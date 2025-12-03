@@ -12,12 +12,6 @@ import 'services/storage/storage_services.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await init.tryCatch();
-  
-  // await ApiService.get("http://localhost:4000/set-cookie?name=Naimul Hassan ss") ;
-
-  await ApiService.get("http://localhost:4000/get-cookie") ;
-
-
   runApp(const MyApp());
 }
 

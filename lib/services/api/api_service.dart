@@ -64,9 +64,7 @@ class ApiService {
             imagePath,
             filename: "$imageName.$extension",
             contentType:
-                mimeType != null
-                    ? DioMediaType.parse(mimeType)
-                    : DioMediaType.parse("image/jpeg"),
+                DioMediaType.parse(mimeType ?? "application/octet-stream"),
           ),
         ),
       );
