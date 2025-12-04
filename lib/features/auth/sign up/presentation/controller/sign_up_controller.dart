@@ -14,8 +14,7 @@ import '../../../../../services/storage/storage_services.dart';
 import '../../../../../utils/app_utils.dart';
 
 class SignUpController extends GetxController {
-  /// Sign Up Form Key
-  final signUpFormKey = GlobalKey<FormState>();
+
 
   bool isPopUpOpen = false;
   bool isLoading = false;
@@ -76,7 +75,6 @@ class SignUpController extends GetxController {
   }
 
   signUpUser() async {
-    if (!signUpFormKey.currentState!.validate()) return;
     Get.toNamed(AppRoutes.verifyUser);
     return;
     isLoading = true;
@@ -122,7 +120,7 @@ class SignUpController extends GetxController {
   }
 
   Future<void> verifyOtpRepo() async {
-    Get.toNamed(AppRoutes.signIn);
+    Get.toNamed(AppRoutes.createSignUpPassword);
     return;
 
     isLoadingVerify = true;

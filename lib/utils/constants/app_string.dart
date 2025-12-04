@@ -10,6 +10,7 @@ class AppString {
   static const String enterYouPassword = "Enter you password";
   static const String cancel = "Cancel";
   static const String done = "Done";
+  static const String didNotReceiveTheCode = "Didn’t received the email? ";
   static const String deleteDetails =
       "All your changes will be deleted and you will no longer be able to access them.";
 

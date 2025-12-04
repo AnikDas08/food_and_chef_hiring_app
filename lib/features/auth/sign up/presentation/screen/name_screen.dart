@@ -14,8 +14,8 @@ import '../../../../../../../utils/constants/app_string.dart';
 import '../widget/already_accunt_rich_text.dart';
 import '../widget/sign_up_all_filed.dart';
 
-class SignUpScreen extends StatelessWidget {
-   SignUpScreen({super.key});
+class NameScreen extends StatelessWidget {
+  NameScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
 
@@ -73,75 +73,6 @@ class SignUpScreen extends StatelessWidget {
                       }
                     },
                   ),
-                  24.height,
-
-                  Row(
-                    children: [
-                      Expanded(child: Divider()),
-                      10.width,
-                      const CommonText(
-                        text: AppString.orUsing,
-                        fontSize: 12,
-                        color: Color(0xff777777),
-                      ),
-                      10.width,
-                      Expanded(child: Divider()),
-                    ],
-                  ),
-
-                  28.height,
-                  Container(
-                    height: 48.h,
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(30.r),
-                      border: Border.all(color: Color(0xffF1F1F1)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CommonImage(imageSrc: AppIcons.facebook),
-                        CommonText(
-                          text: AppString.signInWithFacebook,
-                          left: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
-                    ),
-                  ),
-                  12.height,
-                  Container(
-                    height: 48.h,
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(30.r),
-                      border: Border.all(color: Color(0xffF1F1F1)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CommonImage(imageSrc: AppIcons.google),
-                        CommonText(
-                          text: AppString.signInWithGoogle,
-                          left: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const CommonText(
-                    text: AppString.signUpToPrivaeAsAChef,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff777777),
-                    maxLines: 2,
-                    top: 15,
-                    textAlign: TextAlign.start,
-                    bottom: 28,
-                  ).center,
                 ],
               ),
             ),

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/features/auth/sign%20up/presentation/widget/resend_otp.dart';
+import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../component/text_field/common_text_field.dart';
+import '../../../../../utils/helpers/other_helper.dart';
 import '../controller/sign_up_controller.dart';
 import '../../../../../../../utils/constants/app_colors.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -28,13 +32,7 @@ class _VerifyUserState extends State<VerifyUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       /// App Bar Section starts here
-      appBar: AppBar(
-        title: const CommonText(
-          text: AppString.otpVerify,
-          fontWeight: FontWeight.w700,
-          fontSize: 24,
-        ),
-      ),
+      appBar: AppBar(),
 
       /// Body Section starts here
       body: GetBuilder<SignUpController>(
@@ -44,55 +42,40 @@ class _VerifyUserState extends State<VerifyUser> {
             child: Form(
               key: formKey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// instruction how to get OTP
-                  Center(
-                    child: CommonText(
-                      text:
-                          "${AppString.codeHasBeenSendTo} ${controller.emailController.text}",
-                      fontSize: 18,
-                      top: 100,
-                      bottom: 60,
-                      maxLines: 3,
-                    ),
+                  const CommonText(
+                    text: AppString.pleaseVerifyYourEmailAddress,
+                    fontSize: 24,
+                    color: Color(0xff272727),
+                    top: 10,
+                    maxLines: 2,
+                    textAlign: TextAlign.start,
+                    right: 40,
                   ),
 
-
-                  /// OTP Filed here
-                  Flexible(
-                    flex: 0,
-                    child: PinCodeTextField(
-                      controller: controller.otpController,
-                      autoDisposeControllers: false,
-                      cursorColor: AppColors.black,
-                      appContext: (context),
-                      autoFocus: true,
-                      pinTheme: PinTheme(
-                        shape: PinCodeFieldShape.box,
-                        borderRadius: BorderRadius.circular(16.r),
-                        fieldHeight: 60.h,
-                        fieldWidth: 60.w,
-                        activeFillColor: AppColors.transparent,
-                        selectedFillColor: AppColors.transparent,
-                        inactiveFillColor: AppColors.transparent,
-                        borderWidth: 0.5.w,
-                        selectedColor: AppColors.primaryColor,
-                        activeColor: AppColors.primaryColor,
-                        inactiveColor: AppColors.black,
-                      ),
-                      length: 6,
-                      keyboardType: TextInputType.number,
-                      autovalidateMode: AutovalidateMode.disabled,
-                      enableActiveFill: true,
-                      validator: (value) {
-                        if (value != null && value.length == 6) {
-                          return null;
-                        } else {
-                          return AppString.otpIsInValid;
-                        }
-                      },
-                    ),
+                  const CommonText(
+                    text: AppString.registerAccountMessage,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff777777),
+                    maxLines: 2,
+                    top: 8,
+                    textAlign: TextAlign.start,
+                    bottom: 28,
                   ),
+
+                  /// Account Email Input here
+                  const CommonText(text: AppString.enterCode, bottom: 8),
+                  CommonTextField(
+                    controller: controller.otpController,
+                    hintText: AppString.enterCode,
+                    validator: OtherHelper.validator,
+                    keyboardType: TextInputType.number,
+                  ),
+
+                  10.height,
 
                   /// Resent OTP or show Timer
                   GestureDetector(
@@ -103,20 +86,20 @@ class _VerifyUserState extends State<VerifyUser> {
                               controller.signUpUser();
                             }
                             : () {},
-                    child: CommonText(
-                      text:
-                          controller.time == '00:00'
-                              ? AppString.resendCode
-                              : "${AppString.resendCodeIn} ${controller.time} ${AppString.minute}",
-                      top: 60,
-                      bottom: 100,
-                      fontSize: 18,
-                    ),
+                    child:
+                        controller.time == '00:00'
+                            ? ResendOtp()
+                            : CommonText(
+                              text:
+                                  "${AppString.resendCodeIn} ${controller.time} ${AppString.minute}",
+                            ),
                   ),
+
+                  86.height,
 
                   ///  Submit Button here
                   CommonButton(
-                    titleText: AppString.verify,
+                    titleText: AppString.continues,
                     isLoading: controller.isLoadingVerify,
                     onTap: () {
                       if (formKey.currentState!.validate()) {
