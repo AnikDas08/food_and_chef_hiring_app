@@ -8,7 +8,6 @@ import '../../../../utils/constants/app_string.dart';
 import '../../component/button/common_button.dart';
 import '../../component/image/common_image.dart';
 
-
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
@@ -20,9 +19,7 @@ class OnboardingScreen extends StatelessWidget {
         child: Column(
           children: [
             180.height,
-            const Center(
-              child: CommonImage(imageSrc: AppImages.noImage, size: 70),
-            ),
+            const Center(child: CommonImage(imageSrc: AppImages.onboarding_1)),
             120.height,
             CommonButton(
               titleText: AppString.signIn,
