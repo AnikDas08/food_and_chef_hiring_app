@@ -71,4 +71,14 @@ class AppString {
   static const String thePasswordDoesNotMatch = "The password does not match";
   static const String startServer = "Please, start the Server";
   static const String unknownError = "Unknown Error";
+  static const String welcomeToPrivae = "Welcome to Privae";
+  static const String effortlesslyHirePersonal = "Effortlessly hire personal chefs and enjoy gourmet meals at home. We bring the restaurant experience to you!";
+  static const String imNewSignMeUp = "I’m New, Sign Me Up";
+  static const String findYourPrivaeChef = "Find Your Privae Chef";
+  static const String browseThroughTalentedChefs = "Browse through talented chefs, read reviews, and choose the one that matches your taste and preferences.";
+  static const String bookAnytimeAnywhere = "Book Anytime, Anywhere";
+
+
+
+
 }
