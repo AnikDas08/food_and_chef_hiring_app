@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../../../config/route/app_routes.dart';
 import '../../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,7 +28,7 @@ class SignInScreen extends StatelessWidget {
       body: GetBuilder<SignInController>(
         builder: (controller) {
           return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Form(
               key: controller.formKey,
               child: Column(
@@ -35,17 +37,27 @@ class SignInScreen extends StatelessWidget {
                 children: [
                   /// Log In Instruction here
                   const CommonText(
-                    text: AppString.logIntoYourAccount,
-                    fontSize: 32,
-                    bottom: 20,
-                    top: 36,
+                    text: AppString.welcomeBack,
+                    fontSize: 24,
+                    color: Color(0xff272727),
+                    top: 10,
+                  ),
+
+                  const CommonText(
+                    text: AppString.signInToYourPrivaeAccount,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff777777),
+                    maxLines: 2,
+                    top: 8,
+                    textAlign: TextAlign.start,
+                    bottom: 28,
                   ),
 
                   /// Account Email Input here
                   const CommonText(text: AppString.email, bottom: 8),
                   CommonTextField(
                     controller: controller.emailController,
-                    prefixIcon: const Icon(Icons.mail),
                     hintText: AppString.email,
                     validator: OtherHelper.emailValidator,
                   ),
@@ -58,7 +70,6 @@ class SignInScreen extends StatelessWidget {
                   ),
                   CommonTextField(
                     controller: controller.passwordController,
-                    prefixIcon: const Icon(Icons.lock),
                     isPassword: true,
                     hintText: AppString.password,
                     validator: OtherHelper.passwordValidator,
@@ -74,7 +85,6 @@ class SignInScreen extends StatelessWidget {
                         top: 10,
                         bottom: 30,
                         color: AppColors.primaryColor,
-                        fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -88,9 +98,62 @@ class SignInScreen extends StatelessWidget {
                   ),
                   30.height,
 
-                  /// Account Creating Instruction here
-                  const DoNotHaveAccount(),
-                  30.height,
+                  Row(
+                    children: [
+                      Expanded(child: Divider()),
+                      10.width,
+                      const CommonText(
+                        text: AppString.orUsing,
+                        fontSize: 12,
+                        color: Color(0xff777777),
+                      ),
+                      10.width,
+                      Expanded(child: Divider()),
+                    ],
+                  ),
+
+                  28.height,
+                  Container(
+                    height: 48.h,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(30.r),
+                      border: Border.all(color: Color(0xffF1F1F1)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CommonImage(imageSrc: AppIcons.facebook),
+                        CommonText(
+                          text: AppString.signInWithFacebook,
+                          left: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ],
+                    ),
+                  ),
+                  12.height,
+                  Container(
+                    height: 48.h,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(30.r),
+                      border: Border.all(color: Color(0xffF1F1F1)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CommonImage(imageSrc: AppIcons.google),
+                        CommonText(
+                          text: AppString.signInWithGoogle,
+                          left: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
