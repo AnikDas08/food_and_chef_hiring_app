@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/features/home/presentation/widgets/filter.dart';
 import 'package:new_untitled/features/home/presentation/widgets/search_item.dart';
 import 'package:new_untitled/features/home/presentation/widgets/search_result.dart';
-import 'package:new_untitled/utils/constants/app_images.dart';
-import 'package:new_untitled/utils/extensions/extension.dart';
-
 import '../../../../component/image/common_image.dart';
 import '../../../../component/text_field/common_text_field.dart';
 import '../../../../config/route/app_routes.dart';
@@ -41,7 +38,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 onTap: () => Get.toNamed(AppRoutes.homeSearch),
                 borderRadius: 30,
                 suffixIcon: InkWell(
-                  onTap: onChange,
+                  onTap: () {
+                    filterPanel();
+                  },
                   child: Padding(
                     padding: EdgeInsets.all(10),
                     child: CommonImage(imageSrc: AppIcons.fliter),
@@ -57,7 +56,9 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               value
                   ? Expanded(child: SearchItem())
-                  : Expanded(child: searchResult()),
+                  : Expanded(
+                    child: InkWell(onTap: onChange, child: searchResult()),
+                  ),
             ],
           ),
         ),

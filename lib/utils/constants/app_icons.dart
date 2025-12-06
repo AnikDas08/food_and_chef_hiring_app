@@ -29,4 +29,6 @@ class AppIcons {
   static const String groceries = "$baseurl/groceries.svg";
   static const String home = "$baseurl/home.svg";
   static const String profile = "$baseurl/profile.svg";
+  static const String ingredients = "$baseurl/ingredients.svg";
+  static const String time = "$baseurl/time.svg";
 }

@@ -33,7 +33,13 @@ class _SearchItemState extends State<SearchItem> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CommonText(text: AppString.sortBy),
+        CommonText(
+          text: AppString.sortBy,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: Color(0xff272727),
+          bottom: 10,
+        ).start,
         SizedBox(
           height: 32,
           child: ListView.builder(
