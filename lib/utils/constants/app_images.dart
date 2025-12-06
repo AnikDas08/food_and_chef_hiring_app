@@ -12,6 +12,11 @@ class AppImages {
   static const String splash = "$baseurl/splash.png" ;
   static const String success = "$baseurl/success.png" ;
   static const String logo = "$baseurl/Logo.png" ;
+  static const String image1 = "$baseurl/image1.png" ;
+  static const String image2 = "$baseurl/image2.png" ;
+  static const String image3 = "$baseurl/image3.png" ;
+  static const String image4 = "$baseurl/image4.png" ;
+  static const String image5 = "$baseurl/image5.png" ;
 
 
 

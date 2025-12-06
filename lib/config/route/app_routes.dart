@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:new_untitled/features/home/presentation/screen/search_screen.dart';
 import '../../features/auth/change_password/presentation/screen/change_password_screen.dart';
 import '../../features/auth/forgot password/presentation/screen/create_password.dart';
 import '../../features/auth/forgot password/presentation/screen/forgot_password.dart';
@@ -48,6 +49,7 @@ class AppRoutes {
   static const String dietaryPreferences = "/dietary_preferences_screen.dart";
   static const String reviewDetail = "/review_detail_screen.dart";
   static const String customerHome = "/home_screen.dart";
+  static const String homeSearch = "/search_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -73,5 +75,6 @@ class AppRoutes {
     GetPage(name: dietaryPreferences, page: () => DietaryPreferencesScreen()),
     GetPage(name: reviewDetail, page: () => ReviewDetailScreen()),
     GetPage(name: customerHome, page: () => CustomerHome()),
+    GetPage(name: homeSearch, page: () => SearchScreen()),
   ];
 }

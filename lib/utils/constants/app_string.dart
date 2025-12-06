@@ -149,7 +149,7 @@ class AppString {
   static const String bookings = "Bookings";
   static const String groceries = "Groceries";
   static const String chats = "Chats";
-  static const String relatedResult = "RELATED RESULT";
+  static const String relatedResult = "Related Results";
   static const String sortBy = "Sort by";
   static const String recommended = "Recommended";
   static const String rating = "Rating";

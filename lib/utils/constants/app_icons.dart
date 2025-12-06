@@ -24,4 +24,9 @@ class AppIcons {
   static const String store = "$baseurl/store.svg";
   static const String address = "$baseurl/address.svg";
   static const String map = "$baseurl/map.svg";
+  static const String booking = "$baseurl/booking.svg";
+  static const String chats = "$baseurl/chats.svg";
+  static const String groceries = "$baseurl/groceries.svg";
+  static const String home = "$baseurl/home.svg";
+  static const String profile = "$baseurl/profile.svg";
 }
