@@ -4,6 +4,7 @@ import '../../features/auth/forgot password/presentation/screen/create_password.
 import '../../features/auth/forgot password/presentation/screen/forgot_password.dart';
 import '../../features/auth/forgot password/presentation/screen/verify_screen.dart';
 import '../../features/auth/sign in/presentation/screen/sign_in_screen.dart';
+import '../../features/auth/sign up/presentation/screen/address_screen.dart';
 import '../../features/auth/sign up/presentation/screen/create_password_screen.dart';
 import '../../features/auth/sign up/presentation/screen/name_screen.dart';
 import '../../features/auth/sign up/presentation/screen/sign_up_screen.dart';
@@ -40,6 +41,7 @@ class AppRoutes {
   static const String setting = "/setting_screen.dart";
   static const String createSignUpPassword = "/create_password_screen.dart";
   static const String nameScreen = "/name_screen.dart";
+  static const String address = "/address_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -61,5 +63,6 @@ class AppRoutes {
     GetPage(name: setting, page: () => const SettingScreen()),
     GetPage(name: createSignUpPassword, page: () => CreatePasswordScreen()),
     GetPage(name: nameScreen, page: () => NameScreen()),
+    GetPage(name: address, page: () => AddressScreen()),
   ];
 }

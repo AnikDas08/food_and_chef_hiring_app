@@ -14,8 +14,6 @@ import '../../../../../services/storage/storage_services.dart';
 import '../../../../../utils/app_utils.dart';
 
 class SignUpController extends GetxController {
-
-
   bool isPopUpOpen = false;
   bool isLoading = false;
   bool isLoadingVerify = false;
@@ -50,6 +48,7 @@ class SignUpController extends GetxController {
   TextEditingController numberController = TextEditingController(
     text: kDebugMode ? '1865965581' : '',
   );
+  TextEditingController addressController = TextEditingController();
   TextEditingController otpController = TextEditingController(
     text: kDebugMode ? '123456' : '',
   );

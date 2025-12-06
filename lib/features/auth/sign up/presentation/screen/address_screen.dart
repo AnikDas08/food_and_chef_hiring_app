@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:new_untitled/config/route/app_routes.dart';
 import '../../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -15,8 +14,8 @@ import '../../../../../../../utils/constants/app_string.dart';
 import '../widget/already_accunt_rich_text.dart';
 import '../widget/sign_up_all_filed.dart';
 
-class NameScreen extends StatelessWidget {
-  NameScreen({super.key});
+class AddressScreen extends StatelessWidget {
+  AddressScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
 
@@ -38,14 +37,14 @@ class NameScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
-                    text: AppString.tellUsYourFullName,
+                    text: AppString.enterYourAddress,
                     fontSize: 24,
                     color: Color(0xff272727),
                     top: 10,
                   ),
 
                   const CommonText(
-                    text: AppString.byTellingUsYourFullName,
+                    text: AppString.weveSentAnEmailToDarrenmonarchGmailCom,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
@@ -55,14 +54,14 @@ class NameScreen extends StatelessWidget {
                     bottom: 28,
                   ),
 
-                  /// Account Email Input here
-                  const CommonText(text: AppString.fullName, bottom: 8),
                   CommonTextField(
-                    controller: controller.nameController,
-                    hintText: AppString.fullName,
-                    validator: OtherHelper.validator,
+                    controller: controller.addressController,
+                    hintText: AppString.enterYourAddress,
+                    validator: OtherHelper.emailValidator,
                   ),
                   28.height,
+
+                  CommonText(text: AppString.suggestedAddress),
 
                   /// Submit Button Here
                   CommonButton(
@@ -70,7 +69,7 @@ class NameScreen extends StatelessWidget {
                     isLoading: controller.isLoading,
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        Get.toNamed(AppRoutes.address);
+                        // controller.signUpUser();
                       }
                     },
                   ),

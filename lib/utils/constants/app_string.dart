@@ -15,6 +15,7 @@ class AppString {
       "All your changes will be deleted and you will no longer be able to access them.";
 
   static const String someThingWrong = "Some Thing Wrong";
+  static const String byTellingUsYourFullName = "By telling us your full name we can personalize your Privae experience.";
   static const String tryAgain = "Try Again";
   static const String phoneNumber = "Phone Number";
   static const String test = "Test";
