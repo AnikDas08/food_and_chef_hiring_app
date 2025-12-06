@@ -12,60 +12,67 @@ import '../../../../../../../utils/helpers/other_helper.dart';
 class ForgotPasswordScreen extends StatelessWidget {
   ForgotPasswordScreen({super.key});
 
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ForgetPasswordController>(
-      builder:
-          (controller) => Scaffold(
-            /// App Bar Section
-            appBar: AppBar(
-              title: const CommonText(
-                text: AppString.forgotPassword,
-                fontWeight: FontWeight.w700,
-                fontSize: 24,
-              ),
-            ),
+      builder: (controller) {
+        return Scaffold(
+          appBar: AppBar(),
+          body: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const CommonText(
+                    text: AppString.pleaseEnterYourEmail,
+                    fontSize: 24,
+                    color: Color(0xff272727),
+                    top: 10,
+                  ),
 
-            /// body section
-            body: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// forget password take email for reset Password
-                    const CommonText(text: AppString.email, bottom: 8, top: 80),
-                    CommonTextField(
-                      controller: controller.emailController,
-                      prefixIcon: const Icon(Icons.mail),
-                      hintText: AppString.email,
-                      validator: OtherHelper.emailValidator,
-                    ),
-                    100.height,
-                  ],
-                ),
-              ),
-            ),
+                  const CommonText(
+                    text: AppString.enterYourEmailToReceiveTheOtpCode,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff777777),
+                    maxLines: 2,
+                    top: 8,
+                    textAlign: TextAlign.start,
+                    bottom: 28,
+                  ),
 
-            /// Bottom Navigation Bar Section
-            bottomNavigationBar: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  /// Account Email Input here
+                  const CommonText(text: AppString.enterEmail, bottom: 8),
+                  CommonTextField(
+                    controller: controller.emailController,
+                    hintText: AppString.enterYourEmailAddress,
+                    validator: OtherHelper.validator,
+                  ),
 
-              /// Submit Button
-              child: CommonButton(
-                titleText: AppString.continues,
-                isLoading: controller.isLoadingEmail,
-                onTap: () {
-                  if (formKey.currentState!.validate()) {
-                    controller.forgotPasswordRepo();
-                  }
-                },
+                  /// Submit Button Here
+                ],
               ),
             ),
           ),
+          bottomNavigationBar: Padding(
+            padding: EdgeInsets.only(bottom: 40, left: 20, right: 20),
+            child: CommonButton(
+              titleText: AppString.submit,
+              isLoading: controller.isLoadingEmail,
+              onTap: () {
+                if (_formKey.currentState!.validate()) {
+                  controller.forgotPasswordRepo();
+                }
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

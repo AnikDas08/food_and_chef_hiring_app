@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../component/text_field/common_text_field.dart';
+import '../../../../../utils/helpers/other_helper.dart';
+import '../../../sign up/presentation/widget/resend_otp.dart';
 import '../controller/forget_password_controller.dart';
 import '../../../../../../../utils/constants/app_colors.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../../../../../utils/constants/app_string.dart';
-
 
 class VerifyScreen extends StatefulWidget {
   const VerifyScreen({super.key});
@@ -17,7 +20,7 @@ class VerifyScreen extends StatefulWidget {
 }
 
 class _VerifyScreenState extends State<VerifyScreen> {
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   /// init State here
   @override
@@ -28,107 +31,86 @@ class _VerifyScreenState extends State<VerifyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      /// App Bar Section
-      appBar: AppBar(
-        title: const CommonText(
-          text: AppString.forgotPassword,
-          fontWeight: FontWeight.w700,
-          fontSize: 24,
-        ),
-      ),
+    return GetBuilder<ForgetPasswordController>(
+      builder: (controller) {
+        return Scaffold(
+          appBar: AppBar(),
+          body: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const CommonText(
+                    text: AppString.enter6DigitsCode,
+                    fontSize: 24,
 
-      /// Body Section
-      body: GetBuilder<ForgetPasswordController>(
-        builder:
-            (controller) => SingleChildScrollView(
-              padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 20.w),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    /// instruction how to get OTP
-                    Center(
-                      child: CommonText(
-                        text:
-                            "${AppString.codeHasBeenSendTo} ${controller.emailController.text}",
-                        fontSize: 18,
-                        top: 100,
-                        bottom: 60,
-                      ),
-                    ),
+                    color: Color(0xff272727),
+                    top: 10,
+                  ),
 
-                    /// OTP Filed here
-                    Flexible(
-                      flex: 0,
-                      child: PinCodeTextField(
-                        controller: controller.otpController,
-                        validator: (value) {
-                          if (value != null && value.length == 6) {
-                            return null;
-                          } else {
-                            return AppString.otpIsInValid;
-                          }
-                        },
-                        autoDisposeControllers: false,
-                        cursorColor: AppColors.black,
-                        appContext: (context),
-                        autoFocus: true,
-                        pinTheme: PinTheme(
-                          shape: PinCodeFieldShape.box,
-                          borderRadius: BorderRadius.circular(8),
-                          fieldHeight: 60.h,
-                          fieldWidth: 60.w,
-                          activeFillColor: AppColors.transparent,
-                          selectedFillColor: AppColors.transparent,
-                          inactiveFillColor: AppColors.transparent,
-                          borderWidth: 0.5.w,
-                          selectedColor: AppColors.primaryColor,
-                          activeColor: AppColors.primaryColor,
-                          inactiveColor: AppColors.black,
-                        ),
-                        length: 6,
-                        keyboardType: TextInputType.number,
-                        autovalidateMode: AutovalidateMode.disabled,
-                        enableActiveFill: true,
-                      ),
-                    ),
+                  const CommonText(
+                    text: AppString.weveSentAnEmailToDarrenmonarchGmailCom,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff777777),
+                    maxLines: 2,
+                    top: 8,
+                    textAlign: TextAlign.start,
+                    bottom: 28,
+                  ),
 
-                    /// Resent OTP or show Timer
-                    GestureDetector(
-                      onTap:
-                          controller.time == '00:00'
-                              ? () {
-                                controller.startTimer();
-                                controller.forgotPasswordRepo();
-                              }
-                              : () {},
-                      child: CommonText(
-                        text:
-                            controller.time == '00:00'
-                                ? AppString.resendCode
-                                : "${AppString.resendCodeIn} ${controller.time} ${AppString.minute}",
-                        top: 60,
-                        bottom: 100,
-                        fontSize: 18,
-                      ),
-                    ),
+                  /// Account Email Input here
+                  const CommonText(
+                    text: AppString.enterCode,
+                    bottom: 8,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
+                  ),
+                  CommonTextField(
+                    controller: controller.otpController,
+                    hintText: AppString.enterCode,
+                    validator: OtherHelper.validator,
+                    keyboardType: TextInputType.number,
+                  ),
+                  16.height,
+                  GestureDetector(
+                    onTap:
+                        controller.time == '00:00'
+                            ? () {
+                              controller.startTimer();
+                            }
+                            : () {},
+                    child:
+                        controller.time == '00:00'
+                            ? const ResendOtp()
+                            : CommonText(
+                              text:
+                                  "${AppString.resendCodeIn} ${controller.time} ${AppString.minute}",
+                            ),
+                  ),
 
-                    ///  Submit Button here
-                    CommonButton(
-                      titleText: AppString.verify,
-                      isLoading: controller.isLoadingVerify,
-                      onTap: () {
-                        if (formKey.currentState!.validate()) {
-                          controller.verifyOtpRepo();
-                        }
-                      },
-                    ),
-                  ],
-                ),
+                  /// Submit Button Here
+                ],
               ),
             ),
-      ),
+          ),
+          bottomNavigationBar: Padding(
+            padding: EdgeInsets.only(bottom: 40, left: 20, right: 20),
+            child: CommonButton(
+              titleText: AppString.continueString,
+              isLoading: controller.isLoadingEmail,
+              onTap: () {
+                if (_formKey.currentState!.validate()) {
+                  controller.verifyOtpRepo();
+                }
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

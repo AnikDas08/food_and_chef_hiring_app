@@ -12,6 +12,7 @@ class AppString {
   static const String enterYouPassword = "Enter you password";
   static const String cancel = "Cancel";
   static const String done = "Done";
+  static const String enter6DigitsCode = "Enter 6-digits code";
   static const String didNotReceiveTheCode = "Didn’t received the email? ";
   static const String deleteDetails =
       "All your changes will be deleted and you will no longer be able to access them.";
@@ -94,7 +95,7 @@ class AppString {
   static const String pleaseVerifyYourEmailAddress =
       "Please Verify Your Email Address";
   static const String weveSentAnEmailToDarrenmonarchGmailCom =
-      "We’ve sent an email to darrenmonarch@gmail.com.lease enter the 6 digits code below or click the link.";
+      "We’ve sent an email to darrenmonarch@gmail.com. lease enter the 6 digits code below or click the link.";
   static const String enterCode = "Enter Code";
   static const String typeTheCodeHere = "Type the code here";
   static const String didntReceivedTheEmail = "Didn’t received the email?";
@@ -107,6 +108,7 @@ class AppString {
   static const String registerAccountMessage =
       "Sign up to Privae account to book chefs or manage your cooking gigs. Enter your details to get started!";
   static const String enterYourEmailAddress = "Enter your email address";
+  static const String enterEmail = "Enter Email";
   static const String signUpToPrivaeAsAChef = "Sign up to Privae as a Chef";
   static const String createYourPassword = "Create Your Password";
   static const String createYourPasswordMessage =
@@ -242,6 +244,7 @@ class AppString {
   static const String whereCanYouTravelTo = "Where can you travel to for chef visits to customers? Set your cooking area so that we can help your future customers find you best! No pressure though--you can change this any time.";
   static const String suggestedAddress = "SUGGESTED ADDRESS";
   static const String continueString = "Continue";
+  static const String submit = "Submit";
   static const String orderAreaDistance = "Order Area Distance";
   static const String setYourPrice = "Set Your Price";
   static const String setYourPriceMessage = "Set your hourly rate that customers will pay you to cook for them! No pressure though--you can change this any time.";
