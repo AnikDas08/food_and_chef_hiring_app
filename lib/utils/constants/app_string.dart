@@ -3,8 +3,10 @@ class AppString {
   static const String noInternet = "No Internet";
   static const String checkInternet = "Check Internet";
   static const String back = "Back";
+  static const String detailedAddress = "DETAILED ADDRESS";
   static const String youSureWantToLogout = "You sure want to logout";
   static const String no = "No";
+  static const String allergicPreferences = "ALLERGIC PREFERENCES";
   static const String yes = "Yes";
   static const String areYouSure = "Are you sure";
   static const String enterYouPassword = "Enter you password";

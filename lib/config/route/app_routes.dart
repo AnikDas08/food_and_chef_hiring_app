@@ -6,7 +6,9 @@ import '../../features/auth/forgot password/presentation/screen/verify_screen.da
 import '../../features/auth/sign in/presentation/screen/sign_in_screen.dart';
 import '../../features/auth/sign up/presentation/screen/address_screen.dart';
 import '../../features/auth/sign up/presentation/screen/create_password_screen.dart';
+import '../../features/auth/sign up/presentation/screen/dietary_preferences_screen.dart';
 import '../../features/auth/sign up/presentation/screen/name_screen.dart';
+import '../../features/auth/sign up/presentation/screen/review_detail_screen.dart';
 import '../../features/auth/sign up/presentation/screen/sign_up_screen.dart';
 import '../../features/auth/sign up/presentation/screen/verify_user.dart';
 import '../../features/message/presentation/screen/chat_screen.dart';
@@ -42,6 +44,8 @@ class AppRoutes {
   static const String createSignUpPassword = "/create_password_screen.dart";
   static const String nameScreen = "/name_screen.dart";
   static const String address = "/address_screen.dart";
+  static const String dietaryPreferences = "/dietary_preferences_screen.dart";
+  static const String reviewDetail = "/review_detail_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -64,5 +68,7 @@ class AppRoutes {
     GetPage(name: createSignUpPassword, page: () => CreatePasswordScreen()),
     GetPage(name: nameScreen, page: () => NameScreen()),
     GetPage(name: address, page: () => AddressScreen()),
+    GetPage(name: dietaryPreferences, page: () => DietaryPreferencesScreen()),
+    GetPage(name: reviewDetail, page: () => ReviewDetailScreen()),
   ];
 }

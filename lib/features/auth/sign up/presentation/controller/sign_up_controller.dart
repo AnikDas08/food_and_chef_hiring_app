@@ -23,11 +23,44 @@ class SignUpController extends GetxController {
 
   String time = "";
 
+  String? image;
+
+  getProfileImage() async {
+    image = await OtherHelper.openGallery();
+    update();
+  }
+
   List selectedOption = ["User", "Consultant"];
+  List dietaryOption = [
+    "Onions",
+    "Lettuce",
+    "Cheese",
+    "Cucumber",
+    "Tomato",
+    "Bacon",
+    "Sausage",
+    "Ginger",
+  ];
+
+  List selectDietary = [];
+
+  onChangeDietary(value) {
+    if (selectDietary.contains(value)) {
+      selectDietary.remove(value);
+      update();
+      return;
+    }
+
+    selectDietary.add(value);
+    update();
+
+    dietaryController.text = selectDietary.join(", ");
+
+    print(selectDietary);
+  }
 
   String selectRole = "User";
   String countryCode = "+880";
-  String? image;
 
   String signUpToken = '';
 
@@ -49,6 +82,7 @@ class SignUpController extends GetxController {
     text: kDebugMode ? '1865965581' : '',
   );
   TextEditingController addressController = TextEditingController();
+  TextEditingController dietaryController = TextEditingController();
   TextEditingController otpController = TextEditingController(
     text: kDebugMode ? '123456' : '',
   );

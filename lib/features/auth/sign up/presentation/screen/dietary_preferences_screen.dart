@@ -2,22 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
 import '../../../../../../../utils/extensions/extension.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_text_field.dart';
-import '../../../../../utils/constants/app_colors.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/helpers/other_helper.dart';
 import '../controller/sign_up_controller.dart';
 import '../../../../../../../utils/constants/app_string.dart';
-import '../widget/already_accunt_rich_text.dart';
-import '../widget/sign_up_all_filed.dart';
 
-class AddressScreen extends StatelessWidget {
-  AddressScreen({super.key});
+class DietaryPreferencesScreen extends StatelessWidget {
+  DietaryPreferencesScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
 
@@ -39,7 +35,7 @@ class AddressScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
-                    text: AppString.enterYourAddress,
+                    text: AppString.dietaryPreferences,
                     fontSize: 24,
                     color: Color(0xff272727),
                     top: 10,
@@ -57,18 +53,12 @@ class AddressScreen extends StatelessWidget {
                   ),
 
                   CommonTextField(
-                    controller: controller.addressController,
-                    hintText: AppString.enterYourAddress,
-                    validator: OtherHelper.validator,
+                    hintText: AppString.dietaryPreferences,
                     prefixIcon: Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Icon(CupertinoIcons.search),
                     ),
                     paddingHorizontal: 10,
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: CommonImage(imageSrc: AppIcons.map, size: 24),
-                    ),
                   ),
                   20.height,
 
@@ -82,33 +72,25 @@ class AddressScreen extends StatelessWidget {
 
                   Expanded(
                     child: ListView.builder(
-                      itemCount: 10,
+                      itemCount: controller.dietaryOption.length,
                       itemBuilder: (context, index) {
+                        String value = controller.dietaryOption[index];
                         return Container(
                           margin: EdgeInsets.only(top: 12),
                           child: Row(
                             children: [
-                              CommonImage(imageSrc: AppIcons.address),
-                              12.width,
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CommonText(
-                                    text: "New Mexico",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff272727),
-                                  ),
-                                  CommonText(
-                                    text:
-                                        "4140 Parker Rd. Allentown, New Mexico 31134",
-                                    fontSize: 12,
-                                    top: 2,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xff777777),
-                                  ),
-                                ],
+                              Checkbox(
+                                value: controller.selectDietary.contains(value),
+                                onChanged:
+                                    (val) => controller.onChangeDietary(value),
+                                activeColor: Colors.blue,
+                              ),
+
+                              CommonText(
+                                text: value,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff272727),
                               ),
                             ],
                           ),
@@ -132,7 +114,7 @@ class AddressScreen extends StatelessWidget {
           titleText: AppString.continueString,
           onTap: () {
             if (_formKey.currentState!.validate()) {
-              Get.toNamed(AppRoutes.dietaryPreferences);
+              Get.toNamed(AppRoutes.reviewDetail);
             }
           },
         ),
