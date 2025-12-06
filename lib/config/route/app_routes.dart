@@ -11,6 +11,7 @@ import '../../features/auth/sign up/presentation/screen/name_screen.dart';
 import '../../features/auth/sign up/presentation/screen/review_detail_screen.dart';
 import '../../features/auth/sign up/presentation/screen/sign_up_screen.dart';
 import '../../features/auth/sign up/presentation/screen/verify_user.dart';
+import '../../features/home/presentation/screen/home_screen.dart';
 import '../../features/message/presentation/screen/chat_screen.dart';
 import '../../features/message/presentation/screen/message_screen.dart';
 import '../../features/notifications/presentation/screen/notifications_screen.dart';
@@ -46,6 +47,7 @@ class AppRoutes {
   static const String address = "/address_screen.dart";
   static const String dietaryPreferences = "/dietary_preferences_screen.dart";
   static const String reviewDetail = "/review_detail_screen.dart";
+  static const String customerHome = "/home_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -70,5 +72,6 @@ class AppRoutes {
     GetPage(name: address, page: () => AddressScreen()),
     GetPage(name: dietaryPreferences, page: () => DietaryPreferencesScreen()),
     GetPage(name: reviewDetail, page: () => ReviewDetailScreen()),
+    GetPage(name: customerHome, page: () => CustomerHome()),
   ];
 }
