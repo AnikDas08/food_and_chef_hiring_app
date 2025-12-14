@@ -12,7 +12,7 @@ import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../controller/chef_detail_controller.dart';
 import '../widgets/food_item.dart';
-
+import '../widgets/menu.dart';
 
 String text =
     "Javier Alison, born in Barcelona, Spain, is a celebrated chef known for his innovative Mediterranean cuisine. Trained at the Culinary Institute of Barcelona, Javier refined his skills at renowned restaurants like El Celler de Can Roca. In 2005, he opened his first restaurant, La Cuchara earning a Michelin star within three years. Javier has authored bestselling cookbooks and appeared on numerous cooking shows, sharing his passion and expertise. His philanthropic efforts include the Alison Culinary Foundation, supporting aspiring chefs and sustainable farming. Javier Alison continues to inspire with his creativity and dedication to culinary excellence";
@@ -37,15 +37,7 @@ class ChefDetailsScreen extends StatelessWidget {
                         left: 10,
                         child: InkWell(
                           onTap: Get.back,
-                          child: Container(
-                            height: 40.sp,
-                            width: 40.sp,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(Icons.arrow_back),
-                          ),
+                          child: CommonImage(imageSrc: AppIcons.back),
                         ),
                       ),
                       Positioned(
@@ -53,20 +45,23 @@ class ChefDetailsScreen extends StatelessWidget {
                         right: 10,
                         child: InkWell(
                           onTap: controller.onChange,
-                          child: Container(
-                            height: 40.sp,
-                            width: 40.sp,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              color: Colors.red,
-                              controller.isFavorite
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                            ),
-                          ),
+                          child: CommonImage(imageSrc: AppIcons.favorite),
+                        ),
+                      ),
+                      Positioned(
+                        top: 30,
+                        right: 60,
+                        child: InkWell(
+                          onTap: controller.onChange,
+                          child: CommonImage(imageSrc: AppIcons.share),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 40,
+                        left: 20,
+                        child: InkWell(
+                          onTap: controller.onChange,
+                          child: CommonImage(imageSrc: AppIcons.chef),
                         ),
                       ),
                     ],
@@ -77,147 +72,142 @@ class ChefDetailsScreen extends StatelessWidget {
                     ).copyWith(top: 20.h),
                     margin: EdgeInsets.only(top: 250.h),
                     decoration: BoxDecoration(color: Colors.white),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Color(0xff00580F),
-                                      Color(0xff00AB1D),
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(30),
-                                  border: Border.all(color: Color(0xff00B41E)),
-                                ),
-                                child: Row(
-                                  children: [
-                                    CommonImage(
-                                      imageSrc: AppIcons.chef,
-                                      imageColor: Colors.white,
-                                    ),
-                                    CommonText(
-                                      text: "Professional Chef",
-                                      fontSize: 10,
-                                      left: 4,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ],
-                                ),
-                              ),
+                    child: Column(
+                      children: [
+                        8.height,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CommonText(
+                              text: "Javier A.",
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff272727),
+                            ),
+                            CommonText(
+                              text: "\$70,00/hr",
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff272727),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            CommonImage(imageSrc: AppIcons.location),
+                            CommonText(
+                              text: "2km",
+                              fontSize: 12,
+                              color: Color(0xff777777),
+                              left: 4,
+                              right: 4,
+                            ),
+                            CommonImage(imageSrc: AppIcons.briefcase),
+                            CommonText(
+                              text: "4 years Experience",
+                              fontSize: 12,
+                              left: 4,
+                              color: Color(0xff777777),
+                            ),
 
-                              InkWell(
-                                onTap: () {
-                                  SharePlus.instance.share(
-                                    ShareParams(text: 'https://example.com'),
-                                  );
-                                },
-                                child: Container(
-                                  height: 36.sp,
-                                  width: 36.sp,
-                                  padding: EdgeInsets.all(8.sp),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: Color(0xffF1F1F1),
-                                    ),
-                                  ),
-                                  child: CommonImage(
-                                    imageSrc: AppIcons.share,
-                                    size: 16.sp,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          8.height,
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CommonText(
-                                text: "Javier A.",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff272727),
-                              ),
-                              CommonText(
-                                text: "\$70,00/hr",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff272727),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              CommonImage(imageSrc: AppIcons.location),
-                              CommonText(
-                                text: "2km",
-                                fontSize: 12,
-                                color: Color(0xff777777),
-                                left: 4,
-                                right: 4,
-                              ),
-                              CommonImage(imageSrc: AppIcons.briefcase),
-                              CommonText(
-                                text: "4 years Experience",
-                                fontSize: 12,
-                                left: 4,
-                                color: Color(0xff777777),
-                              ),
+                            Spacer(),
+                            Icon(
+                              Icons.star,
+                              color: Color(0xffFD713F),
+                              size: 20,
+                            ),
+                            CommonText(
+                              text: "4.5 (482 Reviews)",
+                              fontSize: 12,
+                              left: 2,
+                              color: Color(0xff777777),
+                            ),
+                          ],
+                        ),
+                        CommonText(
+                          text: text,
+                          maxLines: 2,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff272727),
+                          textAlign: TextAlign.start,
+                          top: 16,
+                        ),
+                        24.height,
+                        CommonButton(
+                          titleText: AppString.checkAvailability,
+                          titleColor: Colors.white,
+                          titleSize: 14,
+                          titleWeight: FontWeight.w600,
+                        ),
 
-                              Spacer(),
-                              Icon(
-                                Icons.star,
-                                color: Color(0xffE39400),
-                                size: 20,
-                              ),
-                              CommonText(
-                                text: "4.5 (482 Reviews)",
-                                fontSize: 12,
-                                left: 2,
-                                color: Color(0xff777777),
-                              ),
-                            ],
-                          ),
-                          CommonText(
-                            text: text,
-                            maxLines: 2,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff272727),
-                            textAlign: TextAlign.start,
-                            top: 16,
-                          ),
-                          24.height,
-                          CommonButton(
-                            titleText: AppString.checkAvailability,
-                            titleColor: Colors.white,
-                            titleSize: 14,
-                            titleWeight: FontWeight.w600,
-                          ),
-
-                          32.height,
-
-                          foodItem(),
-                          foodItem(),
-                          foodItem(),
-                        ],
-                      ),
+                        CommonText(
+                          text: AppString.menu,
+                          fontSize: 16,
+                          top: 24,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff272727),
+                        ).start,
+                        Expanded(child: MenuPage()),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
+            bottomNavigationBar:
+                controller.cartItems.isEmpty
+                    ? null
+                    : Padding(
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        bottom: 30,
+                      ),
+
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 20,
+                              width: 20,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                              child:
+                                  CommonText(
+                                    text: "1",
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff272727),
+                                  ).center,
+                            ),
+                            CommonText(
+                              text: AppString.viewCart,
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              left: 8,
+                            ),
+                            Spacer(),
+                            CommonText(
+                              text: "\$70,00 30 min",
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
           ),
     );
   }

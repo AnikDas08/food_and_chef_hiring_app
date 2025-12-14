@@ -33,4 +33,6 @@ class AppIcons {
   static const String time = "$baseurl/time.svg";
   static const String notification = "$baseurl/notification.svg";
   static const String basket = "$baseurl/basket.svg";
+  static const String back = "$baseurl/back.svg";
+  static const String favorite = "$baseurl/favorite.svg";
 }
