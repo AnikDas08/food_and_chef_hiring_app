@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:new_untitled/services/api/api_service.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import 'app.dart';

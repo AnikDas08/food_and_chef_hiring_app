@@ -1,29 +1,31 @@
 import 'package:get/get.dart';
-import 'package:new_untitled/features/chef_details/presentation/screen/chef_details_screen.dart';
-import 'package:new_untitled/features/home/presentation/screen/search_screen.dart';
-import '../../features/auth/change_password/presentation/screen/change_password_screen.dart';
-import '../../features/auth/forgot password/presentation/screen/create_password.dart';
-import '../../features/auth/forgot password/presentation/screen/forgot_password.dart';
-import '../../features/auth/forgot password/presentation/screen/verify_screen.dart';
-import '../../features/auth/sign in/presentation/screen/sign_in_screen.dart';
-import '../../features/auth/sign up/presentation/screen/address_screen.dart';
-import '../../features/auth/sign up/presentation/screen/create_password_screen.dart';
-import '../../features/auth/sign up/presentation/screen/dietary_preferences_screen.dart';
-import '../../features/auth/sign up/presentation/screen/name_screen.dart';
-import '../../features/auth/sign up/presentation/screen/review_detail_screen.dart';
-import '../../features/auth/sign up/presentation/screen/sign_up_screen.dart';
-import '../../features/auth/sign up/presentation/screen/verify_user.dart';
-import '../../features/home/presentation/screen/home_screen.dart';
-import '../../features/message/presentation/screen/chat_screen.dart';
-import '../../features/message/presentation/screen/message_screen.dart';
-import '../../features/notifications/presentation/screen/notifications_screen.dart';
-import '../../features/onboarding_screen/onboarding_screen.dart';
-import '../../features/profile/presentation/screen/edit_profile.dart';
-import '../../features/profile/presentation/screen/profile_screen.dart';
-import '../../features/setting/presentation/screen/privacy_policy_screen.dart';
-import '../../features/setting/presentation/screen/setting_screen.dart';
-import '../../features/setting/presentation/screen/terms_of_services_screen.dart';
-import '../../features/splash/splash_screen.dart';
+
+import '../../features/common/auth/change_password/presentation/screen/change_password_screen.dart';
+import '../../features/common/auth/forgot password/presentation/screen/create_password.dart';
+import '../../features/common/auth/forgot password/presentation/screen/forgot_password.dart';
+import '../../features/common/auth/forgot password/presentation/screen/verify_screen.dart';
+import '../../features/common/auth/sign in/presentation/screen/sign_in_screen.dart';
+import '../../features/common/auth/sign up/presentation/screen/address_screen.dart';
+import '../../features/common/auth/sign up/presentation/screen/create_password_screen.dart';
+import '../../features/common/auth/sign up/presentation/screen/dietary_preferences_screen.dart';
+import '../../features/common/auth/sign up/presentation/screen/name_screen.dart';
+import '../../features/common/auth/sign up/presentation/screen/review_detail_screen.dart';
+import '../../features/common/auth/sign up/presentation/screen/sign_up_screen.dart';
+import '../../features/common/auth/sign up/presentation/screen/verify_user.dart';
+import '../../features/common/message/presentation/screen/chat_screen.dart';
+import '../../features/common/message/presentation/screen/message_screen.dart';
+import '../../features/common/notifications/presentation/screen/notifications_screen.dart';
+import '../../features/common/onboarding_screen/onboarding_screen.dart';
+import '../../features/common/profile/presentation/screen/edit_profile.dart';
+import '../../features/common/profile/presentation/screen/profile_screen.dart';
+import '../../features/common/setting/presentation/screen/privacy_policy_screen.dart';
+import '../../features/common/setting/presentation/screen/setting_screen.dart';
+import '../../features/common/setting/presentation/screen/terms_of_services_screen.dart';
+import '../../features/common/splash/splash_screen.dart';
+import '../../features/customer/chef_details/presentation/screen/chef_details_screen.dart';
+import '../../features/customer/home/presentation/screen/home_screen.dart';
+import '../../features/customer/home/presentation/screen/search_screen.dart';
+
 
 class AppRoutes {
   static const String test = "/test_screen.dart";
