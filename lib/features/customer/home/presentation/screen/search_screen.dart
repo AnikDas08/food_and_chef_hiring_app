@@ -10,7 +10,6 @@ import '../widgets/filter.dart';
 import '../widgets/search_item.dart';
 import '../widgets/search_result.dart';
 
-
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -36,7 +35,6 @@ class _SearchScreenState extends State<SearchScreen> {
             children: [
               CommonTextField(
                 hintText: AppString.searchForFoodChefEtc,
-                fillColor: Color(0xffF8F4F1),
                 onTap: () => Get.toNamed(AppRoutes.homeSearch),
                 borderRadius: 30,
                 suffixIcon: InkWell(

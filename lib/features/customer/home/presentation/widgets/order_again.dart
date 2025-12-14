@@ -14,7 +14,7 @@ Widget orderAgain() {
         margin: EdgeInsets.only(right: 10),
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          border: Border.all(color: Color(0xffF1F1F1)),
+          color: Color(0xffF2F2F2),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(

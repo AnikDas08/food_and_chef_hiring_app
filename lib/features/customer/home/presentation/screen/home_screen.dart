@@ -31,7 +31,6 @@ class CustomerHome extends StatelessWidget {
             12.height,
             CommonTextField(
               hintText: AppString.searchForFoodChefEtc,
-              fillColor: Color(0xffF8F4F1),
               keyboardType: TextInputType.none,
               onTap: () => Get.toNamed(AppRoutes.homeSearch),
               borderRadius: 30,
@@ -48,6 +47,7 @@ class CustomerHome extends StatelessWidget {
             20.height,
             SizedBox(height: 90.h, child: category()),
 
+            16.height,
             CommonText(
               text: AppString.recommendedPrivaeChefsNearby,
               fontSize: 16,

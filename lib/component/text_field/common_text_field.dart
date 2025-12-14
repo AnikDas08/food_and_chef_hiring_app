@@ -24,7 +24,7 @@ class CommonTextField extends StatelessWidget {
     this.paddingVertical = 14,
     this.borderRadius = 10,
     this.inputFormatters,
-    this.fillColor = AppColors.white,
+    this.fillColor = const Color(0xffF2F2F2),
     this.hintTextColor = AppColors.textFiledColor,
     this.labelTextColor = AppColors.textFiledColor,
     this.textColor = AppColors.black,
@@ -67,7 +67,7 @@ class CommonTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-          () => TextFormField(
+      () => TextFormField(
         autovalidateMode: AutovalidateMode.onUnfocus,
         keyboardType: keyboardType,
         controller: controller,
@@ -116,12 +116,7 @@ class CommonTextField extends StatelessWidget {
   OutlineInputBorder _buildBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(borderRadius.r),
-      borderSide: BorderSide(
-        color:
-        borderColor == AppColors.transparent
-            ? Colors.grey.withOpacity(0.3)
-            : borderColor,
-      ),
+      borderSide: BorderSide(color: borderColor),
     );
   }
 
@@ -131,7 +126,7 @@ class CommonTextField extends StatelessWidget {
       child: Padding(
         padding: EdgeInsetsDirectional.only(end: 10.w),
         child: Obx(
-              () => Icon(
+          () => Icon(
             obscureText.value
                 ? Icons.visibility_off_outlined
                 : Icons.visibility_outlined,

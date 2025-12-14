@@ -21,13 +21,12 @@ Widget chefItem({num height = 200}) {
     child: Container(
       margin: EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: Color(0xffF1F1F1)),
+        color: Color(0xffF8F4F1),
         borderRadius: BorderRadius.circular(10),
       ),
       padding: const EdgeInsets.only(right: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-
         children: [
           Stack(
             children: [
@@ -66,30 +65,7 @@ Widget chefItem({num height = 200}) {
                 Positioned(
                   bottom: 10,
                   left: 10,
-                  child: Container(
-                    padding: EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Color(0xff00580F), Color(0xff00AB1D)],
-                      ),
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Color(0xff00B41E)),
-                    ),
-                    child: Row(
-                      children: [
-                        CommonImage(
-                          imageSrc: AppIcons.chef,
-                          imageColor: Colors.white,
-                        ),
-                        CommonText(
-                          text: "Professional Chef",
-                          fontSize: 10,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: CommonImage(imageSrc: AppIcons.chef),
                 ),
             ],
           ),
@@ -98,19 +74,36 @@ Widget chefItem({num height = 200}) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CommonText(
-                  text: "Javier A.",
-                  fontSize: 12,
-                  color: Color(0xff272727),
-                  fontWeight: FontWeight.w600,
-                  top: 8,
-                  bottom: 4,
+                SizedBox(
+                  width: 200.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CommonText(
+                        text: "Javier A.",
+                        fontSize: 12,
+                        color: Color(0xff272727),
+                        fontWeight: FontWeight.w600,
+                        top: 8,
+                        bottom: 4,
+                      ),
+                      Spacer(),
+                      Icon(Icons.star, color: Color(0xffFD713F), size: 20),
+                      CommonText(
+                        text: "2km",
+                        fontSize: 12,
+                        color: Color(0xff777777),
+                        left: 4,
+                        right: 4,
+                      ),
+                    ],
+                  ),
                 ),
 
                 SizedBox(
                   width: 200.w,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       CommonImage(imageSrc: AppIcons.location),
                       CommonText(
@@ -139,7 +132,7 @@ Widget chefItem({num height = 200}) {
                 ),
 
                 CommonText(
-                  text: "\$70.00",
+                  text: "\$70.00/hr",
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),

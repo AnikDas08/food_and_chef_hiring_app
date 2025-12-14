@@ -55,8 +55,8 @@ class _SearchItemState extends State<SearchItem> {
                   decoration: BoxDecoration(
                     color:
                         value == selectedValue
-                            ? Color(0xffFD713F)
-                            : Color(0xffF8F4F1),
+                            ? Color(0xff272727)
+                            : Color(0xffF2F2F2),
                     borderRadius: BorderRadius.circular(30),
                   ),
 
@@ -66,7 +66,7 @@ class _SearchItemState extends State<SearchItem> {
                         color:
                             value == selectedValue
                                 ? Colors.white
-                                : Color(0xffFD713F),
+                                : Color(0xff272727),
                       ).center,
                 ),
               );
@@ -95,6 +95,7 @@ class _SearchItemState extends State<SearchItem> {
               isLoading
                   ? Center(child: CircularProgressIndicator())
                   : GridView.builder(
+                    itemCount: 20,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisExtent: 260.h,
