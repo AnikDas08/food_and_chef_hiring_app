@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/utils/constants/app_string.dart';
 import '../../../../../component/bottom_nav_bar/common_bottom_bar.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/other_widgets/no_data.dart';
@@ -20,9 +21,10 @@ class NotificationScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: CommonText(
-          text: ApiEndPoint.notifications,
+          text: AppString.notifications,
           fontWeight: FontWeight.w600,
-          fontSize: 24.sp,
+          fontSize: 14,
+          color: Color(0xff272727),
         ),
       ),
 

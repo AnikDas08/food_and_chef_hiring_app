@@ -113,7 +113,7 @@ class ProfileScreen extends StatelessWidget {
       ),
 
       /// Bottom Navigation Bar Section Starts here
-      bottomNavigationBar: const CommonBottomNavBar(currentIndex: 3),
+      bottomNavigationBar: const CommonBottomNavBar(currentIndex: 4),
     );
   }
 }

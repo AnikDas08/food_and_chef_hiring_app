@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_text_field.dart';
@@ -37,31 +38,49 @@ class _MessageScreenState extends State<MessageScreen> {
         return Scaffold(
           /// App Bar Section starts here
           appBar: AppBar(
-            leading: Padding(
-              padding: EdgeInsets.only(left: 20.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  /// participant image here
-                  CircleAvatar(
-                    radius: 30.sp,
-                    backgroundColor: Colors.transparent,
-                    child: ClipOval(
-                      child: CommonImage(imageSrc: image, size: 60),
+            titleSpacing: 0,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                /// participant image here
+                CircleAvatar(
+                  radius: 20.sp,
+                  backgroundColor: Colors.transparent,
+                  child: ClipOval(
+                    child: CommonImage(
+                      imageSrc: image,
+                      size: 40,
+                      fill: BoxFit.fill,
                     ),
                   ),
-                  12.width,
+                ),
+                12.width,
 
-                  /// participant Name here
-                  CommonText(
-                    text: name,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                  ),
-                ],
-              ),
+                /// participant Name here
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonText(
+                      text: name,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                      color: Color(0xff272727),
+                    ),
+                    CommonText(
+                      text: "online",
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12,
+                      color: Color(0xff777777),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            leadingWidth: Get.width,
+            actions: [
+              InkWell(child: Icon(Icons.call)),
+              IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)),
+            ],
           ),
 
           /// Body Section starts here
@@ -107,15 +126,19 @@ class _MessageScreenState extends State<MessageScreen> {
               /// Send message text filed here
               child: CommonTextField(
                 hintText: AppString.messageHere,
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Icon(Icons.sentiment_dissatisfied),
+                ),
                 suffixIcon: GestureDetector(
                   onTap: controller.addNewMessage,
                   child: Padding(
                     padding: EdgeInsets.all(16.sp),
-                    child: const Icon(Icons.send),
+                    child: CommonImage(imageSrc: AppIcons.send),
                   ),
                 ),
                 borderColor: Colors.white,
-                borderRadius: 8,
+                borderRadius: 20,
                 controller: controller.messageController,
                 onSubmitted: (p0) => controller.addNewMessage(),
               ),

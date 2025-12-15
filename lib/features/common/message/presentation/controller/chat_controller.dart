@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/utils/constants/app_images.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../services/socket/socket_service.dart';
@@ -7,7 +8,6 @@ import '../../../../../services/storage/storage_services.dart';
 import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/enum/enum.dart';
 import '../../data/model/chat_list_model.dart';
-
 
 class ChatController extends GetxController {
   /// Api status check here
@@ -20,7 +20,21 @@ class ChatController extends GetxController {
   int page = 1;
 
   /// Chat List here
-  List chats = [];
+  List<ChatModel> chats = <ChatModel>[
+    ChatModel(
+      id: "aaaa",
+      participant: Participant(
+        id: "aa",
+        fullName: "Cody F.",
+        image: AppImages.image3,
+      ),
+      latestMessage: LatestMessage(
+        id: "aaa",
+        message: "Nam ante lectus donec pulvinar",
+        createdAt: DateTime.now(),
+      ),
+    ),
+  ];
 
   /// Chat Scroll Controller
   ScrollController scrollController = ScrollController();

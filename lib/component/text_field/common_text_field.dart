@@ -81,11 +81,13 @@ class CommonTextField extends StatelessWidget {
         onTap: onTap,
         validator: validator,
         maxLines: isPassword ? 1 : maxLines,
+
         decoration: InputDecoration(
           errorMaxLines: 2,
+
           isDense: isDense,
           filled: true,
-          prefixIconConstraints: BoxConstraints(maxWidth: 30, maxHeight: 30),
+          prefixIconConstraints: BoxConstraints(maxWidth: 40, maxHeight: 30),
           prefixIcon: prefixIcon,
           fillColor: fillColor,
 

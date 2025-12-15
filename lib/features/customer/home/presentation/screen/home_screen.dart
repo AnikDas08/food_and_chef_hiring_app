@@ -36,10 +36,13 @@ class CustomerHome extends StatelessWidget {
               borderRadius: 30,
               suffixIcon: Padding(
                 padding: EdgeInsets.all(10),
-                child: CommonImage(imageSrc: AppIcons.fliter),
+                child: CommonImage(
+                  imageSrc: AppIcons.fliter,
+                  imageColor: Color(0xff636363),
+                ),
               ),
               prefixIcon: Padding(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 16),
                 child: Icon(CupertinoIcons.search),
               ),
             ),

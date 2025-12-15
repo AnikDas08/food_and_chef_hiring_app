@@ -36,5 +36,6 @@ class AppIcons {
   static const String back = "$baseurl/back.svg";
   static const String favorite = "$baseurl/favorite.svg";
   static const String master = "$baseurl/master.svg";
+  static const String send = "$baseurl/send.svg";
 
 }

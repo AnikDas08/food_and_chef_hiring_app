@@ -102,6 +102,10 @@ class CommonBottomNavBar extends StatelessWidget {
       if (!(currentIndex == 3)) {
         Get.toNamed(AppRoutes.chat);
       }
+    } else if (index == 4) {
+      if (!(currentIndex == 4)) {
+        Get.toNamed(AppRoutes.profile);
+      }
     }
   }
 }
