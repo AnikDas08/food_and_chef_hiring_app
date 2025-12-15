@@ -233,6 +233,7 @@ class AppString {
   static const String defaultPayment = "DEFAULT PAYMENT";
   static const String otherPaymentMethod = "OTHER PAYMENT METHOD";
   static const String editACard = "Edit a Card";
+  static const String editOrder = "Edit Order";
   static const String pastBookings = "Past Bookings";
   static const String reorder = "Reorder";
   static const String youRated5 = "You rated 5";
@@ -280,6 +281,7 @@ class AppString {
   static const String avgDishesPerBooking = "Avg Dishes per Booking";
   static const String topItems = "Top Items";
   static const String unconfirmed = "Unconfirmed";
+  static const String cart = "Cart";
   static const String customersAreBusyToo = "Customers are busy too!";
   static const String pleaseAcceptOrDeclineTheOrder = "Please accept or decline the order so that the customer can make other plans if necessary.";
   static const String seePublicProfile = "See Public Profile";

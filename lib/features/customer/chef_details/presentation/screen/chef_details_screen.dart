@@ -9,6 +9,7 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../../../component/text/common_text.dart';
+import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../controller/chef_detail_controller.dart';
 import '../widgets/food_item.dart';
@@ -160,51 +161,54 @@ class ChefDetailsScreen extends StatelessWidget {
             bottomNavigationBar:
                 controller.cartItems.isEmpty
                     ? null
-                    : Padding(
-                      padding: const EdgeInsets.only(
-                        left: 20,
-                        right: 20,
-                        bottom: 30,
-                      ),
-
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                    : InkWell(
+                      onTap: () => Get.toNamed(AppRoutes.cart),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          bottom: 30,
                         ),
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
+
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 20,
+                                width: 20,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child:
+                                    CommonText(
+                                      text: "1",
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xff272727),
+                                    ).center,
                               ),
-                              child:
-                                  CommonText(
-                                    text: "1",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff272727),
-                                  ).center,
-                            ),
-                            CommonText(
-                              text: AppString.viewCart,
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              left: 8,
-                            ),
-                            Spacer(),
-                            CommonText(
-                              text: "\$70,00 30 min",
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ],
+                              CommonText(
+                                text: AppString.viewCart,
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                left: 8,
+                              ),
+                              Spacer(),
+                              CommonText(
+                                text: "\$70,00 30 min",
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
