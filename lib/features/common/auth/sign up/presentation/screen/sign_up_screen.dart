@@ -13,7 +13,7 @@ import '../controller/sign_up_controller.dart';
 import '../../../../../../../utils/constants/app_string.dart';
 
 class SignUpScreen extends StatelessWidget {
-   SignUpScreen({super.key});
+  SignUpScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
 
@@ -89,11 +89,10 @@ class SignUpScreen extends StatelessWidget {
 
                   28.height,
                   Container(
-                    height: 48.h,
+                    height: 60.h,
                     decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(30.r),
-                      border: Border.all(color: Color(0xffF1F1F1)),
+                      color: Color(0xffF2F2F2),
+                      borderRadius: BorderRadius.circular(20.r),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -110,11 +109,10 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   12.height,
                   Container(
-                    height: 48.h,
+                    height: 60.h,
                     decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(30.r),
-                      border: Border.all(color: Color(0xffF1F1F1)),
+                      color: Color(0xffF2F2F2),
+                      borderRadius: BorderRadius.circular(20.r),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

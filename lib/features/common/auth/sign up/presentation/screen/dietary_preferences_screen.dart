@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
 import '../../../../../../../utils/extensions/extension.dart';
 import 'package:get/get.dart';
@@ -39,7 +40,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                   ),
 
                   const CommonText(
-                    text: AppString.weveSentAnEmailToDarrenmonarchGmailCom,
+                    text: AppString.vegetarianKosherHalalFoodAllergies,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
@@ -72,24 +73,42 @@ class DietaryPreferencesScreen extends StatelessWidget {
                       itemCount: controller.dietaryOption.length,
                       itemBuilder: (context, index) {
                         String value = controller.dietaryOption[index];
-                        return Container(
-                          margin: EdgeInsets.only(top: 12),
-                          child: Row(
-                            children: [
-                              Checkbox(
-                                value: controller.selectDietary.contains(value),
-                                onChanged:
-                                    (val) => controller.onChangeDietary(value),
-                                activeColor: Colors.blue,
-                              ),
-
-                              CommonText(
-                                text: value,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff272727),
-                              ),
-                            ],
+                        return InkWell(
+                          onTap: () {
+                            controller.onChangeDietary(value);
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(vertical: 10),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 15.sp,
+                                  height: 15.sp,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        controller.selectDietary.contains(value)
+                                            ? Colors.black
+                                            : Color(0xffF1F1F1),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child:
+                                      !controller.selectDietary.contains(value)
+                                          ? null
+                                          : Icon(
+                                            Icons.check,
+                                            color: Colors.white,
+                                            size: 10,
+                                          ),
+                                ),
+                                CommonText(
+                                  text: value,
+                                  fontSize: 12,
+                                  left: 8,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xff272727),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },

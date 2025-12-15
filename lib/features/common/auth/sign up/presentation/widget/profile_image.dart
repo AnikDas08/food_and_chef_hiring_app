@@ -25,7 +25,7 @@ Widget profileImage(SignUpController controller) {
                       height: 68.sp,
                       fit: BoxFit.fill,
                     )
-                    : const CommonImage(imageSrc: AppImages.camera, size: 68),
+                    : const CommonImage(imageSrc: AppImages.camera, size: 68, ),
           ),
         ),
       ),

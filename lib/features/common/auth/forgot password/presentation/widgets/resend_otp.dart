@@ -8,8 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../../../utils/constants/app_colors.dart';
 import '../../../../../../utils/constants/app_string.dart';
 
-class DoNotHaveAccount extends StatelessWidget {
-  const DoNotHaveAccount({super.key});
+class ResendOtp extends StatelessWidget {
+  const ResendOtp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class DoNotHaveAccount extends StatelessWidget {
       TextSpan(
         children: [
           TextSpan(
-            text: AppString.doNotHaveAccount,
+            text: AppString.didNotReceiveTheCode,
             style: GoogleFonts.plusJakartaSans(
               color: Color(0xff818181),
               fontSize: 12,
@@ -27,12 +27,12 @@ class DoNotHaveAccount extends StatelessWidget {
 
           /// Sign Up Button here
           TextSpan(
-            text: AppString.register,
+            text: AppString.resend,
             recognizer:
-                TapGestureRecognizer()
-                  ..onTap = () {
-                    Get.toNamed(AppRoutes.signUp);
-                  },
+            TapGestureRecognizer()
+              ..onTap = () {
+                Get.toNamed(AppRoutes.signUp);
+              },
             style: GoogleFonts.plusJakartaSans(
               color: Color(0xff272727),
               fontSize: 12,

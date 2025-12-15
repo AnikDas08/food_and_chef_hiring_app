@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -71,10 +69,12 @@ class Screen1 extends StatelessWidget {
                   12.height,
 
                   CommonButton(
-                    titleText: AppString.signUp,
-                    buttonColor: Colors.white,
-                    borderColor: Color(0xffF1F1F1),
+                    titleText: "I’m New, Sign Me Up",
+                    buttonColor: Color(0xffF2F2F2),
+                    borderColor: Colors.transparent,
                     titleColor: Colors.black,
+                    titleSize: 16,
+                    titleWeight: FontWeight.w600,
                     onTap: () => Get.toNamed(AppRoutes.signUp),
                   ),
                   20.height,

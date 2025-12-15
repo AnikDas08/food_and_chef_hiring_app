@@ -7,11 +7,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/text/common_text.dart';
-import '../../../../../../component/text_field/common_text_field.dart' show CommonTextField;
+import '../../../../../../component/text_field/common_text_field.dart'
+    show CommonTextField;
 import '../controller/sign_in_controller.dart';
 import '../../../../../../../utils/constants/app_colors.dart';
 import '../../../../../../../utils/constants/app_string.dart';
 import '../../../../../../../utils/helpers/other_helper.dart';
+import '../widgets/do_not_account.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -82,8 +84,9 @@ class SignInScreen extends StatelessWidget {
                         text: AppString.forgotThePassword,
                         top: 10,
                         bottom: 30,
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w600,
+                        color: Color(0xff272727),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
@@ -112,11 +115,10 @@ class SignInScreen extends StatelessWidget {
 
                   28.height,
                   Container(
-                    height: 48.h,
+                    height: 60.h,
                     decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(30.r),
-                      border: Border.all(color: Color(0xffF1F1F1)),
+                      color: Color(0xffF2F2F2),
+                      borderRadius: BorderRadius.circular(20.r),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -133,11 +135,11 @@ class SignInScreen extends StatelessWidget {
                   ),
                   12.height,
                   Container(
-                    height: 48.h,
+                    height: 60.h,
                     decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(30.r),
-                      border: Border.all(color: Color(0xffF1F1F1)),
+                      color: Color(0xffF2F2F2),
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(color: Color(0xffF2F2F2)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -152,6 +154,8 @@ class SignInScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+                  24.height,
+                  DoNotHaveAccount().center,
                 ],
               ),
             ),

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../component/text_field/common_text_field.dart';
 import '../controller/forget_password_controller.dart';
 import '../../../../../../../utils/constants/app_string.dart';
 import '../../../../../../../utils/helpers/other_helper.dart';
+import '../widgets/resend_otp.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   ForgotPasswordScreen({super.key});
@@ -32,10 +34,12 @@ class ForgotPasswordScreen extends StatelessWidget {
                     fontSize: 24,
                     color: Color(0xff272727),
                     top: 10,
+                    maxLines: 2,
+                    textAlign: TextAlign.start,
                   ),
 
                   const CommonText(
-                    text: AppString.enterYourEmailToReceiveTheOtpCode,
+                    text: AppString.weveSentAnEmailToDarrenmonarchGmailCom,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
@@ -52,6 +56,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                     hintText: AppString.enterYourEmailAddress,
                     validator: OtherHelper.validator,
                   ),
+
+                  12.height,
 
                   /// Submit Button Here
                 ],

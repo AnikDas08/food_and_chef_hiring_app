@@ -32,6 +32,7 @@ Widget chefItem({num height = 200}) {
             children: [
               CommonImage(
                 imageSrc: AppImages.image3,
+                width: 215.w,
                 height: height.toDouble(),
                 borderRadius: 8,
                 fill: BoxFit.fill,

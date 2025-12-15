@@ -73,7 +73,6 @@ class Screen3 extends StatelessWidget {
                     titleText: "I’m New, Sign Me Up",
                     buttonColor: Color(0xffF2F2F2),
                     borderColor: Colors.transparent,
-
                     titleColor: Colors.black,
                     onTap: () => Get.toNamed(AppRoutes.signUp),
                   ),

@@ -51,13 +51,19 @@ class NameScreen extends StatelessWidget {
                   ),
 
                   /// Account Email Input here
-                  const CommonText(text: AppString.fullName, bottom: 8),
+                  const CommonText(text: AppString.firstName, bottom: 8),
                   CommonTextField(
                     controller: controller.nameController,
-                    hintText: AppString.fullName,
+                    hintText: AppString.lastName,
                     validator: OtherHelper.validator,
                   ),
-                  28.height,
+
+                  const CommonText(text: AppString.lastName, bottom: 8, top: 16,),
+                  CommonTextField(
+                    hintText: AppString.lastName,
+                    validator: OtherHelper.validator,
+                  ),
+                  38.height,
 
                   /// Submit Button Here
                   CommonButton(
@@ -65,7 +71,7 @@ class NameScreen extends StatelessWidget {
                     isLoading: controller.isLoading,
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        Get.toNamed(AppRoutes.address);
+                        Get.toNamed(AppRoutes.dietaryPreferences);
                       }
                     },
                   ),

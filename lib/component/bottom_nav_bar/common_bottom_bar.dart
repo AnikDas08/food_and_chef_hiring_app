@@ -11,7 +11,7 @@ import '../../../utils/log/app_log.dart';
 
 List _list = [
   AppIcons.home,
-  AppIcons.booking,
+  AppIcons.basket,
   AppIcons.groceries,
   AppIcons.chats,
   AppIcons.profile,
@@ -59,14 +59,16 @@ class CommonBottomNavBar extends StatelessWidget {
                     CommonImage(
                       imageSrc: _list[index],
                       size: 24,
+
                       imageColor:
                           index == currentIndex
-                              ? Color(0xff272727)
+                              ? Colors.black
                               : Color(0xff777777),
                     ),
                     CommonText(
                       text: _string[index],
                       fontSize: 12,
+                      top: 4,
                       fontWeight: FontWeight.w400,
                       color:
                           index == currentIndex

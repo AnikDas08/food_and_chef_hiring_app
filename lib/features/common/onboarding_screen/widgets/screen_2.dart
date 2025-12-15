@@ -71,9 +71,9 @@ class Screen2 extends StatelessWidget {
                   12.height,
 
                   CommonButton(
-                    titleText: AppString.signUp,
-                    buttonColor: Colors.white,
-                    borderColor: Color(0xffF1F1F1),
+                    titleText: "I’m New, Sign Me Up",
+                    buttonColor: Color(0xffF2F2F2),
+                    borderColor: Colors.transparent,
                     titleColor: Colors.black,
                     onTap: () => Get.toNamed(AppRoutes.signUp),
                   ),

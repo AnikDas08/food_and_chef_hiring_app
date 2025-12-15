@@ -28,8 +28,9 @@ class CreatePassword extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
-                    text: AppString.forgotPassword,
+                    text: AppString.createYourNewPassword,
                     fontSize: 24,
+                    fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                     top: 10,
                   ),
@@ -50,6 +51,18 @@ class CreatePassword extends StatelessWidget {
                   CommonTextField(
                     controller: controller.passwordController,
                     hintText: AppString.newPassword,
+                    validator: OtherHelper.passwordValidator,
+                    isPassword: true,
+                  ),
+
+                  const CommonText(
+                    text: AppString.confirmPassword,
+                    bottom: 8,
+                    top: 16,
+                  ),
+                  CommonTextField(
+                    controller: controller.confirmPasswordController,
+                    hintText: AppString.confirmPassword,
                     validator: OtherHelper.passwordValidator,
                     isPassword: true,
                   ),

@@ -19,7 +19,7 @@ class AppString {
   static const String done = "Done";
   static const String pleaseSelectTheTaxDetailsYouWantToUse = "Please select the tax details you want to use";
   static const String enter6DigitsCode = "Enter 6-digits code";
-  static const String didNotReceiveTheCode = "Didn’t received the email? ";
+  static const String didNotReceiveTheCode = "Didn’t received the email?  ";
   static const String deleteDetails =
       "All your changes will be deleted and you will no longer be able to access them.";
 
@@ -47,12 +47,15 @@ class AppString {
   static const String streetAddress = "Street Address";
   static const String verify = "Verify";
   static const String logIntoYourAccount = "Login to Your Account";
-  static const String forgotThePassword = "Forgot password";
+  static const String forgotThePassword = "Forgot password?";
   static const String signIn = "Sign in";
-  static const String doNotHaveAccount = "Don’t have an account";
+  static const String signInNow = "Sign In Now";
+  static const String doNotHaveAccount = "Don’t have an account?  ";
   static const String signUp = "Sign up";
   static const String alreadyHaveAccount = "Already have an account";
   static const String fullName = "Full Name";
+  static const String firstName = "First name";
+  static const String lastName = "Last name";
   static const String createYourAccount = "Create Your Account";
   static const String otpVerify = "OTP Verify";
   static const String inbox = "Inbox";
@@ -100,8 +103,9 @@ class AppString {
   static const String orUsing = "or using";
   static const String signInWithFacebook = "Sign In with Facebook";
   static const String signInWithGoogle = "Sign In with Google";
+  static const String vegetarianKosherHalalFoodAllergies = "Vegetarian? Kosher? Halal? Food allergies? Enter the details below";
   static const String pleaseVerifyYourEmailAddress =
-      "Please Verify Your Email Address";
+      "Please Verify Your\nEmail Address";
   static const String weveSentAnEmailToDarrenmonarchGmailCom =
       "We’ve sent an email to darrenmonarch@gmail.com. lease enter the 6 digits code below or click the link.";
   static const String enterCode = "Enter Code";
@@ -113,6 +117,7 @@ class AppString {
       "Sign in successful! You’re all set to explore Privae and manage your bookings or chef services. Let’s go!";
   static const String takingYouToYourHomepage = "Taking you to your Homepage";
   static const String registerAccount = "Register Account";
+  static const String register = "Register";
   static const String registerAccountMessage =
       "Sign up to Privae account to book chefs or manage your cooking gigs. Enter your details to get started!";
   static const String enterYourEmailAddress = "Enter your email address";
@@ -142,7 +147,7 @@ class AppString {
   static const String accountCreated = "Account Created";
   static const String accountCreatedMessage =
       "Account created successfully! You're just moments away from your first ever week free of cooking stress";
-  static const String pleaseEnterYourEmail = "Please enter your email";
+  static const String pleaseEnterYourEmail = "Please Verify Your\nEmail Address";
   static const String enterYourEmailToReceiveTheOtpCode =
       "Enter your email to send you the OTP code.";
   static const String enterEmailHere = "Enter email here";
