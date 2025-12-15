@@ -6,6 +6,7 @@ import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../../component/text/common_text.dart';
 import '../../../../../config/route/app_routes.dart';
@@ -51,7 +52,11 @@ class ChefDetailsScreen extends StatelessWidget {
                         top: 30,
                         right: 60,
                         child: InkWell(
-                          onTap: controller.onChange,
+                          onTap: () {
+                            SharePlus.instance.share(
+                              ShareParams(text: 'https://example.com'),
+                            );
+                          },
                           child: CommonImage(imageSrc: AppIcons.share),
                         ),
                       ),

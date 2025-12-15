@@ -23,8 +23,9 @@ class _SearchItemState extends State<SearchItem> {
   onChangeValue(value) async {
     isLoading = true;
     setState(() {});
-    await Future.delayed(Duration(seconds: 1));
     selectedValue = value;
+    await Future.delayed(Duration(seconds: 1));
+
     isLoading = false;
     setState(() {});
   }
@@ -35,6 +36,7 @@ class _SearchItemState extends State<SearchItem> {
       children: [
         CommonText(
           text: AppString.sortBy,
+          top: 24,
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),

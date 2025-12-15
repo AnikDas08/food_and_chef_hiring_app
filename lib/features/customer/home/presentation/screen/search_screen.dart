@@ -36,7 +36,7 @@ class _SearchScreenState extends State<SearchScreen> {
               CommonTextField(
                 hintText: AppString.searchForFoodChefEtc,
                 onTap: () => Get.toNamed(AppRoutes.homeSearch),
-                borderRadius: 30,
+                borderRadius: 20,
                 suffixIcon: InkWell(
                   onTap: () {
                     filterPanel();
