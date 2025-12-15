@@ -16,7 +16,6 @@ class DoNotHaveAccount extends StatelessWidget {
     return Text.rich(
       TextSpan(
         children: [
-
           TextSpan(
             text: AppString.doNotHaveAccount,
             style: GoogleFonts.plusJakartaSans(

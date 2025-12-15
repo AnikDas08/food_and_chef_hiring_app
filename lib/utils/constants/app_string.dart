@@ -3,15 +3,21 @@ class AppString {
   static const String noInternet = "No Internet";
   static const String checkInternet = "Check Internet";
   static const String back = "Back";
+  static const String name = "Name";
+  static const String businessTaxDetails = "Business tax details";
   static const String detailedAddress = "DETAILED ADDRESS";
   static const String youSureWantToLogout = "You sure want to logout";
   static const String no = "No";
+  static const String taxId = "Tax ID / VAT ID";
+  static const String postalCode = "Postal Code";
   static const String allergicPreferences = "ALLERGIC PREFERENCES";
   static const String yes = "Yes";
+  static const String city = "City";
   static const String areYouSure = "Are you sure";
   static const String enterYouPassword = "Enter you password";
   static const String cancel = "Cancel";
   static const String done = "Done";
+  static const String pleaseSelectTheTaxDetailsYouWantToUse = "Please select the tax details you want to use";
   static const String enter6DigitsCode = "Enter 6-digits code";
   static const String didNotReceiveTheCode = "Didn’t received the email? ";
   static const String deleteDetails =
@@ -38,6 +44,7 @@ class AppString {
   static const String resendCode = "Resend Code";
   static const String resendCodeIn = "Resend code in";
   static const String minute = "minute";
+  static const String streetAddress = "Street Address";
   static const String verify = "Verify";
   static const String logIntoYourAccount = "Login to Your Account";
   static const String forgotThePassword = "Forgot password";
@@ -60,6 +67,7 @@ class AppString {
   static const String gender = "Gender";
   static const String profile = "Profile";
   static const String saveAndChanges = "Save and Changes";
+  static const String save = "Save";
   static const String editProfile = "Edit Profile";
   static const String settings = "Settings";
   static const String logOut = "Log Out";
@@ -127,7 +135,7 @@ class AppString {
   static const String
   hereAreTheDetailsOfTheDataYouHaveFilledInPreviouslyYouCanChangeItIfItIsWrong =
       "Here are the details of the data you have filled in previously, you can change it if it is wrong.";
-  static const String personalDetails = "PERSONAL DETAILS";
+  static const String personalDetails = "Personal Details";
   static const String address = "Address";
   static const String selectedFood = "Selected Food";
   static const String createAccount = "Create Account";

@@ -12,6 +12,7 @@ import '../../../../../utils/constants/app_images.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../widgets/confirm_checking_popup.dart';
 import '../widgets/order_summary.dart';
+import '../widgets/tax_popup.dart';
 
 class CheckoutScreen extends StatelessWidget {
   CheckoutScreen({super.key});
@@ -205,6 +206,51 @@ class CheckoutScreen extends StatelessWidget {
                 ),
               ],
             ),
+            24.height,
+            InkWell(
+              onTap: taxPopup,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 15.sp,
+                    width: 15.sp,
+                    decoration: BoxDecoration(
+                      color: Color(0xffF2F2F2),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  12.width,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CommonText(
+                          text: "Request an invoice",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff272727),
+                        ),
+                        CommonText(
+                          text: "Add tax details",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff818181),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Icon(
+                    Icons.arrow_forward_ios_sharp,
+                    size: 16,
+                    color: Color(0xff777777),
+                  ),
+                ],
+              ),
+            ),
+
             CommonText(
               text: AppString.paymentMethod,
               bottom: 8,

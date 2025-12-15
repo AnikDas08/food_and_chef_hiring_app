@@ -22,8 +22,10 @@ import '../../features/common/setting/presentation/screen/privacy_policy_screen.
 import '../../features/common/setting/presentation/screen/setting_screen.dart';
 import '../../features/common/setting/presentation/screen/terms_of_services_screen.dart';
 import '../../features/common/splash/splash_screen.dart';
+import '../../features/customer/cart/presentation/screen/business_tax_details_screen.dart';
 import '../../features/customer/cart/presentation/screen/cart_screen.dart';
 import '../../features/customer/cart/presentation/screen/checkout_screen.dart';
+import '../../features/customer/cart/presentation/screen/personal_tax_details_screen.dart';
 import '../../features/customer/chef_details/presentation/screen/chef_details_screen.dart';
 import '../../features/customer/home/presentation/screen/home_screen.dart';
 import '../../features/customer/home/presentation/screen/search_screen.dart';
@@ -57,6 +59,8 @@ class AppRoutes {
   static const String chefDetails = "/chef_details_screen.dart";
   static const String cart = "/cart_screen.dart";
   static const String checkout = "/checkout_screen.dart";
+  static const String businessTaxDetails = "/business_tax_details_screen.dart";
+  static const String personalTaxDetails = "/personal_tax_details_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -86,5 +90,7 @@ class AppRoutes {
     GetPage(name: chefDetails, page: () => ChefDetailsScreen()),
     GetPage(name: cart, page: () => CartScreen()),
     GetPage(name: checkout, page: () => CheckoutScreen()),
+    GetPage(name: businessTaxDetails, page: () => BusinessTaxDetailsScreen()),
+    GetPage(name: personalTaxDetails, page: () => PersonalTaxDetailsScreen()),
   ];
 }
