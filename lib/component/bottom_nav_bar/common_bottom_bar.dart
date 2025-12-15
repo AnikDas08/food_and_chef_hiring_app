@@ -92,7 +92,7 @@ class CommonBottomNavBar extends StatelessWidget {
       }
     } else if (index == 1) {
       if (!(currentIndex == 1)) {
-        Get.toNamed(AppRoutes.notifications);
+        Get.toNamed(AppRoutes.bookingHistory);
       }
     } else if (index == 2) {
       if (!(currentIndex == 2)) {
