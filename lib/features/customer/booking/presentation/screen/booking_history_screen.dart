@@ -8,6 +8,7 @@ import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/booking_history_controller.dart';
+import '../widgets/booking_item.dart';
 
 class BookingHistoryScreen extends StatelessWidget {
   const BookingHistoryScreen({super.key});
@@ -73,6 +74,14 @@ class BookingHistoryScreen extends StatelessWidget {
                         ),
                       );
                     }),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return bookingItem();
+                      },
+                    ),
                   ),
                 ],
               ),

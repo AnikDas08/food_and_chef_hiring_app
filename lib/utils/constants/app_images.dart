@@ -35,4 +35,5 @@ class AppImages {
 
   static const String image6 = "$baseurl/image6.png";
   static const String warning = "$baseurl/warning.png";
+  static const String orderStatus = "$baseurl/order_status.png";
 }

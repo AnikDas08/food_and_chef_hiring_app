@@ -23,6 +23,7 @@ import '../../features/common/setting/presentation/screen/setting_screen.dart';
 import '../../features/common/setting/presentation/screen/terms_of_services_screen.dart';
 import '../../features/common/splash/splash_screen.dart';
 import '../../features/customer/booking/presentation/screen/booking_history_screen.dart';
+import '../../features/customer/booking/presentation/screen/request_change_screen.dart';
 import '../../features/customer/cart/presentation/screen/business_tax_details_screen.dart';
 import '../../features/customer/cart/presentation/screen/cart_screen.dart';
 import '../../features/customer/cart/presentation/screen/checkout_screen.dart';
@@ -63,6 +64,7 @@ class AppRoutes {
   static const String businessTaxDetails = "/business_tax_details_screen.dart";
   static const String personalTaxDetails = "/personal_tax_details_screen.dart";
   static const String bookingHistory = "/booking_history_screen.dart";
+  static const String requestChange = "/request_change_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -95,5 +97,6 @@ class AppRoutes {
     GetPage(name: businessTaxDetails, page: () => BusinessTaxDetailsScreen()),
     GetPage(name: personalTaxDetails, page: () => PersonalTaxDetailsScreen()),
     GetPage(name: bookingHistory, page: () => BookingHistoryScreen()),
+    GetPage(name: requestChange, page: () => RequestChangeScreen()),
   ];
 }

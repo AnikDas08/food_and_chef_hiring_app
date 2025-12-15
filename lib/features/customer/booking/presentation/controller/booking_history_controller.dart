@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 class BookingHistoryController extends GetxController {
+  bool isOrderDetailsPopup = false;
   List<String> bookingHistoryList = [
     "All",
     "Awaiting Confirmation",
@@ -11,6 +12,11 @@ class BookingHistoryController extends GetxController {
 
   onChangeBookingHistory(String value) {
     selectedBookingHistory = value;
+    update();
+  }
+
+  onChangeOrderDetailsPopup() {
+    isOrderDetailsPopup = !isOrderDetailsPopup;
     update();
   }
 }
