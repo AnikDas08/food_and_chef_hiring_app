@@ -10,6 +10,7 @@ import 'package:new_untitled/utils/helpers/other_helper.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_images.dart';
 import '../../../../../utils/constants/app_string.dart';
+import '../widgets/confirm_checking_popup.dart';
 import '../widgets/order_summary.dart';
 
 class CheckoutScreen extends StatelessWidget {
@@ -265,7 +266,10 @@ class CheckoutScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-        child: CommonButton(titleText: AppString.checkoutNow, onTap: () {}),
+        child: CommonButton(
+          titleText: AppString.checkoutNow,
+          onTap: confirmCheckingPopup,
+        ),
       ),
     );
   }
