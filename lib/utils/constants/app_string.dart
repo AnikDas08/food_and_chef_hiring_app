@@ -112,6 +112,7 @@ class AppString {
   static const String typeTheCodeHere = "Type the code here";
   static const String didntReceivedTheEmail = "Didn’t received the email?";
   static const String resend = "Resend";
+  static const String enterYourEmail = "Enter your email to send you the OTP code.";
   static const String signInSuccessfully = "Sign In Successfully";
   static const String signInSuccessfullyMessage =
       "Sign in successful! You’re all set to explore Privae and manage your bookings or chef services. Let’s go!";
@@ -147,7 +148,7 @@ class AppString {
   static const String accountCreated = "Account Created";
   static const String accountCreatedMessage =
       "Account created successfully! You're just moments away from your first ever week free of cooking stress";
-  static const String pleaseEnterYourEmail = "Please Verify Your\nEmail Address";
+  static const String pleaseEnterYourEmail = "Please enter your email";
   static const String enterYourEmailToReceiveTheOtpCode =
       "Enter your email to send you the OTP code.";
   static const String enterEmailHere = "Enter email here";

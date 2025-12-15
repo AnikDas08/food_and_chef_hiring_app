@@ -51,7 +51,7 @@ class CreatePasswordScreen extends StatelessWidget {
                   ),
 
                   /// Account Email Input here
-                  const CommonText(text: AppString.password, bottom: 8),
+                  const CommonText(text: AppString.newPassword, bottom: 8),
                   CommonTextField(
                     controller: controller.passwordController,
                     hintText: AppString.enterPassword,

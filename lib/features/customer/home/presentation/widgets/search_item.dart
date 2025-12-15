@@ -6,7 +6,7 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 
 import 'chef_item.dart';
 
-List _list = ["Recommended", "Distance", "Rating", "Next Available"];
+List _list = ["Recommended", "Rating", "Price", "Next Available"];
 
 class SearchItem extends StatefulWidget {
   const SearchItem({super.key});
@@ -59,7 +59,7 @@ class _SearchItemState extends State<SearchItem> {
                         value == selectedValue
                             ? Color(0xff272727)
                             : Color(0xffF2F2F2),
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(10),
                   ),
 
                   child:

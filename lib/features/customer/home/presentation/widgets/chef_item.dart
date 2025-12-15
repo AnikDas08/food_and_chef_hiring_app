@@ -21,10 +21,9 @@ Widget chefItem({num height = 200}) {
     child: Container(
       margin: EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
-        color: Color(0xffF8F4F1),
+        color: Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(10),
       ),
-      padding: const EdgeInsets.only(right: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,34 +31,10 @@ Widget chefItem({num height = 200}) {
             children: [
               CommonImage(
                 imageSrc: AppImages.image3,
-                width: 215.w,
                 height: height.toDouble(),
+                width: 240.w,
                 borderRadius: 8,
                 fill: BoxFit.fill,
-              ),
-              Positioned(
-                top: 10,
-                left: 10,
-                child: Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(
-                      color: Color(0xffFFFFFF).withOpacity(0.16),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.star, color: Color(0xffE39400), size: 16),
-                      CommonText(
-                        text: "4.5(482 Reviews)",
-                        fontSize: 10,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                ),
               ),
 
               if (checkCondition())
@@ -91,7 +66,7 @@ Widget chefItem({num height = 200}) {
                       Spacer(),
                       Icon(Icons.star, color: Color(0xffFD713F), size: 20),
                       CommonText(
-                        text: "2km",
+                        text: "4.5",
                         fontSize: 12,
                         color: Color(0xff777777),
                         left: 4,

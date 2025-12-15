@@ -39,7 +39,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                   ),
 
                   const CommonText(
-                    text: AppString.weveSentAnEmailToDarrenmonarchGmailCom,
+                    text: AppString.enterYourEmail,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
