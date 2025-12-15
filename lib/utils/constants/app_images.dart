@@ -9,7 +9,7 @@ class AppImages {
   static const String onboarding_1 = "$baseurl/onboarding_1.png" ;
   static const String onboarding_2 = "$baseurl/onboarding_2.png" ;
   static const String onboarding_3 = "$baseurl/onboarding_3.png" ;
-  static const String splash = "$baseurl/splash.png" ;
+  static const String splash = "$baseurl/" ;
   static const String success = "$baseurl/success.png" ;
   static const String logo = "$baseurl/Logo.png" ;
   static const String image1 = "$baseurl/image1.png" ;

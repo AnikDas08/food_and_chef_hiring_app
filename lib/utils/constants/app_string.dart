@@ -289,6 +289,8 @@ class AppString {
   static const String availability = "Availability";
   static const String menuItems = "Menu & Items";
   static const String accountSettings = "Account Settings";
+  static const String subtotal = "Subtotal";
+  static const String checkout = "Checkout";
   static const String areYouSureYouWantToDeleteYourAccount = "Are you sure you want to delete your account?";
 
 

@@ -39,7 +39,7 @@ class CommonBottomNavBar extends StatelessWidget {
         alignment: Alignment.center,
         padding: EdgeInsets.all(12.sp),
         decoration: BoxDecoration(
-          color: AppColors.blueLight,
+          color: AppColors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20.r),
             topRight: Radius.circular(20.r),
@@ -88,7 +88,7 @@ class CommonBottomNavBar extends StatelessWidget {
 
     if (index == 0) {
       if (!(currentIndex == 0)) {
-        Get.toNamed(AppRoutes.setting);
+        Get.toNamed(AppRoutes.customerHome);
       }
     } else if (index == 1) {
       if (!(currentIndex == 1)) {
@@ -100,7 +100,7 @@ class CommonBottomNavBar extends StatelessWidget {
       }
     } else if (index == 3) {
       if (!(currentIndex == 3)) {
-        Get.toNamed(AppRoutes.profile);
+        Get.toNamed(AppRoutes.chat);
       }
     }
   }

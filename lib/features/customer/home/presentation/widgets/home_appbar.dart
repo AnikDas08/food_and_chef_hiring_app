@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
+
+import '../../../../../config/route/app_routes.dart';
 
 AppBar homeAppbar() {
   return AppBar(
@@ -46,13 +49,16 @@ AppBar homeAppbar() {
       ],
     ),
     actions: [
-      Container(
-        padding: EdgeInsets.all(8.sp),
-        decoration: BoxDecoration(
-          color: Color(0xffF2F2F2),
-          shape: BoxShape.circle,
+      InkWell(
+        onTap: () => Get.toNamed(AppRoutes.notifications),
+        child: Container(
+          padding: EdgeInsets.all(8.sp),
+          decoration: BoxDecoration(
+            color: Color(0xffF2F2F2),
+            shape: BoxShape.circle,
+          ),
+          child: CommonImage(imageSrc: AppIcons.notification),
         ),
-        child: CommonImage(imageSrc: AppIcons.notification),
       ),
       12.width,
       Container(

@@ -41,13 +41,13 @@ Widget cartItem(BuildContext context) {
                       fontWeight: FontWeight.w400,
                       color: Color(0xff777777),
                     ),
-                    4.height,
+                    10.height,
 
                     Container(
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(30),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -81,6 +81,7 @@ Widget cartItem(BuildContext context) {
                         ],
                       ),
                     ),
+                    20.height,
                     Row(
                       children: [
                         CommonImage(
@@ -103,7 +104,6 @@ Widget cartItem(BuildContext context) {
                         ),
                       ],
                     ),
-                    28.height,
                   ],
                 ),
               ),
