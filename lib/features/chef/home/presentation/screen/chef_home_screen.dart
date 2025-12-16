@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:new_untitled/features/chef/home/presentation/widgets/chef_home_appbar.dart';
+import 'package:new_untitled/utils/constants/app_string.dart';
+import 'package:new_untitled/utils/extensions/extension.dart';
+
+import '../../../../../component/bottom_nav_bar/chef_bottom_bar.dart';
+import '../../../../../component/image/common_image.dart';
+import '../../../../../component/text/common_text.dart';
+import '../../../../../utils/constants/app_icons.dart';
+import '../../../../../utils/constants/app_images.dart';
+import '../widgets/request_item.dart';
+
+class ChefHomeScreen extends StatelessWidget {
+  const ChefHomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: chefHomeAppBar(),
+
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        child: Column(
+          children: [
+            CommonImage(imageSrc: AppImages.img7),
+            32.height,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CommonText(
+                  text: AppString.requestedBookings,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff272727),
+                ),
+                CommonText(
+                  text: AppString.seeAll,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xffFD713F),
+                ),
+              ],
+            ),
+
+            Expanded(
+              child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return requestItem(context);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: ChefBottomBar(currentIndex: 0),
+    );
+  }
+}

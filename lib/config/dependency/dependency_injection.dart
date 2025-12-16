@@ -1,6 +1,6 @@
-
 import 'package:get/get.dart';
 
+import '../../features/chef/home/presentation/controller/chef_home_controller.dart';
 import '../../features/common/auth/change_password/presentation/controller/change_password_controller.dart';
 import '../../features/common/auth/forgot password/presentation/controller/forget_password_controller.dart';
 import '../../features/common/auth/sign in/presentation/controller/sign_in_controller.dart';
@@ -18,8 +18,6 @@ import '../../features/customer/home/presentation/controller/home_controller.dar
 import '../../features/customer/past_order/presentation/controller/past_order_controller.dart';
 import '../../features/customer/payment/presentation/controller/payment_method_controller.dart';
 import '../../features/customer/profile/presentation/controller/profile_controller.dart';
-
-
 
 class DependencyInjection extends Bindings {
   @override
@@ -41,5 +39,6 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => AddressController(), fenix: true);
     Get.lazyPut(() => PaymentMethodController(), fenix: true);
     Get.lazyPut(() => PastOrderController(), fenix: true);
+    Get.lazyPut(() => ChefHomeController(), fenix: true);
   }
 }

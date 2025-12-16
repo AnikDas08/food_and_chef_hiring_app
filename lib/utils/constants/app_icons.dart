@@ -49,4 +49,5 @@ class AppIcons {
   static const String shopPay = "$baseurl/shop_pay.svg";
   static const String contact = "$baseurl/contact.svg";
   static const String logout = "$baseurl/logout.svg";
+  static const String analytics = "$baseurl/analytics.svg";
 }

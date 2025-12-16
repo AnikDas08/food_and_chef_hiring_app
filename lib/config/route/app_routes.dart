@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:new_untitled/features/customer/address/presentation/screen/add_address_screen.dart';
+import '../../features/chef/home/presentation/screen/chef_home_screen.dart';
 import '../../features/common/auth/change_password/presentation/screen/change_password_screen.dart';
 import '../../features/common/auth/forgot password/presentation/screen/create_password.dart';
 import '../../features/common/auth/forgot password/presentation/screen/forgot_password.dart';
@@ -78,6 +79,7 @@ class AppRoutes {
   static const String pastOrder = "/past_order_screen.dart";
   static const String reorder = "/reorder_screen.dart";
   static const String review = "/review_screen.dart";
+  static const String chefHome = "/chef_home_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -118,5 +120,6 @@ class AppRoutes {
     GetPage(name: pastOrder, page: () => PastOrderScreen()),
     GetPage(name: reorder, page: () => ReorderScreen()),
     GetPage(name: review, page: () => ReviewScreen()),
+    GetPage(name: chefHome, page: () => ChefHomeScreen()),
   ];
 }
