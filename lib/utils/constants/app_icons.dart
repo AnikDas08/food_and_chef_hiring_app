@@ -50,4 +50,5 @@ class AppIcons {
   static const String contact = "$baseurl/contact.svg";
   static const String logout = "$baseurl/logout.svg";
   static const String analytics = "$baseurl/analytics.svg";
+  static const String chat = "$baseurl/chat.svg";
 }

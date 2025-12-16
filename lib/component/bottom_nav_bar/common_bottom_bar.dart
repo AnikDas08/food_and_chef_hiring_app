@@ -60,7 +60,7 @@ class CommonBottomNavBar extends StatelessWidget {
                       CommonImage(
                         imageSrc: _list[index],
                         size: 24,
-        
+
                         imageColor:
                             index == currentIndex
                                 ? Colors.black
@@ -100,7 +100,7 @@ class CommonBottomNavBar extends StatelessWidget {
       }
     } else if (index == 2) {
       if (!(currentIndex == 2)) {
-        Get.toNamed(AppRoutes.chat);
+        Get.toNamed(AppRoutes.bookingHistory);
       }
     } else if (index == 3) {
       if (!(currentIndex == 3)) {

@@ -62,9 +62,9 @@ class ChefBottomBar extends StatelessWidget {
                         size: 24,
 
                         imageColor:
-                        index == currentIndex
-                            ? Colors.black
-                            : Color(0xff777777),
+                            index == currentIndex
+                                ? Colors.black
+                                : Color(0xff777777),
                       ),
                       CommonText(
                         text: _string[index],
@@ -72,9 +72,9 @@ class ChefBottomBar extends StatelessWidget {
                         top: 4,
                         fontWeight: FontWeight.w400,
                         color:
-                        index == currentIndex
-                            ? Color(0xff272727)
-                            : Color(0xff777777),
+                            index == currentIndex
+                                ? Color(0xff272727)
+                                : Color(0xff777777),
                       ),
                     ],
                   ),
@@ -96,11 +96,11 @@ class ChefBottomBar extends StatelessWidget {
       }
     } else if (index == 1) {
       if (!(currentIndex == 1)) {
-        Get.toNamed(AppRoutes.bookingHistory);
+        // Get.toNamed(AppRoutes.bookingHistory);
       }
     } else if (index == 2) {
       if (!(currentIndex == 2)) {
-        Get.toNamed(AppRoutes.chat);
+        Get.toNamed(AppRoutes.chefBooking);
       }
     } else if (index == 3) {
       if (!(currentIndex == 3)) {

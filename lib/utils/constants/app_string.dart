@@ -11,11 +11,13 @@ class AppString {
   static const String contactSupport = "Contact & Support";
   static const String other = "OTHER";
   static const String management = "MANAGEMENT";
+  static const String congratulations = "Congratulations!";
   static const String taxId = "Tax ID / VAT ID";
   static const String postalCode = "Postal Code";
   static const String allergicPreferences = "ALLERGIC PREFERENCES";
   static const String yes = "Yes";
   static const String city = "City";
+  static const String close = "Close";
   static const String owner = "Owner";
   static const String additionalAddress = "Additional Address";
   static const String delete = "Delete";
@@ -228,6 +230,7 @@ class AppString {
       "Your chef will confirm you order shortly. Sit back, relax, and get ready to enjoy!";
   static const String seeOrderDetails = "See Order Details";
   static const String backToHomepage = "Back to Homepage";
+  static const String youHaveSuccessfully = "You’ve successfully confirmed the order.";
   static const String checkoutFailed = "Checkout Failed";
   static const String checkoutFailedMessage =
       "Unfortunately, there was an issue with your order. Your chef couldn’t be scheduled. Please try again, or contact support for assistance.";
@@ -246,6 +249,7 @@ class AppString {
   static const String request = "Request";
   static const String requestAndCheckout = "Request and Checkout";
   static const String chat = "Chat";
+  static const String chatWithCustomer = "Chat with the Customer";
   static const String myProfile = "My Profile";
   static const String paymentMethods = "Payment Methods";
   static const String pastOrders = "Past Orders";

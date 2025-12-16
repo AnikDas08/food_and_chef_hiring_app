@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../features/chef/chef_booking/presentation/controller/chef_booking_controller.dart';
 import '../../features/chef/home/presentation/controller/chef_home_controller.dart';
 import '../../features/common/auth/change_password/presentation/controller/change_password_controller.dart';
 import '../../features/common/auth/forgot password/presentation/controller/forget_password_controller.dart';
@@ -40,5 +41,6 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => PaymentMethodController(), fenix: true);
     Get.lazyPut(() => PastOrderController(), fenix: true);
     Get.lazyPut(() => ChefHomeController(), fenix: true);
+    Get.lazyPut(() => ChefBookingController(), fenix: true);
   }
 }
