@@ -21,7 +21,7 @@ class NotificationScreen extends StatelessWidget {
         centerTitle: true,
         title: CommonText(
           text: AppString.notifications,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
           fontSize: 14,
           color: Color(0xff272727),
         ),

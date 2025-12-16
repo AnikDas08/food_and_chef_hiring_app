@@ -116,31 +116,33 @@ class _MessageScreenState extends State<MessageScreen> {
                   ),
 
           /// bottom Navigation Bar Section starts here
-          bottomNavigationBar: AnimatedPadding(
-            padding: MediaQuery.of(context).viewInsets,
-            duration: const Duration(milliseconds: 100),
-            curve: Curves.decelerate,
-            child: Padding(
-              padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 24.h),
-
-              /// Send message text filed here
-              child: CommonTextField(
-                hintText: AppString.messageHere,
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Icon(Icons.sentiment_dissatisfied),
-                ),
-                suffixIcon: GestureDetector(
-                  onTap: controller.addNewMessage,
-                  child: Padding(
-                    padding: EdgeInsets.all(16.sp),
-                    child: CommonImage(imageSrc: AppIcons.send),
+          bottomNavigationBar: SafeArea(
+            child: AnimatedPadding(
+              padding: MediaQuery.of(context).viewInsets,
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.decelerate,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 24.h),
+            
+                /// Send message text filed here
+                child: CommonTextField(
+                  hintText: AppString.messageHere,
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Icon(Icons.sentiment_dissatisfied),
                   ),
+                  suffixIcon: GestureDetector(
+                    onTap: controller.addNewMessage,
+                    child: Padding(
+                      padding: EdgeInsets.all(16.sp),
+                      child: CommonImage(imageSrc: AppIcons.send),
+                    ),
+                  ),
+                  borderColor: Colors.white,
+                  borderRadius: 20,
+                  controller: controller.messageController,
+                  onSubmitted: (p0) => controller.addNewMessage(),
                 ),
-                borderColor: Colors.white,
-                borderRadius: 20,
-                controller: controller.messageController,
-                onSubmitted: (p0) => controller.addNewMessage(),
               ),
             ),
           ),
