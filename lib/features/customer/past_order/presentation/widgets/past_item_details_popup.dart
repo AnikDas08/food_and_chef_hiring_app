@@ -7,6 +7,7 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_images.dart';
 import '../../../cart/presentation/widgets/order_summary.dart';
@@ -232,13 +233,21 @@ void bookingDetails(BuildContext context) {
 
                   Divider(),
 
-                  CommonButton(titleText: AppString.reorder),
+                  CommonButton(
+                    titleText: AppString.reorder,
+                    onTap: () {
+                      Get.toNamed(AppRoutes.reorder);
+                    },
+                  ),
                   12.height,
                   CommonButton(
                     titleText: "Leave a Rating",
                     buttonColor: Color(0xffF2F2F2),
                     borderColor: Colors.transparent,
                     titleColor: Color(0xff272727),
+                    onTap: () {
+                      Get.toNamed(AppRoutes.review);
+                    },
                   ),
                 ],
               ),

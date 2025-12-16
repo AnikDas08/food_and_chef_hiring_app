@@ -222,23 +222,28 @@ Widget pastItem(BuildContext context) {
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(left: 8.w),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16.sp,
-                  vertical: 8.sp,
-                ),
-                decoration: BoxDecoration(
-                  color: Color(0xff272727),
-                  borderRadius: BorderRadius.circular(12.sp),
-                  border: Border.all(color: Color(0xffF1F1F1)),
-                ),
-                child: CommonText(
-                  text: AppString.reorder,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                  right: 4,
+              InkWell(
+                onTap: () {
+                  Get.toNamed(AppRoutes.reorder);
+                },
+                child: Container(
+                  margin: EdgeInsets.only(left: 8.w),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.sp,
+                    vertical: 8.sp,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Color(0xff272727),
+                    borderRadius: BorderRadius.circular(12.sp),
+                    border: Border.all(color: Color(0xffF1F1F1)),
+                  ),
+                  child: CommonText(
+                    text: AppString.reorder,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    right: 4,
+                  ),
                 ),
               ),
             ],
