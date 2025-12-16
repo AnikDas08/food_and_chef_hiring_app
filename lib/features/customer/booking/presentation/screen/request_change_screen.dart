@@ -12,7 +12,6 @@ import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_images.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../../../../../utils/helpers/other_helper.dart';
-import '../../../cart/presentation/widgets/order_summary.dart';
 
 class RequestChangeScreen extends StatelessWidget {
   RequestChangeScreen({super.key});

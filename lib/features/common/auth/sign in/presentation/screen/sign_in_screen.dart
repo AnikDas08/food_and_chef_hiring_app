@@ -10,7 +10,6 @@ import '../../../../../../component/text/common_text.dart';
 import '../../../../../../component/text_field/common_text_field.dart'
     show CommonTextField;
 import '../controller/sign_in_controller.dart';
-import '../../../../../../../utils/constants/app_colors.dart';
 import '../../../../../../../utils/constants/app_string.dart';
 import '../../../../../../../utils/helpers/other_helper.dart';
 import '../widgets/do_not_account.dart';

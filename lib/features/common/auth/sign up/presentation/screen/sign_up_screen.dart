@@ -6,7 +6,6 @@ import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/image/common_image.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../component/text_field/common_text_field.dart';
-import '../../../../../../utils/constants/app_colors.dart';
 import '../../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/helpers/other_helper.dart';
 import '../controller/sign_up_controller.dart';

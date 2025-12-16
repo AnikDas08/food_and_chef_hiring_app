@@ -8,7 +8,6 @@ import '../../../../../../component/text_field/common_text_field.dart';
 import '../controller/forget_password_controller.dart';
 import '../../../../../../../utils/constants/app_string.dart';
 import '../../../../../../../utils/helpers/other_helper.dart';
-import '../widgets/resend_otp.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   ForgotPasswordScreen({super.key});
