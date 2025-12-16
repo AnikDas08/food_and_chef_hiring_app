@@ -5,7 +5,6 @@ import '../../features/common/auth/forgot password/presentation/screen/create_pa
 import '../../features/common/auth/forgot password/presentation/screen/forgot_password.dart';
 import '../../features/common/auth/forgot password/presentation/screen/verify_screen.dart';
 import '../../features/common/auth/sign in/presentation/screen/sign_in_screen.dart';
-import '../../features/common/auth/sign up/presentation/screen/address_screen.dart';
 import '../../features/common/auth/sign up/presentation/screen/create_password_screen.dart';
 import '../../features/common/auth/sign up/presentation/screen/dietary_preferences_screen.dart';
 import '../../features/common/auth/sign up/presentation/screen/name_screen.dart';

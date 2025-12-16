@@ -12,7 +12,9 @@ import '../../../../../utils/constants/app_images.dart';
 import '../../../cart/presentation/widgets/order_summary.dart';
 import '../controller/past_order_controller.dart';
 
-void pastItemDetailsPopup(BuildContext context) {
+
+
+void bookingDetails(BuildContext context) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -32,8 +34,8 @@ void pastItemDetailsPopup(BuildContext context) {
                 Container(
                   padding: EdgeInsets.all(12.sp),
                   decoration: BoxDecoration(
+                    color: Color(0xffF2F2F2),
                     borderRadius: BorderRadius.circular(12.sp),
-                    border: Border.all(color: Color(0xffE5E5E5)),
                   ),
                   child: Row(
                     children: [
@@ -72,120 +74,122 @@ void pastItemDetailsPopup(BuildContext context) {
                           vertical: 5.sp,
                         ),
                         decoration: BoxDecoration(
-                          color: Color(0xffDBEBD9),
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(
-                            color: Color(0xffC2E2BE),
-                            width: 1,
-                          ),
+                          color: Color(0xffF2E3C7),
+                          borderRadius: BorderRadius.circular(8.sp),
                         ),
                         child: CommonText(
-                          text: "Completed",
+                          text: AppString.awaitingConfirmation,
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff2F8328),
+                          color: Color(0xffE39400),
                         ),
                       ),
                     ],
                   ),
                 ),
                 34.height,
-                Container(
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.sp),
-                    border: Border.all(color: Color(0xffF1F1F1)),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10.sp),
+                      decoration: BoxDecoration(
+                        color: Color(0xffF2F2F2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: CommonImage(
+                        imageSrc: AppIcons.location,
+                        imageColor: Color(0xffFD713F),
+                        size: 20,
+                      ),
+                    ),
+                    12.width,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: EdgeInsets.all(10.sp),
-                            decoration: BoxDecoration(
-                              color: Color(0xffF8F4F1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: CommonImage(
-                              imageSrc: AppIcons.location,
-                              imageColor: Color(0xffFD713F),
-                              size: 20,
-                            ),
+                          CommonText(
+                            text: "Darren Monarch",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff272727),
                           ),
-                          12.width,
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CommonText(
-                                  text: "Darren Monarch",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff272727),
-                                ),
-                                CommonText(
-                                  text:
-                                      "4140 Parker Rd. Allentown, New Mexico 31134",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff777777),
-                                ),
-                              ],
-                            ),
+                          CommonText(
+                            text: "4140 Parker Rd. Allentown, New Mexico 31134",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff777777),
                           ),
                         ],
                       ),
-
-                      Divider(height: 30, color: Color(0xffF1F1F1)),
-                      Row(
+                    ),
+                  ],
+                ),
+                16.height,
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10.sp),
+                      decoration: BoxDecoration(
+                        color: Color(0xffF2F2F2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: CommonImage(
+                        imageSrc: AppIcons.date,
+                        imageColor: Color(0xffFD713F),
+                        size: 20,
+                      ),
+                    ),
+                    12.width,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: EdgeInsets.all(10.sp),
-                            decoration: BoxDecoration(
-                              color: Color(0xffF8F4F1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: CommonImage(
-                              imageSrc: AppIcons.date,
-                              imageColor: Color(0xffFD713F),
-                              size: 20,
-                            ),
+                          CommonText(
+                            text: "August 30, 2024 ",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff272727),
                           ),
-                          12.width,
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CommonText(
-                                  text: "August 30, 2024 ",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff272727),
-                                ),
-                                CommonText(
-                                  text: "at 01:00 PM - 03:40 PM",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff777777),
-                                ),
-                              ],
-                            ),
+                          CommonText(
+                            text: "at 01:00 PM - 03:40 PM",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff777777),
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
 
-                Container(
-                  margin: EdgeInsets.only(top: 32.h, bottom: 32.h),
-                  padding: EdgeInsets.all(12.sp),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Color(0xffF8F4F1)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                CommonText(
+                  text: AppString.orderStatus,
+                  fontSize: 14,
+                  top: 32,
+                  bottom: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff272727),
+                ),
+
+                CommonImage(imageSrc: AppImages.orderStatus, height: 88),
+
+                CommonText(
+                  text:
+                      "The chef is reviewing your order, and should confirm within 1h32m",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xffFD713F),
+                  maxLines: 2,
+                  textAlign: TextAlign.start,
+                  top: 16,
+                ),
+                33.height,
+                InkWell(
+                  onTap: () {
+
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CommonText(
                         text: AppString.orderDetails,
@@ -193,71 +197,76 @@ void pastItemDetailsPopup(BuildContext context) {
                         fontWeight: FontWeight.w600,
                         color: Color(0xff272727),
                       ),
-                      Divider(
-                        color: Color(0xffF8F4F1),
+                      Icon(
+                        Icons.arrow_forward_ios_sharp,
+                        size: 20,
+                        color: Color(0xff777777),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CommonText(
-                                text: "Chopped Burrito",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff272727),
-                              ),
-                              CommonText(
-                                text: "2 Items + Without Onions",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff777777),
-                              ),
-                            ],
-                          ),
-                          CommonText(
-                            text: "\$20.00",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff272727),
-                          ),
-                        ],
-                      ),
-                      12.height,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CommonText(
-                                text: "Chopped Burrito",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff272727),
-                              ),
-                              CommonText(
-                                text: "2 Items + Without Onions",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff777777),
-                              ),
-                            ],
-                          ),
-                          CommonText(
-                            text: "\$20.00",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff272727),
-                          ),
-                        ],
-                      ),
-                      16.height,
-                      orderSummary(),
                     ],
                   ),
                 ),
+                32.height,
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CommonText(
+                          text: "Chopped Burrito",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff272727),
+                        ),
+                        CommonText(
+                          text: "2 Items + Without Onions",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff777777),
+                        ),
+                      ],
+                    ),
+                    CommonText(
+                      text: "\$20.00",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff272727),
+                    ),
+                  ],
+                ),
+                12.height,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CommonText(
+                          text: "Chopped Burrito",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff272727),
+                        ),
+                        CommonText(
+                          text: "2 Items + Without Onions",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff777777),
+                        ),
+                      ],
+                    ),
+                    CommonText(
+                      text: "\$20.00",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff272727),
+                    ),
+                  ],
+                ),
+                16.height,
+                orderSummary(),
+
                 Divider(),
 
                 Row(

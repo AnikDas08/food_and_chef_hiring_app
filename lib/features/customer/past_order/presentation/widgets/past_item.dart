@@ -12,18 +12,14 @@ import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import 'past_item_details_popup.dart';
 
-Widget pastItem( BuildContext context) {
+Widget pastItem(BuildContext context) {
   return InkWell(
-    onTap: () {
-      pastItemDetailsPopup(context);
-      // Get.toNamed(AppRoutes.requestChange);
-    },
+    onTap: () {},
     child: Container(
       padding: EdgeInsets.all(12.sp),
       margin: EdgeInsets.only(top: 16),
       decoration: BoxDecoration(
-        color: Color(0xffFFFFFF),
-        border: Border.all(color: Color(0xffF1F1F1)),
+        color: Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(12.sp),
       ),
       child: Column(
@@ -125,8 +121,7 @@ Widget pastItem( BuildContext context) {
           Container(
             padding: EdgeInsets.all(8.sp),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12.sp),
+              color: Color(0xffF2F2F2),
               border: Border.all(color: Color(0xffF1F1F1)),
             ),
             child: Column(
@@ -136,7 +131,7 @@ Widget pastItem( BuildContext context) {
                     CommonImage(
                       imageSrc: AppIcons.date,
                       size: 16,
-                      imageColor: Color(0xffFD713F),
+                      imageColor: Color(0xffA7A7A7),
                     ),
                     CommonText(
                       text: "29 July, 2024 at 12:30 PM",
@@ -152,7 +147,7 @@ Widget pastItem( BuildContext context) {
                     CommonImage(
                       imageSrc: AppIcons.ingredients,
                       size: 16,
-                      imageColor: Color(0xffFD713F),
+                      imageColor: Color(0xffA7A7A7),
                     ),
                     CommonText(
                       text: "2 items (Chopped Burrito & Italian Pizza)",
@@ -168,7 +163,7 @@ Widget pastItem( BuildContext context) {
                     CommonImage(
                       imageSrc: AppIcons.location,
                       size: 16,
-                      imageColor: Color(0xffFD713F),
+                      imageColor: Color(0xffA7A7A7),
                     ),
                     CommonText(
                       text: "1901 Thornridge Cir. Shiloh, Hawaii 81063",
@@ -184,7 +179,7 @@ Widget pastItem( BuildContext context) {
 
           12.height,
 
-          Divider(color: Color(0xffF1F1F1)),
+          Divider(color: Color(0xffF9F9F9)),
           8.height,
           Row(
             children: [
@@ -208,12 +203,12 @@ Widget pastItem( BuildContext context) {
               Spacer(),
               Container(
                 padding: EdgeInsets.symmetric(
-                  horizontal: 16.sp,
-                  vertical: 8.sp,
+                  horizontal: 16.w,
+                  vertical: 8.h,
                 ),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(30.sp),
+                  borderRadius: BorderRadius.circular(12.sp),
                   border: Border.all(color: Color(0xffF1F1F1)),
                 ),
                 child: Row(
@@ -237,7 +232,7 @@ Widget pastItem( BuildContext context) {
                 ),
                 decoration: BoxDecoration(
                   color: Color(0xff272727),
-                  borderRadius: BorderRadius.circular(30.sp),
+                  borderRadius: BorderRadius.circular(12.sp),
                   border: Border.all(color: Color(0xffF1F1F1)),
                 ),
                 child: CommonText(
