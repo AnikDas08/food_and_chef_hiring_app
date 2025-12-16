@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/image/common_image.dart';
+import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 
 class PaymentMethodScreen extends StatelessWidget {
@@ -66,22 +68,26 @@ class PaymentMethodScreen extends StatelessWidget {
                     ],
                   ),
                   Spacer(),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Color(0xffF1F1F1)),
-                    ),
-                    child: CommonText(
-                      text: "Edit",
-                      color: Color(0xff272727),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.editCard);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: Color(0xffF1F1F1)),
+                      ),
+                      child: CommonText(
+                        text: "Edit",
+                        color: Color(0xff272727),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
               ),
-
 
               CommonText(
                 text: "OTHER PAYMENT METHOD",
@@ -101,7 +107,7 @@ class PaymentMethodScreen extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     child:
-                    CommonImage(imageSrc: AppIcons.master, size: 24).center,
+                        CommonImage(imageSrc: AppIcons.master, size: 24).center,
                   ),
                   12.width,
                   Column(
@@ -139,10 +145,7 @@ class PaymentMethodScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              Divider(
-                height: 30,
-                color: Color(0xffF1F1F1),
-              ),
+              Divider(height: 30, color: Color(0xffF1F1F1)),
               Row(
                 children: [
                   Container(
@@ -153,7 +156,10 @@ class PaymentMethodScreen extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     child:
-                    CommonImage(imageSrc: AppIcons.shopPay, size: 24).center,
+                        CommonImage(
+                          imageSrc: AppIcons.shopPay,
+                          size: 24,
+                        ).center,
                   ),
                   12.width,
                   Column(
@@ -191,10 +197,7 @@ class PaymentMethodScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              Divider(
-                height: 30,
-                color: Color(0xffF1F1F1),
-              ),
+              Divider(height: 30, color: Color(0xffF1F1F1)),
               Row(
                 children: [
                   Container(
@@ -205,7 +208,7 @@ class PaymentMethodScreen extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     child:
-                    CommonImage(imageSrc: AppIcons.gpay, size: 24).center,
+                        CommonImage(imageSrc: AppIcons.gpay, size: 24).center,
                   ),
                   12.width,
                   Column(
@@ -243,10 +246,7 @@ class PaymentMethodScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              Divider(
-                height: 30,
-                color: Color(0xffF1F1F1),
-              ),
+              Divider(height: 30, color: Color(0xffF1F1F1)),
 
               Row(
                 children: [
@@ -258,7 +258,10 @@ class PaymentMethodScreen extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     child:
-                    CommonImage(imageSrc: AppIcons.creditCard, size: 24).center,
+                        CommonImage(
+                          imageSrc: AppIcons.creditCard,
+                          size: 24,
+                        ).center,
                   ),
                   12.width,
                   Column(
@@ -281,17 +284,25 @@ class PaymentMethodScreen extends StatelessWidget {
                     ],
                   ),
                   Spacer(),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Color(0xffF1F1F1)),
-                    ),
-                    child: CommonText(
-                      text: "Add",
-                      color: Color(0xff272727),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.addCard);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: Color(0xffF1F1F1)),
+                      ),
+                      child: CommonText(
+                        text: "Add",
+                        color: Color(0xff272727),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],

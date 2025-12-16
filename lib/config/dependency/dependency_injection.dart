@@ -15,6 +15,7 @@ import '../../features/customer/address/presentation/controller/address_controll
 import '../../features/customer/booking/presentation/controller/booking_history_controller.dart';
 import '../../features/customer/cart/presentation/controller/cart_controller.dart';
 import '../../features/customer/home/presentation/controller/home_controller.dart';
+import '../../features/customer/payment/presentation/controller/payment_method_controller.dart';
 import '../../features/customer/profile/presentation/controller/profile_controller.dart';
 
 
@@ -37,5 +38,6 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => CartController(), fenix: true);
     Get.lazyPut(() => BookingHistoryController(), fenix: true);
     Get.lazyPut(() => AddressController(), fenix: true);
+    Get.lazyPut(() => PaymentMethodController(), fenix: true);
   }
 }
