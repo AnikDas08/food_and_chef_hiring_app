@@ -63,8 +63,9 @@ class ApiService {
           await MultipartFile.fromFile(
             imagePath,
             filename: "$imageName.$extension",
-            contentType:
-                DioMediaType.parse(mimeType ?? "application/octet-stream"),
+            contentType: DioMediaType.parse(
+              mimeType ?? "application/octet-stream",
+            ),
           ),
         ),
       );
@@ -119,13 +120,11 @@ class ApiService {
       case DioExceptionType.receiveTimeout:
       case DioExceptionType.sendTimeout:
         return ApiResponseModel(408, {"message": AppString.requestTimeOut});
-
       case DioExceptionType.badResponse:
         return ApiResponseModel(
           error.response?.statusCode,
           error.response?.data,
         );
-
       case DioExceptionType.connectionError:
         return ApiResponseModel(503, {
           "message": AppString.noInternetConnection,

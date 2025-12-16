@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:new_untitled/features/customer/address/presentation/screen/add_address_screen.dart';
 import '../../features/common/auth/change_password/presentation/screen/change_password_screen.dart';
 import '../../features/common/auth/forgot password/presentation/screen/create_password.dart';
 import '../../features/common/auth/forgot password/presentation/screen/forgot_password.dart';
@@ -19,6 +20,7 @@ import '../../features/common/setting/presentation/screen/privacy_policy_screen.
 import '../../features/common/setting/presentation/screen/setting_screen.dart';
 import '../../features/common/setting/presentation/screen/terms_of_services_screen.dart';
 import '../../features/common/splash/splash_screen.dart';
+import '../../features/customer/address/presentation/screen/profile_address_screen.dart';
 import '../../features/customer/booking/presentation/screen/booking_history_screen.dart';
 import '../../features/customer/booking/presentation/screen/request_change_screen.dart';
 import '../../features/customer/cart/presentation/screen/business_tax_details_screen.dart';
@@ -52,7 +54,6 @@ class AppRoutes {
   static const String setting = "/setting_screen.dart";
   static const String createSignUpPassword = "/create_password_screen.dart";
   static const String nameScreen = "/name_screen.dart";
-  static const String address = "/address_screen.dart";
   static const String dietaryPreferences = "/dietary_preferences_screen.dart";
   static const String reviewDetail = "/review_detail_screen.dart";
   static const String customerHome = "/home_screen.dart";
@@ -64,6 +65,8 @@ class AppRoutes {
   static const String personalTaxDetails = "/personal_tax_details_screen.dart";
   static const String bookingHistory = "/booking_history_screen.dart";
   static const String requestChange = "/request_change_screen.dart";
+  static const String addressScreen = "/profile_address_screen.dart";
+  static const String addAddress = "/add_address_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -85,7 +88,6 @@ class AppRoutes {
     GetPage(name: setting, page: () => const SettingScreen()),
     GetPage(name: createSignUpPassword, page: () => CreatePasswordScreen()),
     GetPage(name: nameScreen, page: () => NameScreen()),
-    GetPage(name: address, page: () => AddressScreen()),
     GetPage(name: dietaryPreferences, page: () => DietaryPreferencesScreen()),
     GetPage(name: reviewDetail, page: () => ReviewDetailScreen()),
     GetPage(name: customerHome, page: () => CustomerHome()),
@@ -97,5 +99,7 @@ class AppRoutes {
     GetPage(name: personalTaxDetails, page: () => PersonalTaxDetailsScreen()),
     GetPage(name: bookingHistory, page: () => BookingHistoryScreen()),
     GetPage(name: requestChange, page: () => RequestChangeScreen()),
+    GetPage(name: addressScreen, page: () => ProfileAddressScreen()),
+    GetPage(name: addAddress, page: () => AddAddressScreen()),
   ];
 }

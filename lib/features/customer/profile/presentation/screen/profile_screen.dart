@@ -24,6 +24,10 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       /// App Bar Section Starts here
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        surfaceTintColor: Colors.white,
+
         centerTitle: false,
         title: const CommonText(
           text: AppString.myProfile,
@@ -49,7 +53,7 @@ class ProfileScreen extends StatelessWidget {
       /// Body Section Starts here
       body: GetBuilder<ProfileController>(
         builder: (controller) {
-          return Padding(
+          return SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Column(
               children: [
@@ -139,7 +143,7 @@ class ProfileScreen extends StatelessWidget {
                 Item(
                   image: AppIcons.addressIcon,
                   title: AppString.address,
-                  onTap: () => Get.toNamed(AppRoutes.setting),
+                  onTap: () => Get.toNamed(AppRoutes.addressScreen),
                 ),
                 Item(
                   image: AppIcons.card,
@@ -152,9 +156,47 @@ class ProfileScreen extends StatelessWidget {
                   onTap: () => Get.toNamed(AppRoutes.setting),
                 ),
 
+                CommonText(
+                  text: AppString.management,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12,
+                  color: Color(0xff777777),
+                  top: 28,
+                  bottom: 12,
+                ).start,
+
+                Item(
+                  image: AppIcons.manage,
+                  title: AppString.manageDietaryRestrictions,
+                  onTap: () => Get.toNamed(AppRoutes.editProfile),
+                ),
+
+                /// Setting item here
+                Item(
+                  image: AppIcons.kitchen,
+                  title: AppString.manageKitchenEquipment,
+                  onTap: () => Get.toNamed(AppRoutes.setting),
+                ),
+
+                CommonText(
+                  text: AppString.other,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12,
+                  color: Color(0xff777777),
+                  top: 28,
+                  bottom: 12,
+                ).start,
+
+                Item(
+                  image: AppIcons.about,
+                  title: AppString.appVersion,
+                  onTap: () => Get.toNamed(AppRoutes.editProfile),
+                ),
+
                 /// Log Out item here
                 Item(
                   icon: Icons.logout,
+                  color: Color(0xffFF0000),
                   title: AppString.logOut,
                   onTap: logOutPopUp,
                 ),

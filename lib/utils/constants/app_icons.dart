@@ -42,5 +42,5 @@ class AppIcons {
   static const String past = "$baseurl/past.svg";
   static const String user = "$baseurl/user.svg";
   static const String addressIcon = "$baseurl/address_icon.svg";
-
+  static const String house = "$baseurl/house.svg";
 }

@@ -20,75 +20,100 @@ class EditProfile extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           /// App Bar Sections Starts here
-          appBar: AppBar(
-            centerTitle: true,
-            title: const CommonText(
-              text: AppString.profile,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          appBar: AppBar(),
 
           /// Body Sections Starts here
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
             child: Form(
               key: controller.formKey,
-              child: Column(
-                children: [
-                  /// User Profile image here
-                  Stack(
-                    children: [
-                      Center(
-                        child: CircleAvatar(
-                          radius: 85.sp,
+              child: SafeArea(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonText(
+                      text: AppString.editProfile,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff272727),
+                      bottom: 28,
+                    ),
+
+                    /// User Profile image here
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        CircleAvatar(
+                          radius: 34.sp,
                           backgroundColor: Colors.transparent,
                           child: ClipOval(
                             child:
                                 controller.image != null
                                     ? Image.file(
                                       File(controller.image!),
-                                      width: 170,
-                                      height: 170,
+                                      width: 68.sp,
+                                      height: 68.sp,
                                       fit: BoxFit.fill,
                                     )
                                     : const CommonImage(
-                                      imageSrc: AppImages.profile,
-                                      height: 170,
-                                      width: 170,
+                                      imageSrc: AppImages.image3,
+                                      height: 68,
+                                      width: 68,
+                                      fill: BoxFit.fill,
                                     ),
                           ),
                         ),
-                      ),
 
-                      /// image change icon here
-                      Positioned(
-                        bottom: 0,
-                        left: Get.width * 0.53,
-                        child: IconButton(
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateColor.resolveWith(
-                              (states) => Colors.black,
+                        /// image change icon here
+                        Positioned(
+                          bottom: -10,
+                          left: 40,
+                          child: InkWell(
+                            onTap: controller.getProfileImage,
+                            child: Container(
+                              padding: EdgeInsets.all(8.sp),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Color(0xffF1F1F1),
+                                  width: 2,
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.mode_edit_outline_outlined,
+                                size: 16.sp,
+                                color: Color(0xff272727),
+                              ),
                             ),
                           ),
-                          onPressed: controller.getProfileImage,
-                          icon: const Icon(Icons.edit, color: Colors.white),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
 
-                  /// user all information filed here
-                  EditProfileAllFiled(controller: controller),
-                  30.height,
+                    CommonText(
+                      text: AppString.personalDetails,
+                      bottom: 12,
+                      top: 28,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff777777),
+                    ),
 
-                  /// Submit Button here
-                  CommonButton(
-                    titleText: AppString.saveAndChanges,
-                    isLoading: controller.isLoading,
-                    onTap: controller.editProfileRepo,
-                  ),
-                ],
+                    /// user all information filed here
+                    EditProfileAllFiled(controller: controller),
+                    30.height,
+
+                    /// Submit Button here
+                    CommonButton(
+                      titleText: AppString.saveChanges,
+                      isLoading: controller.isLoading,
+                      onTap: controller.editProfileRepo,
+                      buttonRadius: 30,
+                      buttonHeight: 48,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

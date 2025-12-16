@@ -8,23 +8,28 @@ class AppString {
   static const String detailedAddress = "DETAILED ADDRESS";
   static const String youSureWantToLogout = "You sure want to logout";
   static const String no = "No";
+  static const String other = "OTHER";
+  static const String management = "MANAGEMENT";
   static const String taxId = "Tax ID / VAT ID";
   static const String postalCode = "Postal Code";
   static const String allergicPreferences = "ALLERGIC PREFERENCES";
   static const String yes = "Yes";
   static const String city = "City";
+  static const String delete = "Delete";
   static const String areYouSure = "Are you sure";
   static const String enterYouPassword = "Enter you password";
   static const String cancel = "Cancel";
   static const String done = "Done";
-  static const String pleaseSelectTheTaxDetailsYouWantToUse = "Please select the tax details you want to use";
+  static const String pleaseSelectTheTaxDetailsYouWantToUse =
+      "Please select the tax details you want to use";
   static const String enter6DigitsCode = "Enter 6-digits code";
   static const String didNotReceiveTheCode = "Didn’t received the email?  ";
   static const String deleteDetails =
       "All your changes will be deleted and you will no longer be able to access them.";
 
   static const String someThingWrong = "Some Thing Wrong";
-  static const String byTellingUsYourFullName = "By telling us your full name we can personalize your Privae experience.";
+  static const String byTellingUsYourFullName =
+      "By telling us your full name we can personalize your Privae experience.";
   static const String tryAgain = "Try Again";
   static const String phoneNumber = "Phone Number";
   static const String test = "Test";
@@ -72,6 +77,7 @@ class AppString {
   static const String saveAndChanges = "Save and Changes";
   static const String save = "Save";
   static const String editProfile = "Edit Profile";
+  static const String editAddress = "Edit Address";
   static const String settings = "Settings";
   static const String logOut = "Log Out";
   static const String privacyPolicy = "Privacy Policy";
@@ -103,7 +109,8 @@ class AppString {
   static const String orUsing = "or using";
   static const String signInWithFacebook = "Sign In with Facebook";
   static const String signInWithGoogle = "Sign In with Google";
-  static const String vegetarianKosherHalalFoodAllergies = "Vegetarian? Kosher? Halal? Food allergies? Enter the details below";
+  static const String vegetarianKosherHalalFoodAllergies =
+      "Vegetarian? Kosher? Halal? Food allergies? Enter the details below";
   static const String pleaseVerifyYourEmailAddress =
       "Please Verify Your\nEmail Address";
   static const String weveSentAnEmailToDarrenmonarchGmailCom =
@@ -112,7 +119,8 @@ class AppString {
   static const String typeTheCodeHere = "Type the code here";
   static const String didntReceivedTheEmail = "Didn’t received the email?";
   static const String resend = "Resend";
-  static const String enterYourEmail = "Enter your email to send you the OTP code.";
+  static const String enterYourEmail =
+      "Enter your email to send you the OTP code.";
   static const String signInSuccessfully = "Sign In Successfully";
   static const String signInSuccessfullyMessage =
       "Sign in successful! You’re all set to explore Privae and manage your bookings or chef services. Let’s go!";
@@ -212,11 +220,13 @@ class AppString {
       "You have all required kitchen equipment for the order. You will have all required groceries ready for the chef's visit.";
   static const String confirmAndCheckout = "Confirm and Checkout";
   static const String checkoutSuccessful = "Checkout Successful";
-  static const String yourChefWillConfirmYouOrderShortly = "Your chef will confirm you order shortly. Sit back, relax, and get ready to enjoy!";
+  static const String yourChefWillConfirmYouOrderShortly =
+      "Your chef will confirm you order shortly. Sit back, relax, and get ready to enjoy!";
   static const String seeOrderDetails = "See Order Details";
   static const String backToHomepage = "Back to Homepage";
   static const String checkoutFailed = "Checkout Failed";
-  static const String checkoutFailedMessage = "Unfortunately, there was an issue with your order. Your chef couldn’t be scheduled. Please try again, or contact support for assistance.";
+  static const String checkoutFailedMessage =
+      "Unfortunately, there was an issue with your order. Your chef couldn’t be scheduled. Please try again, or contact support for assistance.";
   static const String upcomingBookings = "Upcoming Bookings";
   static const String all = "All";
   static const String awaitingConfirmation = "Awaiting Confirmation";
@@ -255,32 +265,43 @@ class AppString {
   static const String total = "Total";
   static const String giveARating = "Give a Rating";
   static const String setupProfile = "Setup Profile";
-  static const String setUpYourProfile = "Set up your profile by adding your name, experience, and about yourself. This helps us personalize your HeyChef experience!";
+  static const String setUpYourProfile =
+      "Set up your profile by adding your name, experience, and about yourself. This helps us personalize your HeyChef experience!";
   static const String setYourCookingArea = "Set Your Cooking Area";
-  static const String whereCanYouTravelTo = "Where can you travel to for chef visits to customers? Set your cooking area so that we can help your future customers find you best! No pressure though--you can change this any time.";
+  static const String whereCanYouTravelTo =
+      "Where can you travel to for chef visits to customers? Set your cooking area so that we can help your future customers find you best! No pressure though--you can change this any time.";
   static const String suggestedAddress = "SUGGESTED ADDRESS";
   static const String continueString = "Continue";
   static const String submit = "Submit";
   static const String orderAreaDistance = "Order Area Distance";
   static const String setYourPrice = "Set Your Price";
-  static const String setYourPriceMessage = "Set your hourly rate that customers will pay you to cook for them! No pressure though--you can change this any time.";
+  static const String setYourPriceMessage =
+      "Set your hourly rate that customers will pay you to cook for them! No pressure though--you can change this any time.";
   static const String setAmount = "Set Amount";
-  static const String offerDiscountedRate = "Offer discounted rate for specific weekday hours";
+  static const String offerDiscountedRate =
+      "Offer discounted rate for specific weekday hours";
   static const String askForHigherFee = "Ask for higher fee on weekends";
   static const String setupAvailability = "Setup Availability";
-  static const String setupAvailabilityMessage = "Set up your availability to let customers know when you’re available to cook. This helps you get booked at the right times!";
+  static const String setupAvailabilityMessage =
+      "Set up your availability to let customers know when you’re available to cook. This helps you get booked at the right times!";
   static const String addAdditionalTime = "Add Additional Time";
   static const String enableAutoAcceptOrders = "Enable Auto-Accept Orders";
-  static const String enableAutoAcceptOrdersMessage = "Do you want to automatically accept orders from customers from times that are in your availability? Or would you rather have the option to approve or decline orders?";
+  static const String enableAutoAcceptOrdersMessage =
+      "Do you want to automatically accept orders from customers from times that are in your availability? Or would you rather have the option to approve or decline orders?";
   static const String enableAutoAccept = "Enable Auto-Accept";
-  static const String autoAcceptMessage = "Chefs with auto-accept enabled earn on average 1.6x more.";
+  static const String autoAcceptMessage =
+      "Chefs with auto-accept enabled earn on average 1.6x more.";
   static const String addMenuItems = "Add Menu Items";
-  static const String addMenuItemsMessage = "Build your menu to showcase what you can cook for customers.";
+  static const String addMenuItemsMessage =
+      "Build your menu to showcase what you can cook for customers.";
   static const String menu = "Menu";
-  static const String menuMessage = "Build your menu to showcase what you can cook for customers.";
+  static const String menuMessage =
+      "Build your menu to showcase what you can cook for customers.";
   static const String cookingExpertise = "Cooking Expertise";
-  static const String cookingExpertiseMessage = "Define your speciality cuisine.";
-  static const String accountCreatedYourAreAll = "Account created! You're all set to offer your culinary services on HeyChef!";
+  static const String cookingExpertiseMessage =
+      "Define your speciality cuisine.";
+  static const String accountCreatedYourAreAll =
+      "Account created! You're all set to offer your culinary services on HeyChef!";
   static const String letsGetCooking = "Let's get cooking!";
   static const String currentBalance = "Current Balance";
   static const String higherThanLastMonth = "higher than last month";
@@ -298,7 +319,8 @@ class AppString {
   static const String unconfirmed = "Unconfirmed";
   static const String cart = "Cart";
   static const String customersAreBusyToo = "Customers are busy too!";
-  static const String pleaseAcceptOrDeclineTheOrder = "Please accept or decline the order so that the customer can make other plans if necessary.";
+  static const String pleaseAcceptOrDeclineTheOrder =
+      "Please accept or decline the order so that the customer can make other plans if necessary.";
   static const String seePublicProfile = "See Public Profile";
   static const String profileSettings = "Profile Settings";
   static const String availability = "Availability";
@@ -306,7 +328,6 @@ class AppString {
   static const String accountSettings = "Account Settings";
   static const String subtotal = "Subtotal";
   static const String checkout = "Checkout";
-  static const String areYouSureYouWantToDeleteYourAccount = "Are you sure you want to delete your account?";
-
-
+  static const String areYouSureYouWantToDeleteYourAccount =
+      "Are you sure you want to delete your account?";
 }
