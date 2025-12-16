@@ -81,7 +81,8 @@ class CommonTextField extends StatelessWidget {
         onTap: onTap,
         validator: validator,
         maxLines: isPassword ? 1 : maxLines,
-
+        cursorColor:
+            keyboardType == TextInputType.none ? Colors.transparent : textColor,
         decoration: InputDecoration(
           errorMaxLines: 2,
 

@@ -34,52 +34,54 @@ class CommonBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       physics: const NeverScrollableScrollPhysics(),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(12.sp),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20.r),
-            topRight: Radius.circular(20.r),
+      child: SafeArea(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(12.sp),
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              topRight: Radius.circular(20.r),
+            ),
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(_list.length, (index) {
-            return GestureDetector(
-              onTap: () => onTap(index),
-              child: Container(
-                margin: EdgeInsetsDirectional.all(12.sp),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CommonImage(
-                      imageSrc: _list[index],
-                      size: 24,
-
-                      imageColor:
-                          index == currentIndex
-                              ? Colors.black
-                              : Color(0xff777777),
-                    ),
-                    CommonText(
-                      text: _string[index],
-                      fontSize: 12,
-                      top: 4,
-                      fontWeight: FontWeight.w400,
-                      color:
-                          index == currentIndex
-                              ? Color(0xff272727)
-                              : Color(0xff777777),
-                    ),
-                  ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(_list.length, (index) {
+              return GestureDetector(
+                onTap: () => onTap(index),
+                child: Container(
+                  margin: EdgeInsetsDirectional.all(12.sp),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CommonImage(
+                        imageSrc: _list[index],
+                        size: 24,
+        
+                        imageColor:
+                            index == currentIndex
+                                ? Colors.black
+                                : Color(0xff777777),
+                      ),
+                      CommonText(
+                        text: _string[index],
+                        fontSize: 12,
+                        top: 4,
+                        fontWeight: FontWeight.w400,
+                        color:
+                            index == currentIndex
+                                ? Color(0xff272727)
+                                : Color(0xff777777),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
+          ),
         ),
       ),
     );

@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../../features/common/auth/change_password/presentation/screen/change_password_screen.dart';
 import '../../features/common/auth/forgot password/presentation/screen/create_password.dart';
 import '../../features/common/auth/forgot password/presentation/screen/forgot_password.dart';
@@ -16,8 +15,6 @@ import '../../features/common/message/presentation/screen/chat_screen.dart';
 import '../../features/common/message/presentation/screen/message_screen.dart';
 import '../../features/common/notifications/presentation/screen/notifications_screen.dart';
 import '../../features/common/onboarding_screen/onboarding_screen.dart';
-import '../../features/common/profile/presentation/screen/edit_profile.dart';
-import '../../features/common/profile/presentation/screen/profile_screen.dart';
 import '../../features/common/setting/presentation/screen/privacy_policy_screen.dart';
 import '../../features/common/setting/presentation/screen/setting_screen.dart';
 import '../../features/common/setting/presentation/screen/terms_of_services_screen.dart';
@@ -31,6 +28,8 @@ import '../../features/customer/cart/presentation/screen/personal_tax_details_sc
 import '../../features/customer/chef_details/presentation/screen/chef_details_screen.dart';
 import '../../features/customer/home/presentation/screen/home_screen.dart';
 import '../../features/customer/home/presentation/screen/search_screen.dart';
+import '../../features/customer/profile/presentation/screen/edit_profile.dart';
+import '../../features/customer/profile/presentation/screen/profile_screen.dart';
 
 class AppRoutes {
   static const String test = "/test_screen.dart";

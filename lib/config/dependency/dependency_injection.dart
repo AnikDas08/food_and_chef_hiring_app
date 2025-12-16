@@ -8,13 +8,13 @@ import '../../features/common/auth/sign up/presentation/controller/sign_up_contr
 import '../../features/common/message/presentation/controller/chat_controller.dart';
 import '../../features/common/message/presentation/controller/message_controller.dart';
 import '../../features/common/notifications/presentation/controller/notifications_controller.dart';
-import '../../features/common/profile/presentation/controller/profile_controller.dart';
 import '../../features/common/setting/presentation/controller/privacy_policy_controller.dart';
 import '../../features/common/setting/presentation/controller/setting_controller.dart';
 import '../../features/common/setting/presentation/controller/terms_of_services_controller.dart';
 import '../../features/customer/booking/presentation/controller/booking_history_controller.dart';
 import '../../features/customer/cart/presentation/controller/cart_controller.dart';
 import '../../features/customer/home/presentation/controller/home_controller.dart';
+import '../../features/customer/profile/presentation/controller/profile_controller.dart';
 
 
 

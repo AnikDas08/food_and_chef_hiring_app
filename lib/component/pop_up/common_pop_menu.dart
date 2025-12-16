@@ -57,7 +57,6 @@ class PopUpMenu extends StatelessWidget {
                     (index) =>
                     GestureDetector(
                       onTap: () async {
-                        await AnimationPopUpState.closeDialog();
                         onTap(index);
                       },
                       child: Padding(

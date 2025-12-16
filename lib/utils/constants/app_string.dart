@@ -186,6 +186,7 @@ class AppString {
   static const String savedChefsOnly = "Saved Chefs Only";
   static const String cuisine = "Cuisine";
   static const String apply = "Apply";
+  static const String accountInfo = "Account Info";
   static const String checkAvailability = "Check Availability";
   static const String starters = "Starters";
   static const String viewCart = "View Cart";
