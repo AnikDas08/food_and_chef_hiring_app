@@ -13,7 +13,6 @@ import '../../../../../../services/storage/storage_keys.dart';
 import '../../../../../../services/storage/storage_services.dart';
 import '../../../../../../utils/app_utils.dart';
 
-
 class SignUpController extends GetxController {
   bool isPopUpOpen = false;
   bool isLoading = false;
@@ -54,10 +53,7 @@ class SignUpController extends GetxController {
 
     selectDietary.add(value);
     update();
-
     dietaryController.text = selectDietary.join(", ");
-
-    print(selectDietary);
   }
 
   String selectRole = "User";
