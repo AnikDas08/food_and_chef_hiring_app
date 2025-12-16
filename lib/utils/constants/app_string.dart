@@ -8,6 +8,7 @@ class AppString {
   static const String detailedAddress = "DETAILED ADDRESS";
   static const String youSureWantToLogout = "You sure want to logout";
   static const String no = "No";
+  static const String contactSupport = "Contact & Support";
   static const String other = "OTHER";
   static const String management = "MANAGEMENT";
   static const String taxId = "Tax ID / VAT ID";
@@ -197,7 +198,7 @@ class AppString {
   static const String savedChefsOnly = "Saved Chefs Only";
   static const String cuisine = "Cuisine";
   static const String apply = "Apply";
-  static const String accountInfo = "Account Info";
+  static const String accountInfo = "ACCOUNT PREFERENCES";
   static const String checkAvailability = "Check Availability";
   static const String starters = "Starters";
   static const String viewCart = "View Cart";
@@ -333,6 +334,5 @@ class AppString {
   static const String accountSettings = "Account Settings";
   static const String subtotal = "Subtotal";
   static const String checkout = "Checkout";
-  static const String areYouSureYouWantToDeleteYourAccount =
-      "Are you sure you want to delete your account?";
+  static const String areYouSureYouWantToDeleteYourAccount = "Are you sure you want to delete your account?";
 }

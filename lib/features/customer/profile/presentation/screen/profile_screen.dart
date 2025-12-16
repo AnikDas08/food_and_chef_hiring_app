@@ -54,16 +54,16 @@ class ProfileScreen extends StatelessWidget {
       body: GetBuilder<ProfileController>(
         builder: (controller) {
           return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
               children: [
                 12.height,
                 Container(
                   padding: EdgeInsets.all(12.sp),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12.r),
+                    color: Color(0xffF2F2F2),
                     border: Border.all(color: Color(0xffF1F1F1)),
+                    borderRadius: BorderRadius.circular(20.sp),
                   ),
                   child: Column(
                     children: [
@@ -102,8 +102,8 @@ class ProfileScreen extends StatelessWidget {
                         keyboardType: TextInputType.none,
                         borderColor: Color(0xffF1F1F1),
                         borderRadius: 8,
+                        fillColor: Color(0xffFDFDFD),
                         paddingVertical: 14,
-                        fillColor: Colors.white,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: CommonImage(
@@ -133,49 +133,70 @@ class ProfileScreen extends StatelessWidget {
                   bottom: 12,
                 ).start,
 
-                Item(
-                  image: AppIcons.user,
-                  title: AppString.editProfile,
-                  onTap: () => Get.toNamed(AppRoutes.editProfile),
-                ),
+                Container(
+                  padding: EdgeInsets.all(12.sp),
+                  decoration: BoxDecoration(
+                    color: Color(0xffF2F2F2),
+                    borderRadius: BorderRadius.circular(20.sp),
+                  ),
+                  child: Column(
+                    children: [
+                      Item(
+                        image: AppIcons.user,
+                        title: AppString.editProfile,
+                        onTap: () => Get.toNamed(AppRoutes.editProfile),
+                      ),
 
-                /// Setting item here
-                Item(
-                  image: AppIcons.addressIcon,
-                  title: AppString.address,
-                  onTap: () => Get.toNamed(AppRoutes.addressScreen),
+                      /// Setting item here
+                      Item(
+                        image: AppIcons.addressIcon,
+                        title: AppString.address,
+                        onTap: () => Get.toNamed(AppRoutes.addressScreen),
+                      ),
+                      Item(
+                        image: AppIcons.card,
+                        title: AppString.paymentMethods,
+                        onTap: () => Get.toNamed(AppRoutes.paymentMethod),
+                      ),
+                      Item(
+                        image: AppIcons.past,
+                        title: AppString.pastOrders,
+                        onTap: () => Get.toNamed(AppRoutes.pastOrder),
+                      ),
+                    ],
+                  ),
                 ),
-                Item(
-                  image: AppIcons.card,
-                  title: AppString.paymentMethods,
-                  onTap: () => Get.toNamed(AppRoutes.paymentMethod),
-                ),
-                Item(
-                  image: AppIcons.past,
-                  title: AppString.pastOrders,
-                   onTap: () => Get.toNamed(AppRoutes.pastOrder),
-                ),
-
                 CommonText(
                   text: AppString.management,
                   fontWeight: FontWeight.w500,
                   fontSize: 12,
                   color: Color(0xff777777),
                   top: 28,
-                  bottom: 12,
+                  bottom: 16,
                 ).start,
 
-                Item(
-                  image: AppIcons.manage,
-                  title: AppString.manageDietaryRestrictions,
-                  onTap: () => Get.toNamed(AppRoutes.editProfile),
-                ),
+                Container(
+                  padding: EdgeInsets.all(12.sp),
+                  decoration: BoxDecoration(
+                    color: Color(0xffF2F2F2),
+                    borderRadius: BorderRadius.circular(20.sp),
+                  ),
+                  child: Column(
+                    children: [
+                      Item(
+                        image: AppIcons.manage,
+                        title: AppString.manageDietaryRestrictions,
+                        onTap: () => Get.toNamed(AppRoutes.editProfile),
+                      ),
 
-                /// Setting item here
-                Item(
-                  image: AppIcons.kitchen,
-                  title: AppString.manageKitchenEquipment,
-                  onTap: () => Get.toNamed(AppRoutes.setting),
+                      /// Setting item here
+                      Item(
+                        image: AppIcons.kitchen,
+                        title: AppString.manageKitchenEquipment,
+                        onTap: () => Get.toNamed(AppRoutes.setting),
+                      ),
+                    ],
+                  ),
                 ),
 
                 CommonText(
@@ -187,18 +208,38 @@ class ProfileScreen extends StatelessWidget {
                   bottom: 12,
                 ).start,
 
-                Item(
-                  image: AppIcons.about,
-                  title: AppString.appVersion,
-                  onTap: () => Get.toNamed(AppRoutes.editProfile),
+                Container(
+                  padding: EdgeInsets.all(12.sp),
+                  decoration: BoxDecoration(
+                    color: Color(0xffF2F2F2),
+                    borderRadius: BorderRadius.circular(20.sp),
+                  ),
+                  child: Column(
+                    children: [
+                      Item(
+                        image: AppIcons.contact,
+                        title: AppString.contactSupport,
+                        // onTap: () => Get.toNamed(AppRoutes.c),
+                      ),
+
+                      Item(
+                        image: AppIcons.about,
+                        title: AppString.appVersion,
+                        onTap: () => Get.toNamed(AppRoutes.editProfile),
+                      ),
+
+                      /// Log Out item here
+                    ],
+                  ),
                 ),
 
-                /// Log Out item here
                 Item(
-                  icon: Icons.logout,
+                  image: AppIcons.logout,
                   color: Color(0xffFF0000),
-                  title: AppString.logOut,
+                  title: AppString.signOut,
                   onTap: logOutPopUp,
+                  disableDivider: true,
+                  disableIcon: true,
                 ),
               ],
             ),

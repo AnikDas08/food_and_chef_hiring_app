@@ -10,6 +10,11 @@ import '../../../../../config/route/app_routes.dart';
 
 Widget addressItem() {
   return Container(
+    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 26),
+    decoration: BoxDecoration(
+      color: Color(0xffF2F2F2),
+      borderRadius: BorderRadius.circular(12),
+    ),
     child: Column(
       children: [
         Row(
@@ -19,7 +24,7 @@ Widget addressItem() {
             Container(
               padding: EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: Color(0xffF8F4F1),
+                color: Colors.white,
                 shape: BoxShape.circle,
               ),
               child: CommonImage(imageSrc: AppIcons.house),
@@ -54,16 +59,18 @@ Widget addressItem() {
 
                       Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 8,
+                          horizontal: 16,
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
                           color: Color(0xffDBEBD9),
-                          border: Border.all(color: Color(0xffC2E2BE)),
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(8),
                         ),
 
-                        child: CommonText(text: "Active"),
+                        child: CommonText(
+                          text: "Active",
+                          color: Color(0xff2F8328),
+                        ),
                       ),
                     ],
                   ),
@@ -90,8 +97,8 @@ Widget addressItem() {
                             vertical: 8,
                           ),
                           decoration: BoxDecoration(
-                            border: Border.all(color: Color(0xffF1F1F1)),
-                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
                           ),
                           child: CommonText(
                             text: AppString.editAddress,
@@ -112,10 +119,8 @@ Widget addressItem() {
                             vertical: 8,
                           ),
                           decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffFF3C3C).withOpacity(0.24),
-                            ),
-                            borderRadius: BorderRadius.circular(30),
+                            color: Color(0xffFF3C3C).withOpacity(0.20),
+                            borderRadius: BorderRadius.circular(12),
                           ),
                           child: CommonText(
                             text: AppString.delete,

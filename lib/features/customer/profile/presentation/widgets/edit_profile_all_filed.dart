@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/pop_up/common_pop_menu.dart';
@@ -38,10 +39,6 @@ class EditProfileAllFiled extends StatelessWidget {
           validator: OtherHelper.validator,
           hintText: AppString.fullName,
           keyboardType: TextInputType.text,
-          borderColor: Color(0xffF1F1F1),
-          fillColor: Colors.transparent,
-          paddingVertical: 14,
-          borderRadius: 12,
         ),
 
         const CommonText(
@@ -54,10 +51,6 @@ class EditProfileAllFiled extends StatelessWidget {
           validator: OtherHelper.validator,
           hintText: AppString.email,
           keyboardType: TextInputType.emailAddress,
-          borderColor: Color(0xffF1F1F1),
-          fillColor: Colors.transparent,
-          paddingVertical: 14,
-          borderRadius: 12,
         ),
 
         /// User Phone number here
@@ -67,16 +60,10 @@ class EditProfileAllFiled extends StatelessWidget {
           top: 20,
           bottom: 8,
         ),
-        CommonTextField(
-          validator: OtherHelper.validator,
-          hintText: AppString.phoneNumber,
-          keyboardType: TextInputType.text,
-          borderColor: Color(0xffF1F1F1),
-          fillColor: Colors.transparent,
-          paddingVertical: 14,
-          borderRadius: 12,
+        CommonPhoneNumberTextFiled(
+          controller: controller.numberController,
+          countryChange: (value) {},
         ),
-
         CommonText(
           text: "Link Account".toUpperCase(),
           fontWeight: FontWeight.w500,
@@ -123,7 +110,7 @@ class EditProfileAllFiled extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: Color(0xffF1F1F1)),
+                color: Color(0xffF2F2F2),
               ),
               child: CommonText(
                 text: "Disconnect",
@@ -143,15 +130,28 @@ class EditProfileAllFiled extends StatelessWidget {
           bottom: 16,
         ),
 
-        Item(
-          icon: CupertinoIcons.delete_simple,
-          title: AppString.deleteAccount,
-          disableDivider: true,
-          onTap:
-              () => deletePopUp(
-                controller: TextEditingController(),
-                onTap: () {},
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+          decoration: BoxDecoration(
+            color: Color(0xffF2F2F2),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              Icon(CupertinoIcons.delete, color: Color(0xffFF3C3C)),
+              CommonText(
+                text: AppString.deleteAccount,
+                color: Color(0xffFF3C3C),
+                fontWeight: FontWeight.w600,
+                left: 4,
               ),
+              const Spacer(),
+              Icon(
+                Icons.arrow_forward_ios_outlined,
+                size: 16.sp,
+              ),
+            ],
+          ),
         ),
       ],
     );

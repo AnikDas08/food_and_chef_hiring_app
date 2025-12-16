@@ -14,7 +14,7 @@ class ProfileList extends StatelessWidget {
     required this.onTap,
     this.height = 30,
     this.selectedColor = AppColors.primaryColor,
-    this.unselectedColor = Colors.transparent,
+    this.unselectedColor = const Color(0xffF1F1F1),
     this.style,
     this.isContainer = false,
     this.iconColor = AppColors.black,

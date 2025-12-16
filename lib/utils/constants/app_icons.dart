@@ -47,4 +47,6 @@ class AppIcons {
   static const String gpay = "$baseurl/gpay.svg";
   static const String paypal = "$baseurl/paypal.svg";
   static const String shopPay = "$baseurl/shop_pay.svg";
+  static const String contact = "$baseurl/contact.svg";
+  static const String logout = "$baseurl/logout.svg";
 }

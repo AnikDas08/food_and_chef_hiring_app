@@ -13,7 +13,7 @@ class Item extends StatelessWidget {
     this.disableDivider = false,
     this.onTap,
     this.color = const Color(0xff272727),
-    this.vertical = 4,
+    this.vertical = 14,
     this.horizontal = 0,
     this.disableIcon = false,
   });
@@ -43,7 +43,10 @@ class Item extends StatelessWidget {
               children: [
                 icon != null
                     ? Icon(icon, color: color)
-                    : CommonImage(imageSrc: image),
+                    : CommonImage(
+                      imageSrc: image,
+                      imageColor: Color(0xff272727),
+                    ),
                 CommonText(
                   text: title,
                   color: color,
@@ -61,10 +64,6 @@ class Item extends StatelessWidget {
                     ),
               ],
             ),
-            6.height,
-            disableDivider
-                ? const SizedBox()
-                : const Divider(color: Color(0xffF1F1F1)),
           ],
         ),
       ),

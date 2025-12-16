@@ -92,7 +92,7 @@ class EditProfile extends StatelessWidget {
                     ),
 
                     CommonText(
-                      text: AppString.personalDetails,
+                      text: AppString.personalDetails.toUpperCase(),
                       bottom: 12,
                       top: 28,
                       fontSize: 12,
@@ -109,8 +109,6 @@ class EditProfile extends StatelessWidget {
                       titleText: AppString.saveChanges,
                       isLoading: controller.isLoading,
                       onTap: controller.editProfileRepo,
-                      buttonRadius: 30,
-                      buttonHeight: 48,
                     ),
                   ],
                 ),

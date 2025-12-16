@@ -35,7 +35,7 @@ class ProfileAddressScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     color: Color(0xff777777),
                     top: 24,
-                    bottom: 8,
+                    bottom: 12,
                   ),
                   Expanded(
                     child: ListView.builder(
@@ -56,10 +56,6 @@ class ProfileAddressScreen extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16, right: 16, bottom: 30),
           child: CommonButton(
             titleText: AppString.addNewAddress,
-            buttonRadius: 30,
-            buttonHeight: 48,
-            titleSize: 14,
-            titleWeight: FontWeight.w600,
             onTap: () {
               Get.toNamed(AppRoutes.addAddress);
             },

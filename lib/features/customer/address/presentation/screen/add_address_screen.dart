@@ -29,10 +29,10 @@ class AddAddressScreen extends StatelessWidget {
                 children: [
                   CommonText(
                     text: "Add New Address",
-                    fontSize: 16,
+                    fontSize: 24,
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
-                    bottom: 28,
+                    bottom: 24,
                   ),
 
                   SizedBox(
@@ -55,7 +55,7 @@ class AddAddressScreen extends StatelessWidget {
                             ),
                             child: CommonButton(
                               buttonHeight: 48,
-                              buttonRadius: 30,
+                              buttonRadius: 20,
                               titleText: AppString.useCurrentLocation,
                             ),
                           ),
@@ -70,7 +70,7 @@ class AddAddressScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     color: Color(0xff777777),
                     bottom: 12,
-                    top: 28,
+                    top: 24,
                   ),
 
                   CommonText(
@@ -82,10 +82,6 @@ class AddAddressScreen extends StatelessWidget {
                   ),
                   CommonTextField(
                     hintText: "Enter Address Label",
-                    paddingVertical: 14,
-                    borderColor: Color(0xffF1F1F1),
-                    borderRadius: 12,
-                    fillColor: Colors.white,
                     keyboardType: TextInputType.name,
                     controller: controller.addressLabelController,
                     suffixIcon: PopUpMenu(
@@ -105,15 +101,14 @@ class AddAddressScreen extends StatelessWidget {
                   ),
                   CommonTextField(
                     hintText: "Enter Address",
-                    paddingVertical: 14,
-                    borderColor: Color(0xffF1F1F1),
-                    borderRadius: 12,
-                    fillColor: Colors.white,
                     suffixIcon: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: CommonImage(
-                        imageSrc: AppIcons.location,
-                        imageColor: Color(0xffFD713F),
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: CommonImage(
+                          imageSrc: AppIcons.location,
+                          imageColor: Color(0xffFD713F),
+                        ),
                       ),
                     ),
                   ),
@@ -128,10 +123,8 @@ class AddAddressScreen extends StatelessWidget {
                   ),
                   CommonTextField(
                     hintText: "Enter Detailed Address",
-                    paddingVertical: 14,
-                    borderColor: Color(0xffF1F1F1),
-                    borderRadius: 12,
-                    fillColor: Colors.white,
+                    maxLines: 3,
+                    keyboardType: TextInputType.multiline,
                   ),
 
                   CommonText(
@@ -144,10 +137,8 @@ class AddAddressScreen extends StatelessWidget {
                   ),
                   CommonTextField(
                     hintText: AppString.additionalAddress,
-                    paddingVertical: 14,
-                    borderColor: Color(0xffF1F1F1),
-                    borderRadius: 12,
-                    fillColor: Colors.white,
+                    maxLines: 3,
+                    keyboardType: TextInputType.multiline,
                   ),
 
                   CommonText(
@@ -158,13 +149,7 @@ class AddAddressScreen extends StatelessWidget {
                     bottom: 8,
                     top: 16,
                   ),
-                  CommonTextField(
-                    hintText: AppString.owner,
-                    paddingVertical: 14,
-                    borderColor: Color(0xffF1F1F1),
-                    borderRadius: 12,
-                    fillColor: Colors.white,
-                  ),
+                  CommonTextField(hintText: AppString.owner),
 
                   CommonText(
                     text: AppString.phoneNumber,
@@ -174,13 +159,7 @@ class AddAddressScreen extends StatelessWidget {
                     bottom: 8,
                     top: 16,
                   ),
-                  CommonTextField(
-                    hintText: AppString.phoneNumber,
-                    paddingVertical: 14,
-                    borderColor: Color(0xffF1F1F1),
-                    borderRadius: 12,
-                    fillColor: Colors.white,
-                  ),
+                  CommonTextField(hintText: AppString.phoneNumber),
 
                   Row(
                     children: [
@@ -209,12 +188,7 @@ class AddAddressScreen extends StatelessWidget {
           child: Column(
             children: [
               10.height,
-              CommonButton(
-                buttonHeight: 48,
-                buttonRadius: 30,
-                titleText: AppString.addAddress,
-                onTap: Get.back,
-              ),
+              CommonButton(titleText: AppString.addAddress, onTap: Get.back),
             ],
           ),
         ),
