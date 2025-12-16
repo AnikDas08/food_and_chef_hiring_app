@@ -30,6 +30,7 @@ import '../../features/customer/cart/presentation/screen/personal_tax_details_sc
 import '../../features/customer/chef_details/presentation/screen/chef_details_screen.dart';
 import '../../features/customer/home/presentation/screen/home_screen.dart';
 import '../../features/customer/home/presentation/screen/search_screen.dart';
+import '../../features/customer/payment/presentation/screen/payment_method_screen.dart';
 import '../../features/customer/profile/presentation/screen/edit_profile.dart';
 import '../../features/customer/profile/presentation/screen/profile_screen.dart';
 
@@ -67,6 +68,7 @@ class AppRoutes {
   static const String requestChange = "/request_change_screen.dart";
   static const String addressScreen = "/profile_address_screen.dart";
   static const String addAddress = "/add_address_screen.dart";
+  static const String paymentMethod = "/payment_method_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -101,5 +103,6 @@ class AppRoutes {
     GetPage(name: requestChange, page: () => RequestChangeScreen()),
     GetPage(name: addressScreen, page: () => ProfileAddressScreen()),
     GetPage(name: addAddress, page: () => AddAddressScreen()),
+    GetPage(name: paymentMethod, page: () => PaymentMethodScreen()),
   ];
 }

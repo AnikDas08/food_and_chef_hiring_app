@@ -148,7 +148,7 @@ class ProfileScreen extends StatelessWidget {
                 Item(
                   image: AppIcons.card,
                   title: AppString.paymentMethods,
-                  onTap: () => Get.toNamed(AppRoutes.setting),
+                  onTap: () => Get.toNamed(AppRoutes.paymentMethod),
                 ),
                 Item(
                   image: AppIcons.past,

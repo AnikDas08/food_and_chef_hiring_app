@@ -43,4 +43,8 @@ class AppIcons {
   static const String user = "$baseurl/user.svg";
   static const String addressIcon = "$baseurl/address_icon.svg";
   static const String house = "$baseurl/house.svg";
+  static const String creditCard = "$baseurl/credit_card.svg";
+  static const String gpay = "$baseurl/gpay.svg";
+  static const String paypal = "$baseurl/paypal.svg";
+  static const String shopPay = "$baseurl/shop_pay.svg";
 }
