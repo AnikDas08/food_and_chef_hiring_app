@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:new_untitled/utils/extensions/extension.dart';
 import '../image/common_image.dart';
 import '../text/common_text.dart';
 

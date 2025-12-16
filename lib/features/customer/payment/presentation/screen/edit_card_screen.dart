@@ -7,7 +7,6 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../utils/constants/app_icons.dart';
-import '../../../../../utils/constants/app_string.dart';
 import '../controller/payment_method_controller.dart';
 
 class EditCardScreen extends StatelessWidget {

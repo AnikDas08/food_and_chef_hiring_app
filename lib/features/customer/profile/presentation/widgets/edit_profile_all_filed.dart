@@ -1,21 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
-import 'package:new_untitled/component/pop_up/common_pop_menu.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-import '../../../../../component/other_widgets/item.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_phone_number_text_filed.dart';
 import '../../../../../component/text_field/common_text_field.dart';
-import '../../../../../config/route/app_routes.dart';
 import '../controller/profile_controller.dart';
-import '../../../../../utils/constants/app_colors.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../../../../../utils/helpers/other_helper.dart';
-import '../../../../../utils/log/app_log.dart';
 
 class EditProfileAllFiled extends StatelessWidget {
   const EditProfileAllFiled({super.key, required this.controller});
