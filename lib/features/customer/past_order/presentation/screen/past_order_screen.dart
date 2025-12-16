@@ -13,7 +13,7 @@ class PastOrderScreen extends StatelessWidget {
       appBar: AppBar(),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -22,6 +22,7 @@ class PastOrderScreen extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 fontSize: 24,
                 color: Color(0xff272727),
+                bottom: 8,
               ),
 
               Expanded(

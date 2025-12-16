@@ -14,7 +14,9 @@ import 'past_item_details_popup.dart';
 
 Widget pastItem(BuildContext context) {
   return InkWell(
-    onTap: () {},
+    onTap: () {
+      bookingDetails(context);
+    },
     child: Container(
       padding: EdgeInsets.all(12.sp),
       margin: EdgeInsets.only(top: 16),
@@ -60,8 +62,7 @@ Widget pastItem(BuildContext context) {
                 padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
                 decoration: BoxDecoration(
                   color: Color(0xffDBEBD9),
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: Color(0xffC2E2BE), width: 1),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: CommonText(
                   text: "Completed",
@@ -202,10 +203,7 @@ Widget pastItem(BuildContext context) {
               ),
               Spacer(),
               Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                  vertical: 8.h,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12.sp),

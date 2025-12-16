@@ -42,11 +42,7 @@ class EditCardScreen extends StatelessWidget {
                     bottom: 8,
                   ),
                   CommonTextField(
-                    fillColor: Colors.transparent,
-                    borderColor: Color(0xffF1F1F1),
-                    borderRadius: 12,
                     hintText: "Card Number",
-                    paddingVertical: 14,
                     suffixIcon: Padding(
                       padding: EdgeInsets.all(8),
                       child: CommonImage(imageSrc: AppIcons.master, size: 24),
@@ -54,21 +50,15 @@ class EditCardScreen extends StatelessWidget {
                   ),
 
                   CommonText(
-                    text: "Holder Name",
+                    text: "Cardholder Name",
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                     bottom: 8,
-                    top: 12,
+                    top: 16,
                   ),
-                  CommonTextField(
-                    fillColor: Colors.transparent,
-                    borderColor: Color(0xffF1F1F1),
-                    borderRadius: 12,
-                    hintText: "Holder Name",
-                    paddingVertical: 14,
-                  ),
-                  12.height,
+                  CommonTextField(hintText: "Cardholder Name"),
+                  16.height,
                   Row(
                     children: [
                       Expanded(
@@ -82,13 +72,7 @@ class EditCardScreen extends StatelessWidget {
                               color: Color(0xff272727),
                               bottom: 8,
                             ),
-                            CommonTextField(
-                              fillColor: Colors.transparent,
-                              borderColor: Color(0xffF1F1F1),
-                              borderRadius: 12,
-                              hintText: "Expiry Date",
-                              paddingVertical: 14,
-                            ),
+                            CommonTextField(hintText: "Expiry Date"),
                           ],
                         ),
                       ),
@@ -105,35 +89,8 @@ class EditCardScreen extends StatelessWidget {
                               color: Color(0xff272727),
                               bottom: 8,
                             ),
-                            CommonTextField(
-                              fillColor: Colors.transparent,
-                              borderColor: Color(0xffF1F1F1),
-                              borderRadius: 12,
-                              hintText: "CVC",
-                              paddingVertical: 14,
-                            ),
+                            CommonTextField(hintText: "CVC"),
                           ],
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: controller.isBilling,
-                        onChanged: controller.changeBilling,
-                        checkColor: Colors.white,
-                        activeColor: Color(0xffFD713F),
-                      ),
-
-                      Expanded(
-                        child: CommonText(
-                          text: "Use Current Billing Address",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff272727),
-                          textAlign: TextAlign.start,
                         ),
                       ),
                     ],
@@ -145,19 +102,7 @@ class EditCardScreen extends StatelessWidget {
         },
       ),
       persistentFooterButtons: [
-        SafeArea(
-          child: CommonButton(
-            titleText: AppString.saveChanges,
-            buttonHeight: 48,
-            buttonRadius: 30,
-            titleSize: 14,
-            titleWeight: FontWeight.w600,
-            titleColor: Color(0xff272727),
-            buttonColor: Colors.white,
-            borderColor: Color(0xffF1F1F1),
-            onTap: Get.back,
-          ),
-        ),
+        SafeArea(child: CommonButton(titleText: "Edit Card", onTap: Get.back)),
       ],
     );
   }

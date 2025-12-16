@@ -32,61 +32,75 @@ class PaymentMethodScreen extends StatelessWidget {
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
                 color: Color(0xff777777),
-                top: 28,
-                bottom: 16,
+                top: 24,
+                bottom: 12,
               ),
-              Row(
-                children: [
-                  Container(
-                    height: 48.sp,
-                    width: 48.sp,
-                    decoration: BoxDecoration(
-                      color: Color(0xffF0F0F0),
-                      shape: BoxShape.circle,
-                    ),
-                    child:
-                        CommonImage(imageSrc: AppIcons.master, size: 24).center,
-                  ),
-                  12.width,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CommonText(
-                        text: "Mastercard",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff272727),
-                      ),
-                      CommonText(
-                        text: "**** **** ****  4356",
-                        fontSize: 12,
-                        top: 4,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff777777),
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                  InkWell(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.editCard);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              Container(
+                height: 72.h,
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Color(0xffF2F2F2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 48.sp,
+                      width: 48.sp,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        border: Border.all(color: Color(0xffF1F1F1)),
+                        color: Colors.white,
+                        shape: BoxShape.circle,
                       ),
-                      child: CommonText(
-                        text: "Edit",
-                        color: Color(0xff272727),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
+                      child:
+                          CommonImage(
+                            imageSrc: AppIcons.master,
+                            size: 24,
+                          ).center,
+                    ),
+                    12.width,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CommonText(
+                          text: "Mastercard",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff272727),
+                        ),
+                        CommonText(
+                          text: "**** **** ****  4356",
+                          fontSize: 12,
+                          top: 4,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff777777),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.editCard);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: CommonText(
+                          text: "Edit",
+                          color: Color(0xff272727),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
 
               CommonText(
@@ -94,208 +108,60 @@ class PaymentMethodScreen extends StatelessWidget {
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
                 color: Color(0xff777777),
-                top: 28,
-                bottom: 16,
+                top: 24,
+                bottom: 12,
               ),
-              Row(
-                children: [
-                  Container(
-                    height: 48.sp,
-                    width: 48.sp,
-                    decoration: BoxDecoration(
-                      color: Color(0xffF0F0F0),
-                      shape: BoxShape.circle,
-                    ),
-                    child:
-                        CommonImage(imageSrc: AppIcons.master, size: 24).center,
-                  ),
-                  12.width,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CommonText(
-                        text: "Paypall",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff272727),
+              Container(
+                height: 72.h,
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Color(0xffF2F2F2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 48.sp,
+                      width: 48.sp,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
                       ),
-                      CommonText(
-                        text: "Not connected",
-                        fontSize: 12,
-                        top: 4,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff777777),
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Color(0xffF1F1F1)),
+                      child:
+                          CommonImage(
+                            imageSrc: AppIcons.paypal,
+                            size: 24,
+                          ).center,
                     ),
-                    child: CommonText(
-                      text: "Add",
-                      color: Color(0xff272727),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                    12.width,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CommonText(
+                          text: "Paypall",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff272727),
+                        ),
+                        CommonText(
+                          text: "Not connected",
+                          fontSize: 12,
+                          top: 4,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff777777),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              Divider(height: 30, color: Color(0xffF1F1F1)),
-              Row(
-                children: [
-                  Container(
-                    height: 48.sp,
-                    width: 48.sp,
-                    decoration: BoxDecoration(
-                      color: Color(0xffF0F0F0),
-                      shape: BoxShape.circle,
-                    ),
-                    child:
-                        CommonImage(
-                          imageSrc: AppIcons.shopPay,
-                          size: 24,
-                        ).center,
-                  ),
-                  12.width,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CommonText(
-                        text: "Shop Pay",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff272727),
-                      ),
-                      CommonText(
-                        text: "Not connected",
-                        fontSize: 12,
-                        top: 4,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff777777),
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Color(0xffF1F1F1)),
-                    ),
-                    child: CommonText(
-                      text: "Add",
-                      color: Color(0xff272727),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-              Divider(height: 30, color: Color(0xffF1F1F1)),
-              Row(
-                children: [
-                  Container(
-                    height: 48.sp,
-                    width: 48.sp,
-                    decoration: BoxDecoration(
-                      color: Color(0xffF0F0F0),
-                      shape: BoxShape.circle,
-                    ),
-                    child:
-                        CommonImage(imageSrc: AppIcons.gpay, size: 24).center,
-                  ),
-                  12.width,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CommonText(
-                        text: "Google Pay",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff272727),
-                      ),
-                      CommonText(
-                        text: "Not connected",
-                        fontSize: 12,
-                        top: 4,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff777777),
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Color(0xffF1F1F1)),
-                    ),
-                    child: CommonText(
-                      text: "Add",
-                      color: Color(0xff272727),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-              Divider(height: 30, color: Color(0xffF1F1F1)),
-
-              Row(
-                children: [
-                  Container(
-                    height: 48.sp,
-                    width: 48.sp,
-                    decoration: BoxDecoration(
-                      color: Color(0xffF0F0F0),
-                      shape: BoxShape.circle,
-                    ),
-                    child:
-                        CommonImage(
-                          imageSrc: AppIcons.creditCard,
-                          size: 24,
-                        ).center,
-                  ),
-                  12.width,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CommonText(
-                        text: "Add Credit or Debit Card",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff272727),
-                      ),
-                      CommonText(
-                        text: "Not connected",
-                        fontSize: 12,
-                        top: 4,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff777777),
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                  InkWell(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.addCard);
-                    },
-                    child: Container(
+                    Spacer(),
+                    Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        border: Border.all(color: Color(0xffF1F1F1)),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
                       ),
                       child: CommonText(
                         text: "Add",
@@ -304,8 +170,199 @@ class PaymentMethodScreen extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+              16.height,
+              Container(
+                height: 72.h,
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Color(0xffF2F2F2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 48.sp,
+                      width: 48.sp,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child:
+                          CommonImage(
+                            imageSrc: AppIcons.shopPay,
+                            size: 24,
+                          ).center,
+                    ),
+                    12.width,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CommonText(
+                          text: "Shop Pay",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff272727),
+                        ),
+                        CommonText(
+                          text: "Not connected",
+                          fontSize: 12,
+                          top: 4,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff777777),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                      ),
+                      child: CommonText(
+                        text: "Add",
+                        color: Color(0xff272727),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              16.height,
+              Container(
+                height: 72.h,
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Color(0xffF2F2F2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 48.sp,
+                      width: 48.sp,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child:
+                          CommonImage(imageSrc: AppIcons.gpay, size: 24).center,
+                    ),
+                    12.width,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CommonText(
+                          text: "Google Pay",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff272727),
+                        ),
+                        CommonText(
+                          text: "Not connected",
+                          fontSize: 12,
+                          top: 4,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff777777),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                      ),
+                      child: CommonText(
+                        text: "Add",
+                        color: Color(0xff272727),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              16.height,
+              Container(
+                height: 72.h,
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Color(0xffF2F2F2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 48.sp,
+                      width: 48.sp,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child:
+                          CommonImage(
+                            imageSrc: AppIcons.creditCard,
+                            size: 24,
+                          ).center,
+                    ),
+                    12.width,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CommonText(
+                          text: "Add Credit or Debit Card",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff272727),
+                        ),
+                        CommonText(
+                          text: "Not connected",
+                          fontSize: 12,
+                          top: 4,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff777777),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.addCard);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: CommonText(
+                          text: "Add",
+                          color: Color(0xff272727),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
