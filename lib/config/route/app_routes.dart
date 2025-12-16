@@ -30,6 +30,7 @@ import '../../features/customer/cart/presentation/screen/personal_tax_details_sc
 import '../../features/customer/chef_details/presentation/screen/chef_details_screen.dart';
 import '../../features/customer/home/presentation/screen/home_screen.dart';
 import '../../features/customer/home/presentation/screen/search_screen.dart';
+import '../../features/customer/past_order/presentation/screen/past_order_screen.dart';
 import '../../features/customer/payment/presentation/screen/add_card_screen.dart';
 import '../../features/customer/payment/presentation/screen/edit_card_screen.dart';
 import '../../features/customer/payment/presentation/screen/payment_method_screen.dart';
@@ -73,6 +74,7 @@ class AppRoutes {
   static const String paymentMethod = "/payment_method_screen.dart";
   static const String addCard = "/add_card_screen.dart";
   static const String editCard = "/edit_card_screen.dart";
+  static const String pastOrder = "/past_order_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -110,5 +112,7 @@ class AppRoutes {
     GetPage(name: paymentMethod, page: () => PaymentMethodScreen()),
     GetPage(name: addCard, page: () => AddCardScreen()),
     GetPage(name: editCard, page: () => EditCardScreen()),
+    GetPage(name: pastOrder, page: () => PastOrderScreen()),
+
   ];
 }
