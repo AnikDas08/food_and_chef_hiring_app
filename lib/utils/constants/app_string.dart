@@ -15,6 +15,8 @@ class AppString {
   static const String allergicPreferences = "ALLERGIC PREFERENCES";
   static const String yes = "Yes";
   static const String city = "City";
+  static const String owner = "Owner";
+  static const String additionalAddress = "Additional Address";
   static const String delete = "Delete";
   static const String areYouSure = "Are you sure";
   static const String enterYouPassword = "Enter you password";
@@ -151,6 +153,7 @@ class AppString {
       "Here are the details of the data you have filled in previously, you can change it if it is wrong.";
   static const String personalDetails = "Personal Details";
   static const String address = "Address";
+  static const String addressLabel = "Address Label";
   static const String selectedFood = "Selected Food";
   static const String createAccount = "Create Account";
   static const String accountCreated = "Account Created";
@@ -252,6 +255,8 @@ class AppString {
   static const String saveChanges = "Save Changes";
   static const String addresses = "Addresses";
   static const String addNewAddress = "Add New Address";
+  static const String addAddress = "Add Address";
+  static const String addressDetails = "Address Details";
   static const String useCurrentLocation = "Use Current Location";
   static const String makeAsActiveAddress = "Make as Active Address";
   static const String payment = "Payment";
