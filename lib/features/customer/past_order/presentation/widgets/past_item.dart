@@ -10,10 +10,12 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
+import 'past_item_details_popup.dart';
 
-Widget pastItem() {
+Widget pastItem( BuildContext context) {
   return InkWell(
     onTap: () {
+      pastItemDetailsPopup(context);
       // Get.toNamed(AppRoutes.requestChange);
     },
     child: Container(

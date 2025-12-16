@@ -10,12 +10,13 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
+import 'details_popup.dart';
 
 Widget bookingItem() {
   return InkWell(
     onTap: () {
-      Get.toNamed(AppRoutes.requestChange);
-      // bookingDetails(Get.context!);
+      // Get.toNamed(AppRoutes.requestChange);
+      bookingDetails(Get.context!);
     },
     child: Container(
       padding: EdgeInsets.all(12.sp),
