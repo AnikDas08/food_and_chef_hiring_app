@@ -108,7 +108,7 @@ class ChefBottomBar extends StatelessWidget {
       }
     } else if (index == 4) {
       if (!(currentIndex == 4)) {
-        Get.toNamed(AppRoutes.profile);
+        Get.toNamed(AppRoutes.chefProfile);
       }
     }
   }

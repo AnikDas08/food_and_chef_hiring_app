@@ -201,6 +201,7 @@ class AppString {
   static const String cuisine = "Cuisine";
   static const String apply = "Apply";
   static const String accountInfo = "ACCOUNT PREFERENCES";
+  static const String account = "Account";
   static const String checkAvailability = "Check Availability";
   static const String starters = "Starters";
   static const String viewCart = "View Cart";

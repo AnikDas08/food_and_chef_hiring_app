@@ -15,6 +15,7 @@ class Item extends StatelessWidget {
     this.vertical = 14,
     this.horizontal = 0,
     this.disableIcon = false,
+    this.imageSize,
   });
 
   final IconData? icon;
@@ -26,6 +27,7 @@ class Item extends StatelessWidget {
   final Color color;
   final double vertical;
   final double horizontal;
+  final double? imageSize;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class Item extends StatelessWidget {
                     ? Icon(icon, color: color)
                     : CommonImage(
                       imageSrc: image,
+                      size: imageSize,
                       imageColor: Color(0xff272727),
                     ),
                 CommonText(

@@ -17,6 +17,8 @@ class LocalStorage {
   // Create Local Storage Instance
   static SharedPreferences? preferences;
 
+  static bool get isChef => true;
+
   /// Get SharedPreferences Instance
   static Future<SharedPreferences> _getStorage() async {
     preferences ??= await SharedPreferences.getInstance();

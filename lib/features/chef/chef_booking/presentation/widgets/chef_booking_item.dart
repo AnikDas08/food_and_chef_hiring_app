@@ -9,13 +9,18 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../controller/chef_booking_controller.dart';
+import 'booking_details_popup.dart';
+import 'package:get/get.dart';
+
 import 'confirmation_booking_pop_up.dart';
+
 
 Widget chefBookingItem() {
   final controller = Get.find<ChefBookingController>();
   return InkWell(
     onTap: () {
-      confirmBookingPopUp();
+      bookingDetailsPopup(Get.context!);
+
     },
     child: Container(
       padding: EdgeInsets.all(12.sp),
@@ -294,21 +299,26 @@ Widget chefBookingItem() {
                     color: Color(0xffFF3C3C),
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.sp,
-                    vertical: 8.sp,
-                  ),
-                  margin: EdgeInsets.only(left: 8.sp),
-                  decoration: BoxDecoration(
-                    color: Color(0xff272727),
-                    borderRadius: BorderRadius.circular(10.sp),
-                  ),
-                  child: CommonText(
-                    text: AppString.accept,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                InkWell(
+                  onTap: () {
+                    confirmBookingPopUp();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.sp,
+                      vertical: 8.sp,
+                    ),
+                    margin: EdgeInsets.only(left: 8.sp),
+                    decoration: BoxDecoration(
+                      color: Color(0xff272727),
+                      borderRadius: BorderRadius.circular(10.sp),
+                    ),
+                    child: CommonText(
+                      text: AppString.accept,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],

@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
+import 'package:new_untitled/features/chef/chef_public_profile/presentation/screen/chef_public_profile.dart';
 import 'package:new_untitled/features/customer/address/presentation/screen/add_address_screen.dart';
 import '../../features/chef/chef_booking/presentation/screen/chef_booking_screen.dart';
 import '../../features/chef/home/presentation/screen/chef_home_screen.dart';
+import '../../features/chef/profile/presentation/screen/chef_profile_screen.dart';
 import '../../features/common/auth/change_password/presentation/screen/change_password_screen.dart';
 import '../../features/common/auth/forgot password/presentation/screen/create_password.dart';
 import '../../features/common/auth/forgot password/presentation/screen/forgot_password.dart';
@@ -82,6 +84,8 @@ class AppRoutes {
   static const String review = "/review_screen.dart";
   static const String chefHome = "/chef_home_screen.dart";
   static const String chefBooking = "/chef_booking_screen.dart";
+  static const String chefProfile = "/chef_profile_screen.dart";
+  static const String chefPublicProfile = "/chef_public_profile_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -124,5 +128,7 @@ class AppRoutes {
     GetPage(name: review, page: () => ReviewScreen()),
     GetPage(name: chefHome, page: () => ChefHomeScreen()),
     GetPage(name: chefBooking, page: () => ChefBookingScreen()),
+    GetPage(name: chefProfile, page: () => ChefProfileScreen()),
+    GetPage(name: chefPublicProfile, page: () => ChefPublicProfile()),
   ];
 }
