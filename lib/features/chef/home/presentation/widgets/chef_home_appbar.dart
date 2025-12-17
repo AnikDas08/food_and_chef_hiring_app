@@ -7,7 +7,6 @@ import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
-import '../../../../../utils/constants/app_string.dart';
 
 AppBar chefHomeAppBar() {
   return AppBar(

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/services/storage/storage_services.dart';
@@ -18,17 +17,36 @@ class ChefProfileController extends GetxController {
     {"name": "Customers", "image": AppIcons.customers},
   ];
 
+  List<String> expertiseInCooking = [
+    "Chinese",
+    "Italian",
+    "American",
+    "Indian",
+    "Japanese",
+  ];
+
+  TextEditingController selectExpertiseController = TextEditingController();
 
   bool isNotification = false;
+
   /// form key here
   final formKey = GlobalKey<FormState>();
 
   /// select Language here
   String selectedLanguage = "English";
-  Map<String, dynamic> selectedProfile = {"name": "Customers", "image": AppIcons.customers};
+  Map<String, dynamic> selectedProfile = {
+    "name": "Customers",
+    "image": AppIcons.customers,
+  };
 
   onChangeProfile(int index) {
     selectedProfile = profileOptions[index];
+    update();
+    Get.back();
+  }
+
+  onTap(int value) {
+    selectExpertiseController.text = expertiseInCooking[value];
     update();
     Get.back();
   }

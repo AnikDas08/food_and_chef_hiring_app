@@ -5,7 +5,6 @@ import 'package:new_untitled/component/bottom_nav_bar/chef_bottom_bar.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
-import '../../../../../component/bottom_nav_bar/common_bottom_bar.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/other_widgets/item.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
@@ -163,7 +162,7 @@ class ChefProfileScreen extends StatelessWidget {
                         image: AppIcons.chefIcon,
                         title: AppString.profileSettings,
                         imageSize: 24,
-                        onTap: () => Get.toNamed(AppRoutes.editProfile),
+                        onTap: () => Get.toNamed(AppRoutes.chefEditProfile),
                       ),
 
                       /// Setting item here
@@ -201,7 +200,7 @@ class ChefProfileScreen extends StatelessWidget {
                           Spacer(),
 
                           Switch(
-                            activeColor: Colors.white,
+                            activeThumbColor: Colors.white,
                             activeTrackColor: Color(0xff272727),
                             value: controller.isNotification,
                             onChanged: controller.notification,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/bottom_nav_bar/chef_bottom_bar.dart';
-import 'package:new_untitled/component/bottom_nav_bar/common_bottom_bar.dart';
 
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';

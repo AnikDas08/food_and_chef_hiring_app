@@ -14,6 +14,8 @@ class AppString {
   static const String congratulations = "Congratulations!";
   static const String taxId = "Tax ID / VAT ID";
   static const String postalCode = "Postal Code";
+  static const String experience = "Experience";
+  static const String expertiseInCooking = "Expertise in cooking";
   static const String allergicPreferences = "ALLERGIC PREFERENCES";
   static const String yes = "Yes";
   static const String city = "City";
@@ -49,6 +51,7 @@ class AppString {
   static const String password = "Password";
   static const String continues = "Continue";
   static const String email = "Email Address";
+  static const String geographical = "Geographical";
   static const String codeHasBeenSendTo = "Code has been send to";
   static const String otpIsInValid = "Otp is inValid";
   static const String resendCode = "Resend Code";
@@ -77,6 +80,7 @@ class AppString {
   static const String dateOfBirth = "Date of birth";
   static const String age = "Age";
   static const String aboutMe = "About Me";
+  static const String about = "About";
   static const String gender = "Gender";
   static const String profile = "Profile";
   static const String saveAndChanges = "Save and Changes";
@@ -231,7 +235,8 @@ class AppString {
       "Your chef will confirm you order shortly. Sit back, relax, and get ready to enjoy!";
   static const String seeOrderDetails = "See Order Details";
   static const String backToHomepage = "Back to Homepage";
-  static const String youHaveSuccessfully = "You’ve successfully confirmed the order.";
+  static const String youHaveSuccessfully =
+      "You’ve successfully confirmed the order.";
   static const String checkoutFailed = "Checkout Failed";
   static const String checkoutFailedMessage =
       "Unfortunately, there was an issue with your order. Your chef couldn’t be scheduled. Please try again, or contact support for assistance.";
@@ -339,5 +344,6 @@ class AppString {
   static const String accountSettings = "Account Settings";
   static const String subtotal = "Subtotal";
   static const String checkout = "Checkout";
-  static const String areYouSureYouWantToDeleteYourAccount = "Are you sure you want to delete your account?";
+  static const String areYouSureYouWantToDeleteYourAccount =
+      "Are you sure you want to delete your account?";
 }

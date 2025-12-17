@@ -10,7 +10,6 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../../../component/text/common_text.dart';
-import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../customer/chef_details/presentation/widgets/menu.dart';
 
