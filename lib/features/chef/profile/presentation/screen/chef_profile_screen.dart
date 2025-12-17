@@ -186,7 +186,7 @@ class ChefProfileScreen extends StatelessWidget {
                       Item(
                         image: AppIcons.user,
                         title: AppString.accountSettings,
-                        onTap: () => Get.toNamed(AppRoutes.pastOrder),
+                        onTap: () => Get.toNamed(AppRoutes.accountSetting),
                       ),
                       Row(
                         children: [
