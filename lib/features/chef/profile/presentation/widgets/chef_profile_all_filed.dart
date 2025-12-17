@@ -1,12 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/pop_up/common_pop_menu.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/text/common_text.dart';
-import '../../../../../component/text_field/common_phone_number_text_filed.dart';
 import '../../../../../component/text_field/common_text_field.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../../../../../utils/helpers/other_helper.dart';
@@ -52,6 +48,7 @@ class ChefProfileAllFiled extends StatelessWidget {
         CommonTextField(
           validator: OtherHelper.validator,
           hintText: AppString.geographical,
+          borderRadius: 12,
         ),
 
         /// User Phone number here
@@ -65,6 +62,7 @@ class ChefProfileAllFiled extends StatelessWidget {
           validator: OtherHelper.validator,
           hintText: AppString.experience,
           keyboardType: TextInputType.number,
+          borderRadius: 12,
         ),
 
         const CommonText(
@@ -77,6 +75,7 @@ class ChefProfileAllFiled extends StatelessWidget {
           validator: OtherHelper.validator,
           hintText: AppString.expertiseInCooking,
           keyboardType: TextInputType.number,
+          borderRadius: 12,
           suffixIcon: PopUpMenu(
             items: controller.expertiseInCooking,
             selectedItem: [controller.selectExpertiseController.text],
@@ -92,20 +91,171 @@ class ChefProfileAllFiled extends StatelessWidget {
         ),
         CommonTextField(
           validator: OtherHelper.validator,
-          hintText: AppString.experience,
-          keyboardType: TextInputType.text,
+          hintText: AppString.about,
+          maxLines: 3,
+          keyboardType: TextInputType.multiline,
+          borderRadius: 12,
+        ),
+
+        CommonText(
+          text: AppString.price.toUpperCase(),
+          fontWeight: FontWeight.w500,
+          fontSize: 12,
+          color: Color(0xff777777),
+          top: 28,
+          bottom: 12,
         ),
 
         const CommonText(
-          text: AppString.experience,
+          text: AppString.setAmount,
           fontWeight: FontWeight.w600,
-          top: 20,
           bottom: 8,
         ),
         CommonTextField(
           validator: OtherHelper.validator,
-          hintText: AppString.experience,
+          hintText: AppString.setAmount,
           keyboardType: TextInputType.number,
+          borderRadius: 12,
+        ),
+
+        Container(
+          padding: EdgeInsets.all(12),
+          margin: EdgeInsets.only(top: 16),
+          decoration: BoxDecoration(
+            color: Color(0xffF2F2F2),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: CommonText(
+                      text:
+                          "Offer discounted rate during specific hours on weekdays",
+                      maxLines: 3,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff272727),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+
+                  Switch(
+                    activeThumbColor: Colors.white,
+                    activeTrackColor: Color(0xff272727),
+                    value: controller.isNotification,
+                    onChanged: controller.notification,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: CommonTextField(
+                      fillColor: Colors.white,
+                      prefixText: "From: ",
+                      hintText: "From",
+                      controller: controller.fromController,
+                      paddingHorizontal: 4,
+                      paddingVertical: 14,
+                      fontSize: 12,
+                      keyboardType: TextInputType.none,
+                      borderRadius: 12,
+                      onTap:
+                          () => OtherHelper.openTimePickerDialog(
+                            controller.fromController,
+                          ),
+                    ),
+                  ),
+                  12.width,
+                  Expanded(
+                    child: CommonTextField(
+                      fillColor: Colors.white,
+                      prefixText: "To: ",
+                      hintText: "To",
+                      paddingHorizontal: 10,
+                      fontSize: 12,
+                      paddingVertical: 14,
+                      keyboardType: TextInputType.none,
+                      controller: controller.toController,
+                      borderRadius: 12,
+                      onTap:
+                          () => OtherHelper.openTimePickerDialog(
+                            controller.toController,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+              16.height,
+              CommonTextField(
+                prefixText: "\$  ",
+                keyboardType: TextInputType.number,
+                fillColor: Colors.white,
+                borderRadius: 12,
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: CommonText(
+                    text: "/hr",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff777777),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.all(12),
+          margin: EdgeInsets.only(top: 16),
+          decoration: BoxDecoration(
+            color: Color(0xffF2F2F2),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: CommonText(
+                      text: "Ask for higher rate on weekends",
+                      maxLines: 3,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff272727),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+
+                  Switch(
+                    activeThumbColor: Colors.white,
+                    activeTrackColor: Color(0xff272727),
+                    value: controller.isNotification,
+                    onChanged: controller.notification,
+                  ),
+                ],
+              ),
+
+              10.height,
+              CommonTextField(
+                prefixText: "\$  ",
+                keyboardType: TextInputType.number,
+                fillColor: Colors.white,
+                borderRadius: 12,
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: CommonText(
+                    text: "/hr",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff777777),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );

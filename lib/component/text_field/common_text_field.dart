@@ -23,6 +23,7 @@ class CommonTextField extends StatelessWidget {
     this.paddingHorizontal = 16,
     this.paddingVertical = 18,
     this.borderRadius = 20,
+    this.fontSize = 14,
     this.inputFormatters,
     this.fillColor = const Color(0xffF2F2F2),
     this.hintTextColor = AppColors.textFiledColor,
@@ -54,6 +55,7 @@ class CommonTextField extends StatelessWidget {
   final int? mexLength;
   final bool isPassword;
   final bool? isDense;
+  final double fontSize;
   RxBool obscureText = false.obs;
   final Function(String)? onSubmitted;
   final Function(String)? onChanged;
@@ -76,7 +78,7 @@ class CommonTextField extends StatelessWidget {
         maxLength: mexLength,
         onChanged: onChanged,
         inputFormatters: inputFormatters,
-        style: TextStyle(fontSize: 14, color: textColor),
+        style: TextStyle(fontSize: fontSize, color: textColor),
         onFieldSubmitted: onSubmitted,
         onTap: onTap,
         validator: validator,
@@ -104,8 +106,14 @@ class CommonTextField extends StatelessWidget {
           errorBorder: _buildBorder(),
           hintText: hintText,
           labelText: labelText,
-          hintStyle: GoogleFonts.roboto(fontSize: 14, color: hintTextColor),
-          labelStyle: GoogleFonts.roboto(fontSize: 14, color: labelTextColor),
+          hintStyle: GoogleFonts.roboto(
+            fontSize: fontSize,
+            color: hintTextColor,
+          ),
+          labelStyle: GoogleFonts.roboto(
+            fontSize: fontSize,
+            color: labelTextColor,
+          ),
           prefix: CommonText(
             text: prefixText ?? "",
             fontWeight: FontWeight.w400,

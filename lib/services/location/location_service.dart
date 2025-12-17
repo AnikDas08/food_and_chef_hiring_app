@@ -51,7 +51,7 @@ class LocationService {
         bool isPermission = await locationPermission();
         if (isPermission) {
           positions = await Geolocator.getCurrentPosition();
-          print(positions);
+
 
           return positions;
         }

@@ -17,6 +17,8 @@ class ChefProfileController extends GetxController {
     {"name": "Customers", "image": AppIcons.customers},
   ];
 
+  bool isDiscount = false;
+
   List<String> expertiseInCooking = [
     "Chinese",
     "Italian",
@@ -51,6 +53,11 @@ class ChefProfileController extends GetxController {
     Get.back();
   }
 
+  onChangeDiscount(v) {
+    isDiscount = !isDiscount;
+    update();
+  }
+
   /// select image here
   String? image;
 
@@ -60,6 +67,8 @@ class ChefProfileController extends GetxController {
   /// all controller here
   TextEditingController nameController = TextEditingController();
   TextEditingController numberController = TextEditingController();
+  TextEditingController fromController = TextEditingController();
+  TextEditingController toController = TextEditingController();
 
   /// select image function here
   getProfileImage() async {

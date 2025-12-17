@@ -233,9 +233,7 @@ class ReviewScreen extends StatelessWidget {
                           color: Color(0xffFD713F),
                           size: 20,
                         ),
-                    onRatingUpdate: (rating) {
-                      print(rating);
-                    },
+                    onRatingUpdate: (rating) {},
                   ),
 
                   CommonText(
@@ -297,9 +295,7 @@ Widget _ratingItem(String title) {
           itemBuilder:
               (context, _) =>
                   Icon(Icons.star_rounded, color: Color(0xffFD713F), size: 40),
-          onRatingUpdate: (rating) {
-            print(rating);
-          },
+          onRatingUpdate: (rating) {},
         ),
       ],
     ),
