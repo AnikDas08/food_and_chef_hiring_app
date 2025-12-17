@@ -39,7 +39,7 @@ class Screen3 extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(color: Colors.white),
               child: Column(
                 children: [
@@ -68,7 +68,6 @@ class Screen3 extends StatelessWidget {
                     onTap: () => Get.toNamed(AppRoutes.signIn),
                   ),
                   12.height,
-
                   CommonButton(
                     titleText: "I’m New, Sign Me Up",
                     buttonColor: Color(0xffF2F2F2),

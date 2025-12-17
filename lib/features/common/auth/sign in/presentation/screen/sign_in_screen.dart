@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../../../config/route/app_routes.dart';
 import '../../../../../../../utils/extensions/extension.dart';
@@ -54,7 +55,12 @@ class SignInScreen extends StatelessWidget {
                   ),
 
                   /// Account Email Input here
-                  const CommonText(text: AppString.email, bottom: 8),
+                  const CommonText(
+                    text: AppString.email,
+                    bottom: 8,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
+                  ),
                   CommonTextField(
                     controller: controller.emailController,
                     hintText: AppString.email,
@@ -65,7 +71,9 @@ class SignInScreen extends StatelessWidget {
                   const CommonText(
                     text: AppString.password,
                     bottom: 8,
-                    top: 24,
+                    top: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
                   ),
                   CommonTextField(
                     controller: controller.passwordController,
@@ -81,8 +89,8 @@ class SignInScreen extends StatelessWidget {
                       onTap: () => Get.toNamed(AppRoutes.forgotPassword),
                       child: const CommonText(
                         text: AppString.forgotThePassword,
-                        top: 10,
-                        bottom: 30,
+                        top: 8,
+                        bottom: 24,
                         color: Color(0xff272727),
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -96,7 +104,17 @@ class SignInScreen extends StatelessWidget {
                     isLoading: controller.isLoading,
                     onTap: controller.signInUser,
                   ),
-                  30.height,
+
+                  20.height,
+                  CommonButton(
+                    titleText: "Sign as Chef",
+                    isLoading: controller.isLoading,
+                    onTap: () {
+                      LocalStorage.myRole = "chef";
+                      Get.toNamed(AppRoutes.chefHome);
+                    },
+                  ),
+                  20.height,
 
                   Row(
                     children: [
@@ -112,7 +130,7 @@ class SignInScreen extends StatelessWidget {
                     ],
                   ),
 
-                  28.height,
+                  20.height,
                   Container(
                     height: 60.h,
                     decoration: BoxDecoration(

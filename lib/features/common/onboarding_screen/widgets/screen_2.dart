@@ -40,7 +40,7 @@ class Screen2 extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(color: Colors.white),
               child: Column(
                 children: [

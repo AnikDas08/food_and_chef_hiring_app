@@ -13,11 +13,12 @@ class LocalStorage {
   static String myImage = "";
   static String myName = "";
   static String myEmail = "";
+  static String myRole = "";
 
   // Create Local Storage Instance
   static SharedPreferences? preferences;
 
-  static bool get isChef => true;
+  static bool get isChef => myRole.toLowerCase() == "chef";
 
   /// Get SharedPreferences Instance
   static Future<SharedPreferences> _getStorage() async {

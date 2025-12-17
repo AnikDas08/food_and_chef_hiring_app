@@ -12,7 +12,7 @@ Widget indicator({required int currentIndex}) {
         width: 8.sp,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: index == currentIndex ? Color(0xffFD713F) : Colors.grey,
+          color: index == currentIndex ? Color(0xff272727) : Color(0xffF1F1F1),
         ),
       ),
     ),
