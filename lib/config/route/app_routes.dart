@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:new_untitled/features/chef/availaility/presentation/screen/availabiity_screen.dart';
 import 'package:new_untitled/features/chef/chef_public_profile/presentation/screen/chef_public_profile.dart';
 import 'package:new_untitled/features/customer/address/presentation/screen/add_address_screen.dart';
 import '../../features/chef/chef_booking/presentation/screen/chef_booking_screen.dart';
@@ -88,6 +89,7 @@ class AppRoutes {
   static const String chefProfile = "/chef_profile_screen.dart";
   static const String chefPublicProfile = "/chef_public_profile_screen.dart";
   static const String chefEditProfile = "/chef_edit_profile.dart";
+  static const String availability = "/availabiity_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -133,5 +135,6 @@ class AppRoutes {
     GetPage(name: chefProfile, page: () => ChefProfileScreen()),
     GetPage(name: chefPublicProfile, page: () => ChefPublicProfile()),
     GetPage(name: chefEditProfile, page: () => ChefEditProfile()),
+    GetPage(name: availability, page: () => AvailabilityScreen()),
   ];
 }

@@ -170,7 +170,7 @@ class ChefProfileScreen extends StatelessWidget {
                         image: AppIcons.date,
                         title: AppString.availability,
                         imageSize: 24,
-                        onTap: () => Get.toNamed(AppRoutes.addressScreen),
+                        onTap: () => Get.toNamed(AppRoutes.availability),
                       ),
                       Item(
                         image: AppIcons.card,
