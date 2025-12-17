@@ -75,6 +75,7 @@ class CommonTextField extends StatelessWidget {
         controller: controller,
         obscureText: isPassword ? !obscureText.value : obscureText.value,
         textInputAction: textInputAction,
+
         maxLength: mexLength,
         onChanged: onChanged,
         inputFormatters: inputFormatters,
@@ -83,6 +84,9 @@ class CommonTextField extends StatelessWidget {
         onTap: onTap,
         validator: validator,
         maxLines: isPassword ? 1 : maxLines,
+        textAlign: TextAlign.start,
+        textAlignVertical: TextAlignVertical.center,
+
         cursorColor:
             keyboardType == TextInputType.none ? Colors.transparent : textColor,
         decoration: InputDecoration(
@@ -114,10 +118,13 @@ class CommonTextField extends StatelessWidget {
             fontSize: fontSize,
             color: labelTextColor,
           ),
-          prefix: CommonText(
-            text: prefixText ?? "",
+          prefixText: prefixText,
+          prefixStyle: GoogleFonts.roboto(
+            fontSize: fontSize,
             fontWeight: FontWeight.w400,
+            color: textColor,
           ),
+
           suffixIcon: isPassword ? _buildPasswordSuffixIcon() : suffixIcon,
         ),
       ),
