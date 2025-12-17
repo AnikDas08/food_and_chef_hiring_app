@@ -6,7 +6,6 @@ import '../../../../../../utils/constants/app_string.dart';
 import '../controller/sign_up_controller.dart';
 import '../../../../../../utils/constants/app_colors.dart';
 
-
 class SignUpAllField extends StatelessWidget {
   const SignUpAllField({super.key, required this.controller});
 
@@ -22,7 +21,7 @@ class SignUpAllField extends StatelessWidget {
         CommonTextField(
           prefixIcon: const Icon(Icons.person),
           hintText: AppString.fullName,
-          controller: controller.nameController,
+          controller: controller.firstNameController,
           validator: OtherHelper.validator,
         ),
 

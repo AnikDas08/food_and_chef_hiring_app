@@ -63,8 +63,12 @@ class SignUpController extends GetxController {
 
   static SignUpController get instance => Get.put(SignUpController());
 
-  TextEditingController nameController = TextEditingController(
-    text: kDebugMode ? "Namimul Hassan" : "",
+  TextEditingController firstNameController = TextEditingController(
+    text: kDebugMode ? "Namimul" : "",
+  );
+
+  TextEditingController lastNameController = TextEditingController(
+    text: kDebugMode ? "Hassan" : "",
   );
   TextEditingController emailController = TextEditingController(
     text: kDebugMode ? "developernaimul00@gmail.com" : '',
@@ -110,7 +114,7 @@ class SignUpController extends GetxController {
     isLoading = true;
     update();
     Map<String, String> body = {
-      "fullName": nameController.text,
+      // "fullName": nameController.text,
       "email": emailController.text,
       "phoneNumber": numberController.text,
       "countryCode": countryCode,

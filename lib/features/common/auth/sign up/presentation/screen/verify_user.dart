@@ -52,6 +52,7 @@ class _VerifyUserState extends State<VerifyUser> {
                     maxLines: 2,
                     textAlign: TextAlign.start,
                     right: 40,
+                    fontWeight: FontWeight.w600,
                   ),
 
                   const CommonText(
@@ -66,7 +67,13 @@ class _VerifyUserState extends State<VerifyUser> {
                   ),
 
                   /// Account Email Input here
-                  const CommonText(text: AppString.enterCode, bottom: 8),
+                  const CommonText(
+                    text: AppString.enterCode,
+                    bottom: 8,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
+                  ),
                   CommonTextField(
                     controller: controller.otpController,
                     hintText: AppString.enterCode,
@@ -74,7 +81,7 @@ class _VerifyUserState extends State<VerifyUser> {
                     keyboardType: TextInputType.number,
                   ),
 
-                  10.height,
+                  12.height,
 
                   /// Resent OTP or show Timer
                   GestureDetector(
@@ -91,10 +98,13 @@ class _VerifyUserState extends State<VerifyUser> {
                             : CommonText(
                               text:
                                   "${AppString.resendCodeIn} ${controller.time} ${AppString.minute}",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff272727),
                             ),
                   ),
 
-                  86.height,
+                  78.height,
 
                   ///  Submit Button here
                   CommonButton(

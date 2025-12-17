@@ -36,6 +36,7 @@ class CreatePasswordScreen extends StatelessWidget {
                     text: AppString.createYourPassword,
                     fontSize: 24,
                     color: Color(0xff272727),
+                    fontWeight: FontWeight.w600,
                     top: 10,
                   ),
 
@@ -51,7 +52,12 @@ class CreatePasswordScreen extends StatelessWidget {
                   ),
 
                   /// Account Email Input here
-                  const CommonText(text: AppString.newPassword, bottom: 8),
+                  const CommonText(
+                    text: AppString.newPassword,
+                    bottom: 8,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
+                  ),
                   CommonTextField(
                     controller: controller.passwordController,
                     hintText: AppString.enterPassword,
@@ -64,6 +70,8 @@ class CreatePasswordScreen extends StatelessWidget {
                     text: AppString.confirmPassword,
                     bottom: 8,
                     top: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
                   ),
                   CommonTextField(
                     controller: controller.confirmPasswordController,

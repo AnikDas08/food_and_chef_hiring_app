@@ -39,6 +39,7 @@ class ReviewDetailScreen extends StatelessWidget {
                     top: 10,
                     maxLines: 2,
                     textAlign: TextAlign.start,
+                    fontWeight: FontWeight.w600,
                   ),
 
                   const CommonText(
@@ -73,7 +74,10 @@ class ReviewDetailScreen extends StatelessWidget {
                   CommonTextField(
                     hintText: AppString.fullName,
                     paddingHorizontal: 10,
-                    controller: controller.nameController,
+                    controller: TextEditingController(
+                      text:
+                          "${controller.firstNameController.text} ${controller.lastNameController.text}",
+                    ),
                     validator: OtherHelper.validator,
                   ),
 

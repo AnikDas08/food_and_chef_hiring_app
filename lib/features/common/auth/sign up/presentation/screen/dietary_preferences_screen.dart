@@ -36,6 +36,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                     text: AppString.dietaryPreferences,
                     fontSize: 24,
                     color: Color(0xff272727),
+                    fontWeight: FontWeight.w600,
                     top: 10,
                   ),
 
@@ -51,22 +52,14 @@ class DietaryPreferencesScreen extends StatelessWidget {
                   ),
 
                   CommonTextField(
-                    hintText: AppString.dietaryPreferences,
+                    hintText: AppString.search,
                     prefixIcon: Padding(
-                      padding: const EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.only(left: 14),
                       child: Icon(CupertinoIcons.search),
                     ),
                     paddingHorizontal: 10,
                   ),
                   20.height,
-
-                  CommonText(
-                    text: AppString.suggestedAddress,
-                    color: Color(0xff777777),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    bottom: 6,
-                  ),
 
                   Expanded(
                     child: ListView.builder(
@@ -78,7 +71,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                             controller.onChangeDietary(value);
                           },
                           child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 10),
+                            margin: EdgeInsets.symmetric(vertical: 14),
                             child: Row(
                               children: [
                                 Container(
@@ -87,7 +80,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     color:
                                         controller.selectDietary.contains(value)
-                                            ? Colors.black
+                                            ? Color(0xff272727)
                                             : Color(0xffF1F1F1),
                                     shape: BoxShape.circle,
                                   ),
@@ -126,13 +119,15 @@ class DietaryPreferencesScreen extends StatelessWidget {
       /// Bottom Section Starts Here
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 40, right: 16, left: 16),
-        child: CommonButton(
-          titleText: AppString.continueString,
-          onTap: () {
-            if (_formKey.currentState!.validate()) {
-              Get.toNamed(AppRoutes.reviewDetail);
-            }
-          },
+        child: SafeArea(
+          child: CommonButton(
+            titleText: AppString.continueString,
+            onTap: () {
+              if (_formKey.currentState!.validate()) {
+                Get.toNamed(AppRoutes.reviewDetail);
+              }
+            },
+          ),
         ),
       ),
     );

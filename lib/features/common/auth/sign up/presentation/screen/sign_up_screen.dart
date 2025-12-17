@@ -52,7 +52,12 @@ class SignUpScreen extends StatelessWidget {
                   ),
 
                   /// Account Email Input here
-                  const CommonText(text: AppString.email, bottom: 8),
+                  const CommonText(
+                    text: AppString.email,
+                    bottom: 8,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
+                  ),
                   CommonTextField(
                     controller: controller.emailController,
                     hintText: AppString.email,
@@ -70,7 +75,7 @@ class SignUpScreen extends StatelessWidget {
                       }
                     },
                   ),
-                  24.height,
+                  28.height,
 
                   Row(
                     children: [
@@ -133,9 +138,8 @@ class SignUpScreen extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
                     maxLines: 2,
-                    top: 15,
+                    top: 32,
                     textAlign: TextAlign.start,
-                    bottom: 28,
                   ).center,
                 ],
               ),

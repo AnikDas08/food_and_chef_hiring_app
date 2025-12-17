@@ -149,7 +149,7 @@ class CommonTextField extends StatelessWidget {
                 ? Icons.visibility_off_outlined
                 : Icons.visibility_outlined,
             size: 20.sp,
-            color: textColor,
+            color: Color(0xff777777),
           ),
         ),
       ),

@@ -18,22 +18,24 @@ class ResendOtp extends StatelessWidget {
           TextSpan(
             text: AppString.didNotReceiveTheCode,
             style: GoogleFonts.inter(
-              color: AppColors.black,
+              color: Color(0xff818181),
               fontWeight: FontWeight.w400,
+              fontSize: 12,
             ),
           ),
 
           /// Sign In Button Here
           TextSpan(
-            text: AppString.signIn,
+            text: AppString.resend,
             recognizer:
                 TapGestureRecognizer()
                   ..onTap = () {
                     // Get.toNamed(AppRoutes.signIn);
                   },
             style: GoogleFonts.inter(
-              color: Color(0xffFD713F),
-              fontWeight: FontWeight.w600,
+              color: Color(0xff272727),
+              fontWeight: FontWeight.w500,
+              fontSize: 12
             ),
           ),
         ],

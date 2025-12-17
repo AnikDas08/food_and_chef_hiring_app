@@ -25,7 +25,7 @@ class NameScreen extends StatelessWidget {
       body: GetBuilder<SignUpController>(
         builder: (controller) {
           return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Form(
               key: _formKey,
               child: Column(
@@ -36,6 +36,7 @@ class NameScreen extends StatelessWidget {
                     text: AppString.tellUsYourFullName,
                     fontSize: 24,
                     color: Color(0xff272727),
+                    fontWeight: FontWeight.w600,
                     top: 10,
                   ),
 
@@ -51,15 +52,27 @@ class NameScreen extends StatelessWidget {
                   ),
 
                   /// Account Email Input here
-                  const CommonText(text: AppString.firstName, bottom: 8),
+                  const CommonText(
+                    text: AppString.firstName,
+                    bottom: 8,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
+                  ),
                   CommonTextField(
-                    controller: controller.nameController,
+                    controller: controller.firstNameController,
                     hintText: AppString.lastName,
                     validator: OtherHelper.validator,
                   ),
 
-                  const CommonText(text: AppString.lastName, bottom: 8, top: 16,),
+                  const CommonText(
+                    text: AppString.lastName,
+                    bottom: 8,
+                    top: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
+                  ),
                   CommonTextField(
+                    controller: controller.lastNameController,
                     hintText: AppString.lastName,
                     validator: OtherHelper.validator,
                   ),
