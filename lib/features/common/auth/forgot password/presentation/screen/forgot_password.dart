@@ -35,6 +35,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     top: 10,
                     maxLines: 2,
                     textAlign: TextAlign.start,
+                    fontWeight: FontWeight.w600,
                   ),
 
                   const CommonText(
@@ -49,7 +50,12 @@ class ForgotPasswordScreen extends StatelessWidget {
                   ),
 
                   /// Account Email Input here
-                  const CommonText(text: AppString.enterEmail, bottom: 8),
+                  const CommonText(
+                    text: AppString.enterEmail,
+                    bottom: 8,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
+                  ),
                   CommonTextField(
                     controller: controller.emailController,
                     hintText: AppString.enterYourEmailAddress,
@@ -65,14 +71,16 @@ class ForgotPasswordScreen extends StatelessWidget {
           ),
           bottomNavigationBar: Padding(
             padding: EdgeInsets.only(bottom: 40, left: 20, right: 20),
-            child: CommonButton(
-              titleText: AppString.submit,
-              isLoading: controller.isLoadingEmail,
-              onTap: () {
-                if (_formKey.currentState!.validate()) {
-                  controller.forgotPasswordRepo();
-                }
-              },
+            child: SafeArea(
+              child: CommonButton(
+                titleText: AppString.submit,
+                isLoading: controller.isLoadingEmail,
+                onTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    controller.forgotPasswordRepo();
+                  }
+                },
+              ),
             ),
           ),
         );

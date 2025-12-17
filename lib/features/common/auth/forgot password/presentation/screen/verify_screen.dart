@@ -44,7 +44,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                   const CommonText(
                     text: AppString.enter6DigitsCode,
                     fontSize: 24,
-
+                    fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                     top: 10,
                   ),
@@ -97,14 +97,16 @@ class _VerifyScreenState extends State<VerifyScreen> {
           ),
           bottomNavigationBar: Padding(
             padding: EdgeInsets.only(bottom: 40, left: 20, right: 20),
-            child: CommonButton(
-              titleText: AppString.continueString,
-              isLoading: controller.isLoadingEmail,
-              onTap: () {
-                if (_formKey.currentState!.validate()) {
-                  controller.verifyOtpRepo();
-                }
-              },
+            child: SafeArea(
+              child: CommonButton(
+                titleText: AppString.continueString,
+                isLoading: controller.isLoadingEmail,
+                onTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    controller.verifyOtpRepo();
+                  }
+                },
+              ),
             ),
           ),
         );

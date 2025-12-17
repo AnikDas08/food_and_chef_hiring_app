@@ -47,7 +47,12 @@ class CreatePassword extends StatelessWidget {
                   ),
 
                   /// Account Email Input here
-                  const CommonText(text: AppString.newPassword, bottom: 8),
+                  const CommonText(
+                    text: AppString.newPassword,
+                    bottom: 8,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
+                  ),
                   CommonTextField(
                     controller: controller.passwordController,
                     hintText: AppString.newPassword,
@@ -59,6 +64,8 @@ class CreatePassword extends StatelessWidget {
                     text: AppString.confirmPassword,
                     bottom: 8,
                     top: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
                   ),
                   CommonTextField(
                     controller: controller.confirmPasswordController,
@@ -74,14 +81,16 @@ class CreatePassword extends StatelessWidget {
           ),
           bottomNavigationBar: Padding(
             padding: EdgeInsets.only(bottom: 40, left: 20, right: 20),
-            child: CommonButton(
-              titleText: AppString.confirm,
-              isLoading: controller.isLoadingEmail,
-              onTap: () {
-                if (_formKey.currentState!.validate()) {
-                  controller.resetPasswordRepo();
-                }
-              },
+            child: SafeArea(
+              child: CommonButton(
+                titleText: AppString.confirm,
+                isLoading: controller.isLoadingEmail,
+                onTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    controller.resetPasswordRepo();
+                  }
+                },
+              ),
             ),
           ),
         );

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
@@ -11,11 +12,7 @@ import '../../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../utils/constants/app_string.dart';
 
-
 accountCreatePopup() {
-  Future.delayed(Duration(seconds: 3), () {
-    Get.toNamed(AppRoutes.signIn);
-  });
   showDialog(
     context: Get.context!,
     builder: (context) {
@@ -59,18 +56,13 @@ accountCreatePopup() {
                       8.height,
                       Divider(),
                       16.height,
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CupertinoActivityIndicator(),
-                          CommonText(
-                            text: AppString.takingYouToYourHomepage,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff272727),
-                          ),
-                        ],
+                      CommonButton(
+                        titleText: "Go to Home",
+                        buttonHeight: 48,
+                        buttonRadius: 16,
+                        onTap: () {
+                          Get.toNamed(AppRoutes.signIn);
+                        },
                       ),
                       12.height,
                     ],

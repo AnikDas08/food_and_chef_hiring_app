@@ -121,7 +121,6 @@ class ReviewDetailScreen extends StatelessWidget {
                     bottom: 8,
                     color: Color(0xff272727),
                     fontWeight: FontWeight.w600,
-                    top: 16,
                   ),
                   CommonTextField(
                     hintText: AppString.enterYourAddress,
@@ -142,7 +141,6 @@ class ReviewDetailScreen extends StatelessWidget {
                     bottom: 8,
                     color: Color(0xff272727),
                     fontWeight: FontWeight.w600,
-                    top: 16,
                   ),
                   CommonTextField(
                     hintText: AppString.selectedFood,
@@ -162,13 +160,15 @@ class ReviewDetailScreen extends StatelessWidget {
       /// Bottom Section Starts Here
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 40, right: 16, left: 16),
-        child: CommonButton(
-          titleText: AppString.createAccount,
-          onTap: () {
-            if (_formKey.currentState!.validate()) {
-              accountCreatePopup();
-            }
-          },
+        child: SafeArea(
+          child: CommonButton(
+            titleText: AppString.createAccount,
+            onTap: () {
+              if (_formKey.currentState!.validate()) {
+                accountCreatePopup();
+              }
+            },
+          ),
         ),
       ),
     );
