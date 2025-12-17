@@ -38,4 +38,5 @@ class AppImages {
   static const String orderStatus = "$baseurl/order_status.png";
   static const String img7 = "$baseurl/img_7.png";
   static const String img8 = "$baseurl/img8.png";
+  static const String delete = "$baseurl/delete.png";
 }

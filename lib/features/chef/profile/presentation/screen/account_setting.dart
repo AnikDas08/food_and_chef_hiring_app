@@ -150,33 +150,36 @@ class AccountSetting extends StatelessWidget {
                           bottom: 16,
                         ),
 
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 16,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Color(0xffF2F2F2),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                CupertinoIcons.delete,
-                                color: Color(0xff343330),
-                              ),
-                              CommonText(
-                                text: AppString.deleteAccount,
-                                color: Color(0xff343330),
-                                fontWeight: FontWeight.w600,
-                                left: 4,
-                              ),
-                              const Spacer(),
-                              Icon(
-                                Icons.arrow_forward_ios_outlined,
-                                size: 16.sp,
-                              ),
-                            ],
+                        InkWell(
+                          onTap: deletePopUp,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 16,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Color(0xffF2F2F2),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  CupertinoIcons.delete,
+                                  color: Color(0xff343330),
+                                ),
+                                CommonText(
+                                  text: AppString.deleteAccount,
+                                  color: Color(0xff343330),
+                                  fontWeight: FontWeight.w600,
+                                  left: 4,
+                                ),
+                                const Spacer(),
+                                Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  size: 16.sp,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -185,7 +188,7 @@ class AccountSetting extends StatelessWidget {
                     CommonButton(
                       titleText: AppString.saveChanges,
                       isLoading: controller.isLoading,
-                      onTap: deletePopUp,
+                      onTap: Get.back,
                     ),
                   ],
                 ),

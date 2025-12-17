@@ -34,9 +34,9 @@ deletePopUp() {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CommonImage(imageSrc: AppImages.warning, size: 88),
+                      CommonImage(imageSrc: AppImages.delete, size: 88),
                       CommonText(
-                        text: AppString.byCheckingOutYouConfirmThat,
+                        text: AppString.deleteAccount,
                         fontSize: 16,
                         top: 16,
                         bottom: 8,
@@ -44,15 +44,17 @@ deletePopUp() {
                         color: Color(0xff272727),
                       ),
                       CommonText(
-                        text: AppString.youHaveAllRequiredKitchen,
+                        text: AppString.areYouSureYouWantToDeleteYourAccount,
                         fontSize: 12,
-                        bottom: 32,
+                        bottom: 24,
+                        left: 30,
+                        right: 30,
                         fontWeight: FontWeight.w400,
                         color: Color(0xff777777),
                         maxLines: 5,
                       ),
                       CommonButton(
-                        titleText: AppString.confirmAndCheckout,
+                        titleText: AppString.no,
                         buttonHeight: 48,
                         titleSize: 16,
                         buttonRadius: 16,
@@ -60,14 +62,12 @@ deletePopUp() {
                         titleColor: Color(0xffFFFFFF),
                         onTap: () async {
                           await AnimationPopUpState.closeDialog();
-                          await Future.delayed(
-                            const Duration(milliseconds: 500),
-                          );
+
                         },
                       ),
                       12.height,
                       CommonButton(
-                        titleText: AppString.cancel,
+                        titleText: AppString.yes,
                         buttonHeight: 48,
                         titleSize: 16,
                         buttonRadius: 16,
