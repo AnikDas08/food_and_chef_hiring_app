@@ -14,13 +14,17 @@ class AppString {
   static const String congratulations = "Congratulations!";
   static const String taxId = "Tax ID / VAT ID";
   static const String postalCode = "Postal Code";
+  static const String itemName = "Item Name";
   static const String experience = "Experience";
   static const String expertiseInCooking = "Expertise in cooking";
   static const String allergicPreferences = "ALLERGIC PREFERENCES";
+  static const String allergens = "Allergens";
   static const String yes = "Yes";
+  static const String menuSection = "Menu Section";
   static const String city = "City";
   static const String close = "Close";
   static const String owner = "Owner";
+  static const String description = "Description";
   static const String additionalAddress = "Additional Address";
   static const String delete = "Delete";
   static const String areYouSure = "Are you sure";
@@ -67,6 +71,8 @@ class AppString {
   static const String signUp = "Sign up";
   static const String alreadyHaveAccount = "Already have an account";
   static const String fullName = "Full Name";
+  static const String estCookingTime = "Est. Cooking Time";
+  static const String dietType = "Diet Types";
   static const String firstName = "First name";
   static const String lastName = "Last name";
   static const String createYourAccount = "Create Your Account";
@@ -85,6 +91,7 @@ class AppString {
   static const String profile = "Profile";
   static const String saveAndChanges = "Save and Changes";
   static const String save = "Save";
+  static const String saveItem = "Save Item";
   static const String editProfile = "Edit Profile";
   static const String editAddress = "Edit Address";
   static const String settings = "Settings";
@@ -308,6 +315,8 @@ class AppString {
   static const String autoAcceptMessage =
       "Chefs with auto-accept enabled earn on average 1.6x more.";
   static const String addMenuItems = "Add Menu Items";
+  static const String addItem = "Add Item";
+  static const String addMenuSection = "Add Menu Section";
   static const String addMenuItemsMessage =
       "Build your menu to showcase what you can cook for customers.";
   static const String menu = "Menu";

@@ -180,7 +180,7 @@ class ChefProfileScreen extends StatelessWidget {
                       Item(
                         image: AppIcons.kitchen,
                         title: AppString.menuItems,
-                        onTap: () => Get.toNamed(AppRoutes.pastOrder),
+                        onTap: () => Get.toNamed(AppRoutes.menu),
                       ),
 
                       Item(
