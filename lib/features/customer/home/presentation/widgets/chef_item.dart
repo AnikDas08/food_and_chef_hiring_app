@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
+import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
@@ -19,7 +21,7 @@ Widget chefItem({num height = 200}) {
   return InkWell(
     onTap: () => Get.toNamed(AppRoutes.chefDetails),
     child: Container(
-      margin: EdgeInsets.only(right: 10),
+      margin: EdgeInsets.only(right: 12),
       decoration: BoxDecoration(
         color: Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(10),
@@ -51,12 +53,12 @@ Widget chefItem({num height = 200}) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 200.w,
+                  width: 210.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CommonText(
-                        text: "Javier A.",
+                        text: "Olivia Z.",
                         fontSize: 12,
                         color: Color(0xff272727),
                         fontWeight: FontWeight.w600,
@@ -64,11 +66,12 @@ Widget chefItem({num height = 200}) {
                         bottom: 4,
                       ),
                       Spacer(),
-                      Icon(Icons.star, color: Color(0xffFD713F), size: 20),
+                      Icon(Icons.star, color: Color(0xffFD713F), size: 16.sp),
                       CommonText(
                         text: "4.5",
                         fontSize: 12,
-                        color: Color(0xff777777),
+                        color: Color(0xff272727),
+                        fontWeight: FontWeight.w600,
                         left: 4,
                         right: 4,
                       ),
@@ -87,7 +90,7 @@ Widget chefItem({num height = 200}) {
                         fontSize: 12,
                         color: Color(0xff777777),
                         left: 4,
-                        right: 4,
+                        right: 16,
                       ),
                       CommonImage(imageSrc: AppIcons.briefcase),
                       Expanded(
@@ -101,16 +104,32 @@ Widget chefItem({num height = 200}) {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                  width: 200.w,
-                  child: Divider(color: Color(0xffF1F1F1)),
-                ),
 
-                CommonText(
-                  text: "\$70.00/hr",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+                24.height,
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "\$70.00",
+                        style: GoogleFonts.inter(
+                          color: Color(0xff272727),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+
+                      /// Sign Up Button here
+                      TextSpan(
+                        text: " /hr",
+                        style: GoogleFonts.inter(
+                          color: Color(0xff272727),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.start,
                 ),
               ],
             ),

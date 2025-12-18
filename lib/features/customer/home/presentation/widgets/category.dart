@@ -26,7 +26,8 @@ Widget category() {
             CommonText(
               text: value,
               fontSize: 12,
-              color: Color(0xff272727),
+              color: Color(0xff222222),
+              fontWeight: FontWeight.w500,
               top: 8,
             ),
           ],

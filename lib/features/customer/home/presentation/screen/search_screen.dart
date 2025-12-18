@@ -35,22 +35,29 @@ class _SearchScreenState extends State<SearchScreen> {
             children: [
               CommonTextField(
                 hintText: AppString.searchForFoodChefEtc,
-                onTap: () => Get.toNamed(AppRoutes.homeSearch),
                 borderRadius: 20,
+                paddingHorizontal: 20,
                 suffixIcon: InkWell(
                   onTap: () {
                     filterPanel();
                   },
                   child: Padding(
                     padding: EdgeInsets.all(10),
-                    child: CommonImage(imageSrc: AppIcons.fliter),
+                    child: CommonImage(
+                      imageSrc: AppIcons.fliter,
+                      imageColor: Color(0xff636363),
+                    ),
                   ),
                 ),
                 prefixIcon: Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: InkWell(
                     onTap: Get.back,
-                    child: Icon(Icons.arrow_back_outlined),
+                    child: Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Color(0xff272727),
+                      size: 20,
+                    ),
                   ),
                 ),
               ),

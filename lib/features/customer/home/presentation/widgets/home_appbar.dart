@@ -25,6 +25,7 @@ AppBar homeAppbar() {
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
                 color: Color(0xff777777),
+                bottom: 2,
               ),
               Row(
                 children: [
@@ -38,6 +39,7 @@ AppBar homeAppbar() {
                     child: CommonText(
                       text: "4140 Parker Rd. Allentown, New Mexico 31134",
                       color: Color(0xff272727),
+                      fontWeight: FontWeight.w500,
                       left: 4,
                     ),
                   ),

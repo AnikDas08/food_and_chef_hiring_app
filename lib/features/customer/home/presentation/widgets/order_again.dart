@@ -23,10 +23,11 @@ Widget orderAgain() {
             Row(
               children: [
                 CommonImage(imageSrc: AppImages.image4, size: 40),
+                12.width,
                 Column(
                   children: [
                     CommonText(
-                      text: "Michael A.",
+                      text: "Alexa Dilara",
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: Color(0xff272727),
@@ -47,6 +48,9 @@ Widget orderAgain() {
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 6,
               children: List.generate(3, (index) {
+                if (index == 2) {
+                  return CommonImage(imageSrc: AppImages.moreItem, height: 78);
+                }
                 return CommonImage(imageSrc: AppImages.image5, height: 78);
               }),
             ),

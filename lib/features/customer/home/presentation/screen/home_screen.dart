@@ -52,7 +52,7 @@ class CustomerHome extends StatelessWidget {
             20.height,
             SizedBox(height: 90.h, child: category()),
 
-            16.height,
+            20.height,
             CommonText(
               text: AppString.recommendedPrivaeChefsNearby,
               fontSize: 16,
