@@ -60,7 +60,7 @@ class AppString {
   static const String otpIsInValid = "Otp is inValid";
   static const String resendCode = "Resend Code";
   static const String resendCodeIn = "Resend code in";
-  static const String minute = "minute";
+  static const String minute = "minutes";
   static const String streetAddress = "Street Address";
   static const String verify = "Verify";
   static const String logIntoYourAccount = "Login to Your Account";
