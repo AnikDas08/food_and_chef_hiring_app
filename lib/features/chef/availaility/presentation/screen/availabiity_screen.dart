@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_untitled/component/text/common_text.dart';
-import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 
-import '../../../../../utils/constants/app_colors.dart';
 import '../widgets/availability_item.dart';
 
 class AvailabilityScreen extends StatelessWidget {

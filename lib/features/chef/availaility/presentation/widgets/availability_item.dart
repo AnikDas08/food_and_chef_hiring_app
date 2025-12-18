@@ -103,6 +103,5 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
         ],
       ),
     );
-    ;
   }
 }
