@@ -18,19 +18,8 @@ filterPanel() {
   );
 }
 
-class Filter extends StatefulWidget {
+class Filter extends StatelessWidget {
   const Filter({super.key});
-
-  @override
-  State<Filter> createState() => _FilterState();
-}
-
-class _FilterState extends State<Filter> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +31,7 @@ class _FilterState extends State<Filter> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  24.height,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -59,12 +49,13 @@ class _FilterState extends State<Filter> {
                       ),
                     ],
                   ),
-                  Divider(),
+
+                  Divider(color: Color(0xffF1F1F1), height: 32.h),
+
                   CommonText(
                     text: AppString.price,
                     fontWeight: FontWeight.w600,
                     color: Color(0xff1F1F1F),
-                    top: 16,
                   ),
                   CommonText(
                     text: AppString.selectARangeOfValues,
@@ -77,7 +68,8 @@ class _FilterState extends State<Filter> {
                     values: controller.values,
                     min: 0,
                     max: 100,
-                    activeColor: Color(0xffFD713F),
+                    activeColor: Color(0xff272727),
+                    inactiveColor: Color(0xffEFEFEF),
                     labels: RangeLabels(
                       controller.values.start.round().toString(),
                       controller.values.end.round().toString(),
@@ -102,7 +94,10 @@ class _FilterState extends State<Filter> {
                     ],
                   ),
 
-                  Divider(),
+                  Divider(
+                    color: Color(0xffF1F1F1),
+                    height: 32.h,
+                  ),
                   CommonText(
                     text: AppString.timeAvailability,
                     fontWeight: FontWeight.w600,
@@ -149,7 +144,6 @@ class _FilterState extends State<Filter> {
                     ),
                   ),
 
-
                   Divider(),
                   CommonText(
                     text: AppString.chefProfessionalLevel,
@@ -177,27 +171,25 @@ class _FilterState extends State<Filter> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30),
                               color:
-                              controller.selectLevel.contains(value)
-                                  ? Color(0xffFD713F)
-                                  : Color(0xffF8F4F1),
+                                  controller.selectLevel.contains(value)
+                                      ? Color(0xffFD713F)
+                                      : Color(0xffF8F4F1),
                             ),
                             child:
-                            CommonText(
-                              text: value,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color:
-                              controller.levelOption.contains(value)
-                                  ? Color(0xffFFFFFF)
-                                  : Color(0xffFD713F),
-                            ).center,
+                                CommonText(
+                                  text: value,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color:
+                                      controller.levelOption.contains(value)
+                                          ? Color(0xffFFFFFF)
+                                          : Color(0xffFD713F),
+                                ).center,
                           ),
                         );
                       },
                     ),
                   ),
-
-
 
                   50.height,
                 ],

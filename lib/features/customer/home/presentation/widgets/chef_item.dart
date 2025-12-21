@@ -66,7 +66,11 @@ Widget chefItem({num height = 200}) {
                         bottom: 4,
                       ),
                       Spacer(),
-                      Icon(Icons.star, color: Color(0xffFD713F), size: 16.sp),
+                      Icon(
+                        Icons.star_rounded,
+                        color: Color(0xffFD713F),
+                        size: 16.sp,
+                      ),
                       CommonText(
                         text: "4.5",
                         fontSize: 12,
@@ -84,11 +88,15 @@ Widget chefItem({num height = 200}) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      CommonImage(imageSrc: AppIcons.location),
+                      CommonImage(
+                        imageSrc: AppIcons.location,
+                        imageColor: Color(0xff777777),
+                      ),
                       CommonText(
                         text: "2km",
                         fontSize: 12,
                         color: Color(0xff777777),
+                        fontWeight: FontWeight.w400,
                         left: 4,
                         right: 16,
                       ),
@@ -122,7 +130,7 @@ Widget chefItem({num height = 200}) {
                       TextSpan(
                         text: " /hr",
                         style: GoogleFonts.inter(
-                          color: Color(0xff272727),
+                          color: Color(0xff777777),
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                         ),

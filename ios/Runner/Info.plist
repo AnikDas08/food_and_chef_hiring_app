@@ -49,5 +49,43 @@
 	<string>This app requires your location even when it’s in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location to show nearby services</string>
+
+
+
+	<!-- Camera & Gallery -->
+    <key>NSCameraUsageDescription</key>
+    <string>This app needs camera access to upload photos.</string>
+
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app needs photo library access.</string>
+
+
+    <!-- Location -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app uses your location to show nearby places.</string>
+
+     <!-- Google Map  -->
+    <key>io.flutter.embedded_views_preview</key>
+    <true/>
+
+
+    <!---- Notifications ---->
+    <key>NSUserNotificationUsageDescription</key>
+    <string>This app sends you notifications.</string>
+
+
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+
+
+
+
+
+
+
+
 </dict>
 </plist>

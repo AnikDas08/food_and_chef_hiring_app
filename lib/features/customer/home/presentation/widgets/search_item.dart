@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -40,10 +41,10 @@ class _SearchItemState extends State<SearchItem> {
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
-          bottom: 10,
+          bottom: 12,
         ).start,
         SizedBox(
-          height: 32,
+          height: 36.h,
           child: ListView.builder(
             itemCount: _list.length,
             scrollDirection: Axis.horizontal,
@@ -52,26 +53,32 @@ class _SearchItemState extends State<SearchItem> {
               return InkWell(
                 onTap: () => onChangeValue(value),
                 child: Container(
-                  margin: EdgeInsets.only(right: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  margin: EdgeInsets.only(right: 8.w),
                   decoration: BoxDecoration(
                     color:
                         value == selectedValue
                             ? Color(0xff272727)
                             : Color(0xffF2F2F2),
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
 
-                  child:
-                      CommonText(
-                        text: value,
-                        color:
-                            value == selectedValue
-                                ? Colors.white
-                                : Color(0xff272727),
-                      ).center,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 10.h,
+                    ),
+                    child: CommonText(
+                      text: value,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color:
+                          value == selectedValue
+                              ? Colors.white
+                              : Color(0xff272727),
+                    ),
+                  ),
                 ),
-              );
+              ).center;
             },
           ),
         ),
@@ -95,7 +102,7 @@ class _SearchItemState extends State<SearchItem> {
         Expanded(
           child:
               isLoading
-                  ? Center(child: CircularProgressIndicator())
+                  ? CommonLoader()
                   : GridView.builder(
                     itemCount: 20,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

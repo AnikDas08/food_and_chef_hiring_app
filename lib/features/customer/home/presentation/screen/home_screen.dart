@@ -22,6 +22,7 @@ class CustomerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: homeAppbar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20),

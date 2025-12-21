@@ -49,7 +49,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
                 prefixIcon: Padding(
-                  padding: const EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.only(left: 16, right: 20),
                   child: InkWell(
                     onTap: Get.back,
                     child: Icon(
