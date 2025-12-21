@@ -26,9 +26,10 @@ class ChatListScreen extends StatelessWidget {
     return Scaffold(
       /// App Bar Section Starts here
       appBar: AppBar(
-        centerTitle: true,
+        centerTitle: false,
+        automaticallyImplyLeading: false,
         title: const CommonText(
-          text: AppString.inbox,
+          text: AppString.chat,
           fontWeight: FontWeight.w600,
           fontSize: 24,
         ),
@@ -57,6 +58,7 @@ class ChatListScreen extends StatelessWidget {
                       keyboardType: TextInputType.none,
                       onTap: () => Get.toNamed(AppRoutes.homeSearch),
                       borderRadius: 20,
+                      fillColor: Color(0xffFAFAFA),
                       suffixIcon: Padding(
                         padding: EdgeInsets.all(10),
                         child: CommonImage(
@@ -77,7 +79,7 @@ class ChatListScreen extends StatelessWidget {
                         padding: EdgeInsets.only(top: 16.h),
                         itemBuilder: (context, index) {
                           ChatModel item = controller.chats[index];
-                          return GestureDetector(
+                          return InkWell(
                             /// routing with data
                             onTap:
                                 () => Get.toNamed(

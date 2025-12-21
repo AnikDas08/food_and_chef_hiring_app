@@ -53,4 +53,5 @@ class AppIcons {
   static const String chat = "$baseurl/chat.svg";
   static const String dish = "$baseurl/dish.svg";
   static const String mapIcon = "$baseurl/map_icon.svg";
+  static const String sended = "$baseurl/sended.svg";
 }

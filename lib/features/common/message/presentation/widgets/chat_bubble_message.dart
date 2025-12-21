@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_colors.dart';
-import '../../../../../utils/constants/app_images.dart';
-
-
+import '../../../../../utils/constants/app_icons.dart';
 
 class ChatBubbleMessage extends StatelessWidget {
   final DateTime time;
   final String text;
   final String image;
   final bool isMe;
-  final int index;
-  final int messageIndex;
 
   final VoidCallback onTap;
 
@@ -24,53 +22,66 @@ class ChatBubbleMessage extends StatelessWidget {
     required this.image,
     required this.isMe,
     required this.onTap,
-    this.index = 0,
-    this.messageIndex = 1,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment:
             isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment:
+                isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            mainAxisAlignment:
+                isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.only(left: 10.w),
-                padding: EdgeInsets.only(left: 10.w),
-                width: 220,
-                height: 120,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.r),
-                  color: AppColors.white,
-                ),
-                child: Column(
-                  children: [
-                    /// participant Image here
-                    if (!isMe)
-                      const CommonImage(
-                        imageSrc: AppImages.noImage,
-                        fill: BoxFit.contain,
-                        size: 60,
-                      ),
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: Get.width * 0.8),
+                child: Container(
+                  padding: EdgeInsets.all(10.sp),
 
-                    ///Message here
-                    Container(
-                      color: AppColors.primaryColor,
-                      width: 220,
-                      child: CommonText(
-                        maxLines: 5,
-                        text: text,
-                        fontSize: 18,
-                        color: AppColors.white,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Column(
+                    crossAxisAlignment:
+                        isMe
+                            ? CrossAxisAlignment.end
+                            : CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(12.sp),
+                        decoration: BoxDecoration(
+                          color: Color(0xff222222),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: CommonText(
+                          maxLines: 50,
+                          text: text,
+                          fontSize: 18,
+                          color: AppColors.white,
+                          textAlign: isMe ? TextAlign.right : TextAlign.left,
+                        ),
                       ),
-                    ),
-                  ],
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CommonImage(imageSrc: AppIcons.sended),
+                          CommonText(
+                            maxLines: 1,
+                            text: time.time.toString(),
+                            fontSize: 10.sp,
+                            left: 4,
+                            color: Color(0xff777777),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

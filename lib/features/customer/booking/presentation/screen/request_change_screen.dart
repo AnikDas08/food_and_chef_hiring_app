@@ -88,7 +88,11 @@ class RequestChangeScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_rounded),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 16,
+                    color: Color(0xff777777),
+                  ),
                 ],
               ),
             ),
@@ -219,12 +223,14 @@ class RequestChangeScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-        child: CommonButton(
-          titleText: AppString.request,
-          onTap: () {
-            Get.toNamed(AppRoutes.bookingHistory);
-          },
+        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
+        child: SafeArea(
+          child: CommonButton(
+            titleText: AppString.request,
+            onTap: () {
+              Get.toNamed(AppRoutes.bookingHistory);
+            },
+          ),
         ),
       ),
     );

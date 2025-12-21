@@ -81,10 +81,7 @@ Widget bookingItem() {
                 ),
                 onSelected: (value) {
                   if (value == 1) {
-                    // Request a Change action
-                  } else if (value == 2) {
-                    // Cancel Booking action
-                  }
+                  } else if (value == 2) {}
                 },
                 itemBuilder:
                     (context) => [
@@ -129,8 +126,9 @@ Widget bookingItem() {
               CommonText(
                 text: "29 July, 2024 at 12:30 PM",
                 fontSize: 12,
-                left: 4,
+                left: 8,
                 fontWeight: FontWeight.w400,
+                color: Color(0xff272727),
               ),
             ],
           ),
@@ -147,6 +145,7 @@ Widget bookingItem() {
                 fontSize: 12,
                 left: 4,
                 fontWeight: FontWeight.w400,
+                color: Color(0xff272727),
               ),
             ],
           ),
@@ -163,6 +162,7 @@ Widget bookingItem() {
                 fontSize: 12,
                 left: 4,
                 fontWeight: FontWeight.w400,
+                color: Color(0xff272727),
               ),
             ],
           ),

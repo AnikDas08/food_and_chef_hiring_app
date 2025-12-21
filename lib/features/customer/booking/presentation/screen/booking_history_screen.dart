@@ -52,15 +52,15 @@ class BookingHistoryScreen extends StatelessWidget {
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(
-                            horizontal: 16.sp,
-                            vertical: 8,
+                            horizontal: 16.w,
+                            vertical: 8.h,
                           ),
                           decoration: BoxDecoration(
                             color:
                                 controller.selectedBookingHistory == value
                                     ? Color(0xff272727)
                                     : Color(0xffF2F2F2),
-                            borderRadius: BorderRadius.circular(12.sp),
+                            borderRadius: BorderRadius.circular(10.sp),
                           ),
                           child: CommonText(
                             text: value,

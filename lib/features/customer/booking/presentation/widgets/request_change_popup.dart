@@ -6,6 +6,7 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/image/common_image.dart';
+import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../controller/booking_history_controller.dart';
 
@@ -20,68 +21,73 @@ void requestChange(BuildContext context) {
     builder: (context) {
       return GetBuilder<BookingHistoryController>(
         builder: (controller) {
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(16).copyWith(bottom: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: CommonButton(
-                        titleText: AppString.cancelBooking,
-                        buttonHeight: 48,
-                        buttonRadius: 16,
-                        titleSize: 12,
-                        titleWeight: FontWeight.w500,
-                        borderColor: Colors.transparent,
-                        titleColor: Color(0xffFF3C3C),
-                        buttonColor: Color(0xffF2F2F2),
+          return SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16).copyWith(bottom: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CommonButton(
+                          titleText: AppString.cancelBooking,
+                          buttonHeight: 48,
+                          buttonRadius: 16,
+                          titleSize: 12,
+                          titleWeight: FontWeight.w500,
+                          borderColor: Colors.transparent,
+                          titleColor: Color(0xffFF3C3C),
+                          buttonColor: Color(0xffF2F2F2),
+                        ),
                       ),
-                    ),
-                    12.width,
-                    Expanded(
-                      child: CommonButton(
-                        titleText: AppString.requestChange,
-                        buttonHeight: 48,
-                        buttonRadius: 16,
-                        titleSize: 12,
-                        titleWeight: FontWeight.w500,
+                      12.width,
+                      Expanded(
+                        child: CommonButton(
+                          titleText: AppString.requestChange,
+                          buttonHeight: 48,
+                          buttonRadius: 16,
+                          titleSize: 12,
+                          titleWeight: FontWeight.w500,
+                          onTap: () {
+                            Get.toNamed(AppRoutes.requestChange);
+                          },
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Divider(),
-                Row(
-                  children: [
-                    Expanded(
-                      child: CommonButton(
-                        titleText: AppString.orderGroceries,
-                        buttonHeight: 48,
-                        buttonRadius: 16,
+                    ],
+                  ),
+                  Divider(),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CommonButton(
+                          titleText: AppString.orderGroceries,
+                          buttonHeight: 48,
+                          buttonRadius: 16,
+                        ),
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 8.sp),
-                      padding: EdgeInsets.all(14.sp),
-                      decoration: BoxDecoration(
-                        color: Color(0xffF2F2F2),
-                        borderRadius: BorderRadius.circular(20),
+                      Container(
+                        margin: EdgeInsets.only(left: 8.sp),
+                        padding: EdgeInsets.all(14.sp),
+                        decoration: BoxDecoration(
+                          color: Color(0xffF2F2F2),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: CommonImage(imageSrc: AppIcons.chats, size: 20),
                       ),
-                      child: CommonImage(imageSrc: AppIcons.chats, size: 20),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 8.sp),
-                      padding: EdgeInsets.all(14.sp),
-                      decoration: BoxDecoration(
-                        color: Color(0xffF2F2F2),
-                        borderRadius: BorderRadius.circular(20),
+                      Container(
+                        margin: EdgeInsets.only(left: 8.sp),
+                        padding: EdgeInsets.all(14.sp),
+                        decoration: BoxDecoration(
+                          color: Color(0xffF2F2F2),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: CommonImage(imageSrc: AppIcons.edit, size: 20),
                       ),
-                      child: CommonImage(imageSrc: AppIcons.edit, size: 20),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         },

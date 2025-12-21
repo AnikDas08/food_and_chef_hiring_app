@@ -101,7 +101,6 @@ class _MessageScreenState extends State<MessageScreen> {
                       if (index < controller.messages.length) {
                         ChatMessageModel message = controller.messages[index];
                         return ChatBubbleMessage(
-                          index: index,
                           image: message.image,
                           time: message.time,
                           text: message.text,
@@ -123,7 +122,7 @@ class _MessageScreenState extends State<MessageScreen> {
               curve: Curves.decelerate,
               child: Padding(
                 padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 24.h),
-            
+
                 /// Send message text filed here
                 child: CommonTextField(
                   hintText: AppString.messageHere,
