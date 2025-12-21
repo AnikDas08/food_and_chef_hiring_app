@@ -14,13 +14,11 @@ import 'package:get/get.dart';
 
 import 'confirmation_booking_pop_up.dart';
 
-
 Widget chefBookingItem() {
   final controller = Get.find<ChefBookingController>();
   return InkWell(
     onTap: () {
       bookingDetailsPopup(Get.context!);
-
     },
     child: Container(
       padding: EdgeInsets.all(12.sp),

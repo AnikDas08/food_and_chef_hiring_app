@@ -84,7 +84,7 @@ class ChefProfileController extends GetxController {
   }
 
   /// notification function here
-  void notification(v) {
+  void notification() {
     isNotification = !isNotification;
     update();
   }

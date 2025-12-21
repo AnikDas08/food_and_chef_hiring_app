@@ -30,7 +30,7 @@ class ChatController extends GetxController {
       ),
       latestMessage: LatestMessage(
         id: "aaa",
-        message: "Nam ante lectus donec pulvinar",
+        message: "Cody F.",
         createdAt: DateTime.now(),
       ),
     ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:new_untitled/features/chef/home/presentation/widgets/chef_home_appbar.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -21,7 +23,12 @@ class ChefHomeScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         child: Column(
           children: [
-            CommonImage(imageSrc: AppImages.img7),
+            CommonImage(
+              imageSrc: AppImages.img7,
+              fill: BoxFit.fill,
+              height: 120.h,
+              width: Get.width,
+            ),
             32.height,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

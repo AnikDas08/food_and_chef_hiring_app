@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/bottom_nav_bar/chef_bottom_bar.dart';
+import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
@@ -42,38 +43,44 @@ class ChefBookingScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  Row(
-                    spacing: 8.w,
-                    children: List.generate(3, (index) {
-                      String value = controller.bookingHistoryList[index];
-                      return InkWell(
-                        onTap: () {
-                          controller.onChangeBookingHistory(value);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.sp,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color:
-                                controller.selectedBookingHistory == value
-                                    ? Color(0xff272727)
-                                    : Color(0xffF2F2F2),
-                            borderRadius: BorderRadius.circular(12.sp),
-                          ),
-                          child: CommonText(
-                            text: value,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                            color:
-                                controller.selectedBookingHistory == value
-                                    ? Colors.white
-                                    : Color(0xff272727),
-                          ),
-                        ),
-                      );
-                    }),
+                  SizedBox(
+                    height: 40.h,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.bookingHistoryList.length,
+                      itemBuilder: (context, index) {
+                        String value = controller.bookingHistoryList[index];
+                        return InkWell(
+                          onTap: () {
+                            controller.onChangeBookingHistory(value);
+                          },
+                          child:
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 16.w,
+                                  vertical: 8.h,
+                                ),
+                                margin: EdgeInsets.only(right: 8.w),
+                                decoration: BoxDecoration(
+                                  color:
+                                      controller.selectedBookingHistory == value
+                                          ? Color(0xff272727)
+                                          : Color(0xffF2F2F2),
+                                  borderRadius: BorderRadius.circular(10.sp),
+                                ),
+                                child: CommonText(
+                                  text: value,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color:
+                                      controller.selectedBookingHistory == value
+                                          ? Colors.white
+                                          : Color(0xff272727),
+                                ),
+                              ).center,
+                        );
+                      },
+                    ),
                   ),
                   Expanded(
                     child: ListView.builder(

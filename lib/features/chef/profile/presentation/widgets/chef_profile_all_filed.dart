@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_untitled/component/button/switch_button.dart';
 import 'package:new_untitled/component/pop_up/common_pop_menu.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/text/common_text.dart';
@@ -140,11 +141,9 @@ class ChefProfileAllFiled extends StatelessWidget {
                     ),
                   ),
 
-                  Switch(
-                    activeThumbColor: Colors.white,
-                    activeTrackColor: Color(0xff272727),
+                  switchButton(
                     value: controller.isNotification,
-                    onChanged: controller.notification,
+                    onTap: controller.notification,
                   ),
                 ],
               ),
@@ -228,11 +227,9 @@ class ChefProfileAllFiled extends StatelessWidget {
                     ),
                   ),
 
-                  Switch(
-                    activeThumbColor: Colors.white,
-                    activeTrackColor: Color(0xff272727),
+                  switchButton(
                     value: controller.isNotification,
-                    onChanged: controller.notification,
+                    onTap: controller.notification,
                   ),
                 ],
               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/bottom_nav_bar/chef_bottom_bar.dart';
+import 'package:new_untitled/component/button/switch_button.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
@@ -188,6 +189,7 @@ class ChefProfileScreen extends StatelessWidget {
                         title: AppString.accountSettings,
                         onTap: () => Get.toNamed(AppRoutes.accountSetting),
                       ),
+                      14.height,
                       Row(
                         children: [
                           CommonImage(imageSrc: AppIcons.notification),
@@ -199,11 +201,9 @@ class ChefProfileScreen extends StatelessWidget {
                           ),
                           Spacer(),
 
-                          Switch(
-                            activeThumbColor: Colors.white,
-                            activeTrackColor: Color(0xff272727),
+                          switchButton(
                             value: controller.isNotification,
-                            onChanged: controller.notification,
+                            onTap: controller.notification,
                           ),
                         ],
                       ),
@@ -231,14 +231,9 @@ class ChefProfileScreen extends StatelessWidget {
                       Item(
                         image: AppIcons.contact,
                         title: AppString.contactSupport,
-                        // onTap: () => Get.toNamed(AppRoutes.c),
                       ),
 
-                      Item(
-                        image: AppIcons.about,
-                        title: AppString.appVersion,
-                        onTap: () => Get.toNamed(AppRoutes.editProfile),
-                      ),
+                      Item(image: AppIcons.about, title: AppString.appVersion),
 
                       /// Log Out item here
                     ],

@@ -62,7 +62,7 @@ class CustomerHome extends StatelessWidget {
               bottom: 16,
             ).start,
 
-            SizedBox(height: 300, child: recommended()),
+            SizedBox(height: 300.h, child: recommended()),
             20.height,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

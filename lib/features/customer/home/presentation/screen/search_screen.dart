@@ -48,10 +48,10 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ),
                 ),
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 20),
-                  child: InkWell(
-                    onTap: Get.back,
+                prefixIcon: InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 20),
                     child: Icon(
                       Icons.arrow_back_ios_new,
                       color: Color(0xff272727),

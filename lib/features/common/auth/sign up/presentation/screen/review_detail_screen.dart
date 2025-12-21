@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_untitled/utils/app_utils.dart';
 import '../../../../../../../utils/extensions/extension.dart';
 import 'package:get/get.dart';
 import '../../../../../../component/button/common_button.dart';
@@ -159,13 +160,15 @@ class ReviewDetailScreen extends StatelessWidget {
 
       /// Bottom Section Starts Here
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 40, right: 16, left: 16),
+        padding: const EdgeInsets.only(bottom: 20, right: 16, left: 16),
         child: SafeArea(
           child: CommonButton(
             titleText: AppString.createAccount,
             onTap: () {
               if (_formKey.currentState!.validate()) {
                 accountCreatePopup();
+              } else {
+                Utils.errorSnackBar("Error", "Please, Full fill all Field");
               }
             },
           ),

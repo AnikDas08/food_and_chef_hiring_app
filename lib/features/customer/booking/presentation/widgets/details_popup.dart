@@ -7,6 +7,7 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_images.dart';
 import '../../../cart/presentation/widgets/order_summary.dart';
@@ -48,7 +49,7 @@ void bookingDetails(BuildContext context) {
                           borderRadius: 50,
                           fill: BoxFit.fill,
                         ),
-            
+
                         12.width,
                         Expanded(
                           child: Column(
@@ -70,7 +71,7 @@ void bookingDetails(BuildContext context) {
                             ],
                           ),
                         ),
-            
+
                         Container(
                           padding: EdgeInsets.symmetric(
                             horizontal: 8.sp,
@@ -117,7 +118,8 @@ void bookingDetails(BuildContext context) {
                               color: Color(0xff272727),
                             ),
                             CommonText(
-                              text: "4140 Parker Rd. Allentown, New Mexico 31134",
+                              text:
+                                  "4140 Parker Rd. Allentown, New Mexico 31134",
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
                               color: Color(0xff777777),
@@ -164,7 +166,7 @@ void bookingDetails(BuildContext context) {
                       ),
                     ],
                   ),
-            
+
                   CommonText(
                     text: AppString.orderStatus,
                     fontSize: 14,
@@ -173,9 +175,9 @@ void bookingDetails(BuildContext context) {
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                   ),
-            
+
                   CommonImage(imageSrc: AppImages.orderStatus, height: 88),
-            
+
                   CommonText(
                     text:
                         "The chef is reviewing your order, and should confirm within 1h32m",
@@ -271,7 +273,7 @@ void bookingDetails(BuildContext context) {
                     orderSummary(),
                   ],
                   Divider(),
-            
+
                   Row(
                     children: [
                       Expanded(
@@ -281,14 +283,29 @@ void bookingDetails(BuildContext context) {
                           buttonRadius: 16,
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(left: 8.sp),
-                        padding: EdgeInsets.all(14.sp),
-                        decoration: BoxDecoration(
-                          color: Color(0xffF2F2F2),
-                          borderRadius: BorderRadius.circular(20),
+                      InkWell(
+                        onTap: () {
+                          Get.toNamed(
+                            AppRoutes.message,
+                            parameters: {
+                              "chatId": "1234",
+                              "name": "Cody F.",
+                              "image": AppImages.image3,
+                            },
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(left: 8.sp),
+                          padding: EdgeInsets.all(14.sp),
+                          decoration: BoxDecoration(
+                            color: Color(0xffF2F2F2),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: CommonImage(
+                            imageSrc: AppIcons.chats,
+                            size: 20,
+                          ),
                         ),
-                        child: CommonImage(imageSrc: AppIcons.chats, size: 20),
                       ),
                       InkWell(
                         onTap: () {

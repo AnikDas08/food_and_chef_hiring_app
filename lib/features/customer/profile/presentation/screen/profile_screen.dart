@@ -185,14 +185,12 @@ class ProfileScreen extends StatelessWidget {
                       Item(
                         image: AppIcons.manage,
                         title: AppString.manageDietaryRestrictions,
-                        onTap: () => Get.toNamed(AppRoutes.editProfile),
                       ),
 
                       /// Setting item here
                       Item(
                         image: AppIcons.kitchen,
                         title: AppString.manageKitchenEquipment,
-                        onTap: () => Get.toNamed(AppRoutes.setting),
                       ),
                     ],
                   ),
@@ -218,14 +216,9 @@ class ProfileScreen extends StatelessWidget {
                       Item(
                         image: AppIcons.contact,
                         title: AppString.contactSupport,
-                        // onTap: () => Get.toNamed(AppRoutes.c),
                       ),
 
-                      Item(
-                        image: AppIcons.about,
-                        title: AppString.appVersion,
-                        onTap: () => Get.toNamed(AppRoutes.editProfile),
-                      ),
+                      Item(image: AppIcons.about, title: AppString.appVersion),
 
                       /// Log Out item here
                     ],

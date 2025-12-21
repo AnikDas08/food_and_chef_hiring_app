@@ -7,11 +7,12 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../utils/constants/app_icons.dart';
+import '../../../../customer/booking/presentation/widgets/details_popup.dart';
 
 Widget requestItem(BuildContext context) {
   return InkWell(
     onTap: () {
-      // bookingDetails(context);
+      bookingDetails(context);
     },
     child: Container(
       padding: EdgeInsets.all(12.sp),
@@ -199,19 +200,24 @@ Widget requestItem(BuildContext context) {
                 ],
               ),
               Spacer(),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.sp),
-                  border: Border.all(color: Color(0xffF1F1F1)),
-                ),
-                child: CommonText(
-                  text: "Request Change",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff272727),
-                  right: 4,
+              InkWell(
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 8.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12.sp),
+                    border: Border.all(color: Color(0xffF1F1F1)),
+                  ),
+                  child: CommonText(
+                    text: "Request Change",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
+                    right: 4,
+                  ),
                 ),
               ),
             ],
