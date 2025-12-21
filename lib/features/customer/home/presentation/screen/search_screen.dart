@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text_field/common_text_field.dart';
