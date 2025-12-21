@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
@@ -12,6 +13,7 @@ import '../../../../../component/text/common_text.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../controller/chef_detail_controller.dart';
+import '../widgets/exten_text.dart';
 import '../widgets/menu.dart';
 
 String text =
@@ -89,16 +91,35 @@ class ChefDetailsScreen extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                               color: Color(0xff272727),
                             ),
-                            CommonText(
-                              text: "\$70,00/hr",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff272727),
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "\$70.00",
+                                    style: GoogleFonts.inter(
+                                      color: Color(0xff272727),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+
+                                  TextSpan(
+                                    text: " /hr",
+                                    style: GoogleFonts.inter(
+                                      color: Color(0xff777777),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              textAlign: TextAlign.start,
                             ),
                           ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
+
                           children: [
                             CommonImage(imageSrc: AppIcons.location),
                             CommonText(
@@ -106,7 +127,13 @@ class ChefDetailsScreen extends StatelessWidget {
                               fontSize: 12,
                               color: Color(0xff777777),
                               left: 4,
-                              right: 4,
+                            ),
+
+                            Container(
+                              height: 8,
+                              width: 1,
+                              margin: EdgeInsets.symmetric(horizontal: 8),
+                              color: Color(0xffF1F1F1),
                             ),
                             CommonImage(imageSrc: AppIcons.briefcase),
                             CommonText(
@@ -116,28 +143,33 @@ class ChefDetailsScreen extends StatelessWidget {
                               color: Color(0xff777777),
                             ),
 
-                            Spacer(),
-                            Icon(
-                              Icons.star,
-                              color: Color(0xffFD713F),
-                              size: 20,
-                            ),
-                            CommonText(
-                              text: "4.5 (482 Reviews)",
-                              fontSize: 12,
-                              left: 2,
-                              color: Color(0xff777777),
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    color: Color(0xffFD713F),
+                                    size: 20,
+                                  ),
+                                  Flexible(
+                                    child: CommonText(
+                                      text: "4.5 (482 Reviews)",
+                                      fontSize: 12,
+                                      left: 2,
+                                      color: Color(0xff777777),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                        CommonText(
+
+                        ExtendText(
                           text: text,
-                          maxLines: 2,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff272727),
-                          textAlign: TextAlign.start,
-                          top: 16,
+                          isExpanded: controller.isExpanded,
+                          onTap: controller.onChangeExpand,
                         ),
                         24.height,
                         CommonButton(
@@ -164,53 +196,55 @@ class ChefDetailsScreen extends StatelessWidget {
             bottomNavigationBar:
                 controller.cartItems.isEmpty
                     ? null
-                    : InkWell(
-                      onTap: () => Get.toNamed(AppRoutes.cart),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20,
-                          right: 20,
-                          bottom: 30,
-                        ),
-
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                    : SafeArea(
+                  child: InkWell(
+                        onTap: () => Get.toNamed(AppRoutes.cart),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 16,
+                            right: 16,
+                            bottom: 20,
                           ),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 20,
-                                width: 20,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
+                      
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 20,
+                                  width: 20,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child:
+                                      CommonText(
+                                        text: "1",
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xff272727),
+                                      ).center,
                                 ),
-                                child:
-                                    CommonText(
-                                      text: "1",
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xff272727),
-                                    ).center,
-                              ),
-                              CommonText(
-                                text: AppString.viewCart,
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                left: 8,
-                              ),
-                              Spacer(),
-                              CommonText(
-                                text: "\$70,00 30 min",
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ],
+                                CommonText(
+                                  text: AppString.viewCart,
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  left: 8,
+                                ),
+                                Spacer(),
+                                CommonText(
+                                  text: "\$70,00 30 min",
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

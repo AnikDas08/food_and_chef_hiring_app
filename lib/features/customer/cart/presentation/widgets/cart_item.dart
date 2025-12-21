@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
@@ -31,7 +32,7 @@ Widget cartItem(BuildContext context) {
                   children: [
                     CommonText(
                       text: "Chopped Burrito",
-                      color: Color(0xff777777),
+                      color: Color(0xff272727),
                       fontWeight: FontWeight.w600,
                     ),
                     4.height,
@@ -40,14 +41,14 @@ Widget cartItem(BuildContext context) {
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Color(0xff777777),
+                      bottom: 4,
                     ),
-                    10.height,
 
                     Container(
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(30.r),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -82,27 +83,38 @@ Widget cartItem(BuildContext context) {
                       ),
                     ),
                     20.height,
-                    Row(
-                      children: [
-                        CommonImage(
-                          imageSrc: AppIcons.time,
-                          size: 16,
-                          imageColor: Color(0xff777777),
-                        ),
-                        CommonText(
-                          text: "Cooking Time : ",
-                          fontSize: 12,
-                          left: 4,
-                          color: Color(0xff777777),
-                          fontWeight: FontWeight.w400,
-                        ),
-                        CommonText(
-                          text: "40 minutes",
-                          fontSize: 12,
-                          color: Color(0xff272727),
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ],
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30.r),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 8.h,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CommonImage(
+                            imageSrc: AppIcons.time,
+                            size: 16,
+                            imageColor: Color(0xff777777),
+                          ),
+                          CommonText(
+                            text: "Cooking Time: ",
+                            fontSize: 12,
+                            left: 4,
+                            color: Color(0xff777777),
+                            fontWeight: FontWeight.w400,
+                          ),
+                          CommonText(
+                            text: "40 minutes",
+                            fontSize: 12,
+                            color: Color(0xff272727),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -115,8 +127,6 @@ Widget cartItem(BuildContext context) {
               ),
             ],
           ),
-          8.height,
-          Divider(),
         ],
       ),
     ),

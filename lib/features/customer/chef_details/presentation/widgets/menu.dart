@@ -15,20 +15,21 @@ class MenuPage extends StatelessWidget {
           automaticallyImplyLeading: false,
           toolbarHeight: 0,
           bottom: const TabBar(
-            indicatorColor: Color(0xffFD713F),
+            indicatorColor: Colors.transparent,
             indicatorWeight: 2,
             unselectedLabelColor: Color(0xff777777),
             padding: EdgeInsets.symmetric(horizontal: 0),
             labelPadding: EdgeInsets.symmetric(horizontal: 0),
+
             labelStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
               color: Color(0xffFD713F),
             ),
             unselectedLabelStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xff777777),
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: Color(0xff636363),
             ),
 
             tabs: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -16,7 +17,7 @@ Widget foodItem(BuildContext context) {
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Color(0xffF2F2F2),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(16.r),
       ),
       margin: EdgeInsets.only(top: 16),
       child: Column(
@@ -32,7 +33,7 @@ Widget foodItem(BuildContext context) {
                   children: [
                     CommonText(
                       text: "Quesadilla",
-                      color: Color(0xff777777),
+                      color: Color(0xff272727),
                       fontWeight: FontWeight.w600,
                     ),
                     4.height,

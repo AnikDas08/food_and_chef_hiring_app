@@ -25,7 +25,7 @@ class CheckoutScreen extends StatelessWidget {
       appBar: AppBar(
         title: CommonText(
           text: AppString.checkout,
-          fontSize: 24,
+          fontSize: 14,
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
         ),
@@ -45,6 +45,7 @@ class CheckoutScreen extends StatelessWidget {
             CommonTextField(
               controller: dateController,
               keyboardType: TextInputType.none,
+              borderRadius: 20,
               hintText: "1 January 2026, 5:20PM",
               onTap: () => OtherHelper.openDatePickerDialog(dateController),
               suffixIcon: InkWell(
@@ -59,12 +60,12 @@ class CheckoutScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
                 color: Color(0xffF0F0F0),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
                 children: [
                   CommonImage(
-                    imageSrc: AppIcons.location,
+                    imageSrc: AppIcons.mapIcon,
                     imageColor: Color(0xffFD713F),
                     size: 24,
                   ),
@@ -83,13 +84,18 @@ class CheckoutScreen extends StatelessWidget {
                         CommonText(
                           text: "4140 Parker Rd. Allentown, New Mexico 31134",
                           fontSize: 12,
+                          top: 2,
                           fontWeight: FontWeight.w400,
                           color: Color(0xff777777),
                         ),
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_rounded),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 16,
+                    color: Color(0xff777777),
+                  ),
                 ],
               ),
             ),
@@ -125,7 +131,11 @@ class CheckoutScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Icon(Icons.keyboard_arrow_down_rounded),
+                Icon(
+                  Icons.keyboard_arrow_up,
+                  size: 24,
+                  color: Color(0xff777777),
+                ),
               ],
             ),
 
@@ -312,10 +322,12 @@ class CheckoutScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
-        child: CommonButton(
-          titleText: AppString.checkoutNow,
-          onTap: confirmCheckingPopup,
+        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+        child: SafeArea(
+          child: CommonButton(
+            titleText: AppString.checkoutNow,
+            onTap: confirmCheckingPopup,
+          ),
         ),
       ),
     );

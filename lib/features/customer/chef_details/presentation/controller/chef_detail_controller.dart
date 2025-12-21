@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 class ChefDetailsController extends GetxController {
   bool isFavorite = false;
+  bool isExpanded = false;
 
   List cartItems = [];
 
@@ -16,6 +17,11 @@ class ChefDetailsController extends GetxController {
 
   onChange() {
     isFavorite = !isFavorite;
+    update();
+  }
+
+  onChangeExpand() {
+    isExpanded = !isExpanded;
     update();
   }
 

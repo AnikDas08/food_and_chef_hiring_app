@@ -54,11 +54,13 @@ class CartScreen extends StatelessWidget {
                       text: AppString.subtotal,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
+                      color: Color(0xff272727),
                     ),
                     CommonText(
                       text: "\$58.32",
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
+                      color: Color(0xff272727),
                     ),
                   ],
                 ),
@@ -68,10 +70,12 @@ class CartScreen extends StatelessWidget {
         },
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 36),
-        child: CommonButton(
-          titleText: AppString.continueToCheckout,
-          onTap: () => Get.toNamed(AppRoutes.checkout),
+        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+        child: SafeArea(
+          child: CommonButton(
+            titleText: AppString.continueToCheckout,
+            onTap: () => Get.toNamed(AppRoutes.checkout),
+          ),
         ),
       ),
     );

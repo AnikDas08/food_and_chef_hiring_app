@@ -41,7 +41,7 @@ Widget chefInfo() {
         padding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
         decoration: BoxDecoration(
           color: Color(0xffF2F2F2),
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
           children: [
