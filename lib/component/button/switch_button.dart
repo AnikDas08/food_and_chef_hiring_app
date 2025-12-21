@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../utils/constants/app_colors.dart';
 
-Widget switchButton({required bool value, VoidCallback? onTap}) {
+Widget switchButton({
+  required bool value,
+  VoidCallback? onTap,
+  Color color = const Color(0xff272727),
+}) {
   return InkWell(
     onTap: onTap,
     child: AnimatedContainer(
@@ -11,7 +15,7 @@ Widget switchButton({required bool value, VoidCallback? onTap}) {
       width: 36,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: !value ? Colors.black.withOpacity(0.20) : Color(0xff272727),
+        color: !value ? Colors.black.withOpacity(0.20) : color,
       ),
       child: AnimatedAlign(
         duration: const Duration(milliseconds: 300),
