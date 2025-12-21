@@ -94,10 +94,7 @@ class Filter extends StatelessWidget {
                     ],
                   ),
 
-                  Divider(
-                    color: Color(0xffF1F1F1),
-                    height: 32.h,
-                  ),
+                  Divider(color: Color(0xffF1F1F1), height: 32.h),
                   CommonText(
                     text: AppString.timeAvailability,
                     fontWeight: FontWeight.w600,
