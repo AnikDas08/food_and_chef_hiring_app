@@ -82,6 +82,7 @@ Widget foodItem(BuildContext context) {
                         ),
                       ],
                     ),
+
                     28.height,
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -108,8 +109,6 @@ Widget foodItem(BuildContext context) {
               ),
             ],
           ),
-          8.height,
-          Divider(),
         ],
       ),
     ),

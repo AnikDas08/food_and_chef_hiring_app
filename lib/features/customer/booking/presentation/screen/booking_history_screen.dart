@@ -29,6 +29,7 @@ class BookingHistoryScreen extends StatelessWidget {
         actions: [
           Container(
             padding: EdgeInsets.all(8.sp),
+            margin: EdgeInsets.only(right: 20.w),
             decoration: BoxDecoration(
               color: Color(0xffF2F2F2),
               shape: BoxShape.circle,
@@ -54,29 +55,30 @@ class BookingHistoryScreen extends StatelessWidget {
                           onTap: () {
                             controller.onChangeBookingHistory(value);
                           },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                              vertical: 8.h,
-                            ),
-                            margin: EdgeInsets.only(right: 8.w),
-                            decoration: BoxDecoration(
-                              color:
-                                  controller.selectedBookingHistory == value
-                                      ? Color(0xff272727)
-                                      : Color(0xffF2F2F2),
-                              borderRadius: BorderRadius.circular(10.sp),
-                            ),
-                            child: CommonText(
-                              text: value,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                              color:
-                                  controller.selectedBookingHistory == value
-                                      ? Colors.white
-                                      : Color(0xff272727),
-                            ),
-                          ).center,
+                          child:
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 16.w,
+                                  vertical: 8.h,
+                                ),
+                                margin: EdgeInsets.only(right: 8.w),
+                                decoration: BoxDecoration(
+                                  color:
+                                      controller.selectedBookingHistory == value
+                                          ? Color(0xff272727)
+                                          : Color(0xffF2F2F2),
+                                  borderRadius: BorderRadius.circular(10.sp),
+                                ),
+                                child: CommonText(
+                                  text: value,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color:
+                                      controller.selectedBookingHistory == value
+                                          ? Colors.white
+                                          : Color(0xff272727),
+                                ),
+                              ).center,
                         );
                       },
                     ),

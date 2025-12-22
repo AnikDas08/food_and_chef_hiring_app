@@ -107,11 +107,11 @@ class _SearchItemState extends State<SearchItem> {
                     itemCount: 20,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      mainAxisExtent: 260.h,
+                      mainAxisExtent: 250.h,
                       mainAxisSpacing: 10.h,
                     ),
                     itemBuilder: (context, index) {
-                      return chefItem(height: 160);
+                      return chefItem(height: 140.h, isSearch: true);
                     },
                   ),
         ),

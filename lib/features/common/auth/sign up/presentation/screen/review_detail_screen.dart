@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_untitled/component/text_field/common_phone_number_text_filed.dart';
 import 'package:new_untitled/utils/app_utils.dart';
 import '../../../../../../../utils/extensions/extension.dart';
 import 'package:get/get.dart';
@@ -103,13 +104,17 @@ class ReviewDetailScreen extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     top: 16,
                   ),
-                  CommonTextField(
-                    hintText: AppString.phoneNumber,
-                    paddingHorizontal: 10,
-                    controller: controller.numberController,
-                    validator: OtherHelper.validator,
-                  ),
+                  // CommonTextField(
+                  //   hintText: AppString.phoneNumber,
+                  //   paddingHorizontal: 10,
+                  //   controller: controller.numberController,
+                  //   validator: OtherHelper.validator,
+                  // ),
 
+                  CommonPhoneNumberTextFiled(
+                    controller: controller.numberController,
+                    countryChange: (value) {},
+                  ),
                   CommonText(
                     text: AppString.detailedAddress,
                     fontSize: 12,

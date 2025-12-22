@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../utils/constants/app_colors.dart';
 
 // ignore: must_be_immutable
@@ -109,16 +108,16 @@ class CommonTextField extends StatelessWidget {
           errorBorder: _buildBorder(),
           hintText: hintText,
           labelText: labelText,
-          hintStyle: GoogleFonts.roboto(
+          hintStyle: TextStyle(
             fontSize: fontSize,
             color: hintTextColor,
           ),
-          labelStyle: GoogleFonts.roboto(
+          labelStyle: TextStyle(
             fontSize: fontSize,
             color: labelTextColor,
           ),
           prefixText: prefixText,
-          prefixStyle: GoogleFonts.roboto(
+          prefixStyle: TextStyle(
             fontSize: fontSize,
             fontWeight: FontWeight.w400,
             color: textColor,

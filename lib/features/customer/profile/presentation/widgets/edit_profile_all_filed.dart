@@ -74,7 +74,7 @@ class EditProfileAllFiled extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Color(0xffF8F4F1),
+                color: Color(0xffF9F9F9),
                 shape: BoxShape.circle,
               ),
               child: CommonImage(imageSrc: AppIcons.google),
@@ -125,10 +125,11 @@ class EditProfileAllFiled extends StatelessWidget {
         ),
 
         Container(
+          height: 60.h,
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
           decoration: BoxDecoration(
             color: Color(0xffF2F2F2),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(20.r),
           ),
           child: Row(
             children: [
@@ -140,10 +141,7 @@ class EditProfileAllFiled extends StatelessWidget {
                 left: 4,
               ),
               const Spacer(),
-              Icon(
-                Icons.arrow_forward_ios_outlined,
-                size: 16.sp,
-              ),
+              Icon(Icons.arrow_forward_ios_outlined, size: 16.sp),
             ],
           ),
         ),

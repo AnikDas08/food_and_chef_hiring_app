@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 
@@ -49,7 +48,7 @@ class AvailabilityScreen extends StatelessWidget {
                     /// Already Have Account
                     TextSpan(
                       text: "Customers can place orders at least ",
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         color: Color(0xff777777),
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
@@ -59,7 +58,7 @@ class AvailabilityScreen extends StatelessWidget {
                     /// Sign In Button Here
                     TextSpan(
                       text: "12 Hours",
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         color: Color(0xffFD713F),
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -67,7 +66,7 @@ class AvailabilityScreen extends StatelessWidget {
                     ),
                     TextSpan(
                       text: "in advance and a maximum of ",
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         color: Color(0xff777777),
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
@@ -75,7 +74,7 @@ class AvailabilityScreen extends StatelessWidget {
                     ),
                     TextSpan(
                       text: "14 Days",
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         color: Color(0xffFD713F),
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -83,7 +82,7 @@ class AvailabilityScreen extends StatelessWidget {
                     ),
                     TextSpan(
                       text: "in advance",
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         color: Color(0xff777777),
                         fontSize: 14,
                         fontWeight: FontWeight.w400,

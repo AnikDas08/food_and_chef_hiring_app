@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -17,7 +16,7 @@ dynamic checkCondition() {
   return randomNumber < 10 ? true : false;
 }
 
-Widget chefItem({num height = 200}) {
+Widget chefItem({num height = 200, bool isSearch = false}) {
   return InkWell(
     onTap: () => Get.toNamed(AppRoutes.chefDetails),
     child: Container(
@@ -34,8 +33,8 @@ Widget chefItem({num height = 200}) {
               CommonImage(
                 imageSrc: AppImages.image3,
                 height: height.toDouble(),
-                width: 240.w,
-                borderRadius: 8,
+                width: 240,
+                borderRadius: isSearch ? 2 : 8,
                 fill: BoxFit.fill,
               ),
 
@@ -53,7 +52,7 @@ Widget chefItem({num height = 200}) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 210.w,
+                  width: 240.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -77,7 +76,7 @@ Widget chefItem({num height = 200}) {
                         color: Color(0xff272727),
                         fontWeight: FontWeight.w600,
                         left: 4,
-                        right: 4,
+                        right: 8,
                       ),
                     ],
                   ),
@@ -113,13 +112,13 @@ Widget chefItem({num height = 200}) {
                   ),
                 ),
 
-                24.height,
+                isSearch ? 12.height : 24.height,
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
                         text: "\$70.00",
-                        style: GoogleFonts.inter(
+                        style: TextStyle(
                           color: Color(0xff272727),
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -129,7 +128,7 @@ Widget chefItem({num height = 200}) {
                       /// Sign Up Button here
                       TextSpan(
                         text: " /hr",
-                        style: GoogleFonts.inter(
+                        style: TextStyle(
                           color: Color(0xff777777),
                           fontSize: 12,
                           fontWeight: FontWeight.w400,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
@@ -63,11 +62,16 @@ class ChefDetailsScreen extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        bottom: 40,
+                        bottom: 50,
                         left: 20,
                         child: InkWell(
                           onTap: controller.onChange,
-                          child: CommonImage(imageSrc: AppIcons.chef),
+                          child: CommonImage(
+                            imageSrc: AppIcons.chef,
+                            height: 30,
+                            width: 115,
+                            fill: BoxFit.fill,
+                          ),
                         ),
                       ),
                     ],
@@ -96,7 +100,7 @@ class ChefDetailsScreen extends StatelessWidget {
                                 children: [
                                   TextSpan(
                                     text: "\$70.00",
-                                    style: GoogleFonts.inter(
+                                    style: TextStyle(
                                       color: Color(0xff272727),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
@@ -105,7 +109,7 @@ class ChefDetailsScreen extends StatelessWidget {
 
                                   TextSpan(
                                     text: " /hr",
-                                    style: GoogleFonts.inter(
+                                    style: TextStyle(
                                       color: Color(0xff777777),
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
@@ -197,7 +201,7 @@ class ChefDetailsScreen extends StatelessWidget {
                 controller.cartItems.isEmpty
                     ? null
                     : SafeArea(
-                  child: InkWell(
+                      child: InkWell(
                         onTap: () => Get.toNamed(AppRoutes.cart),
                         child: Padding(
                           padding: const EdgeInsets.only(
@@ -205,12 +209,14 @@ class ChefDetailsScreen extends StatelessWidget {
                             right: 16,
                             bottom: 20,
                           ),
-                      
+
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
                               color: Colors.black,
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
                             ),
                             child: Row(
                               children: [

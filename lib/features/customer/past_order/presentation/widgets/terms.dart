@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 
 class Terms extends StatelessWidget {
   const Terms({super.key});
@@ -13,7 +11,7 @@ class Terms extends StatelessWidget {
         children: [
           TextSpan(
             text: "Terms: ",
-            style: GoogleFonts.inter(
+            style: TextStyle(
               color: Color(0xff222222),
               fontSize: 14,
               fontWeight: FontWeight.w400,
@@ -23,7 +21,7 @@ class Terms extends StatelessWidget {
           /// Sign Up Button here
           TextSpan(
             text: "All prices incl. VAT. For your order the ",
-            style: GoogleFonts.plusJakartaSans(
+            style: TextStyle(
               color: Color(0xff636363),
               fontSize: 14,
               fontWeight: FontWeight.w400,
@@ -31,7 +29,7 @@ class Terms extends StatelessWidget {
           ),
           TextSpan(
             text: "Privae Chef Terms & conditions apply",
-            style: GoogleFonts.plusJakartaSans(
+            style: TextStyle(
               color: Color(0xff2F8328),
               fontSize: 14,
               fontWeight: FontWeight.w400,

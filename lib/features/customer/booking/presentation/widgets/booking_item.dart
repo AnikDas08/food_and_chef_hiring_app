@@ -18,7 +18,7 @@ Widget bookingItem() {
       bookingDetails(Get.context!);
     },
     child: Container(
-      padding: EdgeInsets.all(12.sp),
+      padding: EdgeInsets.all(12.sp).copyWith(right: 0),
       margin: EdgeInsets.only(top: 16),
       decoration: BoxDecoration(
         color: Color(0xffF2F2F2),
@@ -74,7 +74,9 @@ Widget bookingItem() {
 
               PopupMenuButton<int>(
                 padding: EdgeInsets.zero,
+
                 menuPadding: EdgeInsets.zero,
+                elevation: 0,
                 icon: const Icon(Icons.more_vert),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -83,6 +85,7 @@ Widget bookingItem() {
                   if (value == 1) {
                   } else if (value == 2) {}
                 },
+
                 itemBuilder:
                     (context) => [
                       PopupMenuItem(
@@ -170,6 +173,7 @@ Widget bookingItem() {
           20.height,
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
+            margin: EdgeInsets.only(right: 12),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8.sp),

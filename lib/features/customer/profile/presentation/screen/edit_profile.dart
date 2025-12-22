@@ -107,6 +107,7 @@ class EditProfile extends StatelessWidget {
                     /// Submit Button here
                     CommonButton(
                       titleText: AppString.saveChanges,
+                      buttonRadius: 20,
                       isLoading: controller.isLoading,
                       onTap: controller.editProfileRepo,
                     ),

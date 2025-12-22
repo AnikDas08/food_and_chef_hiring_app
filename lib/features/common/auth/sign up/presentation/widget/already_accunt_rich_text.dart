@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../../utils/constants/app_colors.dart';
@@ -19,7 +18,7 @@ class AlreadyAccountRichText extends StatelessWidget {
           /// Already Have Account
           TextSpan(
             text: AppString.alreadyHaveAccount,
-            style: GoogleFonts.plusJakartaSans(
+            style: TextStyle(
               color: AppColors.black,
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -34,7 +33,7 @@ class AlreadyAccountRichText extends StatelessWidget {
                   ..onTap = () {
                     Get.toNamed(AppRoutes.signIn);
                   },
-            style: GoogleFonts.plusJakartaSans(
+            style: TextStyle(
               color: AppColors.primaryColor,
               fontSize: 16,
               fontWeight: FontWeight.w600,
