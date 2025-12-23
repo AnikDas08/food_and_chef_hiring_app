@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import '../../../../../component/bottom_nav_bar/common_bottom_bar.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
-import '../../../../../component/other_widgets/no_data.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/notifications_controller.dart';
 import '../../data/model/notification_model.dart';
