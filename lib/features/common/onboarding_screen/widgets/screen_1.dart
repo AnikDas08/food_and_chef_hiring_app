@@ -62,24 +62,7 @@ class Screen1 extends StatelessWidget {
                   ),
 
                   indicator(currentIndex: 0),
-                  28.height,
 
-                  CommonButton(
-                    titleText: AppString.signIn,
-                    onTap: () => Get.toNamed(AppRoutes.signIn),
-                  ),
-                  12.height,
-
-                  CommonButton(
-                    titleText: "I’m New, Sign Me Up",
-                    buttonColor: Color(0xffF2F2F2),
-                    borderColor: Colors.transparent,
-                    titleColor: Colors.black,
-                    titleSize: 16,
-                    titleWeight: FontWeight.w600,
-                    onTap: () => Get.toNamed(AppRoutes.signUp),
-                  ),
-                  20.height,
                 ],
               ),
             ),

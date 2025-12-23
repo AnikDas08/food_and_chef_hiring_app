@@ -19,124 +19,118 @@ Widget menuItem() {
         borderRadius: BorderRadius.circular(20),
       ),
       margin: EdgeInsets.only(top: 16),
-      child: Column(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CommonText(
+                  text: "Quesadilla",
+                  color: Color(0xff272727),
+                  fontWeight: FontWeight.w600,
+                ),
+                4.height,
+                Row(
                   children: [
+                    CommonImage(
+                      imageSrc: AppIcons.ingredients,
+                      size: 16,
+                      imageColor: Color(0xff777777),
+                    ),
                     CommonText(
-                      text: "Quesadilla",
+                      text: "Ingredients : ",
+                      fontSize: 12,
+                      left: 4,
+                      color: Color(0xff777777),
+                      fontWeight: FontWeight.w400,
+                    ),
+                    CommonText(
+                      text: "10 items",
+                      fontSize: 12,
                       color: Color(0xff272727),
-                      fontWeight: FontWeight.w600,
-                    ),
-                    4.height,
-                    Row(
-                      children: [
-                        CommonImage(
-                          imageSrc: AppIcons.ingredients,
-                          size: 16,
-                          imageColor: Color(0xff777777),
-                        ),
-                        CommonText(
-                          text: "Ingredients : ",
-                          fontSize: 12,
-                          left: 4,
-                          color: Color(0xff777777),
-                          fontWeight: FontWeight.w400,
-                        ),
-                        CommonText(
-                          text: "10 items",
-                          fontSize: 12,
-                          color: Color(0xff272727),
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ],
-                    ),
-                    4.height,
-                    Row(
-                      children: [
-                        CommonImage(
-                          imageSrc: AppIcons.time,
-                          size: 16,
-                          imageColor: Color(0xff777777),
-                        ),
-                        CommonText(
-                          text: "Cooking Time : ",
-                          fontSize: 12,
-                          left: 4,
-                          color: Color(0xff777777),
-                          fontWeight: FontWeight.w400,
-                        ),
-                        CommonText(
-                          text: "40 minutes",
-                          fontSize: 12,
-                          color: Color(0xff272727),
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ],
-                    ),
-                    28.height,
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Get.toNamed(AppRoutes.editMenu);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(Icons.edit_outlined, size: 16),
-                                CommonText(
-                                  text: "Edit Item",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff272727),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 8),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Icon(CupertinoIcons.delete, size: 16),
-                        ),
-                      ],
+                      fontWeight: FontWeight.w400,
                     ),
                   ],
                 ),
-              ),
-
-              CommonImage(
-                imageSrc: AppImages.image6,
-                size: 120,
-                borderRadius: 8,
-              ),
-            ],
+                4.height,
+                Row(
+                  children: [
+                    CommonImage(
+                      imageSrc: AppIcons.time,
+                      size: 16,
+                      imageColor: Color(0xff777777),
+                    ),
+                    CommonText(
+                      text: "Cooking Time : ",
+                      fontSize: 12,
+                      left: 4,
+                      color: Color(0xff777777),
+                      fontWeight: FontWeight.w400,
+                    ),
+                    CommonText(
+                      text: "40 minutes",
+                      fontSize: 12,
+                      color: Color(0xff272727),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ],
+                ),
+                28.height,
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.editMenu);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit_outlined, size: 16),
+                            CommonText(
+                              text: "Edit Item",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff272727),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 8),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(CupertinoIcons.delete, size: 16),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          8.height,
-          Divider(),
+
+          CommonImage(
+            imageSrc: AppImages.image6,
+            size: 120,
+            borderRadius: 8,
+          ),
         ],
       ),
     ),

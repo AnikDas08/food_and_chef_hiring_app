@@ -128,7 +128,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   hintText: AppString.messageHere,
                   prefixIcon: Padding(
                     padding: const EdgeInsets.only(left: 16),
-                    child: Icon(Icons.sentiment_dissatisfied),
+                    child: Icon(Icons.emoji_emotions_outlined),
                   ),
                   suffixIcon: GestureDetector(
                     onTap: controller.addNewMessage,

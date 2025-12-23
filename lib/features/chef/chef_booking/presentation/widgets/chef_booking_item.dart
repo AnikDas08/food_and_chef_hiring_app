@@ -10,8 +10,6 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../controller/chef_booking_controller.dart';
 import 'booking_details_popup.dart';
-import 'package:get/get.dart';
-
 import 'confirmation_booking_pop_up.dart';
 
 Widget chefBookingItem() {
@@ -21,7 +19,7 @@ Widget chefBookingItem() {
       bookingDetailsPopup(Get.context!);
     },
     child: Container(
-      padding: EdgeInsets.all(12.sp),
+      padding: EdgeInsets.all(12.sp).copyWith(right: 0),
       margin: EdgeInsets.only(top: 16),
       decoration: BoxDecoration(
         color: Color(0xffF2F2F2),
@@ -69,7 +67,7 @@ Widget chefBookingItem() {
                     ),
                     decoration: BoxDecoration(
                       color: Color(0xffF5EDDD),
-                      borderRadius: BorderRadius.circular(10.sp),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: CommonText(
                       text: "Requested",
@@ -211,6 +209,7 @@ Widget chefBookingItem() {
           if (controller.selectedBookingHistory != "Completed")
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
+              margin: EdgeInsets.only(right: 12.w),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8.sp),
@@ -319,6 +318,7 @@ Widget chefBookingItem() {
                     ),
                   ),
                 ),
+                12.width
               ],
               if (controller.selectedBookingHistory == "Upcoming") ...[
                 Container(

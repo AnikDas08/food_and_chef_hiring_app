@@ -83,6 +83,7 @@ class BookingHistoryScreen extends StatelessWidget {
                       },
                     ),
                   ),
+                  8.height,
                   Expanded(
                     child: ListView.builder(
                       itemCount: 10,

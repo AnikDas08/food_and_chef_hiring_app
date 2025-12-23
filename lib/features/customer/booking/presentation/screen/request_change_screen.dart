@@ -57,7 +57,7 @@ class RequestChangeScreen extends StatelessWidget {
               height: 60.h,
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                color: Color(0xffF0F0F0),
+                color: const Color(0xffF2F2F2),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(

@@ -154,20 +154,25 @@ class PaymentMethodScreen extends StatelessWidget {
                       ],
                     ),
                     Spacer(),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      child: CommonText(
-                        text: "Add",
-                        color: Color(0xff272727),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.addCard);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: CommonText(
+                          text: "Add",
+                          color: Color(0xff272727),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -217,20 +222,25 @@ class PaymentMethodScreen extends StatelessWidget {
                       ],
                     ),
                     Spacer(),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      child: CommonText(
-                        text: "Add",
-                        color: Color(0xff272727),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.addCard);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: CommonText(
+                          text: "Add",
+                          color: Color(0xff272727),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -277,20 +287,25 @@ class PaymentMethodScreen extends StatelessWidget {
                       ],
                     ),
                     Spacer(),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      child: CommonText(
-                        text: "Add",
-                        color: Color(0xff272727),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.addCard);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: CommonText(
+                          text: "Add",
+                          color: Color(0xff272727),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],

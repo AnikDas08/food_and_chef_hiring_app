@@ -41,6 +41,7 @@ class PopUpMenu extends StatelessWidget {
     return SizedBox(
       height: height.h,
       child: PopupMenuButton<String>(
+        color: Color(0xffF2F2F2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.r),
           side: BorderSide(color: selectedColor),

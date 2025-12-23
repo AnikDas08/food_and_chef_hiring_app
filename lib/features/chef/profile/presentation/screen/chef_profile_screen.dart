@@ -173,11 +173,11 @@ class ChefProfileScreen extends StatelessWidget {
                         imageSize: 24,
                         onTap: () => Get.toNamed(AppRoutes.availability),
                       ),
-                      Item(
-                        image: AppIcons.card,
-                        title: AppString.paymentMethods,
-                        onTap: () => Get.toNamed(AppRoutes.paymentMethod),
-                      ),
+                      // Item(
+                      //   image: AppIcons.card,
+                      //   title: AppString.paymentMethods,
+                      //   onTap: () => Get.toNamed(AppRoutes.paymentMethod),
+                      // ),
                       Item(
                         image: AppIcons.kitchen,
                         title: AppString.menuItems,

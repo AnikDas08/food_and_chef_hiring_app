@@ -273,7 +273,7 @@ Widget _ratingItem(String title) {
       borderRadius: BorderRadius.circular(20),
     ),
     child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
       children: [
         CommonText(
@@ -282,16 +282,17 @@ Widget _ratingItem(String title) {
           fontWeight: FontWeight.w500,
           color: Color(0xff272727),
           bottom: 4,
-        ),
+        ).start,
         RatingBar.builder(
           initialRating: 4,
           minRating: 1,
           direction: Axis.horizontal,
+
           allowHalfRating: true,
           itemCount: 5,
           itemSize: 40,
-          wrapAlignment: WrapAlignment.spaceEvenly,
-          itemPadding: EdgeInsets.symmetric(horizontal: 8.w),
+          wrapAlignment: WrapAlignment.center,
+          itemPadding: EdgeInsets.symmetric(horizontal: 10),
           itemBuilder:
               (context, _) =>
                   Icon(Icons.star_rounded, color: Color(0xffFD713F), size: 40),

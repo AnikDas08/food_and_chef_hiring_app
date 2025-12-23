@@ -8,6 +8,7 @@ import '../../../../../component/other_widgets/no_data.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/notifications_controller.dart';
 import '../../data/model/notification_model.dart';
+import '../widgets/no_notification.dart';
 import '../widgets/notification_item.dart';
 
 class NotificationScreen extends StatelessWidget {
@@ -35,7 +36,7 @@ class NotificationScreen extends StatelessWidget {
               ? const CommonLoader()
               : controller.notifications.isEmpty
               ///  data is Empty then show default Data
-              ? const NoData()
+              ? const NoNotification()
               /// show all Notifications here
               : ListView.builder(
                 controller: controller.scrollController,

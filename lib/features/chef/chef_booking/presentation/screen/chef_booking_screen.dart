@@ -82,6 +82,7 @@ class ChefBookingScreen extends StatelessWidget {
                       },
                     ),
                   ),
+                  8.height,
                   Expanded(
                     child: ListView.builder(
                       physics: const BouncingScrollPhysics(),

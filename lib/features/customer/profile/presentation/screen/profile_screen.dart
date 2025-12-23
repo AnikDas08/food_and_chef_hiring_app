@@ -215,10 +215,15 @@ class ProfileScreen extends StatelessWidget {
                     children: [
                       Item(
                         image: AppIcons.contact,
+                        horizontal: 4,
                         title: AppString.contactSupport,
                       ),
 
-                      Item(image: AppIcons.about, title: AppString.appVersion),
+                      Item(
+                        image: AppIcons.about,
+                        horizontal: 4,
+                        title: AppString.appVersion,
+                      ),
 
                       /// Log Out item here
                     ],
