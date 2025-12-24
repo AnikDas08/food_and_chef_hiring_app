@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import '../../../config/route/app_routes.dart';
@@ -47,9 +48,9 @@ class ChefBottomBar extends StatelessWidget {
                     imageSrc: _list[index],
                     size: 24,
                     imageColor:
-                    index == currentIndex
-                        ? Colors.black
-                        : const Color(0xff777777),
+                        index == currentIndex
+                            ? Colors.black
+                            : const Color(0xff777777),
                   ),
                   CommonText(
                     text: _string[index],
@@ -57,9 +58,9 @@ class ChefBottomBar extends StatelessWidget {
                     top: 4,
                     fontWeight: FontWeight.w400,
                     color:
-                    index == currentIndex
-                        ? const Color(0xff272727)
-                        : const Color(0xff777777),
+                        index == currentIndex
+                            ? const Color(0xff272727)
+                            : const Color(0xff777777),
                   ),
                 ],
               ),
@@ -68,7 +69,6 @@ class ChefBottomBar extends StatelessWidget {
         }),
       ),
     );
-
   }
 
   void onTap(int index) async {
@@ -80,7 +80,11 @@ class ChefBottomBar extends StatelessWidget {
       }
     } else if (index == 1) {
       if (!(currentIndex == 1)) {
-        // Get.toNamed(AppRoutes.bookingHistory);
+        if (LocalStorage.isChef) {
+          Get.toNamed(AppRoutes.analytics);
+        } else {
+          Get.toNamed(AppRoutes.bookingHistory);
+        }
       }
     } else if (index == 2) {
       if (!(currentIndex == 2)) {

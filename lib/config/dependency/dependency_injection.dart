@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/features/chef/menu/presentation/controller/add_menu_screen.dart';
 
+import '../../features/chef/analytics/presentation/controller/analytics_controller.dart';
 import '../../features/chef/availaility/presentation/controller/availiability_controller.dart';
 import '../../features/chef/chef_booking/presentation/controller/chef_booking_controller.dart';
 import '../../features/chef/chef_public_profile/presentation/controller/chef_public_profile_controller.dart';
@@ -52,5 +53,6 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => MenuController(), fenix: true);
     Get.lazyPut(() => AddMenuController(), fenix: true);
     Get.lazyPut(() => AvailabilityController(), fenix: true);
+    Get.lazyPut(() => AnalyticsController(), fenix: true);
   }
 }

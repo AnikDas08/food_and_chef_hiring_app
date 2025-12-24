@@ -47,6 +47,7 @@ import '../../features/customer/payment/presentation/screen/edit_card_screen.dar
 import '../../features/customer/payment/presentation/screen/payment_method_screen.dart';
 import '../../features/customer/profile/presentation/screen/edit_profile.dart';
 import '../../features/customer/profile/presentation/screen/profile_screen.dart';
+import '../../features/chef/analytics/presentation/screen/analytics_screen.dart';
 
 class AppRoutes {
   static const String test = "/test_screen.dart";
@@ -98,6 +99,7 @@ class AppRoutes {
   static const String addMenu = "/add_menu_screen.dart";
   static const String editMenu = "/edit_menu.dart";
   static const String accountSetting = "/account_setting.dart";
+  static const String analytics = "/analytics_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -148,5 +150,6 @@ class AppRoutes {
     GetPage(name: addMenu, page: () => AddMenuScreen()),
     GetPage(name: editMenu, page: () => EditMenu()),
     GetPage(name: accountSetting, page: () => AccountSetting()),
+    GetPage(name: analytics, page: () => AnalyticsScreen()),
   ];
 }
