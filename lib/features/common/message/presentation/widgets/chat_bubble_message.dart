@@ -62,7 +62,8 @@ class ChatBubbleMessage extends StatelessWidget {
                         child: CommonText(
                           maxLines: 50,
                           text: text,
-                          fontSize: 18,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
                           color: AppColors.white,
                           textAlign: isMe ? TextAlign.right : TextAlign.left,
                         ),

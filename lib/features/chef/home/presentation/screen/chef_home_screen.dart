@@ -20,7 +20,7 @@ class ChefHomeScreen extends StatelessWidget {
       appBar: chefHomeAppBar(),
 
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24).copyWith(bottom: 0),
         child: Column(
           children: [
             CommonImage(

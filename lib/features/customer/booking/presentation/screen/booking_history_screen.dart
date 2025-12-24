@@ -41,7 +41,7 @@ class BookingHistoryScreen extends StatelessWidget {
       body: GetBuilder<BookingHistoryController>(
         builder:
             (controller) => Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16).copyWith(bottom: 0),
               child: Column(
                 children: [
                   SizedBox(
@@ -86,6 +86,7 @@ class BookingHistoryScreen extends StatelessWidget {
                   8.height,
                   Expanded(
                     child: ListView.builder(
+                      padding: EdgeInsets.zero,
                       itemCount: 10,
                       itemBuilder: (context, index) {
                         return bookingItem();

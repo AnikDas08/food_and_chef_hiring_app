@@ -39,7 +39,7 @@ class ProfileScreen extends StatelessWidget {
         actions: [
           Container(
             padding: EdgeInsets.all(8.sp),
-            margin: EdgeInsets.only(right: 20.w),
+            margin: EdgeInsets.only(right: 24.w),
             decoration: BoxDecoration(
               color: Color(0xffF2F2F2),
               shape: BoxShape.circle,

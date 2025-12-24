@@ -25,17 +25,19 @@ accountCreatePopup() {
             return FadeTransition(
               opacity: ModalRoute.of(context)!.animation!,
               child: Dialog(
+
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 insetPadding: EdgeInsets.all(16.sp),
+                backgroundColor: Colors.white,
 
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CommonImage(imageSrc: AppImages.success, size: 88),
+                      CommonImage(imageSrc: AppImages.reviewSuccess, size: 88),
                       CommonText(
                         text: AppString.accountCreated,
                         fontSize: 16,
@@ -52,8 +54,7 @@ accountCreatePopup() {
                         maxLines: 3,
                       ),
 
-                      8.height,
-                      Divider(),
+
                       16.height,
                       CommonButton(
                         titleText: "Go to Home",

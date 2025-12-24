@@ -125,6 +125,7 @@ logOutPopUp() {
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 contentPadding: EdgeInsets.all(12.sp),
+                backgroundColor: Colors.white,
                 title: const CommonText(
                   text: AppString.youSureWantToLogout,
                   maxLines: 2,
@@ -137,6 +138,8 @@ logOutPopUp() {
                         child: CommonButton(
                           titleText: AppString.no,
                           borderWidth: 1.5,
+                          buttonHeight: 48,
+                          buttonRadius: 8,
                           borderColor: AppColors.primaryColor,
                           buttonColor: AppColors.transparent,
                           titleColor: AppColors.primaryColor,
@@ -147,6 +150,8 @@ logOutPopUp() {
                       Expanded(
                         child: CommonButton(
                           titleText: AppString.yes,
+                          buttonHeight: 48,
+                          buttonRadius: 8,
                           onTap: () {
                             LocalStorage.removeAllPrefData();
                             Get.back();

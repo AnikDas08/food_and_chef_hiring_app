@@ -9,7 +9,9 @@ import '../../../../../component/text_field/common_text_field.dart';
 import '../../../../../utils/helpers/other_helper.dart';
 
 class AvailabilityItem extends StatefulWidget {
-  const AvailabilityItem({super.key});
+  const AvailabilityItem({super.key, required this.day});
+
+  final String day;
 
   @override
   State<AvailabilityItem> createState() => _AvailabilityItemState();
@@ -42,7 +44,7 @@ class _AvailabilityItemState extends State<AvailabilityItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CommonText(
-                text: "Monday",
+                text: widget.day,
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),

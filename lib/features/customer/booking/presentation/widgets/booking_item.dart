@@ -78,6 +78,7 @@ Widget bookingItem() {
                 menuPadding: EdgeInsets.zero,
                 elevation: 0,
                 icon: const Icon(Icons.more_vert),
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),

@@ -40,7 +40,7 @@ class ChefBookingScreen extends StatelessWidget {
       body: GetBuilder<ChefBookingController>(
         builder:
             (controller) => Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16).copyWith(bottom: 0),
               child: Column(
                 children: [
                   SizedBox(
