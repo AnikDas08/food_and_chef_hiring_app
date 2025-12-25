@@ -1,27 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/food_item.dart';
+import 'package:new_untitled/utils/extensions/extension.dart';
+import '../../../../../component/text/common_text.dart';
+import '../../../../../utils/constants/app_string.dart';
+import '../controller/chef_detail_controller.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      initialIndex: 0,
-      animationDuration: const Duration(milliseconds: 300),
-      length: 3,
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          toolbarHeight: 0,
-          actionsPadding: EdgeInsets.zero,
-          automaticallyImplyLeading: false,
-          bottom: const TabBar(
+    return GetBuilder<ChefDetailsController>(
+      builder: (controller) {
+        return DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            body: Obx(
+              () => SafeArea(
+                top: controller.innerBoxIsScrolled.value,
+                child: Column(
+                  children: [
+                    Header(),
+                    Expanded(
+                      child: TabBarView(
+                        children: [_MenuList(), _MenuList(), _MenuList()],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class Header extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CommonText(
+            text: AppString.menu,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Color(0xff272727),
+          ),
+          8.height,
+          const TabBar(
             indicatorColor: Colors.transparent,
-            indicatorWeight: 2,
             unselectedLabelColor: Color(0xff777777),
-            padding: EdgeInsets.symmetric(horizontal: 0),
-            labelPadding: EdgeInsets.symmetric(horizontal: 0),
             labelStyle: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
@@ -38,35 +72,19 @@ class MenuPage extends StatelessWidget {
               Tab(text: 'Desserts'),
             ],
           ),
-        ),
-        body: MediaQuery.removePadding(
-          context: context,
-          removeTop: true,
-          removeBottom: true,
-          child: TabBarView(
-            children: [
-              ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return FoodItem();
-                },
-              ),
-              ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return FoodItem();
-                },
-              ),
-              ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return FoodItem();
-                },
-              ),
-            ],
-          ),
-        ),
+        ],
       ),
+    );
+  }
+}
+
+class _MenuList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      itemCount: 10,
+      itemBuilder: (_, __) => const FoodItem(),
     );
   }
 }

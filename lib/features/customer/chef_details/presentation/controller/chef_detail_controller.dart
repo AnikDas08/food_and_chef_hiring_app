@@ -5,6 +5,7 @@ class ChefDetailsController extends GetxController {
   bool isExpanded = false;
 
   List cartItems = [];
+  RxBool innerBoxIsScrolled = false.obs;
 
   List dish = [
     {"name": "Without onions", "isSelected": false},
@@ -14,6 +15,10 @@ class ChefDetailsController extends GetxController {
     {"name": "Without Tomato", "isSelected": false},
     {"name": "Without Bacon", "isSelected": false},
   ];
+
+  onChangeInnerBoxIsScrolled(bool value) {
+    innerBoxIsScrolled(value);
+  }
 
   onChange() {
     isFavorite = !isFavorite;

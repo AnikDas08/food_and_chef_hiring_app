@@ -29,9 +29,10 @@ class ChefDetailsScreen extends StatelessWidget {
           (controller) => Scaffold(
             body: NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) {
+                controller.onChangeInnerBoxIsScrolled(innerBoxIsScrolled);
                 return [
                   SliverAppBar(
-                    pinned: true,
+                    pinned: false,
                     expandedHeight: 450.h,
                     backgroundColor: Colors.white,
                     leading: InkWell(
@@ -176,23 +177,7 @@ class ChefDetailsScreen extends StatelessWidget {
                   ),
                 ];
               },
-              body: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    CommonText(
-                      text: AppString.menu,
-                      fontSize: 16,
-                      top: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff272727),
-                    ).start,
-                    Expanded(child: MenuPage()),
-                  ],
-                ),
-              ),
+              body: MenuPage(),
             ),
 
             bottomNavigationBar:
