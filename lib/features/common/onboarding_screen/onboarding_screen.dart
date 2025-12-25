@@ -78,9 +78,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       controller: _pageController,
                       onPageChanged: (index) {
                         currentPage = index;
-                        setState(() {
-
-                        });
+                        setState(() {});
                       },
                       itemCount: _list.length,
                       itemBuilder: (context, index) {

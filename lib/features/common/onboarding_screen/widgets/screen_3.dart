@@ -30,7 +30,7 @@ class Screen3 extends StatelessWidget {
                     CommonImage(
                       imageSrc: AppImages.onboarding_3,
                       fill: BoxFit.fill,
-                      height: 296.h,
+                      height: 320.h,
                     ),
                   ],
                 ),

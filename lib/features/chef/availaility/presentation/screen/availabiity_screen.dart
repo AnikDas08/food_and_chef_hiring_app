@@ -61,7 +61,7 @@ class AvailabilityScreen extends StatelessWidget {
 
                         /// Sign In Button Here
                         TextSpan(
-                          text: "12 Hours",
+                          text: "12 Hours ",
                           style: TextStyle(
                             color: Color(0xffFD713F),
                             fontSize: 14,
@@ -77,7 +77,7 @@ class AvailabilityScreen extends StatelessWidget {
                           ),
                         ),
                         TextSpan(
-                          text: "14 Days",
+                          text: "14 Days ",
                           style: TextStyle(
                             color: Color(0xffFD713F),
                             fontSize: 14,
