@@ -6,7 +6,6 @@ import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import '../../../config/route/app_routes.dart';
-import '../../../utils/constants/app_colors.dart';
 import '../../../utils/log/app_log.dart';
 
 List _list = [

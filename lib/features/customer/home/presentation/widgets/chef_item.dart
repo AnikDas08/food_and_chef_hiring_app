@@ -34,7 +34,7 @@ Widget chefItem({num height = 200, bool isSearch = false}) {
                 imageSrc: AppImages.image3,
                 height: height.toDouble(),
                 width: 240,
-                borderRadius: isSearch ? 2 : 8,
+                borderRadius: 0,
                 fill: BoxFit.fill,
               ),
 

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../component/bottom_nav_bar/common_bottom_bar.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/setting_controller.dart';

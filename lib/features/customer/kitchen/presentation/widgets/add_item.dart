@@ -170,12 +170,12 @@ class DropdownField extends StatelessWidget {
   final IconData icon;
 
   const DropdownField({
-    Key? key,
+    super.key,
     required this.title,
     required this.value,
     this.onTap,
     this.icon = Icons.keyboard_arrow_down,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
