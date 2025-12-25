@@ -3,6 +3,8 @@ import 'package:new_untitled/component/bottom_nav_bar/chef_bottom_bar.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 
+import '../widgets/book_time.dart';
+
 class AnalyticsScreen extends StatelessWidget {
   const AnalyticsScreen({super.key});
 
@@ -16,6 +18,10 @@ class AnalyticsScreen extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
         ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(children: [BookTime()]),
       ),
       bottomNavigationBar: ChefBottomBar(currentIndex: 1),
     );
