@@ -7,7 +7,6 @@ import '../../../../component/image/common_image.dart';
 import '../../../../component/text/common_text.dart';
 import '../../../../utils/constants/app_images.dart';
 import '../../../../utils/constants/app_string.dart';
-import 'indicatior.dart';
 
 class Screen2 extends StatelessWidget {
   const Screen2({super.key});

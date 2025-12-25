@@ -16,7 +16,7 @@ import '../../../../../../../utils/helpers/other_helper.dart';
 import '../widgets/do_not_account.dart';
 
 class SignInScreen extends StatefulWidget {
-  SignInScreen({super.key});
+  const SignInScreen({super.key});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
