@@ -11,16 +11,17 @@ class MenuPage extends StatelessWidget {
       animationDuration: const Duration(milliseconds: 300),
       length: 3,
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
-          automaticallyImplyLeading: false,
           toolbarHeight: 0,
+          actionsPadding: EdgeInsets.zero,
+          automaticallyImplyLeading: false,
           bottom: const TabBar(
             indicatorColor: Colors.transparent,
             indicatorWeight: 2,
             unselectedLabelColor: Color(0xff777777),
             padding: EdgeInsets.symmetric(horizontal: 0),
             labelPadding: EdgeInsets.symmetric(horizontal: 0),
-
             labelStyle: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
@@ -31,7 +32,6 @@ class MenuPage extends StatelessWidget {
               fontWeight: FontWeight.w400,
               color: Color(0xff636363),
             ),
-
             tabs: [
               Tab(text: 'Starters'),
               Tab(text: 'Main Courses'),
@@ -39,33 +39,32 @@ class MenuPage extends StatelessWidget {
             ],
           ),
         ),
-        body: TabBarView(
-          children: [
-            Center(
-              child: ListView.builder(
+        body: MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
+          removeBottom: true,
+          child: TabBarView(
+            children: [
+              ListView.builder(
                 itemCount: 10,
                 itemBuilder: (context, index) {
                   return FoodItem();
                 },
               ),
-            ),
-            Center(
-              child: ListView.builder(
+              ListView.builder(
                 itemCount: 10,
                 itemBuilder: (context, index) {
                   return FoodItem();
                 },
               ),
-            ),
-            Center(
-              child: ListView.builder(
+              ListView.builder(
                 itemCount: 10,
                 itemBuilder: (context, index) {
                   return FoodItem();
                 },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

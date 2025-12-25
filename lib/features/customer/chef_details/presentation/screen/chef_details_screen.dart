@@ -27,180 +27,179 @@ class ChefDetailsScreen extends StatelessWidget {
       init: ChefDetailsController(),
       builder:
           (controller) => Scaffold(
-            body: SafeArea(
-              child: Stack(
-                children: [
-                  Stack(
-                    children: [
-                      CommonImage(imageSrc: AppImages.image3),
-                      Positioned(
-                        top: 30,
-                        left: 10,
-                        child: InkWell(
-                          onTap: Get.back,
-                          child: CommonImage(imageSrc: AppIcons.back),
-                        ),
+            body: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  SliverAppBar(
+                    pinned: true,
+                    expandedHeight: 450.h,
+                    backgroundColor: Colors.white,
+                    leading: InkWell(
+                      onTap: Get.back,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 16.w),
+                        child: CommonImage(imageSrc: AppIcons.back),
                       ),
-                      Positioned(
-                        top: 30,
-                        right: 10,
-                        child: InkWell(
-                          onTap: controller.onChange,
-                          child: CommonImage(imageSrc: AppIcons.favorite),
-                        ),
+                    ),
+                    actions: [
+                      InkWell(
+                        onTap: controller.onChange,
+                        child: CommonImage(imageSrc: AppIcons.favorite),
                       ),
-                      Positioned(
-                        top: 30,
-                        right: 60,
-                        child: InkWell(
-                          onTap: () {
-                            SharePlus.instance.share(
-                              ShareParams(text: 'https://example.com'),
-                            );
-                          },
-                          child: CommonImage(imageSrc: AppIcons.share),
-                        ),
+                      const SizedBox(width: 12),
+                      InkWell(
+                        onTap: () {
+                          SharePlus.instance.share(
+                            ShareParams(text: 'https://example.com'),
+                          );
+                        },
+                        child: CommonImage(imageSrc: AppIcons.share),
                       ),
-                      Positioned(
-                        bottom: 50,
-                        left: 20,
-                        child: InkWell(
-                          onTap: controller.onChange,
-                          child: CommonImage(
-                            imageSrc: AppIcons.chef,
-                            height: 30,
-                            width: 115,
-                            fill: BoxFit.fill,
-                          ),
-                        ),
-                      ),
+                      const SizedBox(width: 12),
                     ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                    ).copyWith(top: 20.h),
-                    margin: EdgeInsets.only(top: 250.h),
-                    decoration: BoxDecoration(color: Colors.white),
-                    child: Column(
-                      children: [
-                        8.height,
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CommonText(
-                              text: "Javier A.",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff272727),
-                            ),
-                            Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: "\$70.00",
-                                    style: TextStyle(
-                                      color: Color(0xff272727),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                    flexibleSpace: FlexibleSpaceBar(
+                      collapseMode: CollapseMode.pin,
 
-                                  TextSpan(
-                                    text: " /hr",
-                                    style: TextStyle(
-                                      color: Color(0xff777777),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ],
+                      background: Column(
+                        children: [
+                          Stack(
+                            children: [
+                              CommonImage(
+                                imageSrc: AppImages.image3,
+                                fill: BoxFit.cover,
                               ),
-                              textAlign: TextAlign.start,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-
-                          children: [
-                            CommonImage(imageSrc: AppIcons.location),
-                            CommonText(
-                              text: "2km",
-                              fontSize: 12,
-                              color: Color(0xff777777),
-                              left: 4,
-                            ),
-
-                            Container(
-                              height: 8,
-                              width: 1,
-                              margin: EdgeInsets.symmetric(horizontal: 8),
-                              color: Color(0xffF1F1F1),
-                            ),
-                            CommonImage(imageSrc: AppIcons.briefcase),
-                            CommonText(
-                              text: "4 years Experience",
-                              fontSize: 12,
-                              left: 4,
-                              color: Color(0xff777777),
-                            ),
-
-                            Expanded(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    color: Color(0xffFD713F),
-                                    size: 20,
-                                  ),
-                                  Flexible(
-                                    child: CommonText(
+                              Positioned(
+                                bottom: 20,
+                                left: 20,
+                                child: CommonImage(
+                                  imageSrc: AppIcons.chef,
+                                  height: 30,
+                                  width: 115,
+                                  fill: BoxFit.fill,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 12),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CommonText(
+                                      text: "Javier A.",
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xff272727),
+                                    ),
+                                    Text.rich(
+                                      TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: "\$70.00",
+                                            style: TextStyle(
+                                              color: Color(0xff272727),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: " /hr",
+                                            style: TextStyle(
+                                              color: Color(0xff777777),
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    CommonImage(imageSrc: AppIcons.location),
+                                    CommonText(
+                                      text: "2km",
+                                      fontSize: 12,
+                                      left: 4,
+                                      color: Color(0xff777777),
+                                    ),
+                                    Container(
+                                      height: 8,
+                                      width: 1,
+                                      margin: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                      ),
+                                      color: Color(0xffF1F1F1),
+                                    ),
+                                    CommonImage(imageSrc: AppIcons.briefcase),
+                                    CommonText(
+                                      text: "4 years Experience",
+                                      fontSize: 12,
+                                      left: 4,
+                                      color: Color(0xff777777),
+                                    ),
+                                    const Spacer(),
+                                    Icon(
+                                      Icons.star,
+                                      color: Color(0xffFD713F),
+                                      size: 20,
+                                    ),
+                                    CommonText(
                                       text: "4.5 (482 Reviews)",
                                       fontSize: 12,
-                                      left: 2,
+                                      left: 4,
                                       color: Color(0xff777777),
                                     ),
-                                  ),
-                                ],
-                              ),
+                                  ],
+                                ),
+                                ExtendText(
+                                  text: text,
+                                  isExpanded: controller.isExpanded,
+                                  onTap: controller.onChangeExpand,
+                                ),
+                                const SizedBox(height: 16),
+                                CommonButton(
+                                  titleText: AppString.checkAvailability,
+                                  titleColor: Colors.white,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-
-                        ExtendText(
-                          text: text,
-                          isExpanded: controller.isExpanded,
-                          onTap: controller.onChangeExpand,
-                        ),
-                        24.height,
-                        CommonButton(
-                          titleText: AppString.checkAvailability,
-                          titleColor: Colors.white,
-                          titleSize: 14,
-                          titleWeight: FontWeight.w600,
-                        ),
-
-                        CommonText(
-                          text: AppString.menu,
-                          fontSize: 16,
-                          top: 24,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff272727),
-                        ).start,
-                        Expanded(child: MenuPage()),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ],
+                ];
+              },
+              body: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CommonText(
+                      text: AppString.menu,
+                      fontSize: 16,
+                      top: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff272727),
+                    ).start,
+                    Expanded(child: MenuPage()),
+                  ],
+                ),
               ),
             ),
+
             bottomNavigationBar:
                 controller.cartItems.isEmpty
                     ? null
                     : SafeArea(
+                      top: false,
                       child: InkWell(
                         onTap: () => Get.toNamed(AppRoutes.cart),
                         child: Padding(
