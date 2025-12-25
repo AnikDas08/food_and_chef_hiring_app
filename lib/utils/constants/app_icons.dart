@@ -54,4 +54,5 @@ class AppIcons {
   static const String dish = "$baseurl/dish.svg";
   static const String mapIcon = "$baseurl/map_icon.svg";
   static const String sended = "$baseurl/sended.svg";
+  static const String arrowUpDown = "$baseurl/arrow_up_down.svg";
 }

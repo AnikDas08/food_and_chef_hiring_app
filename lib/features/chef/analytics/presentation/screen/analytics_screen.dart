@@ -5,6 +5,7 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 
 import '../widgets/book_info.dart';
 import '../widgets/book_time.dart';
+import '../widgets/earning.dart';
 import '../widgets/top_item.dart';
 
 class AnalyticsScreen extends StatelessWidget {
@@ -23,7 +24,7 @@ class AnalyticsScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: Column(children: [BookTime(), bookInfo(), topItem()]),
+        child: Column(children: [earning(), BookTime(), bookInfo(), topItem()]),
       ),
       bottomNavigationBar: ChefBottomBar(currentIndex: 1),
     );
