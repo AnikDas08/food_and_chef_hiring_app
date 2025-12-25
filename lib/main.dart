@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
@@ -20,6 +21,10 @@ init() async {
   SocketServices.connectToSocket();
 
   await Future.wait([
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]),
     LocalStorage.getAllPrefData(),
     NotificationService.initLocalNotification(),
     dotenv.load(fileName: ".env"),

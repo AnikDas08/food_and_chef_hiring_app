@@ -4,6 +4,7 @@ import '../../utils/constants/app_colors.dart';
 
 ThemeData themeData = ThemeData(
   scaffoldBackgroundColor: AppColors.background,
+  fontFamily: ".SF Pro Text",
   appBarTheme: const AppBarTheme(
     shadowColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,

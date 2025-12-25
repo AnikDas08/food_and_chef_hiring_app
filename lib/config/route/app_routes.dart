@@ -37,8 +37,11 @@ import '../../features/customer/cart/presentation/screen/cart_screen.dart';
 import '../../features/customer/cart/presentation/screen/checkout_screen.dart';
 import '../../features/customer/cart/presentation/screen/personal_tax_details_screen.dart';
 import '../../features/customer/chef_details/presentation/screen/chef_details_screen.dart';
+import '../../features/customer/dietary/presentation/screen/dietary_screen.dart';
 import '../../features/customer/home/presentation/screen/home_screen.dart';
 import '../../features/customer/home/presentation/screen/search_screen.dart';
+import '../../features/customer/kitchen/presentation/screen/add_equipment_screen.dart';
+import '../../features/customer/kitchen/presentation/screen/kitchen_screen.dart';
 import '../../features/customer/past_order/presentation/screen/past_order_screen.dart';
 import '../../features/customer/past_order/presentation/screen/reorder_screen.dart';
 import '../../features/customer/past_order/presentation/screen/review_screen.dart';
@@ -100,6 +103,9 @@ class AppRoutes {
   static const String editMenu = "/edit_menu.dart";
   static const String accountSetting = "/account_setting.dart";
   static const String analytics = "/analytics_screen.dart";
+  static const String kitchen = "/kitchen_screen.dart";
+  static const String dietary = "/dietary_screen.dart";
+  static const String addEquipment = "/add_equipment_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -151,5 +157,8 @@ class AppRoutes {
     GetPage(name: editMenu, page: () => EditMenu()),
     GetPage(name: accountSetting, page: () => AccountSetting()),
     GetPage(name: analytics, page: () => AnalyticsScreen()),
+    GetPage(name: kitchen, page: () => KitchenScreen()),
+    GetPage(name: dietary, page: () => DietaryScreen()),
+    GetPage(name: addEquipment, page: () => AddEquipmentScreen()),
   ];
 }

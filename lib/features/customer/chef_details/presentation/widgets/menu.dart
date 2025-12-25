@@ -45,7 +45,7 @@ class MenuPage extends StatelessWidget {
               child: ListView.builder(
                 itemCount: 10,
                 itemBuilder: (context, index) {
-                  return foodItem(context);
+                  return FoodItem();
                 },
               ),
             ),
@@ -53,7 +53,7 @@ class MenuPage extends StatelessWidget {
               child: ListView.builder(
                 itemCount: 10,
                 itemBuilder: (context, index) {
-                  return foodItem(context);
+                  return FoodItem();
                 },
               ),
             ),
@@ -61,7 +61,7 @@ class MenuPage extends StatelessWidget {
               child: ListView.builder(
                 itemCount: 10,
                 itemBuilder: (context, index) {
-                  return foodItem(context);
+                  return FoodItem();
                 },
               ),
             ),

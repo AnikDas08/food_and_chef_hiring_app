@@ -52,7 +52,7 @@ Widget chefItem({num height = 200, bool isSearch = false}) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 240.w,
+                  width: 224.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

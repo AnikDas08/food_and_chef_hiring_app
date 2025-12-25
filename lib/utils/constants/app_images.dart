@@ -41,5 +41,7 @@ class AppImages {
   static const String delete = "$baseurl/delete.png";
   static const String moreItem = "$baseurl/more_item.png";
   static const String reviewSuccess = "$baseurl/review_success.png";
+  static const String dietary = "$baseurl/dietary.png";
+  static const String large = "$baseurl/large.png";
 
 }

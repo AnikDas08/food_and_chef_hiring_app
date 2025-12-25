@@ -21,7 +21,9 @@ import '../../features/common/setting/presentation/controller/terms_of_services_
 import '../../features/customer/address/presentation/controller/address_controller.dart';
 import '../../features/customer/booking/presentation/controller/booking_history_controller.dart';
 import '../../features/customer/cart/presentation/controller/cart_controller.dart';
+import '../../features/customer/dietary/presentation/controller/dietary_controller.dart';
 import '../../features/customer/home/presentation/controller/home_controller.dart';
+import '../../features/customer/kitchen/presentation/controller/kitchen_controller.dart';
 import '../../features/customer/past_order/presentation/controller/past_order_controller.dart';
 import '../../features/customer/payment/presentation/controller/payment_method_controller.dart';
 import '../../features/customer/profile/presentation/controller/profile_controller.dart';
@@ -54,5 +56,7 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => AddMenuController(), fenix: true);
     Get.lazyPut(() => AvailabilityController(), fenix: true);
     Get.lazyPut(() => AnalyticsController(), fenix: true);
+    Get.lazyPut(() => DietaryController(), fenix: true);
+    Get.lazyPut(() => KitchenController(), fenix: true);
   }
 }
