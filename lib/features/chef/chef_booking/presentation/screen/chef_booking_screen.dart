@@ -51,6 +51,8 @@ class ChefBookingScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         String value = controller.bookingHistoryList[index];
                         return InkWell(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
                           onTap: () {
                             controller.onChangeBookingHistory(value);
                           },

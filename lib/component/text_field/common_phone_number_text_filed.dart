@@ -23,7 +23,7 @@ class CommonPhoneNumberTextFiled extends StatelessWidget {
       pickerDialogStyle: PickerDialogStyle(backgroundColor: Color(0xffF2F2F2)),
       decoration: const InputDecoration(
         hintText: AppString.phoneNumber,
-        fillColor: AppColors.filledColor,
+        fillColor: Color(0xffF2F2F2),
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         filled: true,
         disabledBorder: OutlineInputBorder(

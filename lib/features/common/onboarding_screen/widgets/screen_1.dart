@@ -58,7 +58,7 @@ class Screen1 extends StatelessWidget {
                     maxLines: 3,
                   ),
 
-                  indicator(currentIndex: 0),
+
 
                 ],
               ),

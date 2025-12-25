@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/features/common/onboarding_screen/widgets/indicatior.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../component/button/common_button.dart';
 import '../../../config/route/app_routes.dart';
@@ -26,7 +28,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Color(0xffF1F1F1),
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.light,
+      ),
+    );
     timer = Timer.periodic(const Duration(seconds: 3), (Timer t) {
       if (currentPage < _list.length - 1) {
         currentPage++;
@@ -50,49 +58,66 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                onPageChanged: (index) {
-                  currentPage = index;
-                },
-                itemCount: _list.length,
-                itemBuilder: (context, index) {
-                  return _list[index];
-                },
-              ),
-            ),
-            28.height,
-
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Color(0xffF1F1F1),
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.light,
+      ),
+      child: Container(
+        color: Color(0xffF1F1F1),
+        child: SafeArea(
+          bottom: false,
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            body: SafeArea(
               child: Column(
                 children: [
-                  CommonButton(
-                    titleText: AppString.signIn,
-                    onTap: () => Get.toNamed(AppRoutes.signIn),
-                  ),
-                  12.height,
+                  Expanded(
+                    child: PageView.builder(
+                      controller: _pageController,
+                      onPageChanged: (index) {
+                        currentPage = index;
+                        setState(() {
 
-                  CommonButton(
-                    titleText: "I’m New, Sign Me Up",
-                    buttonColor: Color(0xffF2F2F2),
-                    borderColor: Colors.transparent,
-                    titleColor: Colors.black,
-                    titleSize: 16,
-                    titleWeight: FontWeight.w600,
-                    onTap: () => Get.toNamed(AppRoutes.signUp),
+                        });
+                      },
+                      itemCount: _list.length,
+                      itemBuilder: (context, index) {
+                        return _list[index];
+                      },
+                    ),
                   ),
-                  20.height,
+                  indicator(currentIndex: currentPage),
+                  28.height,
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Column(
+                      children: [
+                        CommonButton(
+                          titleText: AppString.signIn,
+                          onTap: () => Get.toNamed(AppRoutes.signIn),
+                        ),
+                        12.height,
+
+                        CommonButton(
+                          titleText: "I’m New, Sign Me Up",
+                          buttonColor: Color(0xffF2F2F2),
+                          borderColor: Colors.transparent,
+                          titleColor: Colors.black,
+                          titleSize: 16,
+                          titleWeight: FontWeight.w600,
+                          onTap: () => Get.toNamed(AppRoutes.signUp),
+                        ),
+                        20.height,
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

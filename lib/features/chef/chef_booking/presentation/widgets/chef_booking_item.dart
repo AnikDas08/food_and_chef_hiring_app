@@ -231,6 +231,7 @@ Widget chefBookingItem() {
           if (controller.selectedBookingHistory == "Completed")
             Container(
               padding: EdgeInsets.all(8),
+              margin: EdgeInsets.only(right: 12.w),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8.sp),
@@ -318,10 +319,11 @@ Widget chefBookingItem() {
                     ),
                   ),
                 ),
-                12.width
+                12.width,
               ],
               if (controller.selectedBookingHistory == "Upcoming") ...[
                 Container(
+                  margin: EdgeInsets.only(right: 12.w),
                   padding: EdgeInsets.symmetric(
                     horizontal: 16.sp,
                     vertical: 8.sp,
@@ -350,6 +352,7 @@ Widget chefBookingItem() {
               ],
               if (controller.selectedBookingHistory == "Completed") ...[
                 Container(
+                  margin: EdgeInsets.only(right: 12.w),
                   padding: EdgeInsets.symmetric(
                     horizontal: 16.sp,
                     vertical: 8.sp,
@@ -373,6 +376,7 @@ Widget chefBookingItem() {
                         size: 12,
                         color: Color(0xffFD713F),
                       ),
+
                     ],
                   ),
                 ),

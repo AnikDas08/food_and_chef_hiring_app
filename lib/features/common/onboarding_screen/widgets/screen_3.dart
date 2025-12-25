@@ -57,8 +57,6 @@ class Screen3 extends StatelessWidget {
                     bottom: 20,
                     maxLines: 3,
                   ),
-
-                  indicator(currentIndex: 2),
                 ],
               ),
             ),

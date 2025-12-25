@@ -13,7 +13,7 @@ class CommonTextField extends StatelessWidget {
     this.prefixIcon,
     this.isPassword = false,
     this.controller,
-    this.textInputAction = TextInputAction.next,
+    this.textInputAction = TextInputAction.done,
     this.keyboardType = TextInputType.text,
     this.mexLength,
     this.validator,
@@ -108,14 +108,8 @@ class CommonTextField extends StatelessWidget {
           errorBorder: _buildBorder(),
           hintText: hintText,
           labelText: labelText,
-          hintStyle: TextStyle(
-            fontSize: fontSize,
-            color: hintTextColor,
-          ),
-          labelStyle: TextStyle(
-            fontSize: fontSize,
-            color: labelTextColor,
-          ),
+          hintStyle: TextStyle(fontSize: fontSize, color: hintTextColor),
+          labelStyle: TextStyle(fontSize: fontSize, color: labelTextColor),
           prefixText: prefixText,
           prefixStyle: TextStyle(
             fontSize: fontSize,

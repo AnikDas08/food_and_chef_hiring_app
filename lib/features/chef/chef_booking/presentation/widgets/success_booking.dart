@@ -35,7 +35,7 @@ successBookingPopUp() {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CommonImage(imageSrc: AppImages.success, size: 88),
+                      CommonImage(imageSrc: AppImages.reviewSuccess, size: 88),
                       CommonText(
                         text: AppString.congratulations,
                         fontSize: 16,

@@ -17,7 +17,6 @@ class CommonText extends StatelessWidget {
     this.fontWeight = FontWeight.w500,
     this.color = AppColors.black,
     required this.text,
-    this.style,
     this.overflow = TextOverflow.ellipsis,
   });
 
@@ -32,7 +31,6 @@ class CommonText extends StatelessWidget {
   final TextAlign textAlign;
   final int maxLines;
   final TextOverflow overflow;
-  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +46,11 @@ class CommonText extends StatelessWidget {
         text,
         maxLines: maxLines,
         overflow: overflow,
-        style:
-            style ??
-            TextStyle(
-              fontSize: fontSize.sp,
-              fontWeight: fontWeight,
-              color: color,
-            ),
+        style: TextStyle(
+          fontSize: fontSize.sp,
+          fontWeight: fontWeight,
+          color: color,
+        ),
       ),
     );
   }
