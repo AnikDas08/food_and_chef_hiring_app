@@ -7,6 +7,7 @@ import 'package:new_untitled/features/common/onboarding_screen/widgets/indicatio
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../component/button/common_button.dart';
 import '../../../config/route/app_routes.dart';
+import '../../../utils/constants/app_images.dart';
 import '../../../utils/constants/app_string.dart';
 import 'widgets/screen_1.dart';
 import 'widgets/screen_2.dart';
@@ -22,6 +23,26 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   final List _list = [Screen1(), Screen2(), Screen3()];
+
+  final List _lists = [
+    {
+      "image": AppImages.onboarding_1,
+      "title": AppString.welcomeToPrivae,
+      "subtitle": AppString.effortlesslyHirePersonal,
+    },
+
+    {
+      "image": AppImages.onboarding_2,
+      "title": AppString.findYourPrivaeChef,
+      "subtitle": AppString.browseThroughTalentedChefs,
+    },
+
+    {
+      "image": AppImages.onboarding_3,
+      "title": AppString.bookAnytimeAnywhere,
+      "subtitle": AppString.scheduleYourChefAtYourConvenience,
+    },
+  ];
   int currentPage = 0;
   Timer? timer;
 
