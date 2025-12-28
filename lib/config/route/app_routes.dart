@@ -8,6 +8,8 @@ import 'package:new_untitled/features/chef/profile/presentation/screen/account_s
 import 'package:new_untitled/features/customer/address/presentation/screen/add_address_screen.dart';
 import '../../features/chef/chef_booking/presentation/screen/chef_booking_screen.dart';
 import '../../features/chef/home/presentation/screen/chef_home_screen.dart';
+import '../../features/chef/payment/presentation/screen/add_payment_method.dart';
+import '../../features/chef/payment/presentation/screen/chef_payment_screen.dart';
 import '../../features/chef/profile/presentation/screen/chef_edit_profile.dart';
 import '../../features/chef/profile/presentation/screen/chef_profile_screen.dart';
 import '../../features/common/auth/change_password/presentation/screen/change_password_screen.dart';
@@ -106,6 +108,8 @@ class AppRoutes {
   static const String kitchen = "/kitchen_screen.dart";
   static const String dietary = "/dietary_screen.dart";
   static const String addEquipment = "/add_equipment_screen.dart";
+  static const String addPaymentMethod = "/add_payment_method.dart";
+  static const String chefPayment = "/chef_payment_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -160,5 +164,7 @@ class AppRoutes {
     GetPage(name: kitchen, page: () => KitchenScreen()),
     GetPage(name: dietary, page: () => DietaryScreen()),
     GetPage(name: addEquipment, page: () => AddEquipmentScreen()),
+    GetPage(name: chefPayment, page: () => ChefPaymentScreen()),
+    GetPage(name: addPaymentMethod, page: () => AddPaymentMethod()),
   ];
 }

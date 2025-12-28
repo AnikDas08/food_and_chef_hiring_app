@@ -7,6 +7,7 @@ import '../../features/chef/availaility/presentation/controller/availiability_co
 import '../../features/chef/chef_booking/presentation/controller/chef_booking_controller.dart';
 import '../../features/chef/chef_public_profile/presentation/controller/chef_public_profile_controller.dart';
 import '../../features/chef/home/presentation/controller/chef_home_controller.dart';
+import '../../features/chef/payment/presentation/controller/chef_payment_controller.dart';
 import '../../features/chef/profile/presentation/controller/chef_profile_controller.dart';
 import '../../features/common/auth/change_password/presentation/controller/change_password_controller.dart';
 import '../../features/common/auth/forgot password/presentation/controller/forget_password_controller.dart';
@@ -58,5 +59,6 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => AnalyticsController(), fenix: true);
     Get.lazyPut(() => DietaryController(), fenix: true);
     Get.lazyPut(() => KitchenController(), fenix: true);
+    Get.lazyPut(() => ChefPaymentController(), fenix: true);
   }
 }
