@@ -111,7 +111,6 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -125,6 +124,7 @@ class Header extends StatelessWidget {
           const TabBar(
             indicatorColor: Colors.transparent,
             unselectedLabelColor: Color(0xff777777),
+            labelPadding: EdgeInsets.zero,
             labelStyle: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,

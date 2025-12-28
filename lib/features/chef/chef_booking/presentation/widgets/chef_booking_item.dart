@@ -11,6 +11,7 @@ import '../../../../../utils/constants/app_icons.dart';
 import '../controller/chef_booking_controller.dart';
 import 'booking_details_popup.dart';
 import 'confirmation_booking_pop_up.dart';
+import 'decline_pop_up.dart';
 
 Widget chefBookingItem() {
   final controller = Get.find<ChefBookingController>();
@@ -282,20 +283,25 @@ Widget chefBookingItem() {
               ),
               Spacer(),
               if (controller.selectedBookingHistory == "Unconfirmed") ...[
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.sp,
-                    vertical: 8.sp,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.sp),
-                  ),
-                  child: CommonText(
-                    text: AppString.decline,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xffFF3C3C),
+                InkWell(
+                  onTap: () {
+                    declineBookingPopUp();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.sp,
+                      vertical: 8.sp,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.sp),
+                    ),
+                    child: CommonText(
+                      text: AppString.decline,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xffFF3C3C),
+                    ),
                   ),
                 ),
                 InkWell(

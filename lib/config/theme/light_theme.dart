@@ -8,6 +8,7 @@ ThemeData themeData = ThemeData(
   scaffoldBackgroundColor: AppColors.background,
   fontFamily: Platform.isIOS ? null : 'Roboto',
   useMaterial3: true,
+
   appBarTheme: const AppBarTheme(
     shadowColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,
