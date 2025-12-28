@@ -264,6 +264,7 @@ class AppString {
   static const String requestAndCheckout = "Request and Checkout";
   static const String chat = "Chat";
   static const String chatWithCustomer = "Chat with the Customer";
+  static const String chatWithCustomers = "Chat with Customer";
   static const String myProfile = "My Profile";
   static const String paymentMethods = "Payment Methods";
   static const String pastOrders = "Past Orders";

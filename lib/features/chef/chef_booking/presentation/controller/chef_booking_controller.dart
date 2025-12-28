@@ -1,6 +1,27 @@
 import 'package:get/get.dart';
 
 class ChefBookingController extends GetxController {
+  DateTime selectedDate = DateTime.now();
+  String selectedTime = "";
+  final List<String> timeSlots = [
+    "10:00 AM",
+    "11:00 AM",
+    "12:00 PM",
+    "02:00 PM",
+    "04:00 PM",
+    "06:00 PM",
+  ];
+
+  void selectDate(DateTime date) {
+    selectedDate = date;
+    update();
+  }
+
+  void selectTime(String time) {
+    selectedTime = time;
+    update();
+  }
+
   bool isOrderDetailsPopup = false;
   List<String> bookingHistoryList = ["Unconfirmed", "Upcoming", "Completed"];
 

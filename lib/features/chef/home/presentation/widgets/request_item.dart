@@ -10,6 +10,7 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../customer/booking/presentation/widgets/details_popup.dart';
+import '../../../chef_booking/presentation/widgets/upcoming_pop_up.dart';
 
 Widget requestItem(BuildContext context) {
   return InkWell(
@@ -80,7 +81,7 @@ Widget requestItem(BuildContext context) {
                 ),
                 onSelected: (value) {
                   if (value == 1) {
-                    // Request a Change action
+                    upcomingPopUp();
                   } else if (value == 2) {
                     // Cancel Booking action
                   }
@@ -203,9 +204,7 @@ Widget requestItem(BuildContext context) {
               ),
               Spacer(),
               InkWell(
-                onTap: () {
-                  Get.toNamed(AppRoutes.requestChange);
-                },
+                onTap: upcomingPopUp,
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 16.w,
