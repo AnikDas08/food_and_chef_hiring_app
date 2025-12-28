@@ -41,7 +41,7 @@ Widget topItem() {
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: 10,
+          itemCount: 8,
           itemBuilder: (context, index) {
             return MenuTopItem(value: index + 1);
           },

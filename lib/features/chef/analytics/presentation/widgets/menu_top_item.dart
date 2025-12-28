@@ -61,9 +61,13 @@ class _MenuTopItemState extends State<MenuTopItem> {
                     ),
                     Spacer(),
                     InkWell(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
                       onTap: onChange,
                       child: Icon(
-                        Icons.keyboard_arrow_down_outlined,
+                        isExpanded
+                            ? Icons.keyboard_arrow_right
+                            : Icons.keyboard_arrow_down_outlined,
                         color: Color(0xff777777),
                       ),
                     ),

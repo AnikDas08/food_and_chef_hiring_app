@@ -113,6 +113,7 @@ Widget chefBookingItem() {
               PopupMenuButton<int>(
                 padding: EdgeInsets.zero,
                 menuPadding: EdgeInsets.zero,
+                color: Colors.white,
                 icon: const Icon(Icons.more_vert),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),

@@ -132,31 +132,27 @@ logOutPopUp() {
                   fontWeight: FontWeight.w600,
                 ),
                 actions: [
-                  Row(
+                  Column(
                     children: [
-                      Expanded(
-                        child: CommonButton(
-                          titleText: AppString.no,
-                          borderWidth: 1.5,
-                          buttonHeight: 48,
-                          buttonRadius: 8,
-                          borderColor: AppColors.primaryColor,
-                          buttonColor: AppColors.transparent,
-                          titleColor: AppColors.primaryColor,
-                          onTap: () => Get.back(),
-                        ),
+                      CommonButton(
+                        titleText: AppString.yes,
+                        buttonHeight: 48,
+                        buttonRadius: 8,
+                        onTap: () {
+                          LocalStorage.removeAllPrefData();
+                          Get.back();
+                        },
                       ),
-                      SizedBox(width: 16.w),
-                      Expanded(
-                        child: CommonButton(
-                          titleText: AppString.yes,
-                          buttonHeight: 48,
-                          buttonRadius: 8,
-                          onTap: () {
-                            LocalStorage.removeAllPrefData();
-                            Get.back();
-                          },
-                        ),
+                      16.height,
+                      CommonButton(
+                        titleText: AppString.cancel,
+                        borderWidth: 1.5,
+                        buttonHeight: 48,
+                        buttonRadius: 8,
+                        borderColor: AppColors.primaryColor,
+                        buttonColor: AppColors.transparent,
+                        titleColor: AppColors.primaryColor,
+                        onTap: () => Get.back(),
                       ),
                     ],
                   ),

@@ -305,16 +305,28 @@ class CheckoutScreen extends StatelessWidget {
               ),
             ),
 
-            CommonText(
-              text: "Terms: All prices excl. VAT. For your order the",
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Color(0xff636363),
-              top: 36,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CommonText(
+                  text: "Terms: ",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff222222),
+                  top: 36,
+                ),CommonText(
+                  text: "All prices excl. VAT. For your order the",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff636363),
+                  top: 36,
+                ),
+              ],
             ),
             CommonText(
               text: "Privae Chef Terms & conditions apply",
-              fontSize: 14,
+              fontSize: 15,
               fontWeight: FontWeight.w400,
               color: Color(0xffFD713F),
             ),
