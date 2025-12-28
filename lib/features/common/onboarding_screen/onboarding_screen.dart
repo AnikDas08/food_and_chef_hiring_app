@@ -56,18 +56,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         statusBarBrightness: Brightness.light,
       ),
     );
-    timer = Timer.periodic(const Duration(seconds: 3), (Timer t) {
-      if (currentPage < _list.length - 1) {
-        currentPage++;
-        _pageController.animateToPage(
-          currentPage,
-          duration: const Duration(milliseconds: 350),
-          curve: Curves.easeInOut,
-        );
-      } else {
-        t.cancel();
-      }
-    });
   }
 
   @override
@@ -94,22 +82,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             body: SafeArea(
               child: Column(
                 children: [
-                  Expanded(
-                    child: PageView.builder(
-                      controller: _pageController,
-                      onPageChanged: (index) {
-                        currentPage = index;
-                        setState(() {});
-                      },
-                      itemCount: _list.length,
-                      itemBuilder: (context, index) {
-                        return _list[index];
-                      },
-                    ),
-                  ),
-                  indicator(currentIndex: currentPage),
+                  Expanded(child: OnboardingItem()),
                   28.height,
-
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Column(
