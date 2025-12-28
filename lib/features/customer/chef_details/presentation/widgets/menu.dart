@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/food_item.dart';
@@ -21,6 +22,72 @@ class MenuPage extends StatelessWidget {
                 top: controller.innerBoxIsScrolled.value,
                 child: Column(
                   children: [
+                    if (controller.innerBoxIsScrolled.value)
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xffF2F2F2),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ).copyWith(bottom: 16),
+                        padding: EdgeInsets.all(12),
+                        child: Row(
+                          children: [
+                            InkWell(
+                              onTap: () => Get.back(),
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                padding: const EdgeInsets.all(8),
+                                child: Icon(CupertinoIcons.back),
+                              ),
+                            ),
+                            12.width,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CommonText(
+                                    text: "Javier A.",
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff272727),
+                                  ),
+                                  Row(
+                                    children: [
+                                      CommonText(
+                                        text: "\$40.00 /hr",
+                                        fontSize: 12,
+                                        left: 4,
+                                        right: 4,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xff777777),
+                                      ),
+                                      Icon(
+                                        Icons.star_rate_rounded,
+                                        size: 20,
+                                        color: Color(0xffFD713F),
+                                      ),
+                                      CommonText(
+                                        text: "4.9",
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xff777777),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Icon(CupertinoIcons.search),
+                          ],
+                        ),
+                      ),
                     Header(),
                     Expanded(
                       child: TabBarView(

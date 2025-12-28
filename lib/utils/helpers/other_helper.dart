@@ -74,7 +74,6 @@ class OtherHelper {
       final formattedDate = DateFormat('d MMMM yyyy,').format(picked);
       controller.text = formattedDate;
       return picked.toIso8601String();
-      ;
     }
     return "";
   }

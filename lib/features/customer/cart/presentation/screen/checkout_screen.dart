@@ -318,6 +318,7 @@ class CheckoutScreen extends StatelessWidget {
                 ),CommonText(
                   text: "All prices excl. VAT. For your order the",
                   fontSize: 14,
+
                   fontWeight: FontWeight.w400,
                   color: Color(0xff636363),
                   top: 36,
@@ -325,8 +326,9 @@ class CheckoutScreen extends StatelessWidget {
               ],
             ),
             CommonText(
-              text: "Privae Chef Terms & conditions apply",
-              fontSize: 15,
+              text: "Privae Chef Terms & Conditions apply",
+              fontSize: 14,
+              left: 2,
               fontWeight: FontWeight.w400,
               color: Color(0xffFD713F),
             ),

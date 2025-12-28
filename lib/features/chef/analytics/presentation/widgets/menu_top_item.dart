@@ -33,13 +33,20 @@ class _MenuTopItemState extends State<MenuTopItem> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.all(8),
+            height: 24,
+            width: 24,
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: Color(0xffF1F1F1)),
               shape: BoxShape.circle,
             ),
-            child: CommonText(text: "${widget.value}").center,
+            child:
+                CommonText(
+                  text: "${widget.value}",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+
+                ).center,
           ),
           12.width,
           Expanded(
@@ -65,7 +72,7 @@ class _MenuTopItemState extends State<MenuTopItem> {
                       splashColor: Colors.transparent,
                       onTap: onChange,
                       child: Icon(
-                        isExpanded
+                        !isExpanded
                             ? Icons.keyboard_arrow_right
                             : Icons.keyboard_arrow_down_outlined,
                         color: Color(0xff777777),

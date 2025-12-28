@@ -137,7 +137,7 @@ logOutPopUp() {
                       CommonButton(
                         titleText: AppString.yes,
                         buttonHeight: 48,
-                        buttonRadius: 8,
+                        buttonRadius: 16,
                         onTap: () {
                           LocalStorage.removeAllPrefData();
                           Get.back();
@@ -148,9 +148,10 @@ logOutPopUp() {
                         titleText: AppString.cancel,
                         borderWidth: 1.5,
                         buttonHeight: 48,
-                        buttonRadius: 8,
-                        borderColor: AppColors.primaryColor,
-                        buttonColor: AppColors.transparent,
+
+                        buttonRadius: 16,
+                        borderColor: Color(0xffF2F2F2),
+                        buttonColor: Color(0xffF2F2F2),
                         titleColor: AppColors.primaryColor,
                         onTap: () => Get.back(),
                       ),
