@@ -5,7 +5,6 @@ import 'package:new_untitled/features/customer/cart/presentation/controller/cart
 import 'package:new_untitled/utils/extensions/extension.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../../component/text/common_text.dart';
-import '../../../chef_details/presentation/controller/chef_detail_controller.dart';
 
 void bookingDateTimePopup(BuildContext context) {
   showModalBottomSheet(

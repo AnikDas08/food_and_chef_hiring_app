@@ -6,7 +6,6 @@ import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-import 'package:new_untitled/utils/helpers/other_helper.dart';
 
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_images.dart';

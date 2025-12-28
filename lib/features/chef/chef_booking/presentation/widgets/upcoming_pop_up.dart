@@ -6,14 +6,12 @@ import 'package:new_untitled/features/chef/chef_booking/presentation/widgets/req
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/image/common_image.dart';
-import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_images.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../../../../customer/cart/presentation/widgets/order_summary.dart';
 import '../controller/chef_booking_controller.dart';
-import 'confirmation_booking_pop_up.dart';
 
 upcomingPopUp() {
   showModalBottomSheet(
