@@ -12,6 +12,7 @@ import '../../../../../component/text/common_text.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../controller/chef_detail_controller.dart';
+import '../widgets/availability_pop_up.dart';
 import '../widgets/exten_text.dart';
 import '../widgets/menu.dart';
 
@@ -167,6 +168,7 @@ class ChefDetailsScreen extends StatelessWidget {
                                 CommonButton(
                                   titleText: AppString.checkAvailability,
                                   titleColor: Colors.white,
+                                  onTap: () => availabilityPopup(context),
                                 ),
                               ],
                             ),

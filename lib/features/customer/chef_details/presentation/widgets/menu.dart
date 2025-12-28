@@ -116,6 +116,7 @@ class Header extends StatelessWidget {
         CommonText(
           text: AppString.menu,
           fontSize: 16,
+          left: 16,
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
         ),

@@ -12,6 +12,7 @@ import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_images.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/cart_controller.dart';
+import '../widgets/booking_date_time_pop_up.dart';
 import '../widgets/confirm_checking_popup.dart';
 import '../widgets/order_summary.dart';
 import '../widgets/tax_popup.dart';
@@ -51,10 +52,9 @@ class CheckoutScreen extends StatelessWidget {
                   keyboardType: TextInputType.none,
                   borderRadius: 20,
                   hintText: "1 January 2026, 5:20PM",
-                  onTap: () => OtherHelper.openDatePickerDialog(dateController),
+                  onTap: () => bookingDateTimePopup(context),
                   suffixIcon: InkWell(
-                    onTap:
-                        () => OtherHelper.openDatePickerDialog(dateController),
+                    onTap: () => bookingDateTimePopup(context),
                     child: Icon(Icons.calendar_today, color: Color(0xffFD713F)),
                   ),
                 ),

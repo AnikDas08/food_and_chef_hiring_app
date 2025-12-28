@@ -1,6 +1,31 @@
 import 'package:get/get.dart';
 
 class ChefDetailsController extends GetxController {
+  DateTime selectedDate = DateTime.now();
+  List<String> selectedTime = [];
+  final List<String> timeSlots = [
+    "10:00 AM",
+    "11:00 AM",
+    "12:00 PM",
+    "02:00 PM",
+    "04:00 PM",
+    "06:00 PM",
+  ];
+
+  void selectDate(DateTime date) {
+    selectedDate = date;
+    update();
+  }
+
+  void selectTime(String time) {
+    if (selectedTime.contains(time)) {
+      selectedTime.remove(time);
+    } else {
+      selectedTime.add(time);
+    }
+    update();
+  }
+
   bool isFavorite = false;
   bool isExpanded = false;
 
