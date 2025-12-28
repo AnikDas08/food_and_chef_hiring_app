@@ -108,7 +108,6 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   title: 'Brand',
                   value: 'Musashi',
                   onTap: () {
-                    print('Dropdown tapped!');
                   },
                 ),
         
@@ -118,7 +117,6 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   title: 'Material',
                   value: 'Wood',
                   onTap: () {
-                    print('Dropdown tapped!');
                   },
                 ),
         
@@ -128,7 +126,6 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   title: 'Weight',
                   value: '48g',
                   onTap: () {
-                    print('Dropdown tapped!');
                   },
                 ),
         

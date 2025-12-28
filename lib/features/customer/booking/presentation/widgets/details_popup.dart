@@ -190,6 +190,8 @@ void bookingDetails(BuildContext context) {
                   ),
                   33.height,
                   InkWell(
+                    hoverColor: Colors.transparent,
+                    splashColor: Colors.transparent,
                     onTap: () {
                       controller.onChangeOrderDetailsPopup();
                     },
@@ -203,7 +205,9 @@ void bookingDetails(BuildContext context) {
                           color: Color(0xff272727),
                         ),
                         Icon(
-                          Icons.arrow_forward_ios_sharp,
+                          controller.isOrderDetailsPopup
+                              ? Icons.keyboard_arrow_down
+                              : Icons.keyboard_arrow_right,
                           size: 20,
                           color: Color(0xff777777),
                         ),

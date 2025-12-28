@@ -110,39 +110,37 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CommonText(
-            text: AppString.menu,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Color(0xff272727),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CommonText(
+          text: AppString.menu,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: Color(0xff272727),
+        ),
+        8.height,
+        const TabBar(
+          indicatorColor: Colors.transparent,
+          unselectedLabelColor: Color(0xff777777),
+          labelPadding: EdgeInsets.zero,
+          labelStyle: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Color(0xffFD713F),
           ),
-          8.height,
-          const TabBar(
-            indicatorColor: Colors.transparent,
-            unselectedLabelColor: Color(0xff777777),
-            labelPadding: EdgeInsets.zero,
-            labelStyle: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Color(0xffFD713F),
-            ),
-            unselectedLabelStyle: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Color(0xff636363),
-            ),
-            tabs: [
-              Tab(text: 'Starters'),
-              Tab(text: 'Main Courses'),
-              Tab(text: 'Desserts'),
-            ],
+          unselectedLabelStyle: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: Color(0xff636363),
           ),
-        ],
-      ),
+          tabs: [
+            Tab(text: 'Starters'),
+            Tab(text: 'Main Courses'),
+            Tab(text: 'Desserts'),
+          ],
+        ),
+      ],
     );
   }
 }
