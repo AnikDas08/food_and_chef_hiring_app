@@ -34,7 +34,7 @@ class ChefDetailsScreen extends StatelessWidget {
                 return [
                   SliverAppBar(
                     pinned: false,
-                    expandedHeight: 450.h,
+                    expandedHeight: controller.isExpanded ? 600.h : 450.h,
                     backgroundColor: Colors.white,
                     leading: InkWell(
                       onTap: Get.back,

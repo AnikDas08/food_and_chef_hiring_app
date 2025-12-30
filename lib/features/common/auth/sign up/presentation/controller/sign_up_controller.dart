@@ -32,14 +32,18 @@ class SignUpController extends GetxController {
 
   List selectedOption = ["User", "Consultant"];
   List dietaryOption = [
-    "Onions",
-    "Lettuce",
-    "Cheese",
-    "Cucumber",
-    "Tomato",
-    "Bacon",
-    "Sausage",
-    "Ginger",
+    "Vegetarian",
+    "Vegan",
+    "Pescatarian",
+    "Gluten-free",
+    "Dairy-free",
+    "Lactose-free",
+    "Nut-free",
+    "Soy-free",
+    "Egg-free",
+    "Shellfish-free",
+    "Halal",
+    "Kosher",
   ];
 
   List selectDietary = [];

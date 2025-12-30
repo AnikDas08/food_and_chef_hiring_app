@@ -255,6 +255,7 @@ class CheckoutScreen extends StatelessWidget {
                             CommonText(
                               text: "Add tax details",
                               fontSize: 12,
+                              top: 4,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff818181),
                             ),

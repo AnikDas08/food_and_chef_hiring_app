@@ -11,87 +11,88 @@ void requestChangePopUp() {
   showModalBottomSheet(
     context: Get.context!,
     isScrollControlled: true,
+    enableDrag: true,
+    isDismissible: true,
     backgroundColor: Colors.white,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
-    constraints: BoxConstraints(maxHeight: Get.height - 100),
     builder: (context) {
       return GetBuilder<ChefBookingController>(
         builder: (controller) {
-          return SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16).copyWith(bottom: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CommonText(
-                    text: "Request Change",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
-                  ),
-                  CommonText(
-                    text: "Choose your new preferred time",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff777777),
-                  ),
-
-                  TableCalendar(
-                    daysOfWeekVisible: false,
-                    weekNumbersVisible: false,
-                    rowHeight: 30,
-                    headerStyle: HeaderStyle(formatButtonVisible: false),
-                    daysOfWeekStyle: DaysOfWeekStyle(
-                      weekdayStyle: TextStyle(fontSize: 8),
-                      weekendStyle: TextStyle(fontSize: 8),
-
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(12),
+          return DraggableScrollableSheet(
+            expand: false,
+            initialChildSize: 0.85,
+            minChildSize: 0.4,
+            maxChildSize: 0.95,
+            builder: (context, scrollController) {
+              return SafeArea(
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  padding: const EdgeInsets.all(16).copyWith(bottom: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /// Drag Handle (UX improvement)
+                      Center(
+                        child: Container(
+                          width: 40,
+                          height: 4,
+                          margin: const EdgeInsets.only(bottom: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade400,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                       ),
-                    ),
-                    firstDay: DateTime.now(),
-                    lastDay: DateTime.now().add(const Duration(days: 60)),
-                    focusedDay: controller.selectedDate,
-                    selectedDayPredicate:
-                        (day) => isSameDay(day, controller.selectedDate),
-                    onDaySelected: (selectedDay, focusedDay) {
-                      controller.selectDate(selectedDay);
-                    },
-                    calendarStyle: CalendarStyle(
-                      selectedDecoration: BoxDecoration(
-                        color: Colors.black,
-                        shape: BoxShape.circle,
+
+                      CommonText(
+                        text: "Request Change",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff272727),
                       ),
-                      todayDecoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.3),
-                        shape: BoxShape.circle,
+                      CommonText(
+                        text: "Choose your new preferred time",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff777777),
                       ),
-                    ),
-                  ),
 
-                  const SizedBox(height: 20),
+                      TableCalendar(
+                        daysOfWeekVisible: false,
+                        weekNumbersVisible: false,
+                        rowHeight: 40,
+                        headerStyle:
+                        const HeaderStyle(formatButtonVisible: false),
+                        firstDay: DateTime.now(),
+                        lastDay:
+                        DateTime.now().add(const Duration(days: 60)),
+                        focusedDay: controller.selectedDate,
+                        selectedDayPredicate: (day) =>
+                            isSameDay(day, controller.selectedDate),
+                        onDaySelected: (selectedDay, focusedDay) {
+                          controller.selectDate(selectedDay);
+                        },
+                      ),
 
-                  /// Time Slots
-                  const CommonText(
-                    text: "Select start time",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
-                  ),
+                      const SizedBox(height: 20),
 
-                  const SizedBox(height: 12),
+                      const CommonText(
+                        text: "Select start time",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff272727),
+                      ),
 
-                  Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
-                    children:
-                        controller.timeSlots.map((time) {
-                          final isSelected = controller.selectedTime.contains(
-                            time,
-                          );
+                      const SizedBox(height: 12),
+
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: controller.timeSlots.map((time) {
+                          final isSelected =
+                          controller.selectedTime.contains(time);
 
                           return GestureDetector(
                             onTap: () => controller.selectTime(time),
@@ -101,48 +102,53 @@ void requestChangePopUp() {
                                 vertical: 10,
                               ),
                               decoration: BoxDecoration(
-                                color:
-                                    isSelected
-                                        ? Color(0xff272727)
-                                        : Color(0xffF2F2F2),
+                                color: isSelected
+                                    ? const Color(0xff272727)
+                                    : const Color(0xffF2F2F2),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: CommonText(
                                 text: time,
-                                color: isSelected ? Colors.white : Colors.black,
+                                color: isSelected
+                                    ? Colors.white
+                                    : Colors.black,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 12,
                               ),
                             ),
                           );
                         }).toList(),
-                  ),
+                      ),
 
-                  CommonText(
-                    text: "Note",
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
-                    top: 16,
-                    bottom: 8,
-                  ),
+                      CommonText(
+                        text: "Note",
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff272727),
+                        top: 16,
+                        bottom: 8,
+                      ),
 
-                  CommonTextField(
-                    hintText: "Enter your reason here",
-                    maxLines: 5,
-                    keyboardType: TextInputType.multiline,
-                    borderRadius: 12,
+                      CommonTextField(
+                        hintText: "Enter your reason here",
+                        maxLines: 5,
+                        borderRadius: 12,
+                      ),
+
+                      24.height,
+
+                      CommonButton(
+                        titleText: "Send Request",
+                        onTap: () => Get.back(),
+                      ),
+                    ],
                   ),
-                  24.height,
-                  CommonButton(
-                    titleText: "Send Request",
-                    onTap: () => Get.back(),
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         },
       );
     },
   );
 }
+

@@ -29,7 +29,12 @@ class CustomerHome extends StatelessWidget {
         child: Column(
           children: [
             20.height,
-            CommonImage(imageSrc: AppImages.image1),
+            CommonImage(
+              imageSrc: AppImages.image1,
+              height: 148.h,
+              width: double.infinity,
+              fill: BoxFit.fill,
+            ),
             12.height,
             CommonTextField(
               hintText: AppString.searchForFoodChefEtc,

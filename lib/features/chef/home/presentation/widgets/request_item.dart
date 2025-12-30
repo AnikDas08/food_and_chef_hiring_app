@@ -8,6 +8,8 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../customer/booking/presentation/widgets/details_popup.dart';
+import '../../../chef_booking/presentation/widgets/decline_pop_up.dart';
+import '../../../chef_booking/presentation/widgets/request_change_pop_up.dart';
 import '../../../chef_booking/presentation/widgets/upcoming_pop_up.dart';
 
 Widget requestItem(BuildContext context) {
@@ -73,6 +75,7 @@ Widget requestItem(BuildContext context) {
               PopupMenuButton<int>(
                 padding: EdgeInsets.zero,
                 menuPadding: EdgeInsets.zero,
+                color: Colors.white,
                 icon: const Icon(Icons.more_vert),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -81,7 +84,7 @@ Widget requestItem(BuildContext context) {
                   if (value == 1) {
                     upcomingPopUp();
                   } else if (value == 2) {
-                    // Cancel Booking action
+                    declineBookingPopUp();
                   }
                 },
                 itemBuilder:

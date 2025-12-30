@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/features/chef/chef_booking/presentation/widgets/request_change_pop_up.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -12,6 +13,7 @@ import '../controller/chef_booking_controller.dart';
 import 'booking_details_popup.dart';
 import 'confirmation_booking_pop_up.dart';
 import 'decline_pop_up.dart';
+import 'upcoming_pop_up.dart';
 
 Widget chefBookingItem() {
   final controller = Get.find<ChefBookingController>();
@@ -121,9 +123,9 @@ Widget chefBookingItem() {
                 ),
                 onSelected: (value) {
                   if (value == 1) {
-                    // Request a Change action
+                    upcomingPopUp();
                   } else if (value == 2) {
-                    // Cancel Booking action
+                    declineBookingPopUp();
                   }
                 },
                 itemBuilder:
@@ -383,7 +385,6 @@ Widget chefBookingItem() {
                         size: 12,
                         color: Color(0xffFD713F),
                       ),
-
                     ],
                   ),
                 ),

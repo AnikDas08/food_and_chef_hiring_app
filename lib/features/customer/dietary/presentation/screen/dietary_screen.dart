@@ -20,9 +20,7 @@ class _DietaryRestrictionsScreenState extends State<DietaryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 20),
@@ -84,7 +82,6 @@ class _DietaryRestrictionsScreenState extends State<DietaryScreen> {
 
                 CustomDropdown(
                   dropdownHeight: 170,
-
                   dropdown: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -106,7 +103,7 @@ class _DietaryRestrictionsScreenState extends State<DietaryScreen> {
 
                             return CheckboxListTile(
                               value: isSelected,
-                              title: Text(item),
+                              title: CommonText(text: item, fontSize: 12),
                               controlAffinity: ListTileControlAffinity.leading,
                               onChanged: (value) {
                                 setState(() {
@@ -133,14 +130,15 @@ class _DietaryRestrictionsScreenState extends State<DietaryScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          controller.selectedCategories.isEmpty
-                              ? 'Select Category'
-                              : controller.selectedCategories.join(', '),
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF777777),
-                          ),
+                        CommonText(
+                          text:
+                              controller.selectedCategories.isEmpty
+                                  ? 'Select Category'
+                                  : controller.selectedCategories.join(', '),
+
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF777777),
                         ),
                         const Icon(Icons.keyboard_arrow_down_rounded),
                       ],

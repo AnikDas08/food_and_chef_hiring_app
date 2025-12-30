@@ -26,16 +26,6 @@ class ChefBookingScreen extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
         ),
-        actions: [
-          Container(
-            padding: EdgeInsets.all(8.sp),
-            decoration: BoxDecoration(
-              color: Color(0xffF2F2F2),
-              shape: BoxShape.circle,
-            ),
-            child: CommonImage(imageSrc: AppIcons.basket),
-          ),
-        ],
       ),
       body: GetBuilder<ChefBookingController>(
         builder:

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/bottom_nav_bar/common_bottom_bar.dart';
+import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/image/common_image.dart';
@@ -26,17 +27,6 @@ class BookingHistoryScreen extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
         ),
-        actions: [
-          Container(
-            padding: EdgeInsets.all(8.sp),
-            margin: EdgeInsets.only(right: 20.w),
-            decoration: BoxDecoration(
-              color: Color(0xffF2F2F2),
-              shape: BoxShape.circle,
-            ),
-            child: CommonImage(imageSrc: AppIcons.basket),
-          ),
-        ],
       ),
       body: GetBuilder<BookingHistoryController>(
         builder:
@@ -87,13 +77,16 @@ class BookingHistoryScreen extends StatelessWidget {
                   ),
                   8.height,
                   Expanded(
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return bookingItem();
-                      },
-                    ),
+                    child:
+                        controller.isLoading
+                            ? const CommonLoader()
+                            : ListView.builder(
+                              padding: EdgeInsets.zero,
+                              itemCount: 10,
+                              itemBuilder: (context, index) {
+                                return bookingItem();
+                              },
+                            ),
                   ),
                 ],
               ),
