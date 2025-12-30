@@ -18,7 +18,6 @@ upcomingPopUp() {
     context: Get.context!,
     isScrollControlled: true,
     backgroundColor: Colors.white,
-
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
@@ -245,8 +244,10 @@ upcomingPopUp() {
                           titleWeight: FontWeight.w600,
                           buttonHeight: 48,
                           buttonRadius: 16,
-                          onTap: () {
-                            requestChangePopUp(context);
+                          onTap: () async {
+                            Get.back();
+                            await Future.delayed(Duration(milliseconds: 300));
+                            requestChangePopUp();
                           },
                         ),
                       ),

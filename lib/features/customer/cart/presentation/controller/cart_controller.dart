@@ -1,8 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/utils/extensions/extension.dart';
 
 class CartController extends GetxController {
   bool isDefaultAddress = false;
   bool isExpanded = false;
+
+  final TextEditingController dateController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
   String selectedTime = "";
@@ -22,6 +26,10 @@ class CartController extends GetxController {
 
   void selectTime(String time) {
     selectedTime = time;
+    String formattedDate = selectedDate.dateMonthYear;
+    dateController.text = "$formattedDate, $time";
+
+    Get.back();
     update();
   }
 

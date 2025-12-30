@@ -7,9 +7,9 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/chef_booking_controller.dart';
 
-void requestChangePopUp(BuildContext context) {
+void requestChangePopUp() {
   showModalBottomSheet(
-    context: context,
+    context: Get.context!,
     isScrollControlled: true,
     backgroundColor: Colors.white,
     shape: const RoundedRectangleBorder(
@@ -41,7 +41,17 @@ void requestChangePopUp(BuildContext context) {
                   TableCalendar(
                     daysOfWeekVisible: false,
                     weekNumbersVisible: false,
+                    rowHeight: 30,
                     headerStyle: HeaderStyle(formatButtonVisible: false),
+                    daysOfWeekStyle: DaysOfWeekStyle(
+                      weekdayStyle: TextStyle(fontSize: 8),
+                      weekendStyle: TextStyle(fontSize: 8),
+
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
                     firstDay: DateTime.now(),
                     lastDay: DateTime.now().add(const Duration(days: 60)),
                     focusedDay: controller.selectedDate,

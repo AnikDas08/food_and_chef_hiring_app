@@ -1,41 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/features/customer/cart/presentation/controller/cart_controller.dart';
-import 'package:new_untitled/utils/extensions/extension.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../../component/text/common_text.dart';
 
-void bookingDateTimePopup(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.white,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-    ),
-    constraints: BoxConstraints(maxHeight: Get.height - 100),
+bookingDateTimePopup() {
+  showDialog(
+    context: Get.context!,
+    barrierDismissible: true,
     builder: (context) {
-      return GetBuilder<CartController>(
-        builder: (controller) {
-          return SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16).copyWith(bottom: 30),
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        insetPadding: const EdgeInsets.all(12),
+        backgroundColor: Colors.white,
+        child: GetBuilder<CartController>(
+          builder: (controller) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  16.height,
+                  /// Calendar
                   TableCalendar(
+                    rowHeight: 38,
+                    daysOfWeekHeight: 20,
                     firstDay: DateTime.now(),
                     lastDay: DateTime.now().add(const Duration(days: 60)),
                     focusedDay: controller.selectedDate,
+                    headerStyle: const HeaderStyle(
+                      formatButtonVisible: false,
+                      titleCentered: false,
+                    ),
                     selectedDayPredicate:
                         (day) => isSameDay(day, controller.selectedDate),
                     onDaySelected: (selectedDay, focusedDay) {
                       controller.selectDate(selectedDay);
                     },
                     calendarStyle: CalendarStyle(
-                      selectedDecoration: BoxDecoration(
+                      cellMargin: EdgeInsets.zero,
+                      selectedDecoration: const BoxDecoration(
                         color: Colors.black,
                         shape: BoxShape.circle,
                       ),
@@ -46,7 +50,7 @@ void bookingDateTimePopup(BuildContext context) {
                     ),
                   ),
 
-                  const SizedBox(height: 20),
+                  const Divider(height: 24),
 
                   /// Time Slots
                   const CommonText(
@@ -77,8 +81,8 @@ void bookingDateTimePopup(BuildContext context) {
                               decoration: BoxDecoration(
                                 color:
                                     isSelected
-                                        ? Color(0xff272727)
-                                        : Color(0xffF2F2F2),
+                                        ? const Color(0xff272727)
+                                        : const Color(0xffF2F2F2),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: CommonText(
@@ -91,14 +95,11 @@ void bookingDateTimePopup(BuildContext context) {
                           );
                         }).toList(),
                   ),
-
-                  24.height,
-                  CommonButton(titleText: "Apply", onTap: () => Get.back()),
                 ],
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       );
     },
   );

@@ -19,8 +19,6 @@ import '../widgets/tax_popup.dart';
 class CheckoutScreen extends StatelessWidget {
   CheckoutScreen({super.key});
 
-  final TextEditingController dateController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,13 +45,13 @@ class CheckoutScreen extends StatelessWidget {
                   bottom: 8,
                 ),
                 CommonTextField(
-                  controller: dateController,
+                  controller: controller.dateController,
                   keyboardType: TextInputType.none,
                   borderRadius: 20,
                   hintText: "1 January 2026, 5:20PM",
-                  onTap: () => bookingDateTimePopup(context),
+                  onTap: () => bookingDateTimePopup(),
                   suffixIcon: InkWell(
-                    onTap: () => bookingDateTimePopup(context),
+                    onTap: () => bookingDateTimePopup(),
                     child: Icon(Icons.calendar_today, color: Color(0xffFD713F)),
                   ),
                 ),
