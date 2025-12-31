@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ import '../../../../../component/text/common_text.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_colors.dart';
 import '../../../../../utils/constants/app_icons.dart';
+import '../../../../../utils/log/app_log.dart';
 import '../controller/chef_detail_controller.dart';
 import '../widgets/availability_pop_up.dart';
 import '../widgets/exten_text.dart';
@@ -25,15 +27,17 @@ class ChefDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ChefDetailsController>(
-      init: ChefDetailsController(),
-      builder:
-          (controller) => Scaffold(
-            body: NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                controller.onChangeInnerBoxIsScrolled(innerBoxIsScrolled);
-                return [
-                  SliverAppBar(
+    return Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          appLog(innerBoxIsScrolled, source: "ChefDetailsScreen");
+          ChefDetailsController.instance.onChangeInnerBoxIsScrolled(
+            innerBoxIsScrolled,
+          );
+          return [
+            GetBuilder<ChefDetailsController>(
+              builder:
+                  (controller) => SliverAppBar(
                     pinned: false,
                     expandedHeight: controller.isExpanded ? 600.h : 450.h,
                     backgroundColor: Colors.white,
@@ -178,71 +182,72 @@ class ChefDetailsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                ];
-              },
-              body: MenuPage(),
             ),
+          ];
+        },
+        body: MenuPage(),
+      ),
 
-            bottomNavigationBar:
-                controller.cartItems.isEmpty
-                    ? null
-                    : SafeArea(
-                      top: false,
-                      child: InkWell(
-                        onTap: () => Get.toNamed(AppRoutes.cart),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 16,
-                            right: 16,
-                            bottom: 20,
-                          ),
+      bottomNavigationBar: GetBuilder<ChefDetailsController>(
+        builder: (controller) {
+          return controller.cartItems.isEmpty
+              ? SizedBox()
+              : SafeArea(
+                top: false,
+                child: InkWell(
+                  onTap: () => Get.toNamed(AppRoutes.cart),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      bottom: 20,
+                    ),
 
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 20,
+                            width: 20,
                             decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(20),
-                              ),
+                              color: Colors.white,
+                              shape: BoxShape.circle,
                             ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 20,
-                                  width: 20,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child:
-                                      CommonText(
-                                        text: "1",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                        color: Color(0xff272727),
-                                      ).center,
-                                ),
+                            child:
                                 CommonText(
-                                  text: AppString.viewCart,
-                                  color: Colors.white,
-                                  fontSize: 14,
+                                  text: "1",
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w600,
-                                  left: 8,
-                                ),
-                                Spacer(),
-                                CommonText(
-                                  text: "\$70,00 30 min",
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ],
-                            ),
+                                  color: Color(0xff272727),
+                                ).center,
                           ),
-                        ),
+                          CommonText(
+                            text: AppString.viewCart,
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            left: 8,
+                          ),
+                          Spacer(),
+                          CommonText(
+                            text: "\$70,00 30 min",
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ],
                       ),
                     ),
-          ),
+                  ),
+                ),
+              );
+        },
+      ),
     );
   }
 }

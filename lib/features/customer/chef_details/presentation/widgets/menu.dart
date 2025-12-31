@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/food_item.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-import 'package:new_untitled/utils/log/app_log.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/chef_detail_controller.dart';
@@ -15,7 +14,6 @@ class MenuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<ChefDetailsController>(
       builder: (controller) {
-        appLog(controller.innerBoxIsScrolled.value, source: "aaaa");
         return DefaultTabController(
           length: 3,
           child: Scaffold(
@@ -123,17 +121,10 @@ class Header extends StatelessWidget {
           color: Color(0xff272727),
         ),
         8.height,
-        TabBar(
+        const TabBar(
           indicatorColor: Colors.transparent,
           unselectedLabelColor: Color(0xff777777),
           labelPadding: EdgeInsets.zero,
-          onTap: (value) {
-            final controller = Get.find<ChefDetailsController>();
-            appLog(
-              controller.innerBoxIsScrolled.value.toString(),
-              source: "aaaa",
-            );
-          },
           labelStyle: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,

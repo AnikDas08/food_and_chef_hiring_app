@@ -17,7 +17,7 @@ import '../widgets/order_summary.dart';
 import '../widgets/tax_popup.dart';
 
 class CheckoutScreen extends StatelessWidget {
-  CheckoutScreen({super.key});
+  const CheckoutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

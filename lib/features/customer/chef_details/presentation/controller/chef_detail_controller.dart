@@ -2,6 +2,17 @@ import 'package:get/get.dart';
 import 'package:new_untitled/utils/log/app_log.dart';
 
 class ChefDetailsController extends GetxController {
+  static ChefDetailsController get instance =>
+      Get.find<ChefDetailsController>();
+
+  @override
+  void onInit() {
+    super.onInit();
+    ever(innerBoxIsScrolled, (bool value) {
+      appLog(value, source: "ChefDetailsController");
+    });
+  }
+
   DateTime selectedDate = DateTime.now();
   List<String> selectedTime = [];
   final List<String> timeSlots = [
@@ -43,7 +54,7 @@ class ChefDetailsController extends GetxController {
   ];
 
   onChangeInnerBoxIsScrolled(bool value) {
-    appLog(value, source: "ChefDetailsController");
+    appLog(value, source: "ChefDetailsController onChangeInnerBoxIsScrolled");
     if (innerBoxIsScrolled.value == value) return;
     innerBoxIsScrolled(value);
   }

@@ -4,9 +4,7 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/bottom_nav_bar/chef_bottom_bar.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
-import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
-import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/chef_booking_controller.dart';
 import '../widgets/chef_booking_item.dart';

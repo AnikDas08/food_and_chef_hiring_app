@@ -5,9 +5,7 @@ import 'package:new_untitled/component/bottom_nav_bar/common_bottom_bar.dart';
 import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
-import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
-import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/booking_history_controller.dart';
 import '../widgets/booking_item.dart';
