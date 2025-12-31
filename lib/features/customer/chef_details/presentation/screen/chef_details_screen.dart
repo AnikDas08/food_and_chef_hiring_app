@@ -10,6 +10,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../../component/text/common_text.dart';
 import '../../../../../config/route/app_routes.dart';
+import '../../../../../utils/constants/app_colors.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../controller/chef_detail_controller.dart';
 import '../widgets/availability_pop_up.dart';
@@ -199,7 +200,7 @@ class ChefDetailsScreen extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Colors.black,
+                              color: AppColors.primaryColor,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(20),
                               ),

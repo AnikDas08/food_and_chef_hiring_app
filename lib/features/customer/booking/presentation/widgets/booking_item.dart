@@ -8,6 +8,7 @@ import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
+import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import 'details_popup.dart';
 
@@ -84,7 +85,10 @@ Widget bookingItem() {
                 ),
                 onSelected: (value) {
                   if (value == 1) {
-                  } else if (value == 2) {}
+                    Get.toNamed(AppRoutes.requestChange);
+                  } else if (value == 2) {
+
+                  }
                 },
 
                 itemBuilder:

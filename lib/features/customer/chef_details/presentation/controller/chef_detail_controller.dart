@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:new_untitled/utils/log/app_log.dart';
 
 class ChefDetailsController extends GetxController {
   DateTime selectedDate = DateTime.now();
@@ -42,6 +43,8 @@ class ChefDetailsController extends GetxController {
   ];
 
   onChangeInnerBoxIsScrolled(bool value) {
+    appLog(value, source: "ChefDetailsController");
+    if (innerBoxIsScrolled.value == value) return;
     innerBoxIsScrolled(value);
   }
 

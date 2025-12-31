@@ -29,7 +29,7 @@ class ChefHomeScreen extends StatelessWidget {
             CommonImage(
               imageSrc: AppImages.img7,
               fill: BoxFit.fill,
-              height: 120.h,
+              height: 112.h,
               width: Get.width,
             ),
             32.height,

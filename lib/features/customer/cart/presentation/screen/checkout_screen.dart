@@ -215,7 +215,7 @@ class CheckoutScreen extends StatelessWidget {
                   children: [
                     CommonText(
                       text: "Add promo code",
-                      fontSize: 12,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: Color(0xff272727),
                     ),
@@ -248,7 +248,7 @@ class CheckoutScreen extends StatelessWidget {
                           children: [
                             CommonText(
                               text: "Request an invoice",
-                              fontSize: 12,
+                              fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff272727),
                             ),

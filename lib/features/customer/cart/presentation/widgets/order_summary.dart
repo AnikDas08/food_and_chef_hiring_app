@@ -24,7 +24,7 @@ Widget orderSummary() {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CommonText(
-            text: "Totals",
+            text: "Total",
             fontSize: 14,
             fontWeight: FontWeight.w600,
             color: Color(0xff272727),
@@ -51,7 +51,7 @@ Widget _item(String title, String value) {
     children: [
       CommonText(
         text: title,
-        fontSize: 12,
+        fontSize: 14,
         fontWeight: FontWeight.w400,
         color: Color(0xff777777),
       ),
