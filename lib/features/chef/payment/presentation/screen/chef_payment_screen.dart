@@ -76,55 +76,61 @@ class ChefPaymentScreen extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Container(
-                          padding: EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Color(0xffF2F2F2),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CommonImage(
-                                imageSrc: AppIcons.download,
-                                height: 20,
-                                width: 20,
-                              ),
-                              CommonText(
-                                text: "Withdraw",
-                                left: 8,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff272727),
-                              ),
-                            ],
+                        child: InkWell(
+                          onTap: () => Get.toNamed(AppRoutes.withdraw),
+                          child: Container(
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Color(0xffF2F2F2),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CommonImage(
+                                  imageSrc: AppIcons.download,
+                                  height: 20,
+                                  width: 20,
+                                ),
+                                CommonText(
+                                  text: "Withdraw",
+                                  left: 8,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xff272727),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                       12.width,
                       Expanded(
-                        child: Container(
-                          padding: EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Color(0xffF2F2F2),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CommonImage(
-                                imageSrc: AppIcons.clock,
-                                height: 20,
-                                width: 20,
-                              ),
-                              CommonText(
-                                text: "History",
-                                left: 8,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff272727),
-                              ),
-                            ],
+                        child: InkWell(
+                          onTap: () => Get.toNamed(AppRoutes.history),
+                          child: Container(
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Color(0xffF2F2F2),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CommonImage(
+                                  imageSrc: AppIcons.clock,
+                                  height: 20,
+                                  width: 20,
+                                ),
+                                CommonText(
+                                  text: "History",
+                                  left: 8,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xff272727),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

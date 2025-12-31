@@ -10,6 +10,9 @@ import '../../features/chef/chef_booking/presentation/screen/chef_booking_screen
 import '../../features/chef/home/presentation/screen/chef_home_screen.dart';
 import '../../features/chef/payment/presentation/screen/add_payment_method.dart';
 import '../../features/chef/payment/presentation/screen/chef_payment_screen.dart';
+import '../../features/chef/payment/presentation/screen/history_screen.dart';
+import '../../features/chef/payment/presentation/screen/withdraw_method_screen.dart';
+import '../../features/chef/payment/presentation/screen/withdraw_screen.dart';
 import '../../features/chef/profile/presentation/screen/chef_edit_profile.dart';
 import '../../features/chef/profile/presentation/screen/chef_profile_screen.dart';
 import '../../features/common/auth/change_password/presentation/screen/change_password_screen.dart';
@@ -110,6 +113,9 @@ class AppRoutes {
   static const String addEquipment = "/add_equipment_screen.dart";
   static const String addPaymentMethod = "/add_payment_method.dart";
   static const String chefPayment = "/chef_payment_screen.dart";
+  static const String withdraw = "/withdraw_screen.dart";
+  static const String withdrawMethod = "/withdraw_method_screen.dart";
+  static const String history = "/history_screen.dart";
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -166,5 +172,8 @@ class AppRoutes {
     GetPage(name: addEquipment, page: () => AddEquipmentScreen()),
     GetPage(name: chefPayment, page: () => ChefPaymentScreen()),
     GetPage(name: addPaymentMethod, page: () => AddPaymentMethod()),
+    GetPage(name: withdraw, page: () => WithdrawScreen()),
+    GetPage(name: withdrawMethod, page: () => WithdrawMethodScreen()),
+    GetPage(name: history, page: () => HistoryScreen()),
   ];
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
@@ -81,7 +82,12 @@ class AddPaymentMethod extends StatelessWidget {
 
               16.height,
 
-              CommonButton(titleText: AppString.continues),
+              CommonButton(
+                titleText: AppString.continues,
+                onTap: () {
+                  Get.back();
+                },
+              ),
             ],
           ),
         ),
