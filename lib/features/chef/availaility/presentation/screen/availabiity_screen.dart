@@ -1,8 +1,13 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/component/pop_up/common_pop_menu.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 
+import '../../../chef_booking/presentation/widgets/pop_up.dart';
 import '../controller/availiability_controller.dart';
 import '../widgets/availability_item.dart';
 
@@ -62,6 +67,18 @@ class AvailabilityScreen extends StatelessWidget {
                         /// Sign In Button Here
                         TextSpan(
                           text: "12 Hours ",
+                          recognizer:
+                              TapGestureRecognizer()
+                                ..onTapDown = (TapDownDetails details) {
+                                  PopupController().showAdd(
+                                    context,
+                                    bottom: 100.h,
+                                    right: 40.w,
+                                    list: ["Hours", "Days"],
+                                    selectItem: "Hours",
+                                    onTap: (v) {},
+                                  );
+                                },
                           style: TextStyle(
                             color: Color(0xffFD713F),
                             fontSize: 14,
@@ -78,6 +95,18 @@ class AvailabilityScreen extends StatelessWidget {
                         ),
                         TextSpan(
                           text: "14 Days ",
+                          recognizer:
+                          TapGestureRecognizer()
+                            ..onTapDown = (TapDownDetails details) {
+                              PopupController().showAdd(
+                                context,
+                                bottom: 100.h,
+                                right: 40.w,
+                                list: ["Hours", "Days"],
+                                selectItem: "Hours",
+                                onTap: (v) {},
+                              );
+                            },
                           style: TextStyle(
                             color: Color(0xffFD713F),
                             fontSize: 14,
