@@ -152,7 +152,12 @@ class _OnboardingItemState extends State<OnboardingItem> {
                   child: Column(
                     children: [
                       28.height,
-                      CommonImage(imageSrc: AppImages.logo),
+                      CommonImage(
+                        imageSrc: AppImages.logo,
+                        height: 38,
+                        width: 104,
+                        fill: BoxFit.cover,
+                      ),
                       28.height,
                       CommonImage(
                         imageSrc: item["image"],
@@ -188,7 +193,6 @@ class _OnboardingItemState extends State<OnboardingItem> {
                   ],
                 ),
               ),
-
             ],
           ),
         ),

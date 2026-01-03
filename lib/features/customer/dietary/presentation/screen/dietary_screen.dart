@@ -28,33 +28,6 @@ class _DietaryRestrictionsScreenState extends State<DietaryScreen> {
             Get.back();
           },
         ),
-        actions: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            margin: const EdgeInsets.only(right: 16),
-            decoration: BoxDecoration(
-              color: const Color(0xffF3F3F3),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Row(
-              children: const [
-                Icon(
-                  Icons.mode_edit_outline_outlined,
-                  size: 24,
-                  color: Colors.black,
-                ),
-                SizedBox(width: 6),
-
-                CommonText(
-                  text: "Edit",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff272727),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
 
       body: GetBuilder<DietaryController>(
