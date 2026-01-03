@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/food_item.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
+import 'package:new_untitled/utils/log/app_log.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/chef_detail_controller.dart';
@@ -113,12 +114,17 @@ class Header extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CommonText(
-          text: AppString.menu,
-          fontSize: 16,
-          left: 16,
-          fontWeight: FontWeight.w600,
-          color: Color(0xff272727),
+        GestureDetector(
+          onPanUpdate: (details) {
+            appLog(details.globalPosition) ;
+          },
+          child: CommonText(
+            text: AppString.menu,
+            fontSize: 16,
+            left: 16,
+            fontWeight: FontWeight.w600,
+            color: Color(0xff272727),
+          ),
         ),
         8.height,
         const TabBar(
@@ -150,6 +156,7 @@ class _MenuList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       itemCount: 10,
       itemBuilder: (_, __) => const FoodItem(),
