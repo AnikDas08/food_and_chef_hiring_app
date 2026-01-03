@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/food_item.dart';
@@ -88,6 +87,8 @@ class Header extends StatelessWidget {
 }
 
 class MenuList extends StatelessWidget {
+  const MenuList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(

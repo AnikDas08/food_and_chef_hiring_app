@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:new_untitled/component/text_field/common_text_field.dart';
-import 'package:new_untitled/utils/constants/app_colors.dart';
 
 class PopupController {
   static final PopupController _instance = PopupController._internal();

@@ -2,9 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/component/pop_up/common_pop_menu.dart';
 import 'package:new_untitled/component/text/common_text.dart';
-import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 
 import '../../../chef_booking/presentation/widgets/pop_up.dart';
