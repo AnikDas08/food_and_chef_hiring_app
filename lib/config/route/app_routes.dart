@@ -6,6 +6,7 @@ import 'package:new_untitled/features/chef/menu/presentation/screen/edit_menu.da
 import 'package:new_untitled/features/chef/menu/presentation/screen/menu_screen.dart';
 import 'package:new_untitled/features/chef/profile/presentation/screen/account_setting.dart';
 import 'package:new_untitled/features/customer/address/presentation/screen/add_address_screen.dart';
+import 'package:new_untitled/features/customer/cart/presentation/screen/promo_code_screen.dart';
 import '../../features/chef/chef_booking/presentation/screen/chef_booking_screen.dart';
 import '../../features/chef/home/presentation/screen/chef_home_screen.dart';
 import '../../features/chef/payment/presentation/screen/add_payment_method.dart';
@@ -116,6 +117,8 @@ class AppRoutes {
   static const String withdraw = "/withdraw_screen.dart";
   static const String withdrawMethod = "/withdraw_method_screen.dart";
   static const String history = "/history_screen.dart";
+  static const String promoCode = "/promo_code_screen.dart";
+
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
@@ -175,5 +178,6 @@ class AppRoutes {
     GetPage(name: withdraw, page: () => WithdrawScreen()),
     GetPage(name: withdrawMethod, page: () => WithdrawMethodScreen()),
     GetPage(name: history, page: () => HistoryScreen()),
+    GetPage(name: promoCode, page: () => PromoCodeScreen()),
   ];
 }

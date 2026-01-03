@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
+import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
@@ -210,21 +211,26 @@ class CheckoutScreen extends StatelessWidget {
                 28.height,
                 orderSummary(),
                 42.height,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CommonText(
-                      text: "Add promo code",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff272727),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios_sharp,
-                      size: 16,
-                      color: Color(0xff777777),
-                    ),
-                  ],
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.promoCode);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CommonText(
+                        text: "Add promo code",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff272727),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios_sharp,
+                        size: 16,
+                        color: Color(0xff777777),
+                      ),
+                    ],
+                  ),
                 ),
                 24.height,
                 InkWell(
