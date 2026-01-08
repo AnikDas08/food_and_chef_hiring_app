@@ -74,31 +74,27 @@ class _DietaryRestrictionsScreenState extends State<DietaryScreen> {
                             final isSelected = controller.selectedCategories
                                 .contains(item);
 
-                            return Container(
-                              child: Row(
-                                children: [
-                                  Checkbox(
-                                    activeColor: Color(0xff272727),
-                                    checkColor: Colors.white,
+                            return Row(
+                              children: [
+                                Checkbox(
+                                  activeColor: Color(0xff272727),
+                                  checkColor: Colors.white,
 
-                                    value: isSelected,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value == true) {
-                                          controller.selectedCategories.add(
-                                            item,
-                                          );
-                                        } else {
-                                          controller.selectedCategories.remove(
-                                            item,
-                                          );
-                                        }
-                                      });
-                                    },
-                                  ),
-                                  CommonText(text: item, fontSize: 12),
-                                ],
-                              ),
+                                  value: isSelected,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value == true) {
+                                        controller.selectedCategories.add(item);
+                                      } else {
+                                        controller.selectedCategories.remove(
+                                          item,
+                                        );
+                                      }
+                                    });
+                                  },
+                                ),
+                                CommonText(text: item, fontSize: 12),
+                              ],
                             );
 
                             return CheckboxListTile(

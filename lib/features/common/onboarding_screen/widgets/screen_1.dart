@@ -132,7 +132,6 @@ class _OnboardingItemState extends State<OnboardingItem> {
       currentPage++;
     }
     setState(() {});
-    print('currentPage: $currentPage');
   }
 
   @override
