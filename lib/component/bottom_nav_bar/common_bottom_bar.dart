@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
@@ -35,32 +36,35 @@ class CommonBottomNavBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(_list.length, (index) {
-          return InkWell(
-            onTap: () => onTap(index),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CommonImage(
-                    imageSrc: _list[index],
-                    size: 24,
-                    imageColor:
-                        index == currentIndex
-                            ? Colors.black
-                            : const Color(0xff777777),
-                  ),
-                  CommonText(
-                    text: _string[index],
-                    fontSize: 12,
-                    top: 4,
-                    fontWeight: FontWeight.w400,
-                    color:
-                        index == currentIndex
-                            ? const Color(0xff272727)
-                            : const Color(0xff777777),
-                  ),
-                ],
+          return LiquidGlass(
+            shape: LiquidRoundedSuperellipse(borderRadius: 12),
+            child: InkWell(
+              onTap: () => onTap(index),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CommonImage(
+                      imageSrc: _list[index],
+                      size: 24,
+                      imageColor:
+                          index == currentIndex
+                              ? Colors.black
+                              : const Color(0xff777777),
+                    ),
+                    CommonText(
+                      text: _string[index],
+                      fontSize: 12,
+                      top: 4,
+                      fontWeight: FontWeight.w400,
+                      color:
+                          index == currentIndex
+                              ? const Color(0xff272727)
+                              : const Color(0xff777777),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
