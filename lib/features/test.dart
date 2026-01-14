@@ -1,7 +1,6 @@
 import 'package:cupertino_native/cupertino_native.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:new_untitled/utils/constants/app_images.dart';
 
 void main() {
   runApp(const CupertinoApp(debugShowCheckedModeBanner: false, home: Test()));
@@ -25,9 +24,13 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   int selectedTabIndex = 0;
   final List<TabData> tabs = [
     TabData(title: "Home", icon: "house"),
-    TabData(title: "Bookings", icon: "bag"),
+    // TabData(title: "Bookings", icon: "basket"),
+    TabData(
+      title: "Analytics",
+      icon: "gauge.chart.leftthird.topthird.rightthird",
+    ),
     TabData(title: "Groceries", icon: "cart"),
-    TabData(title: "Chats", icon: "message"),
+    TabData(title: "Chats", icon: "ellipsis.message"),
     TabData(title: "Profile", icon: "person"),
   ];
   @override
@@ -51,7 +54,6 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
     });
     tabController.animateTo(index);
   }
-  
 
   @override
   void dispose() {
@@ -82,11 +84,12 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                       .map(
                         (TabData tab) => CNTabBarItem(
                           label: tab.title,
-                          icon: CNSymbol(tab.icon),
+                          icon: CNSymbol(tab.icon, ),
                         ),
                       )
                       .toList(),
               tint: CupertinoColors.black,
+
               height: 85,
               currentIndex: selectedTabIndex,
               onTap: onTabTap,
