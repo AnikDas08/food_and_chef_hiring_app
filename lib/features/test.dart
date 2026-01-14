@@ -24,11 +24,11 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   int selectedTabIndex = 0;
   final List<TabData> tabs = [
     TabData(title: "Home", icon: "house"),
-    // TabData(title: "Bookings", icon: "basket"),
-    TabData(
-      title: "Analytics",
-      icon: "gauge.chart.leftthird.topthird.rightthird",
-    ),
+     TabData(title: "Bookings", icon: "basket"),
+    // TabData(
+    //   title: "Analytics",
+    //   icon: "gauge.chart.leftthird.topthird.rightthird",
+    // ),
     TabData(title: "Groceries", icon: "cart"),
     TabData(title: "Chats", icon: "ellipsis.message"),
     TabData(title: "Profile", icon: "person"),

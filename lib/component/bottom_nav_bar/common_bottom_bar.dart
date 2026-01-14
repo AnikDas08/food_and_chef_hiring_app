@@ -17,7 +17,7 @@ List _list = [
   AppIcons.profile,
 ];
 
-List _string = [ 
+List _string = [
   AppString.home,
   AppString.bookings,
   AppString.groceries,
