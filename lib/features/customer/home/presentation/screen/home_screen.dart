@@ -22,75 +22,75 @@ class CustomerHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       appBar: homeAppbar(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              20.height,
-              CommonImage(
-                imageSrc: AppImages.image1,
-                height: 148.h,
-                width: double.infinity,
-                fill: BoxFit.fill,
-              ),
-              12.height,
-              CommonTextField(
-                hintText: AppString.searchForFoodChefEtc,
-                keyboardType: TextInputType.none,
-                onTap: () => Get.toNamed(AppRoutes.homeSearch),
-                borderRadius: 20,
-                fillColor: Color(0xffF2F2F2),
-                suffixIcon: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: CommonImage(
-                    imageSrc: AppIcons.fliter,
-                    imageColor: Color(0xff636363),
-                  ),
-                ),
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Icon(CupertinoIcons.search),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: ListView(
+          children: [
+            20.height,
+            CommonImage(
+              imageSrc: AppImages.image1,
+              height: 148.h,
+              width: double.infinity,
+              fill: BoxFit.fill,
+            ),
+            12.height,
+            CommonTextField(
+              hintText: AppString.searchForFoodChefEtc,
+              keyboardType: TextInputType.none,
+              onTap: () => Get.toNamed(AppRoutes.homeSearch),
+              borderRadius: 20,
+              fillColor: Color(0xffF2F2F2),
+              suffixIcon: Padding(
+                padding: EdgeInsets.all(10),
+                child: CommonImage(
+                  imageSrc: AppIcons.fliter,
+                  imageColor: Color(0xff636363),
                 ),
               ),
-        
-              20.height,
-              SizedBox(height: 90.h, child: category()),
-        
-              20.height,
-              CommonText(
-                text: AppString.recommendedPrivaeChefsNearby,
-                fontSize: 16,
-                color: Color(0xff272727),
-                fontWeight: FontWeight.w600,
-                bottom: 16,
-              ).start,
-        
-              SizedBox(height: 300.h, child: recommended()),
-              20.height,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CommonText(
-                    text: AppString.orderAgain,
-                    fontSize: 16,
-                    color: Color(0xff272727),
-                    fontWeight: FontWeight.w600,
-                  ),
-                  CommonText(
-                    text: AppString.seeAll,
-                    color: Color(0xffFD713F),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ],
+              prefixIcon: Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Icon(CupertinoIcons.search),
               ),
-        
-              16.height,
-              SizedBox(height: 160.h, child: orderAgain()),
-              10.height,
-            ],
-          ),
+            ),
+
+            20.height,
+            SizedBox(height: 90.h, child: category()),
+
+            20.height,
+            CommonText(
+              text: AppString.recommendedPrivaeChefsNearby,
+              fontSize: 16,
+              color: Color(0xff272727),
+              fontWeight: FontWeight.w600,
+              bottom: 16,
+            ).start,
+
+            SizedBox(height: 300.h, child: recommended()),
+            20.height,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CommonText(
+                  text: AppString.orderAgain,
+                  fontSize: 16,
+                  color: Color(0xff272727),
+                  fontWeight: FontWeight.w600,
+                ),
+                CommonText(
+                  text: AppString.seeAll,
+                  color: Color(0xffFD713F),
+                  fontWeight: FontWeight.w500,
+                ),
+              ],
+            ),
+
+            16.height,
+            SizedBox(height: 160.h, child: orderAgain()),
+            10.height,
+          ],
         ),
       ),
     );

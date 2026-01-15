@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,14 +23,48 @@ class ChatListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /// App Bar Section Starts here
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      backgroundColor: Colors.white,
+
       appBar: AppBar(
-        centerTitle: false,
         automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        centerTitle: false,
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+            child: Container(color: Colors.white.withOpacity(0.1)),
+          ),
+        ),
         title: const CommonText(
           text: AppString.chat,
           fontWeight: FontWeight.w600,
           fontSize: 24,
+        ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(60),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: CommonTextField(
+              hintText: AppString.search,
+              keyboardType: TextInputType.none,
+              onTap: () => Get.toNamed(AppRoutes.homeSearch),
+              borderRadius: 20,
+              fillColor: Color(0xffFAFAFA),
+              suffixIcon: Padding(
+                padding: EdgeInsets.all(10),
+                child: CommonImage(
+                  imageSrc: AppIcons.fliter,
+                  imageColor: Color(0xff636363),
+                ),
+              ),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Icon(CupertinoIcons.search),
+              ),
+            ),
+          ),
         ),
       ),
 
@@ -47,53 +83,35 @@ class ChatListScreen extends StatelessWidget {
               /// Show main data here
               Status.completed => Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                child: Column(
+                child: ListView(
                   children: [
                     /// User Search bar here
-                    CommonTextField(
-                      hintText: AppString.search,
-                      keyboardType: TextInputType.none,
-                      onTap: () => Get.toNamed(AppRoutes.homeSearch),
-                      borderRadius: 20,
-                      fillColor: Color(0xffFAFAFA),
-                      suffixIcon: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: CommonImage(
-                          imageSrc: AppIcons.fliter,
-                          imageColor: Color(0xff636363),
-                        ),
-                      ),
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: Icon(CupertinoIcons.search),
-                      ),
-                    ),
 
                     /// Show all Chat List here
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: controller.chats.length,
-                        padding: EdgeInsets.only(bottom: 80.h, top: 16.h),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: controller.chats.length,
+                      padding: EdgeInsets.only(bottom: 80.h, top: 16.h),
 
-                        itemBuilder: (context, index) {
-                          ChatModel item = controller.chats[index];
-                          return InkWell(
-                            /// routing with data
-                            onTap:
-                                () => Get.toNamed(
-                                  AppRoutes.message,
-                                  parameters: {
-                                    "chatId": item.id,
-                                    "name": item.participant.fullName,
-                                    "image": item.participant.image,
-                                  },
-                                ),
+                      itemBuilder: (context, index) {
+                        ChatModel item = controller.chats[index];
+                        return InkWell(
+                          /// routing with data
+                          onTap:
+                              () => Get.toNamed(
+                                AppRoutes.message,
+                                parameters: {
+                                  "chatId": item.id,
+                                  "name": item.participant.fullName,
+                                  "image": item.participant.image,
+                                },
+                              ),
 
-                            /// Chat List item here
-                            child: chatListItem(item: controller.chats[index]),
-                          );
-                        },
-                      ),
+                          /// Chat List item here
+                          child: chatListItem(item: controller.chats[index]),
+                        );
+                      },
                     ),
                   ],
                 ),

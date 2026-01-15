@@ -34,6 +34,123 @@ class ChatController extends GetxController {
         createdAt: DateTime.now(),
       ),
     ),
+    ChatModel(
+      id: "aaaa",
+      participant: Participant(
+        id: "aa",
+        fullName: "Cody F.",
+        image: AppImages.image3,
+      ),
+      latestMessage: LatestMessage(
+        id: "aaa",
+        message: "Cody F.",
+        createdAt: DateTime.now(),
+      ),
+    ),
+    ChatModel(
+      id: "aaaa",
+      participant: Participant(
+        id: "aa",
+        fullName: "Cody F.",
+        image: AppImages.image3,
+      ),
+      latestMessage: LatestMessage(
+        id: "aaa",
+        message: "Cody F.",
+        createdAt: DateTime.now(),
+      ),
+    ),
+    ChatModel(
+      id: "aaaa",
+      participant: Participant(
+        id: "aa",
+        fullName: "Cody F.",
+        image: AppImages.image3,
+      ),
+      latestMessage: LatestMessage(
+        id: "aaa",
+        message: "Cody F.",
+        createdAt: DateTime.now(),
+      ),
+    ),
+    ChatModel(
+      id: "aaaa",
+      participant: Participant(
+        id: "aa",
+        fullName: "Cody F.",
+        image: AppImages.image3,
+      ),
+      latestMessage: LatestMessage(
+        id: "aaa",
+        message: "Cody F.",
+        createdAt: DateTime.now(),
+      ),
+    ),
+    ChatModel(
+      id: "aaaa",
+      participant: Participant(
+        id: "aa",
+        fullName: "Cody F.",
+        image: AppImages.image3,
+      ),
+      latestMessage: LatestMessage(
+        id: "aaa",
+        message: "Cody F.",
+        createdAt: DateTime.now(),
+      ),
+    ),
+    ChatModel(
+      id: "aaaa",
+      participant: Participant(
+        id: "aa",
+        fullName: "Cody F.",
+        image: AppImages.image3,
+      ),
+      latestMessage: LatestMessage(
+        id: "aaa",
+        message: "Cody F.",
+        createdAt: DateTime.now(),
+      ),
+    ),
+    ChatModel(
+      id: "aaaa",
+      participant: Participant(
+        id: "aa",
+        fullName: "Cody F.",
+        image: AppImages.image3,
+      ),
+      latestMessage: LatestMessage(
+        id: "aaa",
+        message: "Cody F.",
+        createdAt: DateTime.now(),
+      ),
+    ),
+    ChatModel(
+      id: "aaaa",
+      participant: Participant(
+        id: "aa",
+        fullName: "Cody F.",
+        image: AppImages.image3,
+      ),
+      latestMessage: LatestMessage(
+        id: "aaa",
+        message: "Cody F.",
+        createdAt: DateTime.now(),
+      ),
+    ),
+    ChatModel(
+      id: "aaaa",
+      participant: Participant(
+        id: "aa",
+        fullName: "Cody F.",
+        image: AppImages.image3,
+      ),
+      latestMessage: LatestMessage(
+        id: "aaa",
+        message: "Cody F.",
+        createdAt: DateTime.now(),
+      ),
+    ),
   ];
 
   /// Chat Scroll Controller
