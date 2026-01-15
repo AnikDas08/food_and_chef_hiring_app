@@ -228,7 +228,7 @@ class RequestChangeScreen extends StatelessWidget {
           child: CommonButton(
             titleText: AppString.request,
             onTap: () {
-              Get.toNamed(AppRoutes.chefHomeScreen, arguments: 1);
+              Get.toNamed(AppRoutes.chefHomeScreen, arguments: {"index": 1});
             },
           ),
         ),

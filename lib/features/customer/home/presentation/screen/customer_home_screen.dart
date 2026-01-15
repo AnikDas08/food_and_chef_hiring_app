@@ -34,10 +34,10 @@ class _ChefHomeState extends State<CustomerHomeScreen>
   int selectedTabIndex = 0;
   final List<TabData> tabs = [
     TabData(title: "Home", icon: "house"),
-    TabData(title: "Bookings", icon: "stove"),
+    TabData(title: "Bookings", icon: "calendar.badge.clock"),
     TabData(title: "Groceries", icon: "basket"),
-    TabData(title: "Chats", icon: "bubble.left.and.bubble.right"),
-    TabData(title: "Profile", icon: "person"),
+    TabData(title: "Chats", icon: "ellipsis.message"),
+    TabData(title: "Profile", icon: "person.crop.circle"),
   ];
 
   final List<Widget> pages = [
@@ -90,11 +90,13 @@ class _ChefHomeState extends State<CustomerHomeScreen>
                         .map(
                           (TabData tab) => CNTabBarItem(
                             label: tab.title,
-                            icon: CNSymbol(tab.icon),
+
+                            icon: CNSymbol(tab.icon, color: Color(0xff272727), size: 16),
                           ),
                         )
                         .toList(),
-                tint: CupertinoColors.black,
+                tint: Color(0xff272727),
+                backgroundColor: Colors.red,
                 height: 85,
                 currentIndex: selectedTabIndex,
                 onTap: onTabTap,
