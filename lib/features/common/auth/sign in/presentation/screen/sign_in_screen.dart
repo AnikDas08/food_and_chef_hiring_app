@@ -26,6 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final FocusNode emailFocusNode = FocusNode();
 
   final FocusNode passwordFocusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -88,7 +89,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         fontWeight: FontWeight.w600,
                         color: Color(0xff272727),
                       ),
-
 
                       CommonTextField(
                         controller: controller.emailController,

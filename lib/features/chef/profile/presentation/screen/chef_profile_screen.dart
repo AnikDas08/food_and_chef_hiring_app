@@ -237,14 +237,14 @@ class ChefProfileScreen extends StatelessWidget {
                   disableDivider: true,
                   disableIcon: true,
                 ),
+
+                80.height
               ],
             ),
           );
         },
       ),
 
-      /// Bottom Navigation Bar Section Starts here
-      bottomNavigationBar: const ChefBottomBar(currentIndex: 4),
     );
   }
 }

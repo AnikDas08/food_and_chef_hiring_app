@@ -92,7 +92,6 @@ class CustomerHome extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: CommonBottomNavBar(currentIndex: 0),
     );
   }
 }

@@ -80,7 +80,7 @@ class ChefBottomBar extends StatelessWidget {
     } else if (index == 1) {
       if (!(currentIndex == 1)) {
         if (LocalStorage.isChef) {
-          Get.toNamed(AppRoutes.analytics);
+          // Get.toNamed(AppRoutes.analytics);
         } else {
           // Get.toNamed(AppRoutes.bookingHistory);
         }

@@ -7,22 +7,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
-import 'package:new_untitled/features/chef/analytics/presentation/screen/analytics_screen.dart';
 import 'package:new_untitled/features/chef/home/presentation/screen/chef_home_screen.dart';
 import 'package:new_untitled/features/common/message/presentation/screen/chat_screen.dart';
 import 'package:new_untitled/features/customer/booking/presentation/screen/booking_history_screen.dart';
+import 'package:new_untitled/features/customer/home/presentation/screen/home_screen.dart';
 import 'package:new_untitled/features/customer/profile/presentation/screen/profile_screen.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 
-import '../../../chef_booking/presentation/screen/chef_booking_screen.dart';
-import '../../../profile/presentation/screen/chef_profile_screen.dart';
-
-class ChefHome extends StatefulWidget {
-  const ChefHome({super.key});
+class CustomerHomeScreen extends StatefulWidget {
+  const CustomerHomeScreen({super.key});
 
   @override
-  State<ChefHome> createState() => _ChefHomeState();
+  State<CustomerHomeScreen> createState() => _ChefHomeState();
 }
 
 class TabData {
@@ -32,27 +29,24 @@ class TabData {
   TabData({required this.title, required this.icon});
 }
 
-class _ChefHomeState extends State<ChefHome>
+class _ChefHomeState extends State<CustomerHomeScreen>
     with SingleTickerProviderStateMixin {
   late final TabController tabController;
   int selectedTabIndex = 0;
   final List<TabData> tabs = [
     TabData(title: "Home", icon: "house"),
-    TabData(
-      title: "Analytics",
-      icon: "gauge.chart.leftthird.topthird.rightthird",
-    ),
-    TabData(title: "Booking", icon: "basket"),
+    TabData(title: "Bookings", icon: "stove"),
+    TabData(title: "Bookings", icon: "basket"),
     TabData(title: "Chats", icon: "bubble.left.and.bubble.right"),
     TabData(title: "Profile", icon: "person"),
   ];
 
   final List<Widget> pages = [
-    ChefHomeScreen(),
-    AnalyticsScreen(),
-    ChefBookingScreen(),
+    CustomerHome(),
+    BookingHistoryScreen(),
+    BookingHistoryScreen(),
     ChatListScreen(),
-    ChefProfileScreen(),
+    ProfileScreen(),
   ];
 
   @override

@@ -26,7 +26,6 @@ class AnalyticsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(children: [earning(), BookTime(), bookInfo(), topItem()]),
       ),
-      bottomNavigationBar: ChefBottomBar(currentIndex: 1),
     );
   }
 }

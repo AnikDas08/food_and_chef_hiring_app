@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 class ChefBookingController extends GetxController {
   DateTime selectedDate = DateTime.now();
+  bool isLoading = false;
+
   String selectedTime = "";
   final List<String> timeSlots = [
     "10:00 AM",
@@ -31,7 +33,13 @@ class ChefBookingController extends GetxController {
 
   onChangeBookingHistory(String value) {
     selectedBookingHistory = value;
+    isLoading = true;
     update();
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      isLoading = false;
+      update();
+    });
   }
 
   onChangeOrderDetailsPopup() {

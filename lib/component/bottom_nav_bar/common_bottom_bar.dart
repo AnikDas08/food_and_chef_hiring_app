@@ -74,7 +74,7 @@ class CommonBottomNavBar extends StatelessWidget {
 
     if (index == 0) {
       if (!(currentIndex == 0)) {
-        Get.toNamed(AppRoutes.customerHome);
+        // Get.toNamed(AppRoutes.customerHome);
       }
     } else if (index == 1) {
       if (!(currentIndex == 1)) {
