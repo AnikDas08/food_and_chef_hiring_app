@@ -21,7 +21,6 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -236,6 +235,7 @@ class ProfileScreen extends StatelessWidget {
                   disableDivider: true,
                   disableIcon: true,
                 ),
+                80.height,
               ],
             ),
           );
@@ -243,7 +243,6 @@ class ProfileScreen extends StatelessWidget {
       ),
 
       /// Bottom Navigation Bar Section Starts here
-     
     );
   }
 }

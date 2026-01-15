@@ -75,7 +75,8 @@ class ChatListScreen extends StatelessWidget {
                     Expanded(
                       child: ListView.builder(
                         itemCount: controller.chats.length,
-                        padding: EdgeInsets.only(top: 16.h),
+                        padding: EdgeInsets.only(bottom: 80.h, top: 16.h),
+
                         itemBuilder: (context, index) {
                           ChatModel item = controller.chats[index];
                           return InkWell(

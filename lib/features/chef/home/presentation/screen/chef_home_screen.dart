@@ -52,7 +52,7 @@ class ChefHomeScreen extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.zero,
+                padding: EdgeInsets.only(bottom: 80.h),
                 itemCount: 8,
                 itemBuilder: (context, index) {
                   return requestItem(context);

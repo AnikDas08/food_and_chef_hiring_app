@@ -79,7 +79,8 @@ class BookingHistoryScreen extends StatelessWidget {
                         controller.isLoading
                             ? const CommonLoader()
                             : ListView.builder(
-                              padding: EdgeInsets.zero,
+                              padding: EdgeInsets.only(bottom: 80.h),
+
                               itemCount: 10,
                               itemBuilder: (context, index) {
                                 return bookingItem();
