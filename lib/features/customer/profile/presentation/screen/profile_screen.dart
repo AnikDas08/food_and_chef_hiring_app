@@ -51,192 +51,197 @@ class ProfileScreen extends StatelessWidget {
       /// Body Section Starts here
       body: GetBuilder<ProfileController>(
         builder: (controller) {
-          return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Column(
-              children: [
-                12.height,
-                Container(
-                  padding: EdgeInsets.all(12.sp),
-                  decoration: BoxDecoration(
-                    color: Color(0xffF2F2F2),
-                    border: Border.all(color: Color(0xffF1F1F1)),
-                    borderRadius: BorderRadius.circular(20.sp),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          CommonImage(
-                            imageSrc: AppImages.image3,
-                            size: 52,
-                            fill: BoxFit.fill,
-                            borderRadius: 50,
-                          ),
-                          12.width,
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CommonText(
-                                  text: "Darren Monarch",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff272727),
-                                ),
-                                CommonText(
-                                  text: "darrenmonarch@gmail.com",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff777777),
-                                ),
-                              ],
+          return SafeArea(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Column(
+                children: [
+                  12.height,
+                  Container(
+                    padding: EdgeInsets.all(12.sp),
+                    decoration: BoxDecoration(
+                      color: Color(0xffF2F2F2),
+                      border: Border.all(color: Color(0xffF1F1F1)),
+                      borderRadius: BorderRadius.circular(20.sp),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            CommonImage(
+                              imageSrc: AppImages.image3,
+                              size: 52,
+                              fill: BoxFit.fill,
+                              borderRadius: 50,
+                            ),
+                            12.width,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CommonText(
+                                    text: "Darren Monarch",
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff272727),
+                                  ),
+                                  CommonText(
+                                    text: "darrenmonarch@gmail.com",
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xff777777),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        16.height,
+                        CommonTextField(
+                          keyboardType: TextInputType.none,
+                          borderColor: Color(0xffF1F1F1),
+                          borderRadius: 8,
+                          fillColor: Color(0xffFDFDFD),
+                          paddingVertical: 14,
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: CommonImage(
+                              imageSrc: controller.selectedProfile['image'],
+                              size: 30,
                             ),
                           ),
-                        ],
-                      ),
-                      16.height,
-                      CommonTextField(
-                        keyboardType: TextInputType.none,
-                        borderColor: Color(0xffF1F1F1),
-                        borderRadius: 8,
-                        fillColor: Color(0xffFDFDFD),
-                        paddingVertical: 14,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: CommonImage(
-                            imageSrc: controller.selectedProfile['image'],
-                            size: 30,
+                          hintText: controller.selectedProfile['name'],
+                          hintTextColor: Color(0xff272727),
+                          suffixIcon: ProfileList(
+                            items: controller.profileOptions,
+                            selectedItem: controller.selectedProfile,
+                            onTap: controller.onChangeProfile,
                           ),
                         ),
-                        hintText: controller.selectedProfile['name'],
-                        hintTextColor: Color(0xff272727),
-                        suffixIcon: ProfileList(
-                          items: controller.profileOptions,
-                          selectedItem: controller.selectedProfile,
-                          onTap: controller.onChangeProfile,
+                      ],
+                    ),
+                  ),
+
+                  /// Edit Profile item here
+                  CommonText(
+                    text: AppString.accountInfo,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                    color: Color(0xff777777),
+                    top: 28,
+                    bottom: 12,
+                  ).start,
+
+                  Container(
+                    padding: EdgeInsets.all(12.sp),
+                    decoration: BoxDecoration(
+                      color: Color(0xffF2F2F2),
+                      borderRadius: BorderRadius.circular(20.sp),
+                    ),
+                    child: Column(
+                      children: [
+                        Item(
+                          image: AppIcons.user,
+                          title: AppString.editProfile,
+                          onTap: () => Get.toNamed(AppRoutes.editProfile),
                         ),
-                      ),
-                    ],
+
+                        /// Setting item here
+                        Item(
+                          image: AppIcons.addressIcon,
+                          title: AppString.address,
+                          onTap: () => Get.toNamed(AppRoutes.addressScreen),
+                        ),
+                        Item(
+                          image: AppIcons.card,
+                          title: AppString.paymentMethods,
+                          onTap: () => Get.toNamed(AppRoutes.paymentMethod),
+                        ),
+                        Item(
+                          image: AppIcons.past,
+                          title: AppString.pastOrders,
+                          onTap: () => Get.toNamed(AppRoutes.pastOrder),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                  CommonText(
+                    text: AppString.management,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                    color: Color(0xff777777),
+                    top: 28,
+                    bottom: 16,
+                  ).start,
 
-                /// Edit Profile item here
-                CommonText(
-                  text: AppString.accountInfo,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12,
-                  color: Color(0xff777777),
-                  top: 28,
-                  bottom: 12,
-                ).start,
+                  Container(
+                    padding: EdgeInsets.all(12.sp),
+                    decoration: BoxDecoration(
+                      color: Color(0xffF2F2F2),
+                      borderRadius: BorderRadius.circular(20.sp),
+                    ),
+                    child: Column(
+                      children: [
+                        Item(
+                          image: AppIcons.manage,
+                          title: AppString.manageDietaryRestrictions,
+                          onTap: () => Get.toNamed(AppRoutes.dietary),
+                        ),
 
-                Container(
-                  padding: EdgeInsets.all(12.sp),
-                  decoration: BoxDecoration(
-                    color: Color(0xffF2F2F2),
-                    borderRadius: BorderRadius.circular(20.sp),
+                        /// Setting item here
+                        Item(
+                          image: AppIcons.kitchen,
+                          title: AppString.manageKitchenEquipment,
+                          onTap: () => Get.toNamed(AppRoutes.kitchen),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Column(
-                    children: [
-                      Item(
-                        image: AppIcons.user,
-                        title: AppString.editProfile,
-                        onTap: () => Get.toNamed(AppRoutes.editProfile),
-                      ),
 
-                      /// Setting item here
-                      Item(
-                        image: AppIcons.addressIcon,
-                        title: AppString.address,
-                        onTap: () => Get.toNamed(AppRoutes.addressScreen),
-                      ),
-                      Item(
-                        image: AppIcons.card,
-                        title: AppString.paymentMethods,
-                        onTap: () => Get.toNamed(AppRoutes.paymentMethod),
-                      ),
-                      Item(
-                        image: AppIcons.past,
-                        title: AppString.pastOrders,
-                        onTap: () => Get.toNamed(AppRoutes.pastOrder),
-                      ),
-                    ],
+                  CommonText(
+                    text: AppString.other,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                    color: Color(0xff777777),
+                    top: 28,
+                    bottom: 12,
+                  ).start,
+
+                  Container(
+                    padding: EdgeInsets.all(12.sp),
+                    decoration: BoxDecoration(
+                      color: Color(0xffF2F2F2),
+                      borderRadius: BorderRadius.circular(20.sp),
+                    ),
+                    child: Column(
+                      children: [
+                        Item(
+                          image: AppIcons.contact,
+                          imageSize: 24,
+                          title: AppString.contactSupport,
+                        ),
+
+                        Item(
+                          image: AppIcons.about,
+                          title: AppString.appVersion,
+                        ),
+
+                        /// Log Out item here
+                      ],
+                    ),
                   ),
-                ),
-                CommonText(
-                  text: AppString.management,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12,
-                  color: Color(0xff777777),
-                  top: 28,
-                  bottom: 16,
-                ).start,
 
-                Container(
-                  padding: EdgeInsets.all(12.sp),
-                  decoration: BoxDecoration(
-                    color: Color(0xffF2F2F2),
-                    borderRadius: BorderRadius.circular(20.sp),
+                  Item(
+                    image: AppIcons.logout,
+                    color: Color(0xffFF0000),
+                    title: AppString.signOut,
+                    onTap: logOutPopUp,
+                    disableDivider: true,
+                    disableIcon: true,
                   ),
-                  child: Column(
-                    children: [
-                      Item(
-                        image: AppIcons.manage,
-                        title: AppString.manageDietaryRestrictions,
-                        onTap: () => Get.toNamed(AppRoutes.dietary),
-                      ),
-
-                      /// Setting item here
-                      Item(
-                        image: AppIcons.kitchen,
-                        title: AppString.manageKitchenEquipment,
-                        onTap: () => Get.toNamed(AppRoutes.kitchen),
-                      ),
-                    ],
-                  ),
-                ),
-
-                CommonText(
-                  text: AppString.other,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12,
-                  color: Color(0xff777777),
-                  top: 28,
-                  bottom: 12,
-                ).start,
-
-                Container(
-                  padding: EdgeInsets.all(12.sp),
-                  decoration: BoxDecoration(
-                    color: Color(0xffF2F2F2),
-                    borderRadius: BorderRadius.circular(20.sp),
-                  ),
-                  child: Column(
-                    children: [
-                      Item(
-                        image: AppIcons.contact,
-                        imageSize: 24,
-                        title: AppString.contactSupport,
-                      ),
-
-                      Item(image: AppIcons.about, title: AppString.appVersion),
-
-                      /// Log Out item here
-                    ],
-                  ),
-                ),
-
-                Item(
-                  image: AppIcons.logout,
-                  color: Color(0xffFF0000),
-                  title: AppString.signOut,
-                  onTap: logOutPopUp,
-                  disableDivider: true,
-                  disableIcon: true,
-                ),
-                80.height,
-              ],
+                  // 80.height,
+                ],
+              ),
             ),
           );
         },
