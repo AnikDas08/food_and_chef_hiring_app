@@ -36,7 +36,7 @@ class _ChefHomeState extends State<CustomerHomeScreen>
   final List<TabData> tabs = [
     TabData(title: "Home", icon: "house"),
     TabData(title: "Bookings", icon: "stove"),
-    TabData(title: "Bookings", icon: "basket"),
+    TabData(title: "Groceries", icon: "basket"),
     TabData(title: "Chats", icon: "bubble.left.and.bubble.right"),
     TabData(title: "Profile", icon: "person"),
   ];
