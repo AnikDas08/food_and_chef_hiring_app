@@ -61,7 +61,6 @@ dependencies:
   percent_indicator: ^4.2.5
   fl_chart: ^1.1.1
   table_calendar: ^3.2.0
-  liquid_glass_renderer: ^0.2.0-dev.4
   cupertino_native: ^0.1.1
     
 dev_dependencies:

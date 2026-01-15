@@ -22,7 +22,7 @@ String text =
     "Javier Alison, born in Barcelona, Spain, is a celebrated chef known for his innovative Mediterranean cuisine.";
 
 class ChefDetailsScreen extends StatelessWidget {
-  ChefDetailsScreen({super.key});
+const ChefDetailsScreen({super.key});
 
   final double collapsedHeight = kToolbarHeight + 85;
 

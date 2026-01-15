@@ -123,7 +123,7 @@ class ChefProfileController extends GetxController {
       LocalStorage.setString("myEmail", LocalStorage.myEmail);
 
       Utils.successSnackBar("Successfully Profile Updated", response.message);
-      Get.toNamed(AppRoutes.profile);
+      Get.toNamed(AppRoutes.chefHomeScreen, arguments: {"index": 4});
     } else {
       Utils.errorSnackBar(response.statusCode, response.message);
     }

@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:new_untitled/features/chef/home/presentation/widgets/chef_home_appbar.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-
-import '../../../../../component/bottom_nav_bar/chef_bottom_bar.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_images.dart';
@@ -54,7 +52,8 @@ class ChefHomeScreen extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: 5,
+                padding: EdgeInsets.zero,
+                itemCount: 8,
                 itemBuilder: (context, index) {
                   return requestItem(context);
                 },
@@ -63,7 +62,6 @@ class ChefHomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: ChefBottomBar(currentIndex: 0),
     );
   }
 }

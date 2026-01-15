@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/features/test.dart';
+import 'package:new_untitled/features/chef/home/presentation/screen/chef_home.dart';
 
 import 'config/route/app_routes.dart';
 import 'config/theme/light_theme.dart';
@@ -22,8 +22,9 @@ class MyApp extends StatelessWidget {
         defaultTransition: Transition.fadeIn,
         theme: themeData,
         transitionDuration: const Duration(milliseconds: 300),
-        initialRoute: AppRoutes.splash,
+        // initialRoute: AppRoutes.splash,
         getPages: AppRoutes.routes,
+        home: ChefHome(),
       ),
     );
   }

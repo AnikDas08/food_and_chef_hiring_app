@@ -10,7 +10,6 @@ import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/screen/error_screen.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_text_field.dart';
-import '../../../../../services/storage/storage_services.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../controller/chat_controller.dart';
 import '../../data/model/chat_list_model.dart';
@@ -104,10 +103,10 @@ class ChatListScreen extends StatelessWidget {
       ),
 
       /// Bottom Navigation Bar Section Starts here
-      bottomNavigationBar:
-          LocalStorage.isChef
-              ? ChefBottomBar(currentIndex: 3)
-              : const CommonBottomNavBar(currentIndex: 3),
+      // bottomNavigationBar:
+      //     LocalStorage.isChef
+      //         ? ChefBottomBar(currentIndex: 3)
+      //         : const CommonBottomNavBar(currentIndex: 3),
     );
   }
 }

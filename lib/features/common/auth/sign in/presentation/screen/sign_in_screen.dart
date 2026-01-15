@@ -28,7 +28,6 @@ class _SignInScreenState extends State<SignInScreen> {
   final FocusNode passwordFocusNode = FocusNode();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       emailFocusNode.requestFocus();
@@ -141,7 +140,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         isLoading: controller.isLoading,
                         onTap: () {
                           LocalStorage.myRole = "chef";
-                          Get.toNamed(AppRoutes.chefHome);
+                          Get.toNamed(AppRoutes.chefHomeScreen);
                         },
                       ),
                       20.height,

@@ -27,7 +27,6 @@ import '../../features/common/auth/sign up/presentation/screen/name_screen.dart'
 import '../../features/common/auth/sign up/presentation/screen/review_detail_screen.dart';
 import '../../features/common/auth/sign up/presentation/screen/sign_up_screen.dart';
 import '../../features/common/auth/sign up/presentation/screen/verify_user.dart';
-import '../../features/common/message/presentation/screen/chat_screen.dart';
 import '../../features/common/message/presentation/screen/message_screen.dart';
 import '../../features/common/notifications/presentation/screen/notifications_screen.dart';
 import '../../features/common/onboarding_screen/onboarding_screen.dart';
@@ -36,7 +35,6 @@ import '../../features/common/setting/presentation/screen/setting_screen.dart';
 import '../../features/common/setting/presentation/screen/terms_of_services_screen.dart';
 import '../../features/common/splash/splash_screen.dart';
 import '../../features/customer/address/presentation/screen/profile_address_screen.dart';
-import '../../features/customer/booking/presentation/screen/booking_history_screen.dart';
 import '../../features/customer/booking/presentation/screen/request_change_screen.dart';
 import '../../features/customer/cart/presentation/screen/business_tax_details_screen.dart';
 import '../../features/customer/cart/presentation/screen/cart_screen.dart';
@@ -55,7 +53,6 @@ import '../../features/customer/payment/presentation/screen/add_card_screen.dart
 import '../../features/customer/payment/presentation/screen/edit_card_screen.dart';
 import '../../features/customer/payment/presentation/screen/payment_method_screen.dart';
 import '../../features/customer/profile/presentation/screen/edit_profile.dart';
-import '../../features/customer/profile/presentation/screen/profile_screen.dart';
 import '../../features/chef/analytics/presentation/screen/analytics_screen.dart';
 
 class AppRoutes {
@@ -70,9 +67,9 @@ class AppRoutes {
   static const String createPassword = "/create_password.dart";
   static const String changePassword = "/change_password_screen.dart";
   static const String notifications = "/notifications_screen.dart";
-  static const String chat = "/chat_screen.dart";
+  // static const String chat = "/chat_screen.dart";
   static const String message = "/message_screen.dart";
-  static const String profile = "/profile_screen.dart";
+  // static const String profile = "/profile_screen.dart";
   static const String editProfile = "/edit_profile.dart";
   static const String privacyPolicy = "/privacy_policy_screen.dart";
   static const String termsOfServices = "/terms_of_services_screen.dart";
@@ -88,7 +85,7 @@ class AppRoutes {
   static const String checkout = "/checkout_screen.dart";
   static const String businessTaxDetails = "/business_tax_details_screen.dart";
   static const String personalTaxDetails = "/personal_tax_details_screen.dart";
-  static const String bookingHistory = "/booking_history_screen.dart";
+  // static const String bookingHistory = "/booking_history_screen.dart";
   static const String requestChange = "/request_change_screen.dart";
   static const String addressScreen = "/profile_address_screen.dart";
   static const String addAddress = "/add_address_screen.dart";
@@ -98,7 +95,7 @@ class AppRoutes {
   static const String pastOrder = "/past_order_screen.dart";
   static const String reorder = "/reorder_screen.dart";
   static const String review = "/review_screen.dart";
-  static const String chefHome = "/chef_home_screen.dart";
+  static const String chefHomeScreen = "/chef_home_screen.dart";
   static const String chefBooking = "/chef_booking_screen.dart";
   static const String chefProfile = "/chef_profile_screen.dart";
   static const String chefPublicProfile = "/chef_public_profile_screen.dart";
@@ -131,9 +128,9 @@ class AppRoutes {
     GetPage(name: createPassword, page: () => CreatePassword()),
     GetPage(name: changePassword, page: () => ChangePasswordScreen()),
     GetPage(name: notifications, page: () => const NotificationScreen()),
-    GetPage(name: chat, page: () => const ChatListScreen()),
+    // GetPage(name: chat, page: () => const ChatListScreen()),
     GetPage(name: message, page: () => const MessageScreen()),
-    GetPage(name: profile, page: () => const ProfileScreen()),
+    // GetPage(name: profile, page: () => const ProfileScreen()),
     GetPage(name: editProfile, page: () => EditProfile()),
     GetPage(name: privacyPolicy, page: () => const PrivacyPolicyScreen()),
     GetPage(name: termsOfServices, page: () => const TermsOfServicesScreen()),
@@ -149,7 +146,7 @@ class AppRoutes {
     GetPage(name: checkout, page: () => CheckoutScreen()),
     GetPage(name: businessTaxDetails, page: () => BusinessTaxDetailsScreen()),
     GetPage(name: personalTaxDetails, page: () => PersonalTaxDetailsScreen()),
-    GetPage(name: bookingHistory, page: () => BookingHistoryScreen()),
+    // GetPage(name: bookingHistory, page: () => BookingHistoryScreen()),
     GetPage(name: requestChange, page: () => RequestChangeScreen()),
     GetPage(name: addressScreen, page: () => ProfileAddressScreen()),
     GetPage(name: addAddress, page: () => AddAddressScreen()),
@@ -159,7 +156,7 @@ class AppRoutes {
     GetPage(name: pastOrder, page: () => PastOrderScreen()),
     GetPage(name: reorder, page: () => ReorderScreen()),
     GetPage(name: review, page: () => ReviewScreen()),
-    GetPage(name: chefHome, page: () => ChefHomeScreen()),
+    GetPage(name: chefHomeScreen, page: () => ChefHomeScreen()),
     GetPage(name: chefBooking, page: () => ChefBookingScreen()),
     GetPage(name: chefProfile, page: () => ChefProfileScreen()),
     GetPage(name: chefPublicProfile, page: () => ChefPublicProfile()),

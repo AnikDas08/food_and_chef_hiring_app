@@ -103,7 +103,6 @@ class _OnboardingItemState extends State<OnboardingItem> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     init();
   }

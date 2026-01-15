@@ -24,13 +24,13 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   int selectedTabIndex = 0;
   final List<TabData> tabs = [
     TabData(title: "Home", icon: "house"),
-     TabData(title: "Bookings", icon: "basket"),
+    TabData(title: "Bookings", icon: "stove"),
     // TabData(
     //   title: "Analytics",
     //   icon: "gauge.chart.leftthird.topthird.rightthird",
     // ),
-    TabData(title: "Groceries", icon: "cart"),
-    TabData(title: "Chats", icon: "ellipsis.message"),
+    TabData(title: "Groceries", icon: "basket"),
+    TabData(title: "Chats", icon: "bubble.left.and.bubble.right"),
     TabData(title: "Profile", icon: "person"),
   ];
   @override
@@ -84,7 +84,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                       .map(
                         (TabData tab) => CNTabBarItem(
                           label: tab.title,
-                          icon: CNSymbol(tab.icon, ),
+                          icon: CNSymbol(tab.icon),
                         ),
                       )
                       .toList(),

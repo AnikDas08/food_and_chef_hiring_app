@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
@@ -9,7 +8,7 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 import '../../../config/route/app_routes.dart';
 import '../../../utils/log/app_log.dart';
 
-List _list = [
+final List<String> _list = [
   AppIcons.home,
   AppIcons.basket,
   AppIcons.groceries,
@@ -17,7 +16,7 @@ List _list = [
   AppIcons.profile,
 ];
 
-List _string = [
+final List<String> _string = [
   AppString.home,
   AppString.bookings,
   AppString.groceries,
@@ -36,35 +35,32 @@ class CommonBottomNavBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(_list.length, (index) {
-          return LiquidGlass(
-            shape: LiquidRoundedSuperellipse(borderRadius: 12),
-            child: InkWell(
-              onTap: () => onTap(index),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CommonImage(
-                      imageSrc: _list[index],
-                      size: 24,
-                      imageColor:
-                          index == currentIndex
-                              ? Colors.black
-                              : const Color(0xff777777),
-                    ),
-                    CommonText(
-                      text: _string[index],
-                      fontSize: 12,
-                      top: 4,
-                      fontWeight: FontWeight.w400,
-                      color:
-                          index == currentIndex
-                              ? const Color(0xff272727)
-                              : const Color(0xff777777),
-                    ),
-                  ],
-                ),
+          return InkWell(
+            onTap: () => onTap(index),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CommonImage(
+                    imageSrc: _list[index],
+                    size: 24,
+                    imageColor:
+                        index == currentIndex
+                            ? Colors.black
+                            : const Color(0xff777777),
+                  ),
+                  CommonText(
+                    text: _string[index],
+                    fontSize: 12,
+                    top: 4,
+                    fontWeight: FontWeight.w400,
+                    color:
+                        index == currentIndex
+                            ? const Color(0xff272727)
+                            : const Color(0xff777777),
+                  ),
+                ],
               ),
             ),
           );
@@ -82,19 +78,19 @@ class CommonBottomNavBar extends StatelessWidget {
       }
     } else if (index == 1) {
       if (!(currentIndex == 1)) {
-        Get.toNamed(AppRoutes.bookingHistory);
+        // Get.toNamed(AppRoutes.bookingHistory);
       }
     } else if (index == 2) {
       if (!(currentIndex == 2)) {
-        Get.toNamed(AppRoutes.bookingHistory);
+        // Get.toNamed(AppRoutes.bookingHistory);
       }
     } else if (index == 3) {
-      if (!(currentIndex == 3)) {
-        Get.toNamed(AppRoutes.chat);
-      }
+      // if (!(currentIndex == 3)) {
+      //   Get.toNamed(AppRoutes.chat);
+      // }
     } else if (index == 4) {
       if (!(currentIndex == 4)) {
-        Get.toNamed(AppRoutes.profile);
+        // Get.toNamed(AppRoutes.profile);
       }
     }
   }
