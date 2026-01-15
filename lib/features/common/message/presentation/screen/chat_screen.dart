@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
@@ -44,24 +45,30 @@ class ChatListScreen extends StatelessWidget {
         ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(60),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: CommonTextField(
-              hintText: AppString.search,
-              keyboardType: TextInputType.none,
-              onTap: () => Get.toNamed(AppRoutes.homeSearch),
-              borderRadius: 20,
-              fillColor: Color(0xffFAFAFA),
-              suffixIcon: Padding(
-                padding: EdgeInsets.all(10),
-                child: CommonImage(
-                  imageSrc: AppIcons.fliter,
-                  imageColor: Color(0xff636363),
+          child: LiquidGlassLayer(
+            child: LiquidGlass(
+              shape: LiquidRoundedSuperellipse(borderRadius: 30),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: CommonTextField(
+                  hintText: AppString.search,
+                  keyboardType: TextInputType.none,
+                  onTap: () => Get.toNamed(AppRoutes.homeSearch),
+                  borderRadius: 20,
+                  fillColor: Color(0xffFAFAFA).withOpacity(0.7),
+                  borderColor: Colors.grey.withOpacity(0.2),
+                  suffixIcon: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: CommonImage(
+                      imageSrc: AppIcons.fliter,
+                      imageColor: Color(0xff636363),
+                    ),
+                  ),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Icon(CupertinoIcons.search),
+                  ),
                 ),
-              ),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Icon(CupertinoIcons.search),
               ),
             ),
           ),
@@ -92,7 +99,10 @@ class ChatListScreen extends StatelessWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: controller.chats.length,
-                      padding: EdgeInsets.only(bottom: 80.h, top: 16.h),
+                      padding: EdgeInsets.only(
+                        bottom: 80.h,
+                        top: 16.h,
+                      ).copyWith(bottom: 0),
 
                       itemBuilder: (context, index) {
                         ChatModel item = controller.chats[index];

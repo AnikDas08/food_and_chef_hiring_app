@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
@@ -16,12 +17,6 @@ AppBar homeAppbar() {
     automaticallyImplyLeading: false,
     backgroundColor: Colors.transparent,
     centerTitle: false,
-    flexibleSpace: ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-        child: Container(color: Colors.white.withOpacity(0.1)),
-      ),
-    ),
     title: Row(
       children: [
         Expanded(
@@ -33,7 +28,7 @@ AppBar homeAppbar() {
                 text: AppString.yourLocation,
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
-                color: Color(0xff777777),
+                color: Colors.black,
                 bottom: 2,
               ),
               Row(
@@ -51,7 +46,7 @@ AppBar homeAppbar() {
                       },
                       child: CommonText(
                         text: "4140 Parker Rd. Allentown, New Mexico 31134",
-                        color: Color(0xff272727),
+                        color: Colors.black,
                         fontWeight: FontWeight.w500,
                         left: 4,
                       ),
@@ -64,28 +59,72 @@ AppBar homeAppbar() {
         ),
       ],
     ),
-    actions: [
-      InkWell(
-        onTap: () => Get.toNamed(AppRoutes.notifications),
-        child: Container(
-          padding: EdgeInsets.all(8.sp),
-          decoration: BoxDecoration(
-            color: Color(0xffF2F2F2),
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.black.withOpacity(0.07)),
+    flexibleSpace: Stack(
+      fit: StackFit.expand,
+      children: [
+        // 🌊 GLASS BACKGROUND (ONLY)
+        LiquidGlassLayer(
+          settings: LiquidGlassSettings(
+            thickness: 14,
+            blur: 22,
+            glassColor: Colors.white.withOpacity(0.22),
           ),
-          child: CommonImage(imageSrc: AppIcons.notification),
+          child: LiquidGlass(
+
+            shape: LiquidRoundedSuperellipse(borderRadius: 30),
+            child: Container(),
+          ),
+        ),
+
+        Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            height: 1,
+            color: Colors.white.withOpacity(0.35),
+          ),
+        ),
+
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 0.6,
+            color: Colors.white.withOpacity(0.25),
+          ),
+        ),
+      ],
+    ),
+
+
+    actions: [
+      LiquidGlassLayer(
+        child: LiquidGlass(
+          shape: LiquidRoundedSuperellipse(borderRadius: 30),
+          child: InkWell(
+            onTap: () => Get.toNamed(AppRoutes.notifications),
+            child: Container(
+              padding: EdgeInsets.all(8.sp),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.black.withOpacity(0.07)),
+              ),
+              child: CommonImage(imageSrc: AppIcons.notification, imageColor: Colors.black,),
+            ),
+          ),
         ),
       ),
       12.width,
-      Container(
-        padding: EdgeInsets.all(8.sp),
-        decoration: BoxDecoration(
-          color: Color(0xffF2F2F2),
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.black.withOpacity(0.07)),
+      LiquidGlassLayer(
+        child: LiquidGlass(
+          shape: LiquidRoundedSuperellipse(borderRadius: 30),
+          child: Container(
+            padding: EdgeInsets.all(8.sp),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.black.withOpacity(0.07)),
+            ),
+            child: CommonImage(imageSrc: AppIcons.basket, imageColor: Colors.black,),
+          ),
         ),
-        child: CommonImage(imageSrc: AppIcons.basket),
       ),
       12.width,
     ],
