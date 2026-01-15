@@ -112,39 +112,55 @@ class _ChefHomeState extends State<ChefHome>
 
   Widget _bottomBar() {
     return SafeArea(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(_list.length, (index) {
-          return InkWell(
-            onTap: () => onTabTap(index),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CommonImage(
-                    imageSrc: _list[index],
-                    size: 24,
-                    imageColor:
-                        index == selectedTabIndex
-                            ? Colors.black
-                            : const Color(0xff777777),
-                  ),
-                  CommonText(
-                    text: _string[index],
-                    fontSize: 12,
-                    top: 4,
-                    fontWeight: FontWeight.w400,
-                    color:
-                        index == selectedTabIndex
-                            ? const Color(0xff272727)
-                            : const Color(0xff777777),
-                  ),
-                ],
-              ),
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 12.w).copyWith(bottom: 8),
+        padding: EdgeInsets.symmetric(horizontal: 6.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              blurRadius: 4,
+              offset: Offset(1, 1),
             ),
-          );
-        }),
+          ],
+          borderRadius: BorderRadius.circular(50),
+          border: Border.all(color: Colors.grey.withOpacity(0.5)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(_list.length, (index) {
+            return InkWell(
+              onTap: () => onTabTap(index),
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CommonImage(
+                      imageSrc: _list[index],
+                      size: 24,
+                      imageColor:
+                          index == selectedTabIndex
+                              ? Colors.black
+                              : const Color(0xff777777),
+                    ),
+                    CommonText(
+                      text: _string[index],
+                      fontSize: 12,
+                      top: 4,
+                      fontWeight: FontWeight.w400,
+                      color:
+                          index == selectedTabIndex
+                              ? const Color(0xff272727)
+                              : const Color(0xff777777),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+        ),
       ),
     );
   }
