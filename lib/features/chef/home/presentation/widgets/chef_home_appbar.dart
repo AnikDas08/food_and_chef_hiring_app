@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -11,7 +13,14 @@ import '../../../../../utils/constants/app_icons.dart';
 AppBar chefHomeAppBar() {
   return AppBar(
     automaticallyImplyLeading: false,
-    actionsPadding: EdgeInsets.zero,
+    backgroundColor: Colors.transparent,
+    centerTitle: false,
+    flexibleSpace: ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+        child: Container(color: Colors.white.withOpacity(0.1)),
+      ),
+    ),
     title: Row(
       children: [
         Expanded(
@@ -45,6 +54,7 @@ AppBar chefHomeAppBar() {
           decoration: BoxDecoration(
             color: Color(0xffF2F2F2),
             shape: BoxShape.circle,
+            border: Border.all(color: Colors.black.withOpacity(0.07)),
           ),
           child: CommonImage(imageSrc: AppIcons.notification),
         ),

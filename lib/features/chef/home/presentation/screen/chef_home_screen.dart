@@ -15,6 +15,9 @@ class ChefHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      backgroundColor: Colors.white,
       appBar: chefHomeAppBar(),
 
       body: Padding(
@@ -22,7 +25,7 @@ class ChefHomeScreen extends StatelessWidget {
           horizontal: 16,
           vertical: 24,
         ).copyWith(bottom: 0),
-        child: Column(
+        child: ListView(
           children: [
             CommonImage(
               imageSrc: AppImages.img7,
@@ -49,14 +52,13 @@ class ChefHomeScreen extends StatelessWidget {
               ],
             ),
 
-            Expanded(
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  return requestItem(context);
-                },
-              ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 8,
+              itemBuilder: (context, index) {
+                return requestItem(context);
+              },
             ),
           ],
         ),
