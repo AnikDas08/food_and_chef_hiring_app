@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:new_untitled/component/bottom_nav_bar/chef_bottom_bar.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 

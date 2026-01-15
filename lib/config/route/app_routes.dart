@@ -10,7 +10,6 @@ import 'package:new_untitled/features/customer/address/presentation/screen/add_a
 import 'package:new_untitled/features/customer/cart/presentation/screen/promo_code_screen.dart';
 import 'package:new_untitled/features/customer/home/presentation/screen/customer_home_screen.dart';
 import '../../features/chef/chef_booking/presentation/screen/chef_booking_screen.dart';
-import '../../features/chef/home/presentation/screen/chef_home_screen.dart';
 import '../../features/chef/payment/presentation/screen/add_payment_method.dart';
 import '../../features/chef/payment/presentation/screen/chef_payment_screen.dart';
 import '../../features/chef/payment/presentation/screen/history_screen.dart';
@@ -44,7 +43,6 @@ import '../../features/customer/cart/presentation/screen/checkout_screen.dart';
 import '../../features/customer/cart/presentation/screen/personal_tax_details_screen.dart';
 import '../../features/customer/chef_details/presentation/screen/chef_details_screen.dart';
 import '../../features/customer/dietary/presentation/screen/dietary_screen.dart';
-import '../../features/customer/home/presentation/screen/home_screen.dart';
 import '../../features/customer/home/presentation/screen/search_screen.dart';
 import '../../features/customer/kitchen/presentation/screen/add_equipment_screen.dart';
 import '../../features/customer/kitchen/presentation/screen/kitchen_screen.dart';
@@ -55,7 +53,6 @@ import '../../features/customer/payment/presentation/screen/add_card_screen.dart
 import '../../features/customer/payment/presentation/screen/edit_card_screen.dart';
 import '../../features/customer/payment/presentation/screen/payment_method_screen.dart';
 import '../../features/customer/profile/presentation/screen/edit_profile.dart';
-import '../../features/chef/analytics/presentation/screen/analytics_screen.dart';
 
 class AppRoutes {
   static const String test = "/test_screen.dart";

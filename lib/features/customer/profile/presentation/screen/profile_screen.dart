@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
-import '../../../../../component/bottom_nav_bar/common_bottom_bar.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/other_widgets/item.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';

@@ -10,8 +10,6 @@ import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/features/chef/analytics/presentation/screen/analytics_screen.dart';
 import 'package:new_untitled/features/chef/home/presentation/screen/chef_home_screen.dart';
 import 'package:new_untitled/features/common/message/presentation/screen/chat_screen.dart';
-import 'package:new_untitled/features/customer/booking/presentation/screen/booking_history_screen.dart';
-import 'package:new_untitled/features/customer/profile/presentation/screen/profile_screen.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 
