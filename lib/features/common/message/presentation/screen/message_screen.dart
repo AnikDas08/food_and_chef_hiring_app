@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
+import 'package:new_untitled/utils/constants/app_images.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_text_field.dart';
@@ -128,13 +128,19 @@ class _MessageScreenState extends State<MessageScreen> {
                   hintText: AppString.messageHere,
                   prefixIcon: Padding(
                     padding: const EdgeInsets.only(left: 16),
-                    child: Icon(Icons.emoji_emotions_outlined),
+                    child: CommonImage(
+                      imageSrc: AppImages.faceSmiling,
+                      imageColor: Colors.black,
+                    ),
                   ),
                   suffixIcon: GestureDetector(
                     onTap: controller.addNewMessage,
                     child: Padding(
                       padding: EdgeInsets.all(16.sp),
-                      child: CommonImage(imageSrc: AppIcons.send),
+                      child: CommonImage(
+                        imageSrc: AppImages.paperplane,
+                        imageColor: Colors.black,
+                      ),
                     ),
                   ),
                   borderColor: Colors.white,

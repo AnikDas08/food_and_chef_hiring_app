@@ -36,10 +36,7 @@ class _ChefHomeState extends State<ChefHome>
   int selectedTabIndex = 0;
   final List<TabData> tabs = [
     TabData(title: "Home", icon: "house"),
-    TabData(
-      title: "Analytics",
-      icon: "gauge.chart.leftthird.topthird.rightthird",
-    ),
+    TabData(title: "Analytics", icon: "chart.xyaxis.line"),
     TabData(title: "Booking", icon: "basket"),
     TabData(title: "Chats", icon: "bubble.left.and.bubble.right"),
     TabData(title: "Profile", icon: "person.crop.circle"),

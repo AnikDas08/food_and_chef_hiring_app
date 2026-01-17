@@ -107,7 +107,7 @@ Widget bookingItem() {
                         value: 2,
                         child: Row(
                           children: const [
-                            Icon(Icons.close, size: 20, color: Colors.red),
+                            CommonImage(imageSrc: AppImages.xmark, imageColor: Colors.red,),
                             SizedBox(width: 10),
                             CommonText(
                               text: "Cancel Booking",

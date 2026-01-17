@@ -1,5 +1,3 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,7 +71,10 @@ AppBar homeAppbar() {
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.black.withOpacity(0.07)),
               ),
-              child: Icon(CupertinoIcons.bell, color: Color(0xff272727)),
+              child: CommonImage(
+                imageSrc: AppImages.bellBadge,
+                imageColor: Colors.black,
+              ),
             ),
           ),
         ),

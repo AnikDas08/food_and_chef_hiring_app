@@ -4,7 +4,7 @@ import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/pop_up/common_pop_menu.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
+import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
@@ -106,8 +106,8 @@ class AddAddressScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(6.0),
                         child: CommonImage(
-                          imageSrc: AppIcons.location,
-                          imageColor: Color(0xffFD713F),
+                          imageSrc: AppImages.house,
+                          imageColor: Colors.black,
                         ),
                       ),
                     ),
