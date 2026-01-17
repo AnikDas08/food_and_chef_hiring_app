@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 
@@ -18,6 +19,8 @@ class AnalyticsScreen extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+
         centerTitle: false,
         backgroundColor: Colors.transparent,
         flexibleSpace: ClipRect(

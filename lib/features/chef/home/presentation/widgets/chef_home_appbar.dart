@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -14,6 +15,8 @@ AppBar chefHomeAppBar() {
   return AppBar(
     automaticallyImplyLeading: false,
     backgroundColor: Colors.transparent,
+    systemOverlayStyle: SystemUiOverlayStyle.dark,
+
     centerTitle: false,
     flexibleSpace: ClipRect(
       child: BackdropFilter(

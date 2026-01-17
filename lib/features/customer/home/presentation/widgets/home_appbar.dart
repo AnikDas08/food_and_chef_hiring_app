@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
@@ -16,85 +17,85 @@ AppBar homeAppbar() {
   return AppBar(
     automaticallyImplyLeading: false,
     backgroundColor: Colors.transparent,
-    centerTitle: false,
-    title: Row(
-      children: [
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CommonText(
-                text: AppString.yourLocation,
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
-                bottom: 2,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.location_on_rounded,
-                    color: Color(0xffA7A7A7),
-                    size: 20,
-                  ),
+    elevation: 0,
+    scrolledUnderElevation: 0,
+    shadowColor: Colors.transparent,
+    systemOverlayStyle: SystemUiOverlayStyle.dark,
 
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        Get.toNamed(AppRoutes.addressScreen);
-                      },
-                      child: CommonText(
-                        text: "4140 Parker Rd. Allentown, New Mexico 31134",
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        left: 4,
-                      ),
-                    ),
-                  ),
-                ],
+
+    title: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CommonText(
+          text: AppString.yourLocation,
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          color: Colors.black,
+          bottom: 2,
+        ),
+        Row(
+          children: [
+            Icon(Icons.location_on_rounded, color: Color(0xffA7A7A7), size: 20),
+
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  Get.toNamed(AppRoutes.addressScreen);
+                },
+                child: CommonText(
+                  text: "4140 Parker Rd. Allentown, New Mexico 31134",
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  left: 4,
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     ),
-    flexibleSpace: Stack(
-      fit: StackFit.expand,
-      children: [
-        // 🌊 GLASS BACKGROUND (ONLY)
-        LiquidGlassLayer(
-          settings: LiquidGlassSettings(
-            thickness: 14,
-            blur: 22,
-            glassColor: Colors.white.withOpacity(0.22),
-          ),
+    // flexibleSpace: ClipRect(
+    //   child: BackdropFilter(
+    //     filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+    //     child: Container(
+    //       decoration: const BoxDecoration(
+    //         gradient: LinearGradient(
+    //           begin: Alignment.topCenter,
+    //           end: Alignment.bottomCenter,
+    //           colors: [
+    //             Color.fromRGBO(255, 255, 255, 1.0),
+    //             Color.fromRGBO(255, 255, 255, 0.0),
+    //           ],
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // ),
+
+    /// With Liquid Glass
+    flexibleSpace: ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+        child: LiquidGlassLayer(
           child: LiquidGlass(
-
-            shape: LiquidRoundedSuperellipse(borderRadius: 30),
-            child: Container(),
+            shape: LiquidRoundedSuperellipse(borderRadius: 0),
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color.fromRGBO(255, 255, 255, 1.0),
+                    Color.fromRGBO(255, 255, 255, 0.0),
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
-
-        Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            height: 1,
-            color: Colors.white.withOpacity(0.35),
-          ),
-        ),
-
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            height: 0.6,
-            color: Colors.white.withOpacity(0.25),
-          ),
-        ),
-      ],
+      ),
     ),
-
-
     actions: [
       LiquidGlassLayer(
         child: LiquidGlass(
@@ -107,7 +108,10 @@ AppBar homeAppbar() {
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.black.withOpacity(0.07)),
               ),
-              child: CommonImage(imageSrc: AppIcons.notification, imageColor: Colors.black,),
+              child: CommonImage(
+                imageSrc: AppIcons.notification,
+                imageColor: Colors.black,
+              ),
             ),
           ),
         ),
@@ -122,7 +126,10 @@ AppBar homeAppbar() {
               shape: BoxShape.circle,
               border: Border.all(color: Colors.black.withOpacity(0.07)),
             ),
-            child: CommonImage(imageSrc: AppIcons.basket, imageColor: Colors.black,),
+            child: CommonImage(
+              imageSrc: AppIcons.basket,
+              imageColor: Colors.black,
+            ),
           ),
         ),
       ),

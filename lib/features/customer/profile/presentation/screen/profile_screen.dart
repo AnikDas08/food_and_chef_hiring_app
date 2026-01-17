@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
@@ -24,11 +25,13 @@ class ProfileScreen extends StatelessWidget {
     return GetBuilder<ProfileController>(
       builder: (controller) {
         return Scaffold(
+
           extendBodyBehindAppBar: true,
           extendBody: true,
           backgroundColor: Colors.white,
 
           appBar: AppBar(
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
             automaticallyImplyLeading: false,
             backgroundColor: Colors.transparent,
             centerTitle: false,

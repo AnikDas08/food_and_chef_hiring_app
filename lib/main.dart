@@ -16,7 +16,7 @@ Future<void> main() async {
     const SystemUiOverlayStyle(
       statusBarColor: Colors.red,
       statusBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
     ),
   );
   await init.tryCatch();

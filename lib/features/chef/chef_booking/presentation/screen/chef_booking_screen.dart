@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/other_widgets/common_loader.dart';
@@ -21,6 +22,8 @@ class ChefBookingScreen extends StatelessWidget {
           (controller) => Scaffold(
             extendBodyBehindAppBar: true,
             appBar: AppBar(
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
+
               automaticallyImplyLeading: false,
               centerTitle: false,
               backgroundColor: Colors.transparent,
