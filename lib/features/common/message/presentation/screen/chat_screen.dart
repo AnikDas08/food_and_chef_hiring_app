@@ -35,10 +35,10 @@ class ChatListScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         centerTitle: false,
-        flexibleSpace: ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-            child: Container(color: Colors.white.withOpacity(0.1)),
+        flexibleSpace: LiquidGlassLayer(
+          child: LiquidGlass(
+            shape: LiquidRoundedSuperellipse(borderRadius: 0),
+            child: Container(),
           ),
         ),
         title: const CommonText(
@@ -92,7 +92,7 @@ class ChatListScreen extends StatelessWidget {
 
               /// Show main data here
               Status.completed => Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                 child: ListView(
                   children: [
                     /// User Search bar here

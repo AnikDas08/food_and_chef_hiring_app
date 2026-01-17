@@ -44,5 +44,6 @@ class AppImages {
   static const String dietary = "$baseurl/dietary.png";
   static const String large = "$baseurl/large.png";
   static const String paymentCard = "$baseurl/payment_card.png";
+  static const String basket = "$baseurl/basket.png";
 
 }

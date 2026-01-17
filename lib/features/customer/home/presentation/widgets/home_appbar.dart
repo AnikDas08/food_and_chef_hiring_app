@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +13,7 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../config/route/app_routes.dart';
+import '../../../../../utils/constants/app_images.dart';
 
 AppBar homeAppbar() {
   return AppBar(
@@ -21,7 +23,6 @@ AppBar homeAppbar() {
     scrolledUnderElevation: 0,
     shadowColor: Colors.transparent,
     systemOverlayStyle: SystemUiOverlayStyle.dark,
-
 
     title: Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -36,7 +37,7 @@ AppBar homeAppbar() {
         ),
         Row(
           children: [
-            Icon(Icons.location_on_rounded, color: Color(0xffA7A7A7), size: 20),
+            Icon(Icons.location_on_rounded, color: Color(0xff272727), size: 20),
 
             Expanded(
               child: InkWell(
@@ -55,47 +56,32 @@ AppBar homeAppbar() {
         ),
       ],
     ),
-    // flexibleSpace: ClipRect(
-    //   child: BackdropFilter(
-    //     filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-    //     child: Container(
-    //       decoration: const BoxDecoration(
-    //         gradient: LinearGradient(
-    //           begin: Alignment.topCenter,
-    //           end: Alignment.bottomCenter,
-    //           colors: [
-    //             Color.fromRGBO(255, 255, 255, 1.0),
-    //             Color.fromRGBO(255, 255, 255, 0.0),
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // ),
-
-    /// With Liquid Glass
     flexibleSpace: ClipRect(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-        child: LiquidGlassLayer(
-          child: LiquidGlass(
-            shape: LiquidRoundedSuperellipse(borderRadius: 0),
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color.fromRGBO(255, 255, 255, 1.0),
-                    Color.fromRGBO(255, 255, 255, 0.0),
-                  ],
-                ),
-              ),
+        filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color.fromRGBO(255, 255, 255, 0.9),
+                Color.fromRGBO(255, 255, 255, 0.80),
+                Color.fromRGBO(255, 255, 255, 0.60),
+                Color.fromRGBO(255, 255, 255, 0.40),
+                Color.fromRGBO(255, 255, 255, 0.20),
+                Color.fromRGBO(255, 255, 255, 0.0),
+              ],
             ),
           ),
         ),
       ),
     ),
+    bottom: PreferredSize(
+      preferredSize: Size.fromHeight(20),
+      child: Container(height: 20),
+    ),
+
     actions: [
       LiquidGlassLayer(
         child: LiquidGlass(
@@ -108,10 +94,7 @@ AppBar homeAppbar() {
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.black.withOpacity(0.07)),
               ),
-              child: CommonImage(
-                imageSrc: AppIcons.notification,
-                imageColor: Colors.black,
-              ),
+              child: Icon(CupertinoIcons.bell, color: Color(0xff272727)),
             ),
           ),
         ),
@@ -127,7 +110,7 @@ AppBar homeAppbar() {
               border: Border.all(color: Colors.black.withOpacity(0.07)),
             ),
             child: CommonImage(
-              imageSrc: AppIcons.basket,
+              imageSrc: AppImages.basket,
               imageColor: Colors.black,
             ),
           ),
