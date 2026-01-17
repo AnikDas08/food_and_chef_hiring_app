@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/chef_booking_controller.dart';
@@ -27,14 +27,7 @@ class ChefBookingScreen extends StatelessWidget {
               automaticallyImplyLeading: false,
               centerTitle: false,
               backgroundColor: Colors.transparent,
-              flexibleSpace: ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                  child: Container(
-                    color: Colors.white.withOpacity(0.1), // tint (optional)
-                  ),
-                ),
-              ),
+              flexibleSpace: appBarOpacity(),
               title: CommonText(
                 text: AppString.upcomingBookings,
                 fontSize: 24,

@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +8,7 @@ import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../component/image/common_image.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/other_widgets/item.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../component/text/common_text.dart';
@@ -30,14 +30,7 @@ class ChefProfileScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         centerTitle: false,
         backgroundColor: Colors.transparent,
-        flexibleSpace: ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-            child: Container(
-              color: Colors.white.withOpacity(0.1), // tint (optional)
-            ),
-          ),
-        ),
+        flexibleSpace: appBarOpacity(),
         title: const CommonText(
           text: AppString.myProfile,
           fontWeight: FontWeight.w600,

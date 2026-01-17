@@ -1,10 +1,10 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../widgets/book_info.dart';
 import '../widgets/book_time.dart';
 import '../widgets/earning.dart';
@@ -23,14 +23,7 @@ class AnalyticsScreen extends StatelessWidget {
 
         centerTitle: false,
         backgroundColor: Colors.transparent,
-        flexibleSpace: ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-            child: Container(
-              color: Colors.white.withOpacity(0.1), // tint (optional)
-            ),
-          ),
-        ),
+        flexibleSpace: appBarOpacity(),
         title: CommonText(
           text: AppString.analytics,
           fontSize: 24,

@@ -90,7 +90,11 @@ class _ChefHomeState extends State<CustomerHomeScreen>
                           (TabData tab) => CNTabBarItem(
                             label: tab.title,
 
-                            icon: CNSymbol(tab.icon, color: Color(0xff272727), size: 16),
+                            icon: CNSymbol(
+                              tab.icon,
+                              color: Color(0xff272727),
+                              size: 16,
+                            ),
                           ),
                         )
                         .toList(),

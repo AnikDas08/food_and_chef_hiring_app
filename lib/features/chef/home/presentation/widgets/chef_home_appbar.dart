@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +7,9 @@ import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
-import '../../../../../component/image/common_image.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../config/route/app_routes.dart';
-import '../../../../../utils/constants/app_icons.dart';
 
 AppBar chefHomeAppBar() {
   return AppBar(
@@ -20,27 +18,7 @@ AppBar chefHomeAppBar() {
     systemOverlayStyle: SystemUiOverlayStyle.dark,
 
     centerTitle: false,
-    flexibleSpace: ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color.fromRGBO(255, 255, 255, 0.9),
-                Color.fromRGBO(255, 255, 255, 0.80),
-                Color.fromRGBO(255, 255, 255, 0.60),
-                Color.fromRGBO(255, 255, 255, 0.40),
-                Color.fromRGBO(255, 255, 255, 0.20),
-                Color.fromRGBO(255, 255, 255, 0.0),
-              ],
-            ),
-          ),
-        ),
-      ),
-    ),
+    flexibleSpace: appBarOpacity(),
     title: Row(
       children: [
         Expanded(

@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +7,7 @@ import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/booking_history_controller.dart';
@@ -28,27 +28,7 @@ class BookingHistoryScreen extends StatelessWidget {
               automaticallyImplyLeading: false,
               backgroundColor: Colors.transparent,
               centerTitle: false,
-              flexibleSpace: ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color.fromRGBO(255, 255, 255, 0.9),
-                          Color.fromRGBO(255, 255, 255, 0.80),
-                          Color.fromRGBO(255, 255, 255, 0.60),
-                          Color.fromRGBO(255, 255, 255, 0.40),
-                          Color.fromRGBO(255, 255, 255, 0.20),
-                          Color.fromRGBO(255, 255, 255, 0.0),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              flexibleSpace: appBarOpacity(),
               title: CommonText(
                 text: AppString.upcomingBookings,
                 fontSize: 24,

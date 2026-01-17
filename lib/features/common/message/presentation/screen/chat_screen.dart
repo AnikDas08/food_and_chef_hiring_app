@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../component/image/common_image.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/screen/error_screen.dart';
 import '../../../../../component/text/common_text.dart';
@@ -35,12 +34,7 @@ class ChatListScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         centerTitle: false,
-        flexibleSpace: LiquidGlassLayer(
-          child: LiquidGlass(
-            shape: LiquidRoundedSuperellipse(borderRadius: 0),
-            child: Container(),
-          ),
-        ),
+        flexibleSpace: appBarOpacity(),
         title: const CommonText(
           text: AppString.chat,
           fontWeight: FontWeight.w600,
