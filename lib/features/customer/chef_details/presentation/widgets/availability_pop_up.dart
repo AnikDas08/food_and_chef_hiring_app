@@ -41,7 +41,7 @@ void availabilityPopup(BuildContext context) {
                         shape: BoxShape.circle,
                       ),
                       todayDecoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.3),
+                        color: Colors.green.withValues(alpha: 0.3),
                         shape: BoxShape.circle,
                       ),
                     ),

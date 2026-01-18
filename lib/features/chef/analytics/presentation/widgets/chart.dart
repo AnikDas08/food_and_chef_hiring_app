@@ -97,8 +97,8 @@ class _BarChart extends StatelessWidget {
           value % 15 == 0
               ? [Color(0xffFD713F), Color(0xffFD713F)]
               : [
-                Color(0xffFD713F).withOpacity(0.24),
-                Color(0xffFD713F).withOpacity(0.24),
+                Color(0xffFD713F).withValues(alpha: 0.24),
+                Color(0xffFD713F).withValues(alpha: 0.24),
               ],
       begin: Alignment.bottomCenter,
       end: Alignment.topCenter,

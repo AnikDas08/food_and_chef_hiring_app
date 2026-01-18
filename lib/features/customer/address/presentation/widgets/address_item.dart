@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
@@ -120,7 +118,7 @@ Widget addressItem() {
                             vertical: 8,
                           ),
                           decoration: BoxDecoration(
-                            color: Color(0xffFF3C3C).withOpacity(0.20),
+                            color: Color(0xffFF3C3C).withValues(alpha: 0.20),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: CommonText(

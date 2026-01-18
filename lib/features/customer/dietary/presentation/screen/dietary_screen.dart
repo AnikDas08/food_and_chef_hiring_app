@@ -62,7 +62,7 @@ class _DietaryRestrictionsScreenState extends State<DietaryScreen> {
                       borderRadius: BorderRadius.circular(8.r),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.08),
+                          color: Colors.black.withValues(alpha: 0.08),
                           blurRadius: 12,
                         ),
                       ],

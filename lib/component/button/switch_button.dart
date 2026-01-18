@@ -15,7 +15,7 @@ Widget switchButton({
       width: 36,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: !value ? Colors.black.withOpacity(0.20) : color,
+        color: !value ? Colors.black.withValues(alpha: 0.20) : color,
       ),
       child: AnimatedAlign(
         duration: const Duration(milliseconds: 300),

@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
@@ -35,47 +35,68 @@ class ChefBookingScreen extends StatelessWidget {
                 color: Color(0xff272727),
               ),
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(40.h),
-                child: SizedBox(
-                  height: 40.h,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: controller.bookingHistoryList.length,
-                    itemBuilder: (context, index) {
-                      String value = controller.bookingHistoryList[index];
-                      return InkWell(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onTap: () {
-                          controller.onChangeBookingHistory(value);
-                        },
-                        child:
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
-                                vertical: 8.h,
-                              ),
-                              margin: EdgeInsets.only(right: 8.w),
-                              decoration: BoxDecoration(
-                                color:
-                                    controller.selectedBookingHistory == value
-                                        ? Color(0xff272727).withOpacity(0.9)
-                                        : Color(0xffF2F2F2).withOpacity(0.7),
-                                borderRadius: BorderRadius.circular(10.sp),
-                              ),
-                              child: CommonText(
-                                text: value,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w500,
-                                color:
-                                    controller.selectedBookingHistory == value
-                                        ? Colors.white
-                                        : Color(0xff404040),
-                              ),
-                            ).center,
-                      );
-                    },
+                preferredSize: Size.fromHeight(38.h),
+                child: Container(
+                  height: 50.h,
+                  padding: EdgeInsets.only(bottom: 6.h),
+                  child: Align(
+                    alignment: AlignmentGeometry.topCenter,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      itemCount: controller.bookingHistoryList.length,
+                      itemBuilder: (context, index) {
+                        String value = controller.bookingHistoryList[index];
+                        return Padding(
+                          padding: EdgeInsets.only(right: 8.w),
+                          child:
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () {
+                                  controller.onChangeBookingHistory(value);
+                                },
+                                child: LiquidGlassLayer(
+                                  child: LiquidGlass(
+                                    shape: LiquidRoundedSuperellipse(
+                                      borderRadius: 30.r,
+                                    ),
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 16.w,
+                                        vertical: 8.h,
+                                      ),
+
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.grey.withValues(alpha: 0.2),
+                                        ),
+                                        color:
+                                            controller.selectedBookingHistory ==
+                                                    value
+                                                ? Color(0xff272727)
+                                                : Colors.transparent,
+                                        borderRadius: BorderRadius.circular(
+                                          30.sp,
+                                        ),
+                                      ),
+                                      child: CommonText(
+                                        text: value,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color:
+                                            controller.selectedBookingHistory ==
+                                                    value
+                                                ? Colors.white
+                                                : Color(0xff272727),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ).center,
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),

@@ -17,7 +17,6 @@ class PopupController {
     Function(String)? onTap,
   ) {
     if (_entry != null) return; // already open
-    final overlay = Overlay.of(context, rootOverlay: true);
     _entry = OverlayEntry(
       builder:
           (context) => Positioned(
@@ -105,7 +104,7 @@ class _PopupMenu extends StatelessWidget {
           border: Border.all(color: Color(0xffF1F1F1), width: 1),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Colors.black.withValues(alpha: 0.08),
               offset: const Offset(0, 3),
               blurRadius: 6,
             ),

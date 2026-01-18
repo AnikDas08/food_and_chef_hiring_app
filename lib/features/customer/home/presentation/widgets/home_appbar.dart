@@ -70,7 +70,7 @@ AppBar homeAppbar() {
               padding: EdgeInsets.all(8.sp),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.black.withOpacity(0.07)),
+                border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
               ),
               child: Icon(CupertinoIcons.bell, color: Colors.black, size: 24),
             ),
@@ -85,7 +85,7 @@ AppBar homeAppbar() {
             padding: EdgeInsets.all(8.sp),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.black.withOpacity(0.07)),
+              border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
             ),
             child: CommonImage(
               imageSrc: AppImages.basket,

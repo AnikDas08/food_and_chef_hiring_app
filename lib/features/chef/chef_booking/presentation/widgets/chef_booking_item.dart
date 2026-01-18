@@ -101,7 +101,7 @@ Widget chefBookingItem() {
                       vertical: 5.sp,
                     ),
                     decoration: BoxDecoration(
-                      color: Color(0xfffdbebd9),
+                      color: Color(0xfffdbebd),
                       borderRadius: BorderRadius.circular(10.sp),
                     ),
                     child: CommonText(

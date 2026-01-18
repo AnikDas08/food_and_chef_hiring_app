@@ -38,7 +38,7 @@ class _ChefHomeState extends State<ChefHome>
     TabData(title: "Home", icon: "house"),
     TabData(title: "Analytics", icon: "chart.xyaxis.line"),
     TabData(title: "Booking", icon: "basket"),
-    TabData(title: "Chats", icon: "bubble.left.and.bubble.right"),
+    TabData(title: "Chats", icon: "ellipsis.message"),
     TabData(title: "Profile", icon: "person.crop.circle"),
   ];
 
@@ -115,13 +115,13 @@ class _ChefHomeState extends State<ChefHome>
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withValues(alpha: 0.5),
               blurRadius: 4,
               offset: Offset(1, 1),
             ),
           ],
           borderRadius: BorderRadius.circular(50),
-          border: Border.all(color: Colors.grey.withOpacity(0.5)),
+          border: Border.all(color: Colors.grey.withValues(alpha: 0.5)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

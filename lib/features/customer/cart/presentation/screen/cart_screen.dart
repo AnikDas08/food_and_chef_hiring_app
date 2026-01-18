@@ -29,7 +29,7 @@ class CartScreen extends StatelessWidget {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
             child: Container(
-              color: Colors.white.withOpacity(0.1), // tint (optional)
+              color: Colors.white.withValues(alpha: 0.1), // tint (optional)
             ),
           ),
         ),

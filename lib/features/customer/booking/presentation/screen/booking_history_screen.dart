@@ -35,54 +35,61 @@ class BookingHistoryScreen extends StatelessWidget {
                 color: Color(0xff272727),
               ),
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(50.h),
-                child: SizedBox(
+                preferredSize: Size.fromHeight(38.h),
+                child: Container(
                   height: 50.h,
+                  padding: EdgeInsets.only(bottom: 6.h),
                   child: Align(
                     alignment: AlignmentGeometry.topCenter,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.bookingHistoryList.length,
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
                       itemBuilder: (context, index) {
                         String value = controller.bookingHistoryList[index];
-                        return InkWell(
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onTap: () {
-                            controller.onChangeBookingHistory(value);
-                          },
+                        return Padding(
+                          padding: EdgeInsets.only(right: 8.w),
                           child:
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 16.w,
-                                  vertical: 8.h,
-                                ),
-                                margin: EdgeInsets.only(right: 8.w),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black.withOpacity(0.07),
-                                  ),
-                                  color:
-                                      controller.selectedBookingHistory == value
-                                          ? Color(0xff272727)
-                                          : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(30.sp),
-                                ),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () {
+                                  controller.onChangeBookingHistory(value);
+                                },
                                 child: LiquidGlassLayer(
                                   child: LiquidGlass(
                                     shape: LiquidRoundedSuperellipse(
-                                      borderRadius: 30,
+                                      borderRadius: 30.r,
                                     ),
-                                    child: CommonText(
-                                      text: value,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color:
-                                          controller.selectedBookingHistory ==
-                                                  value
-                                              ? Colors.white
-                                              : Color(0xff272727),
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 16.w,
+                                        vertical: 8.h,
+                                      ),
+
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.grey.withValues(alpha: 0.2),
+                                        ),
+                                        color:
+                                            controller.selectedBookingHistory ==
+                                                    value
+                                                ? Color(0xff272727)
+                                                : Colors.transparent,
+                                        borderRadius: BorderRadius.circular(
+                                          30.sp,
+                                        ),
+                                      ),
+                                      child: CommonText(
+                                        text: value,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color:
+                                            controller.selectedBookingHistory ==
+                                                    value
+                                                ? Colors.white
+                                                : Color(0xff272727),
+                                      ),
                                     ),
                                   ),
                                 ),
