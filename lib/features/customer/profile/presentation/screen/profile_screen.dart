@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -134,24 +135,24 @@ class ProfileScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           Item(
-                            image: AppImages.person,
+                            icon: CupertinoIcons.person,
                             title: AppString.editProfile,
                             onTap: () => Get.toNamed(AppRoutes.editProfile),
                           ),
 
                           /// Setting item here
                           Item(
-                            image: AppImages.location,
+                            icon: CupertinoIcons.location,
                             title: AppString.address,
                             onTap: () => Get.toNamed(AppRoutes.addressScreen),
                           ),
                           Item(
-                            image: AppImages.creditcard,
+                            icon: CupertinoIcons.creditcard,
                             title: AppString.paymentMethods,
                             onTap: () => Get.toNamed(AppRoutes.paymentMethod),
                           ),
                           Item(
-                            image: AppImages.receipt,
+                            image: AppIcons.receipt,
                             title: AppString.pastOrders,
                             onTap: () => Get.toNamed(AppRoutes.pastOrder),
                           ),
@@ -167,6 +168,7 @@ class ProfileScreen extends StatelessWidget {
                       bottom: 16,
                     ).start,
 
+                    /// TODO : Management item here
                     Container(
                       padding: EdgeInsets.all(12.sp),
                       decoration: BoxDecoration(
@@ -183,7 +185,7 @@ class ProfileScreen extends StatelessWidget {
 
                           /// Setting item here
                           Item(
-                            image: AppImages.forkKnife,
+                            image: AppIcons.kitchen,
                             title: AppString.manageKitchenEquipment,
                             onTap: () => Get.toNamed(AppRoutes.kitchen),
                           ),
@@ -210,12 +212,11 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           Item(
                             image: AppIcons.contact,
-                            imageSize: 24,
                             title: AppString.contactSupport,
                           ),
 
                           Item(
-                            image: AppImages.iphoneGen3,
+                            icon: CupertinoIcons.info,
                             title: AppString.appVersion,
                           ),
 
@@ -225,7 +226,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
 
                     Item(
-                      image: AppImages.iphoneAndArrowRightOutward,
+                      image: AppIcons.logout,
                       color: Color(0xffFF0000),
                       title: AppString.signOut,
                       onTap: logOutPopUp,

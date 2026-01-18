@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -53,7 +54,10 @@ class CheckoutScreen extends StatelessWidget {
                   onTap: () => bookingDateTimePopup(),
                   suffixIcon: InkWell(
                     onTap: () => bookingDateTimePopup(),
-                    child: Icon(Icons.calendar_today, color: Color(0xffFD713F)),
+                    child: Icon(
+                      CupertinoIcons.calendar,
+                      color: Color(0xffFD713F),
+                    ),
                   ),
                 ),
 

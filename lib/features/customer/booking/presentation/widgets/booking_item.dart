@@ -78,7 +78,10 @@ Widget bookingItem() {
 
                 menuPadding: EdgeInsets.zero,
                 elevation: 0,
-                icon: const Icon(Icons.more_vert),
+                icon: RotatedBox(
+                  quarterTurns: 1,
+                  child: const Icon(CupertinoIcons.ellipsis),
+                ),
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -86,9 +89,7 @@ Widget bookingItem() {
                 onSelected: (value) {
                   if (value == 1) {
                     Get.toNamed(AppRoutes.requestChange);
-                  } else if (value == 2) {
-
-                  }
+                  } else if (value == 2) {}
                 },
 
                 itemBuilder:
@@ -97,7 +98,11 @@ Widget bookingItem() {
                         value: 1,
                         child: Row(
                           children: const [
-                            Icon(Icons.edit, size: 20, color: Colors.black),
+                            Icon(
+                              CupertinoIcons.pencil,
+                              size: 20,
+                              color: Colors.black,
+                            ),
                             SizedBox(width: 10),
                             CommonText(text: "Request a Change", fontSize: 14),
                           ],
@@ -107,7 +112,11 @@ Widget bookingItem() {
                         value: 2,
                         child: Row(
                           children: const [
-                            CommonImage(imageSrc: AppImages.xmark, imageColor: Colors.red,),
+                            Icon(
+                              CupertinoIcons.clear,
+                              size: 20,
+                              color: Colors.red,
+                            ),
                             SizedBox(width: 10),
                             CommonText(
                               text: "Cancel Booking",

@@ -133,7 +133,7 @@ class EditProfileAllFiled extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(CupertinoIcons.delete, color: Color(0xffFF3C3C)),
+              Icon(CupertinoIcons.trash, color: Color(0xffFF3C3C)),
               CommonText(
                 text: AppString.deleteAccount,
                 color: Color(0xffFF3C3C),

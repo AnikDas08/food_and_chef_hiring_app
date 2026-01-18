@@ -1,4 +1,4 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -164,6 +164,7 @@ class ChefProfileScreen extends StatelessWidget {
                       ),
                       Item(
                         image: AppIcons.card,
+                        icon: CupertinoIcons.creditcard,
                         title: AppString.paymentMethods,
                         onTap: () => Get.toNamed(AppRoutes.chefPayment),
                       ),
@@ -174,14 +175,14 @@ class ChefProfileScreen extends StatelessWidget {
                       ),
 
                       Item(
-                        image: AppIcons.user,
+                        icon: CupertinoIcons.person,
                         title: AppString.accountSettings,
                         onTap: () => Get.toNamed(AppRoutes.accountSetting),
                       ),
                       14.height,
                       Row(
                         children: [
-                          CommonImage(imageSrc: AppIcons.notification),
+                          Icon(CupertinoIcons.bell),
                           CommonText(
                             text: AppString.notifications,
                             left: 12,
@@ -222,7 +223,10 @@ class ChefProfileScreen extends StatelessWidget {
                         title: AppString.contactSupport,
                       ),
 
-                      Item(image: AppIcons.about, title: AppString.appVersion),
+                      Item(
+                        icon: CupertinoIcons.info,
+                        title: AppString.appVersion,
+                      ),
 
                       /// Log Out item here
                     ],
