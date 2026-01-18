@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -53,32 +52,27 @@ class BookingHistoryScreen extends StatelessWidget {
                           onTap: () {
                             controller.onChangeBookingHistory(value);
                           },
-                          child: LiquidGlassLayer(
-                            settings: const LiquidGlassSettings(
-                              blur: 2,
-                              thickness: 2,
-                            ),
-                            child: LiquidGlass(
-                              shape: LiquidRoundedSuperellipse(borderRadius: 0),
-                              child:
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 16.w,
-                                      vertical: 8.h,
-                                    ),
-                                    margin: EdgeInsets.only(right: 8.w),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.black.withOpacity(0.07),
-                                      ),
-                                      color:
-                                          controller.selectedBookingHistory ==
-                                                  value
-                                              ? Color(0xff272727)
-                                              : Colors.transparent,
-                                      borderRadius: BorderRadius.circular(
-                                        30.sp,
-                                      ),
+                          child:
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 16.w,
+                                  vertical: 8.h,
+                                ),
+                                margin: EdgeInsets.only(right: 8.w),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black.withOpacity(0.07),
+                                  ),
+                                  color:
+                                      controller.selectedBookingHistory == value
+                                          ? Color(0xff272727)
+                                          : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(30.sp),
+                                ),
+                                child: LiquidGlassLayer(
+                                  child: LiquidGlass(
+                                    shape: LiquidRoundedSuperellipse(
+                                      borderRadius: 30,
                                     ),
                                     child: CommonText(
                                       text: value,
@@ -90,9 +84,9 @@ class BookingHistoryScreen extends StatelessWidget {
                                               ? Colors.white
                                               : Color(0xff272727),
                                     ),
-                                  ).center,
-                            ),
-                          ),
+                                  ),
+                                ),
+                              ).center,
                         );
                       },
                     ),

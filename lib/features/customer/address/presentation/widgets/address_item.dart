@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
@@ -27,7 +28,7 @@ Widget addressItem() {
                 color: Colors.white,
                 shape: BoxShape.circle,
               ),
-              child: CommonImage(imageSrc: AppIcons.house),
+              child: Icon(CupertinoIcons.house, color: Colors.red, size: 20),
             ),
 
             12.width,
