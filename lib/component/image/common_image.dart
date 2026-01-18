@@ -79,7 +79,8 @@ class CommonImage extends StatelessWidget {
   Widget _buildSvgImage() {
     return SvgPicture.asset(
       imageSrc,
-      colorFilter: ColorFilter.mode(imageColor!, BlendMode.srcIn),
+      color: imageColor,
+      // colorFilter: ColorFilter.mode(imageColor!, BlendMode.srcIn),
       height: size?.sp ?? height?.h,
       width: size?.sp ?? width?.w,
       fit: fill,

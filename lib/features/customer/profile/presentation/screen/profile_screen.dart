@@ -152,7 +152,7 @@ class ProfileScreen extends StatelessWidget {
                             onTap: () => Get.toNamed(AppRoutes.paymentMethod),
                           ),
                           Item(
-                            image: AppIcons.receipt,
+                            icon: CupertinoIcons.arrow_counterclockwise,
                             title: AppString.pastOrders,
                             onTap: () => Get.toNamed(AppRoutes.pastOrder),
                           ),
@@ -178,14 +178,14 @@ class ProfileScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           Item(
-                            image: AppImages.carrot,
+                            icon: CupertinoIcons.heart_circle,
                             title: AppString.manageDietaryRestrictions,
                             onTap: () => Get.toNamed(AppRoutes.dietary),
                           ),
 
                           /// Setting item here
                           Item(
-                            image: AppIcons.kitchen,
+                            icon: CupertinoIcons.list_number,
                             title: AppString.manageKitchenEquipment,
                             onTap: () => Get.toNamed(AppRoutes.kitchen),
                           ),
@@ -211,7 +211,7 @@ class ProfileScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           Item(
-                            image: AppIcons.contact,
+                            icon: CupertinoIcons.question_circle,
                             title: AppString.contactSupport,
                           ),
 
@@ -228,6 +228,7 @@ class ProfileScreen extends StatelessWidget {
                     Item(
                       image: AppIcons.logout,
                       color: Color(0xffFF0000),
+                      imgColor: Color(0xffFF0000),
                       title: AppString.signOut,
                       onTap: logOutPopUp,
                       disableDivider: true,

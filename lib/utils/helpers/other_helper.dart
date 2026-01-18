@@ -7,10 +7,11 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 import '../constants/app_colors.dart';
 
 class OtherHelper {
-  static RegExp emailRegexp = RegExp(
-    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+  static final RegExp emailRegexp = RegExp(
+    r"^[a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+$",
   );
-  static RegExp passRegExp = RegExp(r'(?=.*[a-z])(?=.*[0-9])');
+
+  static final RegExp passRegExp = RegExp(r'(?=.*[a-z])(?=.*[0-9])');
 
   static String? validator(value) {
     if (value.isEmpty) {
@@ -138,3 +139,4 @@ class OtherHelper {
         "${time.minute.toString().padLeft(2, '0')} ${time.hour >= 12 ? "PM" : "AM"}";
   }
 }
+

@@ -90,7 +90,7 @@ AppBar homeAppbar() {
             child: CommonImage(
               imageSrc: AppImages.basket,
               imageColor: Colors.black,
-              size: 20,
+              size: 19,
             ),
           ),
         ),

@@ -29,14 +29,12 @@ class CustomerHome extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: ListView(
           children: [
-            20.height,
             CommonImage(
               imageSrc: AppImages.image1,
-              height: 148.h,
-              width: double.infinity,
-              fill: BoxFit.fill,
+              width: 343.w,
+              fill: BoxFit.fitWidth,
             ),
-            12.height,
+            20.height,
             CommonTextField(
               hintText: AppString.searchForFoodChefEtc,
               keyboardType: TextInputType.none,

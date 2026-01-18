@@ -219,7 +219,7 @@ class ChefProfileScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Item(
-                        image: AppIcons.contact,
+                        icon: CupertinoIcons.question_circle,
                         title: AppString.contactSupport,
                       ),
 
@@ -236,6 +236,7 @@ class ChefProfileScreen extends StatelessWidget {
                 Item(
                   image: AppIcons.logout,
                   color: Color(0xffFF0000),
+                  imgColor: Color(0xffFF0000),
                   title: AppString.signOut,
                   onTap: logOutPopUp,
                   disableDivider: true,
