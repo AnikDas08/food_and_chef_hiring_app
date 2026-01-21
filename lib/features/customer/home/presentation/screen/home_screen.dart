@@ -29,6 +29,7 @@ class CustomerHome extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: ListView(
           children: [
+            4.height,
             CommonImage(
               imageSrc: AppImages.image1,
               width: 343.w,
@@ -39,10 +40,10 @@ class CustomerHome extends StatelessWidget {
               hintText: AppString.searchForFoodChefEtc,
               keyboardType: TextInputType.none,
               onTap: () => Get.toNamed(AppRoutes.homeSearch),
-              borderRadius: 20,
+              borderRadius: 30,
               fillColor: Color(0xffF2F2F2),
               suffixIcon: Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.only(right: 20.w),
                 child: CommonImage(
                   imageSrc: AppIcons.fliter,
                   imageColor: Color(0xff636363),

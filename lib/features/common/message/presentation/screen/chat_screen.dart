@@ -46,22 +46,14 @@ class ChatListScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: LiquidGlassLayer(
               child: LiquidGlass(
-                shape: LiquidRoundedSuperellipse(borderRadius: 30),
+                shape: LiquidRoundedSuperellipse(borderRadius: 30.r),
                 child: CommonTextField(
                   hintText: AppString.search,
-
-                  keyboardType: TextInputType.none,
-                  onTap: () => Get.toNamed(AppRoutes.homeSearch),
-                  borderRadius: 20,
+                  keyboardType: TextInputType.text,
+                  borderRadius: 30,
                   fillColor: Color(0xffFAFAFA).withValues(alpha: 0.7),
                   borderColor: Colors.grey.withValues(alpha: 0.3),
-                  suffixIcon: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: CommonImage(
-                      imageSrc: AppIcons.fliter,
-                      imageColor: Color(0xff636363),
-                    ),
-                  ),
+
                   prefixIcon: Padding(
                     padding: EdgeInsets.only(left: 16.w),
                     child: Icon(CupertinoIcons.search),

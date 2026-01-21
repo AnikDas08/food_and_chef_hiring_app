@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
@@ -67,12 +68,19 @@ AppBar homeAppbar() {
           child: InkWell(
             onTap: () => Get.toNamed(AppRoutes.notifications),
             child: Container(
+              width: 40.sp,
+              height: 40.sp,
               padding: EdgeInsets.all(8.sp),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
               ),
-              child: Icon(CupertinoIcons.bell, color: Colors.black, size: 24),
+              child:
+                  Icon(
+                    CupertinoIcons.bell,
+                    color: Colors.black,
+                    size: 24,
+                  ).center,
             ),
           ),
         ),
@@ -82,20 +90,22 @@ AppBar homeAppbar() {
         child: LiquidGlass(
           shape: LiquidRoundedSuperellipse(borderRadius: 30),
           child: Container(
+            width: 40.sp,
+            height: 40.sp,
             padding: EdgeInsets.all(8.sp),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
             ),
-            child: CommonImage(
-              imageSrc: AppImages.basket,
-              imageColor: Colors.black,
-              size: 19,
-            ),
+            child:
+                CommonImage(
+                  imageSrc: AppIcons.basketSvg,
+                  imageColor: Colors.black,
+                ).center,
           ),
         ),
       ),
-      12.width,
+      16.width,
     ],
   );
 }

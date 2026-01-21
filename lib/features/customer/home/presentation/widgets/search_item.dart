@@ -99,22 +99,21 @@ class _SearchItemState extends State<SearchItem> {
           bottom: 16,
         ).start,
 
-        Expanded(
-          child:
-              isLoading
-                  ? CommonLoader()
-                  : GridView.builder(
-                    itemCount: 20,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisExtent: 250.h,
-                      mainAxisSpacing: 10.h,
-                    ),
-                    itemBuilder: (context, index) {
-                      return chefItem(height: 140.h, isSearch: true);
-                    },
-                  ),
-        ),
+        isLoading
+            ? CommonLoader()
+            : GridView.builder(
+              itemCount: 20,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisExtent: 250.h,
+                mainAxisSpacing: 10.h,
+              ),
+              itemBuilder: (context, index) {
+                return chefItem(height: 140.h, isSearch: true);
+              },
+            ),
       ],
     );
   }

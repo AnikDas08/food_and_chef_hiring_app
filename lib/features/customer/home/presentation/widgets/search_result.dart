@@ -22,6 +22,8 @@ Widget searchResult() {
       Expanded(
         child: ListView.builder(
           itemCount: 8,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             return Padding(
               padding: EdgeInsets.only(bottom: 24.h),
