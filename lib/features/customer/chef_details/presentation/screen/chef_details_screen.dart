@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../../../component/button/common_button.dart';
@@ -22,7 +23,7 @@ String text =
     "Javier Alison, born in Barcelona, Spain, is a celebrated chef known for his innovative Mediterranean cuisine.";
 
 class ChefDetailsScreen extends StatelessWidget {
-const ChefDetailsScreen({super.key});
+  const ChefDetailsScreen({super.key});
 
   final double collapsedHeight = kToolbarHeight + 85;
 
@@ -89,16 +90,47 @@ const ChefDetailsScreen({super.key});
                                                   padding: EdgeInsets.only(
                                                     left: 16.w,
                                                   ),
-                                                  child: CommonImage(
-                                                    imageSrc: AppIcons.back,
+                                                  child: LiquidGlassLayer(
+                                                    child: LiquidGlass(
+                                                      shape:
+                                                          LiquidRoundedSuperellipse(
+                                                            borderRadius: 30,
+                                                          ),
+                                                      child: SizedBox(
+                                                        height: 40.sp,
+                                                        width: 40.sp,
+                                                        child:
+                                                            Icon(
+                                                              CupertinoIcons
+                                                                  .chevron_back,
+                                                              color:
+                                                                  Colors.white,
+                                                            ).center,
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                               Spacer(),
                                               InkWell(
                                                 onTap: controller.onChange,
-                                                child: CommonImage(
-                                                  imageSrc: AppIcons.favorite,
+                                                child: LiquidGlassLayer(
+                                                  child: LiquidGlass(
+                                                    shape:
+                                                        LiquidRoundedSuperellipse(
+                                                          borderRadius: 30,
+                                                        ),
+                                                    child: SizedBox(
+                                                      height: 40.sp,
+                                                      width: 40.sp,
+                                                      child:
+                                                          Icon(
+                                                            CupertinoIcons
+                                                                .heart,
+                                                            color: Colors.white,
+                                                          ).center,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                               const SizedBox(width: 12),
@@ -111,8 +143,23 @@ const ChefDetailsScreen({super.key});
                                                     ),
                                                   );
                                                 },
-                                                child: CommonImage(
-                                                  imageSrc: AppIcons.share,
+                                                child: LiquidGlassLayer(
+                                                  child: LiquidGlass(
+                                                    shape:
+                                                        LiquidRoundedSuperellipse(
+                                                          borderRadius: 30,
+                                                        ),
+                                                    child: SizedBox(
+                                                      height: 40.sp,
+                                                      width: 40.sp,
+                                                      child:
+                                                          Icon(
+                                                            CupertinoIcons
+                                                                .share,
+                                                            color: Colors.white,
+                                                          ).center,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                               const SizedBox(width: 12),

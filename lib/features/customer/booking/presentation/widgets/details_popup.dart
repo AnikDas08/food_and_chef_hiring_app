@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -100,10 +101,9 @@ void bookingDetails(BuildContext context) {
                           color: Color(0xffF2F2F2),
                           shape: BoxShape.circle,
                         ),
-                        child: CommonImage(
-                          imageSrc: AppIcons.location,
-                          imageColor: Color(0xffFD713F),
-                          size: 20,
+                        child: Icon(
+                          CupertinoIcons.location,
+                          color: Color(0xffFD713F),
                         ),
                       ),
                       12.width,
@@ -138,11 +138,12 @@ void bookingDetails(BuildContext context) {
                           color: Color(0xffF2F2F2),
                           shape: BoxShape.circle,
                         ),
-                        child: CommonImage(
-                          imageSrc: AppIcons.date,
-                          imageColor: Color(0xffFD713F),
-                          size: 20,
-                        ),
+                        child:
+                            CommonImage(
+                              imageSrc: AppIcons.calendar,
+                              imageColor: Color(0xffFD713F),
+                              size: 20,
+                            ).center,
                       ),
                       12.width,
                       Expanded(
