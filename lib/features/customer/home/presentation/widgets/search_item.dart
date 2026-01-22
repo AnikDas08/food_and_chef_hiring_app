@@ -37,7 +37,7 @@ class _SearchItemState extends State<SearchItem> {
       children: [
         CommonText(
           text: AppString.sortBy,
-          top: 24,
+          top: 12,
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
@@ -48,6 +48,7 @@ class _SearchItemState extends State<SearchItem> {
           child: ListView.builder(
             itemCount: _list.length,
             scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.zero,
             itemBuilder: (context, index) {
               String value = _list[index];
               return InkWell(
