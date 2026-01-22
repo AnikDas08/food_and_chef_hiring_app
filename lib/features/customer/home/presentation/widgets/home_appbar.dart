@@ -12,7 +12,6 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../config/route/app_routes.dart';
-import '../../../../../utils/constants/app_images.dart';
 
 AppBar homeAppbar() {
   return AppBar(
