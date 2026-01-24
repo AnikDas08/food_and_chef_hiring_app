@@ -1,0 +1,33 @@
+name: Flutter iOS TestFlight CI/CD
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.38.5
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build iOS IPA
+        run: flutter build ipa --release
+
+      - name: Upload to TestFlight
+        uses: apple-actions/upload-testflight-build@v1
+        with:
+          api_key_id: ${{ secrets.APP_STORE_KEY_ID }}
+          api_issuer: ${{ secrets.APP_STORE_ISSUER_ID }}
+          api_private_key: ${{ secrets.APP_STORE_PRIVATE_KEY }}
+          app_path: build/ios/ipa/*.ipa
