@@ -14,6 +14,8 @@ final List<String> _list = [
   AppIcons.profile,
 ];
 
+
+
 final List<String> _string = [
   AppString.home,
   AppString.bookings,

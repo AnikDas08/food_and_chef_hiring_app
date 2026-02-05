@@ -23,8 +23,13 @@ class CustomerHomeScreen extends StatefulWidget {
 class TabData {
   final String title;
   final String icon;
+  final String selectedIcon;
 
-  TabData({required this.title, required this.icon});
+  TabData({
+    required this.title,
+    required this.icon,
+    required this.selectedIcon,
+  });
 }
 
 class _ChefHomeState extends State<CustomerHomeScreen>
@@ -32,11 +37,23 @@ class _ChefHomeState extends State<CustomerHomeScreen>
   late final TabController tabController;
   int selectedTabIndex = 0;
   final List<TabData> tabs = [
-    TabData(title: "Home", icon: "house"),
-    TabData(title: "Bookings", icon: "calendar.badge.clock"),
-    TabData(title: "Groceries", icon: "basket"),
-    TabData(title: "Chats", icon: "ellipsis.message"),
-    TabData(title: "Profile", icon: "person.crop.circle"),
+    TabData(title: "Home", icon: "house", selectedIcon: "house.fill"),
+    TabData(
+      title: "Bookings",
+      icon: "calendar.badge.clock",
+      selectedIcon: "calendar.badge.clock",
+    ),
+    TabData(title: "Groceries", icon: "basket", selectedIcon: "basket.fill"),
+    TabData(
+      title: "Chats",
+      icon: "ellipsis.message",
+      selectedIcon: "ellipsis.message.fill",
+    ),
+    TabData(
+      title: "Profile",
+      icon: "person.crop.circle",
+      selectedIcon: "person.circle.fill",
+    ),
   ];
 
   final List<Widget> pages = [
@@ -91,7 +108,9 @@ class _ChefHomeState extends State<CustomerHomeScreen>
                             label: tab.title,
 
                             icon: CNSymbol(
-                              tab.icon,
+                              tabs[selectedTabIndex] == tab
+                                  ? tab.selectedIcon
+                                  : tab.icon,
                               color: Color(0xff272727),
                               size: 16,
                             ),

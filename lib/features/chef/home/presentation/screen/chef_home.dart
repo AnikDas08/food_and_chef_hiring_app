@@ -26,8 +26,13 @@ class ChefHome extends StatefulWidget {
 class TabData {
   final String title;
   final String icon;
+  final String selectedIcon;
 
-  TabData({required this.title, required this.icon});
+  TabData({
+    required this.title,
+    required this.icon,
+    required this.selectedIcon,
+  });
 }
 
 class _ChefHomeState extends State<ChefHome>
@@ -35,11 +40,23 @@ class _ChefHomeState extends State<ChefHome>
   late final TabController tabController;
   int selectedTabIndex = 0;
   final List<TabData> tabs = [
-    TabData(title: "Home", icon: "house"),
-    TabData(title: "Analytics", icon: "chart.xyaxis.line"),
-    TabData(title: "Booking", icon: "basket"),
-    TabData(title: "Chats", icon: "ellipsis.message"),
-    TabData(title: "Profile", icon: "person.crop.circle"),
+    TabData(title: "Home", icon: "house", selectedIcon: "house.fill"),
+    TabData(
+      title: "Analytics",
+      icon: "chart.xyaxis.line",
+      selectedIcon: "chart.xyaxis.line",
+    ),
+    TabData(title: "Booking", icon: "basket", selectedIcon: "basket.fill"),
+    TabData(
+      title: "Chats",
+      icon: "ellipsis.message",
+      selectedIcon: "ellipsis.message.fill",
+    ),
+    TabData(
+      title: "Profile",
+      icon: "person.crop.circle",
+      selectedIcon: "person.circle.fill",
+    ),
   ];
 
   final List<Widget> pages = [
@@ -93,7 +110,11 @@ class _ChefHomeState extends State<ChefHome>
                         .map(
                           (TabData tab) => CNTabBarItem(
                             label: tab.title,
-                            icon: CNSymbol(tab.icon),
+                            icon: CNSymbol(
+                              tabs[selectedTabIndex] == tab
+                                  ? tab.selectedIcon
+                                  : tab.icon,
+                            ),
                           ),
                         )
                         .toList(),
