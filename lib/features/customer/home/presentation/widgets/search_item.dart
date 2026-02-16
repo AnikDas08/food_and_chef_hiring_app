@@ -111,7 +111,7 @@ class _SearchItemState extends State<SearchItem> {
                       mainAxisSpacing: 10.h,
                     ),
                     itemBuilder: (context, index) {
-                      return chefItem(height: 140.h, isSearch: true);
+                      //return chefItem(height: 140.h, isSearch: true);
                     },
                   ),
         ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:mime/mime.dart';
@@ -76,6 +77,57 @@ class ApiService {
     });
 
     header['Content-Type'] = "multipart/form-data";
+
+    return _request(url, method, body: formData, header: header);
+  }
+
+  static Future<ApiResponseModel> multipartImage(
+      String url, {
+        Map<String, String> header = const {},
+        Map<dynamic, dynamic> body = const {},
+        String method = "PATCH",
+        List files = const [],
+      }) async {
+    FormData formData = FormData();
+
+    for (var item in files) {
+      String imageName = item['name'] ?? "image";
+      String? imagePath = item['image'];
+      if (imagePath != null && imagePath.isNotEmpty) {
+        File file = File(imagePath);
+        String extension = file.path.split('.').last.toLowerCase();
+        String? mimeType = lookupMimeType(imagePath);
+        formData.files.add(
+          MapEntry(
+            imageName,
+            await MultipartFile.fromFile(
+              imagePath,
+              filename: "$imageName.$extension",
+              contentType: mimeType != null
+                  ? DioMediaType.parse(mimeType)
+                  : DioMediaType.parse("image/jpeg"),
+            ),
+          ),
+        );
+      }
+    }
+
+    body.forEach((key, value) {
+      if (key == "services" && value is List) {
+        // Some backends prefer this format for multipart arrays:
+        for (var id in value) {
+          formData.fields.add(MapEntry("services[]", id.toString()));
+          // OR try without brackets: MapEntry("services", id.toString())
+        }
+      } else if (value is List || value is Map) {
+        formData.fields.add(MapEntry(key, jsonEncode(value)));
+      } else {
+        formData.fields.add(MapEntry(key, value.toString()));
+      }
+    });
+
+    final headers = Map<String, String>.from(header);
+    headers['Content-Type'] = 'multipart/form-data';
 
     return _request(url, method, body: formData, header: header);
   }

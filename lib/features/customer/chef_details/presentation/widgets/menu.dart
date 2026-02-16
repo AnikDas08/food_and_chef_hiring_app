@@ -12,6 +12,7 @@ class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ChefDetailsController>(
+      init: ChefDetailsController(),
       builder: (controller) {
         return DefaultTabController(
           length: 3,

@@ -5,6 +5,7 @@ import 'package:new_untitled/features/chef/menu/presentation/screen/add_menu_scr
 import 'package:new_untitled/features/chef/menu/presentation/screen/edit_menu.dart';
 import 'package:new_untitled/features/chef/menu/presentation/screen/menu_screen.dart';
 import 'package:new_untitled/features/chef/profile/presentation/screen/account_setting.dart';
+import 'package:new_untitled/features/common/auth/sign%20up/presentation/screen/signup_chef_screen.dart';
 import 'package:new_untitled/features/customer/address/presentation/screen/add_address_screen.dart';
 import '../../features/chef/chef_booking/presentation/screen/chef_booking_screen.dart';
 import '../../features/chef/home/presentation/screen/chef_home_screen.dart';
@@ -57,6 +58,7 @@ class AppRoutes {
   static const String splash = "/splash_screen.dart";
   static const String onboarding = "/onboarding_screen.dart";
   static const String signUp = "/sign_up_screen.dart";
+  static const String signUpChef = "/sign_up_screen_chef.dart";
   static const String verifyUser = "/verify_user.dart";
   static const String signIn = "/sign_in_screen.dart";
   static const String forgotPassword = "/forgot_password.dart";
@@ -111,6 +113,7 @@ class AppRoutes {
     GetPage(name: splash, page: () => const SplashScreen()),
     GetPage(name: onboarding, page: () => OnboardingScreen()),
     GetPage(name: signUp, page: () => SignUpScreen()),
+    GetPage(name: signUpChef, page: () => SignupChefScreen()),
     GetPage(name: verifyUser, page: () => const VerifyUser()),
     GetPage(name: signIn, page: () => SignInScreen()),
     GetPage(name: forgotPassword, page: () => ForgotPasswordScreen()),
@@ -142,6 +145,7 @@ class AppRoutes {
     GetPage(name: addAddress, page: () => AddAddressScreen()),
     GetPage(name: paymentMethod, page: () => PaymentMethodScreen()),
     GetPage(name: addCard, page: () => AddCardScreen()),
+
     GetPage(name: editCard, page: () => EditCardScreen()),
     GetPage(name: pastOrder, page: () => PastOrderScreen()),
     GetPage(name: reorder, page: () => ReorderScreen()),

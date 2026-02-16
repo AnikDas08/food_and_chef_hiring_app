@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -9,16 +7,18 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
-import '../../../../../utils/constants/app_images.dart';
+import '../data/chef_model.dart';
 
-dynamic checkCondition() {
-  int randomNumber = Random().nextInt(100); // generates 0–99
-  return randomNumber < 10 ? true : false;
-}
+Widget chefItem({
+  num height = 200,
+  bool isSearch = false,
+  required ChefData chef,
+}) {
+  // Check if chef has verified badge (you can adjust this logic)
+  bool isVerified = (chef.totalRating ?? 0) >= 5;
 
-Widget chefItem({num height = 200, bool isSearch = false}) {
   return InkWell(
-    onTap: () => Get.toNamed(AppRoutes.chefDetails),
+    onTap: () => Get.toNamed(AppRoutes.chefDetails, arguments: chef),
     child: Container(
       margin: EdgeInsets.only(right: 12),
       decoration: BoxDecoration(
@@ -36,15 +36,14 @@ Widget chefItem({num height = 200, bool isSearch = false}) {
                   topRight: Radius.circular(12),
                 ),
                 child: CommonImage(
-                  imageSrc: AppImages.image3,
+                  imageSrc: chef.image ?? '',
                   height: height.toDouble(),
                   width: 240,
                   borderRadius: 0,
-                  fill: BoxFit.fill,
+                  fill: BoxFit.cover,
                 ),
               ),
-
-              if (checkCondition())
+              if (isVerified)
                 Positioned(
                   bottom: 10,
                   left: 10,
@@ -62,32 +61,38 @@ Widget chefItem({num height = 200, bool isSearch = false}) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CommonText(
-                        text: "Olivia Z.",
-                        fontSize: 12,
-                        color: Color(0xff272727),
-                        fontWeight: FontWeight.w600,
-                        top: 8,
-                        bottom: 4,
+                      Flexible(
+                        child: CommonText(
+                          text: chef.name ?? "N/A",
+                          fontSize: 12,
+                          color: Color(0xff272727),
+                          fontWeight: FontWeight.w600,
+                          top: 8,
+                          bottom: 4,
+                          //maxLine: 1,
+                        ),
                       ),
-                      Spacer(),
-                      Icon(
-                        Icons.star_rounded,
-                        color: Color(0xffFD713F),
-                        size: 16.sp,
-                      ),
-                      CommonText(
-                        text: "4.5",
-                        fontSize: 12,
-                        color: Color(0xff272727),
-                        fontWeight: FontWeight.w600,
-                        left: 4,
-                        right: 8,
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.star_rounded,
+                            color: Color(0xffFD713F),
+                            size: 16.sp,
+                          ),
+                          SizedBox(width: 4),
+                          CommonText(
+                            text: (chef.avgRating ?? 0).toStringAsFixed(1),
+                            fontSize: 12,
+                            color: Color(0xff272727),
+                            fontWeight: FontWeight.w600,
+                            left: 4,
+                            right: 8,
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-
                 SizedBox(
                   width: 200.w,
                   child: Row(
@@ -98,7 +103,7 @@ Widget chefItem({num height = 200, bool isSearch = false}) {
                         imageColor: Color(0xff777777),
                       ),
                       CommonText(
-                        text: "2km",
+                        text: chef.distance ?? "N/A",
                         fontSize: 12,
                         color: Color(0xff777777),
                         fontWeight: FontWeight.w400,
@@ -108,30 +113,28 @@ Widget chefItem({num height = 200, bool isSearch = false}) {
                       CommonImage(imageSrc: AppIcons.briefcase),
                       Expanded(
                         child: CommonText(
-                          text: "4 years Experience",
+                          text: "${chef.experience ?? 0} years Experience",
                           fontSize: 12,
                           left: 4,
                           color: Color(0xff777777),
+                          //maxLine: 1,
                         ),
                       ),
                     ],
                   ),
                 ),
-
                 isSearch ? 12.height : 24.height,
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: "\$70.00",
+                        text: "\$${chef.pricing?.toStringAsFixed(2) ?? '0.00'}",
                         style: TextStyle(
                           color: Color(0xff272727),
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-
-                      /// Sign Up Button here
                       TextSpan(
                         text: " /hr",
                         style: TextStyle(

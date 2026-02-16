@@ -37,6 +37,7 @@ class LocalStorage {
     myImage = localStorage.getString(LocalStorageKeys.myImage) ?? "";
     myName = localStorage.getString(LocalStorageKeys.myName) ?? "";
     myEmail = localStorage.getString(LocalStorageKeys.myEmail) ?? "";
+    myRole = localStorage.getString(LocalStorageKeys.myRole) ?? "";
 
     appLog(userId, source: "Local Storage");
   }
