@@ -19,7 +19,8 @@ void bookingDetailsPopup(BuildContext context) {
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.white,
-
+    enableDrag: true,
+    isDismissible: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),

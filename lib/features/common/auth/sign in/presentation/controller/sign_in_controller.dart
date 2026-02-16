@@ -81,7 +81,7 @@ class SignInController extends GetxController {
 
       emailController.clear();
       passwordController.clear();
-      Get.offAllNamed(AppRoutes.customerHome);
+      Get.offAllNamed(AppRoutes.customerHomeScreen);
     } else {
       Get.snackbar(response.statusCode.toString(), response.message);
       isLoading=false;

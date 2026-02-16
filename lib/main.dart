@@ -22,10 +22,8 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-
 init() async {
   DependencyInjection dI = DependencyInjection();
-  LocalStorage.getAllPrefData();
   dI.dependencies();
   SocketServices.connectToSocket();
 
@@ -34,6 +32,7 @@ init() async {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]),
+    LocalStorage.getAllPrefData(),
     NotificationService.initLocalNotification(),
     dotenv.load(fileName: ".env"),
   ]);

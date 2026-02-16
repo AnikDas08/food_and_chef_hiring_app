@@ -11,6 +11,8 @@ import '../../../../../utils/constants/app_icons.dart';
 import '../controller/chef_booking_controller.dart';
 import 'booking_details_popup.dart';
 import 'confirmation_booking_pop_up.dart';
+import 'decline_pop_up.dart';
+import 'upcoming_pop_up.dart';
 
 Widget chefBookingItem() {
   final controller = Get.find<ChefBookingController>();
@@ -99,7 +101,7 @@ Widget chefBookingItem() {
                       vertical: 5.sp,
                     ),
                     decoration: BoxDecoration(
-                      color: Color(0xfffdbebd9),
+                      color: Color(0xfffdbebd),
                       borderRadius: BorderRadius.circular(10.sp),
                     ),
                     child: CommonText(
@@ -113,15 +115,16 @@ Widget chefBookingItem() {
               PopupMenuButton<int>(
                 padding: EdgeInsets.zero,
                 menuPadding: EdgeInsets.zero,
+                color: Colors.white,
                 icon: const Icon(Icons.more_vert),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
                 onSelected: (value) {
                   if (value == 1) {
-                    // Request a Change action
+                    upcomingPopUp();
                   } else if (value == 2) {
-                    // Cancel Booking action
+                    declineBookingPopUp();
                   }
                 },
                 itemBuilder:
@@ -281,20 +284,25 @@ Widget chefBookingItem() {
               ),
               Spacer(),
               if (controller.selectedBookingHistory == "Unconfirmed") ...[
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.sp,
-                    vertical: 8.sp,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.sp),
-                  ),
-                  child: CommonText(
-                    text: AppString.decline,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xffFF3C3C),
+                InkWell(
+                  onTap: () {
+                    declineBookingPopUp();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.sp,
+                      vertical: 8.sp,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.sp),
+                    ),
+                    child: CommonText(
+                      text: AppString.decline,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xffFF3C3C),
+                    ),
                   ),
                 ),
                 InkWell(
@@ -376,7 +384,6 @@ Widget chefBookingItem() {
                         size: 12,
                         color: Color(0xffFD713F),
                       ),
-
                     ],
                   ),
                 ),

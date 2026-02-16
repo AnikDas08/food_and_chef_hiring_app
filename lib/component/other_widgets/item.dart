@@ -16,6 +16,7 @@ class Item extends StatelessWidget {
     this.horizontal = 0,
     this.disableIcon = false,
     this.imageSize,
+    this.imgColor = const Color(0xff272727),
   });
 
   final IconData? icon;
@@ -25,6 +26,7 @@ class Item extends StatelessWidget {
   final bool disableIcon;
   final VoidCallback? onTap;
   final Color color;
+  final Color imgColor;
   final double vertical;
   final double horizontal;
   final double? imageSize;
@@ -47,7 +49,7 @@ class Item extends StatelessWidget {
                     : CommonImage(
                       imageSrc: image,
                       size: imageSize,
-                      imageColor: Color(0xff272727),
+                      imageColor: imgColor,
                     ),
                 CommonText(
                   text: title,

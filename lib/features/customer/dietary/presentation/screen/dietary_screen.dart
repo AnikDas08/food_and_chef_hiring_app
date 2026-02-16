@@ -20,9 +20,7 @@ class _DietaryRestrictionsScreenState extends State<DietaryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 20),
@@ -30,33 +28,6 @@ class _DietaryRestrictionsScreenState extends State<DietaryScreen> {
             Get.back();
           },
         ),
-        actions: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            margin: const EdgeInsets.only(right: 16),
-            decoration: BoxDecoration(
-              color: const Color(0xffF3F3F3),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Row(
-              children: const [
-                Icon(
-                  Icons.mode_edit_outline_outlined,
-                  size: 24,
-                  color: Colors.black,
-                ),
-                SizedBox(width: 6),
-
-                CommonText(
-                  text: "Edit",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff272727),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
 
       body: GetBuilder<DietaryController>(
@@ -84,7 +55,6 @@ class _DietaryRestrictionsScreenState extends State<DietaryScreen> {
 
                 CustomDropdown(
                   dropdownHeight: 170,
-
                   dropdown: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -92,7 +62,7 @@ class _DietaryRestrictionsScreenState extends State<DietaryScreen> {
                       borderRadius: BorderRadius.circular(8.r),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.08),
+                          color: Colors.black.withValues(alpha: 0.08),
                           blurRadius: 12,
                         ),
                       ],
@@ -104,9 +74,34 @@ class _DietaryRestrictionsScreenState extends State<DietaryScreen> {
                             final isSelected = controller.selectedCategories
                                 .contains(item);
 
+                            return Row(
+                              children: [
+                                Checkbox(
+                                  activeColor: Color(0xff272727),
+                                  checkColor: Colors.white,
+
+                                  value: isSelected,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value == true) {
+                                        controller.selectedCategories.add(item);
+                                      } else {
+                                        controller.selectedCategories.remove(
+                                          item,
+                                        );
+                                      }
+                                    });
+                                  },
+                                ),
+                                CommonText(text: item, fontSize: 12),
+                              ],
+                            );
+
                             return CheckboxListTile(
                               value: isSelected,
-                              title: Text(item),
+                              title: CommonText(text: item, fontSize: 12),
+                              titleAlignment: ListTileTitleAlignment.center,
+
                               controlAffinity: ListTileControlAffinity.leading,
                               onChanged: (value) {
                                 setState(() {
@@ -133,14 +128,15 @@ class _DietaryRestrictionsScreenState extends State<DietaryScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          controller.selectedCategories.isEmpty
-                              ? 'Select Category'
-                              : controller.selectedCategories.join(', '),
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF777777),
-                          ),
+                        CommonText(
+                          text:
+                              controller.selectedCategories.isEmpty
+                                  ? 'Select Category'
+                                  : controller.selectedCategories.join(', '),
+
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF777777),
                         ),
                         const Icon(Icons.keyboard_arrow_down_rounded),
                       ],

@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:new_untitled/features/chef/home/presentation/widgets/chef_home_appbar.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-
-import '../../../../../component/bottom_nav_bar/chef_bottom_bar.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_images.dart';
@@ -17,16 +15,22 @@ class ChefHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      backgroundColor: Colors.white,
       appBar: chefHomeAppBar(),
 
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24).copyWith(bottom: 0),
-        child: Column(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 24,
+        ).copyWith(bottom: 0),
+        child: ListView(
           children: [
             CommonImage(
               imageSrc: AppImages.img7,
               fill: BoxFit.fill,
-              height: 120.h,
+              height: 112.h,
               width: Get.width,
             ),
             32.height,
@@ -48,19 +52,17 @@ class ChefHomeScreen extends StatelessWidget {
               ],
             ),
 
-            Expanded(
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return requestItem(context);
-                },
-              ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 8,
+              itemBuilder: (context, index) {
+                return requestItem(context);
+              },
             ),
           ],
         ),
       ),
-      bottomNavigationBar: ChefBottomBar(currentIndex: 0),
     );
   }
 }

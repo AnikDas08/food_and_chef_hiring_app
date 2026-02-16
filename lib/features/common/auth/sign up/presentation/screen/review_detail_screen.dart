@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text_field/common_phone_number_text_filed.dart';
 import 'package:new_untitled/utils/app_utils.dart';
 import '../../../../../../../utils/extensions/extension.dart';
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../component/text_field/common_text_field.dart';
+import '../../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/helpers/other_helper.dart';
 import '../controller/sign_up_controller.dart';
 import '../../../../../../../utils/constants/app_string.dart';
@@ -104,13 +106,13 @@ class ReviewDetailScreen extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     top: 16,
                   ),
+
                   // CommonTextField(
                   //   hintText: AppString.phoneNumber,
                   //   paddingHorizontal: 10,
                   //   controller: controller.numberController,
                   //   validator: OtherHelper.validator,
                   // ),
-
                   CommonPhoneNumberTextFiled(
                     controller: controller.numberController,
                     countryChange: (value) {
@@ -134,6 +136,20 @@ class ReviewDetailScreen extends StatelessWidget {
                     hintText: AppString.enterYourAddress,
                     paddingHorizontal: 10,
                     controller: controller.addressController,
+                    suffixIcon: InkWell(
+                      hoverColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      onTap: () {
+                        controller.addressController.text = "Dhaka Bangladesh";
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: CommonImage(
+                          imageSrc: AppIcons.location,
+                          imageColor: Color(0xffFD713F),
+                        ),
+                      ),
+                    ),
                     validator: OtherHelper.validator,
                   ),
 

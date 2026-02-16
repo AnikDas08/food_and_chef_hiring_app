@@ -1,8 +1,10 @@
+
 import 'package:flutter/material.dart';
-import 'package:new_untitled/component/bottom_nav_bar/chef_bottom_bar.dart';
+import 'package:flutter/services.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../widgets/book_info.dart';
 import '../widgets/book_time.dart';
 import '../widgets/earning.dart';
@@ -14,7 +16,14 @@ class AnalyticsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+
+        centerTitle: false,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: appBarOpacity(),
         title: CommonText(
           text: AppString.analytics,
           fontSize: 24,
@@ -22,11 +31,12 @@ class AnalyticsScreen extends StatelessWidget {
           color: Color(0xff272727),
         ),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(children: [earning(), BookTime(), bookInfo(), topItem()]),
+        child: ListView(
+          children: [earning(), BookTime(), bookInfo(), topItem()],
+        ),
       ),
-      bottomNavigationBar: ChefBottomBar(currentIndex: 1),
     );
   }
 }

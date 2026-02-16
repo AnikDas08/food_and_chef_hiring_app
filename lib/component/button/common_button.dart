@@ -31,7 +31,7 @@ class CommonButton extends StatefulWidget {
     this.borderWidth = 1,
     this.isLoading = false,
     this.buttonWidth = double.infinity,
-    this.borderColor = AppColors.primaryColor,
+    this.borderColor = AppColors.transparent,
     super.key,
   });
 
@@ -65,7 +65,6 @@ class _CommonButtonState extends State<CommonButton>
     );
   }
 
-  // Function to build the button with common settings
   Widget _buildElevatedButton() {
     return GestureDetector(
       onTapDown: _onTapDown,
@@ -86,12 +85,17 @@ class _CommonButtonState extends State<CommonButton>
   ButtonStyle _buttonStyle() {
     return ButtonStyle(
       backgroundColor: WidgetStateProperty.all(widget.buttonColor),
+      foregroundColor: WidgetStateProperty.all(Colors.transparent),
+      surfaceTintColor: WidgetStateProperty.all(Colors.transparent),
+      overlayColor: WidgetStateProperty.all(Colors.transparent),
+      shadowColor: WidgetStateProperty.all(Colors.transparent),
+
       padding: WidgetStateProperty.all(EdgeInsets.zero),
       shape: WidgetStateProperty.all(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.buttonRadius),
           side: BorderSide(
-            color: widget.borderColor ?? Colors.blue,
+            color: widget.borderColor ?? Colors.transparent,
             width: widget.borderWidth,
           ),
         ),

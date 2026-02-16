@@ -1,12 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/component/bottom_nav_bar/chef_bottom_bar.dart';
 import 'package:new_untitled/component/button/switch_button.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../component/image/common_image.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/other_widgets/item.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../component/text/common_text.dart';
@@ -22,29 +24,27 @@ class ChefProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /// App Bar Section Starts here
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        surfaceTintColor: Colors.white,
-
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        automaticallyImplyLeading: false,
         centerTitle: false,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: appBarOpacity(),
         title: const CommonText(
           text: AppString.myProfile,
           fontWeight: FontWeight.w600,
           fontSize: 24,
           color: Color(0xff272727),
         ),
-
-        automaticallyImplyLeading: false,
       ),
 
       /// Body Section Starts here
       body: GetBuilder<ChefProfileController>(
         builder: (controller) {
-          return SingleChildScrollView(
+          return Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Column(
+            child: ListView(
               children: [
                 12.height,
                 Container(
@@ -162,11 +162,12 @@ class ChefProfileScreen extends StatelessWidget {
                         imageSize: 24,
                         onTap: () => Get.toNamed(AppRoutes.availability),
                       ),
-                      // Item(
-                      //   image: AppIcons.card,
-                      //   title: AppString.paymentMethods,
-                      //   onTap: () => Get.toNamed(AppRoutes.paymentMethod),
-                      // ),
+                      Item(
+                        image: AppIcons.card,
+                        icon: CupertinoIcons.creditcard,
+                        title: AppString.paymentMethods,
+                        onTap: () => Get.toNamed(AppRoutes.chefPayment),
+                      ),
                       Item(
                         image: AppIcons.kitchen,
                         title: AppString.menuItems,
@@ -174,14 +175,14 @@ class ChefProfileScreen extends StatelessWidget {
                       ),
 
                       Item(
-                        image: AppIcons.user,
+                        icon: CupertinoIcons.person,
                         title: AppString.accountSettings,
                         onTap: () => Get.toNamed(AppRoutes.accountSetting),
                       ),
                       14.height,
                       Row(
                         children: [
-                          CommonImage(imageSrc: AppIcons.notification),
+                          Icon(CupertinoIcons.bell),
                           CommonText(
                             text: AppString.notifications,
                             left: 12,
@@ -218,11 +219,14 @@ class ChefProfileScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Item(
-                        image: AppIcons.contact,
+                        icon: CupertinoIcons.question_circle,
                         title: AppString.contactSupport,
                       ),
 
-                      Item(image: AppIcons.about, title: AppString.appVersion),
+                      Item(
+                        icon: CupertinoIcons.info,
+                        title: AppString.appVersion,
+                      ),
 
                       /// Log Out item here
                     ],
@@ -232,6 +236,7 @@ class ChefProfileScreen extends StatelessWidget {
                 Item(
                   image: AppIcons.logout,
                   color: Color(0xffFF0000),
+                  imgColor: Color(0xffFF0000),
                   title: AppString.signOut,
                   onTap: logOutPopUp,
                   disableDivider: true,
@@ -242,9 +247,6 @@ class ChefProfileScreen extends StatelessWidget {
           );
         },
       ),
-
-      /// Bottom Navigation Bar Section Starts here
-      bottomNavigationBar: const ChefBottomBar(currentIndex: 4),
     );
   }
 }

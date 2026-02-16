@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import '../constants/app_colors.dart';
 
 class OtherHelper {
-  static RegExp emailRegexp = RegExp(
-    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+  static final RegExp emailRegexp = RegExp(
+    r"^[a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+$",
   );
-  static RegExp passRegExp = RegExp(r'(?=.*[a-z])(?=.*[0-9])');
+
+  static final RegExp passRegExp = RegExp(r'(?=.*[a-z])(?=.*[0-9])');
 
   static String? validator(value) {
     if (value.isEmpty) {
@@ -54,6 +56,10 @@ class OtherHelper {
     TextEditingController controller,
   ) async {
     final DateTime? picked = await showDatePicker(
+      context: Get.context!,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
       builder:
           (context, child) => Theme(
             data: Theme.of(context).copyWith(
@@ -63,14 +69,11 @@ class OtherHelper {
             ),
             child: child!,
           ),
-      context: Get.context!,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
     );
 
     if (picked != null) {
-      controller.text = "${picked.year}/${picked.month}/${picked.day}";
+      final formattedDate = DateFormat('d MMMM yyyy,').format(picked);
+      controller.text = formattedDate;
       return picked.toIso8601String();
     }
     return "";
@@ -136,3 +139,4 @@ class OtherHelper {
         "${time.minute.toString().padLeft(2, '0')} ${time.hour >= 12 ? "PM" : "AM"}";
   }
 }
+

@@ -8,6 +8,7 @@ import '../../../../../utils/extensions/extension.dart';
 Widget chatListItem({required ChatModel item}) {
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
+    margin: EdgeInsets.only(bottom: 10),
     decoration: const BoxDecoration(
       color: Color(0xffF2F2F2),
       borderRadius: BorderRadius.all(Radius.circular(20)),

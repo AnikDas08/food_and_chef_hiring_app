@@ -55,4 +55,22 @@ class AppIcons {
   static const String mapIcon = "$baseurl/map_icon.svg";
   static const String sended = "$baseurl/sended.svg";
   static const String arrowUpDown = "$baseurl/arrow_up_down.svg";
+  static const String clock = "$baseurl/clock.svg";
+  static const String download = "$baseurl/download.svg";
+  static const String basketSvg = "$baseurl/basket_svg.svg";
+
+
+  static const String calendarBadgeCheckmark = "$baseurl/calendar.badge.checkmark.svg";
+  static const String highlighter = "$baseurl/highlighter.svg";
+  static const String calendar = "$baseurl/calendar.svg";
+  static const String forkKnife = "$baseurl/fork.knife.svg";
+  static const String heartTextClipboard = "$baseurl/heart.text.clipboard.svg";
+  static const String iphoneAndArrowRightOutward = "$baseurl/iphone_and_arrow_right_outward.svg";
+  static const String stopwatch = "$baseurl/stopwatch.svg";
+  static const String stove = "$baseurl/stove.svg";
+  static const String trash = "$baseurl/trash.svg";
+
+
+
+
 }

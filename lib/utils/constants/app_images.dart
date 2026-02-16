@@ -1,38 +1,21 @@
 class AppImages {
   static const String baseurl = "assets/images";
-
   static const String noData = "$baseurl/noData.png";
-
   static const String noImage = "$baseurl/noImage.png";
-
   static const String profile = "$baseurl/profile.png";
-
   static const String camera = "$baseurl/camera.png";
-
   static const String error = "$baseurl/error.png";
-
   static const String onboarding_1 = "$baseurl/onboarding_1.png";
-
   static const String onboarding_2 = "$baseurl/onboarding_2.png";
-
   static const String onboarding_3 = "$baseurl/onboarding_3.png";
-
   static const String splash = "$baseurl/splash.png";
-
   static const String success = "$baseurl/success.png";
-
   static const String logo = "$baseurl/logo.png";
-
   static const String image1 = "$baseurl/image1.png";
-
   static const String image2 = "$baseurl/image2.png";
-
   static const String image3 = "$baseurl/image3.png";
-
   static const String image4 = "$baseurl/image4.png";
-
   static const String image5 = "$baseurl/image5.png";
-
   static const String image6 = "$baseurl/image6.png";
   static const String warning = "$baseurl/warning.png";
   static const String orderStatus = "$baseurl/order_status.png";
@@ -43,5 +26,35 @@ class AppImages {
   static const String reviewSuccess = "$baseurl/review_success.png";
   static const String dietary = "$baseurl/dietary.png";
   static const String large = "$baseurl/large.png";
-
+  static const String paymentCard = "$baseurl/payment_card.png";
+  static const String basket = "$baseurl/basket.png";
+  static const String bellBadge = "$baseurl/bell.badge.png";
+  static const String briefcase = "$baseurl/briefcase.png";
+  static const String bubbleLeftAndBubbleRight =
+      "$baseurl/bubble.left.and.bubble.right.png";
+  static const String calendarBadgeCheckmark =
+      "$baseurl/calendar.badge.checkmark.png";
+  static const String calendar = "$baseurl/calendar.png";
+  static const String carrot = "$baseurl/carrot.png";
+  static const String chartXyAxisLine = "$baseurl/chart.xyaxis.line.png";
+  static const String clock = "$baseurl/clock.png";
+  static const String creditcard = "$baseurl/creditcard.png";
+  static const String ellipsis = "$baseurl/ellipsis.png";
+  static const String faceSmiling = "$baseurl/face.smiling.png";
+  static const String figureWalk = "$baseurl/figure.walk.png";
+  static const String forkKnife = "$baseurl/fork.knife.png";
+  static const String highlighter = "$baseurl/highlighter.png";
+  static const String house = "$baseurl/house.png";
+  static const String iphoneAndArrowRightOutward =
+      "$baseurl/iphone.and.arrow.right.outward.png";
+  static const String iphoneGen3 = "$baseurl/iphone.gen3.png";
+  static const String location = "$baseurl/location.png";
+  static const String paperplane = "$baseurl/paperplane.png";
+  static const String person = "$baseurl/person.png";
+  static const String questionmarkBubble = "$baseurl/questionmark.bubble.png";
+  static const String receipt = "$baseurl/receipt.png";
+  static const String stopwatch = "$baseurl/stopwatch.png";
+  static const String stove = "$baseurl/stove.png";
+  static const String trash = "$baseurl/trash.png";
+  static const String xmark = "$baseurl/xmark.png";
 }

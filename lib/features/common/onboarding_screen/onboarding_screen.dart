@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/features/common/onboarding_screen/widgets/indicatior.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../component/button/common_button.dart';
 import '../../../config/route/app_routes.dart';
 import '../../../utils/constants/app_string.dart';
 import 'widgets/screen_1.dart';
-import 'widgets/screen_2.dart';
-import 'widgets/screen_3.dart';
+
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -21,7 +19,7 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
-  final List _list = [Screen1(), Screen2(), Screen3()];
+
   int currentPage = 0;
   Timer? timer;
 
@@ -35,18 +33,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         statusBarBrightness: Brightness.light,
       ),
     );
-    timer = Timer.periodic(const Duration(seconds: 3), (Timer t) {
-      if (currentPage < _list.length - 1) {
-        currentPage++;
-        _pageController.animateToPage(
-          currentPage,
-          duration: const Duration(milliseconds: 350),
-          curve: Curves.easeInOut,
-        );
-      } else {
-        t.cancel();
-      }
-    });
   }
 
   @override
@@ -73,22 +59,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             body: SafeArea(
               child: Column(
                 children: [
-                  Expanded(
-                    child: PageView.builder(
-                      controller: _pageController,
-                      onPageChanged: (index) {
-                        currentPage = index;
-                        setState(() {});
-                      },
-                      itemCount: _list.length,
-                      itemBuilder: (context, index) {
-                        return _list[index];
-                      },
-                    ),
-                  ),
-                  indicator(currentIndex: currentPage),
+                  Expanded(child: OnboardingItem()),
                   28.height,
-
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Column(

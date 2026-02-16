@@ -143,6 +143,7 @@ class _KitchenEquipmentScreenState extends State<KitchenScreen> {
                 },
                 child: Container(
                   height: 48.h,
+                  margin: EdgeInsets.only(top: 20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.r),
                     color: Color(0xff272727),

@@ -20,9 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3), () {
       if (LocalStorage.isLogIn&&LocalStorage.token!="") {
         if (LocalStorage.myRole == 'CUSTOMER') {
-          Get.offAllNamed(AppRoutes.customerHome);
+          Get.offAllNamed(AppRoutes.customerHomeScreen);
         } else {
-          Get.offAllNamed(AppRoutes.chefHome);
+          Get.offAllNamed(AppRoutes.chefHomeScreen);
         }
       }
       else{

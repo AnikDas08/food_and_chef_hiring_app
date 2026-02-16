@@ -26,9 +26,9 @@ class _SignInScreenState extends State<SignInScreen> {
   final FocusNode emailFocusNode = FocusNode();
 
   final FocusNode passwordFocusNode = FocusNode();
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       emailFocusNode.requestFocus();
@@ -90,7 +90,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         color: Color(0xff272727),
                       ),
 
-
                       CommonTextField(
                         controller: controller.emailController,
                         hintText: AppString.email,
@@ -141,7 +140,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         isLoading: controller.isLoadingChef,
                         onTap: () {
                           LocalStorage.myRole = "chef";
-                          Get.toNamed(AppRoutes.chefHome);
+                          Get.toNamed(AppRoutes.chefHomeScreen);
                         },
                       ),
                       20.height,

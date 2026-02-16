@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
@@ -17,7 +19,20 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: false,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+            child: Container(
+              color: Colors.white.withValues(alpha: 0.1), // tint (optional)
+            ),
+          ),
+        ),
         title: CommonText(
           text: AppString.cart,
           fontSize: 24,
@@ -29,12 +44,10 @@ class CartScreen extends StatelessWidget {
         builder: (controller) {
           return Padding(
             padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
+            child: ListView(
               children: [
                 chefInfo(),
-                ...List.generate(2, (index) => cartItem(context)),
+                ...List.generate(5, (index) => cartItem(context)),
 
                 CommonText(
                   text: AppString.notesToPrivaeChef,

@@ -6,11 +6,11 @@ class AppString {
   static const String name = "Name";
   static const String businessTaxDetails = "Business tax details";
   static const String detailedAddress = "DETAILED ADDRESS";
-  static const String youSureWantToLogout = "You sure want to logout";
+  static const String youSureWantToLogout = "Are you want you want to log out?";
   static const String no = "No";
   static const String contactSupport = "Contact & Support";
   static const String other = "OTHER";
-  static const String noNotification = "noNotification";
+  static const String noNotification = "No notifications";
   static const String management = "MANAGEMENT";
   static const String congratulations = "Congratulations!";
   static const String taxId = "Tax ID / VAT ID";
@@ -264,6 +264,7 @@ class AppString {
   static const String requestAndCheckout = "Request and Checkout";
   static const String chat = "Chat";
   static const String chatWithCustomer = "Chat with the Customer";
+  static const String chatWithCustomers = "Chat with Customer";
   static const String myProfile = "My Profile";
   static const String paymentMethods = "Payment Methods";
   static const String pastOrders = "Past Orders";

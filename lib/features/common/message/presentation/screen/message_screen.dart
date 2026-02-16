@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_text_field.dart';
@@ -128,13 +128,13 @@ class _MessageScreenState extends State<MessageScreen> {
                   hintText: AppString.messageHere,
                   prefixIcon: Padding(
                     padding: const EdgeInsets.only(left: 16),
-                    child: Icon(Icons.emoji_emotions_outlined),
+                    child: Icon(CupertinoIcons.smiley),
                   ),
                   suffixIcon: GestureDetector(
                     onTap: controller.addNewMessage,
                     child: Padding(
                       padding: EdgeInsets.all(16.sp),
-                      child: CommonImage(imageSrc: AppIcons.send),
+                      child: Icon(CupertinoIcons.paperplane),
                     ),
                   ),
                   borderColor: Colors.white,

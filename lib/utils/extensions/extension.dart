@@ -24,6 +24,7 @@ extension TimeFormater on DateTime {
   String get time => DateFormat('h:mm a').format(this);
 
   String get date => DateFormat('dd-MM-yyyy').format(this);
+  String get dateMonthYear => DateFormat('d MMMM yyyy').format(this);
 
   String get dayName => DateFormat('E').format(this);
 

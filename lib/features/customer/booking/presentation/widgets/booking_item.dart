@@ -8,6 +8,7 @@ import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
+import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import 'details_popup.dart';
 
@@ -77,13 +78,17 @@ Widget bookingItem() {
 
                 menuPadding: EdgeInsets.zero,
                 elevation: 0,
-                icon: const Icon(Icons.more_vert),
+                icon: RotatedBox(
+                  quarterTurns: 1,
+                  child: const Icon(CupertinoIcons.ellipsis),
+                ),
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
                 onSelected: (value) {
                   if (value == 1) {
+                    Get.toNamed(AppRoutes.requestChange);
                   } else if (value == 2) {}
                 },
 
@@ -93,7 +98,11 @@ Widget bookingItem() {
                         value: 1,
                         child: Row(
                           children: const [
-                            Icon(Icons.edit, size: 20, color: Colors.black),
+                            Icon(
+                              CupertinoIcons.pencil,
+                              size: 20,
+                              color: Colors.black,
+                            ),
                             SizedBox(width: 10),
                             CommonText(text: "Request a Change", fontSize: 14),
                           ],
@@ -103,7 +112,11 @@ Widget bookingItem() {
                         value: 2,
                         child: Row(
                           children: const [
-                            Icon(Icons.close, size: 20, color: Colors.red),
+                            Icon(
+                              CupertinoIcons.clear,
+                              size: 20,
+                              color: Colors.red,
+                            ),
                             SizedBox(width: 10),
                             CommonText(
                               text: "Cancel Booking",

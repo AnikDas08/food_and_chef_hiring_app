@@ -9,7 +9,7 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 import '../../../config/route/app_routes.dart';
 import '../../../utils/log/app_log.dart';
 
-List _list = [
+final List<String> _list = [
   AppIcons.home,
   AppIcons.analytics,
   AppIcons.basket,
@@ -17,7 +17,7 @@ List _list = [
   AppIcons.profile,
 ];
 
-List _string = [
+final List<String> _string = [
   AppString.home,
   AppString.analytics,
   AppString.bookings,
@@ -75,14 +75,14 @@ class ChefBottomBar extends StatelessWidget {
 
     if (index == 0) {
       if (!(currentIndex == 0)) {
-        Get.toNamed(AppRoutes.chefHome);
+        // Get.toNamed(AppRoutes.chefHome);
       }
     } else if (index == 1) {
       if (!(currentIndex == 1)) {
         if (LocalStorage.isChef) {
-          Get.toNamed(AppRoutes.analytics);
+          // Get.toNamed(AppRoutes.analytics);
         } else {
-          Get.toNamed(AppRoutes.bookingHistory);
+          // Get.toNamed(AppRoutes.bookingHistory);
         }
       }
     } else if (index == 2) {
@@ -91,7 +91,7 @@ class ChefBottomBar extends StatelessWidget {
       }
     } else if (index == 3) {
       if (!(currentIndex == 3)) {
-        Get.toNamed(AppRoutes.chat);
+        // Get.toNamed(AppRoutes.chat);
       }
     } else if (index == 4) {
       if (!(currentIndex == 4)) {

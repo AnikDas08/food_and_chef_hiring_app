@@ -80,10 +80,9 @@ class EditProfile extends StatelessWidget {
                                   width: 2,
                                 ),
                               ),
-                              child: Icon(
-                                Icons.mode_edit_outline_outlined,
-                                size: 16.sp,
-                                color: Color(0xff272727),
+                              child: CommonImage(
+                                imageSrc: AppImages.highlighter,
+                                imageColor: Colors.black,
                               ),
                             ),
                           ),

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/component/bottom_nav_bar/common_bottom_bar.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
@@ -23,22 +22,28 @@ class CustomerHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       appBar: homeAppbar(),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
+        child: ListView(
           children: [
+            4.height,
+            CommonImage(
+              imageSrc: AppImages.image1,
+              width: 343.w,
+              fill: BoxFit.fitWidth,
+            ),
             20.height,
-            CommonImage(imageSrc: AppImages.image1),
-            12.height,
             CommonTextField(
               hintText: AppString.searchForFoodChefEtc,
               keyboardType: TextInputType.none,
               onTap: () => Get.toNamed(AppRoutes.homeSearch),
-              borderRadius: 20,
+              borderRadius: 30,
               fillColor: Color(0xffF2F2F2),
               suffixIcon: Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.only(right: 20.w),
                 child: CommonImage(
                   imageSrc: AppIcons.fliter,
                   imageColor: Color(0xff636363),
@@ -83,11 +88,10 @@ class CustomerHome extends StatelessWidget {
 
             16.height,
             SizedBox(height: 160.h, child: orderAgain()),
-            30.height,
+            10.height,
           ],
         ),
       ),
-      bottomNavigationBar: CommonBottomNavBar(currentIndex: 0),
     );
   }
 }
