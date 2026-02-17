@@ -6,6 +6,7 @@ import 'package:new_untitled/utils/app_utils.dart';
 
 import '../data/cousine_data.dart';
 import '../data/chef_model.dart';
+import '../data/order_model.dart';
 
 class HomeController extends GetxController {
   RangeValues values = const RangeValues(20, 100);
@@ -14,6 +15,7 @@ class HomeController extends GetxController {
   String address = "";
   bool isLoadingChefs = false;
   bool isLoadingLocation = false;
+  bool isLoadingOrderAgain = false;
 
   // Location variables
   double? currentLat;
@@ -36,6 +38,10 @@ class HomeController extends GetxController {
   // Nearby chefs data
   ChefModel? chefModel;
   List<ChefData> nearbyChefsList = [];
+
+  // Order again data
+  OrderAgainModel? orderAgainModel;
+  List<OrderAgainData> orderAgainList = [];
 
   List<String> timeOption = ["Today", "Tomorrow", "This week", "Next week"];
   List<String> levelOption = [
@@ -73,6 +79,7 @@ class HomeController extends GetxController {
     getProfileData();
     getCusine();
     getCurrentLocationAndFetchChefs();
+    getOrderAgain();
   }
 
   // Get current location with permission handling
@@ -173,6 +180,31 @@ class HomeController extends GetxController {
     }
   }
 
+  // Fetch order again list from API
+  Future<void> getOrderAgain() async {
+    isLoadingOrderAgain = true;
+    update();
+
+    try {
+      final response = await ApiService.get("order/order-again-orders");
+
+      if (response.statusCode == 200) {
+        orderAgainModel = OrderAgainModel.fromJson(response.data);
+        orderAgainList = orderAgainModel?.data ?? [];
+        isLoadingOrderAgain = false;
+        update();
+      } else {
+        isLoadingOrderAgain = false;
+        update();
+        Utils.errorSnackBar('Error', 'Failed to fetch order again list');
+      }
+    } catch (e) {
+      isLoadingOrderAgain = false;
+      update();
+      Utils.errorSnackBar('Error', e.toString());
+    }
+  }
+
   // Refresh chefs list
   Future<void> refreshChefs() async {
     await getCurrentLocationAndFetchChefs();
@@ -185,11 +217,11 @@ class HomeController extends GetxController {
       );
       if (response.statusCode == 200) {
         final data = response.data;
-        address = response.data["data"]["address"];
+        address = response.data["data"]["address"]??"";
         update();
       }
     } catch (e) {
-      Utils.errorSnackBar(e.toString(), e.toString());
+      //Utils.errorSnackBar(e.toString(), e.toString());
     }
   }
 

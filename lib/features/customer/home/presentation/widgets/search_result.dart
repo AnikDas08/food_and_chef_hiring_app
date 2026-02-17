@@ -5,10 +5,10 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
-import '../../../../../utils/constants/app_images.dart';
 import '../../../../../utils/constants/app_string.dart';
+import '../data/search_chef_mofel.dart';
 
-Widget searchResult() {
+Widget searchResult(List<ChefData> chefs) {
   return Column(
     children: [
       CommonText(
@@ -19,73 +19,117 @@ Widget searchResult() {
         top: 16,
         bottom: 16,
       ).start,
-      ListView.builder(
-        itemCount: 20,
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: EdgeInsets.only(bottom: 24.h),
-            child: Row(
-              children: [
-                CommonImage(imageSrc: AppImages.image4, size: 42),
-                12.width,
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CommonText(
-                        text: "Albert Smith",
-                        fontSize: 12,
-                        color: Color(0xff272727),
-                        fontWeight: FontWeight.w500,
-                        top: 8,
-                        bottom: 4,
+
+      // Show message if no results
+      if (chefs.isEmpty)
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 40.h),
+          child: Column(
+            children: [
+              Icon(
+                Icons.search_off,
+                size: 64,
+                color: Color(0xffCCCCCC),
+              ),
+              SizedBox(height: 16.h),
+              CommonText(
+                text: 'No chefs found',
+                fontSize: 16,
+                color: Color(0xff777777),
+                fontWeight: FontWeight.w500,
+              ),
+            ],
+          ),
+        )
+      else
+        ListView.builder(
+          itemCount: chefs.length,
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            final chef = chefs[index];
+
+            return Padding(
+              padding: EdgeInsets.only(bottom: 24.h),
+              child: InkWell(
+                onTap: () {
+                  // Navigate to chef details
+                  // Navigator.push(context, MaterialPageRoute(builder: (_) => ChefDetailsScreen(chefId: chef.id)));
+                },
+                child: Row(
+                  children: [
+                    // Chef Image
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.r),
+                      child: CommonImage(
+                        imageSrc: chef.image ?? '',
+                        size: 42,
                       ),
-                      Row(
+                    ),
+                    12.width,
+
+                    // Chef Info
+                    Expanded(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CommonImage(imageSrc: AppIcons.location),
                           CommonText(
-                            text: "2km",
+                            text: chef.name ?? 'Unknown',
                             fontSize: 12,
-                            color: Color(0xff777777),
-                            left: 4,
-                            right: 8,
+                            color: Color(0xff272727),
+                            fontWeight: FontWeight.w500,
+                            top: 8,
+                            bottom: 4,
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              // Distance
+                              CommonImage(imageSrc: AppIcons.location),
+                              CommonText(
+                                text: chef.distance ?? 'N/A',
+                                fontSize: 12,
+                                color: Color(0xff777777),
+                                left: 4,
+                                right: 8,
+                              ),
 
-                          Container(
-                            height: 8.h,
-                            width: 1,
-                            color: Color(0xffF1F1F1),
-                            margin: EdgeInsets.only(right: 8),
-                          ).center,
+                              // Divider
+                              Container(
+                                height: 8.h,
+                                width: 1,
+                                color: Color(0xffF1F1F1),
+                                margin: EdgeInsets.only(right: 8),
+                              ).center,
 
-                          CommonImage(imageSrc: AppIcons.briefcase),
-                          CommonText(
-                            text: "4 years Experience",
-                            fontSize: 12,
-                            left: 4,
-                            color: Color(0xff777777),
+                              // Experience
+                              CommonImage(imageSrc: AppIcons.briefcase),
+                              CommonText(
+                                text: "${chef.experience ?? 0} years Experience",
+                                fontSize: 12,
+                                left: 4,
+                                color: Color(0xff777777),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
+                    ),
 
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                  color: Color(0xff777777),
+                    // Arrow Icon
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 16,
+                      color: Color(0xff777777),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
-      ),
+              ),
+            );
+          },
+        ),
     ],
   );
 }

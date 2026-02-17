@@ -13,6 +13,7 @@ class CommonTextField extends StatelessWidget {
     this.prefixIcon,
     this.isPassword = false,
     this.controller,
+    this.focusNode,
     this.textInputAction = TextInputAction.done,
     this.keyboardType = TextInputType.text,
     this.mexLength,
@@ -29,6 +30,7 @@ class CommonTextField extends StatelessWidget {
     this.textColor = AppColors.black,
     this.borderColor = AppColors.transparent,
     this.onSubmitted,
+    this.onFieldSubmitted,
     this.onChanged,
     this.onTap,
     this.isDense,
@@ -56,9 +58,11 @@ class CommonTextField extends StatelessWidget {
   final double fontSize;
   RxBool obscureText = false.obs;
   final Function(String)? onSubmitted;
+  final Function(String)? onFieldSubmitted;
   final Function(String)? onChanged;
   final VoidCallback? onTap;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
   final TextInputAction textInputAction;
   final FormFieldValidator? validator;
   final TextInputType keyboardType;
@@ -67,10 +71,11 @@ class CommonTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => TextFormField(
+          () => TextFormField(
         autovalidateMode: AutovalidateMode.onUnfocus,
         keyboardType: keyboardType,
         controller: controller,
+        focusNode: focusNode,
         obscureText: isPassword ? !obscureText.value : obscureText.value,
         textInputAction: textInputAction,
 
@@ -78,7 +83,7 @@ class CommonTextField extends StatelessWidget {
         onChanged: onChanged,
         inputFormatters: inputFormatters,
         style: TextStyle(fontSize: fontSize, color: textColor),
-        onFieldSubmitted: onSubmitted,
+        onFieldSubmitted: onFieldSubmitted ?? onSubmitted,
         onTap: onTap,
         validator: validator,
         maxLines: isPassword ? 1 : maxLines,
@@ -86,7 +91,7 @@ class CommonTextField extends StatelessWidget {
         textAlignVertical: TextAlignVertical.center,
 
         cursorColor:
-            keyboardType == TextInputType.none ? Colors.transparent : textColor,
+        keyboardType == TextInputType.none ? Colors.transparent : textColor,
         decoration: InputDecoration(
           errorMaxLines: 2,
 
@@ -136,7 +141,7 @@ class CommonTextField extends StatelessWidget {
       child: Padding(
         padding: EdgeInsetsDirectional.only(end: 10.w),
         child: Obx(
-          () => Icon(
+              () => Icon(
             obscureText.value
                 ? Icons.visibility_off_outlined
                 : Icons.visibility_outlined,
