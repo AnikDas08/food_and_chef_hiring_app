@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide SearchController;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
+import '../controller/search_controller.dart';
 import 'chef_item.dart';
 
 List _list = ["Recommended", "Rating", "Price", "Next Available"];
@@ -19,103 +21,122 @@ class SearchItem extends StatefulWidget {
 class _SearchItemState extends State<SearchItem> {
   String selectedValue = _list[0];
 
-  bool isLoading = false;
-
-  onChangeValue(value) async {
-    isLoading = true;
-    setState(() {});
-    selectedValue = value;
-    await Future.delayed(Duration(seconds: 1));
-
-    isLoading = false;
-    setState(() {});
+  void onChangeValue(String value) {
+    setState(() => selectedValue = value);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CommonText(
-          text: AppString.sortBy,
-          top: 24,
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          color: Color(0xff272727),
-          bottom: 12,
-        ).start,
-        SizedBox(
-          height: 36.h,
-          child: ListView.builder(
-            itemCount: _list.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              String value = _list[index];
-              return InkWell(
-                onTap: () => onChangeValue(value),
-                child: Container(
-                  margin: EdgeInsets.only(right: 8.w),
-                  decoration: BoxDecoration(
-                    color:
-                        value == selectedValue
+    // ✅ No API call here — controller already has the right data
+    // (nearbyChefsList is populated by getNearbyChefs OR getNearbyChefsByTerm)
+    return GetBuilder<SearchController>(
+      builder: (controller) {
+        final chefs = controller.nearbyChefsList;
+        final isLoading =
+            controller.isLoadingLocation || controller.isLoadingChefs;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Sort by label
+            CommonText(
+              text: AppString.sortBy,
+              top: 24,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff272727),
+              bottom: 12,
+            ).start,
+
+            // Sort filter chips
+            SizedBox(
+              height: 36.h,
+              child: ListView.builder(
+                itemCount: _list.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  final String value = _list[index];
+                  return InkWell(
+                    onTap: () => onChangeValue(value),
+                    child: Container(
+                      margin: EdgeInsets.only(right: 8.w),
+                      decoration: BoxDecoration(
+                        color: value == selectedValue
                             ? Color(0xff272727)
                             : Color(0xffF2F2F2),
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 10.h,
-                    ),
-                    child: CommonText(
-                      text: value,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color:
-                          value == selectedValue
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 10.h,
+                        ),
+                        child: CommonText(
+                          text: value,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: value == selectedValue
                               ? Colors.white
                               : Color(0xff272727),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ).center;
-            },
-          ),
-        ),
+                  ).center;
+                },
+              ),
+            ),
 
-        CommonText(
-          text: AppString.relatedResult,
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          color: Color(0xff272727),
-          top: 20,
-        ).start,
-        CommonText(
-          text: AppString.showing28RelatedResults,
-          fontSize: 12,
-          color: Color(0xff777777),
-          fontWeight: FontWeight.w400,
-          top: 2,
-          bottom: 16,
-        ).start,
+            // Related results label
+            CommonText(
+              text: AppString.relatedResult,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff272727),
+              top: 20,
+            ).start,
+            CommonText(
+              text: "Showing ${chefs.length} related results",
+              fontSize: 12,
+              color: Color(0xff777777),
+              fontWeight: FontWeight.w400,
+              top: 2,
+              bottom: 16,
+            ).start,
 
-        Expanded(
-          child:
-              isLoading
+            // Grid
+            Expanded(
+              child: isLoading
                   ? CommonLoader()
+                  : chefs.isEmpty
+                  ? Center(
+                child: CommonText(
+                  text: "No chefs found nearby",
+                  fontSize: 14,
+                  color: Color(0xff777777),
+                  fontWeight: FontWeight.w400,
+                ),
+              )
                   : GridView.builder(
-                    itemCount: 20,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisExtent: 250.h,
-                      mainAxisSpacing: 10.h,
-                    ),
-                    itemBuilder: (context, index) {
-                      //return chefItem(height: 140.h, isSearch: true);
-                    },
-                  ),
-        ),
-      ],
+                itemCount: chefs.length,
+                gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisExtent: 250.h,
+                  mainAxisSpacing: 10.h,
+                  crossAxisSpacing: 10.w,
+                ),
+                itemBuilder: (context, index) {
+                  return chefItem(
+                    height: 140.h,
+                    isSearch: true,
+                    chef: chefs[index],
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

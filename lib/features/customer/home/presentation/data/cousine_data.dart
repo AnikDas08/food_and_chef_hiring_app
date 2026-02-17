@@ -1,3 +1,5 @@
+import '../../../../../utils/constants/app_images.dart';
+
 class CuisineModel {
   final bool? success;
   final int? statusCode;
@@ -47,7 +49,7 @@ class CuisineData {
     return CuisineData(
       id: json["_id"],
       name: json["name"],
-      image: json["image"],
+      image: json["image"]??AppImages.noImage,
     );
   }
 

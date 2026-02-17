@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../config/api/api_end_point.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_string.dart';
+import '../../../chef_details/presentation/screen/chef_details_screen.dart';
+import '../data/chef_model.dart';
 import '../data/search_chef_mofel.dart';
 
 Widget searchResult(List<ChefData> chefs) {
@@ -54,8 +59,8 @@ Widget searchResult(List<ChefData> chefs) {
               padding: EdgeInsets.only(bottom: 24.h),
               child: InkWell(
                 onTap: () {
-                  // Navigate to chef details
-                  // Navigator.push(context, MaterialPageRoute(builder: (_) => ChefDetailsScreen(chefId: chef.id)));
+                  //Navigate to chef details
+                  Get.toNamed(AppRoutes.chefDetails, arguments: chef);
                 },
                 child: Row(
                   children: [
@@ -63,7 +68,7 @@ Widget searchResult(List<ChefData> chefs) {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8.r),
                       child: CommonImage(
-                        imageSrc: chef.image ?? '',
+                        imageSrc: ApiEndPoint.imageUrl+chef.image! ?? '',
                         size: 42,
                       ),
                     ),

@@ -1,6 +1,6 @@
 class ApiEndPoint {
   static const baseUrl = "http://10.10.7.9:5014/api/v1/";
-  static const imageUrl = "http://10.10.7.9:5014";
+  static const imageUrl = "http://10.10.7.9:5014/files";
   static const socketUrl = "http://10.10.7.9:5014";
 
   static const signUp = "user";

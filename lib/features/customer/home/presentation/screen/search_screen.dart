@@ -12,6 +12,7 @@ import '../widgets/search_result.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
+
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
@@ -37,6 +38,11 @@ class _SearchScreenState extends State<SearchScreen> {
               controller: _controller.searchController,
               focusNode: _focusNode,
               onChanged: _controller.onSearchChanged,
+              // On submit → switch to SearchItem grid with search-term results
+              onSubmitted: (value) {
+                _controller.onSearchSubmitted(value);
+                _focusNode.unfocus();
+              },
               decoration: InputDecoration(
                 hintText: "Search chefs...",
                 prefixIcon: IconButton(
@@ -56,15 +62,22 @@ class _SearchScreenState extends State<SearchScreen> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        // Use a single ListView to avoid the 'Failed assertion' scroll errors
-        return ListView(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-          children: [
-            if (_controller.hasSearched.value)
-              searchResult(_controller.searchResults) // This now returns a Widget
-            else
-              const SearchItem(), // Recent searches or suggestions
-          ],
+        final bool isTyping = _controller.searchText.value.isNotEmpty;
+        final bool isSubmitted = _controller.isSubmitted.value;
+
+        // Typing but NOT yet submitted → show live search results
+        if (isTyping && !isSubmitted) {
+          return ListView(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+            children: [
+              searchResult(_controller.searchResults),
+            ],
+          );
+        }
+
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: const SearchItem(),
         );
       }),
     );
@@ -74,26 +87,23 @@ class _SearchScreenState extends State<SearchScreen> {
     return Obx(() => Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Clear button: shows only when there is text
         if (_controller.searchText.value.isNotEmpty)
           IconButton(
             visualDensity: VisualDensity.compact,
             icon: const Icon(
-                Icons.clear,
-                size: 20,
-                color: Color(0xff636363)
+              Icons.clear,
+              size: 20,
+              color: Color(0xff636363),
             ),
             onPressed: () {
               _controller.clearSearch();
-              _focusNode.requestFocus(); // Keep focus after clearing
+              _focusNode.requestFocus();
             },
           ),
-
-        // Filter button: using your CommonImage component
         IconButton(
           visualDensity: VisualDensity.compact,
           onPressed: () {
-            _focusNode.unfocus(); // Close keyboard before opening filter
+            _focusNode.unfocus();
             filterPanel();
           },
           icon: CommonImage(
@@ -101,8 +111,6 @@ class _SearchScreenState extends State<SearchScreen> {
             imageColor: const Color(0xff636363),
           ),
         ),
-
-        // Right padding to keep icons away from the edge
         SizedBox(width: 8.w),
       ],
     ));
