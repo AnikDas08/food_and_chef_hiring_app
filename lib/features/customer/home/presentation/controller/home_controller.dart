@@ -153,7 +153,7 @@ class HomeController extends GetxController {
 
     try {
       final response = await ApiService.get(
-        "user/nearby-chefs?lat=23.746445&lng=90.376013",
+        "user/nearby-chefs?lat=$currentLat&lng=$currentLng",
       );
 
       if (response.statusCode == 200) {
