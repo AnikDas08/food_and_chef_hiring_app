@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:intl_phone_field/countries.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import '../../../utils/constants/app_colors.dart';
 import '../../../utils/constants/app_string.dart';
 
 class CommonPhoneNumberTextFiled extends StatelessWidget {
   const CommonPhoneNumberTextFiled({
     super.key,
+    this.onChanged,
     required this.controller,
     required this.countryChange,
   });
 
   final TextEditingController controller;
+  final Function(PhoneNumber phone)? onChanged;
   final Function(Country value) countryChange;
 
   @override
@@ -21,6 +24,11 @@ class CommonPhoneNumberTextFiled extends StatelessWidget {
       controller: controller,
       onCountryChanged: countryChange,
       dropdownTextStyle: TextStyle(color: AppColors.black, fontSize: 14),
+      onChanged: (phone) {
+      print(phone.number);        // 1712345678
+      print(phone.countryCode);   // +880
+      print(phone.completeNumber); // +8801712345678  ⭐ BEST
+    },
 
       style: TextStyle(color: AppColors.black, fontSize: 14),
       pickerDialogStyle: PickerDialogStyle(backgroundColor: Color(0xffF2F2F2)),

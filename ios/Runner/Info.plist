@@ -13,6 +13,15 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>We need your location to show nearby services</string>
+
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>We need your location to provide continuous location updates</string>
+
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>We need your location to provide full functionality</string>
+
 	<string>new_untitled</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>

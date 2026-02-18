@@ -142,7 +142,8 @@ class AppString {
   static const String signInSuccessfullyMessage =
       "Sign in successful! You’re all set to explore Privae and manage your bookings or chef services. Let’s go!";
   static const String takingYouToYourHomepage = "Taking you to your Homepage";
-  static const String registerAccount = "Register Account";
+  static const String registerAccount = "Register Account with Customer";
+  static const String registerAccountchef = "Register Account with Chef";
   static const String register = "Register";
   static const String registerAccountMessage =
       "Sign up to Privae account to book chefs or manage your cooking gigs. Enter your details to get started!";

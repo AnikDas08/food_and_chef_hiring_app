@@ -115,7 +115,9 @@ class ReviewDetailScreen extends StatelessWidget {
                   // ),
                   CommonPhoneNumberTextFiled(
                     controller: controller.numberController,
-                    countryChange: (value) {},
+                    countryChange: (value) {
+                      controller.countryCode = value.dialCode;
+                    },
                   ),
                   CommonText(
                     text: AppString.detailedAddress,
@@ -186,8 +188,9 @@ class ReviewDetailScreen extends StatelessWidget {
           child: CommonButton(
             titleText: AppString.createAccount,
             onTap: () {
+              final controller = Get.find<SignUpController>();
               if (_formKey.currentState!.validate()) {
-                accountCreatePopup();
+                controller.completeProfile();
               } else {
                 Utils.errorSnackBar("Error", "Please, Full fill all Field");
               }

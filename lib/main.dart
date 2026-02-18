@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-import 'package:new_untitled/utils/log/error_log.dart';
 
 import 'app.dart';
 import 'config/dependency/dependency_injection.dart';
@@ -16,7 +15,7 @@ Future<void> main() async {
     const SystemUiOverlayStyle(
       statusBarColor: Colors.red,
       statusBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
     ),
   );
   await init.tryCatch();
@@ -24,21 +23,17 @@ Future<void> main() async {
 }
 
 init() async {
-  try {
-    DependencyInjection dI = DependencyInjection();
-    dI.dependencies();
-    SocketServices.connectToSocket();
+  DependencyInjection dI = DependencyInjection();
+  dI.dependencies();
+  SocketServices.connectToSocket();
 
-    await Future.wait([
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]),
-      LocalStorage.getAllPrefData(),
-      NotificationService.initLocalNotification(),
-      dotenv.load(fileName: ".env"),
-    ]);
-  } catch (e) {
-    errorLog(e);
-  }
+  await Future.wait([
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]),
+    LocalStorage.getAllPrefData(),
+    NotificationService.initLocalNotification(),
+    dotenv.load(fileName: ".env"),
+  ]);
 }

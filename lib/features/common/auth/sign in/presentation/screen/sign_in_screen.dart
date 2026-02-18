@@ -137,7 +137,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       20.height,
                       CommonButton(
                         titleText: "Sign as Chef",
-                        isLoading: controller.isLoading,
+                        isLoading: controller.isLoadingChef,
                         onTap: () {
                           LocalStorage.myRole = "chef";
                           Get.toNamed(AppRoutes.chefHomeScreen);

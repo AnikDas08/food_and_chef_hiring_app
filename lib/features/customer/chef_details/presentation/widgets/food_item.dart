@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_images.dart';
+import '../../data/mamu_model.dart';
+import '../controller/chef_detail_controller.dart';
 import 'item_details.dart';
 
 class FoodItem extends StatefulWidget {
-  const FoodItem({super.key});
+  final MenuData item;
+
+  const FoodItem({super.key, required this.item});
 
   @override
   State<FoodItem> createState() => _FoodItemState();
 }
 
-class _FoodItemState extends State<FoodItem> with SingleTickerProviderStateMixin {
-
+class _FoodItemState extends State<FoodItem>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
   @override
@@ -27,11 +33,34 @@ class _FoodItemState extends State<FoodItem> with SingleTickerProviderStateMixin
       duration: const Duration(milliseconds: 400),
     );
   }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  String _buildImageUrl(String path) {
+    if (path.startsWith('http')) return path;
+    return ApiEndPoint.imageUrl + path;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final MenuData item = widget.item;
+    final String? firstImage =
+    (item.images != null && item.images!.isNotEmpty)
+        ? item.images!.first
+        : null;
+
+    // kitchen status badge
+    final bool kitchenReady =
+        item.kitchenStatus?.toLowerCase() == "ready" ||
+            item.kitchenStatus == null;
+
     return InkWell(
       onTap: () {
-        itemDetails(context, _controller);
+        itemDetails(context, _controller, item);
       },
       child: Container(
         padding: EdgeInsets.all(8),
@@ -46,17 +75,21 @@ class _FoodItemState extends State<FoodItem> with SingleTickerProviderStateMixin
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                // ── Text info ────────────────────────────────────────────
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      // Name
                       CommonText(
-                        text: "Quesadilla",
+                        text: item.name ?? "N/A",
                         color: Color(0xff272727),
                         fontWeight: FontWeight.w600,
                       ),
                       4.height,
+
+                      // Ingredients count
                       Row(
                         children: [
                           CommonImage(
@@ -72,7 +105,8 @@ class _FoodItemState extends State<FoodItem> with SingleTickerProviderStateMixin
                             fontWeight: FontWeight.w400,
                           ),
                           CommonText(
-                            text: "10 items",
+                            text:
+                            "${item.ingredients?.length ?? 0} items",
                             fontSize: 12,
                             color: Color(0xff272727),
                             fontWeight: FontWeight.w400,
@@ -80,6 +114,8 @@ class _FoodItemState extends State<FoodItem> with SingleTickerProviderStateMixin
                         ],
                       ),
                       4.height,
+
+                      // Cooking time
                       Row(
                         children: [
                           CommonImage(
@@ -95,7 +131,7 @@ class _FoodItemState extends State<FoodItem> with SingleTickerProviderStateMixin
                             fontWeight: FontWeight.w400,
                           ),
                           CommonText(
-                            text: "40 minutes",
+                            text: item.estCookingTime ?? "N/A",
                             fontSize: 12,
                             color: Color(0xff272727),
                             fontWeight: FontWeight.w400,
@@ -104,16 +140,27 @@ class _FoodItemState extends State<FoodItem> with SingleTickerProviderStateMixin
                       ),
 
                       28.height,
+
+                      // Kitchen status badge
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 6),
                         decoration: BoxDecoration(
-                          color: Color(0xffDBEBD9),
+                          color: kitchenReady
+                              ? Color(0xffDBEBD9)
+                              : Color(0xffFFF0E0),
                           borderRadius: BorderRadius.circular(30),
-                          border: Border.all(color: Color(0xffC2E2BE)),
+                          border: Border.all(
+                            color: kitchenReady
+                                ? Color(0xffC2E2BE)
+                                : Color(0xffFFD4A0),
+                          ),
                         ),
                         child: CommonText(
-                          text: "Your Kitchen is Ready",
-                          color: Color(0xff2F8328),
+                          text: item.kitchenStatus ?? "Your Kitchen is Ready",
+                          color: kitchenReady
+                              ? Color(0xff2F8328)
+                              : Color(0xffC17A00),
                           fontWeight: FontWeight.w600,
                           fontSize: 12,
                         ),
@@ -122,10 +169,14 @@ class _FoodItemState extends State<FoodItem> with SingleTickerProviderStateMixin
                   ),
                 ),
 
+                // ── Food image ────────────────────────────────────────────
                 CommonImage(
-                  imageSrc: AppImages.image6,
+                  imageSrc: firstImage != null
+                      ? _buildImageUrl(firstImage)
+                      : AppImages.image6,
                   size: 120,
                   borderRadius: 8,
+                  fill: BoxFit.cover,
                 ),
               ],
             ),

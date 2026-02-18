@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:new_untitled/config/route/app_routes.dart';
 import '../../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -8,15 +7,16 @@ import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/image/common_image.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../component/text_field/common_text_field.dart';
+import '../../../../../../config/route/app_routes.dart';
 import '../../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/helpers/other_helper.dart';
 import '../controller/sign_up_controller.dart';
 import '../../../../../../../utils/constants/app_string.dart';
 
-class SignUpScreen extends StatelessWidget {
-  SignUpScreen({super.key});
+class SignupChefScreen extends StatelessWidget {
+  SignupChefScreen({super.key});
 
-  final _formKey = GlobalKey<FormState>();
+  final _formKeys = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +30,13 @@ class SignUpScreen extends StatelessWidget {
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Form(
-              key: _formKey,
+              key: _formKeys,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
-                    text: AppString.registerAccount,
+                    text: AppString.registerAccountchef,
                     fontSize: 24,
                     color: Color(0xff272727),
                     top: 10,
@@ -72,8 +72,8 @@ class SignUpScreen extends StatelessWidget {
                     titleText: AppString.signUp,
                     isLoading: controller.isLoading,
                     onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        controller.signUpUser("CUSTOMER");
+                      if (_formKeys.currentState!.validate()) {
+                        controller.signUpUser("CHEF");
                       }
                     },
                   ),
@@ -134,38 +134,37 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
 
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 32),
-                  child: RichText(
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
-                    text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff777777),
-                      ),
-                      children: [
-                        TextSpan(text: "Sign up to Privae as a "),
-                        TextSpan(
-                          text: "Chef",
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 32),
+                      child: RichText(
+                        textAlign: TextAlign.start,
+                        maxLines: 2,
+                        text: TextSpan(
                           style: TextStyle(
-                            fontWeight: FontWeight.w600, // different style
-                            color: Color(0xff000000),     // change color যদি চাও
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff777777),
                           ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Get.offNamed(AppRoutes.signUpChef);
-                            },
+                          children: [
+                            TextSpan(text: "Sign up to Privae as a "),
+                            TextSpan(
+                              text: "Customer",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600, // different style
+                                color: Color(0xff000000),     // change color যদি চাও
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Get.offNamed(AppRoutes.signUp);
+                                },
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              )
-
-              ],
+                  )
+                ],
               ),
             ),
           );

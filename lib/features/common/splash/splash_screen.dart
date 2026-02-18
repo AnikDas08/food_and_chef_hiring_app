@@ -4,6 +4,7 @@ import '../../../../config/route/app_routes.dart';
 import 'package:get/get.dart';
 
 import '../../../component/image/common_image.dart';
+import '../../../services/storage/storage_services.dart';
 import '../../../utils/constants/app_images.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,14 +18,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 3), () {
-      // if (LocalStorage.isLogIn) {
-      //   if (LocalStorage.myRole == 'consultant') {
-      //     Get.offAllNamed(AppRoutes.doctorHome);
-      //   } else {
-      //     Get.offAllNamed(AppRoutes.patientsHome);
-      //   }
-      // } else {
-      Get.offAllNamed(AppRoutes.onboarding);
+      if (LocalStorage.isLogIn&&LocalStorage.token!="") {
+        if (LocalStorage.myRole == 'CUSTOMER') {
+          Get.offAllNamed(AppRoutes.customerHomeScreen);
+        } else {
+          Get.offAllNamed(AppRoutes.chefHomeScreen);
+        }
+      }
+      else{
+        Get.offAllNamed(AppRoutes.onboarding);
+      }
     });
     super.initState();
   }
