@@ -29,7 +29,7 @@ class SignInController extends GetxController {
   /// Sign in Api call here
 
   Future<void> signInUser() async {
-    if (!formKey.currentState!.validate()) return;
+    //if (!formKey.currentState!.validate()) return;
 
     isLoading = true;
     update();
@@ -82,6 +82,70 @@ class SignInController extends GetxController {
       emailController.clear();
       passwordController.clear();
       Get.offAllNamed(AppRoutes.customerHomeScreen);
+    } else {
+      Get.snackbar(response.statusCode.toString(), response.message);
+      isLoading=false;
+      update();
+    }
+
+    isLoading = false;
+    update();
+  }
+
+  Future<void> signInChef() async {
+    if (!formKey.currentState!.validate()) return;
+
+    isLoading = true;
+    update();
+
+    Map<String, String> body = {
+      "email": emailController.text,
+      "password": passwordController.text,
+    };
+
+    var response = await ApiService.post(
+      ApiEndPoint.signIn,
+      body: body,
+    ).timeout(const Duration(seconds: 30));
+
+    if (response.statusCode == 200) {
+      var data = response.data;
+      isLoading = true;
+      update();
+      if(response.data["data"]["onboarding"]==false){
+        Get.toNamed(AppRoutes.createSignUpPassword);
+        await Utils.errorSnackBar("Complete Profile", "First Complete your all details");
+        return;
+      }
+
+      LocalStorage.token = data['data']["accessToken"];
+      //LocalStorage.userId = data['data']["attributes"]["_id"];
+      //LocalStorage.myImage = data['data']["attributes"]["image"];
+      LocalStorage.myRole = data["data"]["role"];
+      //LocalStorage.myName = data['data']["attributes"]["fullName"];
+
+      //LocalStorage.myEmail = data['data']["attributes"]["email"];
+      LocalStorage.isLogIn = true;
+
+
+
+      await LocalStorage.setBool(LocalStorageKeys.isLogIn, LocalStorage.isLogIn);
+      await LocalStorage.setString(LocalStorageKeys.token, LocalStorage.token);
+      await LocalStorage.setString(LocalStorageKeys.myRole, LocalStorage.myRole);
+      //LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
+      //LocalStorage.setString(LocalStorageKeys.myImage, LocalStorage.myImage);
+      //LocalStorage.setString(LocalStorageKeys.myName, LocalStorage.myName);
+      //LocalStorage.setString(LocalStorageKeys.myEmail, LocalStorage.myEmail);
+
+      // if (LocalStorage.myRole == 'consultant') {
+      //   Get.offAllNamed(AppRoutes.doctorHome);
+      // } else {
+      //   Get.offAllNamed(AppRoutes.patientsHome);
+      // }
+
+      emailController.clear();
+      passwordController.clear();
+      Get.toNamed(AppRoutes.chefHomeScreen);
     } else {
       Get.snackbar(response.statusCode.toString(), response.message);
       isLoading=false;

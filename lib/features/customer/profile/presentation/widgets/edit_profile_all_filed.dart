@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
-import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_phone_number_text_filed.dart';
 import '../../../../../component/text_field/common_text_field.dart';
+import '../../../../../utils/extensions/extension.dart';
 import '../controller/profile_controller.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../../../../../utils/helpers/other_helper.dart';
@@ -21,7 +21,7 @@ class EditProfileAllFiled extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        /// User Full Name here
+        /// --- Full Name ---
         const CommonText(
           text: AppString.fullName,
           fontWeight: FontWeight.w600,
@@ -35,19 +35,7 @@ class EditProfileAllFiled extends StatelessWidget {
           keyboardType: TextInputType.text,
         ),
 
-        const CommonText(
-          text: AppString.email,
-          fontWeight: FontWeight.w600,
-          top: 20,
-          bottom: 8,
-        ),
-        CommonTextField(
-          validator: OtherHelper.validator,
-          hintText: AppString.email,
-          keyboardType: TextInputType.emailAddress,
-        ),
-
-        /// User Phone number here
+        /// --- Phone Number with International Formatting ---
         const CommonText(
           text: AppString.phoneNumber,
           fontWeight: FontWeight.w600,
@@ -56,66 +44,88 @@ class EditProfileAllFiled extends StatelessWidget {
         ),
         CommonPhoneNumberTextFiled(
           controller: controller.numberController,
+          initialCountryCode: controller.savedCountryIsoCode, // ✅ Use ISO directly
+          onChanged: (phone) {
+            controller.onPhoneChanged(phone);
+          },
           countryChange: (value) {},
         ),
+
+        /// --- Dynamic Link Account List ---
         CommonText(
           text: "Link Account".toUpperCase(),
           fontWeight: FontWeight.w500,
           fontSize: 12,
-          color: Color(0xff777777),
+          color: const Color(0xff777777),
           top: 28,
           bottom: 8,
         ),
-
         12.height,
 
-        Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Color(0xffF9F9F9),
-                shape: BoxShape.circle,
-              ),
-              child: CommonImage(imageSrc: AppIcons.google),
-            ),
-            12.width,
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        if (controller.linkAccounts.isEmpty)
+          const CommonText(text: "No linked accounts found", fontSize: 12, color: Colors.grey)
+        else
+          ...controller.linkAccounts.map((account) {
+            String type = account['type'] ?? "social";
+            return Padding(
+              padding: EdgeInsets.only(bottom: 16.h),
+              child: Row(
                 children: [
-                  CommonText(
-                    text: "Google",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: const BoxDecoration(
+                      color: Color(0xffF9F9F9),
+                      shape: BoxShape.circle,
+                    ),
+                    child: CommonImage(
+                      imageSrc: type == 'google' ? AppIcons.google : AppIcons.google,
+                      width: 24.sp,
+                      height: 24.sp,
+                    ),
                   ),
-                  CommonText(
-                    text: "darremonarch@gmail.com",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff777777),
-                    top: 2,
+                  12.width,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CommonText(
+                          text: "${type[0].toUpperCase()}${type.substring(1).toLowerCase()}",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff272727),
+                        ),
+                        CommonText(
+                          text: account['email'] ?? "",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: const Color(0xff777777),
+                          top: 2,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /// Disconnect Button
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: const Color(0xffF2F2F2),
+                    ),
+                    child: const CommonText(
+                      text: "Disconnect",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff272727),
+                    ),
                   ),
                 ],
               ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Color(0xffF2F2F2),
-              ),
-              child: CommonText(
-                text: "Disconnect",
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff272727),
-              ),
-            ),
-          ],
-        ),
-        CommonText(
+            );
+          }).toList(),
+
+        /// --- Account Actions ---
+        const CommonText(
           text: "ACCOUNT ACTION",
           fontWeight: FontWeight.w500,
           fontSize: 12,
@@ -124,25 +134,31 @@ class EditProfileAllFiled extends StatelessWidget {
           bottom: 16,
         ),
 
-        Container(
-          height: 60.h,
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-          decoration: BoxDecoration(
-            color: Color(0xffF2F2F2),
-            borderRadius: BorderRadius.circular(20.r),
-          ),
-          child: Row(
-            children: [
-              Icon(CupertinoIcons.trash, color: Color(0xffFF3C3C)),
-              CommonText(
-                text: AppString.deleteAccount,
-                color: Color(0xffFF3C3C),
-                fontWeight: FontWeight.w600,
-                left: 4,
-              ),
-              const Spacer(),
-              Icon(Icons.arrow_forward_ios_outlined, size: 16.sp),
-            ],
+        /// Delete Account Row
+        InkWell(
+          onTap: () {
+            // Confirm delete dialog
+          },
+          child: Container(
+            height: 60.h,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            decoration: BoxDecoration(
+              color: const Color(0xffF2F2F2),
+              borderRadius: BorderRadius.circular(20.r),
+            ),
+            child: Row(
+              children: [
+                const Icon(CupertinoIcons.trash, color: Color(0xffFF3C3C)),
+                const CommonText(
+                  text: AppString.deleteAccount,
+                  color: Color(0xffFF3C3C),
+                  fontWeight: FontWeight.w600,
+                  left: 4,
+                ),
+                const Spacer(),
+                Icon(Icons.arrow_forward_ios_outlined, size: 16.sp),
+              ],
+            ),
           ),
         ),
       ],

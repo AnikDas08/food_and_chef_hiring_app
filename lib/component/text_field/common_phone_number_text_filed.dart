@@ -12,11 +12,13 @@ class CommonPhoneNumberTextFiled extends StatelessWidget {
     this.onChanged,
     required this.controller,
     required this.countryChange,
+    this.initialCountryCode = "BD",
   });
 
   final TextEditingController controller;
   final Function(PhoneNumber phone)? onChanged;
   final Function(Country value) countryChange;
+  final String initialCountryCode;
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +27,12 @@ class CommonPhoneNumberTextFiled extends StatelessWidget {
       onCountryChanged: countryChange,
       dropdownTextStyle: TextStyle(color: AppColors.black, fontSize: 14),
       onChanged: (phone) {
-      print(phone.number);        // 1712345678
-      print(phone.countryCode);   // +880
-      print(phone.completeNumber); // +8801712345678  ⭐ BEST
-    },
-
+        onChanged?.call(phone); // ✅ Forward to controller
+      },
       style: TextStyle(color: AppColors.black, fontSize: 14),
       pickerDialogStyle: PickerDialogStyle(backgroundColor: Color(0xffF2F2F2)),
       decoration: const InputDecoration(
         hintText: AppString.phoneNumber,
-
         hintStyle: TextStyle(color: AppColors.textFiledColor, fontSize: 14),
         labelStyle: TextStyle(color: AppColors.textFiledColor, fontSize: 14),
         fillColor: Color(0xffF2F2F2),
@@ -65,7 +63,7 @@ class CommonPhoneNumberTextFiled extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
       ),
-      initialCountryCode: "BD",
+      initialCountryCode: initialCountryCode, // ✅ Dynamic ISO code
       disableLengthCheck: true,
     );
   }

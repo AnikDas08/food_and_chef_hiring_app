@@ -224,7 +224,7 @@ class SignUpController extends GetxController {
         "password":passwordController.text,
         "lat":"23.777176",
         "lng":"90.399452",
-        "contact":"$countryCode${numberController.text}"
+        "contact":"$countryCode ${numberController.text}"
       };
       for (int i = 0; i < selectDietary.length; i++) {
         body["foods[$i]"] = selectDietary[i];

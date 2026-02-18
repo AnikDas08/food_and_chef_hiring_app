@@ -31,22 +31,27 @@ class SearchController extends GetxController {
   CuisineData? cuisineData;
   List<ChefData> nearbyChefsList = [];
 
+  /// Currently active sort/filter label (matches the chip label in SearchItem)
+  String selectedSortLabel = "Recommended";
+
   Timer? _debounce;
+
+  /// Maps chip label → query param string (appended to the base URL)
+  static const Map<String, String> _sortParamMap = {
+    "Recommended": "",
+    "Rating": "sort=rating",
+    "Price": "sort=price",
+    "Next Available": "availability=next_week",
+  };
 
   @override
   void onInit() {
     super.onInit();
-    // ✅ On init: load nearby chefs by location
     if (Get.arguments != null && Get.arguments is CuisineData) {
       cuisineData = Get.arguments as CuisineData;
-
-      // 2. Set the UI text so the user knows what they clicked
       searchController.text = cuisineData?.name ?? "";
-
-      // 3. Fetch chefs using the ID
       getChefsByCuisineId(cuisineData!.id!);
     } else {
-      // Normal flow if no category was selected
       getCurrentLocationAndFetchChefs();
     }
 
@@ -56,16 +61,60 @@ class SearchController extends GetxController {
         hasSearched.value = false;
         isSubmitted.value = false;
         searchResults.clear();
-        // ✅ When cleared: reload location-based nearby chefs
         getCurrentLocationAndFetchChefs();
       }
     });
-    if (Get.arguments != null && Get.arguments is CuisineData) {
-      cuisineData = Get.arguments as CuisineData;
+  }
+
+  // ── Sort / filter ──────────────────────────────────────────────────────────
+
+  /// Called when user taps a sort chip. Resets to "Recommended" silently
+  /// if the label isn't in the map, then fetches with the right param.
+  Future<void> onSortChanged(String label) async {
+    if (selectedSortLabel == label) return; // no-op if already selected
+    selectedSortLabel = label;
+    update();
+    await _fetchWithCurrentFilter();
+  }
+
+  /// Builds the URL and calls the API with whatever sort/filter is active,
+  /// plus an optional search term (used when the user submitted a search).
+  Future<void> _fetchWithCurrentFilter({String? searchTerm}) async {
+    isLoadingChefs = true;
+    update();
+
+    try {
+      final String sortParam = _sortParamMap[selectedSortLabel] ?? "";
+      final List<String> params = [];
+      if (searchTerm != null && searchTerm.isNotEmpty) {
+        params.add("searchTerm=$searchTerm");
+      }
+      if (sortParam.isNotEmpty) {
+        params.add(sortParam);
+      }
+
+      final String query =
+      params.isNotEmpty ? "?${params.join('&')}" : "";
+      final String url = "user/search-chefs$query";
+
+      final response = await ApiService.get(url);
+
+      if (response.statusCode == 200) {
+        chefModel = ChefModel.fromJson(response.data);
+        nearbyChefsList = chefModel?.data ?? [];
+      } else {
+        Utils.errorSnackBar('Error', 'Failed to fetch chefs');
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+    } finally {
+      isLoadingChefs = false;
+      update();
     }
   }
 
-  // ✅ Typing → live searchResults list (shown in searchResult widget)
+  // ── Search ─────────────────────────────────────────────────────────────────
+
   void onSearchChanged(String value) {
     isSubmitted.value = false;
     if (_debounce?.isActive ?? false) _debounce!.cancel();
@@ -76,7 +125,6 @@ class SearchController extends GetxController {
     });
   }
 
-  // ✅ Enter → populate nearbyChefsList from search term (shown in SearchItem grid)
   void onSearchSubmitted(String value) {
     if (value.trim().isEmpty) return;
     _debounce?.cancel();
@@ -84,7 +132,6 @@ class SearchController extends GetxController {
     getNearbyChefsByTerm(value.trim());
   }
 
-  // Live typing search — fills searchResults (used by searchResult widget)
   Future<void> searchChefs(String searchTerm) async {
     try {
       isLoading.value = true;
@@ -95,8 +142,7 @@ class SearchController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        ChefModel searchResponse =
-        ChefModel.fromJson(response.data);
+        ChefModel searchResponse = ChefModel.fromJson(response.data);
         searchResults.assignAll(searchResponse.data ?? []);
         hasSearched.value = true;
       } else {
@@ -110,7 +156,8 @@ class SearchController extends GetxController {
     }
   }
 
-  // Initial load — location based
+  // ── Location ───────────────────────────────────────────────────────────────
+
   Future<void> getCurrentLocationAndFetchChefs() async {
     isLoadingLocation = true;
     update();
@@ -118,7 +165,8 @@ class SearchController extends GetxController {
     try {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        Utils.errorSnackBar('Location Error', 'Location services are disabled.');
+        Utils.errorSnackBar(
+            'Location Error', 'Location services are disabled.');
         isLoadingLocation = false;
         update();
         return;
@@ -128,7 +176,8 @@ class SearchController extends GetxController {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          Utils.errorSnackBar('Permission Denied', 'Location permission is required.');
+          Utils.errorSnackBar(
+              'Permission Denied', 'Location permission is required.');
           isLoadingLocation = false;
           update();
           return;
@@ -136,7 +185,8 @@ class SearchController extends GetxController {
       }
 
       if (permission == LocationPermission.deniedForever) {
-        Utils.errorSnackBar('Permission Denied', 'Enable location in settings.');
+        Utils.errorSnackBar(
+            'Permission Denied', 'Enable location in settings.');
         isLoadingLocation = false;
         update();
         return;
@@ -163,7 +213,6 @@ class SearchController extends GetxController {
     update();
 
     try {
-      // Using the ID in the query parameter (adjust key name based on your API)
       final response = await ApiService.get(
         "user/search-chefs?cusine=$cuisineId",
       );
@@ -182,61 +231,17 @@ class SearchController extends GetxController {
     }
   }
 
-  // Fills nearbyChefsList from lat/lng (initial state)
   Future<void> getNearbyChefs() async {
     if (currentLat == null || currentLng == null) return;
-
-    isLoadingChefs = true;
-    update();
-
-    try {
-      final response = await ApiService.get(
-        //"user/nearby-chefs?lat=$currentLat&lng=$currentLng",
-        "user/search-chefs",
-      );
-
-      if (response.statusCode == 200) {
-        chefModel = ChefModel.fromJson(response.data);
-        nearbyChefsList = chefModel?.data ?? [];
-      } else {
-        Utils.errorSnackBar('Error', 'Failed to fetch nearby chefs');
-      }
-    } catch (e) {
-      Utils.errorSnackBar('Error', e.toString());
-    } finally {
-      isLoadingChefs = false;
-      update();
-    }
+    await _fetchWithCurrentFilter();
   }
 
-  // ✅ Fills nearbyChefsList from search term (after enter)
-  // search-chefs returns the SAME JSON shape as nearby-chefs → use ChefModel.fromJson
   Future<void> getNearbyChefsByTerm(String searchTerm) async {
-    isLoadingChefs = true;
-    update();
-
-    try {
-      final response = await ApiService.get(
-        "user/search-chefs?searchTerm=$searchTerm",
-      );
-
-      if (response.statusCode == 200) {
-        chefModel = ChefModel.fromJson(response.data);
-        nearbyChefsList = chefModel?.data ?? [];
-      } else {
-        Utils.errorSnackBar('Error', 'Failed to fetch chefs');
-      }
-    } catch (e) {
-      Utils.errorSnackBar('Error', e.toString());
-    } finally {
-      isLoadingChefs = false;
-      update();
-    }
+    await _fetchWithCurrentFilter(searchTerm: searchTerm);
   }
 
   void clearSearch() {
     searchController.clear();
-    // listener above handles the rest
   }
 
   @override
