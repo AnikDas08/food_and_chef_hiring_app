@@ -291,7 +291,7 @@ class AppString {
   static const String total = "Total";
   static const String giveARating = "Give a Rating";
   static const String setupProfile = "Setup Profile";
-  static const String setUpYourProfile =
+  static const String external =
       "Set up your profile by adding your name, experience, and about yourself. This helps us personalize your HeyChef experience!";
   static const String setYourCookingArea = "Set Your Cooking Area";
   static const String whereCanYouTravelTo =

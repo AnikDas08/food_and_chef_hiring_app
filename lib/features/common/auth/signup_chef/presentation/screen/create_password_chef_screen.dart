@@ -91,7 +91,7 @@ class CreatePasswordChefScreen extends StatelessWidget {
                     isLoading: controller.isLoading,
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        Get.toNamed(AppRoutes.nameScreen);
+                        Get.toNamed(AppRoutes.chef_name_screen);
                       }
                     },
                   ),

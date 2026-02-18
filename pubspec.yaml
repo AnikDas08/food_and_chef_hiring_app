@@ -63,8 +63,10 @@ dependencies:
   table_calendar: ^3.2.0
   cupertino_native: ^0.1.1
   liquid_glass_renderer: ^0.2.0-dev.4
+  file_picker: ^8.0.0
 
-    
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

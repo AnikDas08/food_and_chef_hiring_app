@@ -115,7 +115,7 @@ class SignUpChefController extends GetxController {
   }
 
   signUpUser(String role) async {
-    //Get.toNamed(AppRoutes.verifyUser);
+    Get.toNamed(AppRoutes.chef_verify_user);
     isLoading = true;
     update();
     Map<String, String> body = {
@@ -131,10 +131,10 @@ class SignUpChefController extends GetxController {
     if (response.statusCode == 200) {
       var data = response.data;
       //signUpToken = data['data']['signUpToken'];
-      Get.toNamed(AppRoutes.verifyUser);
+      //Get.toNamed(AppRoutes.chef_verify_user);
     }
     else if(response.statusCode==400 && response.data["suggestRoute"]=="/api/v1/auth/verify-email"){
-      Get.toNamed(AppRoutes.verifyUser);
+     // Get.toNamed(AppRoutes.chef_verify_user);
     }
     else {
       Utils.errorSnackBar(response.statusCode.toString(), response.message);
@@ -162,8 +162,7 @@ class SignUpChefController extends GetxController {
   }
 
   Future<void> verifyOtpRepo() async {
-    //Get.toNamed(AppRoutes.createSignUpPassword);
-
+    Get.toNamed(AppRoutes.create_password_chef_screen);
     isLoadingVerify = true;
     update();
     Map<String, dynamic> body = {
@@ -181,7 +180,7 @@ class SignUpChefController extends GetxController {
       LocalStorage.userId=await data["data"];
       await LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
 
-      Get.toNamed(AppRoutes.createSignUpPassword);
+      //Get.toNamed(AppRoutes.create_password_chef_screen);
 
 
 

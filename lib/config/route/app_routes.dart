@@ -7,6 +7,9 @@ import 'package:new_untitled/features/chef/menu/presentation/screen/edit_menu.da
 import 'package:new_untitled/features/chef/menu/presentation/screen/menu_screen.dart';
 import 'package:new_untitled/features/chef/profile/presentation/screen/account_setting.dart';
 import 'package:new_untitled/features/common/auth/sign%20up/presentation/screen/signup_chef_screen.dart';
+import 'package:new_untitled/features/common/auth/signup_chef/presentation/screen/chef_name_screen.dart';
+import 'package:new_untitled/features/common/auth/signup_chef/presentation/screen/chef_verify_user.dart';
+import 'package:new_untitled/features/common/auth/signup_chef/presentation/screen/create_password_chef_screen.dart';
 import 'package:new_untitled/features/customer/address/presentation/screen/add_address_screen.dart';
 import 'package:new_untitled/features/customer/cart/presentation/screen/promo_code_screen.dart';
 import 'package:new_untitled/features/customer/home/presentation/screen/customer_home_screen.dart';
@@ -126,6 +129,10 @@ class AppRoutes {
   static const String customerHomeScreen = "/customer_home_screen.dart";
 
   static List<GetPage> routes = [
+    GetPage(name: create_password_chef_screen, page: () =>  CreatePasswordChefScreen()),
+    GetPage(name: create_password_chef_screen, page: () =>  CreatePasswordChefScreen()),
+    GetPage(name: chef_name_screen, page: () =>  ChefNameScreen()),
+    GetPage(name: chef_verify_user, page: () =>  ChefVerifyUser()),
     GetPage(name: splash, page: () => const SplashScreen()),
     GetPage(name: onboarding, page: () => OnboardingScreen()),
     GetPage(name: signUp, page: () => SignUpScreen()),

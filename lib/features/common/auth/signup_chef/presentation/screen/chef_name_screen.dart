@@ -9,6 +9,7 @@ import '../../../../../../component/text/common_text.dart';
 import '../../../../../../component/text_field/common_text_field.dart';
 import '../../../../../../utils/helpers/other_helper.dart';
 import '../../../../../../../utils/constants/app_string.dart';
+import '../Widget/ChefDocFlowState.dart';
 
 class ChefNameScreen extends StatelessWidget {
   ChefNameScreen({super.key});
@@ -84,7 +85,7 @@ class ChefNameScreen extends StatelessWidget {
                     isLoading: controller.isLoading,
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        Get.toNamed(AppRoutes.dietaryPreferences);
+                        Get.to(() => const ChefDocFlow());
                       }
                     },
                   ),
