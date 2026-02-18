@@ -36,7 +36,7 @@ class SignupChefScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
-                    text: AppString.registerAccount,
+                    text: AppString.registerAccountchef,
                     fontSize: 24,
                     color: Color(0xff272727),
                     top: 10,
