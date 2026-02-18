@@ -73,11 +73,15 @@ class AppRoutes {
   static const String message = "/message_screen.dart";
 
   // static const String profile = "/profile_screen.dart";
+  static const String create_password_chef_screen = "/create_password_chef_screen.dart";
+  static const String chef_name_screen = "/chef_name_screen.dart";
+  static const String chef_verify_user = "/chef_verify_user.dart";
   static const String editProfile = "/edit_profile.dart";
   static const String privacyPolicy = "/privacy_policy_screen.dart";
   static const String termsOfServices = "/terms_of_services_screen.dart";
   static const String setting = "/setting_screen.dart";
   static const String createSignUpPassword = "/create_password_screen.dart";
+  static const String createChefSignUpPassword = "/create_password_chef_screen.dart";
   static const String nameScreen = "/name_screen.dart";
   static const String dietaryPreferences = "/dietary_preferences_screen.dart";
   static const String reviewDetail = "/review_detail_screen.dart";

@@ -15,6 +15,7 @@ import '../../features/common/auth/change_password/presentation/controller/chang
 import '../../features/common/auth/forgot password/presentation/controller/forget_password_controller.dart';
 import '../../features/common/auth/sign in/presentation/controller/sign_in_controller.dart';
 import '../../features/common/auth/sign up/presentation/controller/sign_up_controller.dart';
+import '../../features/common/auth/signup_chef/presentation/controller/sign_up_chef_controller.dart';
 import '../../features/common/message/presentation/controller/chat_controller.dart';
 import '../../features/common/message/presentation/controller/message_controller.dart';
 import '../../features/common/notifications/presentation/controller/notifications_controller.dart';
@@ -35,6 +36,7 @@ import '../../features/customer/profile/presentation/controller/profile_controll
 class DependencyInjection extends Bindings {
   @override
   void dependencies() {
+    Get.lazyPut(() => SignUpChefController(), fenix: true);
     Get.lazyPut(() => SignUpController(), fenix: true);
     Get.lazyPut(() => SignInController(), fenix: true);
     Get.lazyPut(() => ForgetPasswordController(), fenix: true);
