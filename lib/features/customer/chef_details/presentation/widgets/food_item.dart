@@ -60,7 +60,7 @@ class _FoodItemState extends State<FoodItem>
 
     return InkWell(
       onTap: () {
-        //itemDetails(context, _controller, item);
+        itemDetails(context, _controller, item);
       },
       child: Container(
         padding: EdgeInsets.all(8),

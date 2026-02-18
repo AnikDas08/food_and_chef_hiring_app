@@ -28,6 +28,7 @@ class SearchController extends GetxController {
 
   ChefModel? chefModel;
   ChefData? chefArg;
+  CuisineData? cuisineData;
   List<ChefData> nearbyChefsList = [];
 
   Timer? _debounce;
@@ -36,7 +37,18 @@ class SearchController extends GetxController {
   void onInit() {
     super.onInit();
     // ✅ On init: load nearby chefs by location
-    getCurrentLocationAndFetchChefs();
+    if (Get.arguments != null && Get.arguments is CuisineData) {
+      cuisineData = Get.arguments as CuisineData;
+
+      // 2. Set the UI text so the user knows what they clicked
+      searchController.text = cuisineData?.name ?? "";
+
+      // 3. Fetch chefs using the ID
+      getChefsByCuisineId(cuisineData!.id!);
+    } else {
+      // Normal flow if no category was selected
+      getCurrentLocationAndFetchChefs();
+    }
 
     searchController.addListener(() {
       searchText.value = searchController.text;
@@ -48,8 +60,8 @@ class SearchController extends GetxController {
         getCurrentLocationAndFetchChefs();
       }
     });
-    if (Get.arguments != null && Get.arguments is ChefData) {
-      chefArg = Get.arguments as ChefData;
+    if (Get.arguments != null && Get.arguments is CuisineData) {
+      cuisineData = Get.arguments as CuisineData;
     }
   }
 
@@ -143,6 +155,30 @@ class SearchController extends GetxController {
       isLoadingLocation = false;
       update();
       Utils.errorSnackBar('Location Error', e.toString());
+    }
+  }
+
+  Future<void> getChefsByCuisineId(String cuisineId) async {
+    isLoadingChefs = true;
+    update();
+
+    try {
+      // Using the ID in the query parameter (adjust key name based on your API)
+      final response = await ApiService.get(
+        "user/search-chefs?cusine=$cuisineId",
+      );
+
+      if (response.statusCode == 200) {
+        chefModel = ChefModel.fromJson(response.data);
+        nearbyChefsList = chefModel?.data ?? [];
+      } else {
+        Utils.errorSnackBar('Error', 'No chefs found for this category');
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+    } finally {
+      isLoadingChefs = false;
+      update();
     }
   }
 
