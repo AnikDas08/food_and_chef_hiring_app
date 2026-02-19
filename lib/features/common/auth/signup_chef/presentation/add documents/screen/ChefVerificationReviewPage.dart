@@ -62,7 +62,6 @@ class _ChefVerificationReviewPageState extends State<ChefVerificationReviewPage>
     setState(() => list.remove(file));
   }
 
-  // Edit — gallery থেকে replace
   Future<void> _editFile(List<UploadedFileModel> list, UploadedFileModel file) async {
     final picker = ImagePicker();
     final picked = await picker.pickImage(source: ImageSource.gallery);

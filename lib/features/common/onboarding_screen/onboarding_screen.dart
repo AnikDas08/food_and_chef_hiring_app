@@ -70,7 +70,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           onTap: () => Get.toNamed(AppRoutes.signIn),
                         ),
                         12.height,
-
                         CommonButton(
                           titleText: "I’m New, Sign Me Up",
                           buttonColor: Color(0xffF2F2F2),

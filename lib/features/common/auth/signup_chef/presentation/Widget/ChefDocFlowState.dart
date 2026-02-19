@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/features/common/auth/signup_chef/presentation/screen/Cafe_Setup_Profile_Screen.dart';
+import '../../../../../../config/route/app_routes.dart';
 import '../add documents/Model/UploadedFileModel.dart';
 import '../add documents/screen/ChefVerificationReviewPage.dart';
 import '../add documents/screen/CulinaryCertPage.dart';
@@ -73,14 +75,18 @@ class _ChefDocFlowState extends State<ChefDocFlow> {
           govIdFront: _govIdFront,
           govIdBack: _govIdBack,
           proofOfAddress: _proofOfAddress,
-          nonSexualOffender: const [],   // ← empty
-          criminalBackground: const [],  // ← empty
+          nonSexualOffender: const [],
+          criminalBackground: const [],
           foodSafety: _foodSafety,
           culinaryCerts: _culinary,
           onSubmit: () {
+
+            //Get.toNamed(AppRoutes.dietaryPreferences);
+            Get.to(CafeSetupProfileScreen());
+
             Get.snackbar(
               'Success',
-              'Documents submitted successfully!',
+              'Documents submitted successfully ok',
               backgroundColor: Colors.black,
               colorText: Colors.white,
               snackPosition: SnackPosition.BOTTOM,
