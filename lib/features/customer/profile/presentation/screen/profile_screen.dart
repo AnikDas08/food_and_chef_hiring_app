@@ -148,11 +148,11 @@ class ProfileScreen extends StatelessWidget {
                             title: AppString.address,
                             onTap: () => Get.toNamed(AppRoutes.addressScreen),
                           ),
-                          Item(
+                          /*Item(
                             icon: CupertinoIcons.creditcard,
                             title: AppString.paymentMethods,
                             onTap: () => Get.toNamed(AppRoutes.paymentMethod),
-                          ),
+                          ),*/
                           Item(
                             icon: CupertinoIcons.arrow_counterclockwise,
                             title: AppString.pastOrders,

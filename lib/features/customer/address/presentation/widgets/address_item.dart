@@ -1,17 +1,23 @@
+// lib/features/address/widgets/address_item.dart
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-
 import '../../../../../config/route/app_routes.dart';
+import '../../data/address_model.dart';
+import '../controller/address_controller.dart';
 
-Widget addressItem() {
+Widget addressItem(AddressModel address, AddressController controller) {
+  final bool isActive = address.status.toLowerCase() == "active";
+
   return Container(
-    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 26),
+    margin: const EdgeInsets.only(bottom: 12),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 26),
     decoration: BoxDecoration(
-      color: Color(0xffF2F2F2),
+      color: const Color(0xffF2F2F2),
       borderRadius: BorderRadius.circular(12),
     ),
     child: Column(
@@ -20,18 +26,30 @@ Widget addressItem() {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Icon based on label
             Container(
-              padding: EdgeInsets.all(14),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(14),
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
               ),
-              child: Icon(CupertinoIcons.house, color: Colors.red, size: 20),
+              child: Icon(
+                address.label.toLowerCase() == "home"
+                    ? CupertinoIcons.house
+                    : address.label.toLowerCase() == "office" ||
+                    address.label.toLowerCase() == "work"
+                    ? CupertinoIcons.building_2_fill
+                    : CupertinoIcons.location,
+                color: Colors.red,
+                size: 20,
+              ),
             ),
 
             12.width,
+
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -40,58 +58,72 @@ Widget addressItem() {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonText(
-                              text: "House - Darren Monarch",
+                              text: "${address.label} - ${address.ownerName}",
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xff272727),
+                              color: const Color(0xff272727),
                             ),
                             CommonText(
-                              text: "+111 4857 2736",
+                              text: address.phoneNumber,
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
-                              color: Color(0xff777777),
+                              color: const Color(0xff777777),
                               top: 2,
                             ),
                           ],
                         ),
                       ),
 
+                      // Status Badge
                       Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: Color(0xffDBEBD9),
+                          color: isActive
+                              ? const Color(0xffDBEBD9)
+                              : const Color(0xffF2F2F2),
                           borderRadius: BorderRadius.circular(8),
                         ),
-
                         child: CommonText(
-                          text: "Active",
-                          color: Color(0xff2F8328),
+                          text: address.status,
+                          color: isActive
+                              ? const Color(0xff2F8328)
+                              : const Color(0xff777777),
                         ),
                       ),
                     ],
                   ),
+
+                  // Full Address
                   CommonText(
                     text:
-                        "United States -1901 Thornridge Cir. Shiloh, Hawaii, ID : 81063",
+                    "${address.address} - ${address.detailsAddress}, ${address.additionalDetails}",
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xff272727),
+                    color: const Color(0xff272727),
                     maxLines: 3,
                     textAlign: TextAlign.start,
                     top: 12,
                   ),
+
                   12.height,
+
+                  // Action Buttons
+                  // when class
                   Row(
                     children: [
+                      // Edit Button
                       InkWell(
                         onTap: () {
-                          Get.toNamed(AppRoutes.addAddress);
+                          Get.toNamed(
+                            AppRoutes.edit_address,
+                            arguments: address,
+                          );
                         },
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 8,
                           ),
@@ -103,29 +135,29 @@ Widget addressItem() {
                             text: AppString.editAddress,
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xff272727),
+                            color: const Color(0xff272727),
                           ),
                         ),
                       ),
+
+                      // Delete Button
                       InkWell(
-                        onTap: () {
-                          Get.toNamed(AppRoutes.addAddress);
-                        },
+                        onTap: () => _showDeleteDialog(address, controller),
                         child: Container(
-                          margin: EdgeInsets.only(left: 8),
-                          padding: EdgeInsets.symmetric(
+                          margin: const EdgeInsets.only(left: 8),
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 8,
                           ),
                           decoration: BoxDecoration(
-                            color: Color(0xffFF3C3C).withValues(alpha: 0.20),
+                            color: const Color(0xffFF3C3C).withValues(alpha: 0.20),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: CommonText(
                             text: AppString.delete,
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xffFF3C3C),
+                            color: const Color(0xffFF3C3C),
                           ),
                         ),
                       ),
@@ -135,6 +167,28 @@ Widget addressItem() {
               ),
             ),
           ],
+        ),
+      ],
+    ),
+  );
+}
+
+void _showDeleteDialog(AddressModel address, AddressController controller) {
+  Get.dialog(
+    AlertDialog(
+      title: const Text("Delete Address"),
+      content: const Text("Are you sure you want to delete this address?"),
+      actions: [
+        TextButton(
+          onPressed: () => Get.back(),
+          child: const Text("Cancel"),
+        ),
+        TextButton(
+          onPressed: () {
+            Get.back();
+            controller.deleteAddress(address.id);
+          },
+          child: const Text("Delete", style: TextStyle(color: Colors.red)),
         ),
       ],
     ),

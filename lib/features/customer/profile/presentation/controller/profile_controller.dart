@@ -106,10 +106,11 @@ class ProfileController extends GetxController {
     String complete = phone.completeNumber;  // e.g., +8801712345678
     String number = phone.number;            // e.g., 1712345678
     String code = complete.replaceAll(number, ""); // e.g., +880
+    String countryCode=phone.countryCode;
 
     savedCountryCode = code;
     savedCountryIsoCode = phone.countryISOCode; // ✅ Save ISO directly e.g., "BD"
-    fullPhoneNumber = "$code $number";           // ✅ e.g., +880 1712345678
+    fullPhoneNumber = "$countryCode $number";           // ✅ e.g., +880 1712345678
 
     update();
   }
