@@ -1,16 +1,14 @@
 // lib/features/orders/controller/review_controller.dart
 
 import 'package:get/get.dart';
-import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
 import '../data/past_order_model.dart';
 import '../widgets/review_success_pop_up.dart';
 
 class ReviewController extends GetxController {
-  // ── Order passed via arguments ────────────────────────────
   late PastOrderModel order;
 
-  // ── Form State ────────────────────────────────────────────
+  // ── Form State — always starts at 0 ──────────────────────
   String reviewText = '';
   double qualityAndTaste = 0;
   double cleanliness = 0;
@@ -43,37 +41,19 @@ class ReviewController extends GetxController {
     _loadOrderDetail();
   }
 
-  // ── GET order detail by ID ────────────────────────────────
-  // Uses: order/:id
-  // Pre-fills order data + existing review/rating if already rated
   Future<void> _loadOrderDetail() async {
     isLoading = true;
     update();
-
     try {
       final response = await ApiService.get(
         "order/${order.id}",
       );
-
       if (response.statusCode == 200 && response.data != null) {
         final data = response.data['data'];
         if (data != null) {
-          // ── Rebuild order with fresh data ──────────────
           order = PastOrderModel.fromJson(data);
-
-          // ── Pre-fill review fields if already rated ────
-          // rating > 0 means user already submitted a review
-          if (order.rating > 0) {
-            reviewText = order.review ?? '';
-            // Rating fields are not in order API response,
-            // so pre-fill all category ratings with the
-            // overall rating as a starting point
-            qualityAndTaste = order.rating;
-            cleanliness = order.rating;
-            timeliness = order.rating;
-            friendliness = order.rating;
-            communication = order.rating;
-          }
+          // ── All rating fields always start at 0 ──────────
+          // Never pre-fill — user always gives fresh rating
         }
       }
     } catch (_) {
@@ -85,16 +65,15 @@ class ReviewController extends GetxController {
     }
   }
 
-  // ── POST submit review ────────────────────────────────────
-  // Uses: review/extra-review
   Future<void> submitReview() async {
     if (reviewText.trim().isEmpty) {
       Get.snackbar("Error", "Please write a review",
           snackPosition: SnackPosition.BOTTOM);
       return;
     }
-    if (averageRating == 0) {
-      Get.snackbar("Error", "Please provide ratings",
+    if (qualityAndTaste == 0 || cleanliness == 0 ||
+        timeliness == 0 || friendliness == 0 || communication == 0) {
+      Get.snackbar("Error", "Please rate all categories",
           snackPosition: SnackPosition.BOTTOM);
       return;
     }
@@ -109,13 +88,12 @@ class ReviewController extends GetxController {
           "review": reviewText.trim(),
           "quality_and_taste": qualityAndTaste,
           "cleanliness": cleanliness,
-          "timpleness": timeliness,       // keep API spelling
+          "timpleness": timeliness,
           "friendliness": friendliness,
           "communication": communication,
           "order_id": order.id,
         },
       );
-
       if (response.statusCode == 200 || response.statusCode == 201) {
         reviewSuccessPopUp();
       } else {
@@ -131,7 +109,6 @@ class ReviewController extends GetxController {
     }
   }
 
-  // ── Rating update handlers ────────────────────────────────
   void onQualityChanged(double v)       { qualityAndTaste = v; update(); }
   void onCleanlinessChanged(double v)   { cleanliness = v;     update(); }
   void onTimelinessChanged(double v)    { timeliness = v;      update(); }

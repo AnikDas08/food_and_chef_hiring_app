@@ -290,9 +290,10 @@ void bookingDetailsShow(BuildContext context) {
                   ),
                   12.height,
                   CommonButton(
-                    titleText: order.rating > 0
+                    /*titleText: order.rating > 0
                         ? "Edit Rating"
-                        : "Leave a Rating",
+                        : "Leave a Rating",*/
+                    titleText: "Leave a Rating",
                     buttonColor: const Color(0xffF2F2F2),
                     borderColor: Colors.transparent,
                     titleColor: const Color(0xff272727),
