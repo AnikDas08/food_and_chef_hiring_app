@@ -84,6 +84,7 @@ class ChefNameScreen extends StatelessWidget {
                     titleText: AppString.continueString,
                     isLoading: controller.isLoading,
                     onTap: () {
+                      controller.chefSignUp();
                       if (_formKey.currentState!.validate()) {
                         Get.to(() => const ChefDocFlow());
                       }

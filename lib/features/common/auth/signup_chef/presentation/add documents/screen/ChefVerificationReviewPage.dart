@@ -11,7 +11,7 @@ class ChefVerificationReviewPage extends StatefulWidget {
   final List<UploadedFileModel> criminalBackground;
   final List<UploadedFileModel> foodSafety;
   final List<UploadedFileModel> culinaryCerts;
-  final VoidCallback onSubmit;
+  final Future<void> Function() onSubmit; // ← Future করা হয়েছে
   final VoidCallback? onBack;
 
   const ChefVerificationReviewPage({
@@ -28,14 +28,18 @@ class ChefVerificationReviewPage extends StatefulWidget {
   });
 
   @override
-  State<ChefVerificationReviewPage> createState() => _ChefVerificationReviewPageState();
+  State<ChefVerificationReviewPage> createState() =>
+      _ChefVerificationReviewPageState();
 }
 
-class _ChefVerificationReviewPageState extends State<ChefVerificationReviewPage> {
+class _ChefVerificationReviewPageState
+    extends State<ChefVerificationReviewPage> {
   static const _textPrimary = Color(0xFF1A1A1A);
   static const _textMuted = Color(0xFF8A8A8A);
   static const _border = Color(0xFFE0E0E0);
   static const _bg = Color(0xFFFFFFFF);
+
+  bool _isLoading = false; // ← loading state
 
   late List<UploadedFileModel> _govIdFront;
   late List<UploadedFileModel> _govIdBack;
@@ -57,12 +61,12 @@ class _ChefVerificationReviewPageState extends State<ChefVerificationReviewPage>
     _culinaryCerts = List.from(widget.culinaryCerts);
   }
 
-  // Delete
   void _deleteFile(List<UploadedFileModel> list, UploadedFileModel file) {
     setState(() => list.remove(file));
   }
 
-  Future<void> _editFile(List<UploadedFileModel> list, UploadedFileModel file) async {
+  Future<void> _editFile(
+      List<UploadedFileModel> list, UploadedFileModel file) async {
     final picker = ImagePicker();
     final picked = await picker.pickImage(source: ImageSource.gallery);
     if (picked != null) {
@@ -77,6 +81,16 @@ class _ChefVerificationReviewPageState extends State<ChefVerificationReviewPage>
         final index = list.indexOf(file);
         if (index != -1) list[index] = newFile;
       });
+    }
+  }
+
+  // ── Submit with loading ──
+  Future<void> _handleSubmit() async {
+    setState(() => _isLoading = true);
+    try {
+      await widget.onSubmit();
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -96,23 +110,35 @@ class _ChefVerificationReviewPageState extends State<ChefVerificationReviewPage>
       backgroundColor: _bg,
       body: SafeArea(
         child: Column(children: [
+          // ── App Bar ──
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
             child: Row(children: [
               IconButton(
-                onPressed: widget.onBack ?? () => Navigator.of(context).maybePop(),
-                icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: _textPrimary),
+                onPressed: _isLoading
+                    ? null // loading এ back disable
+                    : (widget.onBack ?? () => Navigator.of(context).maybePop()),
+                icon: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  size: 18,
+                  color: _isLoading ? _textMuted : _textPrimary,
+                ),
               ),
               const Expanded(
                 child: Text(
                   'Chef verification',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: _textPrimary),
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: _textPrimary),
                 ),
               ),
               const SizedBox(width: 48),
             ]),
           ),
+
+          // ── Content ──
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -126,21 +152,36 @@ class _ChefVerificationReviewPageState extends State<ChefVerificationReviewPage>
               ),
             ),
           ),
+
+          // ── Continue Button ──
           Container(
             width: double.infinity,
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
             color: _bg,
             child: ElevatedButton(
-              onPressed: widget.onSubmit,
+              onPressed: _isLoading ? null : _handleSubmit,
               style: ElevatedButton.styleFrom(
                 backgroundColor: _textPrimary,
                 foregroundColor: Colors.white,
                 minimumSize: const Size(double.infinity, 54),
                 elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14)),
               ),
-              child: const Text('Continue'),
+              child: _isLoading
+                  ? const SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2.5,
+                ),
+              )
+                  : const Text(
+                'Continue',
+                style: TextStyle(
+                    fontSize: 16, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
         ]),
@@ -155,7 +196,10 @@ class _ChefVerificationReviewPageState extends State<ChefVerificationReviewPage>
       children: [
         const SizedBox(height: 20),
         Text(section.title,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: _textPrimary)),
+            style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: _textPrimary)),
         const SizedBox(height: 10),
         ...section.files.map((f) => _fileTile(section.files, f)),
       ],
@@ -177,31 +221,38 @@ class _ChefVerificationReviewPageState extends State<ChefVerificationReviewPage>
           borderRadius: BorderRadius.circular(8),
           child: isPdf || file.path == null
               ? Container(
-            width: 34, height: 34,
+            width: 34,
+            height: 34,
             color: const Color(0xFFFFEBEE),
-            child: Icon(Icons.picture_as_pdf_rounded, size: 17, color: Colors.red[400]),
+            child: Icon(Icons.picture_as_pdf_rounded,
+                size: 17, color: Colors.red[400]),
           )
-              : Image.file(File(file.path!), width: 34, height: 34, fit: BoxFit.cover),
+              : Image.file(File(file.path!),
+              width: 34, height: 34, fit: BoxFit.cover),
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          child:
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(file.name,
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: _textPrimary),
+                style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: _textPrimary),
                 overflow: TextOverflow.ellipsis),
-            Text(file.size, style: const TextStyle(fontSize: 11, color: _textMuted)),
+            Text(file.size,
+                style: const TextStyle(fontSize: 11, color: _textMuted)),
           ]),
         ),
-        // Edit button
         IconButton(
-          onPressed: () => _editFile(list, file),
+          onPressed: _isLoading ? null : () => _editFile(list, file),
           icon: const Icon(Icons.edit_outlined, size: 18, color: _textMuted),
           style: IconButton.styleFrom(minimumSize: const Size(32, 32)),
         ),
-        // Delete button
         IconButton(
-          onPressed: () => _deleteFile(list, file),
-          icon: const Icon(Icons.delete_outline_rounded, size: 18, color: _textMuted),
+          onPressed: _isLoading ? null : () => _deleteFile(list, file),
+          icon: const Icon(Icons.delete_outline_rounded,
+              size: 18, color: _textMuted),
           style: IconButton.styleFrom(minimumSize: const Size(32, 32)),
         ),
       ]),

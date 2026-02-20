@@ -16,4 +16,6 @@ class ApiEndPoint {
   static const termsOfServices = "terms-and-conditions";
   static const chats = "chats";
   static const messages = "messages";
+  static const cuisine = "/cusine";
+  static const chefSignUp = "/user/onboarding/6997ec78ba735f6fbb712d72";
 }

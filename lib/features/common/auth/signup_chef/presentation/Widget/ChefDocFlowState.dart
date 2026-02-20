@@ -8,6 +8,7 @@ import '../add documents/screen/CulinaryCertPage.dart';
 import '../add documents/screen/FoodSafetyPage.dart';
 import '../add documents/screen/ProofOfAddressPage.dart';
 import '../add documents/screen/government_issued_Page.dart';
+import '../controller/sign_up_chef_controller.dart';
 
 class ChefDocFlow extends StatefulWidget {
   const ChefDocFlow({super.key});
@@ -68,7 +69,6 @@ class _ChefDocFlowState extends State<ChefDocFlow> {
           onContinue: _next,
           onFilesSelected: (files) => _culinary = List.from(files),
         );
-
       case 4:
         return ChefVerificationReviewPage(
           onBack: _back,
@@ -79,21 +79,17 @@ class _ChefDocFlowState extends State<ChefDocFlow> {
           criminalBackground: const [],
           foodSafety: _foodSafety,
           culinaryCerts: _culinary,
-          onSubmit: () {
-
-            //Get.toNamed(AppRoutes.dietaryPreferences);
-            Get.to(CafeSetupProfileScreen());
-
-            Get.snackbar(
-              'Success',
-              'Documents submitted successfully ok',
-              backgroundColor: Colors.black,
-              colorText: Colors.white,
-              snackPosition: SnackPosition.BOTTOM,
+          onSubmit: () async {
+            final controller = SignUpChefController.instance;
+            await controller.submitChefVerification(
+              idCardFrontPath: _govIdFront.isNotEmpty ? _govIdFront.first.path : null,
+              idCardBackPath: _govIdBack.isNotEmpty ? _govIdBack.first.path : null,
+              proofOfAddressPath: _proofOfAddress.isNotEmpty ? _proofOfAddress.first.path : null,
+              foodSafetyCertPath: _foodSafety.isNotEmpty ? _foodSafety.first.path : null,
+              additionalCulinaryPath: _culinary.isNotEmpty ? _culinary.first.path : null,
             );
           },
         );
-
       default:
         return const Scaffold(
           body: Center(child: Text('Something went wrong')),

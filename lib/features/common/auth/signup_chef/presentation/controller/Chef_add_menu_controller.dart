@@ -2,15 +2,115 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../../../config/api/api_end_point.dart';
+import '../../../../../../services/api/api_service.dart';
+import '../../../../../../services/storage/storage_services.dart';
 
+// ── Models ──
+class IngredientModel {
+  final String name;
+  final String quantity;
+  final String unit;
+
+  IngredientModel({required this.name, required this.quantity, required this.unit});
+
+  factory IngredientModel.fromJson(Map<String, dynamic> json) => IngredientModel(
+    name: json['name'] ?? '',
+    quantity: json['quantity'] ?? '',
+    unit: json['unit'] ?? '',
+  );
+}
+
+class MenuItemModel {
+  final String id;
+  final List<String> images;
+  final String name;
+  final String description;
+  final String menuSection;
+  final List<String> dietTypes;
+  final List<String> allergens;
+  final String estCookingTime;
+  final String estPrepTime;
+  final List<String> customizations;
+  final List<IngredientModel> ingredients;
+
+  MenuItemModel({
+    required this.id,
+    required this.images,
+    required this.name,
+    required this.description,
+    required this.menuSection,
+    required this.dietTypes,
+    required this.allergens,
+    required this.estCookingTime,
+    required this.estPrepTime,
+    required this.customizations,
+    required this.ingredients,
+  });
+
+  factory MenuItemModel.fromJson(Map<String, dynamic> json) => MenuItemModel(
+    id: json['_id'] ?? '',
+    images: List<String>.from(json['images'] ?? []),
+    name: json['name'] ?? '',
+    description: json['description'] ?? '',
+    menuSection: json['menu_section'] ?? '',
+    dietTypes: List<String>.from(json['diet_types'] ?? []),
+    allergens: List<String>.from(json['alergens'] ?? []),
+    estCookingTime: json['est_cooking_time'] ?? '',
+    estPrepTime: json['est_prep_time'] ?? '',
+    customizations: List<String>.from(json['customizations'] ?? []),
+    ingredients: (json['ingradients'] as List? ?? [])
+        .map((e) => IngredientModel.fromJson(e))
+        .toList(),
+  );
+}
+
+class MenuSectionModel {
+  final String menuSection;
+  final List<MenuItemModel> menus;
+
+  MenuSectionModel({required this.menuSection, required this.menus});
+
+  factory MenuSectionModel.fromJson(Map<String, dynamic> json) => MenuSectionModel(
+    menuSection: json['menu_section'] ?? '',
+    menus: (json['menus'] as List? ?? [])
+        .map((e) => MenuItemModel.fromJson(e))
+        .toList(),
+  );
+}
+
+// ── Controller ──
 class CafeAddMenuItemController extends GetxController {
 
+  // ─── Fetch Menu ───────────────────────────────────────────────────────────
+  final RxList<MenuSectionModel> menuSections = <MenuSectionModel>[].obs;
+  final RxBool isLoadingMenu = false.obs;
+
+  Future<void> fetchMenus() async {
+    isLoadingMenu.value = true;
+    try {
+      final response = await ApiService.get(
+        "${ApiEndPoint.baseUrl}menu/type-based?id=${LocalStorage.userId}",
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        if (data['success'] == true) {
+          final List list = data['data'] ?? [];
+          menuSections.value =
+              list.map((e) => MenuSectionModel.fromJson(e)).toList();
+        }
+      }
+    } catch (e) {
+      print("Menu fetch error: $e");
+    } finally {
+      isLoadingMenu.value = false;
+    }
+  }
+
   // ─── Text Controllers ─────────────────────────────────────────────────────
-  final nameController = TextEditingController(text: "Quesadilla");
-  final descriptionController = TextEditingController(
-    text:
-    "Home-cooked Chopped Burrito. Inspired by 10 years of experience in cooking in Mexican fine dining restaurants.\nServed with black beans and chilli sauce. One of my...",
-  );
+  final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
 
   // ─── Dropdown values ──────────────────────────────────────────────────────
   String selectedCategory = "Starter";
@@ -33,7 +133,6 @@ class CafeAddMenuItemController extends GetxController {
     "Without Tomato",
     "Without Bacon",
   ].obs;
-
   bool customizeExpanded = true;
 
   // ─── Ingredients ──────────────────────────────────────────────────────────
@@ -49,6 +148,12 @@ class CafeAddMenuItemController extends GetxController {
 
   static CafeAddMenuItemController get instance =>
       Get.put(CafeAddMenuItemController());
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchMenus(); // ← screen খুললেই fetch হবে
+  }
 
   // ─── Actions ──────────────────────────────────────────────────────────────
   Future<void> pickImage() async {
@@ -98,6 +203,7 @@ class CafeAddMenuItemController extends GetxController {
     'customizeOptions': customizeOptions.toList(),
     'ingredients': ingredients.toList(),
     'specialEquipment': specialEquipment.toList(),
+    'imagePath': previewImage?.path,
   };
 
   @override

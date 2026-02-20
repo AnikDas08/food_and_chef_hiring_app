@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/features/common/auth/signup_chef/presentation/screen/Chef_add_menu_items_screen.dart';
 
+import '../controller/sign_up_chef_controller.dart';
+
 class CafeEnableAutoAcceptScreen extends StatefulWidget {
   const CafeEnableAutoAcceptScreen({super.key});
 
@@ -14,6 +16,8 @@ class CafeEnableAutoAcceptScreen extends StatefulWidget {
 class _CafeEnableAutoAcceptScreenState
     extends State<CafeEnableAutoAcceptScreen> {
   bool _autoAccept = true;
+  bool _isSubmitting = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -155,10 +159,16 @@ class _CafeEnableAutoAcceptScreenState
                 width: double.infinity,
                 height: 54.h,
                 child: ElevatedButton(
-                  onPressed: () {
-
-                    Get.to(()=>const CafeAddMenuItemsScreen());
-                    // Get.back(result: {'autoAccept': _autoAccept});
+                  onPressed: _isSubmitting
+                      ? null
+                      : () async {
+                    setState(() => _isSubmitting = true);
+                    try {
+                      final controller = SignUpChefController.instance;
+                      await controller.setupAutoAccept(autoAccept: _autoAccept);
+                    } finally {
+                      if (mounted) setState(() => _isSubmitting = false);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1C1C1C),
@@ -168,7 +178,29 @@ class _CafeEnableAutoAcceptScreenState
                     ),
                     elevation: 0,
                   ),
-                  child: Text(
+                  child: _isSubmitting
+                      ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 18.w,
+                        height: 18.w,
+                        child: const CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      ),
+                      10.horizontalSpace,
+                      Text(
+                        "Loading...",
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  )
+                      : Text(
                     "Continue",
                     style: TextStyle(
                       fontSize: 16.sp,

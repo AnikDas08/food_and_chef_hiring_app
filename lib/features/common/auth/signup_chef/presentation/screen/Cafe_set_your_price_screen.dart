@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/features/common/auth/signup_chef/presentation/screen/cafe_set_availability.dart';
 
+import '../controller/sign_up_chef_controller.dart';
+
 class CafeSetYourPriceScreen extends StatefulWidget {
   const CafeSetYourPriceScreen({super.key});
 
@@ -28,6 +30,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
 
   TimeOfDay _fromTime = const TimeOfDay(hour: 9, minute: 0);
   TimeOfDay _toTime = const TimeOfDay(hour: 15, minute: 0);
+  bool _isSubmitting = false;
 
 
   Future<void> _pickTime(bool isFrom) async {
@@ -132,7 +135,6 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     ),
                     24.verticalSpace,
 
-                    // ── PRICING Label ──
                     Text(
                       "PRICING",
                       style: TextStyle(
@@ -277,29 +279,50 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
               ),
             ),
 
-            // ── Continue Button ──
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
               child: SizedBox(
                 width: double.infinity,
                 height: 54.h,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: _isSubmitting
+                      ? null
+                      : () async {
+                    if (_baseRateController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Please enter base rate")),
+                      );
+                      return;
+                    }
 
-                    Get.to(() => const CafeSetAvailabilityScreen());
-                    // Get.back(result: {
-                    //   'baseRate': double.tryParse(_baseRateController.text) ?? 0,
-                    //   'discountEnabled': _offerDiscount,
-                    //   'discountRate':
-                    //   double.tryParse(_discountRateController.text) ?? 0,
-                    //   'fromTime': _fromTime,
-                    //   'toTime': _toTime,
-                    //   'weekendEnabled': _weekendRate,
-                    //   'weekendRate':
-                    //   double.tryParse(_weekendRateController.text) ?? 0,
-                    //   'minDuration':
-                    //   double.tryParse(_minDurationController.text) ?? 1,
-                    // });
+                    setState(() => _isSubmitting = true);
+                    try {
+                      final controller = SignUpChefController.instance;
+
+                      final Map<String, dynamic> weekDaysDiscount = _offerDiscount
+                          ? {
+                        "from": _formatTime(_fromTime),
+                        "to": _formatTime(_toTime),
+                        "amount": _discountRateController.text.trim(),
+                      }
+                          : {};
+
+
+                      await controller.setupChefPrice(
+                        pricing: _baseRateController.text.trim(),
+                        weekDaysDiscountHas: _offerDiscount,
+                        weekDaysDiscount: weekDaysDiscount,
+                        weekendDiscountHas: _weekendRate,
+                        weekendDiscountAmount: _weekendRateController.text.trim().isEmpty
+                            ? "0"
+                            : _weekendRateController.text.trim(),
+                        minimumShortOrderHours: _minDurationController.text.trim().isEmpty
+                            ? "1"
+                            : _minDurationController.text.trim(),
+                      );
+                    } finally {
+                      if (mounted) setState(() => _isSubmitting = false);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1C1C1C),
@@ -309,7 +332,29 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     ),
                     elevation: 0,
                   ),
-                  child: Text(
+                  child: _isSubmitting
+                      ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 18.w,
+                        height: 18.w,
+                        child: const CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      ),
+                      10.horizontalSpace,
+                      Text(
+                        "Loading...",
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  )
+                      : Text(
                     "Continue",
                     style: TextStyle(
                       fontSize: 16.sp,

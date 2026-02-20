@@ -1,59 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../controller/chef_Cooking_Expertise_Controller.dart';
 
-class CafeCookingExpertiseScreen extends StatefulWidget {
+class CafeCookingExpertiseScreen extends StatelessWidget {
   const CafeCookingExpertiseScreen({super.key});
 
   @override
-  State<CafeCookingExpertiseScreen> createState() =>
-      _CafeCookingExpertiseScreenState();
-}
-
-class _CafeCookingExpertiseScreenState
-    extends State<CafeCookingExpertiseScreen> {
-
-
-  final List<String> _allCuisines = [
-    "Chinese",
-    "Italian",
-    "American",
-    "Indian",
-    "Japanese",
-    "Mexican",
-    "Thai",
-    "French",
-    "Greek",
-    "Turkish",
-  ];
-
-
-  final List<String> _selected = ["Chinese", "Italian"];
-
-
-  bool _dropdownOpen = false;
-
-  void _toggleCuisine(String cuisine) {
-    setState(() {
-      if (_selected.contains(cuisine)) {
-        _selected.remove(cuisine);
-      } else {
-        _selected.add(cuisine);
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CafeCookingExpertiseController());
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
-            // ── Back Button ──
+
             Padding(
-              padding:
-              EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
@@ -75,186 +39,181 @@ class _CafeCookingExpertiseScreenState
               ),
             ),
 
-            // ── Content ──
+
             Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    8.verticalSpace,
-                    Text(
-                      "Cooking Expertise",
-                      style: TextStyle(
-                        fontSize: 26.sp,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF272727),
-                        letterSpacing: -0.5,
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      8.verticalSpace,
+                      Text(
+                        "Cooking Expertise",
+                        style: TextStyle(
+                          fontSize: 26.sp,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF272727),
+                          letterSpacing: -0.5,
+                        ),
                       ),
-                    ),
-                    8.verticalSpace,
-                    Text(
-                      "Define your speciality cuisine.",
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                        color: const Color(0xFF777777),
+                      8.verticalSpace,
+                      Text(
+                        "Define your speciality cuisine.",
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: const Color(0xFF777777),
+                        ),
                       ),
-                    ),
-                    24.verticalSpace,
+                      24.verticalSpace,
+                      Text(
+                        "Cuisines",
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF272727),
+                        ),
+                      ),
+                      10.verticalSpace,
 
-                    // ── Label ──
-                    Text(
-                      "Cuisines",
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFF272727),
-                      ),
-                    ),
-                    10.verticalSpace,
 
-                    // ── Dropdown Container ──
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF7F7F7),
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                      child: Column(
-                        children: [
-                          // ── Header row (selected chips + arrow) ──
-                          GestureDetector(
-                            onTap: () =>
-                                setState(() => _dropdownOpen = !_dropdownOpen),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 14.w, vertical: 10.h),
-                              child: Row(
-                                children: [
-                                  // Selected chips
-                                  Expanded(
-                                    child: _selected.isEmpty
-                                        ? Text(
-                                      "Select cuisines",
-                                      style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: const Color(0xFFBBBBBB),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF7F7F7),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Column(
+                          children: [
+                            // Header Row
+                            GestureDetector(
+                              onTap: controller.toggleDropdown,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 14.w,
+                                  vertical: 10.h,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: controller.selectedCuisines.isEmpty
+                                          ? Text(
+                                        "Select cuisines",
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: const Color(0xFFBBBBBB),
+                                        ),
+                                      )
+                                          : Wrap(
+                                        spacing: 6.w,
+                                        runSpacing: 6.h,
+                                        children: controller.selectedCuisines
+                                            .map((c) => _Chip(label: c.name))
+                                            .toList(),
                                       ),
-                                    )
-                                        : Wrap(
-                                      spacing: 6.w,
-                                      runSpacing: 6.h,
-                                      children: _selected
-                                          .map((c) => _Chip(label: c))
-                                          .toList(),
                                     ),
-                                  ),
-                                  10.horizontalSpace,
-                                  Icon(
-                                    _dropdownOpen
-                                        ? Icons.keyboard_arrow_up
-                                        : Icons.keyboard_arrow_down,
-                                    size: 20.sp,
-                                    color: const Color(0xFF272727),
-                                  ),
-                                ],
+                                    10.horizontalSpace,
+                                    Icon(
+                                      controller.dropdownOpen.value
+                                          ? Icons.keyboard_arrow_up
+                                          : Icons.keyboard_arrow_down,
+                                      size: 20.sp,
+                                      color: const Color(0xFF272727),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
 
-                          // ── Dropdown List ──
-                          if (_dropdownOpen) ...[
-                            Divider(
-                                height: 1,
-                                color: Colors.grey.shade200),
-                            ..._allCuisines.map((cuisine) {
-                              final isSelected = _selected.contains(cuisine);
-                              return GestureDetector(
-                                onTap: () => _toggleCuisine(cuisine),
-                                child: Container(
-                                  color: Colors.transparent,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 14.w, vertical: 14.h),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        cuisine,
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          fontWeight: isSelected
-                                              ? FontWeight.w500
-                                              : FontWeight.w400,
-                                          color: const Color(0xFF272727),
+                            // Dropdown List
+                            if (controller.dropdownOpen.value) ...[
+                              Divider(height: 1, color: Colors.grey.shade200),
+                              ...controller.allCuisines.map((cuisine) {
+                                final selected = controller.isSelected(cuisine.id);
+                                return GestureDetector(
+                                  onTap: () => controller.toggleCuisine(cuisine.id),
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 14.w,
+                                      vertical: 14.h,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          cuisine.name,
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            fontWeight: selected
+                                                ? FontWeight.w500
+                                                : FontWeight.w400,
+                                            color: const Color(0xFF272727),
+                                          ),
                                         ),
-                                      ),
-                                      const Spacer(),
-                                      if (isSelected)
-                                        Container(
-                                          width: 24.w,
-                                          height: 24.w,
-                                          decoration: const BoxDecoration(
-                                            color: Color(0xFF272727),
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Icon(
-                                            Icons.check,
-                                            color: Colors.white,
-                                            size: 14.sp,
-                                          ),
-                                        )
-                                      else
+                                        const Spacer(),
                                         Container(
                                           width: 24.w,
                                           height: 24.w,
                                           decoration: BoxDecoration(
+                                            color: selected
+                                                ? const Color(0xFF272727)
+                                                : Colors.transparent,
                                             shape: BoxShape.circle,
-                                            border: Border.all(
-                                                color: const Color(0xFFCCCCCC),
-                                                width: 1.5),
+                                            border: selected
+                                                ? null
+                                                : Border.all(
+                                              color: const Color(0xFFCCCCCC),
+                                              width: 1.5,
+                                            ),
                                           ),
+                                          child: selected
+                                              ? Icon(
+                                            Icons.check,
+                                            color: Colors.white,
+                                            size: 14.sp,
+                                          )
+                                              : null,
                                         ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            }),
+                                );
+                              }),
+                            ],
                           ],
-                        ],
+                        ),
                       ),
-                    ),
-                    32.verticalSpace,
-                  ],
-                ),
-              ),
+                      32.verticalSpace,
+                    ],
+                  ),
+                );
+              }),
             ),
 
-            // ── Continue Button ──
+
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
               child: SizedBox(
                 width: double.infinity,
                 height: 54.h,
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (_selected.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text("Please select at least one cuisine")),
-                      );
-                      return;
-                    }
-                    Get.back(result: {'cuisines': _selected});
-                  },
+                  onPressed: controller.onContinue,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1C1C1C),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14.r)),
+                      borderRadius: BorderRadius.circular(14.r),
+                    ),
                     elevation: 0,
                   ),
                   child: Text(
                     "Continue",
                     style: TextStyle(
-                        fontSize: 16.sp, fontWeight: FontWeight.w600),
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -265,7 +224,6 @@ class _CafeCookingExpertiseScreenState
     );
   }
 }
-
 
 class _Chip extends StatelessWidget {
   final String label;

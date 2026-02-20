@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-// ─── Models ───────────────────────────────────────────────────────────────────
 class CafeMenuItem {
   String name;
   int ingredients;
@@ -25,7 +24,6 @@ class CafeMenuSection {
       : items = items ?? [];
 }
 
-// ─── Controller ───────────────────────────────────────────────────────────────
 class CafeMenuListController extends GetxController {
 
   final sections = <CafeMenuSection>[

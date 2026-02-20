@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
+import '../controller/sign_up_chef_controller.dart';
 import 'Cafe_set_your_price_screen.dart';
 
 class CafeSetCookingAreaScreen extends StatefulWidget {
@@ -22,6 +23,8 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
   final TextEditingController _searchController = TextEditingController();
   GoogleMapController? _mapController;
   Timer? _debounce;
+  bool _isSubmitting = false;
+
 
   String? _selectedAddress;
   LatLng? _selectedLatLng;
@@ -457,26 +460,35 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                 ),
               ),
             ),
-
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
               child: SizedBox(
                 width: double.infinity,
                 height: 54.h,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: _isSubmitting
+                      ? null
+                      : () async {
                     if (_selectedAddress == null || _selectedLatLng == null) {
-                      // _showError("Please select an address first.");
-                      // return;
 
-                      Get.to(() => const CafeSetYourPriceScreen());
+                      Get.snackbar("Message", "Please select an address first.",backgroundColor: Colors.red,colorText: Colors.red);
+                      return;
                     }
-                    Get.back(result: {
-                      'address': _selectedAddress,
-                      'distance': _distanceKm,
-                      'lat': _selectedLatLng!.latitude,
-                      'lng': _selectedLatLng!.longitude,
-                    });
+                    setState(() => _isSubmitting = true);
+                    try {
+                      final controller = SignUpChefController.instance;
+                      await controller.setupChefProfile(
+                        about: controller.tempAbout,
+                        experience: controller.tempExperience,
+                        cookingAreaDistance: _distanceKm.toInt().toString(),
+                        address: _selectedAddress!,
+                        lat: _selectedLatLng!.latitude.toString(),
+                        lng: _selectedLatLng!.longitude.toString(),
+                        imagePath: controller.tempImagePath,
+                      );
+                    } finally {
+                      if (mounted) setState(() => _isSubmitting = false);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1C1C1C),
@@ -486,7 +498,29 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                     ),
                     elevation: 0,
                   ),
-                  child: Text(
+                  child: _isSubmitting
+                      ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 18.w,
+                        height: 18.w,
+                        child: const CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      ),
+                      10.horizontalSpace,
+                      Text(
+                        "Loading...",
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  )
+                      : Text(
                     "Continue",
                     style: TextStyle(
                       fontSize: 16.sp,

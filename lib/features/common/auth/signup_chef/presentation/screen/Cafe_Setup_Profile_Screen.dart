@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+import '../controller/sign_up_chef_controller.dart';
 import 'Cafe_set_cookin_garea_screen.dart';
 
 class CafeSetupProfileScreen extends StatefulWidget {
@@ -164,19 +165,20 @@ class _CafeSetupProfileScreenState extends State<CafeSetupProfileScreen> {
                           letterSpacing: 1.2,
                         ),
                       ),
+
+
                       16.verticalSpace,
 
-                      // Full Name
-                      _buildLabel("Full Name"),
-                      8.verticalSpace,
-                      _buildTextField(
-                        controller: _fullNameController,
-                        hint: "Enter your full name",
-                        validator: (val) =>
-                        val == null || val.isEmpty ? "Required" : null,
-                      ),
+                      // // Full Name
+                      // _buildLabel("Full Name"),
+                      // 8.verticalSpace,
+                      // _buildTextField(
+                      //   controller: _fullNameController,
+                      //   hint: "Enter your full name",
+                      //   validator: (val) =>
+                      //   val == null || val.isEmpty ? "Required" : null,
+                      // ),
                       20.verticalSpace,
-                      // Experience
                       _buildLabel("Experience"),
                       8.verticalSpace,
                       _buildTextField(
@@ -205,7 +207,6 @@ class _CafeSetupProfileScreenState extends State<CafeSetupProfileScreen> {
               ),
             ),
 
-            // ── Continue Button ──
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
               child: SizedBox(
@@ -214,9 +215,12 @@ class _CafeSetupProfileScreenState extends State<CafeSetupProfileScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      final controller = SignUpChefController.instance;
+                      controller.tempAbout = _aboutController.text.trim();
+                      controller.tempExperience = _experienceController.text.trim();
+                      controller.tempImagePath = _profileImage?.path;
 
                       Get.to(() => const CafeSetCookingAreaScreen());
-
                     }
                   },
                   style: ElevatedButton.styleFrom(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../controller/sign_up_chef_controller.dart';
 import 'Cafe_Enable_AutoAccept_Screen.dart';
 
 class TimeSlot {
@@ -76,6 +77,7 @@ class _CafeSetAvailabilityScreenState
   String _minUnit = "Hours";
   int _maxDays = 14;
   String _maxUnit = "Days";
+  bool _isSubmitting = false;
 
   Future<void> _pickTime(
       DaySchedule day, int slotIndex, bool isFrom) async {
@@ -348,17 +350,22 @@ class _CafeSetAvailabilityScreenState
               ),
             ),
 
-
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
               child: SizedBox(
                 width: double.infinity,
                 height: 54.h,
                 child: ElevatedButton(
-                  onPressed: (){
-
-                    Get.to(()=> const CafeEnableAutoAcceptScreen());
-
+                  onPressed: _isSubmitting
+                      ? null
+                      : () async {
+                    setState(() => _isSubmitting = true);
+                    try {
+                      final controller = SignUpChefController.instance;
+                      await controller.setupChefAvailability(days: _days);
+                    } finally {
+                      if (mounted) setState(() => _isSubmitting = false);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1C1C1C),
@@ -368,7 +375,27 @@ class _CafeSetAvailabilityScreenState
                     ),
                     elevation: 0,
                   ),
-                  child: Text(
+                  child: _isSubmitting
+                      ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 18.w,
+                        height: 18.w,
+                        child: const CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      ),
+                      10.horizontalSpace,
+                      Text(
+                        "Loading...",
+                        style: TextStyle(
+                            fontSize: 16.sp, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  )
+                      : Text(
                     "Continue",
                     style: TextStyle(
                         fontSize: 16.sp, fontWeight: FontWeight.w600),
