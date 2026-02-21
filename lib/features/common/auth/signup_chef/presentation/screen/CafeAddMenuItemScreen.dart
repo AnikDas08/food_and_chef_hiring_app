@@ -21,180 +21,396 @@ class CafeAddMenuItemScreen extends StatelessWidget {
     );
   }
 
+  void _showIngredientDialog(BuildContext context, CafeAddMenuItemController c) {
+    final nameCtrl = TextEditingController();
+    final qtyCtrl = TextEditingController();
+    String localUnit = c.unitsList.isNotEmpty ? c.unitsList.first : "kg";
+
+    showDialog(
+      context: context,
+      builder: (_) => StatefulBuilder(
+        builder: (ctx, setState) => AlertDialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+          title: Text("Add Ingredient", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _dialogField(nameCtrl, "Ingredient name (e.g. Tomato)", autofocus: true),
+              10.verticalSpace,
+              _dialogField(qtyCtrl, "Quantity (e.g. 2)", isNumber: true),
+              10.verticalSpace,
+              Obx(() {
+                if (c.isLoadingUnits.value) {
+                  return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                }
+                final units = c.unitsList.isEmpty ? ["kg", "g", "ml", "l"] : c.unitsList;
+                if (!units.contains(localUnit)) localUnit = units.first;
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                  decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(10.r)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: localUnit,
+                      isExpanded: true,
+                      icon: Icon(Icons.keyboard_arrow_down, size: 18.sp, color: const Color(0xFF272727)),
+                      style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
+                      items: units.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                      onChanged: (v) { if (v != null) setState(() => localUnit = v); },
+                    ),
+                  ),
+                );
+              }),
+            ],
+          ),
+          actions: [
+            TextButton(onPressed: () => Get.back(), child: Text("Cancel", style: TextStyle(fontSize: 13.sp, color: const Color(0xFF999999)))),
+            TextButton(
+              onPressed: () { c.addIngredient(nameCtrl.text, qtyCtrl.text, localUnit); Get.back(); },
+              child: Text("Add", style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600, color: const Color(0xFF1C1C1C))),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static Widget _dialogField(TextEditingController ctrl, String hint, {bool autofocus = false, bool isNumber = false}) {
+    return Builder(builder: (context) => Container(
+      decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(10.r)),
+      child: TextField(
+        controller: ctrl,
+        autofocus: autofocus,
+        keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+        style: TextStyle(fontSize: 13.sp),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+          hintText: hint,
+          hintStyle: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB)),
+        ),
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final c = CafeAddMenuItemController.instance;
 
+    // ── GetBuilder সম্পূর্ণ সরানো হয়েছে, pure Obx ব্যবহার ──
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: GetBuilder<CafeAddMenuItemController>(
-          builder: (c) => Column(
-            children: [
-              // ── Back ──
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: GestureDetector(
-                    onTap: () => Get.back(),
-                    child: Container(
-                      width: 36.w, height: 36.h,
-                      decoration: BoxDecoration(color: const Color(0xFFF5F5F5), borderRadius: BorderRadius.circular(10.r)),
-                      child: Icon(Icons.arrow_back_ios_new_rounded, size: 16.sp, color: const Color(0xFF272727)),
-                    ),
+        child: Column(
+          children: [
+            // ── Back ──
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: GestureDetector(
+                  onTap: () => Get.back(),
+                  child: Container(
+                    width: 36.w, height: 36.h,
+                    decoration: BoxDecoration(color: const Color(0xFFF5F5F5), borderRadius: BorderRadius.circular(10.r)),
+                    child: Icon(Icons.arrow_back_ios_new_rounded, size: 16.sp, color: const Color(0xFF272727)),
                   ),
                 ),
               ),
+            ),
 
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Add Menu Item",
-                          style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w700, color: const Color(0xFF272727), letterSpacing: -0.5)),
-                      8.verticalSpace,
-                      Text("Add your menu and items to showcase what you can cook for customers.",
-                          style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777), height: 1.5)),
-                      20.verticalSpace,
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Add Menu Item",
+                        style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w700,
+                            color: const Color(0xFF272727), letterSpacing: -0.5)),
+                    8.verticalSpace,
+                    Text("Add your menu and items to showcase what you can cook for customers.",
+                        style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777), height: 1.5)),
+                    20.verticalSpace,
 
-                      // ── Previews ──
-                      _label("Previews"),
-                      8.verticalSpace,
-                      GestureDetector(
-                        onTap: () => c.pickImage(),
-                        child: Container(
-                          width: 107.w, height: 112.h,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF2F2F2),
+                    // ── Preview Image ─────────────────────────────────────
+                    _label("Previews"),
+                    8.verticalSpace,
+                    Obx(() => GestureDetector(
+                      onTap: () => c.pickImage(),
+                      child: Container(
+                        width: 107.w, height: 112.h,
+                        decoration: BoxDecoration(color: const Color(0xFFF2F2F2), borderRadius: BorderRadius.circular(12.r)),
+                        child: c.previewImage.value != null
+                            ? ClipRRect(
                             borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          child: c.previewImage != null
-                              ? ClipRRect(
-                              borderRadius: BorderRadius.circular(12.r),
-                              child: Image.file(c.previewImage!, fit: BoxFit.cover))
-                              : Center(child: Icon(Icons.add, size: 28.sp, color: const Color(0xFF777777))),
-                        ),
+                            child: Image.file(c.previewImage.value!, fit: BoxFit.cover))
+                            : Center(child: Icon(Icons.add, size: 28.sp, color: const Color(0xFF777777))),
                       ),
-                      20.verticalSpace,
+                    )),
+                    20.verticalSpace,
 
-                      // ── Menu Category ──
-                      _DropdownField(
-                        title: "Menu Category",
-                        value: c.selectedCategory,
-                        items: c.categories,
-                        onChanged: c.setCategory,
-                      ),
-                      16.verticalSpace,
+                    // ── Menu Category — FULLY FIXED ───────────────────────
+                    _label("Menu Category"),
+                    8.verticalSpace,
+                    Obx(() {
+                      if (c.isLoadingCategory.value) {
+                        return Container(
+                          height: 50.h,
+                          decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
+                          child: const Center(child: CircularProgressIndicator(color: Color(0xFF1C1C1C), strokeWidth: 2)),
+                        );
+                      }
+                      if (c.categoryList.isEmpty) {
+                        return Container(
+                          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+                          decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
+                          child: Text("No category found. Add a menu section first.",
+                              style: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB))),
+                        );
+                      }
 
-                      // ── Item Name ──
-                      _label("Item Name"),
-                      8.verticalSpace,
-                      _textField(c.nameController, "e.g. Quesadilla"),
-                      16.verticalSpace,
+                      // ── safeCategoryValue — সবসময় valid, crash হবে না ──
+                      final safeVal = c.safeCategoryValue;
 
-                      // ── Description ──
-                      _label("Description"),
-                      8.verticalSpace,
-                      Container(
+                      return Container(
+                        padding: EdgeInsets.symmetric(horizontal: 14.w),
                         decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
-                        child: TextField(
-                          controller: c.descriptionController,
-                          maxLines: 4,
-                          style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(14.w),
-                            hintText: "Describe your dish...",
-                            hintStyle: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB)),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: safeVal,
+                            isExpanded: true,
+                            icon: Icon(Icons.keyboard_arrow_down, size: 18.sp, color: const Color(0xFF272727)),
+                            style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
+                            items: c.categoryList.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                            onChanged: (v) { if (v != null) c.setCategory(v); },
                           ),
                         ),
+                      );
+                    }),
+                    16.verticalSpace,
+
+                    // ── Item Name ──────────────────────────────────────────
+                    _label("Item Name"),
+                    8.verticalSpace,
+                    _textField(c.nameController, "e.g. Quesadilla"),
+                    16.verticalSpace,
+
+                    // ── Description ────────────────────────────────────────
+                    _label("Description"),
+                    8.verticalSpace,
+                    Container(
+                      decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
+                      child: TextField(
+                        controller: c.descriptionController,
+                        maxLines: 4,
+                        style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(14.w),
+                          hintText: "Describe your dish...",
+                          hintStyle: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB)),
+                        ),
                       ),
-                      16.verticalSpace,
-
-                      // ── Diet Types ──
-                      _DropdownField(title: "Diet Types", value: c.selectedDietType, items: c.dietTypes, onChanged: c.setDietType),
-                      16.verticalSpace,
-
-                      // ── Allergens ──
-                      _DropdownField(title: "Allergens", value: c.selectedAllergen, items: c.allergens, onChanged: c.setAllergen),
-                      16.verticalSpace,
-
-                      // ── Est. Preparation Time ──
-                      _DropdownField(title: "Est. Preparation Time", value: c.selectedPrepTime, items: c.times, onChanged: c.setPrepTime),
-                      16.verticalSpace,
-
-                      // ── Est. Cooking Time ──
-                      _DropdownField(title: "Est. Cooking Time", value: c.selectedCookTime, items: c.times, onChanged: c.setCookTime),
-                      16.verticalSpace,
-
-                      // ── Customize the Dish ──
-                      _SectionHeader(
-                        title: "Customize the Dish",
-                        expanded: c.customizeExpanded,
-                        onAddTap: () => _showAddDialog(context, "Customize Option", c.addCustomizeOption),
-                        onToggle: c.toggleCustomize,
-                      ),
-                      if (c.customizeExpanded) ...[
-                        8.verticalSpace,
-                        ...c.customizeOptions.map((opt) => _CheckItem(
-                          label: opt,
-                          onRemove: () => c.removeCustomizeOption(opt),
-                        )),
-                      ],
-                      16.verticalSpace,
-
-                      // ── Ingredients ──
-                      _SectionHeader(
-                        title: "Ingredients",
-                        expanded: c.ingredientsExpanded,
-                        onAddTap: () => _showAddDialog(context, "Ingredient", c.addIngredient),
-                        onToggle: c.toggleIngredients,
-                      ),
-                      if (c.ingredientsExpanded && c.ingredients.isNotEmpty) ...[
-                        8.verticalSpace,
-                        ...c.ingredients.map((ing) => _CheckItem(label: ing, onRemove: () => c.ingredients.remove(ing))),
-                      ],
-                      16.verticalSpace,
-
-                      // ── Special Equipment ──
-                      _SectionHeader(
-                        title: "Special Equipment",
-                        expanded: c.equipmentExpanded,
-                        onAddTap: () => _showAddDialog(context, "Equipment", c.addEquipment),
-                        onToggle: c.toggleEquipment,
-                      ),
-                      if (c.equipmentExpanded && c.specialEquipment.isNotEmpty) ...[
-                        8.verticalSpace,
-                        ...c.specialEquipment.map((eq) => _CheckItem(label: eq, onRemove: () => c.specialEquipment.remove(eq))),
-                      ],
-                      32.verticalSpace,
-                    ],
-                  ),
-                ),
-              ),
-
-              // ── Add Item Button ──
-              Padding(
-                padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
-                child: SizedBox(
-                  width: double.infinity, height: 54.h,
-                  child: ElevatedButton(
-                    onPressed: () => Get.back(result: c.getItemData()),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1C1C1C),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
-                      elevation: 0,
                     ),
-                    child: Text("Add Item", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
-                  ),
+                    16.verticalSpace,
+
+                    // ── Diet Types ─────────────────────────────────────────
+                    _label("Diet Types"),
+                    8.verticalSpace,
+                    Obx(() => _dropdownContainer(
+                      value: c.selectedDietType,
+                      items: c.dietTypes,
+                      onChanged: c.setDietType,
+                    )),
+                    16.verticalSpace,
+
+                    // ── Allergens ──────────────────────────────────────────
+                    _label("Allergens"),
+                    8.verticalSpace,
+                    Obx(() => _dropdownContainer(
+                      value: c.selectedAllergen,
+                      items: c.allergens,
+                      onChanged: c.setAllergen,
+                    )),
+                    16.verticalSpace,
+
+                    // ── Est. Preparation Time ──────────────────────────────
+                    _label("Est. Preparation Time"),
+                    8.verticalSpace,
+                    Obx(() => _TimeInputRow(
+                      controller: c.prepTimeController,
+                      selectedUnit: c.selectedPrepUnit,
+                      units: c.timeUnits,
+                      onUnitChanged: c.setPrepUnit,
+                    )),
+                    16.verticalSpace,
+
+                    // ── Est. Cooking Time ──────────────────────────────────
+                    _label("Est. Cooking Time"),
+                    8.verticalSpace,
+                    Obx(() => _TimeInputRow(
+                      controller: c.cookTimeController,
+                      selectedUnit: c.selectedCookUnit,
+                      units: c.timeUnits,
+                      onUnitChanged: c.setCookUnit,
+                    )),
+                    16.verticalSpace,
+
+                    // ── Customize the Dish ─────────────────────────────────
+                    Obx(() => _SectionHeader(
+                      title: "Customize the Dish",
+                      expanded: c.customizeExpanded.value,
+                      onAddTap: () => _showAddDialog(context, "Customize Option", c.addCustomizeOption),
+                      onToggle: c.toggleCustomize,
+                    )),
+                    Obx(() => c.customizeExpanded.value
+                        ? Column(
+                      children: [
+                        8.verticalSpace,
+                        ...c.customizeOptions.map((opt) => _CheckItem(label: opt, onRemove: () => c.removeCustomizeOption(opt))),
+                      ],
+                    )
+                        : const SizedBox.shrink()),
+                    16.verticalSpace,
+
+                    // ── Ingredients ────────────────────────────────────────
+                    Obx(() => _SectionHeader(
+                      title: "Ingredients",
+                      expanded: c.ingredientsExpanded.value,
+                      onAddTap: () => _showIngredientDialog(context, c),
+                      onToggle: c.toggleIngredients,
+                    )),
+                    Obx(() => c.ingredientsExpanded.value
+                        ? Column(
+                      children: [
+                        8.verticalSpace,
+                        c.ingredientsList.isEmpty
+                            ? Padding(
+                          padding: EdgeInsets.symmetric(vertical: 6.h),
+                          child: Text("No ingredients added yet.",
+                              style: TextStyle(fontSize: 12.sp, color: const Color(0xFF999999))),
+                        )
+                            : Column(
+                          children: List.generate(c.ingredientsList.length, (i) {
+                            final ing = c.ingredientsList[i];
+                            return _IngredientRow(name: ing.name, quantity: ing.quantity, unit: ing.unit, onRemove: () => c.removeIngredient(i));
+                          }),
+                        ),
+                      ],
+                    )
+                        : const SizedBox.shrink()),
+                    16.verticalSpace,
+
+                    // ── Special Equipment ──────────────────────────────────
+                    _label("Special Equipment"),
+                    8.verticalSpace,
+                    Obx(() => GestureDetector(
+                      onTap: c.toggleEquipment,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF7F7F7),
+                          borderRadius: c.equipmentExpanded.value
+                              ? BorderRadius.vertical(top: Radius.circular(12.r))
+                              : BorderRadius.circular(12.r),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                c.selectedEquipmentIds.isEmpty ? "Select equipment..." : c.selectedEquipmentNames.join(", "),
+                                style: TextStyle(fontSize: 13.sp,
+                                    color: c.selectedEquipmentIds.isEmpty ? const Color(0xFFBBBBBB) : const Color(0xFF272727)),
+                                maxLines: 1, overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Icon(c.equipmentExpanded.value ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                size: 18.sp, color: const Color(0xFF272727)),
+                          ],
+                        ),
+                      ),
+                    )),
+                    Obx(() => c.equipmentExpanded.value
+                        ? c.isLoadingEquipment.value
+                        ? Container(
+                      padding: EdgeInsets.all(16.w),
+                      decoration: BoxDecoration(
+                          color: const Color(0xFFF7F7F7),
+                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(12.r))),
+                      child: const Center(child: CircularProgressIndicator(color: Color(0xFF1C1C1C), strokeWidth: 2)),
+                    )
+                        : c.equipmentList.isEmpty
+                        ? Container(
+                      padding: EdgeInsets.all(14.w),
+                      decoration: BoxDecoration(
+                          color: const Color(0xFFF7F7F7),
+                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(12.r))),
+                      child: Text("No equipment found", style: TextStyle(fontSize: 13.sp, color: const Color(0xFF999999))),
+                    )
+                        : Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF7F7F7),
+                        border: const Border(top: BorderSide(color: Color(0xFFEEEEEE))),
+                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(12.r)),
+                      ),
+                      child: Column(
+                        children: c.equipmentList.map((eq) {
+                          final isSelected = c.selectedEquipmentIds.contains(eq.id);
+                          return InkWell(
+                            onTap: () => c.toggleEquipmentSelection(eq.id),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 18.w, height: 18.w,
+                                    decoration: BoxDecoration(
+                                      color: isSelected ? const Color(0xFF1C1C1C) : Colors.transparent,
+                                      border: Border.all(color: isSelected ? const Color(0xFF1C1C1C) : const Color(0xFFCCCCCC), width: 1.5),
+                                      borderRadius: BorderRadius.circular(4.r),
+                                    ),
+                                    child: isSelected ? Icon(Icons.check, size: 12.sp, color: Colors.white) : null,
+                                  ),
+                                  12.horizontalSpace,
+                                  Text(eq.name, style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727),
+                                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400)),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    )
+                        : const SizedBox.shrink()),
+
+                    32.verticalSpace,
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+
+
+            Padding(
+              padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
+              child: Obx(() => SizedBox(
+                width: double.infinity,
+                height: 54.h,
+                child: ElevatedButton(
+                  onPressed: c.isSubmitting.value ? null : () => c.submitMenuItem(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF1C1C1C),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
+                    elevation: 0,
+                  ),
+                  child: c.isSubmitting.value
+                      ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                      : Text("Add Item", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+                ),
+              )),
+            ),
+          ],
         ),
       ),
     );
@@ -216,40 +432,103 @@ class CafeAddMenuItemScreen extends StatelessWidget {
       ),
     ),
   );
+
+  Widget _dropdownContainer({required String value, required List<String> items, required Function(String) onChanged}) {
+
+    final safeValue = items.contains(value) ? value : (items.isNotEmpty ? items.first : null);
+    if (safeValue == null) return const SizedBox.shrink();
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 14.w),
+      decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: safeValue,
+          isExpanded: true,
+          icon: Icon(Icons.keyboard_arrow_down, size: 18.sp, color: const Color(0xFF272727)),
+          style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
+          items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          onChanged: (v) { if (v != null) onChanged(v); },
+        ),
+      ),
+    );
+  }
 }
 
-// ─── Dropdown Field ───────────────────────────────────────────────────────────
-class _DropdownField extends StatelessWidget {
-  final String title;
-  final String value;
-  final List<String> items;
-  final Function(String) onChanged;
 
-  const _DropdownField({
-    required this.title,
-    required this.value,
-    required this.items,
-    required this.onChanged,
-  });
+class _IngredientRow extends StatelessWidget {
+  final String name;
+  final String quantity;
+  final String unit;
+  final VoidCallback onRemove;
+
+  const _IngredientRow({required this.name, required this.quantity, required this.unit, required this.onRemove});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Padding(
+      padding: EdgeInsets.only(bottom: 8.h),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+        decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(10.r)),
+        child: Row(
+          children: [
+            Expanded(flex: 3, child: Text(name, style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600, color: const Color(0xFF272727)))),
+            Expanded(flex: 2, child: Text("$quantity $unit", style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777)))),
+            GestureDetector(onTap: onRemove, child: Icon(Icons.close, size: 16.sp, color: const Color(0xFF999999))),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class _TimeInputRow extends StatelessWidget {
+  final TextEditingController controller;
+  final String selectedUnit;
+  final List<String> units;
+  final Function(String) onUnitChanged;
+
+  const _TimeInputRow({required this.controller, required this.selectedUnit, required this.units, required this.onUnitChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    final safeUnit = units.contains(selectedUnit) ? selectedUnit : units.first;
+    return Row(
       children: [
-        Text(title, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: const Color(0xFF272727))),
-        8.verticalSpace,
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 14.w),
-          decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: value,
-              isExpanded: true,
-              icon: Icon(Icons.keyboard_arrow_down, size: 18.sp, color: const Color(0xFF272727)),
+        Expanded(
+          flex: 2,
+          child: Container(
+            decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
+            child: TextField(
+              controller: controller,
+              keyboardType: TextInputType.number,
               style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
-              items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-              onChanged: (v) { if (v != null) onChanged(v); },
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+                hintText: "e.g. 30",
+                hintStyle: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB)),
+              ),
+            ),
+          ),
+        ),
+        10.horizontalSpace,
+        Expanded(
+          flex: 3,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 14.w),
+            decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: safeUnit,
+                isExpanded: true,
+                icon: Icon(Icons.keyboard_arrow_down, size: 18.sp, color: const Color(0xFF272727)),
+                style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
+                items: units.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                onChanged: (v) { if (v != null) onUnitChanged(v); },
+              ),
             ),
           ),
         ),
@@ -258,19 +537,14 @@ class _DropdownField extends StatelessWidget {
   }
 }
 
-// ─── Section Header (Customize / Ingredients / Equipment) ────────────────────
+
 class _SectionHeader extends StatelessWidget {
   final String title;
   final bool expanded;
   final VoidCallback onAddTap;
   final VoidCallback onToggle;
 
-  const _SectionHeader({
-    required this.title,
-    required this.expanded,
-    required this.onAddTap,
-    required this.onToggle,
-  });
+  const _SectionHeader({required this.title, required this.expanded, required this.onAddTap, required this.onToggle});
 
   @override
   Widget build(BuildContext context) {
@@ -289,18 +563,14 @@ class _SectionHeader extends StatelessWidget {
         12.horizontalSpace,
         GestureDetector(
           onTap: onToggle,
-          child: Icon(
-            expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-            size: 20.sp,
-            color: const Color(0xFF272727),
-          ),
+          child: Icon(expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, size: 20.sp, color: const Color(0xFF272727)),
         ),
       ],
     );
   }
 }
 
-// ─── Check Item ───────────────────────────────────────────────────────────────
+
 class _CheckItem extends StatelessWidget {
   final String label;
   final VoidCallback onRemove;
@@ -315,17 +585,11 @@ class _CheckItem extends StatelessWidget {
         children: [
           Container(
             width: 18.w, height: 18.w,
-            decoration: BoxDecoration(
-              border: Border.all(color: const Color(0xFFCCCCCC)),
-              borderRadius: BorderRadius.circular(4.r),
-            ),
+            decoration: BoxDecoration(border: Border.all(color: const Color(0xFFCCCCCC)), borderRadius: BorderRadius.circular(4.r)),
           ),
           10.horizontalSpace,
           Expanded(child: Text(label, style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)))),
-          GestureDetector(
-            onTap: onRemove,
-            child: Icon(Icons.close, size: 16.sp, color: const Color(0xFF999999)),
-          ),
+          GestureDetector(onTap: onRemove, child: Icon(Icons.close, size: 16.sp, color: const Color(0xFF999999))),
         ],
       ),
     );

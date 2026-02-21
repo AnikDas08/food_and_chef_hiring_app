@@ -1,24 +1,23 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' hide MultipartFile, FormData;
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 import '../../../../../../config/api/api_end_point.dart';
 import '../../../../../../services/api/api_service.dart';
 import '../../../../../../services/storage/storage_services.dart';
 
-// ── Models ──
-class IngredientModel {
+// ── Models ───────────────────────────────────────────────────────────────────
+
+class IngredientInputModel {
   final String name;
   final String quantity;
   final String unit;
+  IngredientInputModel({required this.name, required this.quantity, required this.unit});
 
-  IngredientModel({required this.name, required this.quantity, required this.unit});
-
-  factory IngredientModel.fromJson(Map<String, dynamic> json) => IngredientModel(
-    name: json['name'] ?? '',
-    quantity: json['quantity'] ?? '',
-    unit: json['unit'] ?? '',
-  );
+  Map<String, dynamic> toJson() => {'name': name, 'quantity': quantity, 'unit': unit};
 }
 
 class MenuItemModel {
@@ -32,20 +31,13 @@ class MenuItemModel {
   final String estCookingTime;
   final String estPrepTime;
   final List<String> customizations;
-  final List<IngredientModel> ingredients;
+  final List<IngredientInputModel> ingredients;
 
   MenuItemModel({
-    required this.id,
-    required this.images,
-    required this.name,
-    required this.description,
-    required this.menuSection,
-    required this.dietTypes,
-    required this.allergens,
-    required this.estCookingTime,
-    required this.estPrepTime,
-    required this.customizations,
-    required this.ingredients,
+    required this.id, required this.images, required this.name,
+    required this.description, required this.menuSection, required this.dietTypes,
+    required this.allergens, required this.estCookingTime, required this.estPrepTime,
+    required this.customizations, required this.ingredients,
   });
 
   factory MenuItemModel.fromJson(Map<String, dynamic> json) => MenuItemModel(
@@ -60,7 +52,7 @@ class MenuItemModel {
     estPrepTime: json['est_prep_time'] ?? '',
     customizations: List<String>.from(json['customizations'] ?? []),
     ingredients: (json['ingradients'] as List? ?? [])
-        .map((e) => IngredientModel.fromJson(e))
+        .map((e) => IngredientInputModel(name: e['name'] ?? '', quantity: e['quantity'] ?? '', unit: e['unit'] ?? ''))
         .toList(),
   );
 }
@@ -73,143 +65,316 @@ class MenuSectionModel {
 
   factory MenuSectionModel.fromJson(Map<String, dynamic> json) => MenuSectionModel(
     menuSection: json['menu_section'] ?? '',
-    menus: (json['menus'] as List? ?? [])
-        .map((e) => MenuItemModel.fromJson(e))
-        .toList(),
+    menus: (json['menus'] as List? ?? []).map((e) => MenuItemModel.fromJson(e)).toList(),
   );
 }
 
-// ── Controller ──
-class CafeAddMenuItemController extends GetxController {
+class MenuCategoryModel {
+  final String id;
+  final String name;
+  MenuCategoryModel({required this.id, required this.name});
+}
 
-  // ─── Fetch Menu ───────────────────────────────────────────────────────────
+class EquipmentModel {
+  final String id;
+  final String name;
+  EquipmentModel({required this.id, required this.name});
+
+  factory EquipmentModel.fromJson(Map<String, dynamic> json) =>
+      EquipmentModel(id: json['_id'] ?? '', name: json['name'] ?? '');
+}
+
+// ── Controller ───────────────────────────────────────────────────────────────
+
+class CafeAddMenuItemController extends GetxController {
   final RxList<MenuSectionModel> menuSections = <MenuSectionModel>[].obs;
   final RxBool isLoadingMenu = false.obs;
+
+  final RxList<MenuCategoryModel> categoryModels = <MenuCategoryModel>[].obs;
+  final RxList<String> categoryList = <String>[].obs;
+  final RxBool isLoadingCategory = false.obs;
+
+  final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
+
+  // ── সব selected values RxString ──────────────────────────────────────────
+  final RxString _selectedCategory = ''.obs;
+  final RxString _selectedDietType = 'Vegetarian'.obs;
+  final RxString _selectedAllergen = 'peanuts'.obs;
+
+  String get selectedCategory => _selectedCategory.value;
+  String get selectedDietType => _selectedDietType.value;
+  String get selectedAllergen => _selectedAllergen.value;
+
+  final dietTypes = ["Vegetarian", "Vegan", "Non-Vegetarian", "Gluten-Free"];
+  final allergens = ["peanuts", "dairy", "gluten", "eggs", "shellfish"];
+
+  // ── Time ─────────────────────────────────────────────────────────────────
+  final prepTimeController = TextEditingController(text: "30");
+  final cookTimeController = TextEditingController(text: "30");
+  final RxString _selectedPrepUnit = 'Minutes'.obs;
+  final RxString _selectedCookUnit = 'Minutes'.obs;
+  String get selectedPrepUnit => _selectedPrepUnit.value;
+  String get selectedCookUnit => _selectedCookUnit.value;
+  final timeUnits = ["Minutes", "Hours"];
+
+  void setPrepUnit(String val) => _selectedPrepUnit.value = val;
+  void setCookUnit(String val) => _selectedCookUnit.value = val;
+
+  // ── Units ─────────────────────────────────────────────────────────────────
+  final RxList<String> unitsList = <String>[].obs;
+  final RxBool isLoadingUnits = false.obs;
+
+  // ── Equipment ─────────────────────────────────────────────────────────────
+  final RxList<EquipmentModel> equipmentList = <EquipmentModel>[].obs;
+  final RxBool isLoadingEquipment = false.obs;
+  final RxList<String> selectedEquipmentIds = <String>[].obs;
+  final RxBool equipmentExpanded = false.obs;
+
+  List<String> get selectedEquipmentNames => equipmentList
+      .where((e) => selectedEquipmentIds.contains(e.id))
+      .map((e) => e.name)
+      .toList();
+
+  void toggleEquipmentSelection(String id) {
+    if (selectedEquipmentIds.contains(id)) {
+      selectedEquipmentIds.remove(id);
+    } else {
+      selectedEquipmentIds.add(id);
+    }
+  }
+
+  // ── Ingredients ──────────────────────────────────────────────────────────
+  final RxList<IngredientInputModel> ingredientsList = <IngredientInputModel>[].obs;
+  final RxBool ingredientsExpanded = false.obs;
+
+  // ── Customize ────────────────────────────────────────────────────────────
+  final RxList<String> customizeOptions = <String>[
+    "Without onions", "Without iceberg lettuce", "Without cheese",
+    "Without cucumber slices", "Without Tomato", "Without Bacon",
+  ].obs;
+  final RxBool customizeExpanded = true.obs;
+
+  final Rx<File?> previewImage = Rx<File?>(null);
+  final RxBool isSubmitting = false.obs;
+
+  // ── SAFE value getters — dropdown crash থেকে protect করে ─────────────────
+  String get safeCategoryValue {
+    if (categoryList.isEmpty) return '';
+    return categoryList.contains(_selectedCategory.value)
+        ? _selectedCategory.value
+        : categoryList.first;
+  }
+
+  static CafeAddMenuItemController get instance {
+    if (!Get.isRegistered<CafeAddMenuItemController>()) {
+      Get.put(CafeAddMenuItemController());
+    }
+    return Get.find<CafeAddMenuItemController>();
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchCategories();
+    fetchMenus();
+    fetchEquipments();
+    fetchUnits();
+  }
+
+  String get selectedCategoryId {
+    final found = categoryModels.firstWhereOrNull((e) => e.name == selectedCategory);
+    return found?.id ?? '';
+  }
+
+  Future<void> fetchUnits() async {
+    isLoadingUnits.value = true;
+    try {
+      final response = await ApiService.get(ApiEndPoint.getUnits);
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        unitsList.value = List<String>.from(response.data['data'] ?? []);
+      }
+    } catch (e) {
+      debugPrint("❌ Units fetch error: $e");
+    } finally {
+      isLoadingUnits.value = false;
+    }
+  }
+
+  Future<void> fetchEquipments() async {
+    isLoadingEquipment.value = true;
+    try {
+      final response = await ApiService.get(ApiEndPoint.getEquipments);
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        final List list = response.data['data'] ?? [];
+        equipmentList.value = list.map((e) => EquipmentModel.fromJson(e)).toList();
+      }
+    } catch (e) {
+      debugPrint("❌ Equipment fetch error: $e");
+    } finally {
+      isLoadingEquipment.value = false;
+    }
+  }
+
+  Future<void> fetchCategories() async {
+    isLoadingCategory.value = true;
+    try {
+      final response = await ApiService.get("${ApiEndPoint.AddMenuSection}${LocalStorage.userId}");
+      debugPrint("📦 Category Status: ${response.statusCode}");
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        final List list = response.data['data'] ?? [];
+        categoryModels.value = list
+            .map((e) => MenuCategoryModel(id: e['_id'] ?? '', name: e['name'] ?? ''))
+            .toList();
+        categoryList.value = categoryModels.map((e) => e.name).toList();
+
+        // ── list populate হওয়ার পরেই selectedCategory set হচ্ছে ──
+        if (categoryList.isNotEmpty) {
+          _selectedCategory.value = categoryList.first;
+        }
+      }
+    } catch (e) {
+      debugPrint("❌ Category fetch error: $e");
+      Get.snackbar("Error", "Failed to load categories.", snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoadingCategory.value = false;
+    }
+  }
 
   Future<void> fetchMenus() async {
     isLoadingMenu.value = true;
     try {
-      final response = await ApiService.get(
-        "${ApiEndPoint.baseUrl}menu/type-based?id=${LocalStorage.userId}",
-      );
-
-      if (response.statusCode == 200) {
-        final data = response.data;
-        if (data['success'] == true) {
-          final List list = data['data'] ?? [];
-          menuSections.value =
-              list.map((e) => MenuSectionModel.fromJson(e)).toList();
-        }
+      final response = await ApiService.get("${ApiEndPoint.addMenuItem}${LocalStorage.userId}");
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        final List list = response.data['data'] ?? [];
+        menuSections.value = list.map((e) => MenuSectionModel.fromJson(e)).toList();
       }
     } catch (e) {
-      print("Menu fetch error: $e");
+      debugPrint("❌ Menu fetch error: $e");
     } finally {
       isLoadingMenu.value = false;
     }
   }
 
-  // ─── Text Controllers ─────────────────────────────────────────────────────
-  final nameController = TextEditingController();
-  final descriptionController = TextEditingController();
+  Future<void> submitMenuItem() async {
+    if (nameController.text.trim().isEmpty) {
+      Get.snackbar("Error", "Item name is required", snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
 
-  // ─── Dropdown values ──────────────────────────────────────────────────────
-  String selectedCategory = "Starter";
-  String selectedDietType = "Vegetarian";
-  String selectedAllergen = "peanuts";
-  String selectedPrepTime = "40 minutes";
-  String selectedCookTime = "40 minutes";
+    isSubmitting.value = true;
+    try {
+      final formData = FormData();
+      formData.fields.addAll([
+        MapEntry('name', nameController.text.trim()),
+        MapEntry('description', descriptionController.text.trim()),
+        MapEntry('menu_section', selectedCategory),
+        MapEntry('est_prep_time', "${prepTimeController.text.trim()} $selectedPrepUnit"),
+        MapEntry('est_cooking_time', "${cookTimeController.text.trim()} $selectedCookUnit"),
+        MapEntry('diet_types[]', selectedDietType),
+        MapEntry('alergens[]', selectedAllergen),
+      ]);
 
-  final categories = ["Starter", "Main Course", "Dessert", "Drinks"];
-  final dietTypes = ["Vegetarian", "Vegan", "Non-Vegetarian", "Gluten-Free"];
-  final allergens = ["peanuts", "dairy", "gluten", "eggs", "shellfish"];
-  final times = ["10 minutes", "20 minutes", "30 minutes", "40 minutes", "60 minutes"];
+      for (final opt in customizeOptions) {
+        formData.fields.add(MapEntry('customizations[]', opt));
+      }
+      for (final id in selectedEquipmentIds) {
+        formData.fields.add(MapEntry('special_equipment[]', id));
+      }
 
-  // ─── Customize the Dish ───────────────────────────────────────────────────
-  final customizeOptions = <String>[
-    "Without onions",
-    "Without iceberg lettuce",
-    "Without cheese",
-    "Without cucumber slices",
-    "Without Tomato",
-    "Without Bacon",
-  ].obs;
-  bool customizeExpanded = true;
+      formData.fields.add(MapEntry(
+        'ingradients',
+        jsonEncode(ingredientsList.map((e) => e.toJson()).toList()),
+      ));
 
-  // ─── Ingredients ──────────────────────────────────────────────────────────
-  final ingredients = <String>[].obs;
-  bool ingredientsExpanded = false;
+      if (previewImage.value != null) {
+        final file = previewImage.value!;
+        final ext = file.path.split('.').last.toLowerCase();
+        formData.files.add(MapEntry(
+          'image',
+          await MultipartFile.fromFile(
+            file.path,
+            filename: "image.$ext",
+            contentType: DioMediaType.parse(lookupMimeType(file.path) ?? 'image/jpeg'),
+          ),
+        ));
+      }
 
-  // ─── Special Equipment ────────────────────────────────────────────────────
-  final specialEquipment = <String>[].obs;
-  bool equipmentExpanded = false;
+      final response = await ApiService.post(
+        "${ApiEndPoint.addMenuItem}${LocalStorage.userId}",
+        body: formData,
+      );
 
-  // ─── Image ────────────────────────────────────────────────────────────────
-  File? previewImage;
-
-  static CafeAddMenuItemController get instance =>
-      Get.put(CafeAddMenuItemController());
-
-  @override
-  void onInit() {
-    super.onInit();
-    fetchMenus(); // ← screen খুললেই fetch হবে
-  }
-
-  // ─── Actions ──────────────────────────────────────────────────────────────
-  Future<void> pickImage() async {
-    final picked = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, imageQuality: 80);
-    if (picked != null) {
-      previewImage = File(picked.path);
-      update();
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Get.back(result: true);
+        Get.snackbar("Success", "Menu item added successfully!",
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green, colorText: Colors.white);
+      } else {
+        Get.snackbar("Error", "${response.data?['message'] ?? 'Failed to add menu item.'}",
+            snackPosition: SnackPosition.BOTTOM);
+      }
+    } catch (e) {
+      debugPrint("❌ Submit error: $e");
+      Get.snackbar("Error", "Something went wrong: $e", snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isSubmitting.value = false;
     }
   }
 
-  void setCategory(String val) { selectedCategory = val; update(); }
-  void setDietType(String val) { selectedDietType = val; update(); }
-  void setAllergen(String val) { selectedAllergen = val; update(); }
-  void setPrepTime(String val) { selectedPrepTime = val; update(); }
-  void setCookTime(String val) { selectedCookTime = val; update(); }
+  Future<void> addMenuSection(String sectionName) async {
+    menuSections.add(MenuSectionModel(menuSection: sectionName, menus: []));
+    try {
+      await ApiService.post("${ApiEndPoint.AddMenuSection}${LocalStorage.userId}", body: {"name": sectionName});
+    } catch (e) {
+      debugPrint("❌ Add section error: $e");
+    }
+  }
 
-  void toggleCustomize() { customizeExpanded = !customizeExpanded; update(); }
-  void toggleIngredients() { ingredientsExpanded = !ingredientsExpanded; update(); }
-  void toggleEquipment() { equipmentExpanded = !equipmentExpanded; update(); }
+  Future<void> deleteMenuItem(String itemId) async {
+    for (var section in menuSections) {
+      section.menus.removeWhere((item) => item.id == itemId);
+    }
+    menuSections.refresh();
+    try {
+      await ApiService.delete("${ApiEndPoint.baseUrl}menu/$itemId");
+    } catch (e) {
+      debugPrint("❌ Delete error: $e");
+    }
+  }
+
+  Future<void> pickImage() async {
+    final picked = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 80);
+    if (picked != null) previewImage.value = File(picked.path);
+  }
+
+  void setCategory(String val) => _selectedCategory.value = val;
+  void setDietType(String val) => _selectedDietType.value = val;
+  void setAllergen(String val) => _selectedAllergen.value = val;
+
+  void toggleCustomize() => customizeExpanded.value = !customizeExpanded.value;
+  void toggleIngredients() => ingredientsExpanded.value = !ingredientsExpanded.value;
+  void toggleEquipment() => equipmentExpanded.value = !equipmentExpanded.value;
 
   void addCustomizeOption(String val) {
-    if (val.trim().isNotEmpty) { customizeOptions.add(val.trim()); update(); }
+    if (val.trim().isNotEmpty) customizeOptions.add(val.trim());
   }
 
-  void removeCustomizeOption(String val) {
-    customizeOptions.remove(val);
-    update();
+  void removeCustomizeOption(String val) => customizeOptions.remove(val);
+
+  void addIngredient(String name, String quantity, String unit) {
+    if (name.trim().isNotEmpty) {
+      ingredientsList.add(IngredientInputModel(name: name.trim(), quantity: quantity.trim(), unit: unit));
+    }
   }
 
-  void addIngredient(String val) {
-    if (val.trim().isNotEmpty) { ingredients.add(val.trim()); update(); }
-  }
-
-  void addEquipment(String val) {
-    if (val.trim().isNotEmpty) { specialEquipment.add(val.trim()); update(); }
-  }
-
-  Map<String, dynamic> getItemData() => {
-    'name': nameController.text.trim(),
-    'description': descriptionController.text.trim(),
-    'category': selectedCategory,
-    'dietType': selectedDietType,
-    'allergen': selectedAllergen,
-    'prepTime': selectedPrepTime,
-    'cookTime': selectedCookTime,
-    'customizeOptions': customizeOptions.toList(),
-    'ingredients': ingredients.toList(),
-    'specialEquipment': specialEquipment.toList(),
-    'imagePath': previewImage?.path,
-  };
+  void removeIngredient(int index) => ingredientsList.removeAt(index);
 
   @override
   void onClose() {
     nameController.dispose();
     descriptionController.dispose();
+    prepTimeController.dispose();
+    cookTimeController.dispose();
     super.onClose();
   }
 }
