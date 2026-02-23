@@ -20,10 +20,10 @@ class SignInController extends GetxController {
 
   /// email and password Controller here
   TextEditingController emailController = TextEditingController(
-    text: kDebugMode ? 'developernaimul00@gmail.com' : '',
+    text: kDebugMode ? '' : '',
   );
   TextEditingController passwordController = TextEditingController(
-    text: kDebugMode ? 'hello123' : "",
+    text: kDebugMode ? '' : "",
   );
 
   /// Sign in Api call here
@@ -95,7 +95,7 @@ class SignInController extends GetxController {
   Future<void> signInChef() async {
     if (!formKey.currentState!.validate()) return;
 
-    isLoading = true;
+    isLoadingChef = true;
     update();
 
     Map<String, String> body = {
@@ -103,56 +103,44 @@ class SignInController extends GetxController {
       "password": passwordController.text,
     };
 
-    var response = await ApiService.post(
-      ApiEndPoint.signIn,
-      body: body,
-    ).timeout(const Duration(seconds: 30));
+    try {
+      var response = await ApiService.post(
+        ApiEndPoint.signIn,
+        body: body,
+      ).timeout(const Duration(seconds: 30));
 
-    if (response.statusCode == 200) {
-      var data = response.data;
-      isLoading = true;
-      update();
-      if(response.data["data"]["onboarding"]==false){
-        Get.toNamed(AppRoutes.createSignUpPassword);
-        await Utils.errorSnackBar("Complete Profile", "First Complete your all details");
-        return;
+      if (response.statusCode == 200) {
+        var data = response.data;
+
+        if (response.data["data"]["onboarding"] == false) {
+          isLoadingChef = false;
+          update();
+          Get.toNamed(AppRoutes.createSignUpPassword);
+          await Utils.errorSnackBar("Complete Profile", "First Complete your all details");
+          return;
+        }
+
+        LocalStorage.token = data['data']["accessToken"];
+        LocalStorage.myRole = data["data"]["role"];
+        LocalStorage.isLogIn = true;
+
+        await LocalStorage.setBool(LocalStorageKeys.isLogIn, LocalStorage.isLogIn);
+        await LocalStorage.setString(LocalStorageKeys.token, LocalStorage.token);
+        await LocalStorage.setString(LocalStorageKeys.myRole, LocalStorage.myRole);
+
+        emailController.clear();
+        passwordController.clear();
+
+        Get.offAllNamed(AppRoutes.chefHomeScreen);
+      } else {
+        Get.snackbar(response.statusCode.toString(), response.message);
       }
-
-      LocalStorage.token = data['data']["accessToken"];
-      //LocalStorage.userId = data['data']["attributes"]["_id"];
-      //LocalStorage.myImage = data['data']["attributes"]["image"];
-      LocalStorage.myRole = data["data"]["role"];
-      //LocalStorage.myName = data['data']["attributes"]["fullName"];
-
-      //LocalStorage.myEmail = data['data']["attributes"]["email"];
-      LocalStorage.isLogIn = true;
-
-
-
-      await LocalStorage.setBool(LocalStorageKeys.isLogIn, LocalStorage.isLogIn);
-      await LocalStorage.setString(LocalStorageKeys.token, LocalStorage.token);
-      await LocalStorage.setString(LocalStorageKeys.myRole, LocalStorage.myRole);
-      //LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
-      //LocalStorage.setString(LocalStorageKeys.myImage, LocalStorage.myImage);
-      //LocalStorage.setString(LocalStorageKeys.myName, LocalStorage.myName);
-      //LocalStorage.setString(LocalStorageKeys.myEmail, LocalStorage.myEmail);
-
-      // if (LocalStorage.myRole == 'consultant') {
-      //   Get.offAllNamed(AppRoutes.doctorHome);
-      // } else {
-      //   Get.offAllNamed(AppRoutes.patientsHome);
-      // }
-
-      emailController.clear();
-      passwordController.clear();
-      Get.toNamed(AppRoutes.chefHomeScreen);
-    } else {
-      Get.snackbar(response.statusCode.toString(), response.message);
-      isLoading=false;
+    } catch (e) {
+      debugPrint("❌ SignIn Chef error: $e");
+      Utils.errorSnackBar("Error", "Something went wrong");
+    } finally {
+      isLoadingChef = false;
       update();
     }
-
-    isLoading = false;
-    update();
   }
 }

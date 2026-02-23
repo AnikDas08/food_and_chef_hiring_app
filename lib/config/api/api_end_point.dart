@@ -23,6 +23,9 @@ class ApiEndPoint {
   static const String getUnits = "/menu/units";
   static const String getEquipments = "/equipment";
   static const String addMenuItem = "/menu?id=";
+  static const String chefProfile = 'user/profile';
+  static const String wallet = '/user/wallet';
+  static const String order = '/order';
 
 
 }

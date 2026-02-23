@@ -7,11 +7,13 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../utils/constants/app_icons.dart';
+import '../../../../../config/api/api_end_point.dart';
 import '../../../../customer/booking/presentation/widgets/details_popup.dart';
 import '../../../chef_booking/presentation/widgets/decline_pop_up.dart';
 import '../../../chef_booking/presentation/widgets/upcoming_pop_up.dart';
+import '../Model/Request_0edBooking_Model.dart';
 
-Widget requestItem(BuildContext context) {
+Widget requestItem(BuildContext context, RequestedBookingModel booking) {
   return InkWell(
     onTap: () {
       bookingDetails(context);
@@ -29,12 +31,13 @@ Widget requestItem(BuildContext context) {
           Row(
             children: [
               CommonImage(
-                imageSrc: AppImages.img8,
+                imageSrc: booking.customerImage.isNotEmpty
+                    ? '${ApiEndPoint.baseUrl}${booking.customerImage}'
+                    : AppImages.img8,
                 size: 40,
                 borderRadius: 50,
                 fill: BoxFit.fill,
               ),
-
               12.width,
               Expanded(
                 child: Column(
@@ -42,13 +45,15 @@ Widget requestItem(BuildContext context) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonText(
-                      text: "Marvin McKinney",
+                      text: booking.customerName.isNotEmpty
+                          ? booking.customerName
+                          : 'Unknown',
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: Color(0xff272727),
                     ),
                     CommonText(
-                      text: "#HC-3289445",
+                      text: '#${booking.id.length > 7 ? booking.id.substring(booking.id.length - 7) : booking.id}',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Color(0xff777777),
@@ -64,7 +69,7 @@ Widget requestItem(BuildContext context) {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: CommonText(
-                  text: "Upcoming",
+                  text: booking.status,
                   fontSize: 10,
                   fontWeight: FontWeight.w500,
                   color: Color(0xffE39400),
@@ -86,34 +91,33 @@ Widget requestItem(BuildContext context) {
                     declineBookingPopUp();
                   }
                 },
-                itemBuilder:
-                    (context) => [
-                      PopupMenuItem(
-                        value: 1,
-                        child: Row(
-                          children: const [
-                            Icon(Icons.edit, size: 20, color: Colors.black),
-                            SizedBox(width: 10),
-                            CommonText(text: "Request a Change", fontSize: 14),
-                          ],
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 1,
+                    child: Row(
+                      children: const [
+                        Icon(Icons.edit, size: 20, color: Colors.black),
+                        SizedBox(width: 10),
+                        CommonText(text: "Request a Change", fontSize: 14),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    child: Row(
+                      children: const [
+                        Icon(Icons.close, size: 20, color: Colors.red),
+                        SizedBox(width: 10),
+                        CommonText(
+                          text: "Cancel Booking",
+                          fontSize: 14,
+                          color: Colors.red,
+                          fontWeight: FontWeight.w500,
                         ),
-                      ),
-                      PopupMenuItem(
-                        value: 2,
-                        child: Row(
-                          children: const [
-                            Icon(Icons.close, size: 20, color: Colors.red),
-                            SizedBox(width: 10),
-                            CommonText(
-                              text: "Cancel Booking",
-                              fontSize: 14,
-                              color: Colors.red,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -135,7 +139,7 @@ Widget requestItem(BuildContext context) {
                       imageColor: Color(0xffF5865F),
                     ),
                     CommonText(
-                      text: "28 July, 2024 at 04:20 PM",
+                      text: booking.scheduledAt,
                       fontSize: 12,
                       left: 4,
                       color: Color(0xff272727),
@@ -152,7 +156,7 @@ Widget requestItem(BuildContext context) {
                       imageColor: Color(0xffF5865F),
                     ),
                     CommonText(
-                      text: "2 items (Chopped Burrito & Italian Pizza)",
+                      text: '${booking.totalItems} item${booking.totalItems > 1 ? 's' : ''}',
                       fontSize: 12,
                       left: 4,
                       fontWeight: FontWeight.w400,
@@ -168,12 +172,16 @@ Widget requestItem(BuildContext context) {
                       size: 16,
                       imageColor: Color(0xffF5865F),
                     ),
-                    CommonText(
-                      text: "441 9th Ave Suite 101 Manhattan, New York",
-                      fontSize: 12,
-                      left: 4,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff272727),
+                    Expanded(
+                      child: CommonText(
+                        text: booking.address.isNotEmpty
+                            ? booking.address
+                            : 'No address',
+                        fontSize: 12,
+                        left: 4,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff272727),
+                      ),
                     ),
                   ],
                 ),
@@ -195,7 +203,7 @@ Widget requestItem(BuildContext context) {
                     color: Color(0xff777777),
                   ),
                   CommonText(
-                    text: "\$164.00",
+                    text: '\$${booking.total.toStringAsFixed(2)}',
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                     top: 2,
