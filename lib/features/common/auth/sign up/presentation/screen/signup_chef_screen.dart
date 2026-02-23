@@ -152,8 +152,8 @@ class SignupChefScreen extends StatelessWidget {
                             TextSpan(
                               text: "Customer",
                               style: TextStyle(
-                                fontWeight: FontWeight.w600, // different style
-                                color: Color(0xff000000),     // change color যদি চাও
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xff000000),
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {

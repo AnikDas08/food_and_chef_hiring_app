@@ -133,7 +133,6 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                         style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777), height: 1.5)),
                     20.verticalSpace,
 
-                    // ── Preview Image ─────────────────────────────────────
                     _label("Previews"),
                     8.verticalSpace,
                     Obx(() => GestureDetector(
@@ -150,7 +149,6 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     )),
                     20.verticalSpace,
 
-                    // ── Menu Category — FULLY FIXED ───────────────────────
                     _label("Menu Category"),
                     8.verticalSpace,
                     Obx(() {
@@ -170,7 +168,6 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                         );
                       }
 
-                      // ── safeCategoryValue — সবসময় valid, crash হবে না ──
                       final safeVal = c.safeCategoryValue;
 
                       return Container(
@@ -190,13 +187,11 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     }),
                     16.verticalSpace,
 
-                    // ── Item Name ──────────────────────────────────────────
                     _label("Item Name"),
                     8.verticalSpace,
                     _textField(c.nameController, "e.g. Quesadilla"),
                     16.verticalSpace,
 
-                    // ── Description ────────────────────────────────────────
                     _label("Description"),
                     8.verticalSpace,
                     Container(
@@ -215,7 +210,6 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     ),
                     16.verticalSpace,
 
-                    // ── Diet Types ─────────────────────────────────────────
                     _label("Diet Types"),
                     8.verticalSpace,
                     Obx(() => _dropdownContainer(
@@ -225,7 +219,6 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     )),
                     16.verticalSpace,
 
-                    // ── Allergens ──────────────────────────────────────────
                     _label("Allergens"),
                     8.verticalSpace,
                     Obx(() => _dropdownContainer(
@@ -235,7 +228,6 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     )),
                     16.verticalSpace,
 
-                    // ── Est. Preparation Time ──────────────────────────────
                     _label("Est. Preparation Time"),
                     8.verticalSpace,
                     Obx(() => _TimeInputRow(
@@ -246,7 +238,6 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     )),
                     16.verticalSpace,
 
-                    // ── Est. Cooking Time ──────────────────────────────────
                     _label("Est. Cooking Time"),
                     8.verticalSpace,
                     Obx(() => _TimeInputRow(
@@ -257,7 +248,6 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     )),
                     16.verticalSpace,
 
-                    // ── Customize the Dish ─────────────────────────────────
                     Obx(() => _SectionHeader(
                       title: "Customize the Dish",
                       expanded: c.customizeExpanded.value,
@@ -274,7 +264,6 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                         : const SizedBox.shrink()),
                     16.verticalSpace,
 
-                    // ── Ingredients ────────────────────────────────────────
                     Obx(() => _SectionHeader(
                       title: "Ingredients",
                       expanded: c.ingredientsExpanded.value,
@@ -302,7 +291,6 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                         : const SizedBox.shrink()),
                     16.verticalSpace,
 
-                    // ── Special Equipment ──────────────────────────────────
                     _label("Special Equipment"),
                     8.verticalSpace,
                     Obx(() => GestureDetector(
@@ -397,16 +385,25 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 54.h,
                 child: ElevatedButton(
-                  onPressed: c.isSubmitting.value ? null : () => c.submitMenuItem(),
+                  onPressed: c.isSubmitting.value
+                      ? null
+                      : () => c.isEditMode.value
+                      ? c.updateMenuItem()
+                      : c.submitMenuItem(),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1C1C1C),
+                    disabledBackgroundColor: const Color(0xFF1C1C1C),
+                    disabledForegroundColor: Colors.white,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
                     elevation: 0,
                   ),
                   child: c.isSubmitting.value
                       ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
-                      : Text("Add Item", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+                      : Text(
+                    c.isEditMode.value ? "Update Item" : "Add Item",
+                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+                  ),
                 ),
               )),
             ),

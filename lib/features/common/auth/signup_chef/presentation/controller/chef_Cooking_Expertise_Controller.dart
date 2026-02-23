@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../../config/api/api_end_point.dart';
+import '../../../../../../config/route/app_routes.dart';
 import '../../../../../../services/api/api_service.dart';
 import '../../../../../../services/storage/storage_services.dart';
 import 'package:flutter/material.dart';
@@ -193,7 +194,7 @@ void showAccountCreatedPopup() {
               child: ElevatedButton(
                 onPressed: () {
                   Get.back();
-                  // Get.offAllNamed(AppRoutes.home);
+                  Get.offAllNamed(AppRoutes.chefHomeScreen);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF1C1C1C),

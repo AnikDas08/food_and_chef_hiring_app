@@ -34,25 +34,25 @@ class SignUpChefController extends GetxController {
   String? tempImagePath;
 
   TextEditingController firstNameController = TextEditingController(
-    text: kDebugMode ? "Namimul" : "",
+    text: kDebugMode ? "" : "",
   );
   TextEditingController lastNameController = TextEditingController(
-    text: kDebugMode ? "Hassan" : "",
+    text: kDebugMode ? "" : "",
   );
   TextEditingController emailController = TextEditingController(
-    text: kDebugMode ? "developernaimul00@gmail.com" : '',
+    text: kDebugMode ? "" : '',
   );
   TextEditingController passwordController = TextEditingController(
-    text: kDebugMode ? 'hello123' : '',
+    text: kDebugMode ? '' : '',
   );
   TextEditingController confirmPasswordController = TextEditingController(
-    text: kDebugMode ? 'hello123' : '',
+    text: kDebugMode ? '' : '',
   );
   TextEditingController numberController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController dietaryController = TextEditingController();
   TextEditingController otpController = TextEditingController(
-    text: kDebugMode ? '123456' : '',
+    text: kDebugMode ? '' : '',
   );
 
   List dietaryOption = [
@@ -139,7 +139,6 @@ class SignUpChefController extends GetxController {
     update();
   }
 
-  // ── 2. Verify OTP → userId + token save ──
   Future<void> verifyOtpRepo() async {
     Get.toNamed(AppRoutes.create_password_chef_screen);
     isLoadingVerify = true;

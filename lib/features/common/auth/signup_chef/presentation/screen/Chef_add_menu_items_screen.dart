@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../../config/api/api_end_point.dart';
-import '../../../../../../services/storage/storage_services.dart';
 import '../controller/Chef_add_menu_controller.dart';
 import 'CafeAddMenuItemScreen.dart';
 import 'Chef_cooking_expertise_screen.dart';
@@ -64,7 +63,10 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700, color: const Color(0xFF272727))),
                         GestureDetector(
                           onTap: () async {
+                            c.resetForm();
+                            await c.fetchCategories();
                             await Get.to(() => const CafeAddMenuItemScreen());
+                            c.resetForm();
                             c.fetchMenus();
                           },
                           child: Container(
@@ -265,7 +267,10 @@ class _ApiMenuCard extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () async {
+                          c.loadItemForEdit(item);
+                          await c.fetchCategories();
                           await Get.to(() => const CafeAddMenuItemScreen());
+                          c.resetForm();
                           c.fetchMenus();
                         },
                         child: Container(
@@ -284,6 +289,7 @@ class _ApiMenuCard extends StatelessWidget {
                           ]),
                         ),
                       ),
+
                       12.horizontalSpace,
                       GestureDetector(
                         onTap: () => c.deleteMenuItem(item.id),
@@ -310,7 +316,9 @@ class _ApiMenuCard extends StatelessWidget {
                 bottomRight: Radius.circular(12.r)),
             child: item.images.isNotEmpty
                 ? Image.network(
-              "${ApiEndPoint.socketUrl}${item.images.first}",
+              item.images.first.startsWith('http')
+                  ? item.images.first
+                  : "${ApiEndPoint.imageUrl}${item.images.first}",
               width: 110.w, height: 130.h, fit: BoxFit.cover,
               loadingBuilder: (_, child, loadingProgress) {
                 if (loadingProgress == null) return child;
@@ -341,5 +349,4 @@ class _ApiMenuCard extends StatelessWidget {
     color: const Color(0xFFE0E0E0),
     child: Icon(Icons.restaurant, color: const Color(0xFF999999), size: 28.sp),
   );
-
 }
