@@ -13,7 +13,7 @@ import '../../../chef_booking/presentation/widgets/decline_pop_up.dart';
 import '../../../chef_booking/presentation/widgets/upcoming_pop_up.dart';
 import '../Model/Request_0edBooking_Model.dart';
 
-Widget requestItem(BuildContext context, RequestedBookingModel booking) {
+Widget requestItem(BuildContext context, RequestedBookingModel booking, {bool isRequested = false}) {
   return InkWell(
     onTap: () {
       bookingDetails(context);
@@ -62,19 +62,20 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking) {
                 ),
               ),
 
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
-                decoration: BoxDecoration(
-                  color: Color(0xffF5EDDD),
-                  borderRadius: BorderRadius.circular(10),
+              if (!isRequested)
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
+                  decoration: BoxDecoration(
+                    color: Color(0xffF5EDDD),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: CommonText(
+                    text: booking.status,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xffE39400),
+                  ),
                 ),
-                child: CommonText(
-                  text: booking.status,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xffE39400),
-                ),
-              ),
 
               PopupMenuButton<int>(
                 padding: EdgeInsets.zero,
@@ -211,27 +212,61 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking) {
                 ],
               ),
               Spacer(),
-              InkWell(
-                onTap: upcomingPopUp,
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 8.h,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12.sp),
-                    border: Border.all(color: Color(0xffF1F1F1)),
-                  ),
-                  child: CommonText(
-                    text: "Request Change",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
-                    right: 4,
+
+              if (isRequested) ...[
+                InkWell(
+                  onTap: () => declineBookingPopUp(),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12.sp),
+                      border: Border.all(color: Color(0xffFD713F)),
+                    ),
+                    child: CommonText(
+                      text: "Decline",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xffFD713F),
+                    ),
                   ),
                 ),
-              ),
+                8.width,
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                    decoration: BoxDecoration(
+                      color: Color(0xff272727),
+                      borderRadius: BorderRadius.circular(12.sp),
+                    ),
+                    child: CommonText(
+                      text: "Accept",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ] else
+                InkWell(
+                  onTap: upcomingPopUp,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12.sp),
+                      border: Border.all(color: Color(0xffF1F1F1)),
+                    ),
+                    child: CommonText(
+                      text: "Request Change",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff272727),
+                      right: 4,
+                    ),
+                  ),
+                ),
             ],
           ),
         ],

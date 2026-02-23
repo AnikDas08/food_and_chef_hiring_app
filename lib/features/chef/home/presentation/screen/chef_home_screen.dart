@@ -207,12 +207,10 @@ class ChefHomeScreen extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: c.requestedBookings.length,
                 itemBuilder: (context, index) {
-                  return requestItem(context, c.requestedBookings[index]);
+                  return requestItem(context, c.requestedBookings[index], isRequested: true);
                 },
               );
             }),
-
-
             32.height,
 
             Row(
