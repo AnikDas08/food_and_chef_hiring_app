@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
+import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../component/image/common_image.dart';
@@ -45,6 +46,7 @@ class ProfileScreen extends StatelessWidget {
 
           /// Body Section Starts here
           body: GetBuilder<ProfileController>(
+            init: ProfileController(),
             builder: (controller) {
               return Padding(
                 padding: EdgeInsets.all(16.w),
@@ -63,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
                           Row(
                             children: [
                               CommonImage(
-                                imageSrc: AppImages.image3,
+                                imageSrc: ApiEndPoint.imageUrl+controller.profileImage,
                                 size: 52,
                                 fill: BoxFit.fill,
                                 borderRadius: 50,
@@ -74,13 +76,13 @@ class ProfileScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CommonText(
-                                      text: "Darren Monarch",
+                                      text: controller.name,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                       color: Color(0xff272727),
                                     ),
                                     CommonText(
-                                      text: "darrenmonarch@gmail.com",
+                                      text: controller.email,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
                                       color: Color(0xff777777),
@@ -91,7 +93,7 @@ class ProfileScreen extends StatelessWidget {
                             ],
                           ),
                           16.height,
-                          CommonTextField(
+                          /*CommonTextField(
                             keyboardType: TextInputType.none,
                             borderColor: Color(0xffF1F1F1),
                             borderRadius: 8,
@@ -111,7 +113,7 @@ class ProfileScreen extends StatelessWidget {
                               selectedItem: controller.selectedProfile,
                               onTap: controller.onChangeProfile,
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                     ),
@@ -146,11 +148,11 @@ class ProfileScreen extends StatelessWidget {
                             title: AppString.address,
                             onTap: () => Get.toNamed(AppRoutes.addressScreen),
                           ),
-                          Item(
+                          /*Item(
                             icon: CupertinoIcons.creditcard,
                             title: AppString.paymentMethods,
                             onTap: () => Get.toNamed(AppRoutes.paymentMethod),
-                          ),
+                          ),*/
                           Item(
                             icon: CupertinoIcons.arrow_counterclockwise,
                             title: AppString.pastOrders,

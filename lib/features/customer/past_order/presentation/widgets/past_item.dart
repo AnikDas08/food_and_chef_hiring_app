@@ -1,77 +1,104 @@
+// lib/features/orders/widgets/past_item.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
-import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-
+import '../../../../../config/api/api_end_point.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
+import '../controller/past_order_controller.dart';
+import '../data/past_order_model.dart';
 import 'past_item_details_popup.dart';
 
-Widget pastItem(BuildContext context) {
+Widget pastItem(BuildContext context, PastOrderModel order) {
+  // ── Status color helper ───────────────────────────────────
+  Color statusBg;
+  Color statusText;
+  switch (order.status.toLowerCase()) {
+    case 'completed':
+      statusBg = const Color(0xffDBEBD9);
+      statusText = const Color(0xff2F8328);
+      break;
+    case 'cancelled':
+      statusBg = const Color(0xffFFE5E5);
+      statusText = const Color(0xffFF3C3C);
+      break;
+    default:
+      statusBg = const Color(0xffFFF3E0);
+      statusText = const Color(0xffF57C00);
+  }
+
   return InkWell(
     onTap: () {
-      bookingDetails(context);
+      final controller = Get.find<PastOrderController>();
+      controller.fetchAndShowDetail(context, order.id);
     },
     child: Container(
       padding: EdgeInsets.all(12.sp),
-      margin: EdgeInsets.only(top: 16),
+      margin: const EdgeInsets.only(top: 16),
       decoration: BoxDecoration(
-        color: Color(0xffF2F2F2),
+        color: const Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(12.sp),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // ── Header Row ──────────────────────────────────────
           Row(
             children: [
+              // Chef image
               CommonImage(
-                imageSrc: AppImages.image3,
+                imageSrc: "${ApiEndPoint.imageUrl}${order.chef.image}",
                 size: 40,
                 borderRadius: 50,
-                fill: BoxFit.fill,
+                fill: BoxFit.cover,
               ),
 
               12.width,
+
+              /// Chef name + order ID
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonText(
-                      text: "Javier A.",
+                      text: order.chef.name,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                     ),
                     CommonText(
-                      text: "#HC-59375959",
+                      text: order.orderId,
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xff777777),
+                      color: const Color(0xff777777),
                     ),
                   ],
                 ),
               ),
 
+              // Status badge
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
+                padding:
+                EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
                 decoration: BoxDecoration(
-                  color: Color(0xffDBEBD9),
+                  color: statusBg,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: CommonText(
-                  text: "Completed",
+                  text: order.status,
                   fontSize: 10,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xff2F8328),
+                  color: statusText,
                 ),
               ),
 
-              PopupMenuButton<int>(
+              // More options menu
+              /*PopupMenuButton<int>(
                 padding: EdgeInsets.zero,
                 menuPadding: EdgeInsets.zero,
                 icon: const Icon(Icons.more_vert),
@@ -80,96 +107,120 @@ Widget pastItem(BuildContext context) {
                 ),
                 onSelected: (value) {
                   if (value == 1) {
-                    // Request a Change action
+                    // Request a Change
                   } else if (value == 2) {
-                    // Cancel Booking action
+                    // Cancel Booking
                   }
                 },
-                itemBuilder:
-                    (context) => [
-                      PopupMenuItem(
-                        value: 1,
-                        child: Row(
-                          children: const [
-                            Icon(Icons.edit, size: 20, color: Colors.black),
-                            SizedBox(width: 10),
-                            CommonText(text: "Request a Change", fontSize: 14),
-                          ],
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 1,
+                    child: Row(
+                      children: const [
+                        Icon(Icons.edit, size: 20, color: Colors.black),
+                        SizedBox(width: 10),
+                        CommonText(text: "Request a Change", fontSize: 14),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    child: Row(
+                      children: const [
+                        Icon(Icons.close, size: 20, color: Colors.red),
+                        SizedBox(width: 10),
+                        CommonText(
+                          text: "Cancel Booking",
+                          fontSize: 14,
+                          color: Colors.red,
+                          fontWeight: FontWeight.w500,
                         ),
-                      ),
-                      PopupMenuItem(
-                        value: 2,
-                        child: Row(
-                          children: const [
-                            Icon(Icons.close, size: 20, color: Colors.red),
-                            SizedBox(width: 10),
-                            CommonText(
-                              text: "Cancel Booking",
-                              fontSize: 14,
-                              color: Colors.red,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-              ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),*/
             ],
           ),
 
           16.height,
+
+          // ── Order Info Box ──────────────────────────────────
           Container(
             padding: EdgeInsets.all(8.sp),
             decoration: BoxDecoration(
-              color: Color(0xffF2F2F2),
-              border: Border.all(color: Color(0xffF1F1F1)),
+              color: const Color(0xffF2F2F2),
+              border: Border.all(color: const Color(0xffF1F1F1)),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Column(
               children: [
+                // Date & time
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CommonImage(
                       imageSrc: AppIcons.date,
                       size: 16,
-                      imageColor: Color(0xffA7A7A7),
+                      imageColor: const Color(0xffA7A7A7),
                     ),
-                    CommonText(
-                      text: "29 July, 2024 at 12:30 PM",
-                      fontSize: 12,
-                      left: 4,
-                      fontWeight: FontWeight.w400,
+                    SizedBox(width: 20.h,),
+                    Flexible(
+                      child: CommonText(
+                        text: _formatDate(order.formattedDate),
+                        fontSize: 12,
+                        left: 4,
+                        fontWeight: FontWeight.w400,
+                        textAlign: TextAlign.start,
+                      ),
                     ),
                   ],
                 ),
                 8.height,
+
+                // Items
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CommonImage(
                       imageSrc: AppIcons.ingredients,
                       size: 16,
-                      imageColor: Color(0xffA7A7A7),
+                      imageColor: const Color(0xffA7A7A7),
                     ),
-                    CommonText(
-                      text: "2 items (Chopped Burrito & Italian Pizza)",
-                      fontSize: 12,
-                      left: 4,
-                      fontWeight: FontWeight.w400,
+                    SizedBox(width: 20.h,),
+                    Flexible(
+                      child: CommonText(
+                        text:
+                        "${order.itemCountLabel} (${order.itemNames})",
+                        fontSize: 12,
+                        left: 4,
+                        fontWeight: FontWeight.w400,
+                        maxLines: 1,
+                      ),
                     ),
                   ],
                 ),
                 8.height,
+
+                // Address
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CommonImage(
                       imageSrc: AppIcons.location,
                       size: 16,
-                      imageColor: Color(0xffA7A7A7),
+                      imageColor: const Color(0xffA7A7A7),
                     ),
-                    CommonText(
-                      text: "1901 Thornridge Cir. Shiloh, Hawaii 81063",
-                      fontSize: 12,
-                      left: 4,
-                      fontWeight: FontWeight.w400,
+                    SizedBox(width: 20.h,),
+                    Flexible(
+                      child: CommonText(
+                        text: order.formattedAddress,
+                        fontSize: 12,
+                        left: 4,
+                        fontWeight: FontWeight.w400,
+                        maxLines: 1,
+                        textAlign: TextAlign.start,
+                      ),
                     ),
                   ],
                 ),
@@ -177,12 +228,13 @@ Widget pastItem(BuildContext context) {
             ),
           ),
 
-          12.height,
-
-          Divider(color: Color(0xffF9F9F9)),
+          const Divider(color: Color(0xffF9F9F9)),
           8.height,
+
+          // ── Footer Row ──────────────────────────────────────
           Row(
             children: [
+              // Total price
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -190,41 +242,53 @@ Widget pastItem(BuildContext context) {
                     text: AppString.total,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xff777777),
+                    color: const Color(0xff777777),
                   ),
                   CommonText(
-                    text: "\$145.00",
+                    text: "\$${order.userPaid.toStringAsFixed(2)}",
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
+                    color: const Color(0xff272727),
                     top: 2,
                   ),
                 ],
               ),
-              Spacer(),
+
+              const Spacer(),
+
+              // Rating (show 0 as "Rate" if not yet rated)
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                padding:
+                EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12.sp),
-                  border: Border.all(color: Color(0xffF1F1F1)),
+                  border: Border.all(color: const Color(0xffF1F1F1)),
                 ),
                 child: Row(
                   children: [
                     CommonText(
-                      text: "You rated 5",
+                      text: order.rating > 0
+                          ? "You rated ${order.rating}"
+                          : "Rate",
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                       right: 4,
                     ),
-                    Icon(Icons.star, color: Color(0xffFD713F), size: 16),
+                    Icon(
+                      Icons.star,
+                      color: order.rating > 0
+                          ? const Color(0xffFD713F)
+                          : const Color(0xffCCCCCC),
+                      size: 16,
+                    ),
                   ],
                 ),
               ),
+
+              // Reorder button
               InkWell(
-                onTap: () {
-                  Get.toNamed(AppRoutes.reorder);
-                },
+                onTap: () => Get.toNamed(AppRoutes.reorder, arguments: order),
                 child: Container(
                   margin: EdgeInsets.only(left: 8.w),
                   padding: EdgeInsets.symmetric(
@@ -232,16 +296,15 @@ Widget pastItem(BuildContext context) {
                     vertical: 8.sp,
                   ),
                   decoration: BoxDecoration(
-                    color: Color(0xff272727),
+                    color: const Color(0xff272727),
                     borderRadius: BorderRadius.circular(12.sp),
-                    border: Border.all(color: Color(0xffF1F1F1)),
+                    border: Border.all(color: const Color(0xffF1F1F1)),
                   ),
                   child: CommonText(
                     text: AppString.reorder,
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
-                    right: 4,
                   ),
                 ),
               ),
@@ -251,4 +314,21 @@ Widget pastItem(BuildContext context) {
       ),
     ),
   );
+}
+
+/// Formats ISO date string → "27 Feb, 2026 at 08:30 PM"
+String _formatDate(String isoDate) {
+  try {
+    final dt = DateTime.parse(isoDate).toLocal();
+    final months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    final hour = dt.hour > 12 ? dt.hour - 12 : dt.hour == 0 ? 12 : dt.hour;
+    final minute = dt.minute.toString().padLeft(2, '0');
+    final period = dt.hour >= 12 ? 'PM' : 'AM';
+    return "${dt.day} ${months[dt.month - 1]}, ${dt.year} at $hour:$minute $period";
+  } catch (_) {
+    return isoDate;
+  }
 }

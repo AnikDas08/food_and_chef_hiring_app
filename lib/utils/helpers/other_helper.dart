@@ -95,9 +95,24 @@ class OtherHelper {
     if (pickedFile != null) {
       final croppedFile = await ImageCropper().cropImage(
         sourcePath: pickedFile.path,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Edit Image',
+            toolbarColor: Colors.black, // Background color of the toolbar
+            toolbarWidgetColor: Colors.white, // Color of the "Checkmark" (Save) icon
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true,
+          ),
+          IOSUiSettings(
+            title: 'Edit Image',
+            cancelButtonTitle: 'Cancel',
+            doneButtonTitle: 'Done', // This acts as your Save button
+          ),
+        ],
       );
 
+      // This returns the path of the SAVED/CROPPED image
       return croppedFile?.path;
     }
     return null;

@@ -9,26 +9,18 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../controller/search_controller.dart';
 import 'chef_item.dart';
 
-List _list = ["Recommended", "Rating", "Price", "Next Available"];
+const List<String> _sortList = [
+  "Recommended",
+  "Rating",
+  "Price",
+  "Next Available",
+];
 
-class SearchItem extends StatefulWidget {
+class SearchItem extends StatelessWidget {
   const SearchItem({super.key});
 
   @override
-  State<SearchItem> createState() => _SearchItemState();
-}
-
-class _SearchItemState extends State<SearchItem> {
-  String selectedValue = _list[0];
-
-  void onChangeValue(String value) {
-    setState(() => selectedValue = value);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // ✅ No API call here — controller already has the right data
-    // (nearbyChefsList is populated by getNearbyChefs OR getNearbyChefsByTerm)
     return GetBuilder<SearchController>(
       builder: (controller) {
         final chefs = controller.nearbyChefsList;
@@ -38,32 +30,35 @@ class _SearchItemState extends State<SearchItem> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Sort by label
+            // ── Sort by label ────────────────────────────────────────────
             CommonText(
               text: AppString.sortBy,
               top: 24,
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: Color(0xff272727),
+              color: const Color(0xff272727),
               bottom: 12,
             ).start,
 
-            // Sort filter chips
+            // ── Sort filter chips ────────────────────────────────────────
             SizedBox(
               height: 36.h,
               child: ListView.builder(
-                itemCount: _list.length,
+                itemCount: _sortList.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  final String value = _list[index];
+                  final String label = _sortList[index];
+                  final bool isSelected =
+                      controller.selectedSortLabel == label;
+
                   return InkWell(
-                    onTap: () => onChangeValue(value),
+                    onTap: () => controller.onSortChanged(label),
                     child: Container(
                       margin: EdgeInsets.only(right: 8.w),
                       decoration: BoxDecoration(
-                        color: value == selectedValue
-                            ? Color(0xff272727)
-                            : Color(0xffF2F2F2),
+                        color: isSelected
+                            ? const Color(0xff272727)
+                            : const Color(0xffF2F2F2),
                         borderRadius: BorderRadius.circular(10.r),
                       ),
                       child: Padding(
@@ -72,47 +67,47 @@ class _SearchItemState extends State<SearchItem> {
                           vertical: 10.h,
                         ),
                         child: CommonText(
-                          text: value,
+                          text: label,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
-                          color: value == selectedValue
+                          color: isSelected
                               ? Colors.white
-                              : Color(0xff272727),
+                              : const Color(0xff272727),
                         ),
                       ),
-                    ),
-                  ).center;
+                    ).center,
+                  );
                 },
               ),
             ),
 
-            // Related results label
+            // ── Related results label ────────────────────────────────────
             CommonText(
               text: AppString.relatedResult,
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: Color(0xff272727),
+              color: const Color(0xff272727),
               top: 20,
             ).start,
             CommonText(
               text: "Showing ${chefs.length} related results",
               fontSize: 12,
-              color: Color(0xff777777),
+              color: const Color(0xff777777),
               fontWeight: FontWeight.w400,
               top: 2,
               bottom: 16,
             ).start,
 
-            // Grid
+            // ── Grid ─────────────────────────────────────────────────────
             Expanded(
               child: isLoading
-                  ? CommonLoader()
+                  ? const CommonLoader()
                   : chefs.isEmpty
                   ? Center(
                 child: CommonText(
                   text: "No chefs found nearby",
                   fontSize: 14,
-                  color: Color(0xff777777),
+                  color: const Color(0xff777777),
                   fontWeight: FontWeight.w400,
                 ),
               )

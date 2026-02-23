@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
+import 'package:new_untitled/features/customer/chef_details/presentation/widgets/availability_pop_up.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -217,6 +218,9 @@ class ChefDetailsScreen extends StatelessWidget {
                         CommonButton(
                           titleText: AppString.checkAvailability,
                           titleColor: Colors.white,
+                          onTap: (){
+                            availabilityPopup(context);
+                          },
                         ),
 
                         const SizedBox(height: 16),

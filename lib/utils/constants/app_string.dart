@@ -279,7 +279,7 @@ class AppString {
   static const String addAddress = "Add Address";
   static const String addressDetails = "Address Details";
   static const String useCurrentLocation = "Use Current Location";
-  static const String makeAsActiveAddress = "Make as Active Address";
+  static const String makeAsActiveAddress = "Make Default Address";
   static const String payment = "Payment";
   static const String defaultPayment = "DEFAULT PAYMENT";
   static const String otherPaymentMethod = "OTHER PAYMENT METHOD";

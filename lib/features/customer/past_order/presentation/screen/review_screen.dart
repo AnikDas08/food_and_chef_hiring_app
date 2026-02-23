@@ -1,3 +1,5 @@
+// lib/features/orders/view/review_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,299 +8,364 @@ import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-
 import '../../../../../component/text/common_text.dart';
-import '../../../../../utils/constants/app_images.dart';
+import '../../../../../config/api/api_end_point.dart';
 import '../../../../../utils/constants/app_string.dart';
-import '../../../cart/presentation/widgets/order_summary.dart';
-import '../widgets/review_success_pop_up.dart';
+import '../controller/review_controller_here.dart';
 
 class ReviewScreen extends StatelessWidget {
-  ReviewScreen({super.key});
-
-  final TextEditingController dateController = TextEditingController();
+  const ReviewScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: CommonText(
-          text: "Leave Chef Rating",
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-          color: Color(0xff272727),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                12.width,
-                CommonImage(
-                  imageSrc: AppImages.image3,
-                  size: 40,
-                  borderRadius: 50,
-                  fill: BoxFit.fill,
-                ),
+    return GetBuilder<ReviewController>(
+      init: ReviewController(),
+      builder: (controller) {
+        return Scaffold(
+          appBar: AppBar(
+            title: CommonText(
+              text: "Leave Chef Rating",
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff272727),
+            ),
+          ),
 
-                12.width,
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CommonText(
-                        text: "Javier A.",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff272727),
-                        bottom: 2,
-                        left: 3,
-                      ),
-                      Row(
+          body: controller.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+                // ── Chef Info ──────────────────────────
+                Row(
+                  children: [
+                    12.width,
+                    CommonImage(
+                      imageSrc:
+                      "${ApiEndPoint.imageUrl}${controller.order.chef.image}",
+                      size: 40,
+                      borderRadius: 50,
+                      fill: BoxFit.cover,
+                    ),
+                    12.width,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.star, size: 16, color: Color(0xffFD713F)),
                           CommonText(
-                            text: "4.5  (482 Reviews)",
+                            text: controller.order.chef.name,
                             fontSize: 12,
-                            left: 2,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xff272727),
+                            bottom: 2,
+                          ),
+                          CommonText(
+                            text: controller.order.orderId,
+                            fontSize: 12,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff777777),
+                            color: const Color(0xff777777),
                           ),
                         ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 8.sp, vertical: 5.sp),
+                      decoration: BoxDecoration(
+                        color: const Color(0xffDBEBD9),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: CommonText(
+                        text: controller.order.status,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xff2F8328),
+                      ),
+                    ),
+                  ],
+                ),
+
+                24.height,
+
+                // ── Order Details (expandable) ─────────
+                InkWell(
+                  onTap: controller.toggleExpanded,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CommonText(
+                        text: AppString.orderDetails,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xff272727),
+                      ),
+                      Icon(
+                        controller.isExpanded
+                            ? Icons.keyboard_arrow_up_outlined
+                            : Icons.keyboard_arrow_down_outlined,
+                        color: const Color(0xff777777),
                       ),
                     ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 8.sp,
-                    vertical: 5.sp,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Color(0xffDBEBD9),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: CommonText(
-                    text: "Completed",
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff2F8328),
-                  ),
-                ),
-              ],
-            ),
 
-            24.height,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+                if (controller.isExpanded) ...[
+                  16.height,
+                  ...controller.order.staticItems.map(
+                        (item) => Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                CommonText(
+                                  text: item.menuName,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xff4E4E4E),
+                                ),
+                                CommonText(
+                                  text: "${item.quantity} Item${item.quantity > 1 ? 's' : ''}"
+                                      "${item.customizations.isNotEmpty ? ' + ${item.customizations.map((c) => c.replaceAll('_', ' ')).join(', ')}' : ''}",
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: const Color(0xff777777),
+                                ),
+                              ],
+                            ),
+                          ),
+                          CommonText(
+                            text: "\$${item.totalPrice.toStringAsFixed(2)}",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xff272727),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Divider(),
+                  _PriceRow(label: "Subtotal",    value: controller.order.priceBreakdown.subtotal),
+                  _PriceRow(label: "Tax",         value: controller.order.priceBreakdown.taxs),
+                  _PriceRow(label: "Service Fee", value: controller.order.priceBreakdown.serviceFee),
+                  const Divider(),
+                  _PriceRow(label: "Total",       value: controller.order.priceBreakdown.total, isBold: true),
+                ],
+
+                28.height,
+
+                // ── Review Text ────────────────────────
                 CommonText(
-                  text: AppString.orderDetails,
+                  text: "Review",
+                  bottom: 12,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xff272727),
+                  color: const Color(0xff272727),
                 ),
-                Icon(
-                  Icons.keyboard_arrow_down_outlined,
-                  color: Color(0xff777777),
+                CommonTextField(
+                  maxLines: 4,
+                  keyboardType: TextInputType.multiline,
+                  hintText: "Write your review here...",
+                  onChanged: controller.onReviewChanged,
                 ),
-              ],
-            ),
-            28.height,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CommonText(
-                      text: "Chopped Burrito",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff4E4E4E),
-                    ),
-                    CommonText(
-                      text: "2 Items + Without Onions",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff777777),
-                    ),
-                  ],
-                ),
-                CommonText(
-                  text: "\$45.00",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff272727),
-                ),
-              ],
-            ),
-            12.height,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CommonText(
-                      text: "Chopped Burrito",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff4E4E4E),
-                    ),
-                    CommonText(
-                      text: "2 Items + Without Onions",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff777777),
-                    ),
-                  ],
-                ),
-                CommonText(
-                  text: "\$45.00",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff272727),
-                ),
-              ],
-            ),
-            32.height,
-            orderSummary(),
-            28.height,
 
-            CommonText(
-              text: "Reviews",
-              bottom: 16,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xff272727),
-            ),
+                24.height,
 
-            CommonTextField(
-              maxLines: 3,
-              keyboardType: TextInputType.multiline,
-              controller: TextEditingController(
-                text:
-                    "Javier was awesome! The food was so delicious! Everything was well done, and it made the experience great. I’d love to work with Javier again!",
-              ),
-            ),
-            CommonText(
-              text: "Ratings",
-              bottom: 16,
-              top: 16,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xff272727),
-            ),
-            _ratingItem("Quality and Taste"),
-            _ratingItem("Cleanliness"),
-            _ratingItem("Timeliness"),
-            _ratingItem("Friendliness"),
-            _ratingItem("Communication"),
-            8.height,
-            Container(
-              padding: EdgeInsets.all(12),
-              width: Get.width,
-              margin: EdgeInsets.only(bottom: 8),
-              decoration: BoxDecoration(
-                color: Color(0xffF2F2F2),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CommonText(
-                    text: "Average Rating",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
+                // ── All 5 Rating Fields — always empty ─
+                CommonText(
+                  text: "Ratings",
+                  bottom: 12,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xff272727),
+                ),
+
+                _RatingItem(
+                  title: "Quality and Taste",
+                  onRatingUpdate: controller.onQualityChanged,
+                ),
+                _RatingItem(
+                  title: "Cleanliness",
+                  onRatingUpdate: controller.onCleanlinessChanged,
+                ),
+                _RatingItem(
+                  title: "Timeliness",
+                  onRatingUpdate: controller.onTimelinessChanged,
+                ),
+                _RatingItem(
+                  title: "Friendliness",
+                  onRatingUpdate: controller.onFriendlinessChanged,
+                ),
+                _RatingItem(
+                  title: "Communication",
+                  onRatingUpdate: controller.onCommunicationChanged,
+                ),
+
+                8.height,
+
+                // ── Average Rating (computed) ──────────
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  width: Get.width,
+                  margin: const EdgeInsets.only(bottom: 8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xffF2F2F2),
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  Spacer(),
-                  RatingBar.builder(
-                    initialRating: 4,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemSize: 20,
-                    wrapAlignment: WrapAlignment.spaceEvenly,
-                    itemBuilder:
-                        (context, _) => Icon(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CommonText(
+                        text: "Average Rating",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xff272727),
+                      ),
+                      const Spacer(),
+                      RatingBar.builder(
+                        initialRating: controller.averageRating,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize: 20,
+                        ignoreGestures: true, // read-only
+                        itemBuilder: (context, _) => const Icon(
                           Icons.star_rounded,
                           color: Color(0xffFD713F),
-                          size: 20,
                         ),
-                    onRatingUpdate: (rating) {},
+                        onRatingUpdate: (_) {},
+                      ),
+                      8.width,
+                      CommonText(
+                        text: controller.averageRating > 0
+                            ? "${controller.averageRating}"
+                            : "-",
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xff272727),
+                      ),
+                    ],
                   ),
+                ),
 
-                  CommonText(
-                    text: "4.5",
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
-                  ),
-                ],
+                20.height,
+              ],
+            ),
+          ),
+
+          persistentFooterButtons: [
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                child: controller.isSubmitting
+                    ? const Center(child: CircularProgressIndicator())
+                    : CommonButton(
+                  titleText: AppString.submit,
+                  onTap: controller.submitReview,
+                ),
               ),
             ),
           ],
-        ),
-      ),
-      persistentFooterButtons: [
-        SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-            child: CommonButton(
-              titleText: AppString.submit,
-              onTap: reviewSuccessPopUp,
-            ),
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 }
 
-Widget _ratingItem(String title) {
-  return Container(
-    padding: EdgeInsets.all(12),
-    width: Get.width,
-    margin: EdgeInsets.only(bottom: 8),
-    decoration: BoxDecoration(
-      color: Color(0xffF2F2F2),
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        CommonText(
-          text: title,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          color: Color(0xff272727),
-          bottom: 4,
-        ).start,
-        RatingBar.builder(
-          initialRating: 4,
-          minRating: 1,
-          direction: Axis.horizontal,
+// ── Rating Item — always starts empty (initialRating: 0) ───────────────────
+class _RatingItem extends StatelessWidget {
+  final String title;
+  final Function(double) onRatingUpdate;
 
-          allowHalfRating: true,
-          itemCount: 5,
-          itemSize: 40,
-          wrapAlignment: WrapAlignment.center,
-          itemPadding: EdgeInsets.symmetric(horizontal: 10),
-          itemBuilder:
-              (context, _) =>
-                  Icon(Icons.star_rounded, color: Color(0xffFD713F), size: 40),
-          onRatingUpdate: (rating) {},
-        ),
-      ],
-    ),
-  );
+  const _RatingItem({
+    required this.title,
+    required this.onRatingUpdate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      width: Get.width,
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xffF2F2F2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CommonText(
+            text: title,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xff272727),
+            bottom: 8,
+          ),
+          Center(
+            child: RatingBar.builder(
+              initialRating: 0,        // ✅ always empty
+              minRating: 0,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemSize: 40,
+              itemPadding: const EdgeInsets.symmetric(horizontal: 10),
+              itemBuilder: (context, _) => const Icon(
+                Icons.star_rounded,
+                color: Color(0xffFD713F),
+              ),
+              onRatingUpdate: onRatingUpdate,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Price Row ───────────────────────────────────────────────────────────────
+class _PriceRow extends StatelessWidget {
+  final String label;
+  final double value;
+  final bool isBold;
+
+  const _PriceRow({
+    required this.label,
+    required this.value,
+    this.isBold = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CommonText(
+            text: label,
+            fontSize: 13,
+            fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
+            color: isBold ? const Color(0xff272727) : const Color(0xff777777),
+          ),
+          CommonText(
+            text: "\$${value.toStringAsFixed(2)}",
+            fontSize: 13,
+            fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
+            color: const Color(0xff272727),
+          ),
+        ],
+      ),
+    );
+  }
 }

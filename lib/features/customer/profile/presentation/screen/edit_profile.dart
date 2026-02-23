@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:new_untitled/config/api/api_end_point.dart';
 import '../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -19,10 +20,10 @@ class EditProfile extends StatelessWidget {
     return GetBuilder<ProfileController>(
       builder: (controller) {
         return Scaffold(
-          /// App Bar Sections Starts here
-          appBar: AppBar(),
-
-          /// Body Sections Starts here
+          appBar: AppBar(
+            title: const Text("Edit Profile"),
+            centerTitle: true,
+          ),
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
             child: Form(
@@ -35,59 +36,61 @@ class EditProfile extends StatelessWidget {
                       text: AppString.editProfile,
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                       bottom: 28,
                     ),
 
-                    /// User Profile image here
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        CircleAvatar(
-                          radius: 34.sp,
-                          backgroundColor: Colors.transparent,
-                          child: ClipOval(
-                            child:
-                                controller.image != null
-                                    ? Image.file(
-                                      File(controller.image!),
-                                      width: 68.sp,
-                                      height: 68.sp,
-                                      fit: BoxFit.fill,
-                                    )
-                                    : const CommonImage(
-                                      imageSrc: AppImages.image3,
-                                      height: 68,
-                                      width: 68,
-                                      fill: BoxFit.fill,
-                                    ),
-                          ),
-                        ),
-
-                        /// image change icon here
-                        Positioned(
-                          bottom: -10,
-                          left: 40,
-                          child: InkWell(
-                            onTap: controller.getProfileImage,
-                            child: Container(
-                              padding: EdgeInsets.all(8.sp),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                                border: Border.all(
-                                  color: Color(0xffF1F1F1),
-                                  width: 2,
-                                ),
-                              ),
-                              child: CommonImage(
-                                imageSrc: AppImages.highlighter,
-                                imageColor: Colors.black,
+                    /// User Profile Image Section
+                    Center(
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            height: 100.sp,
+                            width: 100.sp,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xffF1F1F1),
+                            ),
+                            child: ClipOval(
+                              child: controller.image != null
+                                  ? Image.file(
+                                File(controller.image!),
+                                fit: BoxFit.cover,
+                              )
+                                  : CommonImage(
+                                imageSrc: controller.profileImage.isNotEmpty
+                                    ? ApiEndPoint.imageUrl+controller.profileImage
+                                    : AppImages.image3, // Fallback if no URL
+                                height: 100,
+                                width: 100,
+                                fill: BoxFit.cover,
                               ),
                             ),
                           ),
-                        ),
-                      ],
+
+                          /// Image Picker Button
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: InkWell(
+                              onTap: controller.getProfileImage,
+                              child: Container(
+                                padding: EdgeInsets.all(8.sp),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: const Color(0xffF1F1F1),
+                                    width: 2,
+                                  ),
+                                ),
+                                child: const Icon(Icons.camera_alt, size: 20, color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
 
                     CommonText(
@@ -96,19 +99,21 @@ class EditProfile extends StatelessWidget {
                       top: 28,
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xff777777),
+                      color: const Color(0xff777777),
                     ),
 
-                    /// user all information filed here
+                    /// User Information Fields
                     EditProfileAllFiled(controller: controller),
                     30.height,
 
-                    /// Submit Button here
+                    /// Submit Button
                     CommonButton(
                       titleText: AppString.saveChanges,
                       buttonRadius: 20,
                       isLoading: controller.isLoading,
-                      onTap: controller.editProfileRepo,
+                      onTap: () {
+                        controller.editProfileRepo();
+                      },
                     ),
                   ],
                 ),

@@ -8,9 +8,11 @@ class ApiEndPoint {
   static const signIn = "auth/login";
   static const forgotPassword = "auth/forget-password";
   static const verifyOtp = "auth/verify-email";
+  static const googleMapsApiKey = "AIzaSyCZTRv24vE1zWXiLgKt5LbktOVGb1AeX_E";
   static const resetPassword = "auth/reset-password";
   static const changePassword = "users/change-password";
-  static const user = "users";
+  static const user = "user/profile";
+  static const address = "address";
   static const notifications = "notifications";
   static const privacyPolicies = "privacy-policies";
   static const termsOfServices = "terms-and-conditions";

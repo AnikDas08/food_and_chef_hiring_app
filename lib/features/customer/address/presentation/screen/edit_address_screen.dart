@@ -1,4 +1,4 @@
-// lib/features/address/view/add_address_screen.dart
+// lib/features/address/view/edit_address_screen.dart
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,20 +10,39 @@ import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-
 import '../../../../../component/google_map/google_map.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../data/address_model.dart';
 import '../controller/address_controller.dart';
 
-class AddAddressScreen extends StatelessWidget {
-  const AddAddressScreen({super.key});
+class EditAddressScreen extends StatelessWidget {
+  const EditAddressScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // ── Get passed address + trigger load on first build ──
+    final address = Get.arguments as AddressModel;
+    final controller = Get.find<AddressController>();
+
+    // Load only if not already loading this address
+    if (controller.editingAddress?.id != address.id) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        controller.loadAddressForEdit(address);
+      });
+    }
+
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Edit Address"),
+      ),
       body: GetBuilder<AddressController>(
         builder: (controller) {
+
+          // ── Full screen loader while fetching ────────────
+          if (controller.isLoadingEdit) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
           return SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -31,14 +50,14 @@ class AddAddressScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CommonText(
-                    text: "Add New Address",
+                    text: "Edit Address",
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xff272727),
                     bottom: 24,
                   ),
 
-                  // ── MAP ──────────────────────────────────────────
+                  // ── MAP (centered on existing location) ──────────
                   SizedBox(
                     height: 324,
                     child: Stack(
@@ -46,13 +65,13 @@ class AddAddressScreen extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: ShowGoogleMap(
+                            latitude: controller.selectedLatitude ?? 0,
+                            longitude: controller.selectedLongitude ?? 0,
                             onTapLatLong: (LatLng latLng) {
-                              // Only update lat/lng on map tap — don't fill fields
                               controller.selectedLatitude = latLng.latitude;
                               controller.selectedLongitude = latLng.longitude;
                               controller.update();
                             },
-                            // Wire up current-location callback
                             onCurrentLocationResolved: (lat, lng, area, details) {
                               controller.onCurrentLocationResolved(
                                 lat: lat,
@@ -75,7 +94,6 @@ class AddAddressScreen extends StatelessWidget {
                               buttonRadius: 20,
                               titleText: AppString.useCurrentLocation,
                               onTap: () {
-                                // Re-trigger current location fetch
                                 final mapCtrl =
                                 Get.find<ShowGoogleMapController>();
                                 mapCtrl.onCurrentLocationResolved =
@@ -167,7 +185,7 @@ class AddAddressScreen extends StatelessWidget {
                     keyboardType: TextInputType.multiline,
                   ),
 
-                  // ── ADDITIONAL ADDRESS (with suggestions, optional) ──
+                  // ── ADDITIONAL ADDRESS (optional) ────────────────
                   CommonText(
                     text: AppString.additionalAddress,
                     fontSize: 14,
@@ -186,9 +204,7 @@ class AddAddressScreen extends StatelessWidget {
                     _SuggestionList(
                       suggestions: controller.additionalSuggestions,
                       isLoading: controller.isLoadingAdditionalSuggestions,
-                      onTap: (s) =>
-                          controller.onAdditionalSuggestionSelected(s),
-                      // No lat/lng sent for additional — just formatted text
+                      onTap: controller.onAdditionalSuggestionSelected,
                     ),
 
                   // ── OWNER ────────────────────────────────────────
@@ -245,6 +261,7 @@ class AddAddressScreen extends StatelessWidget {
         },
       ),
 
+      // ── FOOTER BUTTON ──────────────────────────────────────
       persistentFooterButtons: [
         SafeArea(
           child: GetBuilder<AddressController>(
@@ -254,8 +271,8 @@ class AddAddressScreen extends StatelessWidget {
                 controller.isSubmitting
                     ? const Center(child: CircularProgressIndicator())
                     : CommonButton(
-                  titleText: AppString.addAddress,
-                  onTap: controller.submitAddress,
+                  titleText: AppString.editAddress,
+                  onTap: controller.updateAddress,
                 ),
               ],
             ),
@@ -267,7 +284,6 @@ class AddAddressScreen extends StatelessWidget {
 }
 
 // ── Suggestion Dropdown ─────────────────────────────────────────────────────
-
 class _SuggestionList extends StatelessWidget {
   final List<Map<String, dynamic>> suggestions;
   final bool isLoading;
@@ -302,8 +318,10 @@ class _SuggestionList extends StatelessWidget {
           : suggestions.isEmpty
           ? const Padding(
         padding: EdgeInsets.all(12),
-        child: Text("No results found",
-            style: TextStyle(color: Color(0xff777777))),
+        child: Text(
+          "No results found",
+          style: TextStyle(color: Color(0xff777777)),
+        ),
       )
           : ListView.separated(
         shrinkWrap: true,
@@ -314,19 +332,25 @@ class _SuggestionList extends StatelessWidget {
           final s = suggestions[i];
           return ListTile(
             dense: true,
-            leading: const Icon(Icons.location_on_outlined,
-                color: Color(0xffFD713F), size: 18),
+            leading: const Icon(
+              Icons.location_on_outlined,
+              color: Color(0xffFD713F),
+              size: 18,
+            ),
             title: Text(
               s['main_text'] ?? '',
               style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff272727)),
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff272727),
+              ),
             ),
             subtitle: Text(
               s['secondary_text'] ?? '',
               style: const TextStyle(
-                  fontSize: 11, color: Color(0xff777777)),
+                fontSize: 11,
+                color: Color(0xff777777),
+              ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

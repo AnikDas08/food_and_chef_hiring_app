@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/countries.dart';
+import 'package:intl_phone_field/phone_number.dart';
 import 'package:new_untitled/features/chef/chef_public_profile/presentation/screen/chef_public_profile.dart';
 import 'package:new_untitled/features/common/auth/sign%20up/presentation/widget/account_create_popup.dart';
 import 'package:new_untitled/utils/helpers/other_helper.dart';
@@ -100,8 +101,8 @@ class SignUpController extends GetxController {
     super.dispose();
   }
 
-  onCountryChange(Country value) {
-    countryCode = value.dialCode.toString();
+  onCountryChange(PhoneNumber value) {
+    countryCode = value.countryCode.toString();
   }
 
   setSelectedRole(value) {
@@ -224,7 +225,7 @@ class SignUpController extends GetxController {
         "password":passwordController.text,
         "lat":"23.777176",
         "lng":"90.399452",
-        "contact":"$countryCode${numberController.text}"
+        "contact":"$countryCode ${numberController.text}"
       };
       for (int i = 0; i < selectDietary.length; i++) {
         body["foods[$i]"] = selectDietary[i];
