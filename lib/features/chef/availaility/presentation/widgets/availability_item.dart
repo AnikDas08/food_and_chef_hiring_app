@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -7,102 +8,133 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/button/switch_button.dart';
 import '../../../../../component/text_field/common_text_field.dart';
 import '../../../../../utils/helpers/other_helper.dart';
+import '../controller/availiability_controller.dart';
 
-class AvailabilityItem extends StatefulWidget {
+class AvailabilityItem extends StatelessWidget {
   const AvailabilityItem({super.key, required this.day});
 
-  final String day;
-
-  @override
-  State<AvailabilityItem> createState() => _AvailabilityItemState();
-}
-
-class _AvailabilityItemState extends State<AvailabilityItem> {
-  bool value = false;
-
-  onChange() {
-    value = !value;
-    setState(() {});
-  }
-
-  final TextEditingController fromController = TextEditingController();
-  final TextEditingController toController = TextEditingController();
+  final DayModel day;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(12),
-      margin: EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: Color(0xffF2F2F2),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CommonText(
-                text: widget.day,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff272727),
-              ),
-              switchButton(value: value, onTap: onChange),
-            ],
-          ),
-          if (value) ...[
-            16.height,
+    final controller = Get.find<AvailabilityController>();
+
+    return GetBuilder<AvailabilityController>(
+      builder: (_) => Container(
+        padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.only(bottom: 12),
+        decoration: BoxDecoration(
+          color: const Color(0xffF2F2F2),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ── Day Header ──
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: CommonTextField(
-                    fillColor: Colors.white,
-                    prefixText: "From: ",
-                    hintText: "From",
-                    controller: fromController,
-                    paddingHorizontal: 4,
-                    paddingVertical: 14,
-                    fontSize: 12,
-                    keyboardType: TextInputType.none,
-                    borderRadius: 12,
-                    onTap:
-                        () => OtherHelper.openTimePickerDialog(fromController),
-                  ),
-                ),
-                12.width,
-                Expanded(
-                  child: CommonTextField(
-                    fillColor: Colors.white,
-                    prefixText: "To: ",
-                    hintText: "To",
-                    paddingHorizontal: 10,
-                    fontSize: 12,
-                    paddingVertical: 14,
-                    keyboardType: TextInputType.none,
-                    controller: toController,
-                    borderRadius: 12,
-                    onTap: () => OtherHelper.openTimePickerDialog(toController),
-                  ),
-                ),
-              ],
-            ),
-            16.height,
-            Row(
-              children: [
-                Icon(CupertinoIcons.add, size: 16),
                 CommonText(
-                  text: AppString.addAdditionalTime,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xff272727),
-                  left: 4,
+                  text: day.name,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xff272727),
+                ),
+                switchButton(
+                  value: day.isEnabled,
+                  onTap: () => controller.toggleDay(day, !day.isEnabled),
                 ),
               ],
             ),
+
+            // ── Slots ──
+            if (day.isEnabled) ...[
+              16.height,
+              ...List.generate(day.slots.length, (i) {
+                final slot = day.slots[i];
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (i > 0)
+                      CommonText(
+                        text: "And",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xff777777),
+                        bottom: 8,
+                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CommonTextField(
+                            fillColor: Colors.white,
+                            prefixText: "From: ",
+                            hintText: "From",
+                            controller: slot.from,
+                            paddingHorizontal: 4,
+                            paddingVertical: 14,
+                            fontSize: 12,
+                            keyboardType: TextInputType.none,
+                            borderRadius: 12,
+                            onTap: () =>
+                                OtherHelper.openTimePickerDialog(slot.from),
+                          ),
+                        ),
+                        12.width,
+                        Expanded(
+                          child: CommonTextField(
+                            fillColor: Colors.white,
+                            prefixText: "To: ",
+                            hintText: "To",
+                            paddingHorizontal: 10,
+                            fontSize: 12,
+                            paddingVertical: 14,
+                            keyboardType: TextInputType.none,
+                            controller: slot.to,
+                            borderRadius: 12,
+                            onTap: () =>
+                                OtherHelper.openTimePickerDialog(slot.to),
+                          ),
+                        ),
+                        // ── Remove slot ──
+                        if (day.slots.length > 1) ...[
+                          8.width,
+                          GestureDetector(
+                            onTap: () => controller.removeSlot(day, i),
+                            child: const Icon(
+                              CupertinoIcons.minus_circle,
+                              size: 20,
+                              color: Color(0xffFD713F),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                    16.height,
+                  ],
+                );
+              }),
+
+              // ── Add Additional Time ──
+              GestureDetector(
+                onTap: () => controller.addSlot(day),
+                child: Row(
+                  children: [
+                    const Icon(CupertinoIcons.add, size: 16),
+                    CommonText(
+                      text: AppString.addAdditionalTime,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xff272727),
+                      left: 4,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

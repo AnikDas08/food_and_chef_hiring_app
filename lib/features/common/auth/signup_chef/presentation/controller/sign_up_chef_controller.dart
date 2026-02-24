@@ -269,7 +269,7 @@ class SignUpChefController extends GetxController {
     }
   }
 
-  // ── 5. Profile (about, experience, image) ──
+
   Future<void> setupChefProfile({
     required String about,
     required String experience,
@@ -365,7 +365,7 @@ class SignUpChefController extends GetxController {
     }
   }
 
-  // ── 7. Availability ──
+
   Future<void> setupChefAvailability({
     required List<DaySchedule> days,
   }) async {
