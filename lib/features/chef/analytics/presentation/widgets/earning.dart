@@ -1,85 +1,185 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
-
+import '../controller/analytics_controller.dart';
 import 'earning_chart.dart';
 
 Widget earning() {
-  return Container(
-    height: 320.h,
-    margin: EdgeInsets.only(bottom: 16),
-    padding: EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: Color(0xffF2F2F2),
-      borderRadius: BorderRadius.circular(16),
-    ),
-    child: Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
+  final AnalyticsController controller = Get.put(AnalyticsController());
+
+  return Obx(() {
+    return Container(
+      height: 320.h,
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xffF2F2F2),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: controller.isLoading.value
+          ? const Center(
+        child: CircularProgressIndicator(color: Color(0xffFD713F)),
+      )
+          : controller.errorMessage.isNotEmpty
+          ? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CommonText(
-                  text: AppString.totalEarning,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff777777),
-                ),
-                CommonText(
-                  text: "\$9,280",
-                  fontSize: 28,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff272727),
-                ),
-                Row(
-                  children: [
-                    CommonImage(imageSrc: AppIcons.arrowUpDown),
-                    CommonText(
-                      text: "0.48%",
-                      fontSize: 12,
-                      left: 4,
-                      right: 4,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff2F8328),
-                    ),
-                    CommonText(
-                      text: "higher than last week",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff272727),
-                    ),
-                  ],
-                ),
-              ],
+            Text(
+              controller.errorMessage.value,
+              style: const TextStyle(color: Colors.red),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: controller.fetchTotalEarning,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xffFD713F),
               ),
-              child: Row(
-                children: [
-                  CommonText(
-                    text: "Weekly",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff272727),
-                  ),
-                  Icon(Icons.keyboard_arrow_down_rounded),
-                ],
-              ),
+              child: const Text("Retry",
+                  style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
-        Expanded(child: LineChartSample2()),
-      ],
-    ),
-  );
+      )
+          : Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CommonText(
+                    text: AppString.totalEarning,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xff777777),
+                  ),
+                  CommonText(
+                    text:
+                    "\$${controller.totalEarning.value.toStringAsFixed(0)}",
+                    fontSize: 28,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xff272727),
+                  ),
+                  Row(
+                    children: [
+                      CommonImage(imageSrc: AppIcons.arrowUpDown),
+                      CommonText(
+                        text: "0.48%",
+                        fontSize: 12,
+                        left: 4,
+                        right: 4,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xff2F8328),
+                      ),
+                      CommonText(
+                        text: "higher than last week",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xff272727),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: Get.context!,
+                    isScrollControlled: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20)),
+                    ),
+                    builder: (_) {
+                      return SafeArea(
+                        child: Obx(() => SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(height: 12),
+                              Container(
+                                width: 40,
+                                height: 4,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE0E0E0),
+                                  borderRadius:
+                                  BorderRadius.circular(2),
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              ...controller.filters.map((filter) {
+                                final bool isSelected =
+                                    controller.selectedFilter.value ==
+                                        filter;
+                                return ListTile(
+                                  onTap: () {
+                                    controller.changeFilter(filter);
+                                    Get.back();
+                                  },
+                                  title: Text(
+                                    filter,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: isSelected
+                                          ? FontWeight.w600
+                                          : FontWeight.w400,
+                                      color: isSelected
+                                          ? Color(0xffFD713F)
+                                          : Color(0xff272727),
+                                    ),
+                                  ),
+                                  trailing: isSelected
+                                      ? Icon(Icons.check,
+                                      color: Color(0xffFD713F))
+                                      : null,
+                                );
+                              }),
+                              SizedBox(height: 16),
+                            ],
+                          ),
+                        )),
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    children: [
+                      CommonText(
+                        text: controller.selectedFilter.value,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xff272727),
+                      ),
+                      const Icon(Icons.keyboard_arrow_down_rounded),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: controller.formatArray.isEmpty
+                ? const Center(child: Text("No data available"))
+                : LineChartSample2(
+              chartData: controller.formatArray,
+            ),
+          ),
+        ],
+      ),
+    );
+  });
 }

@@ -6,9 +6,13 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../utils/constants/app_string.dart';
+import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_booking_controller.dart';
 
-declineBookingPopUp() {
+declineBookingPopUp({
+  required String orderId,
+  required VoidCallback onSuccess,
+}) {
   showDialog(
     context: Get.context!,
     builder: (context) {
@@ -114,10 +118,30 @@ declineBookingPopUp() {
                             titleWeight: FontWeight.w600,
                             titleColor: Colors.white,
                             onTap: () async {
-                              await AnimationPopUpState.closeDialog();
-                              await Future.delayed(
-                                const Duration(milliseconds: 500),
-                              );
+                              // ✅ reason selected কিনা check
+                              if (controller.selectDietary.isEmpty) {
+                                Get.snackbar("Message", "Please select a reason");
+                                return;
+                              }
+
+                              final reason = controller.selectDietary.first;
+
+                              // ✅ API call (ChefHomeController থেকে)
+                              final homeC = Get.find<ChefHomeController>();
+                              final res = await homeC.declineBooking(orderId, reason);
+
+                              if (res.statusCode == 200 && res.data?['success'] == true) {
+                                await AnimationPopUpState.closeDialog();
+                                await Future.delayed(const Duration(milliseconds: 300));
+
+                                // ✅ success হলে list update callback call
+                                onSuccess();
+                              } else {
+                                Get.snackbar(
+                                  "Error",
+                                  res.data?['message']?.toString() ?? "Something went wrong",
+                                );
+                              }
                             },
                           ),
                           16.height,

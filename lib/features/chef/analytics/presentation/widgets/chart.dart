@@ -1,11 +1,26 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-final List<int> _items = [3, 5, 7, 9, 11, 13, 15, 13, 11, 9, 7, 5, 3];
+import '../../data/Booking_Time_Model.dart';
+import '../../data/Earning_Model.dart';
 
 class _BarChart extends StatelessWidget {
-  const _BarChart();
+  final List<MappedTime> chartData;
+  const _BarChart({required this.chartData});
+
+  int get maxCount {
+    if (chartData.isEmpty) return 20;
+    return chartData.map((e) => e.count).reduce((a, b) => a > b ? a : b);
+  }
+
+  int get maxIndex {
+    if (chartData.isEmpty) return -1;
+    int max = 0;
+    for (int i = 1; i < chartData.length; i++) {
+      if (chartData[i].count > chartData[max].count) max = i;
+    }
+    return max;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +32,7 @@ class _BarChart extends StatelessWidget {
         gridData: const FlGridData(show: false),
         alignment: BarChartAlignment.spaceAround,
         barTouchData: barTouchData,
-        maxY: 20,
+        maxY: (maxCount * 1.3).toDouble(),
         groupsSpace: 1,
       ),
     );
@@ -29,48 +44,34 @@ class _BarChart extends StatelessWidget {
       getTooltipColor: (group) => Colors.transparent,
       tooltipPadding: EdgeInsets.zero,
       tooltipMargin: 8,
-      getTooltipItem: (
-        BarChartGroupData group,
-        int groupIndex,
-        BarChartRodData rod,
-        int rodIndex,
-      ) {
+      getTooltipItem: (group, groupIndex, rod, rodIndex) {
         return BarTooltipItem(
           "",
-          TextStyle(color: Colors.transparent, fontWeight: FontWeight.bold),
+          TextStyle(color: Colors.transparent),
         );
       },
     ),
   );
 
   Widget getTitles(double value, TitleMeta meta) {
+    int index = value.toInt();
+    if (index < 0 || index >= chartData.length) return const SizedBox();
+
+    bool isMax = index == maxIndex;
+
     TextStyle style = TextStyle(
-      color: Color(0xff777777),
+      color: isMax ? Color(0xff272727) : Color(0xff777777),
       fontWeight: FontWeight.w500,
-      fontSize: 14,
+      fontSize: 12,
     );
-    String text = "";
-    switch (value.toInt()) {
-      case 0:
-        text = "6pm";
-      case 3:
-        text = "8pm";
-      case 6:
-        text = "10pm";
-        style = TextStyle(
-          color: Color(0xff272727),
-          fontWeight: FontWeight.w500,
-          fontSize: 14,
-        );
-      case 9:
-        text = "12pm";
-      case 12:
-        text = "14pm";
-    }
+
+    // প্রতি দুই বার পর পর label দেখাবে
+    if (index % 2 != 0) return const SizedBox();
+
     return SideTitleWidget(
       meta: meta,
       space: 16,
-      child: Text(text, style: style),
+      child: Text(chartData[index].time, style: style),
     );
   }
 
@@ -91,29 +92,29 @@ class _BarChart extends StatelessWidget {
 
   FlBorderData get borderData => FlBorderData(show: false);
 
-  LinearGradient _barsGradient(num value) {
+  LinearGradient _barsGradient(int index) {
+    bool isMax = index == maxIndex;
     return LinearGradient(
-      colors:
-          value % 15 == 0
-              ? [Color(0xffFD713F), Color(0xffFD713F)]
-              : [
-                Color(0xffFD713F).withValues(alpha: 0.24),
-                Color(0xffFD713F).withValues(alpha: 0.24),
-              ],
+      colors: isMax
+          ? [Color(0xffFD713F), Color(0xffFD713F)]
+          : [
+        Color(0xffFD713F).withValues(alpha: 0.24),
+        Color(0xffFD713F).withValues(alpha: 0.24),
+      ],
       begin: Alignment.bottomCenter,
       end: Alignment.topCenter,
     );
   }
 
   List<BarChartGroupData> get barGroups => List.generate(
-    _items.length,
-    (index) => BarChartGroupData(
+    chartData.length,
+        (index) => BarChartGroupData(
       x: index,
       barsSpace: 1,
       barRods: [
         BarChartRodData(
-          toY: _items[index].toDouble(),
-          gradient: _barsGradient(_items[index]),
+          toY: chartData[index].count.toDouble(),
+          gradient: _barsGradient(index),
           borderRadius: BorderRadius.circular(4),
           width: 18.w,
         ),
@@ -123,7 +124,8 @@ class _BarChart extends StatelessWidget {
 }
 
 class BarChartSample3 extends StatefulWidget {
-  const BarChartSample3({super.key});
+  final List<MappedTime> chartData;
+  const BarChartSample3({super.key, required this.chartData});
 
   @override
   State<StatefulWidget> createState() => BarChartSample3State();
@@ -132,6 +134,9 @@ class BarChartSample3 extends StatefulWidget {
 class BarChartSample3State extends State<BarChartSample3> {
   @override
   Widget build(BuildContext context) {
-    return const AspectRatio(aspectRatio: 1.6, child: _BarChart());
+    return AspectRatio(
+      aspectRatio: 1.6,
+      child: _BarChart(chartData: widget.chartData),
+    );
   }
 }

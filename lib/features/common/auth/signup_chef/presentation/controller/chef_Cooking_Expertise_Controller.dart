@@ -65,6 +65,7 @@ class CafeCookingExpertiseController extends GetxController {
   }
 
   void toggleCuisine(String id) {
+
     if (selectedIds.contains(id)) {
       selectedIds.remove(id);
     } else {
@@ -194,7 +195,7 @@ void showAccountCreatedPopup() {
               child: ElevatedButton(
                 onPressed: () {
                   Get.back();
-                  Get.offAllNamed(AppRoutes.chefHomeScreen);
+                  Get.offAllNamed(AppRoutes.signIn);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF1C1C1C),

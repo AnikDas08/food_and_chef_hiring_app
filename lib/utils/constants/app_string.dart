@@ -340,7 +340,7 @@ class AppString {
   static const String totalEarning = "Total Earning";
   static const String mostBookedTimes = "Most Booked Times";
   static const String avgBookingsPerWeek = "Avg Bookings per Week";
-  static const String avgEarningsPerBooking = "Avg Earnings per Booking";
+  static String get avgEarningsPerBooking => "Avg Earnings per Booking";
   static const String avgBookingLength = "Avg Booking Length";
   static const String avgDishesPerBooking = "Avg Dishes per Booking";
   static const String topItems = "Top Items";

@@ -3,20 +3,20 @@ import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
+import '../../data/Earning_Model.dart';
+import '../../data/Top_Menu_Model.dart';
 
 class MenuTopItem extends StatefulWidget {
-  const MenuTopItem({super.key, required this.value});
+  const MenuTopItem({super.key, required this.value, required this.item});
 
   final int value;
+  final TopMenuItem item;
 
   @override
   State<MenuTopItem> createState() => _MenuTopItemState();
 }
 
 class _MenuTopItemState extends State<MenuTopItem> {
-  final int count = 3;
-  final double size = 16;
-  final double overlap = 8;
   bool isExpanded = true;
 
   onChange() {
@@ -26,6 +26,9 @@ class _MenuTopItemState extends State<MenuTopItem> {
 
   @override
   Widget build(BuildContext context) {
+    final item = widget.item;
+    final String imageUrl = item.images.isNotEmpty ? item.images.first : '';
+
     return Container(
       padding: EdgeInsets.all(8),
       child: Row(
@@ -40,13 +43,11 @@ class _MenuTopItemState extends State<MenuTopItem> {
               border: Border.all(color: Color(0xffF1F1F1)),
               shape: BoxShape.circle,
             ),
-            child:
-                CommonText(
-                  text: "${widget.value}",
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-
-                ).center,
+            child: CommonText(
+              text: "${widget.value}",
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ).center,
           ),
           12.width,
           Expanded(
@@ -54,13 +55,25 @@ class _MenuTopItemState extends State<MenuTopItem> {
               children: [
                 Row(
                   children: [
-                    CommonImage(
+                    imageUrl.isNotEmpty
+                        ? Image.network(
+                      imageUrl,
+                      width: 32,
+                      height: 32,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => CommonImage(
+                        imageSrc: AppImages.image6,
+                        size: 32,
+                        borderRadius: 4,
+                      ),
+                    )
+                        : CommonImage(
                       imageSrc: AppImages.image6,
                       size: 32,
                       borderRadius: 4,
                     ),
                     CommonText(
-                      text: "Chopped Burrito",
+                      text: item.name,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: Color(0xff272727),
@@ -100,7 +113,7 @@ class _MenuTopItemState extends State<MenuTopItem> {
                               color: Color(0xff777777),
                             ),
                             CommonText(
-                              text: "12 times",
+                              text: "${item.totalBooking} times",
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff272727),
@@ -119,63 +132,15 @@ class _MenuTopItemState extends State<MenuTopItem> {
                             ),
                             Row(
                               children: [
-                                Icon(
-                                  Icons.star_rate_rounded,
-                                  color: Color(0xffFD713F),
-                                ),
+                                Icon(Icons.star_rate_rounded,
+                                    color: Color(0xffFD713F)),
                                 CommonText(
-                                  text: "4,1",
+                                  text: item.avgRating.toStringAsFixed(1),
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                   color: Color(0xff272727),
                                 ),
                               ],
-                            ),
-                          ],
-                        ),
-                        16.height,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CommonText(
-                              text: "Frequently Order With",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff777777),
-                            ),
-                            SizedBox(
-                              width: size + (count - 1) * overlap + 30,
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                children: List.generate(count, (index) {
-                                  final bool isLast = index == count - 1;
-                                  if (isLast) {
-                                    return Container(
-                                      height: size,
-                                      width: size + (count - 1) * overlap + 30,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      child: CommonText(
-                                        text: "3 more",
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w400,
-                                        color: Color(0xff777777),
-                                      ),
-                                    );
-                                  }
-                                  return Positioned(
-                                    top: 0,
-                                    left: index * overlap - 20,
-                                    child: CommonImage(
-                                      imageSrc: AppImages.image6,
-                                      size: size,
-                                      borderRadius: 50,
-                                    ),
-                                  );
-                                }),
-                              ),
                             ),
                           ],
                         ),

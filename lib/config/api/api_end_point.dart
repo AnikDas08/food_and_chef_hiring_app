@@ -26,6 +26,10 @@ class ApiEndPoint {
   static const String chefProfile = 'user/profile';
   static const String wallet = '/user/wallet';
   static const String order = '/order';
+  static const String totalEarning = 'transaction/chef?range=';
+  static const String topMenus = 'menu/top-menus';
+  static const String changeOrderStatus = '/order/change-status/';
+  static const String mostBookingTime = 'order/chef/most-booking-time?date=';
 
 
 }

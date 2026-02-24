@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../../../config/api/api_end_point.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../services/api/api_response_model.dart';
 import '../../../../../services/api/api_service.dart';
 import '../Model/Chef_Profile_Model.dart';
 import '../Model/Request_0edBooking_Model.dart';
@@ -29,6 +30,28 @@ class ChefHomeController extends GetxController {
     fetchUpcomingBookings();
   }
 
+
+  Future<ApiResponseModel> confirmBooking(String orderId) async {
+    final url = '${ApiEndPoint.changeOrderStatus}$orderId';
+
+    return await ApiService.patch(
+      url,
+      body: {
+        "status": "Confirm",
+      },
+    );
+  }
+  Future<ApiResponseModel> declineBooking(String orderId, String reason) async {
+    final url = '${ApiEndPoint.changeOrderStatus}$orderId';
+
+    return await ApiService.patch(
+      url,
+      body: {
+        "status": "Decline",
+        "decline_reason": reason,
+      },
+    );
+  }
 
 
   Future<void> fetchWalletBalance() async {
@@ -58,14 +81,20 @@ class ChefHomeController extends GetxController {
 
   Future<void> fetchRequestedBookings() async {
     isLoadingBookings.value = true;
+
     try {
+      final status = Uri.encodeQueryComponent("Awaiting Confirmation");
+
       final response = await ApiService.get(
-        '${ApiEndPoint.order}?status=Awaiting Confirmation&limit=5',
+        '${ApiEndPoint.order}?status=$status&limit=5',
       );
+
       if (response.statusCode == 200 && response.data['success'] == true) {
-        final list = response.data['data'] as List? ?? [];
+        final list = (response.data['data'] as List?) ?? [];
         requestedBookings.value =
             list.map((e) => RequestedBookingModel.fromJson(e)).toList();
+      } else {
+        requestedBookings.clear();
       }
     } catch (e) {
       debugPrint("❌ Bookings fetch error: $e");
@@ -79,12 +108,15 @@ class ChefHomeController extends GetxController {
     isLoadingUpcoming.value = true;
     try {
       final response = await ApiService.get(
-        '${ApiEndPoint.order}?status=Completed&limit=5',
+        '${ApiEndPoint.order}?status=Confirm&limit=5',
       );
+
       if (response.statusCode == 200 && response.data['success'] == true) {
         final list = response.data['data'] as List? ?? [];
         upcomingBookings.value =
             list.map((e) => RequestedBookingModel.fromJson(e)).toList();
+      } else {
+        upcomingBookings.clear();
       }
     } catch (e) {
       debugPrint("❌ Upcoming fetch error: $e");

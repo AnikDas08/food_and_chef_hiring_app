@@ -124,7 +124,10 @@ Widget chefBookingItem() {
                   if (value == 1) {
                     upcomingPopUp();
                   } else if (value == 2) {
-                    declineBookingPopUp();
+                    declineBookingPopUp(
+                      orderId: "TEMP_ID",
+                      onSuccess: () {},
+                    );
                   }
                 },
                 itemBuilder:
@@ -286,8 +289,10 @@ Widget chefBookingItem() {
               if (controller.selectedBookingHistory == "Unconfirmed") ...[
                 InkWell(
                   onTap: () {
-                    declineBookingPopUp();
-                  },
+                    declineBookingPopUp(
+                      orderId: "TEMP_ID",
+                      onSuccess: () {},
+                    );                  },
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.sp,
