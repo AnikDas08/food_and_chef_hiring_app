@@ -138,7 +138,6 @@ class _ChefVerificationReviewPageState
             ]),
           ),
 
-          // ── Content ──
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -153,7 +152,6 @@ class _ChefVerificationReviewPageState
             ),
           ),
 
-          // ── Continue Button ──
           Container(
             width: double.infinity,
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),

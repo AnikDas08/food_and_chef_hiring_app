@@ -68,7 +68,6 @@ class SignupChefScreen extends StatelessWidget {
                   ),
                   28.height,
 
-                  /// Submit Button Here
                   CommonButton(
                     titleText: AppString.signUp,
                     isLoading: controller.isLoading,
@@ -79,7 +78,6 @@ class SignupChefScreen extends StatelessWidget {
                     },
                   ),
                   28.height,
-
                   Row(
                     children: [
                       Expanded(child: Divider()),

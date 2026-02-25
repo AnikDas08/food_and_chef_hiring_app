@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image/image.dart' as img;
 import 'package:intl_phone_field/countries.dart';
 import 'package:new_untitled/features/common/auth/sign%20up/presentation/widget/account_create_popup.dart';
 import 'package:new_untitled/utils/helpers/other_helper.dart';
@@ -117,9 +119,8 @@ class SignUpChefController extends GetxController {
     });
   }
 
-  // ── 1. SignUp ──
   Future<void> signUpUser(String role) async {
-    Get.toNamed(AppRoutes.chef_verify_user);
+    //Get.toNamed(AppRoutes.chef_verify_user);
     isLoading = true;
     update();
 
@@ -129,6 +130,9 @@ class SignUpChefController extends GetxController {
     );
 
     if (response.statusCode == 200) {
+
+      Get.toNamed(AppRoutes.chef_verify_user);
+
     } else if (response.statusCode == 400 &&
         response.data["suggestRoute"] == "/api/v1/auth/verify-email") {
     } else {
@@ -140,7 +144,6 @@ class SignUpChefController extends GetxController {
   }
 
   Future<void> verifyOtpRepo() async {
-    Get.toNamed(AppRoutes.create_password_chef_screen);
     isLoadingVerify = true;
     update();
 
@@ -155,22 +158,25 @@ class SignUpChefController extends GetxController {
     if (response.statusCode == 200) {
       final data = response.data;
 
-      // ── userId: data["data"] = "6997ec78ba735f6fbb712d72" ──
+      // userId save
       final userId = data["data"]?.toString() ?? "";
       LocalStorage.userId = userId;
       await LocalStorage.setString(LocalStorageKeys.userId, userId);
 
-      // ── token: header বা response থেকে ──
       final token = data["token"] ??
           data["accessToken"] ??
-          data["data"]["accessToken"] ?? "";
+          (data["data"] is Map ? data["data"]["accessToken"] : null) ?? "";
+
       if (token.toString().isNotEmpty) {
         await LocalStorage.setString(LocalStorageKeys.token, token.toString());
+        print("✅ token saved: $token");
+      } else {
+        print("⚠️ token পাওয়া যায়নি! response: $data");
       }
 
       print("✅ userId: $userId");
-      print("✅ token: $token");
 
+      Get.toNamed(AppRoutes.create_password_chef_screen);
     } else {
       Get.snackbar(response.statusCode.toString(), response.message);
     }
@@ -178,8 +184,6 @@ class SignUpChefController extends GetxController {
     isLoadingVerify = false;
     update();
   }
-
-  // ── 3. Chef SignUp (password + name) ──
   Future<void> chefSignUp() async {
     isLoading = true;
     update();
@@ -221,7 +225,24 @@ class SignUpChefController extends GetxController {
     }
   }
 
-  // ── 4. Documents ──
+  Future<String> _compressImage(String path) async {
+    try {
+      final file = File(path);
+      final bytes = await file.readAsBytes();
+      final decoded = img.decodeImage(bytes);
+      if (decoded == null) return path;
+
+      final resized = img.copyResize(decoded, width: 800);
+      final compressed = img.encodeJpg(resized, quality: 40);
+
+      final newPath = '${path}_c.jpg';
+      await File(newPath).writeAsBytes(compressed);
+      return newPath;
+    } catch (e) {
+      return path;
+    }
+  }
+
   Future<void> submitChefVerification({
     required String? idCardFrontPath,
     required String? idCardBackPath,
@@ -235,17 +256,17 @@ class SignUpChefController extends GetxController {
       final List files = [];
 
       if (idCardFrontPath != null && idCardFrontPath.isNotEmpty)
-        files.add({"name": "id_card_front", "image": idCardFrontPath});
+        files.add({"name": "id_card_front", "image": await _compressImage(idCardFrontPath)});
       if (idCardBackPath != null && idCardBackPath.isNotEmpty)
-        files.add({"name": "id_card_back", "image": idCardBackPath});
+        files.add({"name": "id_card_back", "image": await _compressImage(idCardBackPath)});
       if (proofOfAddressPath != null && proofOfAddressPath.isNotEmpty)
-        files.add({"name": "proof_of_address", "image": proofOfAddressPath});
+        files.add({"name": "proof_of_address", "image": await _compressImage(proofOfAddressPath)});
       if (foodSafetyCertPath != null && foodSafetyCertPath.isNotEmpty)
-        files.add({"name": "food_safety_certificate", "image": foodSafetyCertPath});
+        files.add({"name": "food_safety_certificate", "image": await _compressImage(foodSafetyCertPath)});
       if (additionalCulinaryPath != null && additionalCulinaryPath.isNotEmpty)
-        files.add({"name": "additional_culinary_licenses", "image": additionalCulinaryPath});
+        files.add({"name": "additional_culinary_licenses", "image": await _compressImage(additionalCulinaryPath)});
       if (image != null && image!.isNotEmpty)
-        files.add({"name": "image", "image": image});
+        files.add({"name": "image", "image": await _compressImage(image!)});
 
       final response = await ApiService.multipartImage(
         _onboardingEndpoint,
@@ -268,7 +289,6 @@ class SignUpChefController extends GetxController {
       update();
     }
   }
-
 
   Future<void> setupChefProfile({
     required String about,

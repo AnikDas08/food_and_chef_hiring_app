@@ -72,27 +72,27 @@ class SignUpController extends GetxController {
   static SignUpController get instance => Get.put(SignUpController());
 
   TextEditingController firstNameController = TextEditingController(
-    text: kDebugMode ? "Namimul" : "",
+    text: kDebugMode ? "" : "",
   );
 
   TextEditingController lastNameController = TextEditingController(
-    text: kDebugMode ? "Hassan" : "",
+    text: kDebugMode ? "" : "",
   );
   TextEditingController emailController = TextEditingController(
-    text: kDebugMode ? "developernaimul00@gmail.com" : '',
+    text: kDebugMode ? "" : '',
   );
   TextEditingController passwordController = TextEditingController(
-    text: kDebugMode ? 'hello123' : '',
+    text: kDebugMode ? '' : '',
   );
   TextEditingController confirmPasswordController = TextEditingController(
-    text: kDebugMode ? 'hello123' : '',
+    text: kDebugMode ? '' : '',
   );
   TextEditingController numberController = TextEditingController(
   );
   TextEditingController addressController = TextEditingController();
   TextEditingController dietaryController = TextEditingController();
   TextEditingController otpController = TextEditingController(
-    text: kDebugMode ? '123456' : '',
+    text: kDebugMode ? '' : '',
   );
 
   @override

@@ -12,6 +12,7 @@ import '../controller/chef_home_controller.dart';
 import '../widgets/request_item.dart';
 
 class ChefHomeScreen extends StatelessWidget {
+
   const ChefHomeScreen({super.key});
 
   @override
@@ -183,7 +184,7 @@ class ChefHomeScreen extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.toNamed(AppRoutes.chefHomeScreen, arguments: {"index": 2});
+                    Get.offAndToNamed(AppRoutes.chefHomeScreen, arguments: {"index": 2});
                   },
                   child: CommonText(
                     text: AppString.seeAll,
@@ -235,11 +236,17 @@ class ChefHomeScreen extends StatelessWidget {
                   color: const Color(0xff272727),
                 ),
                 InkWell(
-                  child: CommonText(
-                    text: AppString.seeAll,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xffFD713F),
+                  onTap: () {
+                    Get.offAndToNamed(AppRoutes.chefHomeScreen, arguments: {"index": 3});
+                  },
+
+                  child: InkWell(
+                    child: CommonText(
+                      text: AppString.seeAll,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xffFD713F),
+                    ),
                   ),
                 ),
               ],

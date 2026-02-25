@@ -67,12 +67,16 @@ class _ChefHomeState extends State<ChefHome>
     ChefProfileScreen(),
   ];
 
+
   @override
   void initState() {
     super.initState();
-
     selectedTabIndex = Get.arguments?["index"] ?? 0;
-    tabController = TabController(length: tabs.length, vsync: this);
+    tabController = TabController(
+      length: tabs.length,
+      vsync: this,
+      initialIndex: selectedTabIndex,
+    );
     tabController.addListener(updteTabIndex);
   }
 
