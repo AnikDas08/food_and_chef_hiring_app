@@ -29,6 +29,8 @@ class ApiEndPoint {
   static const String totalEarning = 'transaction/chef?range=';
   static const String topMenus = 'menu/top-menus';
   static const String changeOrderStatus = '/order/change-status/';
+  static const String UpcomingBookingsOrder = 'order';
+  static const String changeSchedule = '/order/change-schedule/';
   static const String mostBookingTime = 'order/chef/most-booking-time?date=';
 
 

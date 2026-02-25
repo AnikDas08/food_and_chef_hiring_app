@@ -31,6 +31,21 @@ class ChefHomeController extends GetxController {
   }
 
 
+  Future<Map<String, dynamic>?> fetchSingleOrder(String orderId) async {
+    try {
+      final response = await ApiService.get(
+        '${ApiEndPoint.UpcomingBookingsOrder}/$orderId',
+      );
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        return response.data['data'] as Map<String, dynamic>;
+      }
+    } catch (e) {
+      debugPrint("❌ Single order fetch error: $e");
+    }
+    return null;
+  }
+
+
   Future<ApiResponseModel> confirmBooking(String orderId) async {
     final url = '${ApiEndPoint.changeOrderStatus}$orderId';
 
@@ -52,6 +67,19 @@ class ChefHomeController extends GetxController {
       },
     );
   }
+
+  Future<ApiResponseModel> cancelBooking(String orderId, String reason) async {
+    final url = '${ApiEndPoint.changeOrderStatus}$orderId';
+
+    return await ApiService.patch(
+      url,
+      body: {
+        "status": "Canceled",
+        "cancel_reason": reason,
+      },
+    );
+  }
+
 
 
   Future<void> fetchWalletBalance() async {

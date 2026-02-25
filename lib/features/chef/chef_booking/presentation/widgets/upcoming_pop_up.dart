@@ -6,14 +6,14 @@ import 'package:new_untitled/features/chef/chef_booking/presentation/widgets/req
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/image/common_image.dart';
+import '../../../../../config/api/api_end_point.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_images.dart';
 import '../../../../../utils/constants/app_string.dart';
-import '../../../../customer/cart/presentation/widgets/order_summary.dart';
 import '../controller/chef_booking_controller.dart';
 
-upcomingPopUp() {
+upcomingPopUp({Map<String, dynamic>? orderData}) {
   showModalBottomSheet(
     context: Get.context!,
     isScrollControlled: true,
@@ -24,80 +24,95 @@ upcomingPopUp() {
     builder: (context) {
       return GetBuilder<ChefBookingController>(
         builder: (controller) {
+
+          final userData     = orderData?['user']  as Map<String, dynamic>?;
+          final customerName = userData?['name']   ?? 'Unknown';
+          final customerImg  = userData?['image']  ?? '';
+          final orderId      = orderData?['order_id']          ?? '';
+          final address      = orderData?['formatted_address'] ?? 'No address';
+          final strTime      = orderData?['strTime']           ?? '';
+          final status       = orderData?['status']            ?? 'Upcoming';
+          final items        = (orderData?['static_items'] as List?) ?? [];
+          final breakdown    = orderData?['price_breakdown'] as Map<String, dynamic>?;
+          final duration     = orderData?['duration'] ?? '';
+
+
+          final String imageUrl = customerImg.isNotEmpty
+              ? '${ApiEndPoint.imageUrl}$customerImg'
+              : '';
+
+          final scheduledDate = _formatDate(orderData?['formatted_date']);
+
           return SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16).copyWith(bottom: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   Container(
                     padding: EdgeInsets.all(12.sp),
                     decoration: BoxDecoration(
-                      color: Color(0xffF2F2F2),
+                      color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(12.sp),
                     ),
                     child: Row(
                       children: [
                         CommonImage(
-                          imageSrc: AppImages.img8,
+                          imageSrc: imageUrl.isNotEmpty ? imageUrl : AppImages.img8,
                           size: 40,
                           borderRadius: 50,
                           fill: BoxFit.fill,
                         ),
-
                         12.width,
                         Expanded(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CommonText(
-                                text: "Tony Ferguson",
+                                text: customerName,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: Color(0xff272727),
+                                color: const Color(0xff272727),
                               ),
                               CommonText(
-                                text: "#HC-59375959",
+                                text: orderId,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xff777777),
+                                color: const Color(0xff777777),
                               ),
                             ],
                           ),
                         ),
-
                         Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8.sp,
-                            vertical: 5.sp,
-                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
                           decoration: BoxDecoration(
-                            color: Color(0xffF5EDDD),
+                            color: const Color(0xffF5EDDD),
                             borderRadius: BorderRadius.circular(10.sp),
                           ),
                           child: CommonText(
-                            text: "Requested",
-                            fontSize: 10,
+                            text: "Upcoming",                            fontSize: 10,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xffE39400),
+                            color: const Color(0xffE39400),
                           ),
                         ),
                       ],
                     ),
                   ),
+
                   34.height,
+
                   Row(
                     children: [
                       Container(
                         padding: EdgeInsets.all(10.sp),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color(0xffF2F2F2),
                           shape: BoxShape.circle,
                         ),
                         child: CommonImage(
                           imageSrc: AppIcons.location,
-                          imageColor: Color(0xffFD713F),
+                          imageColor: const Color(0xffFD713F),
                           size: 20,
                         ),
                       ),
@@ -107,35 +122,36 @@ upcomingPopUp() {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonText(
-                              text: "Darren Monarch",
+                              text: customerName,
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xff272727),
+                              color: const Color(0xff272727),
                             ),
                             CommonText(
-                              text:
-                                  "4140 Parker Rd. Allentown, New Mexico 31134",
+                              text: address,
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
-                              color: Color(0xff777777),
+                              color: const Color(0xff777777),
                             ),
                           ],
                         ),
                       ),
                     ],
                   ),
+
                   16.height,
+
                   Row(
                     children: [
                       Container(
                         padding: EdgeInsets.all(10.sp),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color(0xffF2F2F2),
                           shape: BoxShape.circle,
                         ),
                         child: CommonImage(
                           imageSrc: AppIcons.date,
-                          imageColor: Color(0xffFD713F),
+                          imageColor: const Color(0xffFD713F),
                           size: 20,
                         ),
                       ),
@@ -145,109 +161,178 @@ upcomingPopUp() {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonText(
-                              text: "August 30, 2024 ",
+                              text: scheduledDate,
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xff272727),
+                              color: const Color(0xff272727),
                             ),
                             CommonText(
-                              text: "at 01:00 PM - 03:40 PM",
+                              text: strTime,
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
-                              color: Color(0xff777777),
+                              color: const Color(0xff777777),
                             ),
                           ],
                         ),
                       ),
                     ],
                   ),
+
+
                   CommonText(
                     text: AppString.orderDetails,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
-                    top: 16,
-                    bottom: 20,
+                    color: const Color(0xff272727),
+                    top: 20,
+                    bottom: 16,
                   ),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CommonText(
-                            text: "Chopped Burrito",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff4E4E4E),
-                          ),
-                          CommonText(
-                            text: "2 Items + Without Onions",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff777777),
-                          ),
-                        ],
-                      ),
-                      CommonText(
-                        text: "\$45.00",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff272727),
-                      ),
-                    ],
-                  ),
-                  12.height,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CommonText(
-                            text: "Chopped Burrito",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff4E4E4E),
-                          ),
-                          CommonText(
-                            text: "2 Items + Without Onions",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff777777),
-                          ),
-                        ],
-                      ),
-                      CommonText(
-                        text: "\$45.00",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff272727),
-                      ),
-                    ],
-                  ),
-                  16.height,
-                  orderSummary(),
 
-                  Divider(),
+                  if (items.isEmpty)
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.h),
+                      child: Text(
+                        "No items found",
+                        style: TextStyle(fontSize: 13.sp, color: Colors.grey),
+                      ),
+                    )
+                  else
+                    ...items.map((item) {
+                      final menu        = item['menu'] as Map<String, dynamic>?;
+                      final menuName    = menu?['name'] ?? 'Item';
+                      final qty         = item['quantity'] ?? 1;
+                      final customs     = (item['customizations'] as List?)
+                          ?.map((e) => e.toString())
+                          .join(', ') ?? '';
+                      final price       = (item['total_price'] ?? 0).toDouble();
+
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 12.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CommonText(
+                                    text: menuName,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xff4E4E4E),
+                                  ),
+                                  CommonText(
+                                    text: customs.isNotEmpty
+                                        ? '$qty item(s) · $customs'
+                                        : '$qty item(s)',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: const Color(0xff777777),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            CommonText(
+                              text: '\$${price.toStringAsFixed(2)}',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xff272727),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+
+                  const Divider(height: 24),
+
+
+                  CommonText(
+                    text: "Order Summary",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xff272727),
+                    bottom: 12,
+                  ),
+
+                  // Cooking duration
+                  if (duration.isNotEmpty) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Estimated cooking time:",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff272727),
+                          ),
+                        ),
+                        Text(
+                          duration,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff272727),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 2.h, bottom: 10.h),
+                      child: const Text(
+                        "For scheduling only: Billing reflects time worked.",
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontStyle: FontStyle.italic,
+                          color: Color(0xff777777),
+                        ),
+                      ),
+                    ),
+                  ],
+
+                  // Price rows from breakdown
+                  if (breakdown != null) ...[
+                    _summaryRow(
+                      "Subtotal",
+                      (breakdown['subtotal'] ?? 0).toDouble(),
+                    ),
+                    _summaryRow(
+                      "Estimated taxes",
+                      (breakdown['taxs'] ?? 0).toDouble(),
+                    ),
+                    _summaryRow(
+                      "Service fee",
+                      (breakdown['service_fee'] ?? 0).toDouble(),
+                    ),
+                    const Divider(height: 20),
+                    _summaryRow(
+                      "Total",
+                      (breakdown['total'] ?? 0).toDouble(),
+                      isBold: true,
+                      fontSize: 15,
+                    ),
+                  ],
+
+                  const Divider(height: 24),
 
                   Row(
                     children: [
                       Expanded(
                         child: CommonButton(
                           titleText: AppString.requestChange,
-                          buttonColor: Color(0xffF2F2F2),
+                          buttonColor: const Color(0xffF2F2F2),
                           borderColor: Colors.transparent,
-                          titleColor: Color(0xff272727),
+                          titleColor: const Color(0xff272727),
                           titleSize: 14,
                           titleWeight: FontWeight.w600,
                           buttonHeight: 48,
                           buttonRadius: 16,
                           onTap: () async {
                             Get.back();
-                            await Future.delayed(Duration(milliseconds: 300));
-                            requestChangePopUp();
+                            await Future.delayed(
+                                const Duration(milliseconds: 300));
+                            requestChangePopUp(orderId: orderData?['_id']?.toString());
                           },
                         ),
                       ),
@@ -259,9 +344,7 @@ upcomingPopUp() {
                           buttonRadius: 16,
                           titleSize: 14,
                           titleWeight: FontWeight.w600,
-                          onTap: () {
-                            Get.toNamed(AppRoutes.message);
-                          },
+                          onTap: () => Get.toNamed(AppRoutes.message),
                         ),
                       ),
                     ],
@@ -274,5 +357,49 @@ upcomingPopUp() {
       );
     },
     constraints: BoxConstraints(maxHeight: Get.height - 100),
+  );
+}
+
+
+
+String _formatDate(dynamic rawDate) {
+  if (rawDate == null) return 'N/A';
+  try {
+    final dt = DateTime.parse(rawDate.toString()).toLocal();
+    const months = [
+      'January','February','March','April','May','June',
+      'July','August','September','October','November','December'
+    ];
+    return '${months[dt.month - 1]} ${dt.day}, ${dt.year}';
+  } catch (_) {
+    return rawDate.toString();
+  }
+}
+
+Widget _summaryRow(String label, double amount,
+    {bool isBold = false, double fontSize = 13}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
+            color: isBold ? const Color(0xff272727) : const Color(0xff777777),
+          ),
+        ),
+        Text(
+          '\$${amount.toStringAsFixed(2)}',
+          style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
+            color: const Color(0xff272727),
+          ),
+        ),
+      ],
+    ),
   );
 }

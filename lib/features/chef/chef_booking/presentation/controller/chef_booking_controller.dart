@@ -6,12 +6,15 @@ class ChefBookingController extends GetxController {
 
   String selectedTime = "";
   final List<String> timeSlots = [
-    "10:00 AM",
-    "11:00 AM",
-    "12:00 PM",
-    "02:00 PM",
-    "04:00 PM",
-    "06:00 PM",
+    "12:30 PM",
+    "13:15 PM",
+    "14:00 PM",
+    "14:45 PM",
+    "15:30 PM",
+    "16:15 PM",
+    "07:00 PM",
+    "17:45 PM",
+
   ];
 
   void selectDate(DateTime date) {
@@ -23,6 +26,8 @@ class ChefBookingController extends GetxController {
     selectedTime = time;
     update();
   }
+
+  final RxBool isRequestingChange = false.obs;
 
   bool isOrderDetailsPopup = false;
   List<String> bookingHistoryList = ["Unconfirmed", "Upcoming", "Completed"];

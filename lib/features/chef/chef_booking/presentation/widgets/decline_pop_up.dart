@@ -118,7 +118,7 @@ declineBookingPopUp({
                             titleWeight: FontWeight.w600,
                             titleColor: Colors.white,
                             onTap: () async {
-                              // ✅ reason selected কিনা check
+
                               if (controller.selectDietary.isEmpty) {
                                 Get.snackbar("Message", "Please select a reason");
                                 return;
@@ -126,7 +126,7 @@ declineBookingPopUp({
 
                               final reason = controller.selectDietary.first;
 
-                              // ✅ API call (ChefHomeController থেকে)
+
                               final homeC = Get.find<ChefHomeController>();
                               final res = await homeC.declineBooking(orderId, reason);
 
@@ -134,7 +134,7 @@ declineBookingPopUp({
                                 await AnimationPopUpState.closeDialog();
                                 await Future.delayed(const Duration(milliseconds: 300));
 
-                                // ✅ success হলে list update callback call
+
                                 onSuccess();
                               } else {
                                 Get.snackbar(

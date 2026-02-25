@@ -87,20 +87,22 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  onSelected: (value) {
-                    if (value == 1) upcomingPopUp();
-                    else if (value == 2) {
-                      final homeC = Get.find<ChefHomeController>();
 
-                      declineBookingPopUp(
+                  onSelected: (value) {
+                    if (value == 1) {
+
+                    } else if (value == 2) {
+                      cancelBookingPopUp(
                         orderId: booking.id,
                         onSuccess: () {
+                          final homeC = Get.find<ChefHomeController>();
                           homeC.requestedBookings.removeWhere((e) => e.id == booking.id);
                           homeC.fetchUpcomingBookings();
-                          Get.snackbar("Success", "Booking declined");
+                          Get.snackbar("Success", "Booking cancelled");
                         },
                       );
-                    }                  },
+                    }
+                  },
                   itemBuilder: (context) => [
                     PopupMenuItem(
                       value: 1,
@@ -112,6 +114,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                         ],
                       ),
                     ),
+
                     PopupMenuItem(
                       value: 2,
                       child: Row(
@@ -287,7 +290,20 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                 ),
               ] else
                 InkWell(
-                  onTap: upcomingPopUp,
+                  onTap: () async {
+
+                    Get.dialog(
+                      const Center(child: CircularProgressIndicator()),
+                      barrierDismissible: false,
+                    );
+
+                    final homeC = Get.find<ChefHomeController>();
+                    final orderData = await homeC.fetchSingleOrder(booking.id);
+
+                    Get.back();
+
+                    upcomingPopUp(orderData: orderData);
+                  },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                     decoration: BoxDecoration(
@@ -385,5 +401,134 @@ void showSuccessDialog() {
       ),
     ),
     barrierDismissible: false,
+  );
+}
+
+void cancelBookingPopUp({
+  required String orderId,
+  required VoidCallback onSuccess,
+}) {
+  final RxString selectedReason = ''.obs;
+
+  final List<String> reasons = [
+    "Too Far Away",
+    "Earnings Too Low",
+    "Double Booking",
+  ];
+
+  Get.dialog(
+    Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Want to cancel order?",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: Color(0xff111111),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              "Please select a reason why you want to decline the request?",
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.black.withOpacity(0.55),
+                height: 1.3,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Reason List
+            Obx(() => Column(
+              children: reasons.map((reason) {
+                return GestureDetector(
+                  onTap: () => selectedReason.value = reason,
+                  child: Row(
+                    children: [
+                      Radio<String>(
+                        value: reason,
+                        groupValue: selectedReason.value,
+                        activeColor: const Color(0xff272727),
+                        onChanged: (val) => selectedReason.value = val ?? '',
+                      ),
+                      Text(reason, style: const TextStyle(fontSize: 14)),
+                    ],
+                  ),
+                );
+              }).toList(),
+            )),
+
+            const SizedBox(height: 16),
+
+            // Submit Button
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton(
+                onPressed: () async {
+                  if (selectedReason.value.isEmpty) {
+                    Get.snackbar("Warning", "Please select a reason");
+                    return;
+                  }
+
+                  Get.back(); 
+
+                  Get.dialog(
+                    const Center(child: CircularProgressIndicator()),
+                    barrierDismissible: false,
+                  );
+
+                  try {
+                    final homeC = Get.find<ChefHomeController>();
+                    final res = await homeC.cancelBooking(
+                      orderId,
+                      selectedReason.value,
+                    );
+
+                    Get.back();
+
+                    if (res.statusCode == 200 && res.data?['success'] == true) {
+                      onSuccess();
+                    } else {
+                      Get.snackbar("Error", res.data?['message']?.toString() ?? "Something went wrong");
+                    }
+                  } catch (e) {
+                    Get.back();
+                    Get.snackbar("Error", "Something went wrong");
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xff272727),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  elevation: 0,
+                ),
+                child: const Text(
+                  "Submit",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+    barrierDismissible: true,
   );
 }
