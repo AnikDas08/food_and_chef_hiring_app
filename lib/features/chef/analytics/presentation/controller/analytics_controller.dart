@@ -18,7 +18,7 @@ class AnalyticsController extends GetxController {
   var avgPrice = 0.0.obs;
   var avgMenus = 0.obs;
   var totalBooking = 0.obs;
-  var selectedDay = 'Mondays'.obs;
+  var selectedDay = 'Sunday'.obs;
 
   var topMenuLoading = false.obs;
   var topMenuList = <TopMenuItem>[].obs;

@@ -47,6 +47,16 @@ class ChefBookingController extends GetxController {
     });
   }
 
+  @override
+  void onInit() {
+    super.onInit();
+    final filter = Get.arguments?["filter"];
+    if (filter != null) {
+      onChangeBookingHistory(filter);
+    }
+  }
+
+
   onChangeOrderDetailsPopup() {
     isOrderDetailsPopup = !isOrderDetailsPopup;
     update();

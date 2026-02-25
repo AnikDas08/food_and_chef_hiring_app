@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/features/chef/home/presentation/widgets/chef_home_appbar.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -126,7 +127,6 @@ class ChefHomeScreen extends StatelessWidget {
                               ],
                             ),
 
-                            // Cash Out Button
                             Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -134,24 +134,31 @@ class ChefHomeScreen extends StatelessWidget {
                               ),
                               padding: EdgeInsets.symmetric(
                                   horizontal: 16.w, vertical: 12.h),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.account_balance_wallet_outlined,
-                                    color: Colors.black,
-                                    size: 18.sp,
-                                  ),
-                                  SizedBox(width: 6.w),
-                                  Text(
-                                    "Cash Out",
-                                    style: TextStyle(
+                              child: InkWell(
+                                onTap: (){
+
+                                  Get.toNamed(AppRoutes.chefPayment);
+
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.account_balance_wallet_outlined,
                                       color: Colors.black,
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w600,
+                                      size: 18.sp,
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(width: 6.w),
+                                    Text(
+                                      "Cash Out",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -174,11 +181,16 @@ class ChefHomeScreen extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   color: const Color(0xff272727),
                 ),
-                CommonText(
-                  text: AppString.seeAll,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xffFD713F),
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.chefHomeScreen, arguments: {"index": 2});
+                  },
+                  child: CommonText(
+                    text: AppString.seeAll,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xffFD713F),
+                  ),
                 ),
               ],
             ),
@@ -222,11 +234,13 @@ class ChefHomeScreen extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   color: const Color(0xff272727),
                 ),
-                CommonText(
-                  text: AppString.seeAll,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xffFD713F),
+                InkWell(
+                  child: CommonText(
+                    text: AppString.seeAll,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xffFD713F),
+                  ),
                 ),
               ],
             ),
