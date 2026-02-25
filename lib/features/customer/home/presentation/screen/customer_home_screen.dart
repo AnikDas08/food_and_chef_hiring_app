@@ -185,16 +185,16 @@ class _ChefHomeState extends State<CustomerHomeScreen>
 
 final List<String> _list = [
   AppIcons.home,
-  AppIcons.analytics,
-  AppIcons.basket,
+  AppIcons.booking,
+  AppIcons.groceries,
   AppIcons.chats,
   AppIcons.profile,
 ];
 
 final List<String> _string = [
   AppString.home,
-  AppString.analytics,
   AppString.bookings,
+  AppString.groceries,
   AppString.chats,
   AppString.profile,
 ];

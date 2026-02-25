@@ -83,7 +83,7 @@ class _Header extends StatelessWidget {
         TabBar(
           indicatorColor: Colors.transparent,
           unselectedLabelColor: Color(0xff777777),
-          labelPadding: EdgeInsets.zero,
+          labelPadding: const EdgeInsets.symmetric(horizontal: 20),
           isScrollable: sections.length > 3,
           labelStyle: TextStyle(
             fontSize: 14,
