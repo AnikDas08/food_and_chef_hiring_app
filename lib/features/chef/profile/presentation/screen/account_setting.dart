@@ -9,8 +9,10 @@ import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../../utils/constants/app_string.dart';
 import '../../../../../component/text_field/common_text_field.dart';
+import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/helpers/other_helper.dart';
+import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../widgets/delete_pop_up.dart';
 
 class AccountSetting extends StatelessWidget {
@@ -52,33 +54,40 @@ class AccountSetting extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const CommonText(
-                          text: AppString.email,
-                          fontWeight: FontWeight.w600,
-                          top: 20,
-                          bottom: 8,
-                        ),
-                        CommonTextField(
-                          validator: OtherHelper.validator,
-                          hintText: AppString.email,
-                          keyboardType: TextInputType.emailAddress,
-                        ),
+                        GetBuilder<ChefProfileController>(
+                          builder: (controller) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const CommonText(
+                                  text: "Email",
+                                  fontWeight: FontWeight.w600,
+                                  top: 20,
+                                  bottom: 8,
+                                ),
+                                CommonTextField(
+                                  controller: controller.emailController,
+                                  hintText: "Enter email",
+                                  keyboardType: TextInputType.emailAddress,
+                                ),
 
-                        /// User Phone number here
-                        const CommonText(
-                          text: AppString.phoneNumber,
-                          fontWeight: FontWeight.w600,
-                          top: 20,
-                          bottom: 8,
-                        ),
+                                const CommonText(
+                                  text: AppString.phoneNumber,
+                                  fontWeight: FontWeight.w600,
+                                  top: 20,
+                                  bottom: 8,
+                                ),
+                                CommonTextField(
+                                  controller: controller.phoneController,
+                                  hintText: AppString.phoneNumber,
+                                  keyboardType: TextInputType.phone,
+                                ),
 
-                        CommonTextField(
-                          controller: controller.nameController,
-                          validator: OtherHelper.validator,
-                          hintText: AppString.phoneNumber,
-                          keyboardType: TextInputType.text,
-                        ),
 
+                              ],
+                            );
+                          },
+                        ),
                         CommonText(
                           text: "Link Account".toUpperCase(),
                           fontWeight: FontWeight.w500,
@@ -186,7 +195,14 @@ class AccountSetting extends StatelessWidget {
                     CommonButton(
                       titleText: AppString.saveChanges,
                       isLoading: controller.isLoading,
-                      onTap: Get.back,
+                      onTap: () {
+                        if (controller.emailController.text.trim().isEmpty ||
+                            controller.phoneController.text.trim().isEmpty) {
+                          Utils.errorSnackBar("Warning", "Please fill all fields");
+                          return;
+                        }
+                        controller.updateContactInfo();
+                      },
                     ),
                   ],
                 ),

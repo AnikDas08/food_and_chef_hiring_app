@@ -62,7 +62,6 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                 ),
               ),
 
-              // Upcoming badge only for Upcoming list
               if (!isRequested)
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
@@ -88,15 +87,35 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                     borderRadius: BorderRadius.circular(12),
                   ),
 
-                  onSelected: (value) {
+                  onSelected: (value) async {
                     if (value == 1) {
+                      Get.dialog(
+                        const Center(child: CircularProgressIndicator()),
+                        barrierDismissible: false,
+                      );
+
+                      try {
+                        final homeC = Get.find<ChefHomeController>();
+                        final orderData = await homeC.fetchSingleOrder(booking.id);
+
+                        Get.back();
+
+                        if (orderData != null) {
+                          upcomingPopUp(orderData: orderData);
+                        } else {
+                          Get.snackbar("Error", "Could not load order details");
+                        }
+                      } catch (e) {
+                        Get.back();
+                        Get.snackbar("Error", "Something went wrong");
+                      }
 
                     } else if (value == 2) {
                       cancelBookingPopUp(
                         orderId: booking.id,
                         onSuccess: () {
                           final homeC = Get.find<ChefHomeController>();
-                          homeC.requestedBookings.removeWhere((e) => e.id == booking.id);
+                          homeC.upcomingBookings.removeWhere((e) => e.id == booking.id);
                           homeC.fetchUpcomingBookings();
                           Get.snackbar("Success", "Booking cancelled");
                         },
@@ -229,18 +248,16 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                 InkWell(
                   onTap: () {
                     final homeC = Get.find<ChefHomeController>();
-
                     declineBookingPopUp(
                       orderId: booking.id,
                       onSuccess: () {
                         homeC.requestedBookings.removeWhere((e) => e.id == booking.id);
-
-                        homeC.fetchUpcomingBookings();
-
+                        homeC.fetchRequestedBookings();
                         Get.snackbar("Success", "Booking declined");
                       },
                     );
-                  },                  child: Container(
+                  },
+                  child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -258,20 +275,27 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                 8.width,
                 InkWell(
                   onTap: () async {
-                    final c = Get.find<ChefHomeController>();
+                    Get.dialog(
+                      const Center(child: CircularProgressIndicator()),
+                      barrierDismissible: false,
+                    );
 
-                    final res = await c.confirmBooking(booking.id);
+                    try {
+                      final c = Get.find<ChefHomeController>();
+                      final res = await c.confirmBooking(booking.id);
 
-                    if (res.statusCode == 200 && res.data?['success'] == true) {
-                      c.requestedBookings.removeWhere((e) => e.id == booking.id);
-                      c.fetchUpcomingBookings();
+                      Get.back(); // loader বন্ধ
 
-                      showSuccessDialog();
-                    } else {
-                      Get.snackbar(
-                        "Message",
-                        res.data?['message']?.toString() ?? "Something went wrong",
-                      );
+                      if (res.statusCode == 200 && res.data?['success'] == true) {
+                        c.requestedBookings.removeWhere((e) => e.id == booking.id);
+                        c.fetchUpcomingBookings();
+                        showSuccessDialog();
+                      } else {
+                        Get.snackbar("Message", res.data?['message']?.toString() ?? "Something went wrong");
+                      }
+                    } catch (e) {
+                      Get.back(); // error হলেও loader বন্ধ
+                      Get.snackbar("Error", "Something went wrong");
                     }
                   },
                   child: Container(
@@ -291,18 +315,26 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
               ] else
                 InkWell(
                   onTap: () async {
-
                     Get.dialog(
                       const Center(child: CircularProgressIndicator()),
                       barrierDismissible: false,
                     );
 
-                    final homeC = Get.find<ChefHomeController>();
-                    final orderData = await homeC.fetchSingleOrder(booking.id);
+                    try {
+                      final homeC = Get.find<ChefHomeController>();
+                      final orderData = await homeC.fetchSingleOrder(booking.id);
 
-                    Get.back();
+                      Get.back();
 
-                    upcomingPopUp(orderData: orderData);
+                      if (orderData != null) {
+                        upcomingPopUp(orderData: orderData);
+                      } else {
+                        Get.snackbar("Message", "Could not load order details");
+                      }
+                    } catch (e) {
+                      Get.back();
+                      Get.snackbar("Message", "Something went wrong");
+                    }
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
@@ -482,7 +514,7 @@ void cancelBookingPopUp({
                     return;
                   }
 
-                  Get.back(); 
+                  Get.back();
 
                   Get.dialog(
                     const Center(child: CircularProgressIndicator()),

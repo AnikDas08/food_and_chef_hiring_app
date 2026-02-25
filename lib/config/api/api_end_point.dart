@@ -31,6 +31,7 @@ class ApiEndPoint {
   static const String changeOrderStatus = '/order/change-status/';
   static const String UpcomingBookingsOrder = 'order';
   static const String changeSchedule = '/order/change-schedule/';
+  static const String deleteAccount = '/user/account-delete';
   static const String mostBookingTime = 'order/chef/most-booking-time?date=';
 
 

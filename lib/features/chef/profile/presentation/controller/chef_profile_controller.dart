@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/helpers/other_helper.dart';
-
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/app_utils.dart';
+import '../../../home/presentation/controller/chef_home_controller.dart';
 
 class ChefProfileController extends GetxController {
   /// Language List
@@ -45,6 +45,9 @@ class ChefProfileController extends GetxController {
   TextEditingController toController = TextEditingController();
   TextEditingController weekdayRateController = TextEditingController();
   TextEditingController weekendRateController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
 
   /// Location Data
   double? selectedLat;
@@ -77,15 +80,45 @@ class ChefProfileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // userId empty hole SharedPreferences theke await kore load koro
     if (LocalStorage.userId.isEmpty) {
       LocalStorage.getAllPrefData().then((_) => update());
     }
   }
 
-  // ─────────────────────────────────────────────
-  //  Google Places Autocomplete
-  // ─────────────────────────────────────────────
+
+  bool isLoadingUpdate = false;
+
+  Future<void> updateContactInfo() async {
+    isLoadingUpdate = true;
+    update();
+
+    try {
+      final response = await ApiService.multipartImage(
+        ApiEndPoint.user,
+        method: "PATCH",
+        body: {
+          'email': emailController.text.trim(),
+          'contact': phoneController.text.trim(),
+        },
+      );
+
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        Get.snackbar("Success", "Profile updated successfully");
+
+        Get.find<ChefHomeController>().fetchChefProfile();
+        Get.toNamed(AppRoutes.chefProfile);
+      } else {
+        Get.snackbar("Error", response.data?['message']?.toString() ?? "Something went wrong");
+      }
+    } catch (e) {
+      debugPrint("Update profile error: $e");
+      Get.snackbar("Error", "Something went wrong");
+    } finally {
+      isLoadingUpdate = false;
+      update();
+    }
+  }
+
   static const String _placesApiKey = "AIzaSyCVoe2GBYsk1jU6E9RFIxhVfsyBCSkMX_w";
 
   Future<void> fetchAddressSuggestions(String query) async {
@@ -161,7 +194,6 @@ class ChefProfileController extends GetxController {
     update();
   }
 
-  // ─────────────────────────────────────────────
 
   void onChangeProfile(int index) {
     selectedProfile = profileOptions[index];
@@ -215,7 +247,7 @@ class ChefProfileController extends GetxController {
     update();
   }
 
-  /// JWT token theke userId decode koro
+
   String _getUserIdFromToken(String token) {
     try {
       final parts = token.split('.');
@@ -231,7 +263,7 @@ class ChefProfileController extends GetxController {
     }
   }
 
-  /// ─── API Hit ────────────────────────────────
+
   Future<void> editProfileRepo() async {
     if (!formKey.currentState!.validate()) return;
     if (!LocalStorage.isLogIn) return;

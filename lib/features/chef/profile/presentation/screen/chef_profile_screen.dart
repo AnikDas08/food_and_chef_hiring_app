@@ -12,10 +12,12 @@ import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/other_widgets/item.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../config/api/api_end_point.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/constants/app_images.dart';
 import '../../../../../../utils/constants/app_string.dart';
 import '../../../../customer/profile/presentation/widgets/profile_list.dart';
+import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_profile_controller.dart';
 
 class ChefProfileScreen extends StatelessWidget {
@@ -56,58 +58,63 @@ class ChefProfileScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          CommonImage(
-                            imageSrc: AppImages.image3,
-                            size: 52,
-                            fill: BoxFit.fill,
-                            borderRadius: 50,
-                          ),
-                          12.width,
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CommonText(
-                                  text: "Darren Monarch",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff272727),
-                                ),
-                                CommonText(
-                                  text: "darrenmonarch@gmail.com",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff777777),
-                                ),
-                              ],
+                      Obx(() {
+                        final profile = Get.find<ChefHomeController>().chefProfile.value;
+                        return Row(
+                          children: [
+                            CommonImage(
+                              imageSrc: profile?.image.isNotEmpty == true
+                                  ? Uri.parse(ApiEndPoint.imageUrl).resolve(profile!.image).toString()
+                                  : AppImages.image3,
+                              size: 52,
+                              fill: BoxFit.fill,
+                              borderRadius: 50,
                             ),
-                          ),
-                        ],
-                      ),
-                      16.height,
-                      CommonTextField(
-                        keyboardType: TextInputType.none,
-                        borderColor: Color(0xffF1F1F1),
-                        borderRadius: 8,
-                        fillColor: Color(0xffFDFDFD),
-                        paddingVertical: 14,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: CommonImage(
-                            imageSrc: controller.selectedProfile['image'],
-                            size: 30,
-                          ),
-                        ),
-                        hintText: controller.selectedProfile['name'],
-                        hintTextColor: Color(0xff272727),
-                        suffixIcon: ProfileList(
-                          items: controller.profileOptions,
-                          selectedItem: controller.selectedProfile,
-                          onTap: controller.onChangeProfile,
-                        ),
-                      ),
+                            12.width,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CommonText(
+                                    text: profile?.name ?? 'Unknown',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff272727),
+                                  ),
+                                  CommonText(
+                                    text: profile?.email ?? '',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xff777777),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
+                      //16.height,
+                      // CommonTextField(
+                      //   keyboardType: TextInputType.none,
+                      //   borderColor: Color(0xffF1F1F1),
+                      //   borderRadius: 8,
+                      //   fillColor: Color(0xffFDFDFD),
+                      //   paddingVertical: 14,
+                      //   prefixIcon: Padding(
+                      //     padding: const EdgeInsets.only(left: 8.0),
+                      //     child: CommonImage(
+                      //       imageSrc: controller.selectedProfile['image'],
+                      //       size: 30,
+                      //     ),
+                      //   ),
+                      //   hintText: controller.selectedProfile['name'],
+                      //   hintTextColor: Color(0xff272727),
+                      //   suffixIcon: ProfileList(
+                      //     items: controller.profileOptions,
+                      //     selectedItem: controller.selectedProfile,
+                      //     onTap: controller.onChangeProfile,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -218,9 +225,12 @@ class ChefProfileScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Item(
-                        icon: CupertinoIcons.question_circle,
-                        title: AppString.contactSupport,
+                      InkWell(
+                        onTap: () => Get.toNamed(AppRoutes.message),
+                        child: Item(
+                          icon: CupertinoIcons.question_circle,
+                          title: AppString.contactSupport,
+                        ),
                       ),
 
                       Item(

@@ -56,6 +56,8 @@ class ChefHomeController extends GetxController {
       },
     );
   }
+
+
   Future<ApiResponseModel> declineBooking(String orderId, String reason) async {
     final url = '${ApiEndPoint.changeOrderStatus}$orderId';
 
