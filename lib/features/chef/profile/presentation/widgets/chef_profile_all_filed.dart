@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_text_field.dart';
@@ -133,17 +134,17 @@ class ChefProfileAllFiled extends StatelessWidget {
           ),
         ),
 
-        /// Weekday Discount
-        _DiscountCard(
-          title: 'Offer discounted rate during specific hours on weekdays',
-          isEnabled: controller.isNotification,
-          onToggle: controller.notification,
-          showTimePicker: true,
-          fromController: controller.fromController,
-          toController: controller.toController,
-          rateController: controller.weekdayRateController,
+        Obx(
+              () => _DiscountCard(
+            title: 'Offer discounted rate during specific hours on weekdays',
+            isEnabled: controller.isNotification.value,
+            onToggle: () => controller.notification(),
+            showTimePicker: true,
+            fromController: controller.fromController,
+            toController: controller.toController,
+            rateController: controller.weekdayRateController,
+          ),
         ),
-
         /// Weekend Rate
         _DiscountCard(
           title: 'Ask for higher rate on weekends',

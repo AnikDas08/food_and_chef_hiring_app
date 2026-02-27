@@ -19,6 +19,33 @@ class ChefProfileController extends GetxController {
     {"name": "Customers", "image": AppIcons.customers},
   ];
 
+  RxBool isNotification = false.obs;
+
+  void loadProfile(data) {
+    isNotification.value = data['notification_enabled'] ?? false;
+  }
+
+
+  Future<void> notification() async {
+    bool newValue = !isNotification.value;
+    isNotification.value = newValue;
+
+    var response = await ApiService.patch(
+      ApiEndPoint.chefProfile,
+      body: {
+        "notification_enabled": newValue.toString(),
+      },
+    );
+
+    if (response.statusCode == 200 && response.data['success'] == true) {
+      Get.snackbar("Message", "notification setting updated",backgroundColor: Colors.green,colorText: Colors.white);
+      // Success
+    } else {
+      isNotification.value = !newValue;
+      Utils.errorSnackBar("Error", "Failed to update notification setting");
+    }
+  }
+
   /// Cuisine Options
   final List<String> cuisineOptions = [
     'Chinese', 'Italian', 'American', 'Indian', 'Japanese',
@@ -48,7 +75,6 @@ class ChefProfileController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
-
   /// Location Data
   double? selectedLat;
   double? selectedLng;
@@ -59,7 +85,6 @@ class ChefProfileController extends GetxController {
 
   /// Toggles
   bool isDiscount = false;
-  bool isNotification = false;
   bool isWeekend = false;
   bool isAutoAccept = false;
 
@@ -85,7 +110,6 @@ class ChefProfileController extends GetxController {
     }
   }
 
-
   bool isLoadingUpdate = false;
 
   Future<void> updateContactInfo() async {
@@ -104,7 +128,6 @@ class ChefProfileController extends GetxController {
 
       if (response.statusCode == 200 && response.data['success'] == true) {
         Get.snackbar("Success", "Profile updated successfully");
-
         Get.find<ChefHomeController>().fetchChefProfile();
         Get.toNamed(AppRoutes.chefProfile);
       } else {
@@ -194,7 +217,6 @@ class ChefProfileController extends GetxController {
     update();
   }
 
-
   void onChangeProfile(int index) {
     selectedProfile = profileOptions[index];
     update();
@@ -221,11 +243,6 @@ class ChefProfileController extends GetxController {
     update();
   }
 
-  void notification() {
-    isNotification = !isNotification;
-    update();
-  }
-
   void weekendToggle() {
     isWeekend = !isWeekend;
     update();
@@ -247,13 +264,11 @@ class ChefProfileController extends GetxController {
     update();
   }
 
-
   String _getUserIdFromToken(String token) {
     try {
       final parts = token.split('.');
       if (parts.length != 3) return '';
       String payload = parts[1];
-      // Base64 padding fix
       while (payload.length % 4 != 0) payload += '=';
       final decoded = utf8.decode(base64Url.decode(payload));
       final map = jsonDecode(decoded) as Map<String, dynamic>;
@@ -262,7 +277,6 @@ class ChefProfileController extends GetxController {
       return '';
     }
   }
-
 
   Future<void> editProfileRepo() async {
     if (!formKey.currentState!.validate()) return;
@@ -277,10 +291,8 @@ class ChefProfileController extends GetxController {
     update();
 
     try {
-      // SharedPreferences theke load koro
       await LocalStorage.getAllPrefData();
 
-      // userId empty hole JWT token theke decode koro
       String userId = LocalStorage.userId;
       if (userId.isEmpty && LocalStorage.token.isNotEmpty) {
         userId = _getUserIdFromToken(LocalStorage.token);
@@ -296,6 +308,7 @@ class ChefProfileController extends GetxController {
         update();
         return;
       }
+
       final Map<String, dynamic> body = {
         "role": "CHEF",
         "fullName": nameController.text.trim(),
@@ -309,7 +322,7 @@ class ChefProfileController extends GetxController {
         "cooking_area_distance": distanceController.text.trim(),
         "minimum_booking_duration": minBookingController.text.trim(),
         "auto_accept": isAutoAccept.toString(),
-        "week_days_discount_has": isNotification.toString(),
+        "week_days_discount_has": isDiscount.toString(),
         "week_days_discount_from": fromController.text.trim(),
         "week_days_discount_to": toController.text.trim(),
         "week_days_discount_rate": weekdayRateController.text.trim(),
@@ -368,6 +381,8 @@ class ChefProfileController extends GetxController {
     toController.dispose();
     weekdayRateController.dispose();
     weekendRateController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
     super.onClose();
   }
 }

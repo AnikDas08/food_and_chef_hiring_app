@@ -14,7 +14,6 @@ class ChefBookingController extends GetxController {
     "16:15 PM",
     "07:00 PM",
     "17:45 PM",
-
   ];
 
   void selectDate(DateTime date) {
@@ -30,6 +29,7 @@ class ChefBookingController extends GetxController {
   final RxBool isRequestingChange = false.obs;
 
   bool isOrderDetailsPopup = false;
+
   List<String> bookingHistoryList = ["Unconfirmed", "Upcoming", "Completed"];
 
   List dietaryOption = ["Too Far Away", "Earnings Too Low", "Double Booking"];
