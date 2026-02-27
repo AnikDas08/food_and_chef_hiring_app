@@ -18,6 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 3), () {
+      print("My userId👌👌👌👌👌: ${LocalStorage.userId}");
       if (LocalStorage.isLogIn&&LocalStorage.token!="") {
         if (LocalStorage.myRole == 'CUSTOMER') {
           Get.offAllNamed(AppRoutes.customerHomeScreen);

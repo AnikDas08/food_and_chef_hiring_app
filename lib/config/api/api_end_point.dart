@@ -16,8 +16,8 @@ class ApiEndPoint {
   static const notifications = "notifications";
   static const privacyPolicies = "privacy-policies";
   static const termsOfServices = "terms-and-conditions";
-  static const chats = "chats";
-  static const messages = "messages";
+  static const chats = "chat";
+  static const messages = "message";
   static const cuisine = "/cusine";
   static const AddMenuSection = "/menu/section?id=";
   static const String getUnits = "/menu/units";

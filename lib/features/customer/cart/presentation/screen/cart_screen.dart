@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/other_widgets/common_loader.dart';
@@ -29,7 +30,7 @@ class CartScreen extends StatelessWidget {
             elevation: 0,
             title: CommonText(
               text: AppString.cart,
-              fontSize: 24,
+              fontSize: 24.sp, // Scaled title
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),
             ),
@@ -43,15 +44,15 @@ class CartScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
+                Icon(
                   Icons.shopping_cart_outlined,
-                  size: 64,
-                  color: Color(0xffC0C0C0),
+                  size: 64.r, // Scaled Icon
+                  color: const Color(0xffC0C0C0),
                 ),
                 16.height,
                 CommonText(
                   text: "Your cart is empty",
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
                   color: const Color(0xff777777),
                 ),
@@ -60,7 +61,8 @@ class CartScreen extends StatelessWidget {
           )
           // ── Cart content ────────────────────────────────────────
               : ListView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 120),
+            // Bottom padding 120.h ensures list content clears the floating checkout button
+            padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 120.h),
             children: [
               // Each chef group
               ...controller.chefGroups.map((group) {
@@ -86,11 +88,12 @@ class CartScreen extends StatelessWidget {
               // ── Notes to chef ───────────────────────────────────
               CommonText(
                 text: AppString.notesToPrivaeChef,
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xff272727),
-                top: 8,
-                bottom: 8,
+                textAlign: TextAlign.start,
+                top: 8.h,
+                bottom: 8.h,
               ),
               CommonTextField(
                 hintText: AppString.notesToPrivaeChef,
@@ -99,83 +102,7 @@ class CartScreen extends StatelessWidget {
               24.height,
 
               // ── Price breakdown ─────────────────────────────────
-              Builder(
-                builder: (_) {
-                  // subtotal = chef pricing × total quantity of all items
-                  double subtotal = 0;
-                  for (final group in controller.chefGroups) {
-                    final double chefPrice = group.chef?.pricing ?? 0;
-                    final int totalQty = (group.menus ?? [])
-                        .fold(0, (sum, m) => sum + (m.quantity ?? 1));
-                    subtotal += chefPrice * totalQty;
-                  }
-                  final double tax = controller.priceBreakdown?.tax ?? 0;
-                  final double fee = controller.priceBreakdown?.fee ?? 0;
-                  final double total = subtotal + tax + fee;
-
-                  return Column(
-                    children: [
-                      _priceRow("Subtotal", subtotal),
-                      8.height,
-                      _priceRow("Tax", tax),
-                      8.height,
-                      _priceRow("Service Fee", fee),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        child: Divider(height: 1),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CommonText(
-                            text: "Total",
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff272727),
-                          ),
-                          CommonText(
-                            text: "\$${total.toStringAsFixed(2)}",
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff272727),
-                          ),
-                        ],
-                      ),
-
-                      // Estimated time
-                      if (controller.estimatedTime != null) ...[
-                        12.height,
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: const Color(0xffF2F2F2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.timer_outlined,
-                                size: 16,
-                                color: Color(0xff777777),
-                              ),
-                              8.width,
-                              CommonText(
-                                text:
-                                "Estimated time: ${controller.estimatedTime}",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: const Color(0xff777777),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ],
-                  );
-                },
-              ),
+              _buildPriceSection(controller),
             ],
           ),
 
@@ -183,8 +110,8 @@ class CartScreen extends StatelessWidget {
           bottomNavigationBar: controller.chefGroups.isEmpty
               ? null
               : Padding(
-            padding: const EdgeInsets.only(
-                left: 16, right: 16, bottom: 16),
+            padding: EdgeInsets.only(
+                left: 16.w, right: 16.w, bottom: 16.h),
             child: SafeArea(
               child: CommonButton(
                 titleText: AppString.continueToCheckout,
@@ -197,23 +124,99 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _priceRow(
-      String label,
-      double? amount, {
-        bool isBold = false,
-      }) {
+  // Extracted Price Section for cleaner code and responsiveness
+  Widget _buildPriceSection(CartController controller) {
+    // calculation logic remains the same
+    double subtotal = 0;
+    for (final group in controller.chefGroups) {
+      final double chefPrice = group.chef?.pricing ?? 0;
+      final int totalQty = (group.menus ?? [])
+          .fold(0, (sum, m) => sum + (m.quantity ?? 1));
+      subtotal += chefPrice * totalQty;
+    }
+    final double tax = controller.priceBreakdown?.tax ?? 0;
+    final double fee = controller.priceBreakdown?.fee ?? 0;
+    final double total = subtotal + tax + fee;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _priceRow("Subtotal", subtotal),
+        8.height,
+        _priceRow("Tax", tax),
+        8.height,
+        _priceRow("Service Fee", fee),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 12.h),
+          child: const Divider(height: 1),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CommonText(
+              text: "Total",
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff272727),
+            ),
+            CommonText(
+              text: "\$${total.toStringAsFixed(2)}",
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff272727),
+            ),
+          ],
+        ),
+
+        // Estimated time section - Fixed responsiveness
+        if (controller.estimatedTime != null) ...[
+          12.height,
+          Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: 8.w, vertical: 8.h),
+            decoration: BoxDecoration(
+              color: const Color(0xffF2F2F2),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.timer_outlined,
+                  size: 16.r, // Scaled Icon size
+                  color: const Color(0xff777777),
+                ),
+                8.width,
+                // Flexible ensures the text wraps if the screen is too narrow
+                Flexible(
+                  child: CommonText(
+                    text: "Estimated time: ${controller.estimatedTime}",
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xff777777),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _priceRow(String label, double? amount, {bool isBold = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CommonText(
           text: label,
-          fontSize: 14,
+          fontSize: 14.sp,
           fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
           color: const Color(0xff272727),
         ),
         CommonText(
           text: "\$${(amount ?? 0).toStringAsFixed(2)}",
-          fontSize: 14,
+          fontSize: 14.sp,
           fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
           color: const Color(0xff555555),
         ),

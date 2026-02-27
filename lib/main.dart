@@ -26,13 +26,13 @@ init() async {
   DependencyInjection dI = DependencyInjection();
   dI.dependencies();
   SocketServices.connectToSocket();
+  LocalStorage.getAllPrefData();
 
   await Future.wait([
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]),
-    LocalStorage.getAllPrefData(),
     NotificationService.initLocalNotification(),
     dotenv.load(fileName: ".env"),
   ]);

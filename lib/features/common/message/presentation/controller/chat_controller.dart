@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/utils/constants/app_images.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../services/socket/socket_service.dart';
@@ -11,7 +10,7 @@ import '../../data/model/chat_list_model.dart';
 
 class ChatController extends GetxController {
   /// Api status check here
-  Status status = Status.completed;
+  Status status = Status.loading;
 
   /// Chat more Data Loading Bar
   bool isMoreLoading = false;
@@ -19,145 +18,34 @@ class ChatController extends GetxController {
   /// page no here
   int page = 1;
 
-  /// Chat List here
-  List<ChatModel> chats = <ChatModel>[
-    ChatModel(
-      id: "aaaa",
-      participant: Participant(
-        id: "aa",
-        fullName: "Cody F.",
-        image: AppImages.image3,
-      ),
-      latestMessage: LatestMessage(
-        id: "aaa",
-        message: "Cody F.",
-        createdAt: DateTime.now(),
-      ),
-    ),
-    ChatModel(
-      id: "aaaa",
-      participant: Participant(
-        id: "aa",
-        fullName: "Cody F.",
-        image: AppImages.image3,
-      ),
-      latestMessage: LatestMessage(
-        id: "aaa",
-        message: "Cody F.",
-        createdAt: DateTime.now(),
-      ),
-    ),
-    ChatModel(
-      id: "aaaa",
-      participant: Participant(
-        id: "aa",
-        fullName: "Cody F.",
-        image: AppImages.image3,
-      ),
-      latestMessage: LatestMessage(
-        id: "aaa",
-        message: "Cody F.",
-        createdAt: DateTime.now(),
-      ),
-    ),
-    ChatModel(
-      id: "aaaa",
-      participant: Participant(
-        id: "aa",
-        fullName: "Cody F.",
-        image: AppImages.image3,
-      ),
-      latestMessage: LatestMessage(
-        id: "aaa",
-        message: "Cody F.",
-        createdAt: DateTime.now(),
-      ),
-    ),
-    ChatModel(
-      id: "aaaa",
-      participant: Participant(
-        id: "aa",
-        fullName: "Cody F.",
-        image: AppImages.image3,
-      ),
-      latestMessage: LatestMessage(
-        id: "aaa",
-        message: "Cody F.",
-        createdAt: DateTime.now(),
-      ),
-    ),
-    ChatModel(
-      id: "aaaa",
-      participant: Participant(
-        id: "aa",
-        fullName: "Cody F.",
-        image: AppImages.image3,
-      ),
-      latestMessage: LatestMessage(
-        id: "aaa",
-        message: "Cody F.",
-        createdAt: DateTime.now(),
-      ),
-    ),
-    ChatModel(
-      id: "aaaa",
-      participant: Participant(
-        id: "aa",
-        fullName: "Cody F.",
-        image: AppImages.image3,
-      ),
-      latestMessage: LatestMessage(
-        id: "aaa",
-        message: "Cody F.",
-        createdAt: DateTime.now(),
-      ),
-    ),
-    ChatModel(
-      id: "aaaa",
-      participant: Participant(
-        id: "aa",
-        fullName: "Cody F.",
-        image: AppImages.image3,
-      ),
-      latestMessage: LatestMessage(
-        id: "aaa",
-        message: "Cody F.",
-        createdAt: DateTime.now(),
-      ),
-    ),
-    ChatModel(
-      id: "aaaa",
-      participant: Participant(
-        id: "aa",
-        fullName: "Cody F.",
-        image: AppImages.image3,
-      ),
-      latestMessage: LatestMessage(
-        id: "aaa",
-        message: "Cody F.",
-        createdAt: DateTime.now(),
-      ),
-    ),
-    ChatModel(
-      id: "aaaa",
-      participant: Participant(
-        id: "aa",
-        fullName: "Cody F.",
-        image: AppImages.image3,
-      ),
-      latestMessage: LatestMessage(
-        id: "aaa",
-        message: "Cody F.",
-        createdAt: DateTime.now(),
-      ),
-    ),
-  ];
+  /// All Chat List (original from API)
+  List<ChatModel> chats = <ChatModel>[];
+
+  /// Filtered Chat List (for search)
+  List<ChatModel> filteredChats = <ChatModel>[];
+
+  /// Search controller
+  TextEditingController searchControllers = TextEditingController();
 
   /// Chat Scroll Controller
   ScrollController scrollController = ScrollController();
 
   /// Chat Controller Instance create here
   static ChatController get instance => Get.put(ChatController());
+
+  /// Search by name
+  void searchChats(String query) {
+    if (query.trim().isEmpty) {
+      filteredChats = List.from(chats);
+    } else {
+      filteredChats = chats
+          .where((chat) => chat.participant.fullName
+          .toLowerCase()
+          .contains(query.toLowerCase()))
+          .toList();
+    }
+    update();
+  }
 
   /// Chat More data Loading function
   Future<void> moreChats() async {
@@ -173,21 +61,23 @@ class ChatController extends GetxController {
 
   /// Chat data Loading function
   Future<void> getChatRepo() async {
-    return;
     if (page == 1) {
       status = Status.loading;
       update();
     }
 
-    var response = await ApiService.get("${ApiEndPoint.chats}?page=$page");
+    var response = await ApiService.get("${ApiEndPoint.chats}");
 
     if (response.statusCode == 200) {
-      var data = response.data['chats'] ?? [];
+      var data = response.data['data'] ?? [];
+
+      if (page == 1) chats.clear();
 
       for (var item in data) {
         chats.add(ChatModel.fromJson(item));
       }
 
+      filteredChats = List.from(chats);
       page = page + 1;
       status = Status.completed;
       update();
@@ -198,8 +88,8 @@ class ChatController extends GetxController {
     }
   }
 
-  /// Chat data Update  Socket listener
-  listenChat() async {
+  /// Chat data Update Socket listener
+  void listenChat() {
     SocketServices.on("update-chatlist::${LocalStorage.userId}", (data) {
       page = 1;
       chats.clear();
@@ -208,15 +98,23 @@ class ChatController extends GetxController {
         chats.add(ChatModel.fromJson(item));
       }
 
+      filteredChats = List.from(chats);
       status = Status.completed;
       update();
     });
   }
 
-  /// Controller on Init¬
   @override
   void onInit() {
     getChatRepo();
+    listenChat();
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    //searchControllers.dispose();
+    scrollController.dispose();
+    super.onClose();
   }
 }

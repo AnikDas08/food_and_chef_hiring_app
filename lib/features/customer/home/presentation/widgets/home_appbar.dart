@@ -18,36 +18,41 @@ AppBar homeAppbar() {
       children: [
         Expanded(
           child: GetBuilder<HomeController>(
-            builder: (controller)=> Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CommonText(
-                  text: AppString.yourLocation,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff777777),
-                  bottom: 2,
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.location_on_rounded,
-                      color: Color(0xffA7A7A7),
-                      size: 20,
-                    ),
-
-                    Flexible(
-                      child: CommonText(
-                        text: controller.address,
-                        color: Color(0xff272727),
-                        fontWeight: FontWeight.w500,
-                        left: 4,
+            builder: (controller)=> GestureDetector(
+              onTap: (){
+                Get.toNamed(AppRoutes.addressScreen);
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CommonText(
+                    text: AppString.yourLocation,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff777777),
+                    bottom: 2,
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_on_rounded,
+                        color: Color(0xffA7A7A7),
+                        size: 20,
                       ),
-                    ),
-                  ],
-                ),
-              ],
+
+                      Flexible(
+                        child: CommonText(
+                          text: controller.address,
+                          color: Color(0xff272727),
+                          fontWeight: FontWeight.w500,
+                          left: 4,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

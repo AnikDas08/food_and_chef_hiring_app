@@ -1,7 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../services/socket/socket_service.dart';
@@ -9,136 +11,477 @@ import '../../../../../services/storage/storage_services.dart';
 import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/enum/enum.dart';
 import '../../data/model/chat_message_model.dart';
-import '../../data/model/message_model.dart';
-
 
 class MessageController extends GetxController {
   bool isLoading = false;
   bool isMoreLoading = false;
-  String? video;
+  bool isSendingImage = false;
+  bool isSending = false;
 
-  List messages = [];
+  List<ChatMessageModel> messages = [];
 
   String chatId = "";
   String name = "";
+  String image = "";
 
   int page = 1;
-  int currentIndex = 0;
+  int totalPage = 1;
   Status status = Status.completed;
 
-  bool isMessage = false;
-  bool isInputField = false;
+  File? selectedImage;
+  File? selectedDoc;
+  String? selectedDocName;
 
   ScrollController scrollController = ScrollController();
   TextEditingController messageController = TextEditingController();
 
+  final ImagePicker _picker = ImagePicker();
+
   static MessageController get instance => Get.put(MessageController());
 
-  MessageModel messageModel = MessageModel.fromJson({});
+  // ─── Fetch Messages ────────────────────────────────────────────────────────
 
   Future<void> getMessageRepo() async {
-    return;
     if (page == 1) {
       messages.clear();
-      status = Status.loading;
+      isLoading = true;
       update();
     }
 
     var response = await ApiService.get(
-      "${ApiEndPoint.messages}?chatId=$chatId&page=$page&limit=15",
+      "${ApiEndPoint.messages}/$chatId?page=$page&limit=15",
     );
 
     if (response.statusCode == 200) {
-      var data = response.data['data']['attributes']['messages'];
+      var pagination = response.data['data']['pagination'];
+      totalPage = pagination['totalPage'] ?? 1;
 
-      for (var messageData in data) {
-        messageModel = MessageModel.fromJson(messageData);
+      var data = response.data['data']['messages'] as List? ?? [];
+
+      for (var item in data) {
+        final senderId = item['sender'] ?? '';
+        final bool isMe = LocalStorage.userId == senderId;
+
+        if (kDebugMode) {
+          print("MyId: ${LocalStorage.userId} | SenderId: $senderId | isMe: $isMe");
+        }
 
         messages.add(
           ChatMessageModel(
-            time: messageModel.createdAt.toLocal(),
-            text: messageModel.message,
-            image: messageModel.sender.image,
-            isNotice: messageModel.type == "notice" ? true : false,
-            isMe: LocalStorage.userId == messageModel.sender.id ? true : false,
+            id: item['_id'] ?? '',
+            time: DateTime.tryParse(item['createdAt'] ?? '') ?? DateTime.now(),
+            text: item['text'] ?? '',
+            avatarImage: isMe ? (LocalStorage.myImage ?? '') : '',
+            localImagePath: '',
+            isMe: isMe,
+            isNotice: item['type'] == 'notice',
+            docs: List<String>.from(item['docs'] ?? []),
+            images: List<String>.from(item['image'] ?? []),
+            type: item['type'] ?? 'text',
+            seen: item['seen'] ?? false,
           ),
         );
       }
 
-      page = page + 1;
+      page++;
+      isLoading = false;
       status = Status.completed;
       update();
     } else {
       Utils.errorSnackBar(response.statusCode.toString(), response.message);
+      isLoading = false;
       status = Status.error;
       update();
     }
   }
 
-  addNewMessage() async {
-    isMessage = true;
-    update();
+  // ─── Image Picker ──────────────────────────────────────────────────────────
 
-    messages.insert(
-      0,
-      ChatMessageModel(
-        time: DateTime.now(),
-        text: messageController.text,
-        image: LocalStorage.myImage,
-        isMe: true,
-      ),
-
-      // ChatMessageModel(
-      //     currentTime.format(context).toString(),
-      //     controller.messageController.text,
-      //     true),
-    );
-
-    isMessage = false;
-    update();
-
-    var body = {
-      "chat": chatId,
-      "message": messageController.text,
-      "sender": LocalStorage.userId,
-    };
-
-    messageController.clear();
-
-    SocketServices.emitWithAck("add-new-message", body, (data) {
-      if (kDebugMode) {
-        print(
-          "===============================================================> Received acknowledgment: $data",
-        );
+  Future<void> pickImageFromCamera() async {
+    try {
+      final XFile? pickedFile = await _picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 80,
+      );
+      if (pickedFile != null) {
+        selectedImage = File(pickedFile.path);
+        selectedDoc = null;
+        selectedDocName = null;
+        update();
+        Get.back();
+        await sendImageMessage();
       }
-    });
+    } catch (e) {
+      Utils.errorSnackBar("Error", "Failed to pick image from camera");
+    }
   }
 
-  listenMessage(String chatId) async {
-    SocketServices.on('new-message::$chatId', (data) {
-      status = Status.loading;
-      update();
+  Future<void> pickImageFromGallery() async {
+    try {
+      final XFile? pickedFile = await _picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 80,
+      );
+      if (pickedFile != null) {
+        selectedImage = File(pickedFile.path);
+        selectedDoc = null;
+        selectedDocName = null;
+        update();
+        Get.back();
+        await sendImageMessage();
+      }
+    } catch (e) {
+      Utils.errorSnackBar("Error", "Failed to pick image from gallery");
+    }
+  }
 
-      var time = data['createdAt'].toLocal();
+  void showImageSourceDialog() {
+    Get.bottomSheet(
+      Container(
+        padding: const EdgeInsets.all(20),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ListTile(
+              leading: const Icon(Icons.camera_alt, color: Colors.blue),
+              title: const Text('Camera'),
+              onTap: pickImageFromCamera,
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library, color: Colors.green),
+              title: const Text('Gallery'),
+              onTap: pickImageFromGallery,
+            ),
+            ListTile(
+              leading: const Icon(Icons.cancel, color: Colors.red),
+              title: const Text('Cancel'),
+              onTap: () => Get.back(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ─── Send Image Message ────────────────────────────────────────────────────
+
+  Future<void> sendImageMessage() async {
+    if (selectedImage == null) return;
+
+    try {
+      isSendingImage = true;
+
+      final String localPath = selectedImage!.path;
+
+      /// Optimistic insert with local file path
       messages.insert(
         0,
         ChatMessageModel(
-          isNotice: data['messageType'] == "notice" ? true : false,
-          time: time,
-          text: data['message'],
-          image: data['sender']['image'],
-          isMe: false,
+          id: '',
+          time: DateTime.now(),
+          text: '',
+          avatarImage: LocalStorage.myImage ?? '',
+          localImagePath: localPath,
+          isMe: true,
+          isNotice: false,
+          type: 'image',
+          seen: false,
+          docs: [],
+          images: [],
         ),
       );
 
-      status = Status.completed;
+      selectedImage = null;
+      update();
+
+      Map<String, String> body = {
+        'chatId': chatId,
+        'type': 'image',
+      };
+
+      if (messageController.text.trim().isNotEmpty) {
+        body['text'] = messageController.text.trim();
+        messageController.clear();
+      }
+
+      List<Map<String, String>> files = [
+        {
+          'name': 'image',
+          'image': localPath,
+        }
+      ];
+
+      var response = await ApiService.multipartImage(
+        ApiEndPoint.messages,
+        body: body,
+        files: files,
+        method: "POST",
+      );
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        Utils.errorSnackBar("Error", response.message ?? "Failed to send image");
+        /// Remove optimistic message on failure
+        messages.removeWhere((m) => m.localImagePath == localPath);
+        update();
+      }
+    } catch (e) {
+      Utils.errorSnackBar("Error", "Failed to send image: ${e.toString()}");
+      messages.removeAt(0);
+      update();
+    } finally {
+      isSendingImage = false;
+      update();
+    }
+  }
+
+  // ─── Document Picker ───────────────────────────────────────────────────────
+
+  Future<void> pickDocument() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt'],
+      );
+
+      if (result != null && result.files.single.path != null) {
+        selectedDoc = File(result.files.single.path!);
+        selectedDocName = result.files.single.name;
+        selectedImage = null;
+        update();
+        await sendDocMessage();
+      }
+    } catch (e) {
+      Utils.errorSnackBar("Error", "Failed to pick document");
+    }
+  }
+
+  // ─── Send Document Message ─────────────────────────────────────────────────
+
+  Future<void> sendDocMessage() async {
+    if (selectedDoc == null) return;
+
+    try {
+      isSendingImage = true;
+
+      final String localDocPath = selectedDoc!.path;
+      final String docName = selectedDocName ?? 'document';
+
+      /// Optimistic insert for document
+      messages.insert(
+        0,
+        ChatMessageModel(
+          id: '',
+          time: DateTime.now(),
+          text: '',
+          avatarImage: LocalStorage.myImage ?? '',
+          localImagePath: '',
+          isMe: true,
+          isNotice: false,
+          type: 'document',
+          seen: false,
+          docs: [localDocPath],
+          images: [],
+        ),
+      );
+
+      selectedDoc = null;
+      selectedDocName = null;
+      update();
+
+      Map<String, String> body = {
+        'chatId': chatId,
+        'type': 'document',
+      };
+
+      if (messageController.text.trim().isNotEmpty) {
+        body['text'] = messageController.text.trim();
+        messageController.clear();
+      }
+
+      List<Map<String, String>> files = [
+        {
+          'name': 'doc',
+          'image': localDocPath,
+        }
+      ];
+
+      var response = await ApiService.multipartImage(
+        ApiEndPoint.messages,
+        body: body,
+        files: files,
+        method: "POST",
+      );
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        Utils.errorSnackBar("Error", response.message ?? "Failed to send document");
+        messages.removeWhere((m) => m.docs.contains(localDocPath));
+        update();
+      }
+    } catch (e) {
+      Utils.errorSnackBar("Error", "Failed to send document: ${e.toString()}");
+      messages.removeAt(0);
+      update();
+    } finally {
+      isSendingImage = false;
+      update();
+    }
+  }
+
+  // ─── Send Text Message ─────────────────────────────────────────────────────
+
+  Future<void> addNewMessage() async {
+    if (messageController.text.trim().isEmpty) return;
+
+    final String messageText = messageController.text.trim();
+    messageController.clear();
+
+    /// Optimistic insert for text
+    messages.insert(
+      0,
+      ChatMessageModel(
+        id: '',
+        time: DateTime.now(),
+        text: messageText,
+        avatarImage: LocalStorage.myImage ?? '',
+        localImagePath: '',
+        isMe: true,
+        isNotice: false,
+        type: 'text',
+        seen: false,
+        docs: [],
+        images: [],
+      ),
+    );
+    update();
+
+    try {
+      isSending = true;
+      update();
+
+      var body = {
+        "chatId": chatId,
+        "text": messageText,
+        "type": "text",
+      };
+
+      var response = await ApiService.post(
+        ApiEndPoint.messages,
+        body: body,
+      );
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        messageController.text = messageText;
+        Utils.errorSnackBar("Error", "Failed to send message");
+        /// Remove optimistic message on failure
+        messages.removeWhere(
+              (m) => m.text == messageText && m.id.isEmpty && m.isMe,
+        );
+        update();
+      }
+    } catch (e) {
+      messageController.text = messageText;
+      Utils.errorSnackBar("Error", "Failed to send message");
+      messages.removeAt(0);
+      update();
+    } finally {
+      isSending = false;
+      update();
+    }
+  }
+
+  // ─── Socket Listener ───────────────────────────────────────────────────────
+
+  void listenMessage(String chatId) {
+    SocketServices.on('new-message::$chatId', (data) {
+      if (kDebugMode) print("Socket message: $data");
+
+      final String messageId = data['_id'] ?? '';
+
+      /// Avoid duplicates
+      bool exists = messages.any((m) => m.id == messageId && messageId.isNotEmpty);
+      if (exists) return;
+
+      final String senderId = data['sender'] ?? '';
+      final bool isMe = LocalStorage.userId == senderId;
+
+      if (kDebugMode) {
+        print("Socket => MyId: ${LocalStorage.userId} | SenderId: $senderId | isMe: $isMe");
+      }
+
+      messages.insert(
+        0,
+        ChatMessageModel(
+          id: messageId,
+          isNotice: data['type'] == "notice",
+          time: DateTime.tryParse(data['createdAt'] ?? '') ?? DateTime.now(),
+          text: data['text'] ?? '',
+          avatarImage: isMe ? (LocalStorage.myImage ?? '') : '',
+          localImagePath: '',
+          isMe: isMe,
+          type: data['type'] ?? 'text',
+          docs: List<String>.from(data['docs'] ?? []),
+          images: List<String>.from(data['image'] ?? []),
+          seen: false,
+        ),
+      );
       update();
     });
   }
 
-  void isEmoji(int index) {
-    currentIndex = index;
-    isInputField = isInputField;
-    update();
+  // ─── Init ──────────────────────────────────────────────────────────────────
+
+  void init(String id) {
+    chatId = id;
+    page = 1;
+    messages.clear();
+    getMessageRepo();
+    listenMessage(chatId);
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent &&
+          !isMoreLoading &&
+          !isLoading &&
+          page <= totalPage) {
+        isMoreLoading = true;
+        update();
+        getMessageRepo().then((_) {
+          isMoreLoading = false;
+          update();
+        });
+      }
+    });
+
+    if (Get.arguments != null) {
+      name = Get.arguments['name'] ?? '';
+      image = Get.arguments['image'] ?? '';
+    }
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    messageController.dispose();
+    super.onClose();
   }
 }

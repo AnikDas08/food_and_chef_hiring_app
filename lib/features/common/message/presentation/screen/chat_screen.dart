@@ -28,7 +28,6 @@ class ChatListScreen extends StatelessWidget {
 
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         centerTitle: false,
@@ -45,16 +44,19 @@ class ChatListScreen extends StatelessWidget {
             child: LiquidGlassLayer(
               child: LiquidGlass(
                 shape: LiquidRoundedSuperellipse(borderRadius: 30.r),
-                child: CommonTextField(
-                  hintText: AppString.search,
-                  keyboardType: TextInputType.text,
-                  borderRadius: 30,
-                  fillColor: Color(0xffFAFAFA).withValues(alpha: 0.7),
-                  borderColor: Colors.grey.withValues(alpha: 0.3),
-
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.only(left: 16.w),
-                    child: Icon(CupertinoIcons.search),
+                child: GetBuilder<ChatController>(
+                  builder: (controller) => CommonTextField(
+                    controller: controller.searchControllers,
+                    hintText: AppString.search,
+                    keyboardType: TextInputType.text,
+                    borderRadius: 30,
+                    fillColor: Color(0xffFAFAFA).withValues(alpha: 0.7),
+                    borderColor: Colors.grey.withValues(alpha: 0.3),
+                    onChanged: controller.searchChats,
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: Icon(CupertinoIcons.search),
+                    ),
                   ),
                 ),
               ),
@@ -63,65 +65,52 @@ class ChatListScreen extends StatelessWidget {
         ),
       ),
 
-      /// Body Section Starts here
+      /// Body Section
       body: GetBuilder<ChatController>(
-        builder:
-            (controller) => switch (controller.status) {
-              /// Loading bar here
-              Status.loading => const CommonLoader(),
+        builder: (controller) => switch (controller.status) {
+        /// Loading
+          Status.loading => const CommonLoader(),
 
-              /// Error Handle here
-              Status.error => ErrorScreen(
-                onTap: ChatController.instance.getChatRepo,
-              ),
+        /// Error
+          Status.error => ErrorScreen(
+            onTap: ChatController.instance.getChatRepo,
+          ),
 
-              /// Show main data here
-              Status.completed => Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                child: ListView(
-                  children: [
-                    /// User Search bar here
-
-                    /// Show all Chat List here
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: controller.chats.length,
-                      padding: EdgeInsets.only(
-                        bottom: 80.h,
-                        top: 16.h,
-                      ).copyWith(bottom: 0),
-
-                      itemBuilder: (context, index) {
-                        ChatModel item = controller.chats[index];
-                        return InkWell(
-                          /// routing with data
-                          onTap:
-                              () => Get.toNamed(
-                                AppRoutes.message,
-                                parameters: {
-                                  "chatId": item.id,
-                                  "name": item.participant.fullName,
-                                  "image": item.participant.image,
-                                },
-                              ),
-
-                          /// Chat List item here
-                          child: chatListItem(item: controller.chats[index]),
-                        );
-                      },
-                    ),
-                  ],
+        /// Data
+          Status.completed => Padding(
+            padding:
+            EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+            child: ListView(
+              controller: controller.scrollController,
+              children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: controller.filteredChats.length,
+                  padding: EdgeInsets.only(
+                    bottom: 80.h,
+                    top: 16.h,
+                  ).copyWith(bottom: 0),
+                  itemBuilder: (context, index) {
+                    ChatModel item = controller.filteredChats[index];
+                    return InkWell(
+                      onTap: () => Get.toNamed(
+                        AppRoutes.message,
+                        parameters: {
+                          "chatId": item.id,
+                          "name": item.participant.fullName,
+                          "image": item.participant.image,
+                        },
+                      ),
+                      child: chatListItem(item: item),
+                    );
+                  },
                 ),
-              ),
-            },
+              ],
+            ),
+          ),
+        },
       ),
-
-      /// Bottom Navigation Bar Section Starts here
-      // bottomNavigationBar:
-      //     LocalStorage.isChef
-      //         ? ChefBottomBar(currentIndex: 3)
-      //         : const CommonBottomNavBar(currentIndex: 3),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/features/customer/kitchen/presentation/screen/kitchen_screen.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../widgets/add_item.dart';
 
@@ -16,6 +17,66 @@ class AddEquipmentScreen extends StatefulWidget {
 }
 
 class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
+
+  // Add this inside the _AddEquipmentScreenState class
+  Widget buildProgressSection() {
+    return Container(
+      width: double.maxFinite,
+      padding: EdgeInsets.all(16.r),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.r),
+        color: const Color(0xFFF2F2F2),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'You’re Ready for Cooking',
+            style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w500,
+              color: const Color(0xff272727),
+            ),
+          ),
+          SizedBox(height: 12.h),
+          // Note: Ensure you have the percent_indicator package imported
+          LinearPercentIndicator(
+            padding: EdgeInsets.zero,
+            barRadius: Radius.circular(30.r),
+            lineHeight: 8.h,
+            percent: 0.7,
+            progressColor: const Color(0xffFD713F),
+            backgroundColor: Colors.white,
+          ),
+          SizedBox(height: 10.h),
+          RichText(
+            text: TextSpan(
+              text: "Your kitchen can handle ",
+              style: TextStyle(color: const Color(0xff777777), fontSize: 12.sp),
+              children: [
+                TextSpan(
+                  text: "100%",
+                  style: TextStyle(
+                    color: const Color(0xffFD713F),
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: " of recipes on the platform",
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xff777777),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
   List<Map<String, dynamic>> cookingItems = [
     {'name': 'Large pan', 'selected': true},
     {'name': 'Large pot', 'selected': false},

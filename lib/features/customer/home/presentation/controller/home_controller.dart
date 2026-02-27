@@ -4,6 +4,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:new_untitled/services/api/api_service.dart';
 import 'package:new_untitled/utils/app_utils.dart';
 
+import '../../../../../services/storage/storage_keys.dart';
+import '../../../../../services/storage/storage_services.dart';
 import '../data/cousine_data.dart';
 import '../data/chef_model.dart';
 import '../data/order_model.dart';
@@ -219,6 +221,8 @@ class HomeController extends GetxController {
       if (response.statusCode == 200) {
         final data = response.data;
         address = response.data["data"]["address"]??"";
+        LocalStorage.userId=data["data"]?.id??"";
+        await LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
         update();
       }
     } catch (e) {
