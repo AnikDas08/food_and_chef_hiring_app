@@ -24,6 +24,7 @@ class ChefDetailsController extends GetxController {
   bool isLoadingMenu = false;
   String selectedMenuSection = "Stater";
   static const int _pageLimit = 10;
+  String chefId = "";
 
   @override
   void onInit() {
@@ -35,6 +36,12 @@ class ChefDetailsController extends GetxController {
     if (Get.arguments != null && Get.arguments is ChefData) {
       chefArg = Get.arguments as ChefData;
       fetchChefDetails(chefArg!.id!);
+    }
+    if (Get.arguments != null && Get.arguments is String) {
+      //chefArg = Get.arguments as ChefData;
+      chefId=Get.arguments;
+      print("id: 😍😍😍😍😍😍😍${chefId}");
+      fetchChefDetails(chefId);
     }
     ever(innerBoxIsScrolled, (bool value) {
       appLog(value, source: "ChefDetailsController");
