@@ -25,7 +25,6 @@ class ChefProfileController extends GetxController {
     isNotification.value = data['notification_enabled'] ?? false;
   }
 
-
   Future<void> notification() async {
     bool newValue = !isNotification.value;
     isNotification.value = newValue;
@@ -39,7 +38,6 @@ class ChefProfileController extends GetxController {
 
     if (response.statusCode == 200 && response.data['success'] == true) {
       Get.snackbar("Message", "notification setting updated",backgroundColor: Colors.green,colorText: Colors.white);
-      // Success
     } else {
       isNotification.value = !newValue;
       Utils.errorSnackBar("Error", "Failed to update notification setting");
