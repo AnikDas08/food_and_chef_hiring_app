@@ -1,79 +1,104 @@
-
 import 'package:get/get.dart';
+import '../../../../../config/api/api_end_point.dart';
+import '../../../../../services/api/api_service.dart';
 
 class HistoryController extends GetxController {
   List<String> bookingHistoryList = ["Withdrawal", "Payment received"];
-
   String selectedBookingHistory = "Withdrawal";
-
-  List<Map> history = [
-    {
-      "title": "Withdrawal",
-      "date": "24 June 2025",
-      "amount": "12,400",
-      "status": "Completed",
-      "subTitle": "To your PayPal account",
-      "isWithdraw": true,
-    },
-
-    {
-      "title": "Withdrawal",
-      "date": "24 June 2025",
-      "amount": "12,400",
-      "status": "Pending",
-      "subTitle": "To your PayPal account",
-      "isWithdraw": false,
-    },
-
-    {
-      "title": "Withdrawal",
-      "date": "24 June 2025",
-      "amount": "12,400",
-      "status": "Failed",
-      "subTitle": "To your PayPal account",
-      "isWithdraw": false,
-    },
-
-    {
-      "title": "Withdrawal",
-      "date": "24 June 2025",
-      "amount": "12,400",
-      "status": "Completed",
-      "subTitle": "From Christina Julia",
-      "isWithdraw": false,
-    },
-
-    {
-      "title": "Withdrawal",
-      "date": "24 June 2025",
-      "amount": "12,400",
-      "status": "Completed",
-      "subTitle": "To your PayPal account",
-      "isWithdraw": true,
-    },
-
-    {
-      "title": "Withdrawal",
-      "date": "24 June 2025",
-      "amount": "12,400",
-      "status": "Completed",
-      "subTitle": "To your PayPal account",
-      "isWithdraw": true,
-    },
-  ];
-
+  List<Map> history = [];
   bool isLoading = true;
+
+  String searchText = "";
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchHistory();
+  }
 
   onChangeBookingHistory(String value) {
     if (selectedBookingHistory == value) return;
     isLoading = true;
     selectedBookingHistory = value;
     update();
-    Future.delayed(Duration(milliseconds: 300), () {
-      isLoading = false;
-      update();
-    });
+    fetchHistory();
   }
 
+  onSearch(String value) {
+    searchText = value;
+    fetchHistory();
+  }
 
+  fetchHistory() async {
+    isLoading = true;
+    update();
+
+    try {
+      // type: "Withdraw" or "Booking"
+      String type =
+      selectedBookingHistory == "Withdrawal" ? "Withdraw" : "Booking";
+
+      String url = "${ApiEndPoint.transaction}?type=$type";
+
+      // search থাকলে add করো
+      if (searchText.isNotEmpty) {
+        url += "&searchTerm=$searchText";
+      }
+
+      final response = await ApiService.get(url);
+
+      if (response.statusCode == 200) {
+        List data = response.data['data'] ?? [];
+
+        history = data.map<Map>((item) {
+
+          bool isDeduct = item['payment_type'] == 'deduct';
+
+          return {
+            "title": item['type'] ?? "",
+            "date": _formatDate(item['createdAt']),
+            "amount": item['total'].toString(),
+            "status": item['status'] ?? "Pending",
+            "subTitle": item['user'] != null
+                ? "From ${item['user']['name']}"
+                : "To your PayPal account",
+            "isDeduct": isDeduct, // true = "-", false = "+"
+          };
+        }).toList();
+      } else {
+        history = [];
+      }
+    } catch (e) {
+      print("HistoryController Error: $e");
+      history = [];
+    }
+
+    isLoading = false;
+    update();
+  }
+
+  String _formatDate(String? isoDate) {
+    if (isoDate == null) return "";
+    try {
+      DateTime dt = DateTime.parse(isoDate);
+      const months = [
+        '',
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ];
+      return "${dt.day} ${months[dt.month]} ${dt.year}";
+    } catch (_) {
+      return isoDate;
+    }
+  }
 }

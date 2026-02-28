@@ -67,7 +67,6 @@ class _ChefHomeState extends State<ChefHome>
     ChefProfileScreen(),
   ];
 
-
   @override
   void initState() {
     super.initState();

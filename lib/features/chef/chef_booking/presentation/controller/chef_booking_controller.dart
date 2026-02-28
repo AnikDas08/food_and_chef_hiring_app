@@ -1,77 +1,115 @@
 import 'package:get/get.dart';
+import '../../../../../../../services/api/api_service.dart';
+import '../../../../../../../config/api/api_end_point.dart';
 
 class ChefBookingController extends GetxController {
-  DateTime selectedDate = DateTime.now();
-  bool isLoading = false;
-
-  String selectedTime = "";
-  final List<String> timeSlots = [
-    "12:30 PM",
-    "13:15 PM",
-    "14:00 PM",
-    "14:45 PM",
-    "15:30 PM",
-    "16:15 PM",
-    "07:00 PM",
-    "17:45 PM",
-  ];
-
-  void selectDate(DateTime date) {
-    selectedDate = date;
-    update();
-  }
-
-  void selectTime(String time) {
-    selectedTime = time;
-    update();
-  }
-
-  final RxBool isRequestingChange = false.obs;
-
-  bool isOrderDetailsPopup = false;
-
+  // ✅ Tab list
   List<String> bookingHistoryList = ["Unconfirmed", "Upcoming", "Completed"];
-
-  List dietaryOption = ["Too Far Away", "Earnings Too Low", "Double Booking"];
-
   String selectedBookingHistory = "Unconfirmed";
 
-  onChangeBookingHistory(String value) {
-    selectedBookingHistory = value;
-    isLoading = true;
-    update();
+  List orders = [];
+  bool isLoading = true;
 
-    Future.delayed(const Duration(milliseconds: 500), () {
-      isLoading = false;
-      update();
-    });
-  }
+  // ✅ Decline reason options (declineBookingPopUp এ use হয়)
+  List<String> dietaryOption = [
+    "Too Far Away",
+    "Earnings Too Low",
+    "Schedule Conflict",
+    "Not Available",
+    "Other",
+  ];
+  List<String> selectDietary = [];
+
+  // ✅ DateTime? না — DateTime দিতে হবে (TableCalendar focusedDay null হয় না)
+  DateTime selectedDate = DateTime.now();
+
+  // ✅ Time slots (requestChangePopUp এ use হয়)
+  List<String> timeSlots = [
+    "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM",
+    "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM",
+    "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM",
+    "08:00 PM", "09:00 PM",
+  ];
+
+  // ✅ Selected time (requestChangePopUp এ use হয়)
+  String selectedTime = "";
+
+  // ✅ Obx() এর জন্য RxBool — Send Request button loading
+  bool isRequestingChange = false;
 
   @override
   void onInit() {
     super.onInit();
-    final filter = Get.arguments?["filter"];
-    if (filter != null) {
-      onChangeBookingHistory(filter);
-    }
+    fetchOrders();
   }
 
+  onChangeBookingHistory(String value) {
+    if (selectedBookingHistory == value) return;
+    selectedBookingHistory = value;
+    fetchOrders();
+  }
 
-  onChangeOrderDetailsPopup() {
-    isOrderDetailsPopup = !isOrderDetailsPopup;
+  // ✅ Decline reason single select
+  onChangeDietary(String value) {
+    selectDietary.clear();
+    selectDietary.add(value);
     update();
   }
 
-  List selectDietary = [];
+  // ✅ TableCalendar onDaySelected এ call হয়
+  selectDate(DateTime date) {
+    selectedDate = date;
+    update();
+  }
 
-  onChangeDietary(value) {
-    if (selectDietary.contains(value)) {
-      selectDietary.remove(value);
-      update();
-      return;
+  // ✅ Time chip select
+  selectTime(String time) {
+    selectedTime = time;
+    update();
+  }
+
+  // ✅ Popup close হলে reset
+  resetChangeRequest() {
+    selectedDate = DateTime.now();
+    selectedTime = "";
+    update();
+  }
+
+  // ✅ Tab → API status
+  String get _apiStatus {
+    switch (selectedBookingHistory) {
+      case "Unconfirmed":
+        return "Awaiting Confirmation";
+      case "Upcoming":
+        return "Confirm";
+      case "Completed":
+        return "Completed";
+      default:
+        return "Awaiting Confirmation";
+    }
+  }
+
+  fetchOrders() async {
+    isLoading = true;
+    selectDietary.clear();
+    update();
+
+    try {
+      final response = await ApiService.get(
+        "${ApiEndPoint.order}?status=${Uri.encodeComponent(_apiStatus)}",
+      );
+
+      if (response.statusCode == 200) {
+        orders = response.data['data'] ?? [];
+      } else {
+        orders = [];
+      }
+    } catch (e) {
+      print("ChefBookingController Error: $e");
+      orders = [];
     }
 
-    selectDietary.add(value);
+    isLoading = false;
     update();
   }
 }
