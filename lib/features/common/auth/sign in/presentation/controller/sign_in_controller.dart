@@ -55,6 +55,7 @@ class SignInController extends GetxController {
       }
 
       LocalStorage.token = data['data']["accessToken"];
+      LocalStorage.userId = data['data']["userId"];
       //LocalStorage.userId = data['data']["attributes"]["_id"];
       //LocalStorage.myImage = data['data']["attributes"]["image"];
       LocalStorage.myRole = data["data"]["role"];
@@ -68,6 +69,7 @@ class SignInController extends GetxController {
       await LocalStorage.setBool(LocalStorageKeys.isLogIn, LocalStorage.isLogIn);
       await LocalStorage.setString(LocalStorageKeys.token, LocalStorage.token);
       await LocalStorage.setString(LocalStorageKeys.myRole, LocalStorage.myRole);
+      await LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
       //LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
       //LocalStorage.setString(LocalStorageKeys.myImage, LocalStorage.myImage);
       //LocalStorage.setString(LocalStorageKeys.myName, LocalStorage.myName);

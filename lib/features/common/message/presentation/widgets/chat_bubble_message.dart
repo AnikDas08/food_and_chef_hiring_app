@@ -35,8 +35,6 @@ class ChatBubbleMessage extends StatelessWidget {
     this.images = const [],
   });
 
-  static const String baseUrl = "http://10.10.7.9:5014";
-
   @override
   Widget build(BuildContext context) {
     if (isNotice) return _buildNoticeMessage();

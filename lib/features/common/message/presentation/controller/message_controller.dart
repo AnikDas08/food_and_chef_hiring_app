@@ -49,7 +49,7 @@ class MessageController extends GetxController {
     }
 
     var response = await ApiService.get(
-      "${ApiEndPoint.messages}/$chatId?page=$page&limit=15",
+      "${ApiEndPoint.messages}/$chatId?page=$page&limit=20",
     );
 
     if (response.statusCode == 200) {
@@ -57,6 +57,8 @@ class MessageController extends GetxController {
       totalPage = pagination['totalPage'] ?? 1;
 
       var data = response.data['data']['messages'] as List? ?? [];
+
+      if (page == 1) messages.clear();
 
       for (var item in data) {
         final senderId = item['sender'] ?? '';
@@ -105,14 +107,13 @@ class MessageController extends GetxController {
       );
       if (pickedFile != null) {
         selectedImage = File(pickedFile.path);
-        selectedDoc = null;
-        selectedDocName = null;
         update();
-        Get.back();
+        Get.back(); // close bottom sheet
         await sendImageMessage();
       }
     } catch (e) {
       Utils.errorSnackBar("Error", "Failed to pick image from camera");
+      if (kDebugMode) print("Camera error: $e");
     }
   }
 
@@ -124,14 +125,13 @@ class MessageController extends GetxController {
       );
       if (pickedFile != null) {
         selectedImage = File(pickedFile.path);
-        selectedDoc = null;
-        selectedDocName = null;
         update();
-        Get.back();
+        Get.back(); // close bottom sheet
         await sendImageMessage();
       }
     } catch (e) {
       Utils.errorSnackBar("Error", "Failed to pick image from gallery");
+      if (kDebugMode) print("Gallery error: $e");
     }
   }
 
@@ -179,35 +179,13 @@ class MessageController extends GetxController {
     );
   }
 
-  // ─── Send Image Message ────────────────────────────────────────────────────
+  // ─── Send Image ────────────────────────────────────────────────────────────
 
   Future<void> sendImageMessage() async {
     if (selectedImage == null) return;
 
     try {
       isSendingImage = true;
-
-      final String localPath = selectedImage!.path;
-
-      /// Optimistic insert with local file path
-      messages.insert(
-        0,
-        ChatMessageModel(
-          id: '',
-          time: DateTime.now(),
-          text: '',
-          avatarImage: LocalStorage.myImage ?? '',
-          localImagePath: localPath,
-          isMe: true,
-          isNotice: false,
-          type: 'image',
-          seen: false,
-          docs: [],
-          images: [],
-        ),
-      );
-
-      selectedImage = null;
       update();
 
       Map<String, String> body = {
@@ -223,7 +201,7 @@ class MessageController extends GetxController {
       List<Map<String, String>> files = [
         {
           'name': 'image',
-          'image': localPath,
+          'image': selectedImage!.path,
         }
       ];
 
@@ -234,16 +212,15 @@ class MessageController extends GetxController {
         method: "POST",
       );
 
-      if (response.statusCode != 200 && response.statusCode != 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        /// ✅ No optimistic insert — socket will push the message back
+        selectedImage = null;
+      } else {
         Utils.errorSnackBar("Error", response.message ?? "Failed to send image");
-        /// Remove optimistic message on failure
-        messages.removeWhere((m) => m.localImagePath == localPath);
-        update();
       }
     } catch (e) {
       Utils.errorSnackBar("Error", "Failed to send image: ${e.toString()}");
-      messages.removeAt(0);
-      update();
+      if (kDebugMode) print("Send image error: $e");
     } finally {
       isSendingImage = false;
       update();
@@ -268,40 +245,17 @@ class MessageController extends GetxController {
       }
     } catch (e) {
       Utils.errorSnackBar("Error", "Failed to pick document");
+      if (kDebugMode) print("Doc picker error: $e");
     }
   }
 
-  // ─── Send Document Message ─────────────────────────────────────────────────
+  // ─── Send Document ─────────────────────────────────────────────────────────
 
   Future<void> sendDocMessage() async {
     if (selectedDoc == null) return;
 
     try {
       isSendingImage = true;
-
-      final String localDocPath = selectedDoc!.path;
-      final String docName = selectedDocName ?? 'document';
-
-      /// Optimistic insert for document
-      messages.insert(
-        0,
-        ChatMessageModel(
-          id: '',
-          time: DateTime.now(),
-          text: '',
-          avatarImage: LocalStorage.myImage ?? '',
-          localImagePath: '',
-          isMe: true,
-          isNotice: false,
-          type: 'document',
-          seen: false,
-          docs: [localDocPath],
-          images: [],
-        ),
-      );
-
-      selectedDoc = null;
-      selectedDocName = null;
       update();
 
       Map<String, String> body = {
@@ -317,7 +271,7 @@ class MessageController extends GetxController {
       List<Map<String, String>> files = [
         {
           'name': 'doc',
-          'image': localDocPath,
+          'image': selectedDoc!.path,
         }
       ];
 
@@ -328,57 +282,39 @@ class MessageController extends GetxController {
         method: "POST",
       );
 
-      if (response.statusCode != 200 && response.statusCode != 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        /// ✅ No optimistic insert — socket will push the message back
+        selectedDoc = null;
+        selectedDocName = null;
+      } else {
         Utils.errorSnackBar("Error", response.message ?? "Failed to send document");
-        messages.removeWhere((m) => m.docs.contains(localDocPath));
-        update();
       }
     } catch (e) {
       Utils.errorSnackBar("Error", "Failed to send document: ${e.toString()}");
-      messages.removeAt(0);
-      update();
+      if (kDebugMode) print("Send doc error: $e");
     } finally {
       isSendingImage = false;
       update();
     }
   }
 
-  // ─── Send Text Message ─────────────────────────────────────────────────────
+  // ─── Send Text ─────────────────────────────────────────────────────────────
 
   Future<void> addNewMessage() async {
     if (messageController.text.trim().isEmpty) return;
 
-    final String messageText = messageController.text.trim();
-    messageController.clear();
+    var body = {
+      "chatId": chatId,
+      "text": messageController.text.trim(),
+      "type": "text",
+    };
 
-    /// Optimistic insert for text
-    messages.insert(
-      0,
-      ChatMessageModel(
-        id: '',
-        time: DateTime.now(),
-        text: messageText,
-        avatarImage: LocalStorage.myImage ?? '',
-        localImagePath: '',
-        isMe: true,
-        isNotice: false,
-        type: 'text',
-        seen: false,
-        docs: [],
-        images: [],
-      ),
-    );
-    update();
+    String messageText = messageController.text.trim();
+    messageController.clear();
 
     try {
       isSending = true;
       update();
-
-      var body = {
-        "chatId": chatId,
-        "text": messageText,
-        "type": "text",
-      };
 
       var response = await ApiService.post(
         ApiEndPoint.messages,
@@ -386,19 +322,16 @@ class MessageController extends GetxController {
       );
 
       if (response.statusCode != 200 && response.statusCode != 201) {
+        /// restore text on failure
         messageController.text = messageText;
         Utils.errorSnackBar("Error", "Failed to send message");
-        /// Remove optimistic message on failure
-        messages.removeWhere(
-              (m) => m.text == messageText && m.id.isEmpty && m.isMe,
-        );
-        update();
       }
+
+      /// ✅ No optimistic insert — socket will push the message back
     } catch (e) {
       messageController.text = messageText;
       Utils.errorSnackBar("Error", "Failed to send message");
-      messages.removeAt(0);
-      update();
+      if (kDebugMode) print("Send message error: $e");
     } finally {
       isSending = false;
       update();
@@ -408,14 +341,13 @@ class MessageController extends GetxController {
   // ─── Socket Listener ───────────────────────────────────────────────────────
 
   void listenMessage(String chatId) {
-    SocketServices.on('new-message::$chatId', (data) {
-      if (kDebugMode) print("Socket message: $data");
+    SocketServices.on('getMessage::$chatId', (data) {
+      if (kDebugMode) print("Socket data: $data");
 
-      final String messageId = data['_id'] ?? '';
-
-      /// Avoid duplicates
-      bool exists = messages.any((m) => m.id == messageId && messageId.isNotEmpty);
-      if (exists) return;
+      /// Duplicate check by _id
+      String messageId = data['_id'] ?? '';
+      bool messageExists = messages.any((msg) => msg.id == messageId);
+      if (messageExists) return;
 
       final String senderId = data['sender'] ?? '';
       final bool isMe = LocalStorage.userId == senderId;
@@ -447,6 +379,7 @@ class MessageController extends GetxController {
   // ─── Init ──────────────────────────────────────────────────────────────────
 
   void init(String id) {
+    if (kDebugMode) print("Chat ID: $id");
     chatId = id;
     page = 1;
     messages.clear();
@@ -457,6 +390,7 @@ class MessageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
           scrollController.position.maxScrollExtent &&
@@ -480,6 +414,7 @@ class MessageController extends GetxController {
 
   @override
   void onClose() {
+    //SocketServices.off('getMessage::$chatId');
     scrollController.dispose();
     messageController.dispose();
     super.onClose();
