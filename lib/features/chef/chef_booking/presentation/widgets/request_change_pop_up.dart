@@ -54,13 +54,13 @@ void requestChangePopUp({String? orderId}) {
                         text: "Request Change",
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff272727),
+                        color: const Color(0xff272727),
                       ),
                       CommonText(
                         text: "Choose your new preferred time",
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                        color: Color(0xff777777),
+                        color: const Color(0xff777777),
                       ),
 
                       TableCalendar(
@@ -93,7 +93,8 @@ void requestChangePopUp({String? orderId}) {
                         spacing: 10,
                         runSpacing: 10,
                         children: controller.timeSlots.map((time) {
-                          final isSelected = controller.selectedTime.contains(time);
+                          // ✅ String == String
+                          final isSelected = controller.selectedTime == time;
                           return GestureDetector(
                             onTap: () => controller.selectTime(time),
                             child: Container(
@@ -121,7 +122,7 @@ void requestChangePopUp({String? orderId}) {
                       CommonText(
                         text: "Note",
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff272727),
+                        color: const Color(0xff272727),
                         top: 16,
                         bottom: 8,
                       ),
@@ -135,14 +136,14 @@ void requestChangePopUp({String? orderId}) {
 
                       24.height,
 
-                      Obx(() => CommonButton(
-                        titleText: controller.isRequestingChange.value
+                      // ✅ Obx সরিয়ে GetBuilder এর bool use করো
+                      CommonButton(
+                        titleText: controller.isRequestingChange
                             ? "Sending..."
                             : "Send Request",
-                        onTap: controller.isRequestingChange.value
+                        onTap: controller.isRequestingChange
                             ? null
                             : () async {
-
                           if (controller.selectedTime.isEmpty) {
                             Get.snackbar("Error", "Please select a time");
                             return;
@@ -152,26 +153,26 @@ void requestChangePopUp({String? orderId}) {
                             return;
                           }
 
-                          controller.isRequestingChange.value = true;
+                          controller.isRequestingChange = true;
+                          controller.update();
 
                           try {
-
                             final date = controller.selectedDate;
                             final dateStr =
                                 '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-                            final timeStr = controller.selectedTime;
 
                             final response = await ApiService.post(
                               '${ApiEndPoint.changeSchedule}$orderId',
                               body: {
                                 "requested_date": dateStr,
-                                "requested_time": timeStr,
+                                "requested_time": controller.selectedTime,
                                 "note": noteController.text.trim(),
                               },
                             );
 
                             if (response.statusCode == 200 &&
                                 response.data?['success'] == true) {
+                              controller.resetChangeRequest();
                               Get.back();
                               Get.snackbar(
                                 "Success",
@@ -189,10 +190,11 @@ void requestChangePopUp({String? orderId}) {
                           } catch (e) {
                             Get.snackbar("Error", "Failed to send request");
                           } finally {
-                            controller.isRequestingChange.value = false;
+                            controller.isRequestingChange = false;
+                            controller.update();
                           }
                         },
-                      )),
+                      ),
                     ],
                   ),
                 ),

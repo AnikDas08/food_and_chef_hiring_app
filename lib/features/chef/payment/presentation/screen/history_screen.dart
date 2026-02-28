@@ -21,7 +21,7 @@ class HistoryScreen extends StatelessWidget {
           text: "History",
           fontSize: 14,
           fontWeight: FontWeight.w600,
-          color: Color(0xff272727),
+          color: const Color(0xff272727),
         ),
       ),
       body: GetBuilder<HistoryController>(
@@ -30,16 +30,22 @@ class HistoryScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
+
                 CommonTextField(
                   hintText: "Search",
-                  hintTextColor: Color(0xff272727),
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.only(left: 16),
+                  hintTextColor: const Color(0xff272727),
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.only(left: 16),
                     child: Icon(Icons.search),
                   ),
+                  onChanged: (value) {
+                    controller.onSearch(value);
+                  },
                 ),
 
                 12.height,
+
+
                 SizedBox(
                   height: 40.h,
                   child: ListView.builder(
@@ -53,48 +59,57 @@ class HistoryScreen extends StatelessWidget {
                         onTap: () {
                           controller.onChangeBookingHistory(value);
                         },
-                        child:
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 20.w,
-                                vertical: 10.h,
-                              ),
-                              margin: EdgeInsets.only(right: 8.w),
-                              decoration: BoxDecoration(
-                                color:
-                                    controller.selectedBookingHistory == value
-                                        ? Color(0xff222222)
-                                        : Color(0xffF2F2F2),
-                                borderRadius: BorderRadius.circular(12.sp),
-                              ),
-                              child: CommonText(
-                                text: value,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color:
-                                    controller.selectedBookingHistory == value
-                                        ? Colors.white
-                                        : Colors.black,
-                              ),
-                            ).center,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 20.w,
+                            vertical: 10.h,
+                          ),
+                          margin: EdgeInsets.only(right: 8.w),
+                          decoration: BoxDecoration(
+                            color: controller.selectedBookingHistory == value
+                                ? const Color(0xff222222)
+                                : const Color(0xffF2F2F2),
+                            borderRadius: BorderRadius.circular(12.sp),
+                          ),
+                          child: CommonText(
+                            text: value,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: controller.selectedBookingHistory == value
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ).center,
                       );
                     },
                   ),
                 ),
 
                 24.height,
+
+
                 controller.isLoading
-                    ? CommonLoader()
+                    ? const CommonLoader()
+                    : controller.history.isEmpty
+                    ? Padding(
+                  padding: EdgeInsets.only(top: 40.h),
+                  child: CommonText(
+                    text: "No history found",
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xff9CA3AF),
+                  ),
+                )
                     : ListView.builder(
-                      itemCount: controller.history.length,
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        Map value = controller.history[index];
-                        return withdrawItem(item: value);
-                      },
-                    ),
+                  itemCount: controller.history.length,
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    Map value = controller.history[index];
+                    return withdrawItem(item: value);
+                  },
+                ),
               ],
             ),
           );
