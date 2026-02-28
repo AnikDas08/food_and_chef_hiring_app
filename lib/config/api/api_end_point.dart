@@ -34,6 +34,7 @@ class ApiEndPoint {
   static const String changeSchedule = '/order/change-schedule/';
   static const String deleteAccount = '/user/account-delete';
   static const String mostBookingTime = 'order/chef/most-booking-time?date=';
+  static const String withdrawWallet = '/user/wallet/withdraw';
 
 
 }

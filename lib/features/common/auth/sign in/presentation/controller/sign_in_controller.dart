@@ -113,7 +113,6 @@ class SignInController extends GetxController {
 
       if (response.statusCode == 200) {
         var data = response.data;
-
         if (response.data["data"]["onboarding"] == false) {
           isLoadingChef = false;
           update();
@@ -124,11 +123,13 @@ class SignInController extends GetxController {
 
         LocalStorage.token = data['data']["accessToken"];
         LocalStorage.myRole = data["data"]["role"];
+        LocalStorage.userId = data['data']["userId"];
         LocalStorage.isLogIn = true;
 
         await LocalStorage.setBool(LocalStorageKeys.isLogIn, LocalStorage.isLogIn);
         await LocalStorage.setString(LocalStorageKeys.token, LocalStorage.token);
         await LocalStorage.setString(LocalStorageKeys.myRole, LocalStorage.myRole);
+        await LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
 
         emailController.clear();
         passwordController.clear();
