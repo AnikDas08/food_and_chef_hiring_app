@@ -1,15 +1,10 @@
 import 'dart:async';
-import 'dart:ffi';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl_phone_field/countries.dart';
 import 'package:intl_phone_field/phone_number.dart';
-import 'package:new_untitled/features/chef/chef_public_profile/presentation/screen/chef_public_profile.dart';
 import 'package:new_untitled/features/common/auth/sign%20up/presentation/widget/account_create_popup.dart';
 import 'package:new_untitled/utils/helpers/other_helper.dart';
-
 import '../../../../../../config/api/api_end_point.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../../services/api/api_service.dart';
@@ -164,7 +159,6 @@ class SignUpController extends GetxController {
 
   Future<void> verifyOtpRepo() async {
     //Get.toNamed(AppRoutes.createSignUpPassword);
-
     isLoadingVerify = true;
     update();
     Map<String, dynamic> body = {

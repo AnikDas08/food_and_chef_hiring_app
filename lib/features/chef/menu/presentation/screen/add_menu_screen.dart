@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../../common/auth/signup_chef/presentation/controller/Chef_add_menu_controller.dart';
 
 class AddMenuScreen extends StatelessWidget {
+
   const AddMenuScreen({super.key});
 
   void _showAddDialog(

@@ -150,10 +150,12 @@ class ChefPaymentScreen extends StatelessWidget {
                         color: Color(0xff272727),
                       ),
 
-                      switchButton(
-                        value: controller.isAutoPayment,
-                        onTap: controller.onChangeAutoPayment,
-                        color: Color(0xffFD713F),
+                      Obx(
+                            () => switchButton(
+                          value: controller.isAutoPayment.value,
+                          onTap: () => controller.autoPaymentToggle(),
+                          color: Color(0xffFD713F),
+                        ),
                       ),
                     ],
                   ),

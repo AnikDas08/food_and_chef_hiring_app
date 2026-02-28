@@ -187,22 +187,23 @@ class ChefProfileScreen extends StatelessWidget {
                         onTap: () => Get.toNamed(AppRoutes.accountSetting),
                       ),
                       14.height,
-                      Row(
-                        children: [
-                          Icon(CupertinoIcons.bell),
-                          CommonText(
-                            text: AppString.notifications,
-                            left: 12,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff272727),
-                          ),
-                          Spacer(),
-
-                          switchButton(
-                            value: controller.isNotification,
-                            onTap: controller.notification,
-                          ),
-                        ],
+                      Obx(
+                            () => Row(
+                          children: [
+                            Icon(CupertinoIcons.bell),
+                            CommonText(
+                              text: AppString.notifications,
+                              left: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff272727),
+                            ),
+                            Spacer(),
+                            switchButton(
+                              value: controller.isNotification.value,
+                              onTap: () => controller.notification(),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -237,8 +238,6 @@ class ChefProfileScreen extends StatelessWidget {
                         icon: CupertinoIcons.info,
                         title: AppString.appVersion,
                       ),
-
-                      /// Log Out item here
                     ],
                   ),
                 ),
