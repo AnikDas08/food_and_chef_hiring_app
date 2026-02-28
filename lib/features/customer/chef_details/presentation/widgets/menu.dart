@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/food_item.dart';
+import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import 'package:new_untitled/utils/log/app_log.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
@@ -127,7 +128,8 @@ class _MenuListState extends State<_MenuList>
     // Fetch first page when tab first appears
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final c = Get.find<ChefDetailsController>();
-      if (c.chefArg?.id != null) {
+      final hasId = c.chefArg?.id != null || c.chefId.isNotEmpty;
+      if (hasId) {
         c.fetchMenuForSection(widget.section);
       }
     });

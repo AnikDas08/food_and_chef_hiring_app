@@ -1,20 +1,22 @@
 import 'dart:io';
-
-import 'package:cupertino_native/cupertino_native.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+// Note: Ensure cupertino_native is still in your pubspec if using CNTabBar
+// import 'package:cupertino_native/cupertino_native.dart';
+
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
-import 'package:new_untitled/features/chef/analytics/presentation/screen/analytics_screen.dart';
-import 'package:new_untitled/features/chef/home/presentation/screen/chef_home_screen.dart';
-import 'package:new_untitled/features/common/message/presentation/screen/chat_screen.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 
+// Import your screens...
+import '../../../analytics/presentation/screen/analytics_screen.dart';
 import '../../../chef_booking/presentation/screen/chef_booking_screen.dart';
 import '../../../profile/presentation/screen/chef_profile_screen.dart';
+import '../../../../common/message/presentation/screen/chat_screen.dart';
+import 'chef_home_screen.dart';
 
 class ChefHome extends StatefulWidget {
   const ChefHome({super.key});
@@ -28,59 +30,42 @@ class TabData {
   final String icon;
   final String selectedIcon;
 
-  TabData({
-    required this.title,
-    required this.icon,
-    required this.selectedIcon,
-  });
+  TabData({required this.title, required this.icon, required this.selectedIcon});
 }
 
-class _ChefHomeState extends State<ChefHome>
-    with SingleTickerProviderStateMixin {
+class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin {
   late final TabController tabController;
   int selectedTabIndex = 0;
+
   final List<TabData> tabs = [
     TabData(title: "Home", icon: "house", selectedIcon: "house.fill"),
-    TabData(
-      title: "Analytics",
-      icon: "chart.xyaxis.line",
-      selectedIcon: "chart.xyaxis.line",
-    ),
+    TabData(title: "Analytics", icon: "chart.xyaxis.line", selectedIcon: "chart.xyaxis.line"),
     TabData(title: "Booking", icon: "basket", selectedIcon: "basket.fill"),
-    TabData(
-      title: "Chats",
-      icon: "ellipsis.message",
-      selectedIcon: "ellipsis.message.fill",
-    ),
-    TabData(
-      title: "Profile",
-      icon: "person.crop.circle",
-      selectedIcon: "person.circle.fill",
-    ),
+    TabData(title: "Chats", icon: "ellipsis.message", selectedIcon: "ellipsis.message.fill"),
+    TabData(title: "Profile", icon: "person.crop.circle", selectedIcon: "person.circle.fill"),
   ];
 
   final List<Widget> pages = [
-    ChefHomeScreen(),
-    AnalyticsScreen(),
-    ChefBookingScreen(),
-    ChatListScreen(),
-    ChefProfileScreen(),
+    const ChefHomeScreen(),
+    const AnalyticsScreen(),
+    const ChefBookingScreen(),
+    const ChatListScreen(),
+    const ChefProfileScreen(),
   ];
-
 
   @override
   void initState() {
     super.initState();
     selectedTabIndex = Get.arguments?["index"] ?? 0;
     tabController = TabController(
-      length: tabs.length,
+      length: pages.length,
       vsync: this,
       initialIndex: selectedTabIndex,
     );
-    tabController.addListener(updteTabIndex);
+    tabController.addListener(_updateTabIndex);
   }
 
-  void updteTabIndex() {
+  void _updateTabIndex() {
     if (tabController.index != selectedTabIndex) {
       setState(() {
         selectedTabIndex = tabController.index;
@@ -97,6 +82,7 @@ class _ChefHomeState extends State<ChefHome>
 
   @override
   void dispose() {
+    tabController.removeListener(_updateTabIndex);
     tabController.dispose();
     super.dispose();
   }
@@ -104,77 +90,58 @@ class _ChefHomeState extends State<ChefHome>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
-      body: TabBarView(controller: tabController, children: pages),
-      bottomNavigationBar:
-          (Platform.isIOS)
-              ? CNTabBar(
-                items:
-                    tabs
-                        .map(
-                          (TabData tab) => CNTabBarItem(
-                            label: tab.title,
-                            icon: CNSymbol(
-                              tabs[selectedTabIndex] == tab
-                                  ? tab.selectedIcon
-                                  : tab.icon,
-                            ),
-                          ),
-                        )
-                        .toList(),
-                tint: CupertinoColors.black,
-                height: 85,
-                currentIndex: selectedTabIndex,
-                onTap: onTabTap,
-              )
-              : _bottomBar(),
+      extendBody: true, // Allows content to flow behind the floating bar
+      body: TabBarView(
+        controller: tabController,
+        children: pages,
+      ),
+      bottomNavigationBar: _buildBottomBar(),
     );
   }
 
-  Widget _bottomBar() {
+  Widget _buildBottomBar() {
+    // We wrap in SafeArea to handle the "Home Indicator" on modern phones
     return SafeArea(
+      bottom: true,
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 12.w).copyWith(bottom: 8),
-        padding: EdgeInsets.symmetric(horizontal: 6.w),
+        height: 68.h, // Scaled height for the bar
+        margin: EdgeInsets.symmetric(horizontal: 16.w).copyWith(bottom: 12.h),
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withValues(alpha: 0.5),
-              blurRadius: 4,
-              offset: Offset(1, 1),
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
           ],
-          borderRadius: BorderRadius.circular(50),
-          border: Border.all(color: Colors.grey.withValues(alpha: 0.5)),
+          borderRadius: BorderRadius.circular(40.r), // Responsive corner radius
+          border: Border.all(color: Colors.grey.withOpacity(0.2)),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(_list.length, (index) {
-            return InkWell(
-              onTap: () => onTabTap(index),
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+            bool isSelected = index == selectedTabIndex;
+
+            // Using Expanded ensures each tab gets exactly 20% of the bar width
+            return Expanded(
+              child: InkWell(
+                onTap: () => onTabTap(index),
+                borderRadius: BorderRadius.circular(40.r),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CommonImage(
                       imageSrc: _list[index],
-                      size: 24,
-                      imageColor:
-                          index == selectedTabIndex
-                              ? Colors.black
-                              : const Color(0xff777777),
+                      size: 22.r, // Scaled icon
+                      imageColor: isSelected ? Colors.black : const Color(0xff777777),
                     ),
+                    SizedBox(height: 4.h),
                     CommonText(
                       text: _string[index],
-                      fontSize: 12,
-                      top: 4,
-                      fontWeight: FontWeight.w400,
-                      color:
-                          index == selectedTabIndex
-                              ? const Color(0xff272727)
-                              : const Color(0xff777777),
+                      fontSize: 10.sp, // Scaled text
+                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                      color: isSelected ? const Color(0xff272727) : const Color(0xff777777),
                     ),
                   ],
                 ),
@@ -187,6 +154,7 @@ class _ChefHomeState extends State<ChefHome>
   }
 }
 
+// Data lists moved outside for cleanliness
 final List<String> _list = [
   AppIcons.home,
   AppIcons.analytics,

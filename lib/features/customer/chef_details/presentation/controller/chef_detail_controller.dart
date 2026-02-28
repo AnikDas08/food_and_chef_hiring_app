@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:new_untitled/services/api/api_service.dart';
+import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/app_utils.dart';
 import 'package:new_untitled/utils/log/app_log.dart';
 import '../../../cart/presentation/controller/cart_controller.dart';
@@ -75,7 +76,7 @@ class ChefDetailsController extends GetxController {
 
   Future<void> fetchMenuForSection(String section) async {
     if (menuCache.containsKey(section)) return;
-    if (chefArg?.id == null) return;
+    if (chefArg?.id == null && chefId.isEmpty) return; // ← allow chefId alone
     await _fetchMenuPage(section, page: 1);
   }
 
@@ -95,7 +96,8 @@ class ChefDetailsController extends GetxController {
 
   Future<void> _fetchMenuPage(String section,
       {required int page, bool isLoadMore = false}) async {
-    if (chefArg?.id == null) return;
+    final id = chefArg?.id ?? chefId;
+    if (id.isEmpty) return;
 
     if (isLoadMore) {
       menuLoadingMore[section] = true;
@@ -107,8 +109,7 @@ class ChefDetailsController extends GetxController {
 
     try {
       final response = await ApiService.get(
-        "menu/chef/${chefArg!.id}"
-            "?menu_section=$section&page=$page&limit=$_pageLimit",
+        "menu/chef/$id?menu_section=$section&page=$page&limit=$_pageLimit",
       );
       if (response.statusCode == 200) {
         final model = MenuModel.fromJson(response.data);

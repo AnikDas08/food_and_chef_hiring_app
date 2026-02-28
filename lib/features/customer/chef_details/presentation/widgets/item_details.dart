@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
+import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
@@ -491,6 +492,7 @@ void itemDetails(
                             children: [
                               const Divider(),
                               4.height,
+                              if(LocalStorage.myRole=="CUSTOMER")
                               CommonButton(
                                 titleText: AppString.addToOrder,
                                 onTap: () {
