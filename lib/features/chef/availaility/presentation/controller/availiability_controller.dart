@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/config/route/app_routes.dart';
 
+import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../services/storage/storage_services.dart';
 import '../../../../../utils/app_utils.dart';
@@ -170,8 +172,6 @@ class AvailabilityController extends GetxController {
   }
 
   Future<void> saveAvailability() async {
-    isLoading = true;
-    update();
 
     try {
       final Map<String, dynamic> body = {};
@@ -192,17 +192,12 @@ class AvailabilityController extends GetxController {
         }
       }
 
-      body["min_booking_notice"] = minHours.toString();
-      body["min_booking_unit"] = minUnit;
-      body["max_booking_advance"] = maxDays.toString();
-      body["max_booking_unit"] = maxUnit;
-
-
+      final response = await ApiService.patch(
+        ApiEndPoint.user,
+        body: body,
+      );
 
       debugPrint("Body to send: $body");
-      Get.snackbar("Success", "Availability saved!",
-          backgroundColor: const Color(0xFF1C1C1C),
-          colorText: const Color(0xFFFFFFFF));
     } catch (e) {
       Get.snackbar("Error", e.toString());
     } finally {

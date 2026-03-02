@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../controller/sign_up_chef_controller.dart';
-import 'Cafe_Enable_AutoAccept_Screen.dart';
 
 class TimeSlot {
   TimeOfDay from;

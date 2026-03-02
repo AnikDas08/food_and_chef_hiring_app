@@ -17,6 +17,7 @@ import '../../../../../config/api/api_end_point.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/constants/app_images.dart';
 import '../../../../../../utils/constants/app_string.dart';
+import '../../../../common/auth/signup_chef/presentation/screen/BankManagementPage.dart';
 import '../../../../customer/profile/presentation/widgets/profile_list.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_profile_controller.dart';
@@ -179,6 +180,24 @@ class ChefProfileScreen extends StatelessWidget {
                         title: AppString.paymentMethods,
                         onTap: () => Get.toNamed(AppRoutes.chefPayment),
                       ),
+
+                      Item(
+                        image: AppIcons.card,
+                        icon: CupertinoIcons.add,
+                        title: AppString.bankManagement,
+                        onTap: () {
+                          final profile = Get.find<ChefHomeController>().chefProfile.value;
+                          final stripeUrl = profile?.stripeLoginLink; // বা যে field নামে আছে
+
+                          if (stripeUrl != null && stripeUrl.isNotEmpty) {
+                            Get.to(() => StripeWebViewPage(url: stripeUrl));
+                          } else {
+                            Get.to(() => const BankManagementPage());
+                          }
+                        },
+                      ),
+
+
                       Item(
                         image: AppIcons.kitchen,
                         title: AppString.menuItems,
@@ -231,7 +250,6 @@ class ChefProfileScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: () => Get.toNamed(AppRoutes.message),
                         child: Item(
                           icon: CupertinoIcons.question_circle,
                           title: AppString.contactSupport,

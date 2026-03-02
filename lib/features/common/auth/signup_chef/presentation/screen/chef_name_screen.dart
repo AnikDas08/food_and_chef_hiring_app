@@ -61,7 +61,7 @@ class ChefNameScreen extends StatelessWidget {
                   ),
                   CommonTextField(
                     controller: controller.firstNameController,
-                    hintText: AppString.lastName,
+                    hintText: AppString.firstName,
                     validator: OtherHelper.validator,
                   ),
 

@@ -268,6 +268,7 @@ class AppString {
   static const String chatWithCustomers = "Chat with Customer";
   static const String myProfile = "My Profile";
   static const String paymentMethods = "Payment Methods";
+  static const String bankManagement = "Bank Management";
   static const String pastOrders = "Past Orders";
   static const String manageDietaryRestrictions = "Manage Dietary Restrictions";
   static const String manageKitchenEquipment = "Manage Kitchen Equipment";

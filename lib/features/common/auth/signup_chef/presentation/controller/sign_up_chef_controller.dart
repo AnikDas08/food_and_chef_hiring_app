@@ -380,6 +380,51 @@ class SignUpChefController extends GetxController {
   }
 
 
+
+  Future<void> setupChefAvailability2({
+    required List<DaySchedule> days,
+  }) async {
+    isLoading = true;
+    update();
+    try {
+      final Map<String, dynamic> body = {};
+
+      for (int i = 0; i < days.length; i++) {
+        final day = days[i];
+        body["availability[$i][day]"] = day.name.toLowerCase();
+        body["availability[$i][availableity]"] = day.isEnabled.toString();
+
+        if (day.isEnabled) {
+          for (int j = 0; j < day.slots.length; j++) {
+            final slot = day.slots[j];
+            body["availability[$i][availability_times][$j][start_time]"] =
+                _formatTime(slot.from);
+            body["availability[$i][availability_times][$j][end_time]"] =
+                _formatTime(slot.to);
+          }
+        }
+      }
+
+      final response = await ApiService.multipartImage(
+        _onboardingEndpoint,
+        method: "PATCH",
+        body: body,
+        files: [],
+      );
+
+      if (response.statusCode == 200) {
+        Get.snackbar("Message", "Set Your Availability",backgroundColor: Colors.green);
+      } else {
+        Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
+      }
+    } catch (e) {
+      Utils.errorSnackBar("Error", e.toString());
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
+
   Future<void> setupChefAvailability({
     required List<DaySchedule> days,
   }) async {

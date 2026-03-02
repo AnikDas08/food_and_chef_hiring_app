@@ -201,7 +201,6 @@ class CafeAddMenuItemController extends GetxController {
     nameController.text = item.name;
     descriptionController.text = item.description;
 
-    // Category set - fetchCategories er pore set korbo
     _selectedCategory.value = item.menuSection;
 
     final prepParts = item.estPrepTime.split(' ');
@@ -298,7 +297,6 @@ class CafeAddMenuItemController extends GetxController {
             .where((e) => e.name.isNotEmpty && seen.add(e.name))
             .toList();
         categoryList.value = categoryModels.map((e) => e.name).toList();
-        categoryList.value = categoryModels.map((e) => e.name).toList();
         if (categoryList.isNotEmpty) {
           _selectedCategory.value = categoryList.first;
         }
@@ -332,7 +330,7 @@ class CafeAddMenuItemController extends GetxController {
             .toList();
       }
     } catch (e) {
-      debugPrint("❌ Menu fetch error: $e");
+      debugPrint("Menu fetch error: $e");
     } finally {
       isLoadingMenu.value = false;
     }
@@ -388,6 +386,21 @@ class CafeAddMenuItemController extends GetxController {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        // ✅ POST response diye directly UI-te add koro — GET call lagbe na
+        final newItem = MenuItemModel.fromJson(response.data['data']);
+        final sectionName = newItem.menuSection.isEmpty ? "Other" : newItem.menuSection;
+
+        final existingSection = menuSections.firstWhereOrNull(
+              (s) => s.menuSection == sectionName,
+        );
+
+        if (existingSection != null) {
+          existingSection.menus.add(newItem);
+        } else {
+          menuSections.add(MenuSectionModel(menuSection: sectionName, menus: [newItem]));
+        }
+        menuSections.refresh();
+
         Get.back(result: true);
         Get.snackbar("Success", "Menu item added successfully!",
             snackPosition: SnackPosition.BOTTOM,
@@ -398,7 +411,7 @@ class CafeAddMenuItemController extends GetxController {
             snackPosition: SnackPosition.BOTTOM);
       }
     } catch (e) {
-      debugPrint("❌ Submit error: $e");
+      debugPrint("Submit error: $e");
       Get.snackbar("Error", "Something went wrong: $e", snackPosition: SnackPosition.BOTTOM);
     } finally {
       isSubmitting.value = false;
@@ -453,8 +466,9 @@ class CafeAddMenuItemController extends GetxController {
         "${ApiEndPoint.baseUrl}menu/${editingItemId.value}",
         body: formData,
       );
+
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // ✅ GET call na kore directly UI update
+        // ✅ PATCH response diye directly UI update koro — GET call lagbe na
         final updatedItem = MenuItemModel.fromJson(response.data['data']);
         for (var section in menuSections) {
           final idx = section.menus.indexWhere((m) => m.id == updatedItem.id);
@@ -469,9 +483,12 @@ class CafeAddMenuItemController extends GetxController {
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white);
+      } else {
+        Get.snackbar("Error", "${response.data?['message'] ?? 'Failed to update menu item.'}",
+            snackPosition: SnackPosition.BOTTOM);
       }
     } catch (e) {
-      debugPrint("❌ Update error: $e");
+      debugPrint("Update error: $e");
       Get.snackbar("Error", "Something went wrong: $e", snackPosition: SnackPosition.BOTTOM);
     } finally {
       isSubmitting.value = false;
@@ -484,7 +501,7 @@ class CafeAddMenuItemController extends GetxController {
       await ApiService.post(
           "${ApiEndPoint.AddMenuSection}${LocalStorage.userId}", body: {"name": sectionName});
     } catch (e) {
-      debugPrint("❌ Add section error: $e");
+      debugPrint(" Add section error: $e");
     }
   }
 
@@ -496,7 +513,7 @@ class CafeAddMenuItemController extends GetxController {
     try {
       await ApiService.delete("${ApiEndPoint.baseUrl}menu/$itemId");
     } catch (e) {
-      debugPrint("❌ Delete error: $e");
+      debugPrint("Delete error: $e");
     }
   }
 

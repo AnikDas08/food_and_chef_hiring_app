@@ -17,7 +17,6 @@ import 'upcoming_pop_up.dart';
 Widget chefBookingItem({required Map order}) {
   final controller = Get.find<ChefBookingController>();
 
-  // ✅ Data from API
   String orderId = order['order_id'] ?? "";
   String userName = order['user']?['name'] ?? "";
   String userImage = order['user']?['image'] ?? "";
@@ -28,8 +27,8 @@ Widget chefBookingItem({required Map order}) {
   double rating = (order['rating'] ?? 0).toDouble();
   String review = order['review'] ?? "";
   String deadline = order['deadline'] ?? "";
+  String cookingTime = order['cooking_time'] ?? ""; // ✅ cooking time
 
-  // ✅ Items list: menu names + quantity
   List staticItems = order['static_items'] ?? [];
   String itemsText = staticItems.map((item) {
     String name = item['menu']?['name'] ?? "";
@@ -38,11 +37,8 @@ Widget chefBookingItem({required Map order}) {
   }).join(", ");
   String itemsLabel = "${staticItems.length} item${staticItems.length > 1 ? 's' : ''} ($itemsText)";
 
-  // ✅ Date format from formatted_date
   String formattedDate = _formatDate(order['formatted_date']);
   String dateLabel = "$formattedDate at $strTime";
-
-  // ✅ Deadline countdown (time left)
   String timeLeft = _timeLeft(deadline);
 
   return InkWell(
@@ -61,31 +57,24 @@ Widget chefBookingItem({required Map order}) {
         children: [
           Row(
             children: [
-              // ✅ User image
               CommonImage(
-                imageSrc: userImage.isNotEmpty
-                    ? userImage
-                    : AppImages.image3,
+                imageSrc: userImage.isNotEmpty ? userImage : AppImages.image3,
                 size: 40,
                 borderRadius: 50,
                 fill: BoxFit.fill,
               ),
-
               12.width,
-
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ✅ User name
                     CommonText(
                       text: userName,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: Color(0xff272727),
                     ),
-                    // ✅ Order ID
                     CommonText(
                       text: orderId,
                       fontSize: 12,
@@ -95,10 +84,7 @@ Widget chefBookingItem({required Map order}) {
                   ],
                 ),
               ),
-
-              // ✅ Status badge
               _statusBadge(controller.selectedBookingHistory),
-
               PopupMenuButton<int>(
                 padding: EdgeInsets.zero,
                 menuPadding: EdgeInsets.zero,
@@ -152,7 +138,6 @@ Widget chefBookingItem({required Map order}) {
 
           24.height,
 
-          // ✅ Date
           Row(
             children: [
               CommonImage(
@@ -160,17 +145,19 @@ Widget chefBookingItem({required Map order}) {
                 size: 16,
                 imageColor: Color(0xff777777),
               ),
-              CommonText(
-                text: dateLabel,
-                fontSize: 12,
-                left: 4,
-                fontWeight: FontWeight.w400,
+              Expanded(
+                child: CommonText(
+                  text: dateLabel,
+                  fontSize: 12,
+                  left: 4,
+                  fontWeight: FontWeight.w400,
+                  textAlign: TextAlign.start,
+                ),
               ),
             ],
           ),
-          8.height,
+          15.height,
 
-          // ✅ Items
           Row(
             children: [
               CommonImage(
@@ -185,13 +172,14 @@ Widget chefBookingItem({required Map order}) {
                   left: 4,
                   fontWeight: FontWeight.w400,
                   maxLines: 1,
+                  textAlign: TextAlign.start, // ✅ add
                 ),
               ),
             ],
           ),
           8.height,
 
-          // ✅ Address
+
           Row(
             children: [
               CommonImage(
@@ -206,14 +194,40 @@ Widget chefBookingItem({required Map order}) {
                   left: 4,
                   fontWeight: FontWeight.w400,
                   maxLines: 1,
+                  textAlign: TextAlign.start, // ✅ add
                 ),
               ),
             ],
           ),
+          8.height,
 
-          20.height,
+          if (cookingTime.isNotEmpty)
+            Padding(
+              padding: EdgeInsets.only(top: 0, bottom: 0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    CupertinoIcons.time,
+                    size: 16,
+                    color: Color(0xff777777),
+                  ),
+                  SizedBox(width: 4),
+                  Expanded(
+                    child: CommonText(
+                      text: "Estimated cooking time: $cookingTime",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff272727),
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          8.height,
 
-          // ✅ Time left (Unconfirmed/Upcoming only)
+
           if (controller.selectedBookingHistory != "Completed")
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
@@ -238,9 +252,7 @@ Widget chefBookingItem({required Map order}) {
               ),
             ),
 
-          // ✅ Review (Completed only)
-          if (controller.selectedBookingHistory == "Completed" &&
-              review.isNotEmpty)
+          if (controller.selectedBookingHistory == "Completed" && review.isNotEmpty)
             Container(
               padding: EdgeInsets.all(8),
               margin: EdgeInsets.only(right: 12.w),
@@ -278,12 +290,11 @@ Widget chefBookingItem({required Map order}) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CommonText(
-                    text: AppString.total,
+                    text: "Hourly rate",
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
                   ),
-                  // ✅ Real total price
                   CommonText(
                     text: "\$${totalPrice.toStringAsFixed(2)}",
                     fontWeight: FontWeight.w600,
@@ -306,8 +317,7 @@ Widget chefBookingItem({required Map order}) {
                     );
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16.sp, vertical: 8.sp),
+                    padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10.sp),
@@ -325,8 +335,7 @@ Widget chefBookingItem({required Map order}) {
                     confirmBookingPopUp();
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 16.sp, vertical: 8.sp),
+                    padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
                     margin: EdgeInsets.only(left: 8.sp),
                     decoration: BoxDecoration(
                       color: Color(0xff272727),
@@ -347,8 +356,7 @@ Widget chefBookingItem({required Map order}) {
               if (controller.selectedBookingHistory == "Upcoming") ...[
                 Container(
                   margin: EdgeInsets.only(right: 12.w),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 16.sp, vertical: 8.sp),
+                  padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.sp),
@@ -376,8 +384,7 @@ Widget chefBookingItem({required Map order}) {
               if (controller.selectedBookingHistory == "Completed") ...[
                 Container(
                   margin: EdgeInsets.only(right: 12.w),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 16.sp, vertical: 8.sp),
+                  padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.sp),
@@ -409,7 +416,6 @@ Widget chefBookingItem({required Map order}) {
   );
 }
 
-// ✅ Status badge widget
 Widget _statusBadge(String selectedTab) {
   switch (selectedTab) {
     case "Unconfirmed":
@@ -457,7 +463,6 @@ Widget _statusBadge(String selectedTab) {
   }
 }
 
-// ✅ Format ISO date → "27 February, 2026"
 String _formatDate(String? isoDate) {
   if (isoDate == null) return "";
   try {
@@ -472,7 +477,6 @@ String _formatDate(String? isoDate) {
   }
 }
 
-// ✅ Calculate time left from deadline
 String _timeLeft(String? deadlineIso) {
   if (deadlineIso == null || deadlineIso.isEmpty) return "";
   try {
