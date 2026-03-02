@@ -38,8 +38,8 @@ taxPopup() {
                           Expanded(
                             child: CommonText(
                               text:
-                                  AppString
-                                      .pleaseSelectTheTaxDetailsYouWantToUse,
+                              AppString
+                                  .pleaseSelectTheTaxDetailsYouWantToUse,
                               fontSize: 16,
                               top: 16,
                               bottom: 8,

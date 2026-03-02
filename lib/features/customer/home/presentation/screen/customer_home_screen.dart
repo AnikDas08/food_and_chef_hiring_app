@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:cupertino_native/cupertino_native.dart';
+import 'package:new_untitled/features/customer/groceries/presentations/screens/groceries_screen.dart';
 
 import '../../../../../component/image/common_image.dart';
 import '../../../../../utils/constants/app_icons.dart';
@@ -38,7 +39,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
   final List<Widget> pages = [
     const CustomerHome(),
     const BookingHistoryScreen(),
-    const BookingHistoryScreen(),
+    const GroceryScreen(),
     const ChatListScreen(),
     const ProfileScreen(),
   ];

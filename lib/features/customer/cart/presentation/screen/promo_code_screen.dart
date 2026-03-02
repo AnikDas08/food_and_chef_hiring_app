@@ -1,3 +1,5 @@
+// lib/features/customer/cart/presentation/screens/promo_code_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
@@ -8,6 +10,7 @@ class PromoCodeScreen extends StatelessWidget {
   PromoCodeScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
+  final _promoController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +23,13 @@ class PromoCodeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CommonText(
+              const CommonText(
                 text: "Promotions",
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
               ),
-              CommonText(
+              const CommonText(
                 text: "Claim your discount by entering the promo code.",
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
@@ -34,18 +37,16 @@ class PromoCodeScreen extends StatelessWidget {
                 bottom: 28,
                 color: Color(0xff777777),
               ),
-
               CommonTextField(
-                hintText: "Enter promo code ",
+                hintText: "Enter promo code",
+                controller: _promoController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Promo code is required';
                   }
-
                   if (value.length < 5) {
                     return 'The code is not valid';
                   }
-
                   return null;
                 },
               ),
@@ -60,7 +61,8 @@ class PromoCodeScreen extends StatelessWidget {
             titleText: "Submit",
             onTap: () {
               if (_formKey.currentState!.validate()) {
-                Get.back();
+                // Return promo code back to caller
+                Get.back(result: _promoController.text.trim());
               }
             },
           ),

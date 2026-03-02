@@ -10,8 +10,14 @@ import '../../../../../config/route/app_routes.dart';
 import '../../data/address_model.dart';
 import '../controller/address_controller.dart';
 
-Widget addressItem(AddressModel address, AddressController controller) {
+Widget addressItem(
+    AddressModel address,
+    AddressController controller, {
+      bool fromCheckout = false,
+      String? selectedAddressId,
+    }) {
   final bool isActive = address.status.toLowerCase() == "active";
+  final bool isSelected = fromCheckout && selectedAddressId == address.id;
 
   return Container(
     margin: const EdgeInsets.only(bottom: 12),
@@ -74,25 +80,36 @@ Widget addressItem(AddressModel address, AddressController controller) {
                         ),
                       ),
 
-                      // Status Badge
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 6,
+                      // ── If fromCheckout: show radio, else show status badge ──
+                      if (fromCheckout)
+                        Icon(
+                          isSelected
+                              ? Icons.radio_button_checked
+                              : Icons.radio_button_unchecked,
+                          size: 22,
+                          color: isSelected
+                              ? const Color(0xffFD713F)
+                              : const Color(0xffC0C0C0),
+                        )
+                      else
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isActive
+                                ? const Color(0xffDBEBD9)
+                                : const Color(0xffF2F2F2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: CommonText(
+                            text: address.status,
+                            color: isActive
+                                ? const Color(0xff2F8328)
+                                : const Color(0xff777777),
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          color: isActive
-                              ? const Color(0xffDBEBD9)
-                              : const Color(0xffF2F2F2),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: CommonText(
-                          text: address.status,
-                          color: isActive
-                              ? const Color(0xff2F8328)
-                              : const Color(0xff777777),
-                        ),
-                      ),
                     ],
                   ),
 
@@ -110,59 +127,60 @@ Widget addressItem(AddressModel address, AddressController controller) {
 
                   12.height,
 
-                  // Action Buttons
-                  // when class
-                  Row(
-                    children: [
-                      // Edit Button
-                      InkWell(
-                        onTap: () {
-                          Get.toNamed(
-                            AppRoutes.edit_address,
-                            arguments: address,
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: CommonText(
-                            text: AppString.editAddress,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff272727),
+                  // ── If fromCheckout: hide edit/delete buttons ──
+                  if (!fromCheckout)
+                    Row(
+                      children: [
+                        // Edit Button
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed(
+                              AppRoutes.edit_address,
+                              arguments: address,
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: CommonText(
+                              text: AppString.editAddress,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff272727),
+                            ),
                           ),
                         ),
-                      ),
 
-                      // Delete Button
-                      InkWell(
-                        onTap: () => _showDeleteDialog(address, controller),
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 8),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xffFF3C3C).withValues(alpha: 0.20),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: CommonText(
-                            text: AppString.delete,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xffFF3C3C),
+                        // Delete Button
+                        InkWell(
+                          onTap: () => _showDeleteDialog(address, controller),
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 8),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xffFF3C3C)
+                                  .withValues(alpha: 0.20),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: CommonText(
+                              text: AppString.delete,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xffFF3C3C),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                 ],
               ),
             ),

@@ -14,6 +14,9 @@ class ProfileAddressScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // If navigated from checkout, this will be true
+    final bool fromCheckout = Get.arguments?['fromCheckout'] == true;
+
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -73,18 +76,30 @@ class ProfileAddressScreen extends StatelessWidget {
                         physics: const AlwaysScrollableScrollPhysics(),
                         // +1 for the footer loader item
                         itemCount: controller.addressList.length + 1,
+                        // In the ListView.builder, replace the existing itemBuilder logic:
                         itemBuilder: (context, index) {
-                          // Last item = pagination footer
                           if (index == controller.addressList.length) {
                             return _PaginationFooter(
                               isFetchingMore: controller.isFetchingMore,
                               hasMorePages: controller.hasMorePages,
                             );
                           }
-                          return addressItem(
-                            controller.addressList[index],
-                            controller,
-                          );
+
+                          final address = controller.addressList[index];
+
+                          if (fromCheckout) {
+                            return GestureDetector(
+                              onTap: () => Get.back(result: address),
+                              child: addressItem(
+                                address,
+                                controller,
+                                fromCheckout: true,
+                                selectedAddressId: Get.arguments?['selectedAddressId'],
+                              ),
+                            );
+                          }
+
+                          return addressItem(address, controller);
                         },
                       ),
                     ),
@@ -126,17 +141,6 @@ class _PaginationFooter extends StatelessWidget {
         child: Center(child: CircularProgressIndicator()),
       );
     }
-    /*if (!hasMorePages) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 16),
-        child: Center(
-          child: Text(
-            "No more addresses",
-            style: TextStyle(color: Color(0xff777777), fontSize: 12),
-          ),
-        ),
-      );
-    }*/
     return const SizedBox.shrink();
   }
 }

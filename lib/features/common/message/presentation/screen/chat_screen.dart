@@ -77,7 +77,8 @@ class ChatListScreen extends StatelessWidget {
           ),
 
         /// Data
-          Status.completed => Padding(
+          Status.completed => (controller.filteredChats.isEmpty || controller.filteredChats.length == 0)
+              ? _buildEmptyState(): Padding(
             padding:
             EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
             child: ListView(
@@ -110,6 +111,33 @@ class ChatListScreen extends StatelessWidget {
             ),
           ),
         },
+      ),
+    );
+  }
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            CupertinoIcons.chat_bubble_text,
+            size: 80.sp,
+            color: Colors.grey.withValues(alpha: 0.5),
+          ),
+          SizedBox(height: 16.h),
+          CommonText(
+            text: "No chats found",
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey,
+          ),
+          SizedBox(height: 8.h),
+          CommonText(
+            text: "Start a conversation to see them here.",
+            fontSize: 14.sp,
+            color: Colors.grey.withValues(alpha: 0.7),
+          ),
+        ],
       ),
     );
   }

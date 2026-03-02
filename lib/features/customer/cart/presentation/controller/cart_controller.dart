@@ -4,6 +4,7 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/app_utils.dart';
 import '../../../../../config/route/app_routes.dart';
+import '../../../address/data/address_model.dart';
 import '../../data/cart_model.dart';
 
 class CartController extends GetxController {
@@ -29,6 +30,13 @@ class CartController extends GetxController {
     "10:00 AM", "11:00 AM", "12:00 PM",
     "02:00 PM", "04:00 PM", "06:00 PM",
   ];
+
+  AddressModel? selectedAddress;
+
+  void onAddressSelected(AddressModel address) {
+    selectedAddress = address;
+    update();
+  }
 
   // ── POST → navigate ─────────────────────────────────────────────────────────
 
