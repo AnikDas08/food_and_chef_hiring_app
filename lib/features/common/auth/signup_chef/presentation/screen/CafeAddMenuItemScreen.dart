@@ -36,9 +36,9 @@ class CafeAddMenuItemScreen extends StatelessWidget {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _dialogField(nameCtrl, "Ingredient name (e.g. Tomato)", autofocus: true),
+              _dialogField(nameCtrl, "Ingredient name", autofocus: true),
               10.verticalSpace,
-              _dialogField(qtyCtrl, "Quantity (e.g. 2)", isNumber: true),
+              _dialogField(qtyCtrl, "Quantity", isNumber: true),
               10.verticalSpace,
               Obx(() {
                 if (c.isLoadingUnits.value) {
@@ -148,7 +148,6 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                       ),
                     )),
                     20.verticalSpace,
-
                     _label("Menu Category"),
                     8.verticalSpace,
                     Obx(() {
@@ -189,7 +188,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
 
                     _label("Item Name"),
                     8.verticalSpace,
-                    _textField(c.nameController, "e.g. Quesadilla"),
+                    _textField(c.nameController,),
                     16.verticalSpace,
 
                     _label("Description"),
@@ -416,7 +415,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
   Widget _label(String text) => Text(text,
       style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: const Color(0xFF272727)));
 
-  Widget _textField(TextEditingController ctrl, String hint) => Container(
+  Widget _textField(TextEditingController ctrl,) => Container(
     decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
     child: TextField(
       controller: ctrl,
@@ -424,7 +423,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
       decoration: InputDecoration(
         border: InputBorder.none,
         contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
-        hintText: hint,
+        hintText: "Enter name",
         hintStyle: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB)),
       ),
     ),
@@ -505,7 +504,7 @@ class _TimeInputRow extends StatelessWidget {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
-                hintText: "e.g. 30",
+                hintText: "Enter time",
                 hintStyle: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB)),
               ),
             ),

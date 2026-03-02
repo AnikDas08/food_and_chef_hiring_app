@@ -84,7 +84,6 @@ class _ChefVerificationReviewPageState
     }
   }
 
-  // ── Submit with loading ──
   Future<void> _handleSubmit() async {
     setState(() => _isLoading = true);
     try {
@@ -110,13 +109,13 @@ class _ChefVerificationReviewPageState
       backgroundColor: _bg,
       body: SafeArea(
         child: Column(children: [
-          // ── App Bar ──
+
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
             child: Row(children: [
               IconButton(
                 onPressed: _isLoading
-                    ? null // loading এ back disable
+                    ? null
                     : (widget.onBack ?? () => Navigator.of(context).maybePop()),
                 icon: Icon(
                   Icons.arrow_back_ios_new_rounded,

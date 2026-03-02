@@ -134,7 +134,7 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                               controller: ctrl,
                               autofocus: true,
                               decoration: InputDecoration(
-                                hintText: "e.g. Starters, Desserts...",
+                                hintText: "Enter Your Menu",
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.r),
                                 ),
@@ -269,9 +269,15 @@ class _ApiMenuCard extends StatelessWidget {
                         onTap: () async {
                           c.loadItemForEdit(item);
                           await c.fetchCategories();
+                          if (c.categoryList.contains(item.menuSection)) {
+                            c.setCategory(item.menuSection);
+                          } else if (c.categoryList.isNotEmpty) {
+                            c.setCategory(c.categoryList.first);
+                          }
                           await Get.to(() => const CafeAddMenuItemScreen());
                           c.resetForm();
-                          c.fetchMenus();
+                          await Future.delayed(const Duration(milliseconds: 500));
+                          await c.fetchMenus();
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
@@ -289,7 +295,6 @@ class _ApiMenuCard extends StatelessWidget {
                           ]),
                         ),
                       ),
-
                       12.horizontalSpace,
                       GestureDetector(
                         onTap: () => c.deleteMenuItem(item.id),

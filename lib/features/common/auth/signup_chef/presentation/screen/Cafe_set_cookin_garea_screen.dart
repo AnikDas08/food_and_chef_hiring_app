@@ -470,7 +470,6 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                       ? null
                       : () async {
                     if (_selectedAddress == null || _selectedLatLng == null) {
-
                       Get.snackbar("Message", "Please select an address first.",backgroundColor: Colors.red,colorText: Colors.red);
                       return;
                     }
