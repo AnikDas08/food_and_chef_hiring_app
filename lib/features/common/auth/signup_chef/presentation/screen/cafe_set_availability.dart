@@ -79,6 +79,19 @@ class _CafeSetAvailabilityScreenState
   String _maxUnit = "Days";
   bool _isSubmitting = false;
 
+  // Editing states
+  bool _editingMin = false;
+  bool _editingMax = false;
+  final TextEditingController _minController = TextEditingController();
+  final TextEditingController _maxController = TextEditingController();
+
+  @override
+  void dispose() {
+    _minController.dispose();
+    _maxController.dispose();
+    super.dispose();
+  }
+
   Future<void> _pickTime(
       DaySchedule day, int slotIndex, bool isFrom) async {
     final slot = day.slots[slotIndex];
@@ -122,7 +135,6 @@ class _CafeSetAvailabilityScreenState
     entry = OverlayEntry(
       builder: (_) => Stack(
         children: [
-          // dismiss tap
           Positioned.fill(
             child: GestureDetector(
               onTap: () => entry.remove(),
@@ -135,14 +147,14 @@ class _CafeSetAvailabilityScreenState
             child: Material(
               color: Colors.transparent,
               child: Container(
-                width: 120.w,
+                width: 160.w,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(14.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.12),
-                      blurRadius: 12,
+                      color: Colors.black.withOpacity(0.08),
+                      blurRadius: 20,
                       offset: const Offset(0, 4),
                     ),
                   ],
@@ -158,7 +170,7 @@ class _CafeSetAvailabilityScreenState
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 12.h),
+                            horizontal: 16.w, vertical: 14.h),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -166,21 +178,28 @@ class _CafeSetAvailabilityScreenState
                               unit,
                               style: TextStyle(
                                 fontSize: 14.sp,
-                                fontWeight: isSelected
-                                    ? FontWeight.w600
-                                    : FontWeight.w400,
+                                fontWeight: FontWeight.w500,
                                 color: const Color(0xFF272727),
                               ),
                             ),
-                            if (isSelected)
-                              Container(
-                                width: 10.w,
-                                height: 10.w,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFFFF6B35),
-                                  shape: BoxShape.circle,
-                                ),
+                            // Dark circle with checkmark (selected) or grey circle (unselected)
+                            Container(
+                              width: 22.w,
+                              height: 22.w,
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? const Color(0xFF272727)
+                                    : const Color(0xFFEEEEEE),
+                                shape: BoxShape.circle,
                               ),
+                              child: isSelected
+                                  ? Icon(
+                                Icons.check,
+                                size: 13.sp,
+                                color: Colors.white,
+                              )
+                                  : null,
+                            ),
                           ],
                         ),
                       ),
@@ -282,14 +301,23 @@ class _CafeSetAvailabilityScreenState
                           ),
                           // Min value
                           WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
                             child: _buildValueChip(
                               value: _minHours.toString(),
                               unit: _minUnit,
-                              onValueTap: () {
-
+                              isEditing: _editingMin,
+                              controller: _minController,
+                              onEditStart: () {
+                                _minController.text = _minHours.toString();
+                                setState(() => _editingMin = true);
+                              },
+                              onEditDone: () {
+                                final val = int.tryParse(_minController.text);
                                 setState(() {
-                                  _minHours =
-                                  _minHours < 24 ? _minHours + 1 : 1;
+                                  if (val != null && val >= 1 && val <= 24) {
+                                    _minHours = val;
+                                  }
+                                  _editingMin = false;
                                 });
                               },
                               onUnitTap: (offset) {
@@ -313,13 +341,23 @@ class _CafeSetAvailabilityScreenState
                           ),
                           // Max value
                           WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
                             child: _buildValueChip(
                               value: _maxDays.toString(),
                               unit: _maxUnit,
-                              onValueTap: () {
+                              isEditing: _editingMax,
+                              controller: _maxController,
+                              onEditStart: () {
+                                _maxController.text = _maxDays.toString();
+                                setState(() => _editingMax = true);
+                              },
+                              onEditDone: () {
+                                final val = int.tryParse(_maxController.text);
                                 setState(() {
-                                  _maxDays =
-                                  _maxDays < 30 ? _maxDays + 1 : 1;
+                                  if (val != null && val >= 1 && val <= 30) {
+                                    _maxDays = val;
+                                  }
+                                  _editingMax = false;
                                 });
                               },
                               onUnitTap: (offset) {
@@ -409,12 +447,10 @@ class _CafeSetAvailabilityScreenState
     );
   }
 
-
   Widget _buildDayItem(DaySchedule day) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Day header row
         Row(
           children: [
             Text(
@@ -437,7 +473,6 @@ class _CafeSetAvailabilityScreenState
           ],
         ),
 
-        // Slots (only when enabled)
         if (day.isEnabled) ...[
           ...day.slots.asMap().entries.map((entry) {
             final i = entry.key;
@@ -506,7 +541,6 @@ class _CafeSetAvailabilityScreenState
             );
           }),
 
-          // + Add Additional Time
           GestureDetector(
             onTap: () {
               setState(() {
@@ -547,51 +581,102 @@ class _CafeSetAvailabilityScreenState
   Widget _buildValueChip({
     required String value,
     required String unit,
-    required VoidCallback onValueTap,
+    required bool isEditing,
+    required TextEditingController controller,
+    required VoidCallback onEditStart,
+    required VoidCallback onEditDone,
     required Function(Offset) onUnitTap,
   }) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 2.w),
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFF0EB),
-        borderRadius: BorderRadius.circular(6.r),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          GestureDetector(
-            onTap: onValueTap,
-            child: Text(
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Number box
+        GestureDetector(
+          onTap: onEditStart,
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 2.w),
+            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.06),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: isEditing
+                ? SizedBox(
+              width: 40.w,
+              child: TextField(
+                controller: controller,
+                autofocus: true,
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF272727),
+                ),
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                onSubmitted: (_) => onEditDone(),
+              ),
+            )
+                : Text(
               value,
               style: TextStyle(
-                fontSize: 13.sp,
+                fontSize: 15.sp,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xFFFF6B35),
+                color: const Color(0xFF272727),
               ),
             ),
           ),
-          4.horizontalSpace,
-          GestureDetector(
-            onTapDown: (details) => onUnitTap(details.globalPosition),
+        ),
+
+        4.horizontalSpace,
+
+        // Unit + arrow box
+        GestureDetector(
+          onTapDown: (details) => onUnitTap(details.globalPosition),
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 2.w),
+            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.06),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   unit,
                   style: TextStyle(
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFFFF6B35),
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF272727),
                   ),
                 ),
+                4.horizontalSpace,
                 Icon(Icons.keyboard_arrow_down,
-                    size: 14.sp, color: const Color(0xFFFF6B35)),
+                    size: 16.sp, color: const Color(0xFF272727)),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -210,7 +210,7 @@ class SignUpChefController extends GetxController {
         }
 
         if (data['success'] == true) {
-          Get.snackbar("Success", data['message'] ?? "Sign up successful");
+
         } else {
           Utils.errorSnackBar("Error", data['message'] ?? "Something went wrong");
         }
@@ -276,8 +276,6 @@ class SignUpChefController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        Get.snackbar("Success", response.data['message'] ?? "Documents submitted",
-            backgroundColor: Colors.black, colorText: Colors.white);
         Get.to(() => CafeSetupProfileScreen());
       } else {
         Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
@@ -321,8 +319,6 @@ class SignUpChefController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        Get.snackbar("Success", response.data['message'] ?? "Profile setup successful",
-            backgroundColor: Colors.black, colorText: Colors.white);
         Get.to(() => const CafeSetYourPriceScreen());
       } else {
         Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
@@ -371,8 +367,6 @@ class SignUpChefController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        Get.snackbar("Success", response.data['message'] ?? "Price setup successful",
-            backgroundColor: Colors.black, colorText: Colors.white);
         Get.to(() => const CafeSetAvailabilityScreen());
       } else {
         Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
@@ -418,8 +412,6 @@ class SignUpChefController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        Get.snackbar("Success", response.data['message'] ?? "Availability setup successful",
-            backgroundColor: Colors.black, colorText: Colors.white);
         Get.to(() => const CafeEnableAutoAcceptScreen());
       } else {
         Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
@@ -445,8 +437,6 @@ class SignUpChefController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        Get.snackbar("Success", response.data['message'] ?? "Updated successfully",
-            backgroundColor: Colors.black, colorText: Colors.white);
         Get.to(() => const CafeAddMenuItemsScreen());
       } else {
         Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
