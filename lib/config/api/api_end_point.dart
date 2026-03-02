@@ -14,6 +14,7 @@ class ApiEndPoint {
   static const changePassword = "users/change-password";
   static const user = "user/profile";
   static const address = "address";
+  static const String createConnectedAccount = 'user/create-connected-account';
   static const notifications = "notifications";
   static const privacyPolicies = "privacy-policies";
   static const termsOfServices = "terms-and-conditions";

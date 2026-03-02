@@ -181,7 +181,7 @@ class AppRoutes {
     GetPage(name: chefProfile, page: () => ChefProfileScreen()),
     GetPage(name: chefPublicProfile, page: () => ChefPublicProfile()),
     GetPage(name: chefEditProfile, page: () => ChefEditProfile()),
-    GetPage(name: availability, page: () => AvailabilityScreen()),
+    GetPage(name: availability, page: () => AvailabiityScreen ()),
     GetPage(name: menu, page: () => MenuScreen()),
     GetPage(name: addMenu, page: () => AddMenuScreen()),
     GetPage(name: editMenu, page: () => EditMenu()),

@@ -67,7 +67,7 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                             await c.fetchCategories();
                             await Get.to(() => const CafeAddMenuItemScreen());
                             c.resetForm();
-                            c.fetchMenus();
+                            // ✅ fetchMenus() lagbe na — submitMenuItem e direct UI update hoy
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
@@ -276,8 +276,7 @@ class _ApiMenuCard extends StatelessWidget {
                           }
                           await Get.to(() => const CafeAddMenuItemScreen());
                           c.resetForm();
-                          await Future.delayed(const Duration(milliseconds: 500));
-                          await c.fetchMenus();
+                          // ✅ fetchMenus() call nai — updateMenuItem e direct UI update hoy
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
