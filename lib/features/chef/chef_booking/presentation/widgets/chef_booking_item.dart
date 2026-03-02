@@ -15,19 +15,25 @@ import 'decline_pop_up.dart';
 import 'upcoming_pop_up.dart';
 
 Widget chefBookingItem({required Map order}) {
+
+  print("=============================");
+  print("FULL ORDER: $order");
+  print("=============================");
   final controller = Get.find<ChefBookingController>();
 
   String orderId = order['order_id'] ?? "";
   String userName = order['user']?['name'] ?? "";
-  String userImage = order['user']?['image'] ?? "";
-  String status = order['status'] ?? "";
+  String userImageRaw = order['user']?['image'] ?? "";
+  String userImage = userImageRaw.startsWith('http')
+      ? userImageRaw
+      : "http://10.10.7.9:5014$userImageRaw";  String status = order['status'] ?? "";
   String address = order['formatted_address'] ?? "";
   String strTime = order['strTime'] ?? "";
   double totalPrice = (order['user_paid'] ?? 0).toDouble();
   double rating = (order['rating'] ?? 0).toDouble();
   String review = order['review'] ?? "";
   String deadline = order['deadline'] ?? "";
-  String cookingTime = order['cooking_time'] ?? ""; // ✅ cooking time
+  String cookingTime = order['duration'] ?? "";
 
   List staticItems = order['static_items'] ?? [];
   String itemsText = staticItems.map((item) {
@@ -43,7 +49,11 @@ Widget chefBookingItem({required Map order}) {
 
   return InkWell(
     onTap: () {
-      bookingDetailsPopup(Get.context!);
+      bookingDetailsPopup(
+        Get.context!,
+        order: order,
+        selectedTab: controller.selectedBookingHistory,
+      );
     },
     child: Container(
       padding: EdgeInsets.all(12.sp).copyWith(right: 0),
@@ -226,7 +236,6 @@ Widget chefBookingItem({required Map order}) {
               ),
             ),
           8.height,
-
 
           if (controller.selectedBookingHistory != "Completed")
             Container(
