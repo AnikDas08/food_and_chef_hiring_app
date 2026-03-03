@@ -17,7 +17,7 @@ import 'details_popup.dart';
 Widget bookingItem(BookingHistoryModel order) {
   return InkWell(
     onTap: () {
-      //bookingDetails(Get.context!, order);
+      bookingDetails(Get.context!);
     },
     child: Container(
       padding: EdgeInsets.all(12.sp).copyWith(right: 0),

@@ -39,6 +39,7 @@ class SignUpScreen extends StatelessWidget {
                     text: AppString.registerAccount,
                     fontSize: 24,
                     color: Color(0xff272727),
+                    maxLines: 2,
                     top: 10,
                   ),
 

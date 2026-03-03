@@ -70,16 +70,6 @@ class SignInController extends GetxController {
       await LocalStorage.setString(LocalStorageKeys.token, LocalStorage.token);
       await LocalStorage.setString(LocalStorageKeys.myRole, LocalStorage.myRole);
       await LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
-      //LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
-      //LocalStorage.setString(LocalStorageKeys.myImage, LocalStorage.myImage);
-      //LocalStorage.setString(LocalStorageKeys.myName, LocalStorage.myName);
-      //LocalStorage.setString(LocalStorageKeys.myEmail, LocalStorage.myEmail);
-
-      // if (LocalStorage.myRole == 'consultant') {
-      //   Get.offAllNamed(AppRoutes.doctorHome);
-      // } else {
-      //   Get.offAllNamed(AppRoutes.patientsHome);
-      // }
 
       emailController.clear();
       passwordController.clear();

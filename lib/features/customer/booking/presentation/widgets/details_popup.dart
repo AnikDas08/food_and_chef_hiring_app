@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
@@ -177,7 +178,7 @@ void bookingDetails(BuildContext context) {
                     color: Color(0xff272727),
                   ),
 
-                  CommonImage(imageSrc: AppImages.orderStatus, height: 88),
+                  _buildOrderStatusTimeline("Awaiting Confirmation"),
 
                   CommonText(
                     text:
@@ -337,5 +338,104 @@ void bookingDetails(BuildContext context) {
       );
     },
     constraints: BoxConstraints(maxHeight: Get.height - 100),
+  );
+}
+
+Widget _buildOrderStatusTimeline(String currentStatus) {
+  // Define the order of statuses with SVG paths from your AppIcons
+  final List<Map<String, dynamic>> steps = [
+    {'title': 'Booking\nOrdered', 'icon': "assets/icons/booking_order.svg", 'status': 'Pending'},
+    {'title': 'Chef\nConfirmed', 'icon': "assets/icons/chef_confirmed.svg", 'status': 'Awaiting Confirmation'},
+    {'title': 'Groceries\nOrdered', 'icon': "assets/icons/groceries_ordered.svg", 'status': 'Groceries'},
+    {'title': 'Booking\nComplete', 'icon': "assets/icons/booking_complete.svg", 'status': 'Complete'},
+  ];
+
+  // Logic to determine progress index based on the status string
+  int currentStepIndex = 1;
+  if (currentStatus == "Pending") currentStepIndex = 0;
+  else if (currentStatus == "Awaiting Confirmation") currentStepIndex = 1;
+  else if (currentStatus == "Groceries") currentStepIndex = 2;
+  else if (currentStatus == "Complete") currentStepIndex = 3;
+
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: List.generate(steps.length, (index) {
+      bool isCompleted = index < currentStepIndex;
+      bool isActive = index == currentStepIndex;
+
+      // Color logic for the theme
+      Color mainColor = isCompleted
+          ? const Color(0xff4CAF50) // Green for finished
+          : isActive
+          ? const Color(0xffFD713F) // Orange for current
+          : const Color(0xffA7A7A7); // Grey for upcoming
+
+      Color bgColor = isCompleted
+          ? const Color(0xffE8F5E9)
+          : isActive
+          ? const Color(0xffFFF2EE)
+          : const Color(0xffF5F5F5);
+
+      return Expanded(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                // Connecting line BEFORE the circle
+                Expanded(
+                  child: index == 0
+                      ? const SizedBox()
+                      : Container(
+                      height: 2.h,
+                      color: isCompleted ? const Color(0xff4CAF50) : const Color(0xffD9D9D9)
+                  ),
+                ),
+
+                // The Step Circle using SvgPicture
+                Container(
+                  height: 48.r,
+                  width: 48.r,
+                  decoration: BoxDecoration(
+                    color: bgColor,
+                    shape: BoxShape.circle,
+                  ),
+                  alignment: Alignment.center,
+                  child: SvgPicture.asset(
+                    steps[index]['icon'],
+                    height: 20.sp,
+                    width: 20.sp,
+                    colorFilter: ColorFilter.mode(mainColor, BlendMode.srcIn),
+                    // Add this to debug
+                    placeholderBuilder: (BuildContext context) => Container(
+                        padding: const EdgeInsets.all(10),
+                        child: const CircularProgressIndicator(strokeWidth: 2)),
+                  ),
+                ),
+
+                // Connecting line AFTER the circle
+                Expanded(
+                  child: index == steps.length - 1
+                      ? const SizedBox()
+                      : Container(
+                      height: 2.h,
+                      color: index < currentStepIndex ? const Color(0xff4CAF50) : const Color(0xffD9D9D9)
+                  ),
+                ),
+              ],
+            ),
+            8.height,
+            CommonText(
+              text: steps[index]['title'],
+              fontSize: 10.sp,
+              fontWeight: isActive || isCompleted ? FontWeight.w600 : FontWeight.w400,
+              color: mainColor,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+            ),
+          ],
+        ),
+      );
+    }),
   );
 }

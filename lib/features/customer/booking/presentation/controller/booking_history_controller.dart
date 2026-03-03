@@ -96,4 +96,12 @@ class BookingHistoryController extends GetxController {
     isOrderDetailsPopup = !isOrderDetailsPopup;
     update();
   }
+
+  int getStatusIndex(String status) {
+    if (status == "Pending") return 0;
+    if (status == "Awaiting Confirmation") return 1;
+    if (status == "Groceries") return 2;
+    if (status == "Complete") return 3;
+    return 0;
+  }
 }
