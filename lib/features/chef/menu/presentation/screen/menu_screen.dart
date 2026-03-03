@@ -232,7 +232,6 @@ class MenuScreen extends StatelessWidget {
 class _MenuCard extends StatelessWidget {
   final MenuItemModel item;
   const _MenuCard({required this.item});
-
   @override
   Widget build(BuildContext context) {
     final c = CafeAddMenuItemController.instance;
