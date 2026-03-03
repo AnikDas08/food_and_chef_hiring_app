@@ -19,9 +19,6 @@ void bookingDetailsPopup(
       required String selectedTab,
     }) {
 
-  print("POPUP ORDER: $order");
-  print("POPUP selectedTab: $selectedTab");
-
   String userName = order['user']?['name'] ?? "Unknown";
   String userImageRaw = order['user']?['image'] ?? "";
   String userImage = userImageRaw.startsWith('http')
@@ -49,7 +46,6 @@ void bookingDetailsPopup(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ✅ User info
               Container(
                 padding: EdgeInsets.all(12.sp),
                 decoration: BoxDecoration(
@@ -91,7 +87,7 @@ void bookingDetailsPopup(
 
               34.height,
 
-              // ✅ Address
+
               Row(
                 children: [
                   Container(
@@ -178,7 +174,7 @@ void bookingDetailsPopup(
                 bottom: 20,
               ),
 
-              // ✅ Items
+
               if (staticItems.isEmpty)
                 CommonText(
                   text: "No items found",
@@ -259,8 +255,7 @@ void bookingDetailsPopup(
                         buttonHeight: 48,
                         buttonRadius: 16,
                         onTap: () {
-                          confirmBookingPopUp();
-                        },
+                          confirmBookingPopUp(orderMongoId: order['_id']?.toString() ?? "");                        },
                       ),
                     ),
                     Container(

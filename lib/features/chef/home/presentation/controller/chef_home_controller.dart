@@ -70,8 +70,10 @@ class ChefHomeController extends GetxController {
     );
   }
 
-  Future<ApiResponseModel> cancelBooking(String orderId, String reason) async {
-    final url = '${ApiEndPoint.changeOrderStatus}$orderId';
+
+  Future<ApiResponseModel> cancelBooking(String orderMongoId, String reason) async {
+
+    final url = '${ApiEndPoint.changeOrderStatus}$orderMongoId';
 
     return await ApiService.patch(
       url,
@@ -81,7 +83,6 @@ class ChefHomeController extends GetxController {
       },
     );
   }
-
 
 
   Future<void> fetchWalletBalance() async {
