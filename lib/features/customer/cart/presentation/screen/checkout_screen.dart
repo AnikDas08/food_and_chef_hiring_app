@@ -197,18 +197,48 @@ class CheckoutScreen extends StatelessWidget {
                 42.height,
 
                 // ── Promo Code ─────────────────────────────────────────
+                // Replace the promo code InkWell with this:
                 InkWell(
-                  onTap: () => Get.toNamed(AppRoutes.promoCode),
+                  onTap: () async {
+                    final result = await Get.toNamed(AppRoutes.promoCode);
+                    if (result != null && result is String) {
+                      controller.onPromoCodeApplied(result);
+                    }
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CommonText(
-                        text: "Add promo code",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xff272727),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CommonText(
+                            text: "Add promo code",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: const Color(0xff272727),
+                          ),
+                          // Show applied promo code below
+                          if (controller.promoCode != null)
+                            CommonText(
+                              text: controller.promoCode!,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xffFD713F),
+                              top: 2,
+                            ),
+                        ],
                       ),
-                      const Icon(
+                      // Show remove icon if promo applied, else arrow
+                      controller.promoCode != null
+                          ? InkWell(
+                        onTap: () => controller.onPromoCodeApplied(''),
+                        child: const Icon(
+                          Icons.close,
+                          size: 16,
+                          color: Color(0xffE53935),
+                        ),
+                      )
+                          : const Icon(
                         Icons.arrow_forward_ios_sharp,
                         size: 16,
                         color: Color(0xff777777),
@@ -265,7 +295,7 @@ class CheckoutScreen extends StatelessWidget {
                 ),
 
                 // ── Payment Method ─────────────────────────────────────
-                CommonText(
+                /*CommonText(
                   text: AppString.paymentMethod,
                   bottom: 8,
                   fontSize: 16,
@@ -305,7 +335,7 @@ class CheckoutScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
+                ),*/
 
                 // ── Terms ──────────────────────────────────────────────
                 Row(
@@ -342,9 +372,13 @@ class CheckoutScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
         child: SafeArea(
-          child: CommonButton(
-            titleText: AppString.checkoutNow,
-            onTap: confirmCheckingPopup,
+          child: GetBuilder<CartController>(
+            builder: (controller) => CommonButton(
+              titleText: controller.isCheckingOut
+                  ? "Placing Order..."
+                  : AppString.checkoutNow,
+              onTap: controller.isCheckingOut ? () {} : controller.placeOrder,
+            ),
           ),
         ),
       ),

@@ -44,9 +44,9 @@ class PromoCodeScreen extends StatelessWidget {
                   if (value == null || value.isEmpty) {
                     return 'Promo code is required';
                   }
-                  if (value.length < 5) {
+                  /*if (value.length < 5) {
                     return 'The code is not valid';
-                  }
+                  }*/
                   return null;
                 },
               ),

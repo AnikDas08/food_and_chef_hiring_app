@@ -9,6 +9,7 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../config/route/app_routes.dart';
+import '../../../../common/notifications/presentation/controller/notifications_controller.dart';
 
 AppBar homeAppbar() {
   return AppBar(
@@ -59,25 +60,46 @@ AppBar homeAppbar() {
       ],
     ),
     actions: [
-      InkWell(
-        onTap: () => Get.toNamed(AppRoutes.notifications),
+      GetBuilder<NotificationsController>(
+        // Ensure the controller is initialized so the badge shows immediately
+        init: NotificationsController(),
+        builder: (controller) {
+          return InkWell(
+            onTap: () => Get.toNamed(AppRoutes.notifications),
+            child: Badge(
+              // Use the unreadCount from the controller
+              label: Text(
+                controller.unreadCount > 99 ? "99+" : "${controller.unreadCount}",
+                style: const TextStyle(color: Colors.white, fontSize: 10),
+              ),
+              // Only show badge if count is greater than 0
+              isLabelVisible: controller.unreadCount > 0,
+              backgroundColor: Colors.red,
+              child: Container(
+                padding: EdgeInsets.all(8.sp),
+                decoration: const BoxDecoration(
+                  color: Color(0xffF2F2F2),
+                  shape: BoxShape.circle,
+                ),
+                child: CommonImage(imageSrc: AppIcons.notification),
+              ),
+            ),
+          );
+        },
+      ),
+      12.width,
+      GestureDetector(
+        onTap: (){
+          Get.toNamed(AppRoutes.cart,arguments: "cart");
+        },
         child: Container(
           padding: EdgeInsets.all(8.sp),
           decoration: BoxDecoration(
             color: Color(0xffF2F2F2),
             shape: BoxShape.circle,
           ),
-          child: CommonImage(imageSrc: AppIcons.notification),
+          child: CommonImage(imageSrc: AppIcons.basket),
         ),
-      ),
-      12.width,
-      Container(
-        padding: EdgeInsets.all(8.sp),
-        decoration: BoxDecoration(
-          color: Color(0xffF2F2F2),
-          shape: BoxShape.circle,
-        ),
-        child: CommonImage(imageSrc: AppIcons.basket),
       ),
       12.width,
     ],

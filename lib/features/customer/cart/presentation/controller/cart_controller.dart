@@ -6,6 +6,7 @@ import '../../../../../utils/app_utils.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../address/data/address_model.dart';
 import '../../data/cart_model.dart';
+import '../screen/stripe_webview_screen.dart';
 
 class CartController extends GetxController {
   static CartController get instance => Get.find<CartController>();
@@ -31,11 +32,137 @@ class CartController extends GetxController {
     "02:00 PM", "04:00 PM", "06:00 PM",
   ];
 
+  @override
+  void onInit(){
+    super.onInit();
+    if(Get.arguments!=null){
+      fetchCardData();
+    }
+  }
+
+  String? promoCode;
+
+  void onPromoCodeApplied(String code) {
+    promoCode = code.trim().isEmpty ? null : code.trim();
+    update();
+  }
+
   AddressModel? selectedAddress;
 
   void onAddressSelected(AddressModel address) {
     selectedAddress = address;
     update();
+  }
+
+  String? selectedTaxId;
+
+  void onTaxSelected(String? taxId) {
+    selectedTaxId = taxId;
+    update();
+  }
+
+  bool isCheckingOut = false;
+
+  Future<void> placeOrder() async {
+    // ── Validations ──────────────────────────────────────────────────────────
+    if (selectedAddress == null) {
+      Utils.errorSnackBar('Error', 'Please select a delivery address');
+      return;
+    }
+    if (dateController.text.trim().isEmpty) {
+      Utils.errorSnackBar('Error', 'Please select a booking date and time');
+      return;
+    }
+    if (chefGroups.isEmpty) {
+      Utils.errorSnackBar('Error', 'Your cart is empty');
+      return;
+    }
+
+    isCheckingOut = true;
+    update();
+
+    try {
+      // ── Build date string from selectedDate + selectedTime ───────────────
+      // selectedDate is DateTime, selectedTime is e.g. "10:00 AM"
+      final DateTime bookingDate = _buildBookingDateTime();
+
+      // ── Build body ───────────────────────────────────────────────────────
+      final Map<String, dynamic> body = {
+        "chef": chefGroups.first.chef?.id ?? '',
+        "address_id": selectedAddress!.id,
+        "date": bookingDate.toUtc().toIso8601String(),
+      };
+
+      if (promoCode != null && promoCode!.isNotEmpty) {
+        body["promo_code"] = promoCode;
+      }
+
+      if (selectedTaxId != null && selectedTaxId!.isNotEmpty) {
+        body["tax_id"] = selectedTaxId;
+      }
+
+      final response = await ApiService.post("order", body: body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Clear cart state after successful order
+        String? checkoutUrl;
+        checkoutUrl=response.data["data"];
+        cartResponse = null;
+        selectedAddress = null;
+        promoCode = null;
+        selectedTaxId = null;
+        dateController.clear();
+        selectedTime = '';
+        update();
+
+        if(checkoutUrl!=null){
+         await Get.to(
+            StripeWebViewScreen(checkoutUrl: checkoutUrl),
+          );
+        }
+        else{
+          Utils.errorSnackBar(
+              'Error', "Failed to provide payment url");
+        }
+
+        //Get.offAllNamed(AppRoutes.orderSuccess); // or your success route
+        //Utils.successSnackBar('Success', 'Order placed successfully');
+      } else {
+        Utils.errorSnackBar(
+            'Error', response.data['message'] ?? 'Failed to place order');
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+    } finally {
+      isCheckingOut = false;
+      update();
+    }
+  }
+
+  DateTime _buildBookingDateTime() {
+    if (selectedTime.isEmpty) return selectedDate;
+
+    try {
+      // Parse "10:00 AM" / "02:00 PM" format
+      final parts = selectedTime.split(' ');
+      final timeParts = parts[0].split(':');
+      int hour = int.parse(timeParts[0]);
+      final int minute = int.parse(timeParts[1]);
+      final String period = parts[1].toUpperCase();
+
+      if (period == 'PM' && hour != 12) hour += 12;
+      if (period == 'AM' && hour == 12) hour = 0;
+
+      return DateTime(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+        hour,
+        minute,
+      );
+    } catch (_) {
+      return selectedDate;
+    }
   }
 
   // ── POST → navigate ─────────────────────────────────────────────────────────
@@ -82,6 +209,25 @@ class CartController extends GetxController {
 
     try {
       final response = await ApiService.get("cart?chefId=$chefId");
+      if (response.statusCode == 200) {
+        cartResponse = CartResponseModel.fromJson(response.data);
+      } else {
+        Utils.errorSnackBar('Error', 'Failed to fetch cart');
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+    } finally {
+      isLoadingCart = false;
+      update();
+    }
+  }
+
+  Future<void> fetchCardData() async {
+    isLoadingCart = true;
+    update();
+
+    try {
+      final response = await ApiService.get("cart");
       if (response.statusCode == 200) {
         cartResponse = CartResponseModel.fromJson(response.data);
       } else {

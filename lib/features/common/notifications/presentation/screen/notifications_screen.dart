@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/utils/constants/app_string.dart';
 import '../../../../../component/bottom_nav_bar/common_bottom_bar.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/text/common_text.dart';
@@ -15,54 +14,53 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Ensure controller is initialized
+    final controller = Get.put(NotificationsController());
+
     return Scaffold(
-      /// App Bar Section starts here
       appBar: AppBar(
         centerTitle: true,
-        title: CommonText(
-          text: AppString.notifications,
+        title: const CommonText(
+          text: "Notifications",
           fontWeight: FontWeight.w500,
           fontSize: 14,
           color: Color(0xff272727),
         ),
       ),
-
-      /// Body Section starts here
       body: GetBuilder<NotificationsController>(
         builder: (controller) {
-          return controller.isLoading
-              /// Loading bar here
-              ? const CommonLoader()
-              : controller.notifications.isEmpty
-              ///  data is Empty then show default Data
-              ? const NoNotification()
-              /// show all Notifications here
-              : ListView.builder(
-                controller: controller.scrollController,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 20.sp,
-                  vertical: 10.sp,
-                ),
-                itemCount:
-                    controller.isLoadingMore
-                        ? controller.notifications.length + 1
-                        : controller.notifications.length,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  ///  Notification More Data Loading Bar
-                  if (index > controller.notifications.length) {
-                    return CommonLoader(size: 40, strokeWidth: 2);
-                  }
-                  NotificationModel item = controller.notifications[index];
+          if (controller.isLoading) {
+            return const Center(child: CommonLoader());
+          }
 
-                  ///  Notification card item
-                  return NotificationItem(item: item);
-                },
-              );
+          if (controller.notifications.isEmpty) {
+            return const NoNotification();
+          }
+
+          return RefreshIndicator(
+            onRefresh: () => controller.getNotificationsRepo(),
+            child: ListView.builder(
+              controller: controller.scrollController,
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+              // Add 1 to count if loading more to show the bottom loader
+              itemCount: controller.notifications.length + (controller.isLoadingMore ? 1 : 0),
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                // Show loader at the very bottom
+                if (index == controller.notifications.length) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: CommonLoader(size: 30),
+                  );
+                }
+
+                NotificationModel item = controller.notifications[index];
+                return NotificationItem(item: item);
+              },
+            ),
+          );
         },
       ),
-
-      /// Bottom Navigation Bar Section starts here
       bottomNavigationBar: const CommonBottomNavBar(currentIndex: 1),
     );
   }

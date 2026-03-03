@@ -1,37 +1,61 @@
 class NotificationModel {
-  final String id;
-  final String message;
-  final String linkId;
-  final String type;
-  final String role;
-  final String receiver;
-  final int v;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  String? id;
+  String? title;
+  List<String>? receiver;
+  String? message;
+  String? filePath;
+  bool? isRead;
+  String? referenceId;
+  List<String>? readers;
+  String? createdAt;
+  String? updatedAt;
 
   NotificationModel({
-    required this.id,
-    required this.message,
-    required this.linkId,
-    required this.type,
-    required this.role,
-    required this.receiver,
-    required this.v,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.title,
+    this.receiver,
+    this.message,
+    this.filePath,
+    this.isRead,
+    this.referenceId,
+    this.readers,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
     return NotificationModel(
-      id: json['_id'] ?? "",
-      message: json['message'] ?? '',
-      linkId: json['linkId'] ?? '',
-      type: json['type'] ?? '',
-      role: json['role'] ?? '',
-      receiver: json['receiver'] ?? '',
-      v: json['__v'] ?? 0,
-      createdAt: DateTime.tryParse(json['createdAt']) ?? DateTime.now(),
-      updatedAt: DateTime.tryParse(json['updatedAt']) ?? DateTime.now(),
+      id: json['_id'],
+      title: json['title'],
+      // Mapping the lists safely
+      receiver: json['receiver'] != null
+          ? List<String>.from(json['receiver'])
+          : [],
+      message: json['message'],
+      filePath: json['filePath'],
+      isRead: json['isRead'],
+      referenceId: json['referenceId'],
+      readers: json['readers'] != null
+          ? List<String>.from(json['readers'])
+          : [],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
     );
+  }
+
+  // Optional: Add a method to convert model back to JSON if needed for POST/PATCH
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'title': title,
+      'receiver': receiver,
+      'message': message,
+      'filePath': filePath,
+      'isRead': isRead,
+      'referenceId': referenceId,
+      'readers': readers,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+    };
   }
 }

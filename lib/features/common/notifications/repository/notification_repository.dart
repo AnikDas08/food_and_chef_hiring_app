@@ -1,24 +1,19 @@
-
-import '../../../../config/api/api_end_point.dart';
 import '../../../../services/api/api_service.dart';
 import '../data/model/notification_model.dart';
 
 Future<List<NotificationModel>> notificationRepository(int page) async {
-  var response = await ApiService.get(
-    "${ApiEndPoint.notifications}?page=$page",
-  );
+  try {
+    // Adjusted endpoint to include pagination params
+    final response = await ApiService.get("notification?page=$page&limit=10");
 
-  if (response.statusCode == 200) {
-    var notificationList = response.data['data'] ?? [];
-
-    List<NotificationModel> list = [];
-
-    for (var notification in notificationList) {
-      list.add(NotificationModel.fromJson(notification));
+    if (response.statusCode == 200) {
+      // Your JSON structure is: data { unreadCount: X, data: [ ... ] }
+      final List rawData = response.data['data']['data'];
+      return rawData.map((e) => NotificationModel.fromJson(e)).toList();
     }
-
-    return list;
-  } else {
+    return [];
+  } catch (e) {
+    print("Repository Error: $e");
     return [];
   }
 }
