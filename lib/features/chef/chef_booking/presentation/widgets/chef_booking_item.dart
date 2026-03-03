@@ -8,6 +8,7 @@ import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../utils/constants/app_icons.dart';
+import '../../../home/presentation/widgets/request_item.dart';
 import '../controller/chef_booking_controller.dart';
 import 'booking_details_popup.dart';
 import 'confirmation_booking_pop_up.dart';
@@ -16,9 +17,7 @@ import 'upcoming_pop_up.dart';
 
 Widget chefBookingItem({required Map order}) {
 
-  print("=============================");
-  print("FULL ORDER: $order");
-  print("=============================");
+
   final controller = Get.find<ChefBookingController>();
 
   String orderId = order['order_id'] ?? "";
@@ -95,6 +94,8 @@ Widget chefBookingItem({required Map order}) {
                 ),
               ),
               _statusBadge(controller.selectedBookingHistory),
+
+
               PopupMenuButton<int>(
                 padding: EdgeInsets.zero,
                 menuPadding: EdgeInsets.zero,
@@ -103,14 +104,36 @@ Widget chefBookingItem({required Map order}) {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                onSelected: (value) {
+                onSelected: (value) async {
                   if (value == 1) {
-                    upcomingPopUp();
-                  } else if (value == 2) {
-                    declineBookingPopUp(
-                      orderId: order['_id'] ?? "",
+                    Get.dialog(
+                      const Center(child: CircularProgressIndicator()),
+                      barrierDismissible: false,
+                    );
+
+                    try {
+                      final c = Get.find<ChefBookingController>();
+                      final orderData = await c.fetchSingleOrder(order['_id'] ?? "");
+
+                      Get.back();
+
+                      if (orderData != null) {
+                        upcomingPopUp(orderData: orderData);
+                      } else {
+                        Get.snackbar("Error", "Could not load order details");
+                      }
+                    } catch (e) {
+                      Get.back();
+                      Get.snackbar("Error", "Something went wrong");
+                    }
+                  }
+
+                  if (value == 2) {
+                    cancelBookingPopUp(
+                      orderId: order['_id']?.toString() ?? "",
                       onSuccess: () {
                         controller.fetchOrders();
+                        Get.snackbar("Success", "Booking cancelled");
                       },
                     );
                   }
@@ -341,8 +364,7 @@ Widget chefBookingItem({required Map order}) {
                 ),
                 InkWell(
                   onTap: () {
-                    confirmBookingPopUp();
-                  },
+                    confirmBookingPopUp(orderMongoId: order['_id']?.toString() ?? "");                  },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
                     margin: EdgeInsets.only(left: 8.sp),

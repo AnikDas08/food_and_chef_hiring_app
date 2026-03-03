@@ -509,37 +509,39 @@ void cancelBookingPopUp({
               height: 48,
               child: ElevatedButton(
                 onPressed: () async {
-                  if (selectedReason.value.isEmpty) {
-                    Get.snackbar("Warning", "Please select a reason");
-                    return;
-                  }
+                    if (selectedReason.value.isEmpty) {
+                      Get.snackbar("Warning", "Please select a reason");
+                      return;
+                    }
 
-                  Get.back();
+                    Get.back();
 
-                  Get.dialog(
-                    const Center(child: CircularProgressIndicator()),
-                    barrierDismissible: false,
-                  );
-
-                  try {
-                    final homeC = Get.find<ChefHomeController>();
-                    final res = await homeC.cancelBooking(
-                      orderId,
-                      selectedReason.value,
+                    Get.dialog(
+                      const Center(child: CircularProgressIndicator()),
+                      barrierDismissible: false,
                     );
 
-                    Get.back();
+                    try {
+                      final homeC = Get.find<ChefHomeController>();
 
-                    if (res.statusCode == 200 && res.data?['success'] == true) {
-                      onSuccess();
-                    } else {
-                      Get.snackbar("Error", res.data?['message']?.toString() ?? "Something went wrong");
+                      final res = await homeC.cancelBooking(orderId, selectedReason.value);
+
+                      Get.back();
+
+                      if (res.statusCode == 200 && res.data?['success'] == true) {
+                        onSuccess();
+                        Get.snackbar("Success", "Booking cancelled successfully");
+                      } else {
+                        Get.snackbar(
+                          "Error",
+                          res.data?['message']?.toString() ?? "Something went wrong",
+                        );
+                      }
+                    } catch (e) {
+                      Get.back();
+                      Get.snackbar("Error", "Something went wrong");
                     }
-                  } catch (e) {
-                    Get.back();
-                    Get.snackbar("Error", "Something went wrong");
-                  }
-                },
+                  },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff272727),
                   shape: RoundedRectangleBorder(

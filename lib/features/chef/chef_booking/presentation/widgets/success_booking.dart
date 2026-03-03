@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
@@ -60,7 +61,10 @@ successBookingPopUp() {
                         titleWeight: FontWeight.w600,
                         titleColor: Color(0xffFFFFFF),
                         onTap: () async {
-                          await AnimationPopUpState.closeDialog();
+
+                          Get.offNamed(AppRoutes.chefBooking);
+
+                          // await AnimationPopUpState.closeDialog();
                         },
                       ),
 

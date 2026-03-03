@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../../../../../../../services/api/api_service.dart';
 import '../../../../../../../config/api/api_end_point.dart';
@@ -51,6 +52,24 @@ class ChefBookingController extends GetxController {
     selectDietary.add(value);
     update();
   }
+
+  Future<Map<String, dynamic>?> fetchSingleOrder(String id) async {
+    try {
+      final response = await ApiService.get(
+        "${ApiEndPoint.order}/$id",
+      );
+
+      if (response.statusCode == 200 &&
+          response.data['success'] == true) {
+        return response.data['data'];
+      }
+    } catch (e) {
+      debugPrint("Single order error: $e");
+    }
+    return null;
+  }
+
+
 
   // ✅ TableCalendar onDaySelected এ call হয়
   selectDate(DateTime date) {

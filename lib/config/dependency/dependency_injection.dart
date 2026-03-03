@@ -37,6 +37,7 @@ import '../../features/customer/profile/presentation/controller/profile_controll
 class DependencyInjection extends Bindings {
   @override
   void dependencies() {
+
     Get.lazyPut(() => SignUpChefController(), fenix: true);
     Get.lazyPut(() => SignUpController(), fenix: true);
     Get.lazyPut(() => SignInController(), fenix: true);
