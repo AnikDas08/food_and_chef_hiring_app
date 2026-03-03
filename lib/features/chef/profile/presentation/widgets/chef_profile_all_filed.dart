@@ -64,14 +64,9 @@ class ChefProfileAllFiled extends StatelessWidget {
         CommonTextField(
           controller: controller.experienceController,
           validator: OtherHelper.validator,
-          hintText: 'e.g. 5 years',
+          hintText: 'Enter your years of experience',
           keyboardType: TextInputType.number,
           borderRadius: 12,
-          suffixIcon: const Padding(
-            padding: EdgeInsets.all(14),
-            child: Icon(Icons.keyboard_arrow_down_rounded,
-                color: Color(0xff272727), size: 22),
-          ),
         ),
 
         /// Cuisines
@@ -134,18 +129,20 @@ class ChefProfileAllFiled extends StatelessWidget {
           ),
         ),
 
-        Obx(
-              () => _DiscountCard(
-            title: 'Offer discounted rate during specific hours on weekdays',
-            isEnabled: controller.isNotification.value,
-            onToggle: () => controller.notification(),
-            showTimePicker: true,
-            fromController: controller.fromController,
-            toController: controller.toController,
-            rateController: controller.weekdayRateController,
-          ),
-        ),
+        // Obx(
+        //       () => _DiscountCard(
+        //     title: 'Offer discounted rate during specific hours on weekdays',
+        //     isEnabled: controller.isNotification.value,
+        //     onToggle: () => controller.notification(),
+        //     showTimePicker: true,
+        //     fromController: controller.fromController,
+        //     toController: controller.toController,
+        //     rateController: controller.weekdayRateController,
+        //   ),
+        // ),
         /// Weekend Rate
+        ///
+        ///
         _DiscountCard(
           title: 'Ask for higher rate on weekends',
           isEnabled: controller.isWeekend,

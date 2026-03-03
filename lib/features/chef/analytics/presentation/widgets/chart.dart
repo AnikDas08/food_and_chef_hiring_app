@@ -2,7 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../data/Booking_Time_Model.dart';
-import '../../data/Earning_Model.dart';
 
 class _BarChart extends StatelessWidget {
   final List<MappedTime> chartData;
@@ -45,10 +44,7 @@ class _BarChart extends StatelessWidget {
       tooltipPadding: EdgeInsets.zero,
       tooltipMargin: 8,
       getTooltipItem: (group, groupIndex, rod, rodIndex) {
-        return BarTooltipItem(
-          "",
-          TextStyle(color: Colors.transparent),
-        );
+        return BarTooltipItem("", TextStyle(color: Colors.transparent));
       },
     ),
   );
@@ -56,18 +52,13 @@ class _BarChart extends StatelessWidget {
   Widget getTitles(double value, TitleMeta meta) {
     int index = value.toInt();
     if (index < 0 || index >= chartData.length) return const SizedBox();
-
     bool isMax = index == maxIndex;
-
     TextStyle style = TextStyle(
       color: isMax ? Color(0xff272727) : Color(0xff777777),
       fontWeight: FontWeight.w500,
       fontSize: 12,
     );
-
-    // প্রতি দুই বার পর পর label দেখাবে
     if (index % 2 != 0) return const SizedBox();
-
     return SideTitleWidget(
       meta: meta,
       space: 16,
@@ -123,20 +114,12 @@ class _BarChart extends StatelessWidget {
   );
 }
 
-class BarChartSample3 extends StatefulWidget {
+class BarChartSample3 extends StatelessWidget {
   final List<MappedTime> chartData;
   const BarChartSample3({super.key, required this.chartData});
 
   @override
-  State<StatefulWidget> createState() => BarChartSample3State();
-}
-
-class BarChartSample3State extends State<BarChartSample3> {
-  @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.6,
-      child: _BarChart(chartData: widget.chartData),
-    );
+    return _BarChart(chartData: chartData);
   }
 }

@@ -93,79 +93,85 @@ Widget chefBookingItem({required Map order}) {
                   ],
                 ),
               ),
+
               _statusBadge(controller.selectedBookingHistory),
 
+              if (controller.selectedBookingHistory != "Completed")
+                PopupMenuButton<int>(
+                  padding: EdgeInsets.zero,
+                  menuPadding: EdgeInsets.zero,
+                  color: Colors.white,
+                  icon: const Icon(Icons.more_vert),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  onSelected: (value) async {
+                    if (value == 1) {
+                      Get.dialog(
+                        const Center(child: CircularProgressIndicator()),
+                        barrierDismissible: false,
+                      );
 
-              PopupMenuButton<int>(
-                padding: EdgeInsets.zero,
-                menuPadding: EdgeInsets.zero,
-                color: Colors.white,
-                icon: const Icon(Icons.more_vert),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                onSelected: (value) async {
-                  if (value == 1) {
-                    Get.dialog(
-                      const Center(child: CircularProgressIndicator()),
-                      barrierDismissible: false,
-                    );
+                      try {
+                        final c = Get.find<ChefBookingController>();
+                        final orderData = await c.fetchSingleOrder(order['_id'] ?? "");
 
-                    try {
-                      final c = Get.find<ChefBookingController>();
-                      final orderData = await c.fetchSingleOrder(order['_id'] ?? "");
+                        if (Get.isDialogOpen == true) Get.back();
 
-                      Get.back();
-
-                      if (orderData != null) {
-                        upcomingPopUp(orderData: orderData);
-                      } else {
-                        Get.snackbar("Error", "Could not load order details");
+                        if (orderData != null) {
+                          upcomingPopUp(orderData: orderData);
+                        } else {
+                          Get.snackbar("Error", "Could not load order details");
+                        }
+                      } catch (e) {
+                        if (Get.isDialogOpen == true) Get.back();
+                        Get.snackbar("Error", "Something went wrong");
                       }
-                    } catch (e) {
-                      Get.back();
-                      Get.snackbar("Error", "Something went wrong");
                     }
-                  }
 
-                  if (value == 2) {
-                    cancelBookingPopUp(
-                      orderId: order['_id']?.toString() ?? "",
-                      onSuccess: () {
-                        controller.fetchOrders();
-                        Get.snackbar("Success", "Booking cancelled");
-                      },
-                    );
-                  }
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: 1,
-                    child: Row(
-                      children: const [
-                        Icon(Icons.edit, size: 20, color: Colors.black),
-                        SizedBox(width: 10),
-                        CommonText(text: "Request a Change", fontSize: 14),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 2,
-                    child: Row(
-                      children: const [
-                        Icon(Icons.close, size: 20, color: Colors.red),
-                        SizedBox(width: 10),
-                        CommonText(
-                          text: "Cancel Booking",
-                          fontSize: 14,
-                          color: Colors.red,
-                          fontWeight: FontWeight.w500,
+                    if (value == 2) {
+                      cancelBookingPopUp(
+                        orderId: order['_id']?.toString() ?? "",
+                        onSuccess: () {
+                          controller.fetchOrders();
+                          Get.snackbar("Success", "Booking cancelled");
+                        },
+                      );
+                    }
+                  },
+                  itemBuilder: (context) {
+                    final isUpcoming = controller.selectedBookingHistory == "Upcoming";
+
+                    return [
+                      if (isUpcoming)
+                        const PopupMenuItem(
+                          value: 1,
+                          child: Row(
+                            children: [
+                              Icon(Icons.edit, size: 20, color: Colors.black),
+                              SizedBox(width: 10),
+                              CommonText(text: "Request a Change", fontSize: 14),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                      const PopupMenuItem(
+                        value: 2,
+                        child: Row(
+                          children: [
+                            Icon(Icons.close, size: 20, color: Colors.red),
+                            SizedBox(width: 10),
+                            CommonText(
+                              text: "Cancel Booking",
+                              fontSize: 14,
+                              color: Colors.red,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ];
+                  },
+                ),
             ],
           ),
 
@@ -238,7 +244,7 @@ Widget chefBookingItem({required Map order}) {
             Padding(
               padding: EdgeInsets.only(top: 0, bottom: 0),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Icon(
                     CupertinoIcons.time,
@@ -246,14 +252,12 @@ Widget chefBookingItem({required Map order}) {
                     color: Color(0xff777777),
                   ),
                   SizedBox(width: 4),
-                  Expanded(
-                    child: CommonText(
-                      text: "Estimated cooking time: $cookingTime",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff272727),
-                      maxLines: 1,
-                    ),
+                  CommonText(
+                    text: "Estimated cooking time: $cookingTime",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xff272727),
+                    maxLines: 2,
                   ),
                 ],
               ),

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../data/booking_model.dart';
+import '../data.dart';
 
 class BookingHistoryController extends GetxController {
   bool isOrderDetailsPopup = false;
@@ -14,6 +15,27 @@ class BookingHistoryController extends GetxController {
     "Awaiting Confirmation",
     "Confirmed",
   ];
+
+
+  var bookingDetail = Rxn<BookingDetailData>();
+  var detailLoading = false.obs;
+
+  Future<void> fetchBookingDetail(String orderId) async {
+    try {
+      detailLoading(true);
+      final response = await ApiService.get('${ApiEndPoint.singleOrder}$orderId');
+      if (response.isSuccess) {
+        final model = BookingDetailModel.fromJson(response.data as Map<String, dynamic>);
+        if (model.success) {
+          bookingDetail.value = model.data;
+        }
+      }
+    } catch (e) {
+      print('ERROR: $e');
+    } finally {
+      detailLoading(false);
+    }
+  }
 
   String selectedBookingHistory = "All";
 

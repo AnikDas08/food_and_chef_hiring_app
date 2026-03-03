@@ -207,19 +207,19 @@ class MenuScreen extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 height: 54.h,
-                child: ElevatedButton(
-                  onPressed: () => Get.to(() => CafeCookingExpertiseScreen()),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1C1C1C),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14.r)),
-                    elevation: 0,
-                  ),
-                  child: Text("Finish & Create Account",
-                      style: TextStyle(
-                          fontSize: 15.sp, fontWeight: FontWeight.w600)),
-                ),
+                // child: ElevatedButton(
+                //   onPressed: () => Get.to(() => CafeCookingExpertiseScreen()),
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: const Color(0xFF1C1C1C),
+                //     foregroundColor: Colors.white,
+                //     shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.circular(14.r)),
+                //     elevation: 0,
+                //   ),
+                //   child: Text("Finish & Create Account",
+                //       style: TextStyle(
+                //           fontSize: 15.sp, fontWeight: FontWeight.w600)),
+                // ),
               ),
             ),
           ],
@@ -229,7 +229,6 @@ class MenuScreen extends StatelessWidget {
   }
 }
 
-// ── Menu Card Widget ──
 class _MenuCard extends StatelessWidget {
   final MenuItemModel item;
   const _MenuCard({required this.item});

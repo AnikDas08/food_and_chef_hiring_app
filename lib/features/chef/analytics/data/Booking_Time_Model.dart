@@ -51,7 +51,7 @@ class MappedTime {
 class AvgCountOrder {
   final double avgDuration;
   final double avgPrice;
-  final int avgMenus;
+  final double avgMenus;
   final int totalBooking;
 
   AvgCountOrder({
@@ -65,8 +65,8 @@ class AvgCountOrder {
     return AvgCountOrder(
       avgDuration: (json['avg_duration'] as num).toDouble(),
       avgPrice: (json['avg_price'] as num).toDouble(),
-      avgMenus: json['avg_menus'] ?? 0,
-      totalBooking: json['total_booking'] ?? 0,
+      avgMenus: (json['avg_menus'] as num).toDouble(),
+      totalBooking: (json['total_booking'] as num).toInt(),
     );
   }
 }
