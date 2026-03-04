@@ -18,7 +18,7 @@ import '../controller/chef_home_controller.dart';
 Widget requestItem(BuildContext context, RequestedBookingModel booking,
     {bool isRequested = false}) {
   return InkWell(
-    onTap: () => bookingDetails(context),
+    //onTap: () => bookingDetails(context),
     child: Container(
       padding: EdgeInsets.all(12.sp),
       margin: EdgeInsets.only(top: 16),

@@ -1,50 +1,33 @@
 // lib/features/booking_history/controller/booking_history_controller.dart
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../config/api/api_end_point.dart';
+import 'package:new_untitled/utils/app_utils.dart';
 import '../../../../../services/api/api_service.dart';
-import '../../data/booking_model.dart';
+import '../../data/booking_model.dart'; // For the list items
 import '../../data/data.dart';
 
 class BookingHistoryController extends GetxController {
-  bool isOrderDetailsPopup = false;
+  static BookingHistoryController get instance => Get.find();
+
+  // --- UI & Loading States ---
   bool isLoading = false;
-
-  List<String> bookingHistoryList = [
-    "All",
-    "Awaiting Confirmation",
-    "Confirmed",
-  ];
-
-
-  var bookingDetail = Rxn<BookingDetailData>();
-  var detailLoading = false.obs;
-
-  Future<void> fetchBookingDetail(String orderId) async {
-    try {
-      detailLoading(true);
-      final response = await ApiService.get('${ApiEndPoint.singleOrder}$orderId');
-      if (response.isSuccess) {
-        final model = BookingDetailModel.fromJson(response.data as Map<String, dynamic>);
-        if (model.success) {
-          bookingDetail.value = model.data;
-        }
-      }
-    } catch (e) {
-      print('ERROR: $e');
-    } finally {
-      detailLoading(false);
-    }
-  }
-
-  String selectedBookingHistory = "All";
-
-  List<BookingHistoryModel> orders = [];
+  bool isDetailLoading = false;
+  bool isPaginationLoading = false;
+  bool isOrderDetailsPopup = false;
   String errorMessage = '';
 
+  // --- Filter / Tab States ---
+  List<String> bookingHistoryList = ["All", "Awaiting Confirmation", "Confirmed"];
+  String selectedBookingHistory = "All";
+
+  // --- Data Storage ---
+  List<BookingHistoryModel> orders = [];
+  OrderData? selectedOrderDetail;
+
+  // --- Pagination ---
   int currentPage = 1;
   bool hasMore = true;
-  bool isPaginationLoading = false;
 
   @override
   void onInit() {
@@ -52,7 +35,7 @@ class BookingHistoryController extends GetxController {
     fetchOrders();
   }
 
-  /// Maps tab label to API status param
+  /// Maps tab selection to API status string
   String? get _statusParam {
     switch (selectedBookingHistory) {
       case "Awaiting Confirmation":
@@ -60,10 +43,11 @@ class BookingHistoryController extends GetxController {
       case "Confirmed":
         return "Confirm";
       default:
-        return null; // "All" — no status filter
+        return null;
     }
   }
 
+  /// 1. Fetch Main List (Booking History)
   Future<void> fetchOrders({bool isRefresh = false}) async {
     if (isRefresh) {
       currentPage = 1;
@@ -76,7 +60,7 @@ class BookingHistoryController extends GetxController {
     update();
 
     try {
-      String url = ApiEndPoint.baseUrl + "order?page=$currentPage&limit=10";
+      String url = "order?page=$currentPage&limit=10";
       if (_statusParam != null) {
         url += "&status=${Uri.encodeComponent(_statusParam!)}";
       }
@@ -84,16 +68,17 @@ class BookingHistoryController extends GetxController {
       final response = await ApiService.get(url);
 
       if (response.statusCode == 200 && response.data != null) {
+        // Assuming BookingHistoryResponse is your list wrapper model
         final result = BookingHistoryResponse.fromJson(response.data);
         orders.addAll(result.data);
         hasMore = currentPage < result.pagination.totalPage;
-        currentPage++;
+        if (hasMore) currentPage++;
       } else {
-        errorMessage =
-            response.data?['message'] ?? 'Something went wrong. Try again.';
+        errorMessage = response.data?['message'] ?? 'Failed to load data';
       }
     } catch (e) {
-      errorMessage = 'Failed to load bookings.';
+      errorMessage = 'Connection error. Please try again.';
+      debugPrint("List Fetch Error: $e");
     } finally {
       isLoading = false;
       isPaginationLoading = false;
@@ -101,8 +86,46 @@ class BookingHistoryController extends GetxController {
     }
   }
 
+  /// 2. Fetch Specific Order Details (For the Popup)
+  Future<void> fetchOrderDetails(String id) async {
+    isDetailLoading = true;
+    isOrderDetailsPopup = false; // Reset the "Order Details" expansion toggle
+    update();
+
+    try {
+      final response = await ApiService.get("order/$id");
+      if (response.statusCode == 200 && response.data != null) {
+        // Map using the detailed OrderResponse model
+        final result = OrderResponse.fromJson(response.data);
+        selectedOrderDetail = result.data;
+      }
+    } catch (e) {
+      Utils.errorSnackBar("Error", "Could not fetch details.");
+      debugPrint("Detail Fetch Error: $e");
+    } finally {
+      isDetailLoading = false;
+      update();
+    }
+  }
+
+  /// 3. Helper for History Timeline logic
+  /// This scans the 'history' array to find the current progress index.
+  int getStatusIndex(List<OrderHistory> history) {
+    if (history.isEmpty) return -1;
+
+    // We find the highest index that exists in the history array
+    int maxIndex = 0;
+    if (history.any((e) => e.type == "Booking Ordered")) maxIndex = 0;
+    if (history.any((e) => e.type == "Chef Confirmed")) maxIndex = 1;
+    if (history.any((e) => e.type == "Groceries Ordered")) maxIndex = 2;
+    if (history.any((e) => e.type == "Booking Completed")) maxIndex = 3;
+
+    return maxIndex;
+  }
+
+  /// 4. Action Handlers
   Future<void> loadMore() async {
-    if (!hasMore || isPaginationLoading) return;
+    if (!hasMore || isPaginationLoading || isLoading) return;
     isPaginationLoading = true;
     update();
     await fetchOrders();
@@ -114,16 +137,8 @@ class BookingHistoryController extends GetxController {
     await fetchOrders(isRefresh: true);
   }
 
-  onChangeOrderDetailsPopup() {
+  void onChangeOrderDetailsPopup() {
     isOrderDetailsPopup = !isOrderDetailsPopup;
     update();
-  }
-
-  int getStatusIndex(String status) {
-    if (status == "Pending") return 0;
-    if (status == "Awaiting Confirmation") return 1;
-    if (status == "Groceries") return 2;
-    if (status == "Complete") return 3;
-    return 0;
   }
 }

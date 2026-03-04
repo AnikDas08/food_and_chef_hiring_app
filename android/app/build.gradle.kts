@@ -61,3 +61,12 @@ dependencies {
     // For AGP 4.0 to 7.2
     // coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.9")
 }
+
+configurations.all {
+    resolutionStrategy {
+        // Forces the libraries to versions compatible with your current Gradle setup
+        force("androidx.browser:browser:1.8.0")
+        force("androidx.core:core-ktx:1.13.1")
+        force("androidx.core:core:1.13.1")
+    }
+}

@@ -1,60 +1,155 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../../../../services/api/api_service.dart';
 
 class GroceryController extends GetxController {
-  // Partner Selection
-  var selectedPartner = "Instacart".obs;
+  // Capture initial ID if coming from the Booking Details popup
+  final String? initialOrderId = Get.arguments?.toString();
 
-  // MULTI-SELECT: List of selected indexes
-  var selectedBookingIndexes = <int>[0].obs;
+  // Loading States
+  var isLoading = false.obs;             // For the initial order list
+  var isIngredientsLoading = false.obs;  // For the basket section
+  var isInstacartLoading = false.obs;    // For the API post call
 
-  // Grocery Items List
-  var basketItems = <Map<String, dynamic>>[
-    {'name': 'Eggs', 'price': 70.00, 'items': 1, 'isSelected': true},
-    {'name': 'Jasmine rice', 'price': 70.00, 'items': 1, 'isSelected': true},
-    {'name': 'Vegetable oil', 'price': 70.00, 'items': 1, 'isSelected': true},
-    {'name': 'White onion', 'price': 70.00, 'items': 1, 'isSelected': true},
-  ].obs;
+  // Data Observables
+  var availableOrders = <Map<String, dynamic>>[].obs;
+  var basketItems = <Map<String, dynamic>>[].obs;
+  var selectedOrderIds = <String>[].obs;
+  var selectedPartner = "".obs; // "Instacart" or "Self"
 
-  // Suggested Items List
-  var suggestedItems = <Map<String, dynamic>>[
-    {'name': 'Eggs', 'price': 70.00, 'items': 1, 'isSelected': false},
-    {'name': 'Jasmine rice', 'price': 70.00, 'items': 1, 'isSelected': false},
-  ].obs;
+  @override
+  void onInit() {
+    super.onInit();
+    initializeData();
+  }
 
-  // Booking Data
-  final List<Map<String, dynamic>> bookingList = [
-    {
-      "name": "Michael Alonso",
-      "recipe": "6 Recipe • 18 Items",
-      "userImg": "https://i.pravatar.cc/150?u=1",
-      "images": ["https://picsum.photos/200", "https://picsum.photos/201"],
-      "more": 4
-    },
-    {
-      "name": "Michael Alonso",
-      "recipe": "6 Recipe • 18 Items",
-      "userImg": "https://i.pravatar.cc/150?u=2",
-      "images": ["https://picsum.photos/202", "https://picsum.photos/203"],
-      "more": 4
-    },
-  ];
+  /// Initial setup logic
+  Future<void> initializeData() async {
+    isLoading.value = true;
 
-  // Logic to toggle multi-selection
-  void toggleBookingSelection(int index) {
-    if (selectedBookingIndexes.contains(index)) {
-      selectedBookingIndexes.remove(index);
-    } else {
-      selectedBookingIndexes.add(index);
+    // 1. Always fetch all orders to populate the selection list
+    await fetchAllOrders();
+
+    // 2. If we arrived with a specific ID, select it and fetch ingredients immediately
+    if (initialOrderId != null && initialOrderId!.isNotEmpty) {
+      selectedOrderIds.add(initialOrderId!);
+      await fetchIngredients();
+    }
+
+    isLoading.value = false;
+  }
+
+  /// Scenario: Fetch all orders and filter for "Confirm" or "Completed"
+  Future<void> fetchAllOrders() async {
+    try {
+      final response = await ApiService.get("order?limit=50");
+      if (response.statusCode == 200) {
+        List allData = response.data['data'] ?? [];
+
+        // Filter: Match statuses that allow grocery ordering
+        availableOrders.value = allData.where((order) {
+          final status = order['status']?.toString();
+          return status == "Confirm" || status == "Completed";
+        }).toList().cast<Map<String, dynamic>>();
+      }
+    } catch (e) {
+      debugPrint("Orders Fetch Error: $e");
     }
   }
 
+  /// Scenario: Fetch ingredients based on one or multiple selected Order IDs
+  Future<void> fetchIngredients() async {
+    if (selectedOrderIds.isEmpty) {
+      basketItems.clear();
+      return;
+    }
+
+    isIngredientsLoading.value = true;
+    try {
+      // Constructs query: cart/ingradients?orderId[]=ID1&orderId[]=ID2
+      String queryString = selectedOrderIds.map((id) => "orderId[]=$id").join("&");
+
+      final response = await ApiService.get("cart/ingradients?$queryString");
+
+      if (response.statusCode == 200) {
+        List rawIngs = response.data['data'] ?? [];
+        basketItems.value = rawIngs.map((e) => {
+          'id': e['_id'],
+          'name': e['name'],
+          'items': e['quantity'],
+          'unit': e['unit'],
+          'isSelected': true, // Default to selected for the basket
+        }).toList();
+      }
+    } catch (e) {
+      debugPrint("Ingredients API Error: $e");
+    } finally {
+      isIngredientsLoading.value = false;
+    }
+  }
+
+  /// Toggles the selection of a Booking card
+  void toggleOrderSelection(String id) {
+    if (selectedOrderIds.contains(id)) {
+      selectedOrderIds.remove(id);
+    } else {
+      selectedOrderIds.add(id);
+    }
+
+    // Every time selection changes, refresh the ingredients list
+    fetchIngredients();
+  }
+
+  /// Toggles individual items inside the grocery basket
   void toggleBasketItem(int index) {
     basketItems[index]['isSelected'] = !basketItems[index]['isSelected'];
     basketItems.refresh();
   }
 
-  void toggleSuggestItem(int index) {
-    suggestedItems[index]['isSelected'] = !suggestedItems[index]['isSelected'];
-    suggestedItems.refresh();
+  /// Scenario: Hit the Instacart Link generation API
+  Future<void> createInstacartLink() async {
+    // 1. Filter only items currently "checked" in the UI list
+    List selectedPayload = basketItems
+        .where((item) => item['isSelected'] == true)
+        .map((item) => {
+      "name": item['name'],
+      "quantity": item['items'].toString(),
+      "unit": item['unit'],
+      "_id": item['id'],
+    })
+        .toList();
+
+    if (selectedPayload.isEmpty) {
+      Get.snackbar("Basket Empty", "Please select at least one ingredient.");
+      selectedPartner.value = "";
+      return;
+    }
+
+    isInstacartLoading.value = true;
+    try {
+      final response = await ApiService.post("cart/instacart-link",
+          body: {
+        "items": selectedPayload,
+      });
+
+      if (response.statusCode == 200 && response.data['success']) {
+        String url = response.data['data']['products_link_url'];
+        await _launchBrowser(url);
+      }
+    } catch (e) {
+      debugPrint("Instacart Link Error: $e");
+      Get.snackbar("Error", "Failed to generate link. Try again.");
+    } finally {
+      isInstacartLoading.value = false;
+    }
+  }
+
+  /// Helper: Opens the URL in the phone's external browser
+  Future<void> _launchBrowser(String urlString) async {
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      Get.snackbar("Browser Error", "Could not open the link.");
+    }
   }
 }

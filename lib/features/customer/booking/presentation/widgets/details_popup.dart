@@ -1,336 +1,107 @@
+// lib/features/booking_history/widgets/details_popup.dart
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
+import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-
-import '../../../../../component/image/common_image.dart';
-import '../../../../../component/text/common_text.dart';
-import '../../../../../config/route/app_routes.dart';
-import '../../../../../utils/constants/app_icons.dart';
-import '../../../../../utils/constants/app_images.dart';
-import '../../../cart/presentation/widgets/order_summary.dart';
+import '../../../groceries/presentations/screens/groceries_screen.dart';
 import '../controller/booking_history_controller.dart';
-import 'request_change_popup.dart';
 
-String text =
-    "For making Chopped Burrito, you'll need 2 cups of cold, cooked jasmine rice (preferably day-old) and 2 tablespoons of vegetable oil for stir-frying. Use 3 large eggs, lightly beaten, along with a small onion finely chopped and 2 cloves of garlic minced. Add 1 cup of mixed vegetables such as peas, carrots, and corn, and 1/2 cup of finely diced cooked ham or shrimp for added protein if desired. Season with 3 tablespoons of soy sauce (preferably low sodium), 1 tablespoon of oyster sauce, and 1 teaspoon of sesame oil. Include 2 thinly sliced green onions (including the green parts), and adjust the flavor with salt and pepper to taste. For extra spice, add 1/2 teaspoon of white pepper, and enhance the aroma with 1 teaspoon of finely grated ginger. Optionally, you can include 1 tablespoon of fish sauce for added umami flavor. For garnishes, consider fresh chopped cilantro, lime wedges, and Sriracha or chili sauce for added heat.";
+void bookingDetails(BuildContext context, String orderId) {
+  // Trigger the specific API call for this order ID
+  Get.find<BookingHistoryController>().fetchOrderDetails(orderId);
 
-void bookingDetails(BuildContext context) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.white,
-
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
-
     builder: (context) {
       return GetBuilder<BookingHistoryController>(
         builder: (controller) {
+          // 1. LOADING STATE
+          if (controller.isDetailLoading) {
+            return SizedBox(
+              height: 350.h,
+              child: const Center(child: CircularProgressIndicator(color: Color(0xffFD713F))),
+            );
+          }
+
+          // 2. ERROR/NULL STATE
+          final order = controller.selectedOrderDetail;
+          if (order == null) {
+            return SizedBox(
+              height: 200.h,
+              child: const Center(child: CommonText(text: "Order details not found")),
+            );
+          }
+
+          // 3. DATA STATE
           return SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16).copyWith(bottom: 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: EdgeInsets.all(12.sp),
-                    decoration: BoxDecoration(
-                      color: Color(0xffF2F2F2),
-                      borderRadius: BorderRadius.circular(20.sp),
-                    ),
-                    child: Row(
-                      children: [
-                        CommonImage(
-                          imageSrc: AppImages.image3,
-                          size: 40,
-                          borderRadius: 50,
-                          fill: BoxFit.fill,
-                        ),
-
-                        12.width,
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CommonText(
-                                text: "Javier A.",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff272727),
-                              ),
-                              CommonText(
-                                text: "#HC-59375959",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff777777),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8.sp,
-                            vertical: 5.sp,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Color(0xffF2E3C7),
-                            borderRadius: BorderRadius.circular(8.sp),
-                          ),
-                          child: CommonText(
-                            text: AppString.awaitingConfirmation,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xffE39400),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // --- Chef & Order ID Header ---
+                  _buildHeader(order),
                   34.height,
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(10.sp),
-                        decoration: BoxDecoration(
-                          color: Color(0xffF2F2F2),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          CupertinoIcons.location,
-                          color: Color(0xffFD713F),
-                        ),
-                      ),
-                      12.width,
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CommonText(
-                              text: "Darren Monarch",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff272727),
-                            ),
-                            CommonText(
-                              text:
-                                  "4140 Parker Rd. Allentown, New Mexico 31134",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff777777),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+
+                  // --- Location ---
+                  _buildIconRow(
+                    iconData: CupertinoIcons.location,
+                    title: "Location",
+                    subTitle: order.formattedAddress,
                   ),
                   16.height,
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(10.sp),
-                        decoration: BoxDecoration(
-                          color: Color(0xffF2F2F2),
-                          shape: BoxShape.circle,
-                        ),
-                        child:
-                            CommonImage(
-                              imageSrc: AppIcons.calendar,
-                              imageColor: Color(0xffFD713F),
-                              size: 20,
-                            ).center,
-                      ),
-                      12.width,
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CommonText(
-                              text: "August 30, 2024 ",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff272727),
-                            ),
-                            CommonText(
-                              text: "at 01:00 PM - 03:40 PM",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff777777),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+
+                  // --- Date & Time ---
+                  _buildIconRow(
+                    iconPath: AppIcons.calendar,
+                    title: _formatSimpleDate(order.formattedDate),
+                    subTitle: "at ${order.strTime}",
                   ),
 
+                  // --- Status Timeline ---
                   CommonText(
                     text: AppString.orderStatus,
                     fontSize: 14,
                     top: 32,
                     bottom: 16,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
                   ),
+                  _buildOrderStatusTimeline(order.history),
 
-                  _buildOrderStatusTimeline("Awaiting Confirmation"),
+                  // Status helper message
+                  if (order.status == "Awaiting Confirmation")
+                    CommonText(
+                      text: "The chef is reviewing your order and should confirm soon.",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xffFD713F),
+                      top: 16,
+                    ),
 
-                  CommonText(
-                    text:
-                        "The chef is reviewing your order, and should confirm within 1h32m",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xffFD713F),
-                    maxLines: 2,
-                    textAlign: TextAlign.start,
-                    top: 16,
-                  ),
                   33.height,
-                  InkWell(
-                    hoverColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    onTap: () {
-                      controller.onChangeOrderDetailsPopup();
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CommonText(
-                          text: AppString.orderDetails,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff272727),
-                        ),
-                        Icon(
-                          controller.isOrderDetailsPopup
-                              ? Icons.keyboard_arrow_down
-                              : Icons.keyboard_arrow_right,
-                          size: 20,
-                          color: Color(0xff777777),
-                        ),
-                      ],
-                    ),
-                  ),
-                  32.height,
-                  if (controller.isOrderDetailsPopup) ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CommonText(
-                              text: "Chopped Burrito",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff272727),
-                            ),
-                            CommonText(
-                              text: "2 Items + Without Onions",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff777777),
-                            ),
-                          ],
-                        ),
-                        CommonText(
-                          text: "\$20.00",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff272727),
-                        ),
-                      ],
-                    ),
-                    12.height,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CommonText(
-                              text: "Chopped Burrito",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff272727),
-                            ),
-                            CommonText(
-                              text: "2 Items + Without Onions",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff777777),
-                            ),
-                          ],
-                        ),
-                        CommonText(
-                          text: "\$20.00",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff272727),
-                        ),
-                      ],
-                    ),
-                    16.height,
-                    orderSummary(),
-                  ],
-                  Divider(),
 
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CommonButton(
-                          titleText: AppString.orderGroceries,
-                          buttonHeight: 48,
-                          buttonRadius: 16,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Get.toNamed(
-                            AppRoutes.message,
-                            parameters: {
-                              "chatId": "1234",
-                              "name": "Cody F.",
-                              "image": AppImages.image3,
-                            },
-                          );
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(left: 8.sp),
-                          padding: EdgeInsets.all(14.sp),
-                          decoration: BoxDecoration(
-                            color: Color(0xffF2F2F2),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: CommonImage(
-                            imageSrc: AppIcons.chats,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Get.back();
-                          requestChange(context);
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(left: 8.sp),
-                          padding: EdgeInsets.all(14.sp),
-                          decoration: BoxDecoration(
-                            color: Color(0xffF2F2F2),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: CommonImage(imageSrc: AppIcons.edit, size: 20),
-                        ),
-                      ),
-                    ],
-                  ),
+                  // --- Order Details Accordion ---
+                  _buildOrderDetailsAccordion(controller, order),
+
+                  16.height,
+                  const Divider(),
+                  20.height,
+
+
+                  _buildBottomActions(context, order),
                 ],
               ),
             ),
@@ -342,39 +113,52 @@ void bookingDetails(BuildContext context) {
   );
 }
 
-Widget _buildOrderStatusTimeline(String currentStatus) {
+// ─── Timeline Logic ─────────────────────────────────────────────────────────
 
+Widget _buildOrderStatusTimeline(List<dynamic> history) {
+  // Define unique colors for each stage
   final List<Map<String, dynamic>> steps = [
-    {'title': 'Booking\nOrdered', 'icon': "assets/icons/booking_order.svg", 'status': 'Pending'},
-    {'title': 'Chef\nConfirmed', 'icon': "assets/icons/chef_confirmed.svg", 'status': 'Awaiting Confirmation'},
-    {'title': 'Groceries\nOrdered', 'icon': "assets/icons/groceries_ordered.svg", 'status': 'Groceries'},
-    {'title': 'Booking\nComplete', 'icon': "assets/icons/booking_complete.svg", 'status': 'Complete'},
+    {
+      'title': 'Booking\nOrdered',
+      'icon': "assets/icons/booking_order.svg",
+      'type': 'Booking Ordered',
+      'color': const Color(0xff4CAF50), // Green
+    },
+    {
+      'title': 'Chef\nConfirmed',
+      'icon': "assets/icons/chef_confirmed.svg",
+      'type': 'Chef Confirmed',
+      'color': const Color(0xff2196F3), // Blue
+    },
+    {
+      'title': 'Groceries\nOrdered',
+      'icon': "assets/icons/groceries_ordered.svg",
+      'type': 'Groceries Ordered',
+      'color': const Color(0xffFF9800), // Orange
+    },
+    {
+      'title': 'Booking\nComplete',
+      'icon': "assets/icons/booking_complete.svg",
+      'type': 'Booking Completed',
+      'color': const Color(0xff9C27B0), // Purple
+    },
   ];
 
-  int currentStepIndex = 1;
-  if (currentStatus == "Pending") currentStepIndex = 0;
-  else if (currentStatus == "Awaiting Confirmation") currentStepIndex = 1;
-  else if (currentStatus == "Groceries") currentStepIndex = 2;
-  else if (currentStatus == "Complete") currentStepIndex = 3;
+  int activeIndex = Get.find<BookingHistoryController>().getStatusIndex(history.cast());
 
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: List.generate(steps.length, (index) {
-      bool isCompleted = index < currentStepIndex;
-      bool isActive = index == currentStepIndex;
+      bool isReached = index <= activeIndex;
+      bool isActive = index == activeIndex;
 
-      // Color logic for the theme
-      Color mainColor = isCompleted
-          ? const Color(0xff4CAF50) // Green for finished
-          : isActive
-          ? const Color(0xffFD713F) // Orange for current
-          : const Color(0xffA7A7A7); // Grey for upcoming
+      // Logic: If reached, use its specific color. If not reached, use Grey.
+      Color stepColor = isReached ? steps[index]['color'] : const Color(0xffA7A7A7);
 
-      Color bgColor = isCompleted
-          ? const Color(0xffE8F5E9)
-          : isActive
-          ? const Color(0xffFFF2EE)
+      // Lighten the background color for the circle
+      Color bgColor = isReached
+          ? (steps[index]['color'] as Color).withOpacity(0.1)
           : const Color(0xffF5F5F5);
 
       return Expanded(
@@ -382,39 +166,42 @@ Widget _buildOrderStatusTimeline(String currentStatus) {
           children: [
             Row(
               children: [
-                // Connecting line BEFORE the circle
+                // Line BEFORE
                 Expanded(
                   child: index == 0
                       ? const SizedBox()
                       : Container(
-                      height: 2.h,
-                      color: isCompleted ? const Color(0xff4CAF50) : const Color(0xffD9D9D9)
+                    height: 2.h,
+                    // Line is colored if the CURRENT step is reached
+                    color: isReached ? steps[index - 1]['color'] : const Color(0xffD9D9D9),
                   ),
                 ),
 
-                // The Step Circle using SvgPicture
+                // Icon Circle
                 Container(
                   height: 48.r,
                   width: 48.r,
                   decoration: BoxDecoration(
                     color: bgColor,
                     shape: BoxShape.circle,
+                    border: isActive ? Border.all(color: stepColor, width: 2) : null,
                   ),
                   alignment: Alignment.center,
                   child: SvgPicture.asset(
                     steps[index]['icon'],
                     height: 20.sp,
-                    colorFilter: ColorFilter.mode(bgColor, BlendMode.srcIn),
+                    colorFilter: ColorFilter.mode(stepColor, BlendMode.srcIn),
                   ),
                 ),
 
-                // Connecting line AFTER the circle
+                // Line AFTER
                 Expanded(
                   child: index == steps.length - 1
                       ? const SizedBox()
                       : Container(
-                      height: 2.h,
-                      color: index < currentStepIndex ? const Color(0xff4CAF50) : const Color(0xffD9D9D9)
+                    height: 2.h,
+                    // Line is colored if the NEXT step is already reached
+                    color: (index < activeIndex) ? steps[index]['color'] : const Color(0xffD9D9D9),
                   ),
                 ),
               ],
@@ -422,15 +209,190 @@ Widget _buildOrderStatusTimeline(String currentStatus) {
             8.height,
             CommonText(
               text: steps[index]['title'],
-              fontSize: 10.sp,
-              fontWeight: isActive || isCompleted ? FontWeight.w600 : FontWeight.w400,
-              color: mainColor,
-              textAlign: TextAlign.center,
               maxLines: 2,
+              fontSize: 10.sp,
+              // Make text bold only if it is the current active status
+              fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
+              color: stepColor,
+              textAlign: TextAlign.center,
             ),
           ],
         ),
       );
     }),
   );
+}
+
+// ─── UI Components ──────────────────────────────────────────────────────────
+
+Widget _buildHeader(dynamic order) {
+  return Container(
+    padding: EdgeInsets.all(12.sp),
+    decoration: BoxDecoration(color: const Color(0xffF2F2F2), borderRadius: BorderRadius.circular(20.sp)),
+    child: Row(
+      children: [
+        CommonImage(imageSrc: order.chef.image, size: 40, borderRadius: 50, fill: BoxFit.fill),
+        12.width,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CommonText(text: order.chef.name, fontSize: 12, fontWeight: FontWeight.w600),
+              CommonText(text: order.orderId, fontSize: 12, color: const Color(0xff777777)),
+            ],
+          ),
+        ),
+        _buildStatusBadge(order.status),
+      ],
+    ),
+  );
+}
+
+Widget _buildOrderDetailsAccordion(BookingHistoryController controller, dynamic order) {
+  return Column(
+    children: [
+      InkWell(
+        onTap: () => controller.onChangeOrderDetailsPopup(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CommonText(text: AppString.orderDetails, fontSize: 16, fontWeight: FontWeight.w600),
+            Icon(
+              controller.isOrderDetailsPopup ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right,
+              color: const Color(0xff777777),
+            ),
+          ],
+        ),
+      ),
+      if (controller.isOrderDetailsPopup) ...[
+        24.height,
+        ...order.staticItems.map((item) => Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CommonText(text: item.menuName, fontSize: 14, fontWeight: FontWeight.w600),
+                  CommonText(
+                    text: "${item.quantity} Items + ${item.customizations.join(', ').replaceAll('_', ' ')}",
+                    fontSize: 12, color: const Color(0xff777777),
+                  ),
+                ],
+              ),
+              CommonText(text: "\$${item.totalPrice.toStringAsFixed(2)}", fontSize: 14),
+            ],
+          ),
+        )).toList(),
+        const Divider(),
+        _buildPriceRow("Subtotal", order.priceBreakdown.subtotal),
+        _buildPriceRow("Tax", order.priceBreakdown.taxs),
+        _buildPriceRow("Service Fee", order.priceBreakdown.serviceFee),
+        const Divider(),
+        _buildPriceRow("Total", order.priceBreakdown.total, isBold: true),
+      ],
+    ],
+  );
+}
+
+Widget _buildBottomActions(BuildContext context, dynamic order) {
+  return Row(
+    children: [
+      // If status is "Confirm", show the Expanded Button
+      if (order.status == "Confirm")
+        Expanded(
+          child: CommonButton(
+            titleText: AppString.orderGroceries,
+            buttonHeight: 48,
+            buttonRadius: 16,
+            onTap: () {
+              Get.back();
+              Get.to(() => const GroceryScreen(), arguments: order.id);
+            },
+          ),
+        )
+      else
+      // If not confirmed, this space can be empty or show a different message
+        const Spacer(),
+
+      _circularIconButton(AppIcons.chats, () {
+        // Handle chat navigation
+      }),
+
+      _circularIconButton(AppIcons.edit, () {
+        Get.back();
+        // Handle edit logic
+      }),
+    ],
+  );
+}
+
+// ─── Internal Helpers ───────────────────────────────────────────────────────
+
+Widget _buildIconRow({IconData? iconData, String? iconPath, required String title, required String subTitle}) {
+  return Row(
+    children: [
+      Container(
+        padding: EdgeInsets.all(10.sp),
+        decoration: const BoxDecoration(color: Color(0xffF2F2F2), shape: BoxShape.circle),
+        child: iconPath != null
+            ? SvgPicture.asset(iconPath, colorFilter: const ColorFilter.mode(Color(0xffFD713F), BlendMode.srcIn), width: 20)
+            : Icon(iconData, color: const Color(0xffFD713F)),
+      ),
+      12.width,
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CommonText(text: title, fontSize: 12, fontWeight: FontWeight.w600),
+            CommonText(text: subTitle, fontSize: 12, color: const Color(0xff777777)),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+Widget _buildPriceRow(String label, double val, {bool isBold = false}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        CommonText(text: label, fontSize: isBold ? 16 : 14, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+        CommonText(text: "\$${val.toStringAsFixed(2)}", fontSize: isBold ? 16 : 14, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+      ],
+    ),
+  );
+}
+
+Widget _buildStatusBadge(String status) {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    decoration: BoxDecoration(color: const Color(0xffF2E3C7), borderRadius: BorderRadius.circular(8)),
+    child: CommonText(text: status, fontSize: 10, color: const Color(0xffE39400), fontWeight: FontWeight.w500),
+  );
+}
+
+Widget _circularIconButton(String icon, VoidCallback onTap) {
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      margin: const EdgeInsets.only(left: 8),
+      padding: EdgeInsets.all(14.sp),
+      decoration: BoxDecoration(color: const Color(0xffF2F2F2), borderRadius: BorderRadius.circular(20)),
+      child: CommonImage(imageSrc: icon, size: 20),
+    ),
+  );
+}
+
+String _formatSimpleDate(String isoDate) {
+  try {
+    DateTime dt = DateTime.parse(isoDate);
+    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return "${dt.day} ${months[dt.month - 1]}, ${dt.year}";
+  } catch (e) {
+    return isoDate;
+  }
 }
