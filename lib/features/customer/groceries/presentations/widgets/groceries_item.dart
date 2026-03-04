@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../../../component/text/common_text.dart';
 
 class GroceryItemTile extends StatelessWidget {
@@ -14,36 +15,56 @@ class GroceryItemTile extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 10.h),
       child: Row(
         children: [
+          // ICON CONTAINER instead of NetworkImage
           Container(
-            width: 70.w,
-            height: 70.w,
+            width: 60.w,
+            height: 60.w,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12.r),
-              image: const DecorationImage(
-                image: NetworkImage('https://picsum.photos/205'), // Use data image if available
-                fit: BoxFit.cover,
+              // Light orange/grey background to match your theme
+              color: const Color(0xffFFF2EE),
+            ),
+            child: Center(
+              child: Icon(
+                Icons.shopping_basket_outlined, // You can also use data['icon'] if available
+                color: const Color(0xffFD713F), // Theme color
+                size: 28.sp,
               ),
             ),
           ),
+
           SizedBox(width: 16.w),
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CommonText(text: data['name'], fontWeight: FontWeight.w600, fontSize: 16),
+                CommonText(
+                    text: data['name'] ?? "",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16
+                ),
                 SizedBox(height: 4.h),
-                CommonText(text: "${data['items']} items", color: Colors.grey, fontSize: 13),
-                SizedBox(height: 4.h),
-                CommonText(text: "\$${data['price'].toStringAsFixed(2)}", fontWeight: FontWeight.bold),
+                // Showing Quantity and Unit (e.g., 2 kg)
+                CommonText(
+                    text: "${data['items']} ${data['unit'] ?? ''}",
+                    color: Colors.grey,
+                    fontSize: 13
+                ),
               ],
             ),
           ),
+
           InkWell(
             onTap: onTap,
-            child: Icon(
-              data['isSelected'] ? Icons.check_circle : Icons.circle_outlined,
-              color: data['isSelected'] ? Colors.black : Colors.grey[300],
-              size: 24.sp,
+            borderRadius: BorderRadius.circular(50),
+            child: Padding(
+              padding: EdgeInsets.all(4.r),
+              child: Icon(
+                data['isSelected'] ? Icons.check_circle : Icons.circle_outlined,
+                color: data['isSelected'] ? Colors.black : Colors.grey[300],
+                size: 24.sp,
+              ),
             ),
           ),
         ],

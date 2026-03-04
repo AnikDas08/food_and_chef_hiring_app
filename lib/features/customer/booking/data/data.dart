@@ -1,75 +1,102 @@
-class BookingDetailModel {
+class OrderResponse {
   final bool success;
   final String message;
-  final BookingDetailData data;
+  final OrderData? data;
 
-  BookingDetailModel({required this.success, required this.message, required this.data});
+  OrderResponse({required this.success, required this.message, this.data});
 
-  factory BookingDetailModel.fromJson(Map<String, dynamic> json) {
-    return BookingDetailModel(
+  factory OrderResponse.fromJson(Map<dynamic, dynamic> json) {
+    return OrderResponse(
       success: json['success'] ?? false,
       message: json['message'] ?? '',
-      data: BookingDetailData.fromJson(json['data']),
+      data: json['data'] != null ? OrderData.fromJson(json['data']) : null,
     );
   }
 }
 
-class BookingDetailData {
+class OrderData {
   final String id;
-  final BookingUser user;
-  final String orderId;
-  final String status;
+  final User user;
+  final Chef chef;
   final String strTime;
+  final String status;
+  final List<StaticItem> staticItems;
+  final double userPaid;
   final String formattedAddress;
   final String formattedDate;
-  final String duration;
   final PriceBreakdown priceBreakdown;
-  final List<StaticItem> staticItems;
-  final List<BookingHistory> history;
+  final List<OrderHistory> history;
+  final String orderId;
+  final String? invoiceUrl;
+  final String? cancelReason;
 
-  BookingDetailData({
+  OrderData({
     required this.id,
     required this.user,
-    required this.orderId,
-    required this.status,
+    required this.chef,
     required this.strTime,
+    required this.status,
+    required this.staticItems,
+    required this.userPaid,
     required this.formattedAddress,
     required this.formattedDate,
-    required this.duration,
     required this.priceBreakdown,
-    required this.staticItems,
     required this.history,
+    required this.orderId,
+    this.invoiceUrl,
+    this.cancelReason,
   });
 
-  factory BookingDetailData.fromJson(Map<String, dynamic> json) {
-    return BookingDetailData(
+  factory OrderData.fromJson(Map<String, dynamic> json) {
+    return OrderData(
       id: json['_id'] ?? '',
-      user: BookingUser.fromJson(json['user']),
-      orderId: json['order_id'] ?? '',
-      status: json['status'] ?? '',
+      user: User.fromJson(json['user']),
+      chef: Chef.fromJson(json['chef']),
       strTime: json['strTime'] ?? '',
+      status: json['status'] ?? '',
+      staticItems: (json['static_items'] as List)
+          .map((i) => StaticItem.fromJson(i))
+          .toList(),
+      userPaid: (json['user_paid'] as num).toDouble(),
       formattedAddress: json['formatted_address'] ?? '',
       formattedDate: json['formatted_date'] ?? '',
-      duration: json['duration'] ?? '',
       priceBreakdown: PriceBreakdown.fromJson(json['price_breakdown']),
-      staticItems: (json['static_items'] as List)
-          .map((e) => StaticItem.fromJson(e))
-          .toList(),
       history: (json['history'] as List)
-          .map((e) => BookingHistory.fromJson(e))
+          .map((i) => OrderHistory.fromJson(i))
           .toList(),
+      orderId: json['order_id'] ?? '',
+      invoiceUrl: json['invoice_url'],
+      cancelReason: json['cancel_reason'],
     );
   }
 }
 
-class BookingUser {
+class User {
+  final String id;
   final String name;
   final String image;
 
-  BookingUser({required this.name, required this.image});
+  User({required this.id, required this.name, required this.image});
 
-  factory BookingUser.fromJson(Map<String, dynamic> json) {
-    return BookingUser(
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['_id'] ?? '',
+      name: json['name'] ?? '',
+      image: json['image'] ?? '',
+    );
+  }
+}
+
+class Chef {
+  final String id;
+  final String name;
+  final String image;
+
+  Chef({required this.id, required this.name, required this.image});
+
+  factory Chef.fromJson(Map<String, dynamic> json) {
+    return Chef(
+      id: json['_id'] ?? '',
       name: json['name'] ?? '',
       image: json['image'] ?? '',
     );
@@ -77,13 +104,17 @@ class BookingUser {
 }
 
 class StaticItem {
+  final String id;
   final String menuName;
+  final List<String> images;
   final int quantity;
   final List<String> customizations;
   final double totalPrice;
 
   StaticItem({
+    required this.id,
     required this.menuName,
+    required this.images,
     required this.quantity,
     required this.customizations,
     required this.totalPrice,
@@ -91,8 +122,10 @@ class StaticItem {
 
   factory StaticItem.fromJson(Map<String, dynamic> json) {
     return StaticItem(
+      id: json['_id'] ?? '',
       menuName: json['menu']['name'] ?? '',
-      quantity: json['quantity'] ?? 1,
+      images: List<String>.from(json['menu']['images'] ?? []),
+      quantity: json['quantity'] ?? 0,
       customizations: List<String>.from(json['customizations'] ?? []),
       totalPrice: (json['total_price'] as num).toDouble(),
     );
@@ -122,14 +155,14 @@ class PriceBreakdown {
   }
 }
 
-class BookingHistory {
+class OrderHistory {
   final String type;
   final String date;
 
-  BookingHistory({required this.type, required this.date});
+  OrderHistory({required this.type, required this.date});
 
-  factory BookingHistory.fromJson(Map<String, dynamic> json) {
-    return BookingHistory(
+  factory OrderHistory.fromJson(Map<String, dynamic> json) {
+    return OrderHistory(
       type: json['type'] ?? '',
       date: json['date'] ?? '',
     );

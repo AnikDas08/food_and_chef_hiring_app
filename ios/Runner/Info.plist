@@ -12,6 +12,10 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>https</string>
+    </array>
 	<key>CFBundleName</key>
 	<key>NSLocationWhenInUseUsageDescription</key>
     <string>We need your location to show nearby services</string>
