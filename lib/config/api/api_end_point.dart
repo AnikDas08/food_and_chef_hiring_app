@@ -37,6 +37,7 @@ class ApiEndPoint {
   static const String mostBookingTime = 'order/chef/most-booking-time?date=';
   static const String withdrawWallet = '/user/wallet/withdraw';
   static const String transaction = '/transaction';
+  static const String singleOrder = '/order/';
 
 
 

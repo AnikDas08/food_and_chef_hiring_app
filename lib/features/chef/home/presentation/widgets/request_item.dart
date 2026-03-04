@@ -284,7 +284,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       final c = Get.find<ChefHomeController>();
                       final res = await c.confirmBooking(booking.id);
 
-                      Get.back(); // loader বন্ধ
+                      Get.back();
 
                       if (res.statusCode == 200 && res.data?['success'] == true) {
                         c.requestedBookings.removeWhere((e) => e.id == booking.id);
@@ -294,7 +294,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                         Get.snackbar("Message", res.data?['message']?.toString() ?? "Something went wrong");
                       }
                     } catch (e) {
-                      Get.back(); // error হলেও loader বন্ধ
+                      Get.back();
                       Get.snackbar("Error", "Something went wrong");
                     }
                   },

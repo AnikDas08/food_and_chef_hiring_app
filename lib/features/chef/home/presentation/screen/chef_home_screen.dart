@@ -237,7 +237,7 @@ class ChefHomeScreen extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.offAndToNamed(AppRoutes.chefHomeScreen, arguments: {"index": 3});
+                    Get.offAndToNamed(AppRoutes.chefHomeScreen, arguments: {"index": 2});
                   },
 
                   child: InkWell(

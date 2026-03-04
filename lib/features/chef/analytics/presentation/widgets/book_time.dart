@@ -65,12 +65,8 @@ class BookTime extends StatelessWidget {
                                       day,
                                       style: TextStyle(
                                         fontSize: 14,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w400,
-                                        color: isSelected
-                                            ? Color(0xffFD713F)
-                                            : Color(0xff272727),
+                                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                                        color: isSelected ? Color(0xffFD713F) : Color(0xff272727),
                                       ),
                                     ),
                                     trailing: isSelected
@@ -108,10 +104,19 @@ class BookTime extends StatelessWidget {
                 ),
               ],
             ),
-            Expanded(
+            SizedBox(
+              height: 160.h,
               child: controller.bookingLoading.value
                   ? Center(child: CircularProgressIndicator(color: Color(0xffFD713F)))
-                  : BarChartSample3(chartData: controller.mappedData),
+                  : controller.mappedData.isEmpty
+                  ? Center(child: Text("DATA EMPTY")) // debug
+                  : Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: BarChartSample3(
+                  key: ValueKey(controller.selectedDay.value),
+                  chartData: controller.mappedData.toList(),
+                ),
+              ),
             ),
           ],
         ),
