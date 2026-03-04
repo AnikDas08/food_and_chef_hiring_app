@@ -13,12 +13,39 @@ import '../../../../customer/booking/presentation/widgets/details_popup.dart';
 import '../../../chef_booking/presentation/widgets/decline_pop_up.dart';
 import '../../../chef_booking/presentation/widgets/upcoming_pop_up.dart';
 import '../Model/Request_0edBooking_Model.dart';
+import '../controller/Chef_Order_History_Controller.dart';
 import '../controller/chef_home_controller.dart';
+import 'chef_Booking_Details.dart';
 
 Widget requestItem(BuildContext context, RequestedBookingModel booking,
     {bool isRequested = false}) {
   return InkWell(
-    onTap: () => bookingDetails(context),
+    onTap: () {
+      final orderMap = {
+        '_id': booking.id,
+        'order_id': booking.orderId,
+        'status': isRequested ? 'Awaiting Confirmation' : 'Confirm',
+        'strTime': booking.scheduledAt,
+        'formatted_address': booking.address,
+        'formatted_date': booking.scheduledAt,
+        'user': {
+          'name': booking.customerName,
+          'image': booking.customerImage,
+        },
+        'static_items': [],
+        'price_breakdown': {'total': booking.total},
+        'total_price': booking.total,
+        'cancel_reason': null,
+        'decline_reason': null,
+      };
+
+      final controller = Get.isRegistered<ChefOrderHistoryController>()
+          ? Get.find<ChefOrderHistoryController>()
+          : Get.put(ChefOrderHistoryController());
+
+      controller.selectOrder(orderMap);
+      chefBookingDetailsSheet(context, orderMap, controller);
+    },
     child: Container(
       padding: EdgeInsets.all(12.sp),
       margin: EdgeInsets.only(top: 16),

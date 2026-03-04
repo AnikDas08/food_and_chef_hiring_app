@@ -51,10 +51,9 @@ confirmBookingPopUp({required String orderMongoId}) {
                   titleWeight: FontWeight.w600,
                   titleColor: const Color(0xffFFFFFF),
                   onTap: () async {
-                    // 1) প্রথম confirm popup বন্ধ
+
                     if (Get.isDialogOpen == true) Get.back();
 
-                    // 2) Loader show
                     Get.dialog(
                       const Center(child: CircularProgressIndicator()),
                       barrierDismissible: false,
@@ -90,7 +89,6 @@ confirmBookingPopUp({required String orderMongoId}) {
 
                 12.height,
 
-                /// ✅ DECLINE
                 CommonButton(
                   titleText: AppString.decline,
                   buttonHeight: 48,
@@ -101,7 +99,8 @@ confirmBookingPopUp({required String orderMongoId}) {
                   titleWeight: FontWeight.w600,
                   titleColor: const Color(0xff777777),
                   onTap: () async {
-                    if (Get.isDialogOpen == true) Get.back(); // close confirm popup
+
+                    Get.back();
                   },
                 ),
                 16.height,
