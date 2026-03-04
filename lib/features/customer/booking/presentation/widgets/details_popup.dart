@@ -28,6 +28,7 @@ void bookingDetails(BuildContext context) {
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
+
     builder: (context) {
       return GetBuilder<BookingHistoryController>(
         builder: (controller) {
