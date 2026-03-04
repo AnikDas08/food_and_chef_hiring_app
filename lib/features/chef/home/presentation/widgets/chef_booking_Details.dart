@@ -12,14 +12,14 @@ import '../../../../../component/text/common_text.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_images.dart';
-import '../../../cart/presentation/widgets/order_summary.dart';
-import '../controller/booking_history_controller.dart';
-import 'request_change_popup.dart';
+import '../../../../customer/booking/presentation/controller/booking_history_controller.dart';
+import '../../../../customer/booking/presentation/widgets/request_change_popup.dart';
+import '../../../../customer/cart/presentation/widgets/order_summary.dart';
 
 String text =
     "For making Chopped Burrito, you'll need 2 cups of cold, cooked jasmine rice (preferably day-old) and 2 tablespoons of vegetable oil for stir-frying. Use 3 large eggs, lightly beaten, along with a small onion finely chopped and 2 cloves of garlic minced. Add 1 cup of mixed vegetables such as peas, carrots, and corn, and 1/2 cup of finely diced cooked ham or shrimp for added protein if desired. Season with 3 tablespoons of soy sauce (preferably low sodium), 1 tablespoon of oyster sauce, and 1 teaspoon of sesame oil. Include 2 thinly sliced green onions (including the green parts), and adjust the flavor with salt and pepper to taste. For extra spice, add 1/2 teaspoon of white pepper, and enhance the aroma with 1 teaspoon of finely grated ginger. Optionally, you can include 1 tablespoon of fish sauce for added umami flavor. For garnishes, consider fresh chopped cilantro, lime wedges, and Sriracha or chili sauce for added heat.";
 
-void bookingDetails(BuildContext context) {
+void ChefBookingDetails(BuildContext context) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -120,7 +120,7 @@ void bookingDetails(BuildContext context) {
                             ),
                             CommonText(
                               text:
-                                  "4140 Parker Rd. Allentown, New Mexico 31134",
+                              "4140 Parker Rd. Allentown, New Mexico 31134",
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
                               color: Color(0xff777777),
@@ -140,11 +140,11 @@ void bookingDetails(BuildContext context) {
                           shape: BoxShape.circle,
                         ),
                         child:
-                            CommonImage(
-                              imageSrc: AppIcons.calendar,
-                              imageColor: Color(0xffFD713F),
-                              size: 20,
-                            ).center,
+                        CommonImage(
+                          imageSrc: AppIcons.calendar,
+                          imageColor: Color(0xffFD713F),
+                          size: 20,
+                        ).center,
                       ),
                       12.width,
                       Expanded(
@@ -182,7 +182,7 @@ void bookingDetails(BuildContext context) {
 
                   CommonText(
                     text:
-                        "The chef is reviewing your order, and should confirm within 1h32m",
+                    "The chef is reviewing your order, and should confirm within 1h32m",
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xffFD713F),
@@ -365,10 +365,10 @@ Widget _buildOrderStatusTimeline(String currentStatus) {
 
       // Color logic for the theme
       Color mainColor = isCompleted
-          ? const Color(0xff4CAF50) // Green for finished
+          ? const Color(0xff4CAF50)
           : isActive
-          ? const Color(0xffFD713F) // Orange for current
-          : const Color(0xffA7A7A7); // Grey for upcoming
+          ? const Color(0xffFD713F)
+          : const Color(0xffA7A7A7);
 
       Color bgColor = isCompleted
           ? const Color(0xffE8F5E9)
@@ -381,7 +381,7 @@ Widget _buildOrderStatusTimeline(String currentStatus) {
           children: [
             Row(
               children: [
-                // Connecting line BEFORE the circle
+
                 Expanded(
                   child: index == 0
                       ? const SizedBox()
@@ -403,7 +403,7 @@ Widget _buildOrderStatusTimeline(String currentStatus) {
                   child: SvgPicture.asset(
                     steps[index]['icon'],
                     height: 20.sp,
-                    colorFilter: ColorFilter.mode(bgColor, BlendMode.srcIn),
+                    colorFilter: ColorFilter.mode(mainColor, BlendMode.srcIn),
                   ),
                 ),
 
