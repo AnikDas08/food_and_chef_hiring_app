@@ -42,7 +42,6 @@ confirmBookingPopUp({required String orderMongoId}) {
                   maxLines: 5,
                 ),
 
-                /// ✅ ACCEPT
                 CommonButton(
                   titleText: AppString.accept,
                   buttonHeight: 48,

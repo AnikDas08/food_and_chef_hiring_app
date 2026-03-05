@@ -9,7 +9,7 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../utils/constants/app_icons.dart';
-import '../../../../customer/booking/presentation/widgets/details_popup.dart';
+import '../../../chef_booking/presentation/widgets/Chef_Booking_Detail_Page.dart';
 import '../../../chef_booking/presentation/widgets/decline_pop_up.dart';
 import '../../../chef_booking/presentation/widgets/upcoming_pop_up.dart';
 import '../Model/Request_0edBooking_Model.dart';
@@ -17,8 +17,12 @@ import '../controller/chef_home_controller.dart';
 
 Widget requestItem(BuildContext context, RequestedBookingModel booking,
     {bool isRequested = false}) {
+
   return InkWell(
-    //onTap: () => bookingDetails(context),
+    // onTap: () => bookingDetails(context),
+    onTap: () {
+      Get.to(() => ChefBookingDetailPage(orderId: booking.id));
+    },
     child: Container(
       padding: EdgeInsets.all(12.sp),
       margin: EdgeInsets.only(top: 16),
