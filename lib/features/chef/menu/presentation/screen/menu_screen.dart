@@ -154,7 +154,7 @@ class MenuScreen extends StatelessWidget {
                         controller: ctrl,
                         autofocus: true,
                         decoration: InputDecoration(
-                          hintText: "e.g. Starters, Desserts...",
+                          hintText: "Enter Starters Desserts",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.r),
                           ),
@@ -178,48 +178,30 @@ class MenuScreen extends StatelessWidget {
                     ),
                   );
                 },
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 14.h),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xFFE0E0E0)),
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.add,
-                          size: 16.sp, color: const Color(0xFF272727)),
-                      6.horizontalSpace,
-                      Text("Add Menu Section",
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF272727))),
-                    ],
+                child: Padding(
+                  padding: EdgeInsetsGeometry.only(bottom: 25),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 14.h),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: const Color(0xFFE0E0E0)),
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add,
+                            size: 16.sp, color: const Color(0xFF272727)),
+                        6.horizontalSpace,
+                        Text("Add Menu Section",
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFF272727))),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
-              child: SizedBox(
-                width: double.infinity,
-                height: 54.h,
-                // child: ElevatedButton(
-                //   onPressed: () => Get.to(() => CafeCookingExpertiseScreen()),
-                //   style: ElevatedButton.styleFrom(
-                //     backgroundColor: const Color(0xFF1C1C1C),
-                //     foregroundColor: Colors.white,
-                //     shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(14.r)),
-                //     elevation: 0,
-                //   ),
-                //   child: Text("Finish & Create Account",
-                //       style: TextStyle(
-                //           fontSize: 15.sp, fontWeight: FontWeight.w600)),
-                // ),
               ),
             ),
           ],

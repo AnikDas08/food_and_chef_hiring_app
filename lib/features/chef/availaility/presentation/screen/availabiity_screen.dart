@@ -232,7 +232,7 @@ class _CafeSetAvailabilityScreenState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Set Your Availability",
+                      "Set Availability",
                       style: TextStyle(
                         fontSize: 26.sp,
                         fontWeight: FontWeight.w700,

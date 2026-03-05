@@ -11,26 +11,27 @@ import '../../../../../../utils/constants/app_string.dart';
 import '../../../../../component/text_field/common_text_field.dart';
 import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/constants/app_icons.dart';
-import '../../../../../utils/helpers/other_helper.dart';
-import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../widgets/delete_pop_up.dart';
-
-class AccountSetting extends StatelessWidget {
+class AccountSetting extends StatefulWidget {
   const AccountSetting({super.key});
+
+  @override
+  State<AccountSetting> createState() => _AccountSettingState();
+}
+
+class _AccountSettingState extends State<AccountSetting> {
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ChefProfileController>(
       builder: (controller) {
         return Scaffold(
-          /// App Bar Sections Starts here
           appBar: AppBar(),
-
-          /// Body Sections Starts here
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Form(
-              key: controller.formKey,
+              key: _formKey, // ✅ controller.formKey না
               child: SafeArea(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +43,6 @@ class AccountSetting extends StatelessWidget {
                       color: Color(0xff272727),
                       bottom: 28,
                     ),
-
                     CommonText(
                       text: "ACCOUNT DETAILS",
                       fontWeight: FontWeight.w500,
@@ -50,43 +50,30 @@ class AccountSetting extends StatelessWidget {
                       color: Color(0xff777777),
                       bottom: 8,
                     ),
-
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GetBuilder<ChefProfileController>(
-                          builder: (controller) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const CommonText(
-                                  text: "Email",
-                                  fontWeight: FontWeight.w600,
-                                  top: 20,
-                                  bottom: 8,
-                                ),
-                                CommonTextField(
-                                  controller: controller.emailController,
-                                  hintText: "Enter email",
-                                  keyboardType: TextInputType.emailAddress,
-                                ),
-
-                                const CommonText(
-                                  text: AppString.phoneNumber,
-                                  fontWeight: FontWeight.w600,
-                                  top: 20,
-                                  bottom: 8,
-                                ),
-                                CommonTextField(
-                                  controller: controller.phoneController,
-                                  hintText: AppString.phoneNumber,
-                                  keyboardType: TextInputType.phone,
-                                ),
-
-
-                              ],
-                            );
-                          },
+                        const CommonText(
+                          text: "Email",
+                          fontWeight: FontWeight.w600,
+                          top: 20,
+                          bottom: 8,
+                        ),
+                        CommonTextField(
+                          controller: controller.emailController,
+                          hintText: "Enter email",
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        const CommonText(
+                          text: AppString.phoneNumber,
+                          fontWeight: FontWeight.w600,
+                          top: 20,
+                          bottom: 8,
+                        ),
+                        CommonTextField(
+                          controller: controller.phoneController,
+                          hintText: AppString.phoneNumber,
+                          keyboardType: TextInputType.phone,
                         ),
                         CommonText(
                           text: "Link Account".toUpperCase(),
@@ -96,9 +83,7 @@ class AccountSetting extends StatelessWidget {
                           top: 28,
                           bottom: 8,
                         ),
-
                         12.height,
-
                         Row(
                           children: [
                             Container(
@@ -156,7 +141,6 @@ class AccountSetting extends StatelessWidget {
                           top: 28,
                           bottom: 16,
                         ),
-
                         InkWell(
                           onTap: deletePopUp,
                           child: Container(
@@ -194,13 +178,8 @@ class AccountSetting extends StatelessWidget {
                     60.height,
                     CommonButton(
                       titleText: AppString.saveChanges,
-                      isLoading: controller.isLoading,
+                      isLoading: controller.isLoadingUpdate,
                       onTap: () {
-                        if (controller.emailController.text.trim().isEmpty ||
-                            controller.phoneController.text.trim().isEmpty) {
-                          Utils.errorSnackBar("Warning", "Please fill all fields");
-                          return;
-                        }
                         controller.updateContactInfo();
                       },
                     ),
