@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/app_utils.dart';
+import '../../../chef_booking/presentation/widgets/SuccessPopup.dart';
 
 class WithdrawController extends GetxController {
   final amountController = TextEditingController();
@@ -69,12 +70,18 @@ class WithdrawController extends GetxController {
       );
 
       if (response.statusCode == 200 && response.data['success'] == true) {
-        // postman response: data.balance
+
         balance.value = (response.data['data']?['balance'] ?? balance.value) as int;
+
+        Get.dialog(
+          const SuccessPopup(),
+          barrierDismissible: false,
+        );
+
         amountController.clear();
-        Utils.successSnackBar("Success", response.data['message'] ?? "Withdraw successful");
+
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Withdraw failed");
+        Utils.errorSnackBar("Message", response.data['message'] ?? "Withdraw failed");
       }
     } catch (e) {
       Utils.errorSnackBar("Error", e.toString());

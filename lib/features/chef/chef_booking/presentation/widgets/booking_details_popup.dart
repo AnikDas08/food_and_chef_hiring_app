@@ -12,6 +12,7 @@ import '../../../../customer/cart/presentation/widgets/order_summary.dart';
 import '../controller/chef_booking_controller.dart';
 import 'confirmation_booking_pop_up.dart';
 import 'decline_pop_up.dart';
+import 'order_Summary_chef.dart';
 
 void bookingDetailsPopup(
     BuildContext context, {
@@ -222,10 +223,9 @@ void bookingDetailsPopup(
                 }).toList(),
 
               16.height,
-              orderSummary(),
+              orderSummarychef(order: order),
               Divider(),
 
-              // ✅ Buttons
               if (selectedTab == "Unconfirmed")
                 Row(
                   children: [

@@ -183,11 +183,12 @@ class ChefProfileScreen extends StatelessWidget {
 
                       Item(
                         image: AppIcons.card,
-                        icon: CupertinoIcons.add,
+                        icon: CupertinoIcons.arrow_swap,
                         title: AppString.bankManagement,
                         onTap: () {
                           final profile = Get.find<ChefHomeController>().chefProfile.value;
-                          final stripeUrl = profile?.stripeLoginLink;
+                          final stripeUrl = profile?.stripeLoginLink; // বা যে field নামে আছে
+
                           if (stripeUrl != null && stripeUrl.isNotEmpty) {
                             Get.to(() => StripeWebViewPage(url: stripeUrl));
                           } else {

@@ -7,6 +7,8 @@ import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
+import '../../../../../config/api/api_end_point.dart';
+import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../home/presentation/widgets/request_item.dart';
 import '../controller/chef_booking_controller.dart';
@@ -16,7 +18,6 @@ import 'decline_pop_up.dart';
 import 'upcoming_pop_up.dart';
 
 Widget chefBookingItem({required Map order}) {
-
 
   final controller = Get.find<ChefBookingController>();
 
@@ -387,7 +388,6 @@ Widget chefBookingItem({required Map order}) {
                 12.width,
               ],
 
-              // ✅ Upcoming: Chat button
               if (controller.selectedBookingHistory == "Upcoming") ...[
                 Container(
                   margin: EdgeInsets.only(right: 12.w),
@@ -415,17 +415,22 @@ Widget chefBookingItem({required Map order}) {
                 ),
               ],
 
-              // ✅ Completed: Rating
               if (controller.selectedBookingHistory == "Completed") ...[
+
+
+
+
+
                 Container(
-                  margin: EdgeInsets.only(right: 12.w),
+                  margin: EdgeInsets.only(right: 5.w),
                   padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.sp),
+                    borderRadius: BorderRadius.circular(5.sp),
                   ),
                   child: Row(
                     children: [
+
                       CommonText(
                         text: "${AppString.rating} ${rating > 0 ? rating.toStringAsFixed(1) : 'N/A'}",
                         fontSize: 12,
@@ -442,6 +447,41 @@ Widget chefBookingItem({required Map order}) {
                     ],
                   ),
                 ),
+
+
+
+
+                InkWell(
+                  onTap: () {
+                    reviewPopUp(
+                      orderId: order['_id']?.toString() ?? "",
+                      onSuccess: () => controller.fetchOrders(),
+                    );
+                  },
+
+                  child: Container(
+                    margin: EdgeInsets.only(right: 5.w),
+                    padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5.sp),
+                    ),
+                    child: Row(
+                      children: [
+
+
+                        CommonText(
+                          text: "Rate Customer",
+                          fontSize: 12,
+                          right: 6,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff272727),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
               ],
             ],
           ),
@@ -524,5 +564,182 @@ String _timeLeft(String? deadlineIso) {
     return "${minutes}m";
   } catch (_) {
     return "";
+  }
+}
+
+void reviewPopUp({
+  required String orderId,
+  required VoidCallback onSuccess,
+}) {
+  double kitchenRating = 0;
+  double communicationRating = 0;
+  final reviewController = TextEditingController();
+
+  Get.bottomSheet(
+    StatefulBuilder(
+      builder: (context, setState) {
+        final avg = (kitchenRating + communicationRating) / 2;
+
+        return Container(
+          padding: const EdgeInsets.all(20),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Leave a Review",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                const SizedBox(height: 20),
+
+                // Kitchen Readiness
+                const Text("Kitchen readiness",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                const SizedBox(height: 8),
+                _StarRatingRow(
+                  rating: kitchenRating,
+                  onChanged: (v) => setState(() => kitchenRating = v),
+                ),
+                const SizedBox(height: 16),
+
+                // Communication
+                const Text("Communication",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                const SizedBox(height: 8),
+                _StarRatingRow(
+                  rating: communicationRating,
+                  onChanged: (v) => setState(() => communicationRating = v),
+                ),
+                const SizedBox(height: 16),
+
+                // Average
+                Row(
+                  children: [
+                    const Text("Average Rating",
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                    const Spacer(),
+                    ...List.generate(5, (i) => Icon(
+                      i < avg.floor()
+                          ? Icons.star_rounded
+                          : (i < avg && avg % 1 >= 0.5)
+                          ? Icons.star_half_rounded
+                          : Icons.star_border_rounded,
+                      color: const Color(0xffFD713F),
+                      size: 20,
+                    )),
+                    const SizedBox(width: 4),
+                    Text(avg > 0 ? avg.toStringAsFixed(1) : "0.0",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 13)),
+                  ],
+                ),
+                const SizedBox(height: 20),
+
+                // Review text
+                TextField(
+                  controller: reviewController,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    hintText: "Write your review...",
+                    filled: true,
+                    fillColor: const Color(0xffF5F5F5),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Submit button
+                SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xff1A1A1A),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14)),
+                    ),
+                    onPressed: kitchenRating == 0 || communicationRating == 0
+                        ? null
+                        : () async {
+                      try {
+                        final response = await ApiService.post(
+                          ApiEndPoint.ChefReview,
+                          body: {
+                            "order_id": orderId,
+                            "communication": communicationRating,
+                            "kitchen_readiness": kitchenRating,
+                            "review": reviewController.text.trim(),
+                          },
+                        );
+                        if (response.statusCode == 200 &&
+                            response.data['success'] == true) {
+                          Get.back();
+                          onSuccess();
+                          Get.snackbar("Success", "Review submitted!",
+                              backgroundColor: Colors.green,
+                              colorText: Colors.white);
+                        } else {
+                          Get.snackbar(
+                            "Error",
+                            response.data?['message'] ?? "Something went wrong",
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                        }
+                      } catch (e) {
+                        Get.snackbar("Error", e.toString(),
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white);
+                      }
+                    },
+                    child: const Text("Submit",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600)),
+                  ),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
+        );
+      },
+    ),
+    isScrollControlled: true,
+  );
+}
+
+class _StarRatingRow extends StatelessWidget {
+  final double rating;
+  final ValueChanged<double> onChanged;
+  const _StarRatingRow({required this.rating, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xffF5F5F5),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: List.generate(5, (i) {
+          return GestureDetector(
+            onTap: () => onChanged((i + 1).toDouble()),
+            child: Icon(
+              i < rating ? Icons.star_rounded : Icons.star_border_rounded,
+              color: const Color(0xffFD713F),
+              size: 32,
+            ),
+          );
+        }),
+      ),
+    );
   }
 }
