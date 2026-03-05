@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/services/api/api_service.dart';
 import 'package:new_untitled/services/storage/storage_services.dart';
@@ -30,23 +31,78 @@ class ChefDetailsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Ensure CartController is available
     if (!Get.isRegistered<CartController>()) {
       Get.put(CartController());
     }
+
     if (Get.arguments != null && Get.arguments is ChefData) {
       chefArg = Get.arguments as ChefData;
+      chefId = chefArg!.id ?? ""; // ✅ Always set chefId from chefArg
       fetchChefDetails(chefArg!.id!);
-    }
-    if (Get.arguments != null && Get.arguments is String) {
-      //chefArg = Get.arguments as ChefData;
-      chefId=Get.arguments;
+    } else if (Get.arguments != null && Get.arguments is String) {
+      chefId = Get.arguments;
       print("id: 😍😍😍😍😍😍😍${chefId}");
       fetchChefDetails(chefId);
     }
+
     ever(innerBoxIsScrolled, (bool value) {
       appLog(value, source: "ChefDetailsController");
     });
+  }
+
+  DateTime selectedDate = DateTime.now();
+  String selectedTime = "";
+  List<String> timeSlots = []; // Start empty, fill from API
+  bool isSlotLoading = false;
+
+  // Method to fetch slots from API
+  Future<void> fetchAvailableSlots() async {
+    isSlotLoading = true;
+    update();
+
+    try {
+      // Formatting date to "yyyy-MM-dd" or as required by your logic
+      // The example shows "2026-01-12 8:20 PM", but usually availability
+      // check only needs the date part.
+      String formattedDate = "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}";
+
+      final response = await ApiService.post(
+        "user/check-chef-availability/$chefId",
+        body: {"date": formattedDate},
+      );
+
+      if (response.statusCode == 200) {
+        // Map the "data" list from response to our timeSlots list
+        timeSlots = List<String>.from(response.data['data']);
+      } else {
+        timeSlots = [];
+        Get.snackbar("Error", "Could not fetch slots");
+      }
+    } catch (e) {
+      timeSlots = [];
+      debugPrint("Slot Fetch Error: $e");
+    } finally {
+      isSlotLoading = false;
+      update();
+    }
+  }
+
+  void selectDate(DateTime date, String passedChefId) {
+    selectedDate = date;
+    selectedTime = ""; // Reset time when date changes
+
+    // ✅ FIX: Ensure chefId is set from either the passed value or chefArg
+    if (chefId.isEmpty && chefArg?.id != null) {
+      chefId = chefArg!.id!;
+    }
+
+    fetchAvailableSlots(); // Call API immediately
+    update();
+  }
+
+  void selectTime(String time) {
+    selectedTime = time;
+    update();
   }
 
   // ── Chef detail ─────────────────────────────────────────────────────────────
@@ -179,7 +235,7 @@ class ChefDetailsController extends GetxController {
 
   // ── Misc state ───────────────────────────────────────────────────────────────
 
-  DateTime selectedDate = DateTime.now();
+  /*DateTime selectedDate = DateTime.now();
   List<String> selectedTime = [];
   final List<String> timeSlots = [
     "10:00 AM", "11:00 AM", "12:00 PM",
@@ -195,7 +251,7 @@ class ChefDetailsController extends GetxController {
       selectedTime.add(time);
     }
     update();
-  }
+  }*/
 
   bool isFavorite = false;
   bool isExpanded = false;

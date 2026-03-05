@@ -6,7 +6,11 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/chef_detail_controller.dart';
 
-void availabilityPopup(BuildContext context) {
+void availabilityPopup(BuildContext context, String chefId) {
+  // Trigger initial fetch for today's date
+  final controller = Get.find<ChefDetailsController>();
+  controller.fetchAvailableSlots();
+
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -14,10 +18,8 @@ void availabilityPopup(BuildContext context) {
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
-    constraints: BoxConstraints(maxHeight: Get.height - 100),
     builder: (context) {
       return GetBuilder<ChefDetailsController>(
-        init: ChefDetailsController(),
         builder: (controller) {
           return SafeArea(
             child: SingleChildScrollView(
@@ -25,76 +27,62 @@ void availabilityPopup(BuildContext context) {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  16.height,
                   TableCalendar(
                     firstDay: DateTime.now(),
                     lastDay: DateTime.now().add(const Duration(days: 60)),
                     focusedDay: controller.selectedDate,
-                    selectedDayPredicate:
-                        (day) => isSameDay(day, controller.selectedDate),
+                    selectedDayPredicate: (day) => isSameDay(day, controller.selectedDate),
                     onDaySelected: (selectedDay, focusedDay) {
-                      controller.selectDate(selectedDay);
+                      controller.selectDate(selectedDay, chefId); // Pass chefId here
                     },
-                    calendarStyle: CalendarStyle(
-                      selectedDecoration: BoxDecoration(
-                        color: Colors.black,
-                        shape: BoxShape.circle,
-                      ),
-                      todayDecoration: BoxDecoration(
-                        color: Colors.green.withValues(alpha: 0.3),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
+                    // ... calendar style ...
                   ),
 
-                  const SizedBox(height: 20),
+                  20.height,
+                  const CommonText(text: "Select start time", fontSize: 14, fontWeight: FontWeight.w600),
+                  12.height,
 
-                  /// Time Slots
-                  const CommonText(
-                    text: "Select start time",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
-                    children:
-                        controller.timeSlots.map((time) {
-                          final isSelected = controller.selectedTime.contains(
-                            time,
-                          );
-
-                          return GestureDetector(
-                            onTap: () => controller.selectTime(time),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                color:
-                                    isSelected
-                                        ? Color(0xff272727)
-                                        : Color(0xffF2F2F2),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: CommonText(
-                                text: time,
-                                color: isSelected ? Colors.white : Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ),
+                  // Show loader or slots
+                  if (controller.isSlotLoading)
+                    const Center(child: CircularProgressIndicator())
+                  else if (controller.timeSlots.isEmpty)
+                    const Center(child: CommonText(text: "No slots available for this date", fontSize: 12))
+                  else
+                    Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: controller.timeSlots.map((time) {
+                        final isSelected = controller.selectedTime == time;
+                        return GestureDetector(
+                          onTap: () => controller.selectTime(time),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: isSelected ? const Color(0xff272727) : const Color(0xffF2F2F2),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          );
-                        }).toList(),
-                  ),
+                            child: CommonText(
+                              text: time,
+                              color: isSelected ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
 
                   24.height,
-                  CommonButton(titleText: "Done", onTap: () => Get.back()),
+                  CommonButton(
+                      titleText: "Done",
+                      onTap: () {
+                        // You can return the data back to the screen
+                        Get.back(result: {
+                          'date': controller.selectedDate,
+                          'time': controller.selectedTime
+                        });
+                      }
+                  ),
                 ],
               ),
             ),

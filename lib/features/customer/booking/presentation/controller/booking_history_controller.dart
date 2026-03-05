@@ -227,12 +227,13 @@ class BookingHistoryController extends GetxController {
         // Navigate back to Booking History or Home
         Get.offAllNamed(AppRoutes.customerHomeScreen);
       } else {
-        Get.snackbar("Error", response.data['message'] ?? "Failed to send request");
+        //Get.snackbar("Error", response.data['message'] ?? "Failed to send request");
+        Utils.errorSnackBar("Error", response.message);
       }
     } catch (e) {
       Get.back();
       debugPrint("Request Change Error: $e");
-      Get.snackbar("Error", "Something went wrong");
+      Utils.errorSnackBar("Error", "Somthing error");
     }
   }
 }
