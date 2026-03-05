@@ -9,7 +9,7 @@ class ConfirmedGroceryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Initialize the controller
+    // Initialize the controller - it will automatically pick up the arguments
     final controller = Get.put(ConfirmedGroceryController());
 
     return Scaffold(
@@ -40,6 +40,17 @@ class ConfirmedGroceryScreen extends StatelessWidget {
               fontSize: 14,
               textAlign: TextAlign.start,
             ),
+
+            // --- UI Note: Showing the IDs for your reference ---
+            if (controller.receivedOrderIds.isNotEmpty) ...[
+              SizedBox(height: 10.h),
+              CommonText(
+                text: "Selected Orders: ${controller.receivedOrderIds.length}",
+                color: const Color(0xffFD713F),
+                fontWeight: FontWeight.w600,
+              ),
+            ],
+
             SizedBox(height: 32.h),
             const CommonText(
               text: "Choose your grocery delivery partner",
@@ -54,10 +65,9 @@ class ConfirmedGroceryScreen extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
 
-            // Reactive Partner Icon
             Obx(() => _buildPartnerIcon(
               name: "Instacart",
-              imagePath: "assets/images/instacart_logo.png",
+              imagePath: "assets/images/intacart.png", // Corrected path to match your asset
               isSelected: controller.selectedPartner.value == "Instacart",
               controller: controller,
             )),
@@ -71,7 +81,7 @@ class ConfirmedGroceryScreen extends StatelessWidget {
     required String name,
     required String imagePath,
     required bool isSelected,
-    required ConfirmedGroceryController controller, // Required parameter to fix null errors
+    required ConfirmedGroceryController controller,
   }) {
     return GestureDetector(
       onTap: () {
@@ -86,7 +96,7 @@ class ConfirmedGroceryScreen extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: const Color(0xffF5F5F5),
-              border: isSelected ? Border.all(color: Colors.black12, width: 1) : null,
+              border: isSelected ? Border.all(color: const Color(0xffFD713F), width: 2) : null,
             ),
             child: Center(
               child: Image.asset(
@@ -101,7 +111,7 @@ class ConfirmedGroceryScreen extends StatelessWidget {
           CommonText(
             text: name,
             fontSize: 12,
-            color: Colors.grey,
+            color: isSelected ? Colors.black : Colors.grey,
           ),
         ],
       ),

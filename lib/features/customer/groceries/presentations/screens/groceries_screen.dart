@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/my_groceries_screen.dart';
 import '../../../../../component/button/common_button.dart';
@@ -52,7 +53,15 @@ class GroceryScreen extends StatelessWidget {
                 ] else ...[
                   const CommonText(text: "Select bookings for grocery delivery", color: Colors.grey),
                   SizedBox(height: 16.h),
-                  _buildFullListView(controller),
+                  // Inside the Column, replace _buildFullListView(controller) with:
+                  controller.availableOrders.isEmpty
+                      ? Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20.h),
+                      child: const CommonText(text: "No pending bookings available", color: Colors.grey),
+                    ),
+                  )
+                      : _buildFullListView(controller),
                 ],
 
                 SizedBox(height: 24.h),
@@ -113,7 +122,15 @@ class GroceryScreen extends StatelessWidget {
                   CommonButton(
                     titleText: "Add to Cart",
                     onTap: () {
-                      Get.to(()=>ConfirmedGroceryScreen());
+                      // We send the list of selected IDs to the next screen
+                      if (controller.selectedOrderIds.isNotEmpty) {
+                        Get.to(
+                              () => const ConfirmedGroceryScreen(),
+                          arguments: controller.selectedOrderIds.toList(), // Sending the list
+                        );
+                      } else {
+                        Get.snackbar("Selection Required", "Please select at least one booking.");
+                      }
                     },
                   ),
                 SizedBox(height: 30.h),
@@ -149,8 +166,24 @@ class GroceryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBookingCard({required Map<String, dynamic> order, required bool isSelected, required VoidCallback onTap}) {
+  Widget _buildBookingCard({
+    required Map<String, dynamic> order,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
     final chef = order['chef'] ?? {};
+    final List staticItems = order['static_items'] as List? ?? [];
+
+    // 1. Extract the first image from each menu item in static_items
+    List<String> recipeImages = [];
+    for (var item in staticItems) {
+      final menu = item['menu'] ?? {};
+      final List images = menu['images'] as List? ?? [];
+      if (images.isNotEmpty && images[0] != null) {
+        recipeImages.add(images[0].toString());
+      }
+    }
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -163,19 +196,78 @@ class GroceryScreen extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(isSelected ? Icons.check_circle : Icons.circle_outlined, color: isSelected ? const Color(0xffFD713F) : Colors.grey[400], size: 22),
-            SizedBox(width: 12.w),
-            CircleAvatar(radius: 20.r, backgroundImage: NetworkImage(chef['image'] ?? "")),
-            SizedBox(width: 12.w),
+            Icon(
+              isSelected ? Icons.check_circle : Icons.circle_outlined,
+              color: isSelected ? const Color(0xffFD713F) : Colors.grey[400],
+              size: 22,
+            ),
+            SizedBox(width: 8.w),
+            CircleAvatar(
+              radius: 20.r,
+              backgroundImage: NetworkImage(chef['image'] ?? ""),
+            ),
+            SizedBox(width: 10.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(text: chef['name'] ?? "", fontWeight: FontWeight.bold, fontSize: 14),
-                  CommonText(text: "Order ID: ${order['order_id'] ?? ''}", color: Colors.grey, fontSize: 12),
+                  CommonText(
+                    text: chef['name'] ?? "Unknown Chef",
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                  CommonText(
+                    text: "${staticItems.length} Recipe • ${order['order_id'] ?? ''}",
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
                 ],
               ),
             ),
+
+            // --- 2. CONDITIONAL IMAGE SECTION ---
+            // Only show this block if there are images available
+            if (recipeImages.isNotEmpty)
+              Row(
+                children: [
+                  // Show max 2 images
+                  ...recipeImages.take(2).map((imageUrl) => Padding(
+                    padding: EdgeInsets.only(left: 6.w),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.r),
+                      child: Image.network(
+                        ApiEndPoint.imageUrl+imageUrl,
+                        width: 40.w,
+                        height: 40.w,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                        const SizedBox.shrink(), // Hide if URL fails
+                      ),
+                    ),
+                  )),
+
+                  // 3. Show "more" count only if recipes exceed the 2 displayed images
+                  if (staticItems.length > 2)
+                    Padding(
+                      padding: EdgeInsets.only(left: 6.w),
+                      child: Container(
+                        width: 45.w,
+                        height: 40.w,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.6),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: CommonText(
+                          text: "${staticItems.length - 2} more\nitems",
+                          fontSize: 8,
+                          textAlign: TextAlign.center,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
           ],
         ),
       ),

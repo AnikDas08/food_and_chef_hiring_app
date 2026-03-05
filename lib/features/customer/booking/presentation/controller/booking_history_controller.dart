@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/utils/app_utils.dart';
+import '../../../../../config/route/app_routes.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../data/booking_model.dart'; // For the list items
 import '../../data/data.dart';
@@ -110,17 +111,64 @@ class BookingHistoryController extends GetxController {
 
   /// 3. Helper for History Timeline logic
   /// This scans the 'history' array to find the current progress index.
-  int getStatusIndex(List<OrderHistory> history) {
+  // lib/features/booking_history/controller/booking_history_controller.dart
+
+  int getStatusIndex(List<dynamic> history) {
     if (history.isEmpty) return -1;
 
-    // We find the highest index that exists in the history array
     int maxIndex = 0;
-    if (history.any((e) => e.type == "Booking Ordered")) maxIndex = 0;
-    if (history.any((e) => e.type == "Chef Confirmed")) maxIndex = 1;
-    if (history.any((e) => e.type == "Groceries Ordered")) maxIndex = 2;
-    if (history.any((e) => e.type == "Booking Completed")) maxIndex = 3;
+
+    for (var entry in history) {
+      // If entry is a model (OrderHistory), use entry.type
+      // If it's a map (for some reason), use entry['type']
+      String? type;
+      if (entry is OrderHistory) {
+        type = entry.type;
+      } else if (entry is Map) {
+        type = entry['type'];
+      }
+
+      if (type == "Booking Ordered") maxIndex = maxIndex < 0 ? 0 : maxIndex;
+      if (type == "Chef Confirmed") maxIndex = 1;
+      if (type == "Groceries Ordered") maxIndex = 2;
+      if (type == "Booking Completed") maxIndex = 3;
+    }
 
     return maxIndex;
+  }
+
+  // lib/features/booking_history/controller/booking_history_controller.dart
+
+  Future<void> cancelBooking(String id, String reason) async {
+    if (reason.isEmpty) {
+      Get.snackbar("Required", "Please provide a reason for cancellation");
+      return;
+    }
+
+    try {
+      // Show a simple loading overlay
+      Get.dialog(const Center(child: CircularProgressIndicator(color: Color(0xffFD713F))), barrierDismissible: false);
+
+      final response = await ApiService.patch(
+        "order/change-status/$id",
+        body: {
+          "status": "Canceled",
+          "cancel_reason": reason // Sending the reason here
+        },
+      );
+
+      Get.back(); // Close loading indicator
+
+      if (response.statusCode == 200) {
+        Get.snackbar("Success", "Booking cancelled", backgroundColor: Colors.green, colorText: Colors.white);
+        await fetchOrders(isRefresh: true);
+      } else {
+        Get.snackbar("Error", response.data['message'] ?? "Failed to cancel");
+      }
+    } catch (e) {
+      Get.back(); // Close loading
+      debugPrint("Cancel Error: $e");
+    }
   }
 
   /// 4. Action Handlers
@@ -140,5 +188,51 @@ class BookingHistoryController extends GetxController {
   void onChangeOrderDetailsPopup() {
     isOrderDetailsPopup = !isOrderDetailsPopup;
     update();
+  }
+
+  // lib/features/booking_history/controller/booking_history_controller.dart
+
+  Future<void> submitChangeRequest({
+    required String orderId,
+    required String date,       // e.g., "2026-01-22"
+    required String time,       // e.g., "05:00 PM"
+    required String addressId,
+    required String note,
+  }) async {
+    if (date.isEmpty || time.isEmpty || addressId.isEmpty) {
+      Get.snackbar("Error", "Please select both date/time and address");
+      return;
+    }
+
+    try {
+      // Show loading overlay
+      Get.dialog(const Center(child: CircularProgressIndicator(color: Color(0xffFD713F))), barrierDismissible: false);
+
+      final Map<String, dynamic> body = {
+        "requested_date": date,
+        "requested_time": time,
+        "address_id": addressId,
+        "note": note,
+      };
+
+      // End URL: order/change-status/{id}
+      final response = await ApiService.post("order/change-schedule/$orderId", body: body);
+
+      Get.back(); // Close loading
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Get.snackbar("Success", "Request change sent successfully",
+            backgroundColor: Colors.green, colorText: Colors.white);
+
+        // Navigate back to Booking History or Home
+        Get.offAllNamed(AppRoutes.customerHomeScreen);
+      } else {
+        Get.snackbar("Error", response.data['message'] ?? "Failed to send request");
+      }
+    } catch (e) {
+      Get.back();
+      debugPrint("Request Change Error: $e");
+      Get.snackbar("Error", "Something went wrong");
+    }
   }
 }

@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/features/customer/booking/presentation/widgets/request_change_popup.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -297,33 +298,52 @@ Widget _buildOrderDetailsAccordion(BookingHistoryController controller, dynamic 
 }
 
 Widget _buildBottomActions(BuildContext context, dynamic order) {
+  // 1. Safely check history using property access (.type) instead of Map access (['type'])
+  bool alreadyOrderedGroceries = false;
+  final String status = order.status;
+
+  if (order.history != null) {
+    // We iterate through the list of OrderHistory objects
+    for (var entry in order.history) {
+      // Use the dot operator because entry is an Instance of OrderHistory
+      if (entry.type == "Groceries Ordered") {
+        alreadyOrderedGroceries = true;
+        break;
+      }
+    }
+  }
+
+  // 2. The Condition: Show only if status is "Confirm" AND groceries haven't been ordered yet
+  bool showGroceryButton = (order.status == "Confirm") && !alreadyOrderedGroceries;
+  bool showEditButton = (status == "Awaiting Confirmation" || status == "Confirm");
+
   return Row(
     children: [
-      // If status is "Confirm", show the Expanded Button
-      if (order.status == "Confirm")
+      if (showGroceryButton)
         Expanded(
           child: CommonButton(
             titleText: AppString.orderGroceries,
             buttonHeight: 48,
             buttonRadius: 16,
             onTap: () {
-              Get.back();
+              Get.back(); // Close BottomSheet
               Get.to(() => const GroceryScreen(), arguments: order.id);
             },
           ),
         )
       else
-      // If not confirmed, this space can be empty or show a different message
+      // Using a Spacer or a 'Status' message if button is hidden
         const Spacer(),
 
       _circularIconButton(AppIcons.chats, () {
         // Handle chat navigation
       }),
 
-      _circularIconButton(AppIcons.edit, () {
-        Get.back();
-        // Handle edit logic
-      }),
+      if (showEditButton)
+        _circularIconButton(AppIcons.edit, () {
+          Get.back();
+          requestChange(context,order);
+        }),
     ],
   );
 }

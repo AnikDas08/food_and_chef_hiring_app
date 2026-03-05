@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/grocerie_controller.dart';
+import '../controller/my_grocerires_controller.dart';
 
 class GroceryConfirmationPopup extends StatelessWidget {
   const GroceryConfirmationPopup({super.key});
@@ -54,16 +55,23 @@ class GroceryConfirmationPopup extends StatelessWidget {
               width: double.infinity,
               height: 55.h,
               child: ElevatedButton(
-                onPressed: () => {
-                  Get.back(),
+                onPressed: () {
+                  // 1. Close the popup first
+                  Get.back();
+
+                  // 2. Find the controller and trigger the API loop
+                  final controller = Get.find<ConfirmedGroceryController>();
+                  controller.confirmGroceries();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff262626),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
                   elevation: 0,
                 ),
-                child: const Text("I got my groceries",
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                child: const Text(
+                  "I got my groceries",
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                ),
               ),
             ),
             SizedBox(height: 12.h),

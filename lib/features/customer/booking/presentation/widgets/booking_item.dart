@@ -10,6 +10,7 @@ import '../../../../../config/api/api_end_point.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../data/booking_model.dart';
+import '../controller/booking_history_controller.dart';
 import 'details_popup.dart';
 
 Widget bookingItem(BookingHistoryModel order) {
@@ -38,18 +39,20 @@ Widget bookingItem(BookingHistoryModel order) {
                   width: 40,
                   height: 40,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => CircleAvatar(
-                    radius: 20,
-                    backgroundColor: const Color(0xffE0E0E0),
-                    child: CommonText(
-                      text: order.chef.name.isNotEmpty
-                          ? order.chef.name[0].toUpperCase()
-                          : '?',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xff272727),
-                    ),
-                  ),
+                  errorBuilder:
+                      (_, __, ___) => CircleAvatar(
+                        radius: 20,
+                        backgroundColor: const Color(0xffE0E0E0),
+                        child: CommonText(
+                          text:
+                              order.chef.name.isNotEmpty
+                                  ? order.chef.name[0].toUpperCase()
+                                  : '?',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff272727),
+                        ),
+                      ),
                 ),
               ),
 
@@ -81,9 +84,9 @@ Widget bookingItem(BookingHistoryModel order) {
                 padding: EdgeInsets.zero,
                 menuPadding: EdgeInsets.zero,
                 elevation: 0,
-                icon: RotatedBox(
+                icon: const RotatedBox(
                   quarterTurns: 1,
-                  child: const Icon(CupertinoIcons.ellipsis),
+                  child: Icon(CupertinoIcons.ellipsis),
                 ),
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -91,21 +94,67 @@ Widget bookingItem(BookingHistoryModel order) {
                 ),
                 onSelected: (value) {
                   if (value == 1) {
-                    Get.toNamed(AppRoutes.requestChange, arguments: order);
+                    Get.toNamed(AppRoutes.requestChange, arguments: order.id);
                   }
+                  // Inside onSelected in bookingItem
+
+                  else if (value == 2) {
+                    final TextEditingController reasonController = TextEditingController();
+
+                    Get.dialog(
+                      AlertDialog(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+                        title: const CommonText(text: "Cancel Booking", fontWeight: FontWeight.bold),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const CommonText(text: "Please provide a reason for cancelling this booking:",maxLines:  4, fontSize: 13,textAlign: TextAlign.start, bottom: 12),
+                            TextField(
+                              controller: reasonController,
+                              maxLines: 3,
+                              decoration: InputDecoration(
+                                hintText: "Enter reason here...",
+                                hintStyle: const TextStyle(fontSize: 12),
+                                fillColor: const Color(0xffF5F5F5),
+                                filled: true,
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.r), borderSide: BorderSide.none),
+                              ),
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(onPressed: () => Get.back(), child: const Text("Cancel")),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(backgroundColor: Colors.red, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r))),
+                            onPressed: () {
+                              if (reasonController.text.trim().isEmpty) {
+                                Get.snackbar("Reason Required", "Please enter a reason before cancelling.");
+                              } else {
+                                Get.back(); // Close dialog
+                                Get.find<BookingHistoryController>().cancelBooking(order.id, reasonController.text.trim());
+                              }
+                            },
+                            child: const Text("Confirm Cancel", style: TextStyle(color: Colors.white)),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  // Add logic for value == 2 (Cancel) if needed
                 },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: 1,
-                    child: Row(
-                      children: const [
-                        Icon(CupertinoIcons.pencil, size: 20, color: Colors.black),
-                        SizedBox(width: 10),
-                        CommonText(text: "Request a Change", fontSize: 14),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
+                itemBuilder: (context) {
+                  final String status = order.status.toLowerCase();
+
+                  // 1. If status is Cancelled, Completed, or Declined, show nothing
+                  if (status == 'canceled' ||
+                      status == 'completed' ||
+                      status == 'decline' ||
+                      status == 'declined') {
+                    return [];
+                  }
+
+                  // 2. Define the Cancel Item (Shared by Awaiting and Confirm)
+                  final cancelItem = PopupMenuItem(
                     value: 2,
                     child: Row(
                       children: const [
@@ -119,8 +168,36 @@ Widget bookingItem(BookingHistoryModel order) {
                         ),
                       ],
                     ),
-                  ),
-                ],
+                  );
+
+                  // 3. Define the Request Change Item
+                  final requestChangeItem = PopupMenuItem(
+                    value: 1,
+                    child: Row(
+                      children: const [
+                        Icon(
+                          CupertinoIcons.pencil,
+                          size: 20,
+                          color: Colors.black,
+                        ),
+                        SizedBox(width: 10),
+                        CommonText(text: "Request a Change", fontSize: 14),
+                      ],
+                    ),
+                  );
+
+                  // 4. Return items based on status
+                  if (status == 'confirm' || status == 'confirmed') {
+                    return [requestChangeItem, cancelItem];
+                  }
+
+                  if (status == 'awaiting confirmation') {
+                    return [cancelItem];
+                  }
+
+                  // Default fallback (usually for unknown statuses)
+                  return [cancelItem];
+                },
               ),
             ],
           ),
@@ -150,7 +227,11 @@ Widget bookingItem(BookingHistoryModel order) {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CommonImage(imageSrc: AppIcons.ingredients, width: 16, height: 16),
+              CommonImage(
+                imageSrc: AppIcons.ingredients,
+                width: 16,
+                height: 16,
+              ),
               Flexible(
                 child: CommonText(
                   text: _buildMenuText(order.staticItems),
@@ -196,10 +277,15 @@ Widget bookingItem(BookingHistoryModel order) {
               ),
               child: Row(
                 children: [
-                  const Icon(CupertinoIcons.info, color: Color(0xffFD713F), size: 16),
+                  const Icon(
+                    CupertinoIcons.info,
+                    color: Color(0xffFD713F),
+                    size: 16,
+                  ),
                   Flexible(
                     child: CommonText(
-                      text: "Rescheduled to ${_formatDate(order.changeSchedule!)}",
+                      text:
+                          "Rescheduled to ${_formatDate(order.changeSchedule!)}",
                       fontSize: 12,
                       left: 4,
                       textAlign: TextAlign.left,
@@ -224,7 +310,11 @@ Widget bookingItem(BookingHistoryModel order) {
               ),
               child: Row(
                 children: [
-                  const Icon(CupertinoIcons.xmark_circle, color: Colors.red, size: 16),
+                  const Icon(
+                    CupertinoIcons.xmark_circle,
+                    color: Colors.red,
+                    size: 16,
+                  ),
                   Flexible(
                     child: CommonText(
                       text: "Cancelled: ${order.cancelReason}",
@@ -266,8 +356,18 @@ String _formatDate(String isoDate) {
   try {
     final dt = DateTime.parse(isoDate).toLocal();
     final months = [
-      'Jan','Feb','Mar','Apr','May','Jun',
-      'Jul','Aug','Sep','Oct','Nov','Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     final hour = dt.hour > 12 ? dt.hour - 12 : (dt.hour == 0 ? 12 : dt.hour);
     final period = dt.hour >= 12 ? 'PM' : 'AM';
@@ -290,6 +390,7 @@ String _buildMenuText(List<StaticItem> items) {
 
 class _StatusBadge extends StatelessWidget {
   final String status;
+
   const _StatusBadge({required this.status});
 
   @override

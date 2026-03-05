@@ -33,18 +33,53 @@ class GroceryController extends GetxController {
 
   Future<void> fetchAllOrders() async {
     try {
+      // 1. Fetch data from API
       final response = await ApiService.get("order?limit=50");
       if (response.statusCode == 200) {
         List allData = response.data['data'] ?? [];
-        availableOrders.value = allData.where((order) {
+
+        // 2. Apply BOTH filters at once
+        final filteredList = allData.where((order) {
+          // A. Check Status first
           final status = order['status']?.toString();
-          return status == "Confirm" || status == "Completed";
-        }).toList().cast<Map<String, dynamic>>();
+          bool isCorrectStatus = (status == "Confirm" || status == "Completed");
+
+          // B. Check History for "Groceries Ordered"
+          final List history = order['history'] as List? ?? [];
+          bool alreadyOrderedGroceries = history.any((entry) =>
+          entry['type'] == "Groceries Ordered"
+          );
+
+          // Return true ONLY if it has the right status AND hasn't been ordered yet
+          return isCorrectStatus && !alreadyOrderedGroceries;
+        }).toList();
+
+        // 3. Update the observable list that the UI is watching
+        availableOrders.value = filteredList.cast<Map<String, dynamic>>();
       }
     } catch (e) {
       debugPrint("Orders Fetch Error: $e");
     }
   }
+
+  var allOrders = <Map<String, dynamic>>[].obs;
+
+// Computed list that only shows orders WITHOUT "Groceries Ordered" in history
+  List<Map<String, dynamic>> get filteredOrders {
+    return allOrders.where((order) {
+      final List history = order['history'] as List? ?? [];
+
+      // We check if "Groceries Ordered" exists in the history
+      bool hasGroceriesOrdered = history.any((entry) =>
+      entry['type'] == "Groceries Ordered"
+      );
+
+      // Return true ONLY if it DOES NOT have "Groceries Ordered"
+      return !hasGroceriesOrdered;
+    }).toList();
+  }
+
+
 
   Future<void> fetchIngredients() async {
     if (selectedOrderIds.isEmpty) {
