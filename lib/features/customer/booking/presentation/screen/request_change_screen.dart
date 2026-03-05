@@ -196,17 +196,17 @@ class RequestChangeScreen extends StatelessWidget {
         child: CommonButton(
           titleText: AppString.request,
           onTap: () {
-            final cartCtrl = Get.find<CartController>();
+            final cartController = Get.find<CartController>();
             final historyCtrl = Get.find<BookingHistoryController>();
 
             // Format the date to YYYY-MM-DD
-            String formattedDate = "${cartCtrl.selectedDate.year}-${cartCtrl.selectedDate.month.toString().padLeft(2, '0')}-${cartCtrl.selectedDate.day.toString().padLeft(2, '0')}";
+            String formattedDate = "${cartController.selectedDate.year}-${cartController.selectedDate.month.toString().padLeft(2, '0')}-${cartController.selectedDate.day.toString().padLeft(2, '0')}";
 
             historyCtrl.submitChangeRequest(
               orderId: orderId,
               date: formattedDate,
-              time: cartCtrl.selectedTime, // Takes "05:00 PM" from CartController
-              addressId: cartCtrl.selectedAddress?.id ?? "",
+              time: cartController.selectedTime, // Takes "05:00 PM" from CartController
+              addressId: cartController.selectedAddress?.id ?? "",
               note: noteController.text.trim(),
             );
           },
