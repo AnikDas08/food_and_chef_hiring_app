@@ -86,9 +86,6 @@ class ChefProfileController extends GetxController {
   bool isWeekend = false;
   bool isAutoAccept = false;
 
-  /// Form Key
-  final formKey = GlobalKey<FormState>();
-
   /// Language & Profile
   String selectedLanguage = "English";
   Map<String, dynamic> selectedProfile = {
@@ -115,13 +112,15 @@ class ChefProfileController extends GetxController {
     update();
 
     try {
-      final response = await ApiService.multipartImage(
+
+      final Map<String, dynamic> body = {
+        "email": emailController.text.trim(),
+        "contact": phoneController.text.trim(),
+      };
+
+      final response = await ApiService.patch(
         ApiEndPoint.user,
-        method: "PATCH",
-        body: {
-          'email': emailController.text.trim(),
-          'contact': phoneController.text.trim(),
-        },
+        body: body,
       );
 
       if (response.statusCode == 200 && response.data['success'] == true) {
@@ -275,10 +274,10 @@ class ChefProfileController extends GetxController {
       return '';
     }
   }
-
-  Future<void> editProfileRepo() async {
+  Future<void> editProfileRepo(GlobalKey<FormState> formKey) async {
     if (!formKey.currentState!.validate()) return;
     if (!LocalStorage.isLogIn) return;
+
 
     if (selectedLat == null || selectedLng == null) {
       Utils.errorSnackBar("Error", "Please select a valid address from the suggestions");

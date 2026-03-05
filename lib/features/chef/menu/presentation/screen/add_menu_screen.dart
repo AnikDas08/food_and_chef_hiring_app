@@ -287,7 +287,7 @@ class AddMenuScreen extends StatelessWidget {
                     // ── Item Name ──
                     _label("Item Name"),
                     8.verticalSpace,
-                    _textField(c.nameController, "e.g. Quesadilla"),
+                    _textField(c.nameController, "Enter Item Name"),
                     16.verticalSpace,
 
                     // ── Description ──

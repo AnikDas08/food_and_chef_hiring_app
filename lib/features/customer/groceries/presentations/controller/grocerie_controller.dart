@@ -4,19 +4,18 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../../services/api/api_service.dart';
 
 class GroceryController extends GetxController {
-  // Capture initial ID if coming from the Booking Details popup
+
   final String? initialOrderId = Get.arguments?.toString();
 
-  // Loading States
-  var isLoading = false.obs;             // For the initial order list
-  var isIngredientsLoading = false.obs;  // For the basket section
-  var isInstacartLoading = false.obs;    // For the API post call
+  var isLoading = false.obs;
+  var isIngredientsLoading = false.obs;
+  var isInstacartLoading = false.obs;
 
   // Data Observables
   var availableOrders = <Map<String, dynamic>>[].obs;
   var basketItems = <Map<String, dynamic>>[].obs;
   var selectedOrderIds = <String>[].obs;
-  var selectedPartner = "".obs; // "Instacart" or "Self"
+  var selectedPartner = "".obs;
 
   @override
   void onInit() {
@@ -24,14 +23,12 @@ class GroceryController extends GetxController {
     initializeData();
   }
 
-  /// Initial setup logic
   Future<void> initializeData() async {
+
     isLoading.value = true;
 
-    // 1. Always fetch all orders to populate the selection list
     await fetchAllOrders();
 
-    // 2. If we arrived with a specific ID, select it and fetch ingredients immediately
     if (initialOrderId != null && initialOrderId!.isNotEmpty) {
       selectedOrderIds.add(initialOrderId!);
       await fetchIngredients();
@@ -40,8 +37,8 @@ class GroceryController extends GetxController {
     isLoading.value = false;
   }
 
-  /// Scenario: Fetch all orders and filter for "Confirm" or "Completed"
   Future<void> fetchAllOrders() async {
+
     try {
       final response = await ApiService.get("order?limit=50");
       if (response.statusCode == 200) {

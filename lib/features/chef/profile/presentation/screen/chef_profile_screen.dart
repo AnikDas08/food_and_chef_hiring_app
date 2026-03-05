@@ -187,8 +187,7 @@ class ChefProfileScreen extends StatelessWidget {
                         title: AppString.bankManagement,
                         onTap: () {
                           final profile = Get.find<ChefHomeController>().chefProfile.value;
-                          final stripeUrl = profile?.stripeLoginLink; // বা যে field নামে আছে
-
+                          final stripeUrl = profile?.stripeLoginLink;
                           if (stripeUrl != null && stripeUrl.isNotEmpty) {
                             Get.to(() => StripeWebViewPage(url: stripeUrl));
                           } else {

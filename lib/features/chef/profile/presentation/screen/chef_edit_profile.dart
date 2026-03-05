@@ -9,79 +9,102 @@ import '../../../../../../utils/constants/app_images.dart';
 import '../controller/chef_profile_controller.dart';
 import '../widgets/chef_profile_all_filed.dart';
 
-class ChefEditProfile extends StatelessWidget {
+class ChefEditProfile extends StatefulWidget {
   const ChefEditProfile({super.key});
+
+  @override
+  State<ChefEditProfile> createState() => _ChefEditProfileState();
+}
+
+class _ChefEditProfileState extends State<ChefEditProfile> {
+  // ✅ Local formKey
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ChefProfileController>(
       builder: (controller) {
         return Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 0,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new,
-                  size: 20, color: Color(0xff272727)),
-              onPressed: () => Get.back(),
+            scrolledUnderElevation: 0,
+            leading: GestureDetector(
+              onTap: () => Get.back(),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                size: 18,
+                color: Color(0xff272727),
+              ),
             ),
           ),
           body: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Form(
-              key: controller.formKey,
+              key: _formKey, // ✅ controller.formKey না
               child: SafeArea(
+                top: false,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CommonText(
-                      text: 'Edit Profile',
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff272727),
-                      bottom: 28,
+                    SizedBox(height: 4.h),
+                    const Text(
+                      'Edit Profile',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff1A1A1A),
+                      ),
                     ),
-
+                    SizedBox(height: 24.h),
                     Stack(
                       clipBehavior: Clip.none,
                       children: [
                         CircleAvatar(
-                          radius: 34.sp,
-                          backgroundColor: Colors.transparent,
+                          radius: 36.sp,
+                          backgroundColor: const Color(0xffF0F0F0),
                           child: ClipOval(
                             child: controller.image != null
                                 ? Image.file(
                               File(controller.image!),
-                              width: 68.sp,
-                              height: 68.sp,
-                              fit: BoxFit.fill,
+                              width: 72.sp,
+                              height: 72.sp,
+                              fit: BoxFit.cover,
                             )
-                                : const CommonImage(
+                                : CommonImage(
                               imageSrc: AppImages.image3,
-                              height: 68,
-                              width: 68,
-                              fill: BoxFit.fill,
+                              height: 72.sp,
+                              width: 72.sp,
+                              fill: BoxFit.cover,
                             ),
                           ),
                         ),
                         Positioned(
-                          bottom: -10,
-                          left: 40,
-                          child: InkWell(
+                          bottom: -4,
+                          left: 48,
+                          child: GestureDetector(
                             onTap: controller.getProfileImage,
                             child: Container(
-                              padding: EdgeInsets.all(8.sp),
+                              padding: EdgeInsets.all(6.sp),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                                 border: Border.all(
-                                  color: const Color(0xffF1F1F1),
-                                  width: 2,
+                                  color: const Color(0xffE0E0E0),
+                                  width: 1.5,
                                 ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.08),
+                                    blurRadius: 6,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
                               ),
                               child: Icon(
-                                Icons.mode_edit_outline_outlined,
-                                size: 16.sp,
+                                Icons.edit_outlined,
+                                size: 14.sp,
                                 color: const Color(0xff272727),
                               ),
                             ),
@@ -89,25 +112,17 @@ class ChefEditProfile extends StatelessWidget {
                         ),
                       ],
                     ),
-
-                    const CommonText(
-                      text: 'PERSONAL DETAILS',
-                      bottom: 12,
-                      top: 28,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff777777),
-                    ),
-
+                    SizedBox(height: 28.h),
+                    _SectionLabel(text: 'PERSONAL DETAILS'),
+                    SizedBox(height: 16.h),
                     ChefProfileAllFiled(controller: controller),
-
+                    SizedBox(height: 8.h),
                     CommonButton(
                       titleText: 'Save Changes',
                       isLoading: controller.isLoading,
-                      onTap: controller.editProfileRepo,
+                      onTap: () => controller.editProfileRepo(_formKey), // ✅ formKey pass করো
                     ),
-
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 32.h),
                   ],
                 ),
               ),
@@ -115,6 +130,24 @@ class ChefEditProfile extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _SectionLabel extends StatelessWidget {
+  final String text;
+  const _SectionLabel({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 11.sp,
+        fontWeight: FontWeight.w600,
+        color: const Color(0xff999999),
+        letterSpacing: 0.8,
+      ),
     );
   }
 }
