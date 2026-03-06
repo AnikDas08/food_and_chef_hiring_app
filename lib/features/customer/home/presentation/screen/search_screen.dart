@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import '../../../../../component/image/common_image.dart';
+import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
+import '../../../../../utils/extensions/extension.dart';
 import '../controller/search_controller.dart';
 import '../widgets/filter.dart';
 import '../widgets/search_item.dart';
@@ -38,7 +40,6 @@ class _SearchScreenState extends State<SearchScreen> {
               controller: _controller.searchController,
               focusNode: _focusNode,
               onChanged: _controller.onSearchChanged,
-              // On submit → switch to SearchItem grid with search-term results
               onSubmitted: (value) {
                 _controller.onSearchSubmitted(value);
                 _focusNode.unfocus();
@@ -75,9 +76,86 @@ class _SearchScreenState extends State<SearchScreen> {
           );
         }
 
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: const SearchItem(),
+        // ── MAIN RESULTS VIEW WITH CLEAR FILTERS OPTION ─────────────────
+        return Stack(
+          children: [
+            // Results grid/list
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: const SearchItem(),
+            ),
+
+            // ── CLEAR FILTERS BUTTON (Floating at top) ──────────────────
+            Obx(
+                  () {
+                // Show clear button only if filters are applied
+                final hasActiveFilters = _controller.minPrice.value > 0 ||
+                    _controller.maxPrice.value < 100 ||
+                    _controller.selectedAvailability.isNotEmpty ||
+                    _controller.selectedProfessionalLevels.isNotEmpty ||
+                    _controller.selectedDietaryPrefs.isNotEmpty ||
+                    _controller.selectedCuisines.isNotEmpty ||
+                    _controller.savedChefsOnly.value;
+
+                if (!hasActiveFilters) {
+                  return SizedBox.shrink(); // Hide if no filters active
+                }
+
+                return Positioned(
+                  top: 16.h,
+                  right: 16.w,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xffFD713F),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          // Clear all filters
+                          _controller.clearAllFilters();
+                          // Fetch unfiltered results
+                          _controller.getNearbyChefs();
+                        },
+                        borderRadius: BorderRadius.circular(20),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 10.h,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 16,
+                              ),
+                              6.width,
+                              CommonText(
+                                text: "Clear Filters",
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         );
       }),
     );

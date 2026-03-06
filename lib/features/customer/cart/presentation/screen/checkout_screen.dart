@@ -377,7 +377,7 @@ class CheckoutScreen extends StatelessWidget {
               titleText: controller.isCheckingOut
                   ? "Placing Order..."
                   : AppString.checkoutNow,
-              onTap: controller.isCheckingOut ? () {} : controller.placeOrder,
+              onTap: controller.isCheckingOut ? () {} :confirmCheckingPopup ,
             ),
           ),
         ),

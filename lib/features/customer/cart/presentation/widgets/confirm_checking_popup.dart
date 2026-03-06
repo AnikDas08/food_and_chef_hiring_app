@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/features/customer/cart/presentation/controller/cart_controller.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
@@ -62,11 +63,13 @@ confirmCheckingPopup() {
                         titleWeight: FontWeight.w600,
                         titleColor: Color(0xffFFFFFF),
                         onTap: () async {
-                          await AnimationPopUpState.closeDialog();
+                         /* await AnimationPopUpState.closeDialog();
                           await Future.delayed(
                             const Duration(milliseconds: 500),
                           );
-                          successPopup();
+                          successPopup();*/
+                          Get.back();
+                          Get.find<CartController>().placeOrder();
                         },
                       ),
                       12.height,
@@ -80,11 +83,12 @@ confirmCheckingPopup() {
                         titleWeight: FontWeight.w600,
                         titleColor: Color(0xff777777),
                         onTap: () async {
-                          await AnimationPopUpState.closeDialog();
+                          /*await AnimationPopUpState.closeDialog();
                           await Future.delayed(
                             const Duration(milliseconds: 500),
                           );
-                          failledPopup();
+                          failledPopup();*/
+                          Get.back();
                         },
                       ),
                       16.height,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -22,9 +23,10 @@ class SearchController extends GetxController {
   bool isLoadingLocation = false;
   double? currentLat;
   double? currentLng;
-  CuisineModel? cuisineModel;
+
+  // ── CUISINES ────────────────────────────────────────────────────────────────
+  RxBool isLoadingCuisines = false.obs;
   List<CuisineData> cuisineList = [];
-  CuisineData? selectedCuisine;
 
   ChefModel? chefModel;
   ChefData? chefArg;
@@ -43,6 +45,15 @@ class SearchController extends GetxController {
     "Price": "sort=price",
     "Next Available": "availability=next_week",
   };
+
+  // ── FILTER STATE ────────────────────────────────────────────────────────────
+  RxDouble minPrice = 0.0.obs;
+  RxDouble maxPrice = 100.0.obs;
+  RxList<String> selectedAvailability = <String>[].obs;
+  RxList<String> selectedProfessionalLevels = <String>[].obs;
+  RxList<String> selectedDietaryPrefs = <String>[].obs;
+  RxList<String> selectedCuisines = <String>[].obs;
+  RxBool savedChefsOnly = false.obs;
 
   @override
   void onInit() {
@@ -64,38 +75,129 @@ class SearchController extends GetxController {
         getCurrentLocationAndFetchChefs();
       }
     });
+
+    // Fetch cuisines for filter panel
+    fetchCuisines();
   }
 
-  // ── Sort / filter ──────────────────────────────────────────────────────────
+  // ── FETCH CUISINES FROM API ────────────────────────────────────────────────
 
-  /// Called when user taps a sort chip. Resets to "Recommended" silently
-  /// if the label isn't in the map, then fetches with the right param.
+  Future<void> fetchCuisines() async {
+    isLoadingCuisines.value = true;
+
+    try {
+      final response = await ApiService.get("cusine");
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data['data'] ?? [];
+        cuisineList = data
+            .map((item) => CuisineData.fromJson(item as Map<String, dynamic>))
+            .toList();
+      } else {
+        Utils.errorSnackBar('Error', 'Failed to fetch cuisines');
+        cuisineList = [];
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+      cuisineList = [];
+    } finally {
+      isLoadingCuisines.value = false;
+    }
+  }
+
+  // ── SORT / FILTER ──────────────────────────────────────────────────────────
+
+  /// Called when user taps a sort chip
   Future<void> onSortChanged(String label) async {
-    if (selectedSortLabel == label) return; // no-op if already selected
+    if (selectedSortLabel == label) return;
     selectedSortLabel = label;
     update();
     await _fetchWithCurrentFilter();
   }
 
-  /// Builds the URL and calls the API with whatever sort/filter is active,
-  /// plus an optional search term (used when the user submitted a search).
+  // ── BUILD FILTER URL ───────────────────────────────────────────────────────
+
+  /// Builds the complete URL with all active filters
+  String _buildFilterUrl({String? searchTerm}) {
+    final List<String> params = [];
+
+    // Search term
+    if (searchTerm != null && searchTerm.isNotEmpty) {
+      params.add("searchTerm=$searchTerm");
+    }
+
+    // Cuisine IDs (from selectedCuisines list)
+    if (selectedCuisines.isNotEmpty) {
+      params.add("cusine=${selectedCuisines.first}"); // API expects single cusine param
+    }
+
+    // Price range
+    if (minPrice.value > 0 || maxPrice.value < 100) {
+      params.add("minPrice=${minPrice.value.toInt()}");
+      params.add("maxPrice=${maxPrice.value.toInt()}");
+    }
+
+    // Availability
+    if (selectedAvailability.isNotEmpty) {
+      params.add("availability=${selectedAvailability.first}");
+    }
+
+    // Professional level
+    if (selectedProfessionalLevels.isNotEmpty) {
+      String levels = selectedProfessionalLevels.join(',');
+      params.add("chef_professional_level=$levels");
+    }
+
+    // Dietary preferences (as JSON array)
+    if (selectedDietaryPrefs.isNotEmpty) {
+      String dietary = jsonEncode(selectedDietaryPrefs);
+      params.add("dietary=$dietary");
+    }
+
+    // Saved chefs only
+    if (savedChefsOnly.value) {
+      params.add("save=true");
+    }
+
+    // Sort
+    final String sortParam = _sortParamMap[selectedSortLabel] ?? "";
+    if (sortParam.isNotEmpty) {
+      params.add(sortParam);
+    }
+
+    final String query = params.isNotEmpty ? "?${params.join('&')}" : "";
+    return "user/search-chefs$query";
+  }
+
+  // ── APPLY FILTERS ──────────────────────────────────────────────────────────
+
+  /// Called when user taps "Apply" button in filter panel
+  Future<void> applyFilters() async {
+    Get.back(); // Close filter panel
+    await _fetchWithCurrentFilter();
+  }
+
+  /// Clears all filters and resets to defaults
+  void clearAllFilters() {
+    minPrice.value = 0.0;
+    maxPrice.value = 100.0;
+    selectedAvailability.clear();
+    selectedProfessionalLevels.clear();
+    selectedDietaryPrefs.clear();
+    selectedCuisines.clear();
+    savedChefsOnly.value = false;
+    selectedSortLabel = "Recommended";
+    update();
+  }
+
+  // ── FETCH WITH FILTERS ─────────────────────────────────────────────────────
+
   Future<void> _fetchWithCurrentFilter({String? searchTerm}) async {
     isLoadingChefs = true;
     update();
 
     try {
-      final String sortParam = _sortParamMap[selectedSortLabel] ?? "";
-      final List<String> params = [];
-      if (searchTerm != null && searchTerm.isNotEmpty) {
-        params.add("searchTerm=$searchTerm");
-      }
-      if (sortParam.isNotEmpty) {
-        params.add(sortParam);
-      }
-
-      final String query =
-      params.isNotEmpty ? "?${params.join('&')}" : "";
-      final String url = "user/search-chefs$query";
+      final String url = _buildFilterUrl(searchTerm: searchTerm);
+      print("🔍 Filter URL: $url"); // Debug log
 
       final response = await ApiService.get(url);
 
@@ -113,7 +215,7 @@ class SearchController extends GetxController {
     }
   }
 
-  // ── Search ─────────────────────────────────────────────────────────────────
+  // ── SEARCH ─────────────────────────────────────────────────────────────────
 
   void onSearchChanged(String value) {
     isSubmitted.value = false;
@@ -156,7 +258,7 @@ class SearchController extends GetxController {
     }
   }
 
-  // ── Location ───────────────────────────────────────────────────────────────
+  // ── LOCATION ───────────────────────────────────────────────────────────────
 
   Future<void> getCurrentLocationAndFetchChefs() async {
     isLoadingLocation = true;

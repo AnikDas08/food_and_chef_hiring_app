@@ -31,20 +31,19 @@ class ChefDetailsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // Ensure CartController is available
     if (!Get.isRegistered<CartController>()) {
       Get.put(CartController());
     }
-
     if (Get.arguments != null && Get.arguments is ChefData) {
       chefArg = Get.arguments as ChefData;
-      chefId = chefArg!.id ?? ""; // ✅ Always set chefId from chefArg
+      chefId = chefArg!.id ?? ""; // ✅ FIX: Always set chefId from chefArg
       fetchChefDetails(chefArg!.id!);
     } else if (Get.arguments != null && Get.arguments is String) {
       chefId = Get.arguments;
       print("id: 😍😍😍😍😍😍😍${chefId}");
       fetchChefDetails(chefId);
     }
-
     ever(innerBoxIsScrolled, (bool value) {
       appLog(value, source: "ChefDetailsController");
     });
@@ -234,24 +233,6 @@ class ChefDetailsController extends GetxController {
   }
 
   // ── Misc state ───────────────────────────────────────────────────────────────
-
-  /*DateTime selectedDate = DateTime.now();
-  List<String> selectedTime = [];
-  final List<String> timeSlots = [
-    "10:00 AM", "11:00 AM", "12:00 PM",
-    "02:00 PM", "04:00 PM", "06:00 PM",
-  ];
-
-  void selectDate(DateTime date) { selectedDate = date; update(); }
-
-  void selectTime(String time) {
-    if (selectedTime.contains(time)) {
-      selectedTime.remove(time);
-    } else {
-      selectedTime.add(time);
-    }
-    update();
-  }*/
 
   bool isFavorite = false;
   bool isExpanded = false;

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
+import 'package:new_untitled/features/customer/kitchen/presentation/screen/kitchen_setup_screen.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../component/image/common_image.dart';
@@ -189,7 +190,9 @@ class ProfileScreen extends StatelessWidget {
                           Item(
                             icon: CupertinoIcons.list_number,
                             title: AppString.manageKitchenEquipment,
-                            onTap: () => Get.toNamed(AppRoutes.kitchen),
+                            onTap: () {
+                              Get.to(()=>KitchenSetupScreen());
+                            },
                           ),
                         ],
                       ),

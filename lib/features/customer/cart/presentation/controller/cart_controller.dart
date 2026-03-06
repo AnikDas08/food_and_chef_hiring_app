@@ -139,6 +139,8 @@ class CartController extends GetxController {
     }
   }
 
+
+
   DateTime _buildBookingDateTime() {
     if (selectedTime.isEmpty) return selectedDate;
 
@@ -302,8 +304,14 @@ class CartController extends GetxController {
 
   void selectTime(String time) {
     selectedTime = time;
+
+    // ✅ FIX: Format the date/time properly for display in the text field
+    // Example output: "1 January 2026, 10:00 AM"
     dateController.text = "${selectedDate.dateMonthYear}, $time";
+
+    // Close the dialog
     Get.back();
+
     update();
   }
 
