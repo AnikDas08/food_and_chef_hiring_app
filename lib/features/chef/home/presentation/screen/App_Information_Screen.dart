@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'dart:io';
 
 class AppInformationScreen extends StatefulWidget {
   const AppInformationScreen({super.key});
@@ -14,100 +16,113 @@ class AppInformationScreen extends StatefulWidget {
 class _AppInformationScreenState extends State<AppInformationScreen>
     with TickerProviderStateMixin {
   PackageInfo? _packageInfo;
-  late AnimationController _fadeController;
-  late AnimationController _slideController;
+  String _deviceModel = '';
+  String _osVersion = '';
+  String _platform = '';
+
+  late AnimationController _heroController;
   late List<AnimationController> _itemControllers;
-  late Animation<double> _fadeAnim;
-  late Animation<Offset> _slideAnim;
+  late Animation<double> _heroAnim;
 
   final List<_InfoItem> _items = [];
+
+  // ── Brand colors ──
+  static const _primary = Color(0xFFE82535);
+  static const _secondary = Color(0xFF0076BF);
+  static const _bg = Color(0xFFFAF7F4);
+  static const _card = Colors.white;
+  static const _dark = Color(0xFF1A0A00);
 
   @override
   void initState() {
     super.initState();
-
-    _fadeController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 600),
-    );
-    _slideController = AnimationController(
+    _heroController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 700),
     );
-    _fadeAnim = CurvedAnimation(parent: _fadeController, curve: Curves.easeOut);
-    _slideAnim = Tween<Offset>(
-      begin: const Offset(0, 0.08),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _slideController, curve: Curves.easeOutCubic));
+    _heroAnim =
+        CurvedAnimation(parent: _heroController, curve: Curves.easeOutCubic);
 
     _itemControllers = List.generate(
-      4,
+      6,
           (i) => AnimationController(
         vsync: this,
-        duration: const Duration(milliseconds: 400),
+        duration: const Duration(milliseconds: 380),
       ),
     );
 
-    _loadPackageInfo();
+    _loadAllInfo();
   }
 
-  Future<void> _loadPackageInfo() async {
+  Future<void> _loadAllInfo() async {
     final info = await PackageInfo.fromPlatform();
+
+    final deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      final android = await deviceInfo.androidInfo;
+      _deviceModel = '${android.manufacturer} ${android.model}';
+      _osVersion = 'Android ${android.version.release}';
+      _platform = 'Android';
+    } else if (Platform.isIOS) {
+      final ios = await deviceInfo.iosInfo;
+      _deviceModel = ios.model;
+      _osVersion = 'iOS ${ios.systemVersion}';
+      _platform = 'iOS';
+    }
+
     setState(() {
       _packageInfo = info;
       _items.addAll([
         _InfoItem(
-          icon: Icons.apps_rounded,
+          icon: Icons.restaurant_rounded,
           label: 'App Name',
           value: info.appName,
-          gradient: const [Color(0xFF0288A6), Color(0xFF00BCD4)],
+          color: _primary,
         ),
         _InfoItem(
-          icon: Icons.rocket_launch_rounded,
+          icon: Icons.new_releases_rounded,
           label: 'Version',
           value: info.version,
-          gradient: const [Color(0xFF1B5E20), Color(0xFF43A047)],
+          color: const Color(0xFF0076BF),
+        ),
+
+        _InfoItem(
+          icon: Platform.isIOS
+              ? Icons.phone_iphone_rounded
+              : Icons.phone_android_rounded,
+          label: 'Device Model',
+          value: _deviceModel,
+          color: const Color(0xFF0076BF),
         ),
         _InfoItem(
-          icon: Icons.tag_rounded,
-          label: 'Build Number',
-          value: info.buildNumber,
-          gradient: const [Color(0xFF4A148C), Color(0xFF7B1FA2)],
-        ),
-        _InfoItem(
-          icon: Icons.inventory_2_rounded,
-          label: 'Package Name',
-          value: info.packageName,
-          gradient: const [Color(0xFFBF360C), Color(0xFFE64A19)],
+          icon: Icons.system_update_rounded,
+          label: 'OS Version',
+          value: _osVersion,
+          color: const Color(0xFF0076BF),
         ),
       ]);
     });
 
-    _fadeController.forward();
-    _slideController.forward();
-
+    _heroController.forward();
     for (int i = 0; i < _itemControllers.length; i++) {
-      await Future.delayed(Duration(milliseconds: 80 * i));
-      _itemControllers[i].forward();
+      await Future.delayed(Duration(milliseconds: 90 * i));
+      if (mounted) _itemControllers[i].forward();
     }
   }
 
   @override
   void dispose() {
-    _fadeController.dispose();
-    _slideController.dispose();
-    for (final c in _itemControllers) {
-      c.dispose();
-    }
+    _heroController.dispose();
+    for (final c in _itemControllers) c.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: const Color(0xFF0A0E1A),
+        backgroundColor: _bg,
         body: CustomScrollView(
           slivers: [
             _buildSliverHeader(),
@@ -116,29 +131,26 @@ class _AppInformationScreenState extends State<AppInformationScreen>
                   ? SizedBox(
                 height: 300.h,
                 child: const Center(
-                  child: CircularProgressIndicator(
-                    color: Color(0xFF0288A6),
-                    strokeWidth: 2,
-                  ),
+                  child: CircularProgressIndicator(color: _primary),
                 ),
               )
                   : FadeTransition(
-                opacity: _fadeAnim,
-                child: SlideTransition(
-                  position: _slideAnim,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(20.w, 32.h, 20.w, 40.h),
-                    child: Column(
-                      children: [
-                        _buildAppTitle(),
-                        SizedBox(height: 32.h),
-                        _buildItemsGrid(),
-                        SizedBox(height: 32.h),
-                        _buildDivider(),
-                        SizedBox(height: 28.h),
-                        _buildCopyright(),
-                      ],
-                    ),
+                opacity: _heroAnim,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(20.w, 24.h, 20.w, 48.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildAppNameRow(),
+                      SizedBox(height: 20.h),
+                      _buildDeviceBadge(),
+                      SizedBox(height: 28.h),
+                      _buildSectionLabel('APP DETAILS'),
+                      SizedBox(height: 12.h),
+                      _buildItemsList(),
+                      SizedBox(height: 32.h),
+                      _buildCopyright(),
+                    ],
                   ),
                 ),
               ),
@@ -151,17 +163,17 @@ class _AppInformationScreenState extends State<AppInformationScreen>
 
   Widget _buildSliverHeader() {
     return SliverAppBar(
-      expandedHeight: 260.h,
+      expandedHeight: 240.h,
       pinned: true,
-      backgroundColor: const Color(0xFF0A0E1A),
+      backgroundColor: _primary,
+      systemOverlayStyle: SystemUiOverlayStyle.light,
       leading: GestureDetector(
         onTap: Get.back,
         child: Container(
           margin: EdgeInsets.all(10.r),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.15),
+            color: Colors.white.withOpacity(0.18),
             borderRadius: BorderRadius.circular(12.r),
-            border: Border.all(color: Colors.white.withOpacity(0.1)),
           ),
           child: const Icon(
             Icons.arrow_back_ios_new_rounded,
@@ -171,66 +183,69 @@ class _AppInformationScreenState extends State<AppInformationScreen>
         ),
       ),
       flexibleSpace: FlexibleSpaceBar(
+        centerTitle: true,
+        title: Text(
+          'App Information',
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+          ),
+        ),
         background: Stack(
           fit: StackFit.expand,
           children: [
-            // Deep dark gradient bg
+            // Gradient bg
             Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                   colors: [
-                    Color(0xFF051822),
-                    Color(0xFF083E4B),
-                    Color(0xFF0A0E1A),
+                    Color(0xFF259DE8),
+                    Color(0xADA4FF35),
+                    Color(0xFF0076BF),
                   ],
-                  stops: [0.0, 0.6, 1.0],
                 ),
               ),
             ),
 
-            // Glow orb - top right
+            // Decorative circles
             Positioned(
-              top: -40.h,
-              right: -40.w,
+              top: -30.h,
+              right: -30.w,
               child: Container(
-                width: 200.r,
-                height: 200.r,
+                width: 180.r,
+                height: 180.r,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [
-                      const Color(0xFF0288A6).withOpacity(0.35),
-                      Colors.transparent,
-                    ],
-                  ),
+                  color: Colors.white.withOpacity(0.07),
                 ),
               ),
             ),
-
-            // Glow orb - bottom left
             Positioned(
-              bottom: 10.h,
-              left: -30.w,
+              bottom: -20.h,
+              left: -20.w,
               child: Container(
-                width: 150.r,
-                height: 150.r,
+                width: 120.r,
+                height: 120.r,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [
-                      const Color(0xFF074E5E).withOpacity(0.4),
-                      Colors.transparent,
-                    ],
-                  ),
+                  color: Colors.white.withOpacity(0.06),
                 ),
               ),
             ),
-
-            // Grid lines (subtle)
-            CustomPaint(
-              painter: _GridPainter(),
+            Positioned(
+              top: 50.h,
+              left: 30.w,
+              child: Container(
+                width: 60.r,
+                height: 60.r,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withOpacity(0.05),
+                ),
+              ),
             ),
 
             // Center logo
@@ -238,294 +253,284 @@ class _AppInformationScreenState extends State<AppInformationScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 30.h),
-                  // Outer glow ring
+                  SizedBox(height: 20.h),
                   Container(
-                    width: 110.r,
-                    height: 110.r,
+                    width: 90.r,
+                    height: 90.r,
                     decoration: BoxDecoration(
+                      color: Colors.white,
                       shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        colors: [
-                          const Color(0xFF0288A6).withOpacity(0.3),
-                          Colors.transparent,
-                        ],
-                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 24,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
                     ),
                     child: Center(
-                      // Inner logo container
-                      child: Container(
-                        width: 86.r,
-                        height: 86.r,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: const LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Color(0xFF0288A6),
-                              Color(0xFF074E5E),
-                            ],
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF0288A6).withOpacity(0.5),
-                              blurRadius: 30,
-                              spreadRadius: 2,
-                            ),
-                          ],
-                        ),
-                        child: Icon(
-                          Icons.work_rounded,
-                          color: Colors.white,
-                          size: 40.r,
-                        ),
+                      child: Text(
+                        '🍳',
+                        style: TextStyle(fontSize: 38.sp),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16.h),
-                  // Badge
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 5.h),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color(0xFF0288A6).withOpacity(0.5),
-                      ),
-                      borderRadius: BorderRadius.circular(20.r),
-                      color: const Color(0xFF0288A6).withOpacity(0.1),
-                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAppNameRow() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+          decoration: BoxDecoration(
+            color: _primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10.r),
+            border: Border.all(color: _primary.withOpacity(0.3)),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 7.r,
+                height: 7.r,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF22C55E),
+                ),
+              ),
+              SizedBox(width: 5.w),
+              Text(
+                'LIVE',
+                style: TextStyle(
+                  fontSize: 11.sp,
+                  color: _primary,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.2,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDeviceBadge() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 14.h),
+      decoration: BoxDecoration(
+        color: _card,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 44.r,
+            height: 44.r,
+            decoration: BoxDecoration(
+              color: _primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Icon(
+              _platform == 'iOS'
+                  ? Icons.phone_iphone_rounded
+                  : Icons.phone_android_rounded,
+              color: _primary,
+              size: 22.r,
+            ),
+          ),
+          SizedBox(width: 14.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'RUNNING ON',
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    color: Colors.grey[400],
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.1,
+                  ),
+                ),
+                SizedBox(height: 3.h),
+                Text(
+                  '$_platform  ·  $_deviceModel',
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    color: _dark,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionLabel(String label) {
+    return Row(
+      children: [
+        Container(
+          width: 3.w,
+          height: 14.h,
+          decoration: BoxDecoration(
+            color: _primary,
+            borderRadius: BorderRadius.circular(2.r),
+          ),
+        ),
+        SizedBox(width: 8.w),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 11.sp,
+            color: Colors.grey[500],
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1.3,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildItemsList() {
+    return Container(
+      decoration: BoxDecoration(
+        color: _card,
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: _items.asMap().entries.map((entry) {
+          final i = entry.key;
+          final item = entry.value;
+          final isLast = i == _items.length - 1;
+
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0.06, 0),
+              end: Offset.zero,
+            ).animate(CurvedAnimation(
+              parent: _itemControllers[i],
+              curve: Curves.easeOutCubic,
+            )),
+            child: FadeTransition(
+              opacity: _itemControllers[i],
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 16.w, vertical: 14.h),
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
+                        Container(
+                          width: 42.r,
+                          height: 42.r,
+                          decoration: BoxDecoration(
+                            color: item.color.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Icon(item.icon,
+                              color: item.color, size: 20.r),
+                        ),
+                        SizedBox(width: 14.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.label.toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  color: Colors.grey[400],
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 1.0,
+                                ),
+                              ),
+                              SizedBox(height: 3.h),
+                              Text(
+                                item.value.isEmpty ? 'N/A' : item.value,
+                                style: TextStyle(
+                                  fontSize: 13.sp,
+                                  color: _dark,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
                         Container(
                           width: 6.r,
                           height: 6.r,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFF00E5FF),
-                          ),
-                        ),
-                        SizedBox(width: 6.w),
-                        Text(
-                          'LIVE',
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                            color: const Color(0xFF00E5FF),
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 1.5,
+                            color: item.color.withOpacity(0.5),
                           ),
                         ),
                       ],
                     ),
                   ),
+                  if (!isLast)
+                    Divider(
+                      height: 1,
+                      indent: 72.w,
+                      endIndent: 16.w,
+                      color: Colors.grey[100],
+                    ),
                 ],
               ),
             ),
-          ],
-        ),
-        title: Text(
-          'App Info',
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-            letterSpacing: 0.3,
-          ),
-        ),
-        centerTitle: true,
+          );
+        }).toList(),
       ),
     );
   }
 
-  Widget _buildAppTitle() {
-    return Column(
-      children: [
-        Text(
-          _packageInfo?.appName ?? '',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 28.sp,
-            fontWeight: FontWeight.w800,
-            color: Colors.white,
-            letterSpacing: -0.5,
-          ),
-        ),
-        SizedBox(height: 8.h),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _versionChip(
-              'v${_packageInfo?.version}',
-              const Color(0xFF0288A6),
-            ),
-            SizedBox(width: 8.w),
-            _versionChip(
-              'Build ${_packageInfo?.buildNumber}',
-              const Color(0xFF6A1B9A),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _versionChip(String label, Color color) {
+  Widget _chip(String label, Color color) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 5.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
+        color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: color.withOpacity(0.4)),
+        border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Text(
         label,
         style: TextStyle(
-          fontSize: 12.sp,
-          color: color.withOpacity(0.9),
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.3,
+          fontSize: 11.sp,
+          color: color,
+          fontWeight: FontWeight.w700,
         ),
       ),
-    );
-  }
-
-  Widget _buildItemsGrid() {
-    return Column(
-      children: _items.asMap().entries.map((entry) {
-        final i = entry.key;
-        final item = entry.value;
-
-        return SlideTransition(
-          position: Tween<Offset>(
-            begin: const Offset(0.1, 0),
-            end: Offset.zero,
-          ).animate(CurvedAnimation(
-            parent: _itemControllers[i],
-            curve: Curves.easeOutCubic,
-          )),
-          child: FadeTransition(
-            opacity: _itemControllers[i],
-            child: Container(
-              margin: EdgeInsets.only(bottom: 12.h),
-              decoration: BoxDecoration(
-                color: const Color(0xFF111827),
-                borderRadius: BorderRadius.circular(16.r),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.06),
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(16.r),
-                child: Row(
-                  children: [
-                    // Icon with gradient bg
-                    Container(
-                      width: 48.r,
-                      height: 48.r,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14.r),
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: item.gradient,
-                        ),
-                      ),
-                      child: Icon(
-                        item.icon,
-                        color: Colors.white,
-                        size: 22.r,
-                      ),
-                    ),
-                    SizedBox(width: 16.w),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item.label.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 10.sp,
-                              color: Colors.white.withOpacity(0.35),
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1.2,
-                            ),
-                          ),
-                          SizedBox(height: 4.h),
-                          Text(
-                            item.value.isEmpty ? 'N/A' : item.value,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: Colors.white.withOpacity(0.9),
-                              fontWeight: FontWeight.w600,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Accent dot
-                    Container(
-                      width: 8.r,
-                      height: 8.r,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: item.gradient,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildDivider() {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 1,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.transparent,
-                  Colors.white.withOpacity(0.1),
-                ],
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.w),
-          child: Container(
-            width: 4.r,
-            height: 4.r,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white.withOpacity(0.2),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Container(
-            height: 1,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withOpacity(0.1),
-                  Colors.transparent,
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -535,66 +540,35 @@ class _AppInformationScreenState extends State<AppInformationScreen>
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.copyright_rounded,
-              size: 13.r,
-              color: Colors.white.withOpacity(0.25),
-            ),
-            SizedBox(width: 5.w),
+            Icon(Icons.copyright_rounded,
+                size: 13.r, color: Colors.grey[400]),
+            SizedBox(width: 4.w),
+
             Text(
-              '${DateTime.now().year} ${_packageInfo?.appName ?? 'JobsInApp'}. All rights reserved.',
+              'Made with ❤️ for food lovers',
               style: TextStyle(
                 fontSize: 11.sp,
-                color: Colors.white.withOpacity(0.25),
-                letterSpacing: 0.2,
+                color: Colors.grey[400],
               ),
             ),
+
           ],
-        ),
-        SizedBox(height: 6.h),
-        Text(
-          'Made with ❤️ for job seekers',
-          style: TextStyle(
-            fontSize: 11.sp,
-            color: Colors.white.withOpacity(0.2),
-          ),
         ),
       ],
     );
   }
 }
 
-// Subtle background grid painter
-class _GridPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white.withOpacity(0.03)
-      ..strokeWidth = 1;
-
-    const spacing = 40.0;
-    for (double x = 0; x < size.width; x += spacing) {
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
-    }
-    for (double y = 0; y < size.height; y += spacing) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(_GridPainter oldDelegate) => false;
-}
-
 class _InfoItem {
   final IconData icon;
   final String label;
   final String value;
-  final List<Color> gradient;
+  final Color color;
 
   _InfoItem({
     required this.icon,
     required this.label,
     required this.value,
-    required this.gradient,
+    required this.color,
   });
 }
