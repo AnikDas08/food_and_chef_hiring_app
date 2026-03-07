@@ -359,4 +359,10 @@ class AppString {
   static const String checkout = "Checkout";
   static const String areYouSureYouWantToDeleteYourAccount =
       "Are you sure you want to delete your account?";
+
+  static const String contact_support = "Contact Support";
+  static const String subject = "Subject";
+  static const String message = "Message";
+  static const String hint_type_here = "Type here...";
+  static const String submit_button = "Submit";
 }

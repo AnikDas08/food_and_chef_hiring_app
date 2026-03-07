@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:new_untitled/features/chef/availaility/presentation/screen/availabiity_screen.dart';
 import 'package:new_untitled/features/chef/chef_public_profile/presentation/screen/chef_public_profile.dart';
+import 'package:new_untitled/features/chef/home/presentation/screen/App_Information_Screen.dart';
 import 'package:new_untitled/features/chef/home/presentation/screen/chef_home.dart';
 import 'package:new_untitled/features/chef/menu/presentation/screen/add_menu_screen.dart';
 import 'package:new_untitled/features/chef/menu/presentation/screen/edit_menu.dart';
@@ -103,6 +104,7 @@ class AppRoutes {
   static const String addAddress = "/add_address_screen.dart";
   static const String paymentMethod = "/payment_method_screen.dart";
   static const String addCard = "/add_card_screen.dart";
+  static const String App_Information_Screen = "/App_Information_Screen.dart";
   static const String editCard = "/edit_card_screen.dart";
   static const String pastOrder = "/past_order_screen.dart";
   static const String reorder = "/reorder_screen.dart";
@@ -166,6 +168,7 @@ class AppRoutes {
     GetPage(name: personalTaxDetails, page: () => PersonalTaxDetailsScreen()),
     // GetPage(name: bookingHistory, page: () => BookingHistoryScreen()),
     GetPage(name: requestChange, page: () => RequestChangeScreen()),
+    GetPage(name: App_Information_Screen, page: () => AppInformationScreen()),
     GetPage(name: edit_address, page: () => EditAddressScreen()),
     GetPage(name: addressScreen, page: () => ProfileAddressScreen()),
     GetPage(name: addAddress, page: () => AddAddressScreen()),

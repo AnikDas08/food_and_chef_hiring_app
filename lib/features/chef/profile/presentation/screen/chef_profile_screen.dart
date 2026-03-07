@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/switch_button.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
+import 'package:new_untitled/features/chef/home/presentation/screen/App_Information_Screen.dart';
 import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
@@ -259,6 +260,11 @@ class ChefProfileScreen extends StatelessWidget {
                       Item(
                         icon: CupertinoIcons.info,
                         title: AppString.appVersion,
+                        onTap: (){
+
+                          Get.to(AppInformationScreen());
+
+                        },
                       ),
                     ],
                   ),
