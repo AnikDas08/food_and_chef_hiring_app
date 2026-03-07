@@ -64,11 +64,12 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
   }
 
   void _togglePause() {
+
     setState(() => _isRunning = !_isRunning);
+
   }
 
   void _onStopPressed() {
-    // Pause timer while confirming
     setState(() => _isRunning = false);
     _showStopConfirmation();
   }
