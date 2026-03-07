@@ -20,6 +20,7 @@ import '../../../../../../utils/constants/app_images.dart';
 import '../../../../../../utils/constants/app_string.dart';
 import '../../../../common/auth/signup_chef/presentation/screen/BankManagementPage.dart';
 import '../../../../customer/profile/presentation/widgets/profile_list.dart';
+import '../../../chef_booking_control/widgets/Booking_Banner_Popup.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_profile_controller.dart';
 
@@ -254,6 +255,19 @@ class ChefProfileScreen extends StatelessWidget {
                         child: Item(
                           icon: CupertinoIcons.question_circle,
                           title: AppString.contactSupport,
+                          onTap: (){
+
+                            BookingBannerPopup.show(
+                              context,
+                              image: AppImages.profile, // অথবা null দিলে default icon
+                              title: 'Your booking with Jimmy starts in 1 hour',
+                              subtitle: 'Click here when you\'ve arrived to the customer and you\'re ready to start cooking!',
+                              onTap: () {
+
+                              },
+                            );
+
+                          },
                         ),
                       ),
 
