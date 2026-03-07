@@ -44,7 +44,6 @@ class ChefProfileAllFiled extends StatelessWidget {
         SizedBox(height: 8),
         _AddressAutocompleteField(controller: controller),
 
-        // ── Chef Experience ────────────────────────────────────────────────
         _FieldLabel(text: 'Chef Experience', top: 20),
         _gap(),
         _DropdownStyleField(
@@ -54,12 +53,10 @@ class ChefProfileAllFiled extends StatelessWidget {
           suffix: null,
         ),
 
-        // ── Cuisines ───────────────────────────────────────────────────────
         _FieldLabel(text: 'Cuisines', top: 20),
         _gap(),
         _CuisineSelector(controller: controller),
 
-        // ── About ──────────────────────────────────────────────────────────
         _FieldLabel(text: AppString.about, top: 20),
         _gap(),
         CommonTextField(
@@ -71,7 +68,6 @@ class ChefProfileAllFiled extends StatelessWidget {
           borderRadius: 12,
         ),
 
-        // ── PRICING Section ────────────────────────────────────────────────
         SizedBox(height: 28),
         _SectionLabel(text: 'PRICING'),
         _FieldLabel(text: 'Set Amount', top: 14),

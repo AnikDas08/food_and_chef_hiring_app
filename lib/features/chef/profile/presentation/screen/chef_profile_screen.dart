@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/switch_button.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
+import 'package:new_untitled/features/chef/home/presentation/screen/App_Information_Screen.dart';
 import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
@@ -19,6 +20,7 @@ import '../../../../../../utils/constants/app_images.dart';
 import '../../../../../../utils/constants/app_string.dart';
 import '../../../../common/auth/signup_chef/presentation/screen/BankManagementPage.dart';
 import '../../../../customer/profile/presentation/widgets/profile_list.dart';
+import '../../../chef_booking_control/widgets/Booking_Banner_Popup.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_profile_controller.dart';
 
@@ -253,12 +255,30 @@ class ChefProfileScreen extends StatelessWidget {
                         child: Item(
                           icon: CupertinoIcons.question_circle,
                           title: AppString.contactSupport,
+                          onTap: (){
+
+                            BookingBannerPopup.show(
+                              context,
+                              image: AppImages.profile, // অথবা null দিলে default icon
+                              title: 'Your booking with Jimmy starts in 1 hour',
+                              subtitle: 'Click here when you\'ve arrived to the customer and you\'re ready to start cooking!',
+                              onTap: () {
+
+                              },
+                            );
+
+                          },
                         ),
                       ),
 
                       Item(
                         icon: CupertinoIcons.info,
                         title: AppString.appVersion,
+                        onTap: (){
+
+                          Get.to(AppInformationScreen());
+
+                        },
                       ),
                     ],
                   ),
