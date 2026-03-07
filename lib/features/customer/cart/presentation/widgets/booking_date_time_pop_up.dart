@@ -5,9 +5,13 @@ import 'package:new_untitled/features/customer/chef_details/presentation/control
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../../component/text/common_text.dart';
 
-bookingDateTimePopup() {
-  final cartController = Get.find<CartController>();
-  final chefController = Get.find<ChefDetailsController>();
+bookingDateTimePopup({String? id}) {
+
+
+  // You can now handle the case where ID is null
+  final effectiveId = id;
+  print("id : 🤣🤣🤣🤣$id");
+  print("effectiveId: 🤣🤣🤣🤣${effectiveId}");
 
   showDialog(
     context: Get.context!,
@@ -41,9 +45,20 @@ bookingDateTimePopup() {
                         selectedDayPredicate:
                             (day) => isSameDay(day, controller.selectedDate),
                         onDaySelected: (selectedDay, focusedDay) {
+                          // 1. Update the date in the CartController (UI update)
                           controller.selectDate(selectedDay);
-                          // ✅ Fetch slots from chef controller for this date
-                          chefCtrl.selectDate(selectedDay, chefCtrl.chefId);
+
+                          // 2. Determine which ID to use
+                          // We check if effectiveId is not null AND not an empty string
+                          final bool hasPassedId = effectiveId != null && effectiveId.isNotEmpty;
+
+                          // 3. Trigger the slot fetch in ChefDetailsController
+                          if (hasPassedId) {
+                            chefCtrl.selectDate(selectedDay, effectiveId);
+                          } else {
+                            // Fallback to the ID already stored in the controller
+                            chefCtrl.selectDate(selectedDay, chefCtrl.chefId);
+                          }
                         },
                         calendarStyle: CalendarStyle(
                           cellMargin: EdgeInsets.zero,

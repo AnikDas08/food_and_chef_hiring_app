@@ -86,16 +86,18 @@ class ChefDetailsController extends GetxController {
     }
   }
 
-  void selectDate(DateTime date, String passedChefId) {
+  void selectDate(DateTime date, String passedChefId)async {
     selectedDate = date;
     selectedTime = ""; // Reset time when date changes
 
-    // ✅ FIX: Ensure chefId is set from either the passed value or chefArg
-    if (chefId.isEmpty && chefArg?.id != null) {
-      chefId = chefArg!.id!;
-    }
+    // Update the controller's chefId with the one passed from the popup
+    await fetchChefDetails(passedChefId);
+    chefId = passedChefId;
 
-    fetchAvailableSlots(); // Call API immediately
+    // 1. Fetch the slots for the calendar
+    fetchAvailableSlots();
+
+
     update();
   }
 

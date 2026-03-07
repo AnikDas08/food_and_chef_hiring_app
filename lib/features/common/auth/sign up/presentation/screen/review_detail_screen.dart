@@ -53,7 +53,6 @@ class ReviewDetailScreen extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
-
                     maxLines: 2,
                     top: 8,
                     textAlign: TextAlign.start,

@@ -35,6 +35,7 @@ class ProfileController extends GetxController {
 
   String savedCountryCode = "+880";     // e.g., +880
   String savedCountryIsoCode = "BD";    // e.g., BD
+  bool isKitchen=false;
 
   /// International Phone Logic
   String fullPhoneNumber = "";
@@ -63,6 +64,9 @@ class ProfileController extends GetxController {
           email = data["email"] ?? "";
           profileImage = data["image"] ?? "";
           linkAccounts = data["link_accounts"] ?? [];
+
+          isKitchen=data["is_kitchen_has"];
+
 
           nameController.text = name;
           addressController.text = data["address"] ?? "";

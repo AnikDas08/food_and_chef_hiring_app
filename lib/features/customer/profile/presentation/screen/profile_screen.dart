@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/customer/kitchen/presentation/screen/kitchen_setup_screen.dart';
+import 'package:new_untitled/features/customer/profile/presentation/controller/kitchen_equipment_controller.dart';
+import 'package:new_untitled/features/customer/profile/presentation/screen/kitchen/kitchen_equipment_screen.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../component/image/common_image.dart';
@@ -191,7 +193,12 @@ class ProfileScreen extends StatelessWidget {
                             icon: CupertinoIcons.list_number,
                             title: AppString.manageKitchenEquipment,
                             onTap: () {
-                              Get.to(()=>KitchenSetupScreen());
+                              if(controller.isKitchen){
+                                Get.to(()=>KitchenEquipmentScreen());
+                              }
+                              else{
+                                Get.to(()=>KitchenSetupScreen());
+                              }
                             },
                           ),
                         ],

@@ -109,6 +109,27 @@ class BookingHistoryController extends GetxController {
     }
   }
 
+  Future<void> fetchChefDetails(String id) async {
+    isDetailLoading = true;
+    isOrderDetailsPopup = false; // Reset the "Order Details" expansion toggle
+    update();
+
+    try {
+      final response = await ApiService.get("order/$id");
+      if (response.statusCode == 200 && response.data != null) {
+        // Map using the detailed OrderResponse model
+        final result = OrderResponse.fromJson(response.data);
+        selectedOrderDetail = result.data;
+      }
+    } catch (e) {
+      Utils.errorSnackBar("Error", "Could not fetch details.");
+      debugPrint("Detail Fetch Error: $e");
+    } finally {
+      isDetailLoading = false;
+      update();
+    }
+  }
+
   /// 3. Helper for History Timeline logic
   /// This scans the 'history' array to find the current progress index.
   // lib/features/booking_history/controller/booking_history_controller.dart

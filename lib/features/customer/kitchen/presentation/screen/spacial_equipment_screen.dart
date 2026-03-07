@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/features/customer/kitchen/presentation/screen/upload_photo_screen.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../data/equipment_data.dart';
 import '../controller/kitchen_setup_controller.dart';
-
 
 class SpecialEquipmentScreen extends StatelessWidget {
   const SpecialEquipmentScreen({super.key});
+
+  static const String _category = 'Special Equipment';
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class SpecialEquipmentScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 24.h),
                   CommonText(
-                    text: 'Add Special Equipment',
+                    text: 'Special Equipment',
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
                     color: AppColors.black,
@@ -44,53 +47,110 @@ class SpecialEquipmentScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8.h),
                   CommonText(
-                    text: 'Customize your set-up to reflect your kitchen.',
+                    text: 'Do you have any special equipment? These unlock more advanced recipes.',
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xFF888888),
-                    maxLines: 2,
                     textAlign: TextAlign.start,
                   ),
-                  SizedBox(height: 24.h),
-                  _SectionHeader(label: 'Special Equipment', isRequired: true),
-                  SizedBox(height: 4.h),
+                  SizedBox(height: 20.h),
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: 'Select all that apply ',
+                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: AppColors.black),
+                      ),
+                      TextSpan(
+                        text: '(optional)',
+                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400, color: const Color(0xFF888888)),
+                      ),
+                    ]),
+                  ),
+                  SizedBox(height: 12.h),
                 ],
               ),
             ),
 
             // ── Scrollable list ──
             Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                itemCount: controller.specialEquipment.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      _CheckboxRow(
-                        label: controller.specialEquipment[index],
-                        isCheckedFn: () => controller.specialEquipmentSelected[index],
-                        onTap: () => controller.toggleSpecialEquipment(index),
-                      ),
-                      if (index < controller.specialEquipment.length - 1)
-                        Divider(height: 1, color: const Color(0xFFF0F0F0)),
-                    ],
+              child: Obx(() {
+                if (controller.isLoadingEquipment.value) {
+                  return const Center(child: CircularProgressIndicator(color: Colors.black));
+                }
+                if (controller.equipmentError.value.isNotEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CommonText(
+                          text: controller.equipmentError.value,
+                          fontSize: 13,
+                          color: const Color(0xFF888888),
+                          maxLines: 3,
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 12.h),
+                        GestureDetector(
+                          onTap: controller.fetchEquipmentList,
+                          child: CommonText(
+                            text: 'Tap to retry',
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.black,
+                          ),
+                        ),
+                      ],
+                    ),
                   );
-                },
-              ),
+                }
+
+                final items = controller.itemsFor(_category);
+
+                if (items.isEmpty) {
+                  return Center(
+                    child: CommonText(
+                      text: 'No special equipment found.',
+                      fontSize: 13,
+                      color: const Color(0xFF888888),
+                    ),
+                  );
+                }
+
+                return ListView.separated(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  itemCount: items.length,
+                  separatorBuilder: (_, __) =>
+                      Divider(height: 1, color: const Color(0xFFF0F0F0)),
+                  itemBuilder: (context, index) {
+                    return _EquipmentCheckRow(
+                      controller: controller,
+                      category: _category,
+                      index: index,
+                      item: items[index],
+                    );
+                  },
+                );
+              }),
             ),
 
             // ── Fixed footer ──
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 28.h),
               child: Column(
                 children: [
+                  CommonButton(
+                    titleText: 'Skip For Now',
+                    buttonColor: const Color(0xFFF2F2F2),
+                    titleColor: AppColors.black,
+                    onTap: () => Get.to(() => const UploadKitchenPhotoScreen()),
+                  ),
+                  SizedBox(height: 10.h),
                   CommonButton(
                     titleText: 'Continue',
                     buttonColor: AppColors.black,
                     titleColor: AppColors.white,
-                    //onTap: () => Get.to(() => const UploadKitchenPhotoScreen()),
+                    onTap: () => Get.to(() => const UploadKitchenPhotoScreen()),
                   ),
-                  SizedBox(height: 20.h),
                 ],
               ),
             ),
@@ -102,30 +162,43 @@ class SpecialEquipmentScreen extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────
-// Checkbox Row
+// Equipment Check Row
 // ─────────────────────────────────────────────────────
-class _CheckboxRow extends StatelessWidget {
-  final String label;
-  final bool Function() isCheckedFn;
-  final VoidCallback onTap;
+class _EquipmentCheckRow extends StatelessWidget {
+  final KitchenSetupController controller;
+  final String category;
+  final int index;
+  final EquipmentItemModel item;
 
-  const _CheckboxRow({
-    required this.label,
-    required this.isCheckedFn,
-    required this.onTap,
+  const _EquipmentCheckRow({
+    required this.controller,
+    required this.category,
+    required this.index,
+    required this.item,
   });
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final bool isChecked = isCheckedFn();
+      final bool isChecked =
+          controller.categoryItemsMap[category]?[index].isSelected ?? false;
+
       return GestureDetector(
-        onTap: onTap,
+        onTap: () => controller.toggleItem(category, index),
         behavior: HitTestBehavior.opaque,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 14.h),
           child: Row(
             children: [
+              Expanded(
+                child: CommonText(
+                  text: item.name,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.black,
+                  textAlign: TextAlign.start,
+                ),
+              ),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 width: 22.w,
@@ -142,14 +215,6 @@ class _CheckboxRow extends StatelessWidget {
                     ? Icon(Icons.check_rounded, size: 14.sp, color: AppColors.white)
                     : null,
               ),
-              SizedBox(width: 14.w),
-              CommonText(
-                text: label,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.black,
-                textAlign: TextAlign.start,
-              ),
             ],
           ),
         ),
@@ -158,42 +223,9 @@ class _CheckboxRow extends StatelessWidget {
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  final String label;
-  final bool isRequired;
-
-  const _SectionHeader({required this.label, this.isRequired = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: label,
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: AppColors.black),
-              ),
-              if (isRequired)
-                TextSpan(
-                  text: ' *',
-                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.red),
-                ),
-            ],
-          ),
-        ),
-        Icon(Icons.keyboard_arrow_up_rounded, size: 22.sp, color: AppColors.black),
-      ],
-    );
-  }
-}
-
 class _ProgressBar extends StatelessWidget {
   final int totalSteps;
   final int currentStep;
-
   const _ProgressBar({required this.totalSteps, required this.currentStep});
 
   @override

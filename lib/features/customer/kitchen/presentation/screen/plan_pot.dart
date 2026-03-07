@@ -6,23 +6,18 @@ import 'package:new_untitled/utils/constants/app_colors.dart';
 
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../data/equipment_data.dart';
 import '../controller/kitchen_setup_controller.dart';
-
 
 class CookwareToolsScreen extends StatelessWidget {
   const CookwareToolsScreen({super.key});
 
+  static const String _categoryPots = 'Pots & Pans';
+  static const String _categoryTools = 'Tools';
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<KitchenSetupController>();
-
-    // Combine both sections into one flat list for ListView.builder
-    // Section index: 0 = Pans & Pots header, 1..pansPots.length = pans items
-    // then Tools header, then tools items
-    final int pansCount = controller.pansPots.length;
-    final int toolsCount = controller.tools.length;
-    // Total items: 1 header + pansCount items + 1 header + toolsCount items
-    final int totalItems = 1 + pansCount + 1 + toolsCount;
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -45,7 +40,7 @@ class CookwareToolsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 24.h),
                   CommonText(
-                    text: 'Customize Cookware & Tools',
+                    text: 'Cookware & Tools',
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
                     color: AppColors.black,
@@ -53,11 +48,10 @@ class CookwareToolsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8.h),
                   CommonText(
-                    text: 'Customize your set-up to reflect your kitchen.',
+                    text: 'Select the pots, pans and tools available in your kitchen.',
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xFF888888),
-                    maxLines: 2,
                     textAlign: TextAlign.start,
                   ),
                   SizedBox(height: 20.h),
@@ -65,78 +59,119 @@ class CookwareToolsScreen extends StatelessWidget {
               ),
             ),
 
-            // ── Scrollable list (both sections) ──
+            // ── Scrollable list — both categories merged ──
             Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                itemCount: totalItems,
-                itemBuilder: (context, index) {
-                  // Pans & Pots header
-                  if (index == 0) {
-                    return Column(
+              child: Obx(() {
+                if (controller.isLoadingEquipment.value) {
+                  return const Center(child: CircularProgressIndicator(color: Colors.black));
+                }
+                if (controller.equipmentError.value.isNotEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        _SectionHeader(label: 'Pans & Pots', isRequired: true),
-                        SizedBox(height: 4.h),
-                      ],
-                    );
-                  }
-
-                  // Pans & Pots items
-                  if (index >= 1 && index <= pansCount) {
-                    final i = index - 1;
-                    return Column(
-                      children: [
-                        _CheckboxRow(
-                          label: controller.pansPots[i],
-                          isCheckedFn: () => controller.pansPotsSelected[i],
-                          onTap: () => controller.togglePanPot(i),
+                        CommonText(
+                          text: controller.equipmentError.value,
+                          fontSize: 13,
+                          color: const Color(0xFF888888),
+                          maxLines: 3,
+                          textAlign: TextAlign.center,
                         ),
-                        if (i < pansCount - 1)
+                        SizedBox(height: 12.h),
+                        GestureDetector(
+                          onTap: controller.fetchEquipmentList,
+                          child: CommonText(
+                            text: 'Tap to retry',
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                final potsItems = controller.itemsFor(_categoryPots);
+                final toolsItems = controller.itemsFor(_categoryTools);
+
+                // Merge: [pots header, ...pots, tools header, ...tools]
+                final int total = 1 + potsItems.length + 1 + toolsItems.length;
+
+                return ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  itemCount: total,
+                  itemBuilder: (context, index) {
+                    // Pots & Pans section header
+                    if (index == 0) {
+                      return _SectionHeader(
+                        title: 'Pans & Pots',
+                        selectedCount: () => controller.selectedCountFor(_categoryPots),
+                      );
+                    }
+
+                    // Pots items
+                    if (index <= potsItems.length) {
+                      final i = index - 1;
+                      return Column(
+                        children: [
+                          _EquipmentCheckRow(
+                            controller: controller,
+                            category: _categoryPots,
+                            index: i,
+                            item: potsItems[i],
+                          ),
+                          if (i < potsItems.length - 1)
+                            Divider(height: 1, color: const Color(0xFFF0F0F0)),
+                        ],
+                      );
+                    }
+
+                    // Tools section header
+                    if (index == potsItems.length + 1) {
+                      return _SectionHeader(
+                        title: 'Tools',
+                        selectedCount: () => controller.selectedCountFor(_categoryTools),
+                      );
+                    }
+
+                    // Tools items
+                    final i = index - potsItems.length - 2;
+                    return Column(
+                      children: [
+                        _EquipmentCheckRow(
+                          controller: controller,
+                          category: _categoryTools,
+                          index: i,
+                          item: toolsItems[i],
+                        ),
+                        if (i < toolsItems.length - 1)
                           Divider(height: 1, color: const Color(0xFFF0F0F0)),
                       ],
                     );
-                  }
-
-                  // Tools header
-                  if (index == pansCount + 1) {
-                    return Column(
-                      children: [
-                        SizedBox(height: 20.h),
-                        _SectionHeader(label: 'Tools', isRequired: true),
-                        SizedBox(height: 4.h),
-                      ],
-                    );
-                  }
-
-                  // Tools items
-                  final i = index - pansCount - 2;
-                  return Column(
-                    children: [
-                      _CheckboxRow(
-                        label: controller.tools[i],
-                        isCheckedFn: () => controller.toolsSelected[i],
-                        onTap: () => controller.toggleTool(i),
-                      ),
-                      if (i < toolsCount - 1)
-                        Divider(height: 1, color: const Color(0xFFF0F0F0)),
-                    ],
-                  );
-                },
-              ),
+                  },
+                );
+              }),
             ),
 
             // ── Fixed footer ──
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 28.h),
               child: Column(
                 children: [
+                  CommonButton(
+                    titleText: 'Skip For Now',
+                    buttonColor: const Color(0xFFF2F2F2),
+                    titleColor: AppColors.black,
+                    onTap: () => Get.to(() => const SpecialEquipmentScreen()),
+                  ),
+                  SizedBox(height: 10.h),
                   CommonButton(
                     titleText: 'Continue',
                     buttonColor: AppColors.black,
                     titleColor: AppColors.white,
                     onTap: () => Get.to(() => const SpecialEquipmentScreen()),
                   ),
-                  SizedBox(height: 20.h),
                 ],
               ),
             ),
@@ -148,30 +183,90 @@ class CookwareToolsScreen extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────
-// Checkbox Row
+// Section Header with live selected count
 // ─────────────────────────────────────────────────────
-class _CheckboxRow extends StatelessWidget {
-  final String label;
-  final bool Function() isCheckedFn;
-  final VoidCallback onTap;
+class _SectionHeader extends StatelessWidget {
+  final String title;
+  final int Function() selectedCount;
 
-  const _CheckboxRow({
-    required this.label,
-    required this.isCheckedFn,
-    required this.onTap,
+  const _SectionHeader({required this.title, required this.selectedCount});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 20.h, bottom: 10.h),
+      child: Obx(() {
+        final count = selectedCount();
+        return Row(
+          children: [
+            CommonText(
+              text: title,
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: AppColors.black,
+              textAlign: TextAlign.start,
+            ),
+            if (count > 0) ...[
+              SizedBox(width: 8.w),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                decoration: BoxDecoration(
+                  color: AppColors.black,
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: CommonText(
+                  text: '$count selected',
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.white,
+                ),
+              ),
+            ],
+          ],
+        );
+      }),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────
+// Equipment Check Row
+// ─────────────────────────────────────────────────────
+class _EquipmentCheckRow extends StatelessWidget {
+  final KitchenSetupController controller;
+  final String category;
+  final int index;
+  final EquipmentItemModel item;
+
+  const _EquipmentCheckRow({
+    required this.controller,
+    required this.category,
+    required this.index,
+    required this.item,
   });
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final bool isChecked = isCheckedFn();
+      final bool isChecked =
+          controller.categoryItemsMap[category]?[index].isSelected ?? false;
+
       return GestureDetector(
-        onTap: onTap,
+        onTap: () => controller.toggleItem(category, index),
         behavior: HitTestBehavior.opaque,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 14.h),
           child: Row(
             children: [
+              Expanded(
+                child: CommonText(
+                  text: item.name,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.black,
+                  textAlign: TextAlign.start,
+                ),
+              ),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 width: 22.w,
@@ -188,14 +283,6 @@ class _CheckboxRow extends StatelessWidget {
                     ? Icon(Icons.check_rounded, size: 14.sp, color: AppColors.white)
                     : null,
               ),
-              SizedBox(width: 14.w),
-              CommonText(
-                text: label,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.black,
-                textAlign: TextAlign.start,
-              ),
             ],
           ),
         ),
@@ -204,42 +291,9 @@ class _CheckboxRow extends StatelessWidget {
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  final String label;
-  final bool isRequired;
-
-  const _SectionHeader({required this.label, this.isRequired = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: label,
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: AppColors.black),
-              ),
-              if (isRequired)
-                TextSpan(
-                  text: ' *',
-                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.red),
-                ),
-            ],
-          ),
-        ),
-        Icon(Icons.keyboard_arrow_up_rounded, size: 22.sp, color: AppColors.black),
-      ],
-    );
-  }
-}
-
 class _ProgressBar extends StatelessWidget {
   final int totalSteps;
   final int currentStep;
-
   const _ProgressBar({required this.totalSteps, required this.currentStep});
 
   @override

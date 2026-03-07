@@ -65,22 +65,29 @@ class RequestChangeScreen extends StatelessWidget {
                   bottom: 8,
                 ),
                 GetBuilder<CartController>(
-                  builder: (controller) {
-                    return CommonTextField(
-                      controller: dateController,
-                      keyboardType: TextInputType.none,
-                      borderRadius: 20,
-                      hintText: "1 January 2026, 5:20PM",
-                      onTap: () => bookingDateTimePopup(),
-                      suffixIcon: InkWell(
-                        onTap: () => bookingDateTimePopup(),
-                        child: const Icon(
-                          CupertinoIcons.calendar,
-                          color: Color(0xffFD713F),
+                    builder: (cartCtrl) {
+                      // This logic updates the text field whenever the controller state changes
+                      if (cartCtrl.selectedTime.isNotEmpty) {
+                        final date = cartCtrl.selectedDate;
+                        String formattedDate = "${date.day}/${date.month}/${date.year}";
+                        dateController.text = "$formattedDate, ${cartCtrl.selectedTime}";
+                      }
+
+                      return CommonTextField(
+                        controller: dateController,
+                        keyboardType: TextInputType.none,
+                        borderRadius: 20,
+                        hintText: "Select Date & Time",
+                        onTap: () => bookingDateTimePopup(id: historyCtrl.selectedOrderDetail!.chef.id),
+                        suffixIcon: InkWell(
+                          onTap: () => bookingDateTimePopup(id: historyCtrl.selectedOrderDetail!.chef.id),
+                          child: const Icon(
+                            CupertinoIcons.calendar,
+                            color: Color(0xffFD713F),
+                          ),
                         ),
-                      ),
-                    );
-                  }
+                      );
+                    }
                 ),
                 20.height,
 
