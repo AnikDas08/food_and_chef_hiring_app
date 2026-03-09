@@ -12,12 +12,17 @@ import '../controller/kitchen_setup_controller.dart';
 class CookingAppliancesScreen extends StatelessWidget {
   const CookingAppliancesScreen({super.key});
 
-  // The API category name for cooking appliances
   static const String _category = 'Cooking Appliances';
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<KitchenSetupController>();
+
+    // Fetch equipment list on first load if not already loaded
+    if (controller.equipmentCategories.isEmpty &&
+        !controller.isLoadingEquipment.value) {
+      controller.fetchEquipmentList();
+    }
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -25,7 +30,6 @@ class CookingAppliancesScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Fixed header ──
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
@@ -55,88 +59,42 @@ class CookingAppliancesScreen extends StatelessWidget {
                     textAlign: TextAlign.start,
                   ),
                   SizedBox(height: 20.h),
-                  RichText(
-                    text: TextSpan(children: [
-                      TextSpan(
-                        text: 'Select all that apply ',
-                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: AppColors.black),
-                      ),
-                      TextSpan(
-                        text: '*',
-                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.red),
-                      ),
-                    ]),
-                  ),
-                  SizedBox(height: 12.h),
                 ],
               ),
             ),
 
-            // ── Scrollable list ──
             Expanded(
               child: Obx(() {
-                // Loading state
                 if (controller.isLoadingEquipment.value) {
                   return const Center(child: CircularProgressIndicator(color: Colors.black));
                 }
-                // Error state
                 if (controller.equipmentError.value.isNotEmpty) {
-                  return Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CommonText(
-                          text: controller.equipmentError.value,
-                          fontSize: 13,
-                          color: const Color(0xFF888888),
-                          maxLines: 3,
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 12.h),
-                        GestureDetector(
-                          onTap: controller.fetchEquipmentList,
-                          child: CommonText(
-                            text: 'Tap to retry',
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.black,
-                          ),
-                        ),
-                      ],
-                    ),
+                  return _ErrorRetry(
+                    message: controller.equipmentError.value,
+                    onRetry: controller.fetchEquipmentList,
                   );
                 }
 
                 final items = controller.itemsFor(_category);
-
                 if (items.isEmpty) {
                   return Center(
-                    child: CommonText(
-                      text: 'No appliances found.',
-                      fontSize: 13,
-                      color: const Color(0xFF888888),
-                    ),
+                    child: CommonText(text: 'No appliances found.', fontSize: 13, color: const Color(0xFF888888)),
                   );
                 }
 
-                return ListView.separated(
+                return ListView(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  itemCount: items.length,
-                  separatorBuilder: (_, __) =>
-                      Divider(height: 1, color: const Color(0xFFF0F0F0)),
-                  itemBuilder: (context, index) {
-                    return _EquipmentCheckRow(
+                  children: [
+                    _CollapsibleSection(
                       controller: controller,
                       category: _category,
-                      index: index,
-                      item: items[index],
-                    );
-                  },
+                      title: 'Cooking Appliances',
+                    ),
+                  ],
                 );
               }),
             ),
 
-            // ── Fixed footer ──
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 28.h),
               child: Column(
@@ -165,8 +123,112 @@ class CookingAppliancesScreen extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────
-// Reusable Equipment Check Row
+// Collapsible Section with arrow + selected count badge
 // ─────────────────────────────────────────────────────
+class _CollapsibleSection extends StatelessWidget {
+  final KitchenSetupController controller;
+  final String category;
+  final String title;
+
+  const _CollapsibleSection({
+    required this.controller,
+    required this.category,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final bool expanded = controller.isExpanded(category);
+      final int count = controller.selectedCountFor(category);
+      final items = controller.itemsFor(category);
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // ── Section header with arrow ──
+          GestureDetector(
+            onTap: () => controller.toggleCategoryExpanded(category),
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 14.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: title,
+                        style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w700, color: AppColors.black),
+                      ),
+                      TextSpan(
+                        text: ' *',
+                        style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w700, color: Colors.red),
+                      ),
+                    ]),
+                  ),
+                  Row(
+                    children: [
+                      // Selected count badge when collapsed
+                      if (!expanded && count > 0) ...[
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                          decoration: BoxDecoration(
+                            color: AppColors.black,
+                            borderRadius: BorderRadius.circular(20.r),
+                          ),
+                          child: CommonText(
+                            text: '$count selected',
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.white,
+                          ),
+                        ),
+                        SizedBox(width: 6.w),
+                      ],
+                      AnimatedRotation(
+                        turns: expanded ? 0 : 0.5,
+                        duration: const Duration(milliseconds: 250),
+                        child: Icon(Icons.keyboard_arrow_up_rounded, size: 22.sp, color: AppColors.black),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // ── Items list ──
+          AnimatedCrossFade(
+            firstChild: Column(
+              children: List.generate(items.length, (index) {
+                return Column(
+                  children: [
+                    _EquipmentCheckRow(
+                      controller: controller,
+                      category: category,
+                      index: index,
+                      item: items[index],
+                    ),
+                    if (index < items.length - 1)
+                      Divider(height: 1, color: const Color(0xFFF0F0F0)),
+                  ],
+                );
+              }),
+            ),
+            secondChild: const SizedBox.shrink(),
+            crossFadeState: expanded ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+            duration: const Duration(milliseconds: 250),
+          ),
+
+          Divider(height: 1, color: const Color(0xFFEEEEEE)),
+        ],
+      );
+    });
+  }
+}
+
+// ─── Equipment Check Row ───
 class _EquipmentCheckRow extends StatelessWidget {
   final KitchenSetupController controller;
   final String category;
@@ -183,10 +245,8 @@ class _EquipmentCheckRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      // Reading categoryItemsMap triggers rebuild when toggled
       final bool isChecked =
           controller.categoryItemsMap[category]?[index].isSelected ?? false;
-
       return GestureDetector(
         onTap: () => controller.toggleItem(category, index),
         behavior: HitTestBehavior.opaque,
@@ -205,8 +265,7 @@ class _EquipmentCheckRow extends StatelessWidget {
               ),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
-                width: 22.w,
-                height: 22.w,
+                width: 22.w, height: 22.w,
                 decoration: BoxDecoration(
                   color: isChecked ? AppColors.black : Colors.transparent,
                   shape: BoxShape.circle,
@@ -224,6 +283,29 @@ class _EquipmentCheckRow extends StatelessWidget {
         ),
       );
     });
+  }
+}
+
+class _ErrorRetry extends StatelessWidget {
+  final String message;
+  final VoidCallback onRetry;
+  const _ErrorRetry({required this.message, required this.onRetry});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CommonText(text: message, fontSize: 13, color: const Color(0xFF888888), maxLines: 3, textAlign: TextAlign.center),
+          SizedBox(height: 12.h),
+          GestureDetector(
+            onTap: onRetry,
+            child: CommonText(text: 'Tap to retry', fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.black),
+          ),
+        ],
+      ),
+    );
   }
 }
 

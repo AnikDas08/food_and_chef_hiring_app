@@ -265,12 +265,27 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
                 onTap: () => Get.offAllNamed('/home'),
               ),
               SizedBox(height: 10.h),
-              CommonButton(
-                  titleText: 'Continue',
-                  buttonColor: AppColors.black,
-                  titleColor: AppColors.white,
-                  onTap: () => Get.offAllNamed('/home'),
-                ),
+              Obx(
+                    () {
+                  final submitting = controller.isSubmittingCustom.value;
+                  return CommonButton(
+                    titleText: submitting ? 'Please wait...' : 'Continue',
+                    buttonColor: submitting
+                        ? const Color(0xFFAAAAAA)
+                        : AppColors.black,
+                    titleColor: AppColors.white,
+                    onTap: submitting
+                        ? null
+                        : () async {
+                      final success =
+                      await controller.submitCustomKitchen();
+                      if (success) {
+                        Get.offAllNamed('/home');
+                      }
+                    },
+                  );
+                },
+              ),
               SizedBox(height: 20.h),
             ],
           ),

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/features/customer/home/presentation/screen/customer_home_screen.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 
 import '../../../../../component/button/common_button.dart';
@@ -64,7 +65,6 @@ class KitchenSetupScreen extends StatelessWidget {
               ),
               SizedBox(height: 12.h),
 
-              // ── List body ──
               Expanded(
                 child: Obx(() {
                   if (controller.isLoadingPresets.value) {
@@ -97,7 +97,6 @@ class KitchenSetupScreen extends StatelessWidget {
                     );
                   }
 
-                  // presets from API + fixed Custom Setup at bottom
                   final int total = controller.kitchenPresets.length + 1;
                   return ListView.separated(
                     itemCount: total,
@@ -135,34 +134,26 @@ class KitchenSetupScreen extends StatelessWidget {
                 final selected = controller.isAnythingSelected;
                 final submitting = controller.isSubmittingPreset.value;
                 final loading = controller.isLoadingEquipment.value;
+                final busy = submitting || loading;
 
                 return CommonButton(
-                  titleText: (submitting || loading) ? 'Please wait...' : 'Continue',
+                  titleText: busy ? 'Please wait...' : 'Continue',
                   buttonColor: selected ? AppColors.black : const Color(0xFFAAAAAA),
                   titleColor: AppColors.white,
-                  onTap: !selected || submitting || loading
+                  onTap: (!selected || busy)
                       ? null
                       : () async {
                     if (controller.isCustomSetup) {
-                      // Custom Setup → fetch equipment list → go to next screen
+                      // Custom Setup: just go to next screen
+                      // Equipment list will be fetched there
                       await controller.fetchEquipmentList();
-                      if (controller.equipmentError.value.isEmpty) {
-                        Get.to(() => const CookingAppliancesScreen());
-                      } else {
-                        Get.snackbar(
-                          'Error',
-                          controller.equipmentError.value,
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.red.shade400,
-                          colorText: Colors.white,
-                          margin: const EdgeInsets.all(16),
-                          borderRadius: 12,
-                        );
-                      }
-                    } else {
-                      // Preset selected → POST already fired on tap,
-                      // just navigate to next screen
                       Get.to(() => const CookingAppliancesScreen());
+                    } else {
+                      // Preset: POST first, then navigate on success
+                      final success = await controller.submitPresetKitchen();
+                      if (success) {
+                        Get.offAll(()=>CustomerHomeScreen());
+                      }
                     }
                   },
                 );
@@ -176,9 +167,7 @@ class KitchenSetupScreen extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────
-// API Preset Card — tapping immediately fires POST
-// ─────────────────────────────────────────────────────
+// ─── Preset Card (tap = select only, no API) ───
 class _PresetCard extends StatelessWidget {
   final KitchenSetupController controller;
   final int index;
@@ -195,7 +184,7 @@ class _PresetCard extends StatelessWidget {
     return Obx(() {
       final bool isSelected = controller.selectedKitchenIndex.value == index;
       return GestureDetector(
-        onTap: () => controller.selectPreset(index), // fires POST inside
+        onTap: () => controller.selectPreset(index), // just selection, no API
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
@@ -233,23 +222,6 @@ class _PresetCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // Loading spinner on this card while POST is in flight
-              Obx(() {
-                if (controller.isSubmittingPreset.value && isSelected) {
-                  return Padding(
-                    padding: EdgeInsets.only(left: 8.w),
-                    child: SizedBox(
-                      width: 18.w,
-                      height: 18.w,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: isSelected ? Colors.white : Colors.black,
-                      ),
-                    ),
-                  );
-                }
-                return const SizedBox.shrink();
-              }),
             ],
           ),
         ),
@@ -258,15 +230,10 @@ class _PresetCard extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────
-// Preset image — network or default kitchen icon
-// ─────────────────────────────────────────────────────
 class _PresetImage extends StatelessWidget {
   final String? imageUrl;
   final bool isSelected;
-
   const _PresetImage({this.imageUrl, required this.isSelected});
-
   bool get _hasImage => imageUrl != null && imageUrl!.isNotEmpty;
 
   @override
@@ -276,9 +243,7 @@ class _PresetImage extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.r),
         child: CachedNetworkImage(
           imageUrl: imageUrl!,
-          width: 44.w,
-          height: 44.w,
-          fit: BoxFit.cover,
+          width: 44.w, height: 44.w, fit: BoxFit.cover,
           placeholder: (_, __) => _defaultBox(),
           errorWidget: (_, __, ___) => _defaultBox(),
         ),
@@ -287,29 +252,19 @@ class _PresetImage extends StatelessWidget {
     return _defaultBox();
   }
 
-  Widget _defaultBox() {
-    return Container(
-      width: 44.w,
-      height: 44.w,
-      decoration: BoxDecoration(
-        color: isSelected ? Colors.white.withOpacity(0.15) : const Color(0xFFEEEEEE),
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Icon(
-        Icons.kitchen_outlined,
-        size: 24.sp,
-        color: isSelected ? Colors.white70 : const Color(0xFF888888),
-      ),
-    );
-  }
+  Widget _defaultBox() => Container(
+    width: 44.w, height: 44.w,
+    decoration: BoxDecoration(
+      color: isSelected ? Colors.white.withOpacity(0.15) : const Color(0xFFEEEEEE),
+      borderRadius: BorderRadius.circular(8.r),
+    ),
+    child: Icon(Icons.kitchen_outlined, size: 24.sp,
+        color: isSelected ? Colors.white70 : const Color(0xFF888888)),
+  );
 }
 
-// ─────────────────────────────────────────────────────
-// Fixed Custom Setup card — always last, not from API
-// ─────────────────────────────────────────────────────
 class _CustomSetupCard extends StatelessWidget {
   final KitchenSetupController controller;
-
   const _CustomSetupCard({required this.controller});
 
   @override
@@ -328,8 +283,7 @@ class _CustomSetupCard extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 44.w,
-                height: 44.w,
+                width: 44.w, height: 44.w,
                 decoration: BoxDecoration(
                   color: isSelected ? Colors.white.withOpacity(0.15) : const Color(0xFFEEEEEE),
                   borderRadius: BorderRadius.circular(8.r),
@@ -354,13 +308,9 @@ class _CustomSetupCard extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────
-// Progress Bar
-// ─────────────────────────────────────────────────────
 class _ProgressBar extends StatelessWidget {
   final int totalSteps;
   final int currentStep;
-
   const _ProgressBar({required this.totalSteps, required this.currentStep});
 
   @override
