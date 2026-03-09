@@ -117,6 +117,18 @@ class NotificationsController extends GetxController {
     }
   }
 
+  /*Future<void> readAllNotification() async {
+
+      try {
+        final response = await ApiService.patch("notification");
+        if (response.statusCode != 200) {
+          getNotificationsRepo();
+        }
+      } catch (e) {
+
+      }
+    }*/
+
   /// Scroll Listener Logic
   void _setupScrollListener() {
     scrollController.addListener(() {

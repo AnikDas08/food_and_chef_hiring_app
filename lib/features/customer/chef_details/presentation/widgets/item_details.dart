@@ -402,7 +402,7 @@ void itemDetails(
                                                       FontWeight.w500,
                                                     ),
                                                   ),
-                                                  if (ingredient.quantity !=
+                                                  /*if (ingredient.quantity !=
                                                       null ||
                                                       ingredient.unit != null)
                                                     TextSpan(
@@ -416,7 +416,7 @@ void itemDetails(
                                                         fontWeight:
                                                         FontWeight.w400,
                                                       ),
-                                                    ),
+                                                    ),*/
                                                 ],
                                               ),
                                             ),

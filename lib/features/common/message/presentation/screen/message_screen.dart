@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/config/api/api_end_point.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_text_field.dart';
@@ -51,7 +52,10 @@ class _MessageScreenState extends State<MessageScreen> {
                   backgroundColor: Colors.transparent,
                   child: ClipOval(
                     child: CommonImage(
-                      imageSrc: image,
+                      // Logic: If image starts with http, use it. Otherwise, add base URL.
+                      imageSrc: image.startsWith('http')
+                          ? image
+                          : ApiEndPoint.image+image,
                       size: 40,
                       fill: BoxFit.fill,
                     ),
@@ -80,7 +84,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 ),
               ],
             ),
-            actions: [
+            /*actions: [
               IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.call_outlined, color: Color(0xff272727)),
@@ -89,7 +93,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 onPressed: () {},
                 icon: const Icon(Icons.more_vert, color: Color(0xff272727)),
               ),
-            ],
+            ],*/
           ),
 
           /// ── Body ────────────────────────────────────────────────────────

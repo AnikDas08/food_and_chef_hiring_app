@@ -192,6 +192,26 @@ class KitchenSetupController extends GetxController {
     final list = categoryItemsMap[category];
     if (list != null && itemIndex < list.length) {
       list[itemIndex].isSelected = !list[itemIndex].isSelected;
+      // Reset quantity to 1 when toggling on, keep when toggling off
+      if (list[itemIndex].isSelected) {
+        list[itemIndex].quantity = 1;
+      }
+      categoryItemsMap.refresh();
+    }
+  }
+
+  void incrementItem(String category, int itemIndex) {
+    final list = categoryItemsMap[category];
+    if (list != null && itemIndex < list.length) {
+      list[itemIndex].quantity++;
+      categoryItemsMap.refresh();
+    }
+  }
+
+  void decrementItem(String category, int itemIndex) {
+    final list = categoryItemsMap[category];
+    if (list != null && itemIndex < list.length && list[itemIndex].quantity > 1) {
+      list[itemIndex].quantity--;
       categoryItemsMap.refresh();
     }
   }
@@ -230,28 +250,18 @@ class KitchenSetupController extends GetxController {
 
   void removeImage() => selectedImage.value = null;
 
-  // Build items list: [{ "_id": "xxx", "quantity": 1 }, ...]
-  // Collected from all categories across all 3 equipment screens
+  // Build payload: [{ "_id": "xxx", "quantity": 3 }, ...]
+  // Uses actual quantity set by user via +/- controls
   List<Map<String, dynamic>> get selectedItemsPayload {
     final List<Map<String, dynamic>> result = [];
     for (final items in categoryItemsMap.values) {
       for (final item in items) {
         if (item.isSelected) {
-          result.add({'_id': item.id, 'quantity': 1});
+          result.add(item.toPayload());
         }
       }
     }
     return result;
-  }
-
-  // Zod schema expects items as array of plain ID strings:
-  // items[0]=id1, items[1]=id2, ...
-  Map<dynamic, dynamic> _buildIndexedItemsBody(List<Map<String, dynamic>> items) {
-    final Map<dynamic, dynamic> body = {};
-    for (int i = 0; i < items.length; i++) {
-      body['items[$i]'] = items[i]['_id'].toString();
-    }
-    return body;
   }
 
   Future<bool> submitCustomKitchen() async {
@@ -265,24 +275,27 @@ class KitchenSetupController extends GetxController {
       ApiResponseModel response;
 
       if (hasImage) {
-        // ── With image: multipartImage with indexed body fields ──
-        // Zod expects a real array — indexed fields like items[0][_id]
-        // are parsed by most backends (Express/Zod) as a proper array.
+        // ── With image: multipartImage ──
+        // items sent as JSON-encoded array in body field
         response = await ApiService.multipartImage(
           'equipment/kitchen',
           method: 'POST',
-          body: _buildIndexedItemsBody(items),
+          body: {
+            'items': items, // List<Map> — multipartImage jsonEncodes this
+          },
           files: [
             {'name': 'image', 'image': imagePath},
           ],
         );
       } else {
         // ── No image: plain JSON POST ──
-        // Send items as array of plain ID strings: ["id1", "id2", ...]
-        final List<String> itemIds = items.map((e) => e['_id'].toString()).toList();
-        response = await ApiService.post(
+        // Dio sends List<Map> as proper JSON array: [{"_id":"xxx","quantity":1}]
+        response = await ApiService.multipartImage(
           'equipment/kitchen',
-          body: {'items': itemIds},
+          method: 'POST',
+          body: {
+            'items': items, // List<Map> — multipartImage jsonEncodes this
+          },
         );
       }
 

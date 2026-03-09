@@ -65,7 +65,10 @@ AppBar homeAppbar() {
         init: NotificationsController(),
         builder: (controller) {
           return InkWell(
-            onTap: () => Get.toNamed(AppRoutes.notifications),
+            onTap: ()async{
+              //controller.readAllNotification();
+              Get.toNamed(AppRoutes.notifications);
+            },
             child: Badge(
               // Use the unreadCount from the controller
               label: Text(

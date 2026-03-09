@@ -102,7 +102,7 @@ void bookingDetails(BuildContext context, String orderId) {
                   20.height,
 
 
-                  _buildBottomActions(context, order),
+                  _buildBottomActions(context, order,controller),
                 ],
               ),
             ),
@@ -297,7 +297,7 @@ Widget _buildOrderDetailsAccordion(BookingHistoryController controller, dynamic 
   );
 }
 
-Widget _buildBottomActions(BuildContext context, dynamic order) {
+Widget _buildBottomActions(BuildContext context, dynamic order,BookingHistoryController controller) {
   // 1. Safely check history using property access (.type) instead of Map access (['type'])
   bool alreadyOrderedGroceries = false;
   final String status = order.status;
@@ -336,7 +336,7 @@ Widget _buildBottomActions(BuildContext context, dynamic order) {
         const Spacer(),
 
       _circularIconButton(AppIcons.chats, () {
-        // Handle chat navigation
+        controller.createChat(controller.selectedOrderDetail!.chef.id,controller.selectedOrderDetail!.chef.name,controller.selectedOrderDetail!.chef.image);
       }),
 
       if (showEditButton)

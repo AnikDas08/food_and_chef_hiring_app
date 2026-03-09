@@ -35,7 +35,7 @@ Widget bookingItem(BookingHistoryModel order) {
               ClipRRect(
                 borderRadius: BorderRadius.circular(50),
                 child: Image.network(
-                  ApiEndPoint.imageUrl + order.chef.image,
+                  order.chef.image,
                   width: 40,
                   height: 40,
                   fit: BoxFit.cover,

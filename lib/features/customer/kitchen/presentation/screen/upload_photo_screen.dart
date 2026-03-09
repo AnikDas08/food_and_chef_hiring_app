@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:new_untitled/features/customer/home/presentation/screen/customer_home_screen.dart';
+import 'package:new_untitled/utils/app_utils.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 
 import '../../../../../component/button/common_button.dart';
@@ -280,7 +282,8 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
                       final success =
                       await controller.submitCustomKitchen();
                       if (success) {
-                        Get.offAllNamed('/home');
+                        Get.offAll(()=>CustomerHomeScreen());
+                        Utils.successSnackBar("Successful", "Successfully create kitchen");
                       }
                     },
                   );

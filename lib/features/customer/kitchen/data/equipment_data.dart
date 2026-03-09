@@ -2,11 +2,13 @@ class EquipmentItemModel {
   final String id;
   final String name;
   bool isSelected;
+  int quantity; // dynamic quantity, min 1
 
   EquipmentItemModel({
     required this.id,
     required this.name,
     this.isSelected = false,
+    this.quantity = 1,
   });
 
   factory EquipmentItemModel.fromJson(Map<String, dynamic> json) {
@@ -15,6 +17,12 @@ class EquipmentItemModel {
       name: json['name'] ?? '',
     );
   }
+
+  // Payload format the backend expects
+  Map<String, dynamic> toPayload() => {
+    '_id': id,
+    'quantity': quantity,
+  };
 }
 
 class EquipmentCategoryModel {

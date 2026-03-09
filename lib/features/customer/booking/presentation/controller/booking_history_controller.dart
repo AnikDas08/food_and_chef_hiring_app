@@ -87,6 +87,28 @@ class BookingHistoryController extends GetxController {
     }
   }
 
+  Future<void> createChat(String id,String name, String image) async {
+    try {
+      final response = await ApiService.post("chat/$id");
+      if (response.statusCode == 200 && response.data != null) {
+        final data=response.data;
+        String chatId=data["data"]["_id"];
+        Get.toNamed(AppRoutes.message,parameters: {
+          "chatId":chatId,
+          "name": name,
+          "image": image,
+        },);
+
+      }
+    } catch (e) {
+      Utils.errorSnackBar("Error", "Could not fetch details.");
+      debugPrint("Detail Fetch Error: $e");
+    } finally {
+      isDetailLoading = false;
+      update();
+    }
+  }
+
   /// 2. Fetch Specific Order Details (For the Popup)
   Future<void> fetchOrderDetails(String id) async {
     isDetailLoading = true;

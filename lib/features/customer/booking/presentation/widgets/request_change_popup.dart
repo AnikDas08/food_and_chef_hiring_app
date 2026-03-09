@@ -9,6 +9,7 @@ import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
+import '../../../groceries/presentations/screens/groceries_screen.dart';
 import '../controller/booking_history_controller.dart';
 
 void requestChange(BuildContext context,dynamic order) {
@@ -96,7 +97,7 @@ void requestChange(BuildContext context,dynamic order) {
                             titleSize: 12,
                             titleWeight: FontWeight.w500,
                             onTap: () {
-                              Get.toNamed(AppRoutes.requestChange, arguments: order);
+                              Get.toNamed(AppRoutes.requestChange, arguments: order.id);
                             },
                           ),
                         ),
@@ -111,6 +112,9 @@ void requestChange(BuildContext context,dynamic order) {
                           titleText: AppString.orderGroceries,
                           buttonHeight: 48,
                           buttonRadius: 16,
+                          onTap: (){
+                            Get.to(() => const GroceryScreen(), arguments: order.id);
+                          },
                         ),
                       ),
                       Container(
@@ -120,7 +124,11 @@ void requestChange(BuildContext context,dynamic order) {
                           color: Color(0xffF2F2F2),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: CommonImage(imageSrc: AppIcons.chats, size: 20),
+                        child: GestureDetector(
+                          onTap: (){
+                            controller.createChat(controller.selectedOrderDetail!.chef.id,controller.selectedOrderDetail!.chef.name,controller.selectedOrderDetail!.chef.image);
+                          },
+                            child: CommonImage(imageSrc: AppIcons.chats, size: 20)),
                       ),
                       Container(
                         margin: EdgeInsets.only(left: 8.sp),
@@ -129,7 +137,11 @@ void requestChange(BuildContext context,dynamic order) {
                           color: Color(0xffF2F2F2),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: CommonImage(imageSrc: AppIcons.edit, size: 20),
+                        child: InkWell(
+                          onTap: (){
+
+                          },
+                            child: CommonImage(imageSrc: AppIcons.edit, size: 20)),
                       ),
                     ],
                   ),
