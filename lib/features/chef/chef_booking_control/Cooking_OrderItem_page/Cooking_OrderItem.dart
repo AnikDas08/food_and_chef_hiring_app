@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../services/api/api_service.dart';
+
 class CookingOrderItem {
   final String name;
   final String description;
@@ -385,7 +387,6 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
   }
 }
 
-// ── Stop Confirmation Dialog ──
 class _StopConfirmationDialog extends StatelessWidget {
   final Duration totalTime;
   final VoidCallback onConfirm;
@@ -406,6 +407,8 @@ class _StopConfirmationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: EdgeInsets.symmetric(horizontal: 28.w),
@@ -468,7 +471,26 @@ class _StopConfirmationDialog extends StatelessWidget {
 
             // I'm sure button
             GestureDetector(
-              onTap: onConfirm,
+              onTap: () async {
+                try {
+                  final timeString = _formatShort(totalTime);
+
+                  final orderId = Get.arguments?['orderId']?.toString() ?? "";
+
+                  final response = await ApiService.post(
+                    "order/clearence/$orderId",
+                    body: {"time": timeString},
+                  );
+
+                  if (response.statusCode == 200 || response.statusCode == 201) {
+                    onConfirm();
+                  } else {
+                    Get.snackbar("Error", "Failed to submit cooking time");
+                  }
+                } catch (e) {
+                  Get.snackbar("Error", e.toString());
+                }
+              },
               child: Container(
                 width: double.infinity,
                 height: 50.h,
