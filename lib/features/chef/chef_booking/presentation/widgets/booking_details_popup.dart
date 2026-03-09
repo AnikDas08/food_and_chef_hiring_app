@@ -272,12 +272,14 @@ void bookingDetailsPopup(
                             final chatData = response.data['data'];
                             final chatId = chatData['_id']?.toString() ?? "";
 
-                            Get.back(); // popup বন্ধ
-                            Get.toNamed(AppRoutes.message, arguments: {
+                            Get.back();
+
+                            Get.toNamed(AppRoutes.message, parameters: {
                               'chatId': chatId,
-                              'userName': order['user']?['name'] ?? "User",
-                              'userImage': order['user']?['image'] ?? "",
+                              'name': order['user']?['name'] ?? "User",
+                              'image': order['user']?['image'] ?? "",
                             });
+
                           } else {
                             Get.snackbar("Error", "Failed to open chat");
                           }
@@ -315,10 +317,10 @@ void bookingDetailsPopup(
                         final chatId = chatData['_id']?.toString() ?? "";
 
                         Get.back(); // popup বন্ধ
-                        Get.toNamed(AppRoutes.message, arguments: {
+                        Get.toNamed(AppRoutes.message, parameters: {
                           'chatId': chatId,
-                          'userName': order['user']?['name'] ?? "User",
-                          'userImage': order['user']?['image'] ?? "",
+                          'name': order['user']?['name'] ?? "User",
+                          'image': order['user']?['image'] ?? "",
                         });
                       } else {
                         Get.snackbar("Error", "Failed to open chat");

@@ -357,11 +357,10 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                                 final chatData = response.data['data'];
                                 final chatId = chatData['_id']?.toString() ?? "";
 
-                                Get.back();
-                                Get.toNamed(AppRoutes.message, arguments: {
+                                Get.back();Get.toNamed(AppRoutes.message, parameters: {
                                   'chatId': chatId,
-                                  'userName': orderData?['user']?['name'] ?? "User",
-                                  'userImage': orderData?['user']?['image'] ?? "",
+                                  'name': orderData?['user']?['name'] ?? "User",
+                                  'image': orderData?['user']?['image'] ?? "",
                                 });
                               } else {
                                 Get.snackbar("Error", "Failed to open chat");

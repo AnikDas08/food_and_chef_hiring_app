@@ -401,11 +401,10 @@ Widget chefBookingItem({required Map order}) {
                       if (response.statusCode == 200 || response.statusCode == 201) {
                         final chatData = response.data['data'];
                         final chatId = chatData['_id']?.toString() ?? "";
-
-                        Get.toNamed(AppRoutes.message, arguments: {
+                        Get.toNamed(AppRoutes.message, parameters: {
                           'chatId': chatId,
-                          'userName': order['user']?['name'] ?? "User",
-                          'userImage': order['user']?['image'] ?? "",
+                          'name': order['user']?['name'] ?? "User",
+                          'image': order['user']?['image'] ?? "",
                         });
                       } else {
                         Get.snackbar("Error", "Failed to open chat");
