@@ -309,8 +309,8 @@ class SignUpChefController extends GetxController {
         method: "PATCH",
         body: {
           "about": about,
-          "experience": experience,
-          "cooking_area_distance": cookingAreaDistance,
+          "experience": int.tryParse(experience) ?? 0, // ← String থেকে int
+          "cooking_area_distance": int.tryParse(cookingAreaDistance) ?? 0,
           "address": address,
           "lat": lat,
           "lng": lng,
@@ -331,7 +331,6 @@ class SignUpChefController extends GetxController {
     }
   }
 
-  // ── 6. Price ──
   Future<void> setupChefPrice({
     required String pricing,
     required bool weekDaysDiscountHas,

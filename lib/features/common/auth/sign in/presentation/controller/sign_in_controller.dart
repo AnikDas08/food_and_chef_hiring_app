@@ -9,7 +9,6 @@ import '../../../../../../services/api/api_service.dart';
 import '../../../../../../services/storage/storage_keys.dart';
 import '../../../../../../services/storage/storage_services.dart';
 
-
 class SignInController extends GetxController {
   /// Sign in Button Loading variable
   bool isLoading = false;
@@ -29,8 +28,6 @@ class SignInController extends GetxController {
   /// Sign in Api call here
 
   Future<void> signInUser() async {
-    //if (!formKey.currentState!.validate()) return;
-
     isLoading = true;
     update();
 
@@ -46,9 +43,10 @@ class SignInController extends GetxController {
 
     if (response.statusCode == 200) {
       var data = response.data;
-      isLoading = true;
-      update();
-      if(response.data["data"]["onboarding"]==false){
+
+      if (response.data["data"]["onboarding"] == false) {
+        isLoading = false;
+        update();
         Get.toNamed(AppRoutes.createSignUpPassword);
         await Utils.errorSnackBar("Complete Profile", "First Complete your all details");
         return;
@@ -56,15 +54,8 @@ class SignInController extends GetxController {
 
       LocalStorage.token = data['data']["accessToken"];
       LocalStorage.userId = data['data']["userId"];
-      //LocalStorage.userId = data['data']["attributes"]["_id"];
-      //LocalStorage.myImage = data['data']["attributes"]["image"];
       LocalStorage.myRole = data["data"]["role"];
-      //LocalStorage.myName = data['data']["attributes"]["fullName"];
-
-      //LocalStorage.myEmail = data['data']["attributes"]["email"];
       LocalStorage.isLogIn = true;
-
-
 
       await LocalStorage.setBool(LocalStorageKeys.isLogIn, LocalStorage.isLogIn);
       await LocalStorage.setString(LocalStorageKeys.token, LocalStorage.token);
@@ -73,67 +64,73 @@ class SignInController extends GetxController {
 
       emailController.clear();
       passwordController.clear();
-      Get.offAllNamed(AppRoutes.customerHomeScreen);
+
+      if (response.data["data"]["role"] == "CHEF") {
+        Get.offAllNamed(AppRoutes.chefHomeScreen);
+      } else if (response.data["data"]["role"] == "CUSTOMER") {
+        Get.offAllNamed(AppRoutes.customerHomeScreen);
+      } else {
+        Get.snackbar("Message", "${response.message}");
+      }
+
     } else {
       Get.snackbar(response.statusCode.toString(), response.message);
-      isLoading=false;
-      update();
     }
 
     isLoading = false;
     update();
   }
 
-  Future<void> signInChef() async {
-    if (!formKey.currentState!.validate()) return;
-
-    isLoadingChef = true;
-    update();
-
-    Map<String, String> body = {
-      "email": emailController.text,
-      "password": passwordController.text,
-    };
-
-    try {
-      var response = await ApiService.post(
-        ApiEndPoint.signIn,
-        body: body,
-      ).timeout(const Duration(seconds: 30));
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        if (response.data["data"]["onboarding"] == false) {
-          isLoadingChef = false;
-          update();
-          Get.toNamed(AppRoutes.createSignUpPassword);
-          await Utils.errorSnackBar("Complete Profile", "First Complete your all details");
-          return;
-        }
-
-        LocalStorage.token = data['data']["accessToken"];
-        LocalStorage.myRole = data["data"]["role"];
-        LocalStorage.userId = data['data']["userId"];
-        LocalStorage.isLogIn = true;
-
-        await LocalStorage.setBool(LocalStorageKeys.isLogIn, LocalStorage.isLogIn);
-        await LocalStorage.setString(LocalStorageKeys.token, LocalStorage.token);
-        await LocalStorage.setString(LocalStorageKeys.myRole, LocalStorage.myRole);
-        await LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
-
-        emailController.clear();
-        passwordController.clear();
-
-        Get.offAllNamed(AppRoutes.chefHomeScreen);
-      } else {
-        Get.snackbar(response.statusCode.toString(), response.message);
-      }
-    } catch (e) {
-      debugPrint("❌ SignIn Chef error: $e");
-      Utils.errorSnackBar("Error", "Something went wrong");
-    } finally {
-      isLoadingChef = false;
-      update();
-    }
-  }
+  // Future<void> signInChef() async {
+  //   if (!formKey.currentState!.validate()) return;
+  //
+  //   isLoadingChef = true;
+  //   update();
+  //
+  //   Map<String, String> body = {
+  //     "email": emailController.text,
+  //     "password": passwordController.text,
+  //   };
+  //
+  //   try {
+  //     var response = await ApiService.post(
+  //       ApiEndPoint.signIn,
+  //       body: body,
+  //     ).timeout(const Duration(seconds: 30));
+  //
+  //     if (response.statusCode == 200) {
+  //       var data = response.data;
+  //       if (response.data["data"]["onboarding"] == false) {
+  //         isLoadingChef = false;
+  //         update();
+  //         Get.toNamed(AppRoutes.createSignUpPassword);
+  //         await Utils.errorSnackBar("Complete Profile", "First Complete your all details");
+  //         return;
+  //       }
+  //
+  //       LocalStorage.token = data['data']["accessToken"];
+  //       LocalStorage.myRole = data["data"]["role"];
+  //       LocalStorage.userId = data['data']["userId"];
+  //       LocalStorage.isLogIn = true;
+  //
+  //       await LocalStorage.setBool(LocalStorageKeys.isLogIn, LocalStorage.isLogIn);
+  //       await LocalStorage.setString(LocalStorageKeys.token, LocalStorage.token);
+  //       await LocalStorage.setString(LocalStorageKeys.myRole, LocalStorage.myRole);
+  //       await LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
+  //
+  //       emailController.clear();
+  //       passwordController.clear();
+  //
+  //       Get.offAllNamed(AppRoutes.chefHomeScreen);
+  //     } else {
+  //       Get.snackbar(response.statusCode.toString(), response.message);
+  //     }
+  //   } catch (e) {
+  //     debugPrint("❌ SignIn Chef error: $e");
+  //     Utils.errorSnackBar("Error", "Something went wrong");
+  //   } finally {
+  //     isLoadingChef = false;
+  //     update();
+  //   }
+  // }
 }

@@ -30,7 +30,6 @@ class ChefHomeController extends GetxController {
     fetchUpcomingBookings();
   }
 
-
   Future<Map<String, dynamic>?> fetchSingleOrder(String orderId) async {
     try {
       final response = await ApiService.get(

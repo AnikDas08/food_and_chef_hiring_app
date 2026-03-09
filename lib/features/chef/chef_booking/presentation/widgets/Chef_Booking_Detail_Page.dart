@@ -792,3 +792,167 @@ class _ActionButtons extends StatelessWidget {
     );
   }
 }
+
+
+void stopConfirmationPopUp({
+  required Duration totalTime,
+  required String orderId,
+  required VoidCallback onSuccess,
+}) {
+  showDialog(
+    context: Get.context!,
+    barrierDismissible: false,
+    barrierColor: Colors.black.withOpacity(0.5),
+    builder: (_) => _StopConfirmationDialog(
+      totalTime: totalTime,
+      orderId: orderId,
+      onConfirm: () {
+        Get.back(); // dialog বন্ধ
+        onSuccess();
+      },
+      onCheckAgain: () => Get.back(),
+    ),
+  );
+}
+class _StopConfirmationDialog extends StatelessWidget {
+  final Duration totalTime;
+  final String orderId;
+  final VoidCallback onConfirm;
+  final VoidCallback onCheckAgain;
+
+  const _StopConfirmationDialog({
+    required this.totalTime,
+    required this.orderId,
+    required this.onConfirm,
+    required this.onCheckAgain,
+  });
+
+  String _formatShort(Duration d) {
+    final h = d.inHours.toString().padLeft(2, '0');
+    final m = (d.inMinutes % 60).toString().padLeft(2, '0');
+    final s = (d.inSeconds % 60).toString().padLeft(2, '0');
+    return '$h:$m:$s';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: EdgeInsets.symmetric(horizontal: 28.w),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        padding: EdgeInsets.fromLTRB(24.w, 28.h, 24.w, 20.h),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 56.r,
+              height: 56.r,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color(0xFFF5A623),
+              ),
+              child: Icon(Icons.priority_high_rounded,
+                  color: Colors.white, size: 28.r),
+            ),
+            SizedBox(height: 16.h),
+            Text(
+              "Are you sure you're done?",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w800,
+                color: const Color(0xFF1A1A1A),
+              ),
+            ),
+            SizedBox(height: 10.h),
+            Text(
+              'Are you sure that all recipes have been prepared and the kitchen is cleaned up?',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12.sp,
+                color: Colors.grey[500],
+                height: 1.5,
+              ),
+            ),
+            SizedBox(height: 14.h),
+            Text(
+              'Total cooking time: ${_formatShort(totalTime)}',
+              style: TextStyle(
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF1A1A1A),
+              ),
+            ),
+            SizedBox(height: 20.h),
+
+            // I'm sure button
+            GestureDetector(
+              onTap: () async {
+                try {
+                  final timeString = _formatShort(totalTime);
+                  final response = await ApiService.post(
+                    "order/clearence/$orderId",
+                    body: {"time": timeString},
+                  );
+                  if (response.statusCode == 200 || response.statusCode == 201) {
+                    onConfirm(); // ← Get.back() না, onConfirm call করো
+                  } else {
+                    Get.snackbar("Error", "Failed to submit cooking time");
+                  }
+                } catch (e) {
+                  Get.snackbar("Error", e.toString());
+                }
+              },
+              child: Container(
+                width: double.infinity,
+                height: 50.h,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1A1A1A),
+                  borderRadius: BorderRadius.circular(14.r),
+                ),
+                child: Center(
+                  child: Text(
+                    "I'm sure",
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10.h),
+
+            // Check again button
+            GestureDetector(
+              onTap: onCheckAgain,
+              child: Container(
+                width: double.infinity,
+                height: 50.h,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF5F5F5),
+                  borderRadius: BorderRadius.circular(14.r),
+                ),
+                child: Center(
+                  child: Text(
+                    'Check again',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF1A1A1A),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

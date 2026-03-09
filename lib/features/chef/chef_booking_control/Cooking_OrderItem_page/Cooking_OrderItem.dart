@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../services/api/api_service.dart';
+
 class CookingOrderItem {
   final String name;
   final String description;
@@ -17,11 +19,13 @@ class CookingOrderItem {
 
 class CookingStopwatchScreen extends StatefulWidget {
   final List<CookingOrderItem> orderItems;
+  final String orderId;
   final void Function(Duration totalTime)? onDone;
 
   const CookingStopwatchScreen({
     super.key,
     required this.orderItems,
+    required this.orderId,
     this.onDone,
   });
 
@@ -74,6 +78,7 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
     _showStopConfirmation();
   }
 
+
   void _showStopConfirmation() {
     showDialog(
       context: context,
@@ -81,20 +86,20 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (_) => _StopConfirmationDialog(
         totalTime: _elapsed,
+        orderId: widget.orderId,
         onConfirm: () {
-          Navigator.pop(context); // close dialog
+          Navigator.pop(context);
           _timer?.cancel();
           widget.onDone?.call(_elapsed);
-          Get.back(); // go back
+          Get.back();
         },
         onCheckAgain: () {
-          Navigator.pop(context); // close dialog
-          setState(() => _isRunning = true); // resume
+          Navigator.pop(context);
+          setState(() => _isRunning = true);
         },
       ),
     );
   }
-
   String _formatShort(Duration d) {
     final h = d.inHours.toString().padLeft(2, '0');
     final m = (d.inMinutes % 60).toString().padLeft(2, '0');
@@ -384,15 +389,15 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
     );
   }
 }
-
-// ── Stop Confirmation Dialog ──
 class _StopConfirmationDialog extends StatelessWidget {
   final Duration totalTime;
+  final String orderId; // ← যোগ করো
   final VoidCallback onConfirm;
   final VoidCallback onCheckAgain;
 
   const _StopConfirmationDialog({
     required this.totalTime,
+    required this.orderId, // ← যোগ করো
     required this.onConfirm,
     required this.onCheckAgain,
   });
@@ -425,14 +430,10 @@ class _StopConfirmationDialog extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Color(0xFFF5A623),
               ),
-              child: Icon(
-                Icons.priority_high_rounded,
-                color: Colors.white,
-                size: 28.r,
-              ),
+              child: Icon(Icons.priority_high_rounded,
+                  color: Colors.white, size: 28.r),
             ),
             SizedBox(height: 16.h),
-
             Text(
               "Are you sure you're done?",
               textAlign: TextAlign.center,
@@ -443,7 +444,6 @@ class _StopConfirmationDialog extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10.h),
-
             Text(
               'Are you sure that all recipes have been prepared and the kitchen is cleaned up?',
               textAlign: TextAlign.center,
@@ -454,8 +454,6 @@ class _StopConfirmationDialog extends StatelessWidget {
               ),
             ),
             SizedBox(height: 14.h),
-
-            // Total time
             Text(
               'Total cooking time: ${_formatShort(totalTime)}',
               style: TextStyle(
@@ -465,10 +463,23 @@ class _StopConfirmationDialog extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20.h),
-
-            // I'm sure button
             GestureDetector(
-              onTap: onConfirm,
+              onTap: () async {
+                try {
+                  final timeString = _formatShort(totalTime);
+                  final response = await ApiService.post(
+                    "order/clearence/$orderId", // ← Get.arguments সরানো
+                    body: {"time": timeString},
+                  );
+                  if (response.statusCode == 200 || response.statusCode == 201) {
+                    onConfirm();
+                  } else {
+                    Get.snackbar("Error", "Failed to submit cooking time");
+                  }
+                } catch (e) {
+                  Get.snackbar("Error", e.toString());
+                }
+              },
               child: Container(
                 width: double.infinity,
                 height: 50.h,
@@ -477,20 +488,13 @@ class _StopConfirmationDialog extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14.r),
                 ),
                 child: Center(
-                  child: Text(
-                    "I'm sure",
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
+                  child: Text("I'm sure",
+                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w700, color: Colors.white),
                   ),
                 ),
               ),
             ),
             SizedBox(height: 10.h),
-
-            // Check again button
             GestureDetector(
               onTap: onCheckAgain,
               child: Container(
@@ -501,13 +505,8 @@ class _StopConfirmationDialog extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14.r),
                 ),
                 child: Center(
-                  child: Text(
-                    'Check again',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFF1A1A1A),
-                    ),
+                  child: Text('Check again',
+                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: const Color(0xFF1A1A1A)),
                   ),
                 ),
               ),
