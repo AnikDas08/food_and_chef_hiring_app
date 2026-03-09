@@ -95,7 +95,7 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
     );
   }
 
-  String _formatTime(Duration d) {
+  String _formatShort(Duration d) {
     final h = d.inHours.toString().padLeft(2, '0');
     final m = (d.inMinutes % 60).toString().padLeft(2, '0');
     final s = (d.inSeconds % 60).toString().padLeft(2, '0');
@@ -187,7 +187,7 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        _formatTime(_elapsed),
+                        _formatShort(_elapsed),
                         style: TextStyle(
                           fontSize: 32.sp,
                           fontWeight: FontWeight.w700,
@@ -400,7 +400,8 @@ class _StopConfirmationDialog extends StatelessWidget {
   String _formatShort(Duration d) {
     final h = d.inHours.toString().padLeft(2, '0');
     final m = (d.inMinutes % 60).toString().padLeft(2, '0');
-    return '$h:$m';
+    final s = (d.inSeconds % 60).toString().padLeft(2, '0');
+    return '$h:$m:$s';
   }
 
   @override
