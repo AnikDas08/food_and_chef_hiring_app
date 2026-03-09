@@ -6,6 +6,8 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../config/route/app_routes.dart';
+import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_images.dart';
 import '../../../../customer/cart/presentation/widgets/order_summary.dart';
@@ -258,25 +260,73 @@ void bookingDetailsPopup(
                           confirmBookingPopUp(orderMongoId: order['_id']?.toString() ?? "");                        },
                       ),
                     ),
-                    Container(
-                      height: 48,
-                      width: 48,
-                      margin: EdgeInsets.only(left: 12),
-                      decoration: BoxDecoration(
-                        color: Color(0xffF2F2F2),
-                        borderRadius: BorderRadius.circular(16),
+                    GestureDetector(
+                      onTap: () async {
+                        try {
+                          final userId = order['user']?['_id']?.toString() ?? "";
+                          if (userId.isEmpty) return;
+
+                          final response = await ApiService.post("chat/$userId", body: {});
+
+                          if (response.statusCode == 200 || response.statusCode == 201) {
+                            final chatData = response.data['data'];
+                            final chatId = chatData['_id']?.toString() ?? "";
+
+                            Get.back(); // popup বন্ধ
+                            Get.toNamed(AppRoutes.message, arguments: {
+                              'chatId': chatId,
+                              'userName': order['user']?['name'] ?? "User",
+                              'userImage': order['user']?['image'] ?? "",
+                            });
+                          } else {
+                            Get.snackbar("Error", "Failed to open chat");
+                          }
+                        } catch (e) {
+                          Get.snackbar("Error", e.toString());
+                        }
+                      },
+                      child: Container(
+                        height: 48,
+                        width: 48,
+                        margin: EdgeInsets.only(left: 12),
+                        decoration: BoxDecoration(
+                          color: Color(0xffF2F2F2),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: CommonImage(imageSrc: AppIcons.chat).center,
                       ),
-                      child: CommonImage(imageSrc: AppIcons.chat).center,
                     ),
                   ],
                 ),
-
               if (selectedTab == "Upcoming")
                 CommonButton(
                   titleText: AppString.chatWithCustomer,
                   buttonHeight: 48,
                   buttonRadius: 16,
-                  onTap: () {},
+                  onTap: () async {
+                    try {
+                      final userId = order['user']?['_id']?.toString() ?? "";
+                      if (userId.isEmpty) return;
+
+                      final response = await ApiService.post("chat/$userId", body: {});
+
+                      if (response.statusCode == 200 || response.statusCode == 201) {
+                        final chatData = response.data['data'];
+                        final chatId = chatData['_id']?.toString() ?? "";
+
+                        Get.back(); // popup বন্ধ
+                        Get.toNamed(AppRoutes.message, arguments: {
+                          'chatId': chatId,
+                          'userName': order['user']?['name'] ?? "User",
+                          'userImage': order['user']?['image'] ?? "",
+                        });
+                      } else {
+                        Get.snackbar("Error", "Failed to open chat");
+                      }
+                    } catch (e) {
+                      Get.snackbar("Error", e.toString());
+                    }
+                  },
                 ),
             ],
           ),

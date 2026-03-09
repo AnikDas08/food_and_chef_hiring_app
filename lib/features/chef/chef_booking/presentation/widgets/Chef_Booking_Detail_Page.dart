@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../config/route/app_routes.dart';
+import '../../../../../services/api/api_service.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../../../home/presentation/widgets/request_item.dart';
 import '../screen/ChefBooking_Detail_Controller.dart';
@@ -609,6 +610,32 @@ class _ActionButtons extends StatelessWidget {
   final Map order;
   const _ActionButtons({required this.status, required this.order});
 
+  Future<void> _openChat(Map order) async {
+    try {
+      final userId = order['user']?['_id']?.toString() ?? "";
+      final userName = order['user']?['name']?.toString() ?? "User";
+      final userImage = order['user']?['image']?.toString() ?? "";
+      if (userId.isEmpty) return;
+
+      final response = await ApiService.post("chat/$userId", body: {});
+
+      if (response.statusCode == 200 && response.data != null) {
+        final chatId = response.data['data']['_id']?.toString() ?? "";
+
+        Get.toNamed(AppRoutes.message, parameters: {
+          'chatId': chatId,
+          'name': userName,
+          'image': userImage,
+        });
+      } else {
+        Get.snackbar("Error", "Failed to open chat");
+      }
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     // Awaiting Confirmation
@@ -648,7 +675,8 @@ class _ActionButtons extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          _iconBtn(Icons.chat_bubble_outline_rounded, onTap: () {}),
+          _iconBtn(Icons.chat_bubble_outline_rounded, onTap: () => _openChat(order)),
+
         ],
       );
     }
@@ -682,20 +710,18 @@ class _ActionButtons extends StatelessWidget {
               textColor: const Color(0xff1A1A1A),
               onTap: () {
 
-
-
                 Get.to(() => RequestChangeChefScreen(), arguments: order);
 
               },
             ),
           ),
           const SizedBox(width: 10),
-          _iconBtn(Icons.chat_bubble_outline_rounded, onTap: () {}),
+          _iconBtn(Icons.chat_bubble_outline_rounded, onTap: () => _openChat(order)),
+
         ],
       );
     }
 
-    // Completed
     return Row(
       children: [
         Expanded(
@@ -704,7 +730,7 @@ class _ActionButtons extends StatelessWidget {
             color: const Color(0xff1A1A1A),
             textColor: Colors.white,
             icon: Icons.chat_bubble_outline_rounded,
-            onTap: () {},
+            onTap: () => _openChat(order),
           ),
         ),
         const SizedBox(width: 10),

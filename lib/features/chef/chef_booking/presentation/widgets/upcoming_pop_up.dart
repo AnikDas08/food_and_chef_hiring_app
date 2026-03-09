@@ -8,6 +8,7 @@ import '../../../../../component/button/common_button.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../config/route/app_routes.dart';
+import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_images.dart';
 import '../../../../../utils/constants/app_string.dart';
@@ -344,7 +345,31 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                           buttonRadius: 16,
                           titleSize: 14,
                           titleWeight: FontWeight.w600,
-                          onTap: () => Get.toNamed(AppRoutes.message),
+                          onTap: () async {
+                            try {
+
+                              final userId = orderData?['user']?['_id']?.toString() ?? "";
+                              if (userId.isEmpty) return;
+
+                              final response = await ApiService.post("chat/$userId", body: {});
+
+                              if (response.statusCode == 200 || response.statusCode == 201) {
+                                final chatData = response.data['data'];
+                                final chatId = chatData['_id']?.toString() ?? "";
+
+                                Get.back();
+                                Get.toNamed(AppRoutes.message, arguments: {
+                                  'chatId': chatId,
+                                  'userName': orderData?['user']?['name'] ?? "User",
+                                  'userImage': orderData?['user']?['image'] ?? "",
+                                });
+                              } else {
+                                Get.snackbar("Error", "Failed to open chat");
+                              }
+                            } catch (e) {
+                              Get.snackbar("Error", e.toString());
+                            }
+                          },
                         ),
                       ),
                     ],

@@ -160,6 +160,8 @@ class _ChefVerificationReviewPageState
               style: ElevatedButton.styleFrom(
                 backgroundColor: _textPrimary,
                 foregroundColor: Colors.white,
+                disabledBackgroundColor: _textPrimary,
+                disabledForegroundColor: Colors.white, 
                 minimumSize: const Size(double.infinity, 54),
                 elevation: 0,
                 shape: RoundedRectangleBorder(

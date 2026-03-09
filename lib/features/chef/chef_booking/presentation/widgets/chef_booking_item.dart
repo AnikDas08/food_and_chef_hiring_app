@@ -8,6 +8,7 @@ import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../config/api/api_end_point.dart';
+import '../../../../../config/route/app_routes.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../home/presentation/widgets/request_item.dart';
@@ -389,28 +390,53 @@ Widget chefBookingItem({required Map order}) {
               ],
 
               if (controller.selectedBookingHistory == "Upcoming") ...[
-                Container(
-                  margin: EdgeInsets.only(right: 12.w),
-                  padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.sp),
-                  ),
-                  child: Row(
-                    children: [
-                      CommonImage(
-                        imageSrc: AppIcons.chat,
-                        size: 16,
-                        imageColor: Color(0xff272727),
-                      ),
-                      CommonText(
-                        text: AppString.chatWithCustomer,
-                        fontSize: 12,
-                        left: 6,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff272727),
-                      ),
-                    ],
+                InkWell(
+                  onTap: () async {
+                    try {
+                      final userId = order['user']?['_id']?.toString() ?? "";
+                      if (userId.isEmpty) return;
+
+                      final response = await ApiService.post("chat/$userId", body: {});
+
+                      if (response.statusCode == 200 || response.statusCode == 201) {
+                        final chatData = response.data['data'];
+                        final chatId = chatData['_id']?.toString() ?? "";
+
+                        Get.toNamed(AppRoutes.message, arguments: {
+                          'chatId': chatId,
+                          'userName': order['user']?['name'] ?? "User",
+                          'userImage': order['user']?['image'] ?? "",
+                        });
+                      } else {
+                        Get.snackbar("Error", "Failed to open chat");
+                      }
+                    } catch (e) {
+                      Get.snackbar("Error", e.toString());
+                    }
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 12.w),
+                    padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.sp),
+                    ),
+                    child: Row(
+                      children: [
+                        CommonImage(
+                          imageSrc: AppIcons.chat,
+                          size: 16,
+                          imageColor: Color(0xff272727),
+                        ),
+                        CommonText(
+                          text: AppString.chatWithCustomer,
+                          fontSize: 12,
+                          left: 6,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff272727),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

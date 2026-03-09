@@ -492,6 +492,8 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1C1C1C),
                     foregroundColor: Colors.white,
+                    disabledBackgroundColor: const Color(0xFF1C1C1C),
+                    disabledForegroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14.r),
                     ),
