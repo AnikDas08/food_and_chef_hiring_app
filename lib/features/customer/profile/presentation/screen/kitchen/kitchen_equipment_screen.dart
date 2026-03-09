@@ -1,13 +1,22 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/features/customer/profile/presentation/screen/kitchen/customize_kitchen_screen.dart';
+import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 
 import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../controller/kitchen_equipment_controller.dart';
+import 'customize_kitchen_screen.dart';
 
+// Fixed 4 category names — always shown in this order
+const List<String> _kCategories = [
+  'Cooking Appliances',
+  'Pots & Pans',
+  'Tools',
+  'Special Equipment',
+];
 
 class KitchenEquipmentScreen extends StatelessWidget {
   const KitchenEquipmentScreen({super.key});
@@ -46,95 +55,43 @@ class KitchenEquipmentScreen extends StatelessWidget {
 
                 // ── Kitchen type label ──
                 RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Which kitchen best describes yours? ',
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.black,
-                        ),
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: 'Which kitchen best describes yours? ',
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.black,
                       ),
-                      TextSpan(
-                        text: '*',
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10.h),
-
-                // ── Kitchen type cards ──
-                ...List.generate(controller.kitchenTypes.length, (index) {
-                  final item = controller.kitchenTypes[index];
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 8.h),
-                    child: _KitchenTypeCard(
-                      controller: controller,
-                      index: index,
-                      emoji: item['emoji'],
-                      title: item['title'],
-                      subtitle: item['subtitle'],
                     ),
-                  );
-                }),
-
+                    TextSpan(
+                      text: '*',
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ]),
+                ),
                 SizedBox(height: 10.h),
 
-                // ── Collapsible sections ──
-                _CollapsibleSection(
-                  label: 'Cooking Appliances',
-                  isRequired: true,
-                  isExpandedFn: () => controller.appliancesExpanded.value,
-                  onToggle: controller.toggleAppliances,
-                  items: controller.appliances,
-                  isCheckedFn: (i) => controller.appliancesSelected[i],
-                  onItemTap: controller.toggleAppliance,
-                ),
+                // ── Preset cards from API + Custom Setup at bottom ──
+                _PresetCards(controller: controller),
+                SizedBox(height: 10.h),
 
-                _CollapsibleSection(
-                  label: 'Pans & Pots',
-                  isRequired: true,
-                  isExpandedFn: () => controller.pansPotsExpanded.value,
-                  onToggle: controller.togglePansPots,
-                  items: controller.pansPots,
-                  isCheckedFn: (i) => controller.pansPotsSelected[i],
-                  onItemTap: controller.togglePanPot,
-                ),
+                // ── Equipment sections ──
+                // Custom Setup selected: checkable list from API
+                // Preset selected / default: read-only sections from kitchen data
+                _EquipmentBody(controller: controller),
 
-                _CollapsibleSection(
-                  label: 'Tools',
-                  isRequired: true,
-                  isExpandedFn: () => controller.toolsExpanded.value,
-                  onToggle: controller.toggleTools,
-                  items: controller.tools,
-                  isCheckedFn: (i) => controller.toolsSelected[i],
-                  onItemTap: controller.toggleTool,
-                ),
-
-                _CollapsibleSection(
-                  label: 'Special Equipment',
-                  isRequired: true,
-                  isExpandedFn: () => controller.specialEquipmentExpanded.value,
-                  onToggle: controller.toggleSpecialEquipment,
-                  items: controller.specialEquipment,
-                  isCheckedFn: (i) => controller.specialEquipmentSelected[i],
-                  onItemTap: controller.toggleSpecialEquipments,
-                ),
-
-                SizedBox(height: 100.h), // space for sticky button
+                SizedBox(height: 100.h),
               ],
             ),
           ),
         ],
       ),
 
-      // ── Sticky bottom button ──
       bottomNavigationBar: Container(
         color: AppColors.white,
         padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 28.h),
@@ -142,9 +99,7 @@ class KitchenEquipmentScreen extends StatelessWidget {
           titleText: 'Customize Your Kitchen',
           buttonColor: AppColors.black,
           titleColor: AppColors.white,
-          onTap: () {
-            Get.to(()=>CustomizeKitchenScreen());
-          },
+          onTap: () => Get.to(() => const CustomizeKitchenScreen()),
         ),
       ),
     );
@@ -152,7 +107,7 @@ class KitchenEquipmentScreen extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────
-// Hero kitchen image with back button
+// Hero image — original design, no edit button
 // ─────────────────────────────────────────────────────
 class _KitchenHeroImage extends StatelessWidget {
   @override
@@ -170,7 +125,6 @@ class _KitchenHeroImage extends StatelessWidget {
             ),
           ),
         ),
-        // dark gradient overlay
         Container(
           height: 200.h,
           decoration: BoxDecoration(
@@ -184,7 +138,6 @@ class _KitchenHeroImage extends StatelessWidget {
             ),
           ),
         ),
-        // back button
         Positioned(
           top: MediaQuery.of(context).padding.top + 8.h,
           left: 16.w,
@@ -197,11 +150,8 @@ class _KitchenHeroImage extends StatelessWidget {
                 color: Colors.white.withOpacity(0.85),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 16.sp,
-                color: AppColors.black,
-              ),
+              child: Icon(Icons.arrow_back_ios_new_rounded,
+                  size: 16.sp, color: AppColors.black),
             ),
           ),
         ),
@@ -211,19 +161,542 @@ class _KitchenHeroImage extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────
-// Ready for Cooking progress card
+// Preset cards — API list + fixed Custom Setup at bottom
+// ─────────────────────────────────────────────────────
+class _PresetCards extends StatelessWidget {
+  final KitchenEquipmentController controller;
+  const _PresetCards({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      if (controller.isLoadingPresets.value) {
+        return const Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            child: CircularProgressIndicator(color: Colors.black),
+          ),
+        );
+      }
+      if (controller.presetsError.value.isNotEmpty) {
+        return _ErrorRetry(
+          message: controller.presetsError.value,
+          onRetry: controller.fetchPresets,
+        );
+      }
+
+      // Preset list + Custom Setup card at end
+      final int total = controller.presets.length + 1;
+      return Column(
+        children: List.generate(total, (index) {
+          final bool isCustom = index == controller.presets.length;
+          return Padding(
+            padding: EdgeInsets.only(bottom: 8.h),
+            child: isCustom
+                ? _CustomSetupCard(controller: controller)
+                : _PresetCard(
+              controller: controller,
+              index: index,
+            ),
+          );
+        }),
+      );
+    });
+  }
+}
+
+class _PresetCard extends StatelessWidget {
+  final KitchenEquipmentController controller;
+  final int index;
+  const _PresetCard({required this.controller, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final preset = controller.presets[index];
+      final bool isSelected = controller.selectedPresetIndex.value == index;
+      return GestureDetector(
+        onTap: () => controller.onPresetTap(index),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 13.h),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.black : const Color(0xFFF7F7F7),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 40.w,
+                height: 40.w,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? Colors.white.withOpacity(0.15)
+                      : const Color(0xFFEEEEEE),
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Icon(Icons.kitchen_outlined,
+                    size: 22.sp,
+                    color: isSelected
+                        ? Colors.white70
+                        : const Color(0xFF888888)),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonText(
+                      text: preset.name,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: isSelected ? AppColors.white : AppColors.black,
+                      textAlign: TextAlign.start,
+                    ),
+                    if (preset.items.isNotEmpty) ...[
+                      SizedBox(height: 2.h),
+                      CommonText(
+                        text: preset.items,
+                        fontSize: 11,
+                        color: isSelected
+                            ? const Color(0xFFCCCCCC)
+                            : const Color(0xFF888888),
+                        textAlign: TextAlign.start,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              // Loading spinner while fetching this preset's detail
+              if (isSelected && controller.isLoadingPresetDetail.value)
+                SizedBox(
+                  width: 16.w,
+                  height: 16.w,
+                  child: const CircularProgressIndicator(
+                      strokeWidth: 2, color: Colors.white),
+                ),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+}
+
+class _CustomSetupCard extends StatelessWidget {
+  final KitchenEquipmentController controller;
+  const _CustomSetupCard({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final bool isSelected = controller.selectedPresetIndex.value == 9999;
+      return GestureDetector(
+        onTap: () => controller.selectCustomSetup(),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 13.h),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.black : const Color(0xFFF7F7F7),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 40.w,
+                height: 40.w,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? Colors.white.withOpacity(0.15)
+                      : const Color(0xFFEEEEEE),
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Center(
+                  child: Text('🔨', style: TextStyle(fontSize: 20.sp)),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              CommonText(
+                text: 'Custom Setup',
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: isSelected ? AppColors.white : AppColors.black,
+                textAlign: TextAlign.start,
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+}
+
+
+// ─────────────────────────────────────────────────────
+// Equipment body — switches between custom setup and normal view
+// ─────────────────────────────────────────────────────
+class _EquipmentBody extends StatelessWidget {
+  final KitchenEquipmentController controller;
+  const _EquipmentBody({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final bool isCustom = controller.selectedPresetIndex.value == 9999;
+
+      if (isCustom) {
+        // ── Custom Setup — checkable list from equipment?type=list ──
+        if (controller.isLoadingCustomSetup.value) {
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 24.h),
+            child: const Center(
+                child: CircularProgressIndicator(color: Colors.black)),
+          );
+        }
+        if (controller.customSetupError.value.isNotEmpty) {
+          return _ErrorRetry(
+            message: controller.customSetupError.value,
+            onRetry: controller.selectCustomSetup,
+          );
+        }
+        if (controller.customSetupCategories.isEmpty) {
+          return const SizedBox.shrink();
+        }
+        // Show each category as collapsible with checkboxes
+        return Column(
+          children: controller.customSetupCategories
+              .map((cat) => _CustomSetupSection(
+            controller: controller,
+            category: cat,
+          ))
+              .toList(),
+        );
+      }
+
+      // ── Normal view — always show all 4 sections ──
+      return Column(
+        children: _kCategories
+            .map((cat) => _CollapsibleSection(
+          controller: controller,
+          categoryName: cat,
+        ))
+            .toList(),
+      );
+    });
+  }
+}
+
+// ─────────────────────────────────────────────────────
+// Custom Setup Section — collapsible with checkboxes
+// Items pre-checked if user already has them
+// ─────────────────────────────────────────────────────
+class _CustomSetupSection extends StatelessWidget {
+  final KitchenEquipmentController controller;
+  final EquipmentListCategory category;
+
+  const _CustomSetupSection({
+    required this.controller,
+    required this.category,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final bool expanded = controller.isExpanded(category.category);
+
+      return Column(
+        children: [
+          // ── Header ──
+          GestureDetector(
+            onTap: () => controller.toggleCategory(category.category),
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 14.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: category.category,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' *',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ]),
+                  ),
+                  AnimatedRotation(
+                    turns: expanded ? 0 : 0.5,
+                    duration: const Duration(milliseconds: 250),
+                    child: Icon(Icons.keyboard_arrow_up_rounded,
+                        size: 22.sp, color: AppColors.black),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // ── Items with checkboxes ──
+          AnimatedCrossFade(
+            duration: const Duration(milliseconds: 250),
+            crossFadeState: expanded
+                ? CrossFadeState.showFirst
+                : CrossFadeState.showSecond,
+            firstChild: Column(
+              children: List.generate(category.items.length, (i) {
+                final item = category.items[i];
+                return Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () => controller.toggleCustomItem(
+                          category.category, i),
+                      behavior: HitTestBehavior.opaque,
+                      child: Obx(() {
+                        final bool isChecked = controller
+                            .customSetupCategories
+                            .firstWhereOrNull(
+                                (c) => c.category == category.category)
+                            ?.items[i]
+                            .isSelected ??
+                            false;
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 13.h),
+                          child: Row(
+                            children: [
+                              AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                width: 22.w,
+                                height: 22.w,
+                                decoration: BoxDecoration(
+                                  color: isChecked
+                                      ? AppColors.black
+                                      : Colors.transparent,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: isChecked
+                                        ? AppColors.black
+                                        : const Color(0xFFCCCCCC),
+                                    width: 1.5,
+                                  ),
+                                ),
+                                child: isChecked
+                                    ? Icon(Icons.check_rounded,
+                                    size: 14.sp, color: AppColors.white)
+                                    : null,
+                              ),
+                              SizedBox(width: 14.w),
+                              Expanded(
+                                child: CommonText(
+                                  text: item.name,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.black,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                    ),
+                    if (i < category.items.length - 1)
+                      Divider(height: 1, color: const Color(0xFFF0F0F0)),
+                  ],
+                );
+              }),
+            ),
+            secondChild: const SizedBox.shrink(),
+          ),
+
+          Divider(height: 1, color: const Color(0xFFEEEEEE)),
+        ],
+      );
+    });
+  }
+}
+
+// ─────────────────────────────────────────────────────
+// Collapsible section — always rendered for all 4 categories
+// Items come from controller based on selected preset or user kitchen
+// If no items → section header still shows, body is empty
+// ─────────────────────────────────────────────────────
+class _CollapsibleSection extends StatelessWidget {
+  final KitchenEquipmentController controller;
+  final String categoryName;
+
+  const _CollapsibleSection({
+    required this.controller,
+    required this.categoryName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final bool expanded = controller.isExpanded(categoryName);
+      final List<KitchenDetailItem> items =
+      controller.itemsForCategory(categoryName);
+
+      return Column(
+        children: [
+          // ── Section header — always shown, always toggleable ──
+          GestureDetector(
+            onTap: () => controller.toggleCategory(categoryName),
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 14.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: categoryName,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' *',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ]),
+                  ),
+                  AnimatedRotation(
+                    turns: expanded ? 0 : 0.5,
+                    duration: const Duration(milliseconds: 250),
+                    child: Icon(Icons.keyboard_arrow_up_rounded,
+                        size: 22.sp, color: AppColors.black),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // ── Items — only rendered when expanded ──
+          AnimatedCrossFade(
+            duration: const Duration(milliseconds: 250),
+            crossFadeState: expanded
+                ? CrossFadeState.showFirst
+                : CrossFadeState.showSecond,
+            firstChild: items.isEmpty
+                ? Padding(
+              padding: EdgeInsets.only(bottom: 12.h),
+              child: CommonText(
+                text: 'No items',
+                fontSize: 13,
+                color: const Color(0xFFAAAAAA),
+                textAlign: TextAlign.start,
+              ),
+            )
+                : Column(
+              children: List.generate(items.length, (i) {
+                final item = items[i];
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 13.h),
+                      child: Row(
+                        children: [
+                          // Checkbox style — filled = available
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            width: 22.w,
+                            height: 22.w,
+                            decoration: BoxDecoration(
+                              color: item.availability
+                                  ? AppColors.black
+                                  : Colors.transparent,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: item.availability
+                                    ? AppColors.black
+                                    : const Color(0xFFCCCCCC),
+                                width: 1.5,
+                              ),
+                            ),
+                            child: item.availability
+                                ? Icon(Icons.check_rounded,
+                                size: 14.sp, color: AppColors.white)
+                                : null,
+                          ),
+                          SizedBox(width: 14.w),
+                          Expanded(
+                            child: CommonText(
+                              text: item.name,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.black,
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                          // Quantity badge
+                          if (item.quantity > 0)
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w, vertical: 2.h),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF2F2F2),
+                                borderRadius:
+                                BorderRadius.circular(20.r),
+                              ),
+                              child: CommonText(
+                                text: 'x${item.quantity}',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xFF555555),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    if (i < items.length - 1)
+                      Divider(
+                          height: 1,
+                          color: const Color(0xFFF0F0F0)),
+                  ],
+                );
+              }),
+            ),
+            secondChild: const SizedBox.shrink(),
+          ),
+
+          Divider(height: 1, color: const Color(0xFFEEEEEE)),
+        ],
+      );
+    });
+  }
+}
+
+// ─────────────────────────────────────────────────────
+// Ready for Cooking card — original design
 // ─────────────────────────────────────────────────────
 class _ReadyForCookingCard extends StatelessWidget {
   final KitchenEquipmentController controller;
-
   const _ReadyForCookingCard({required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final percent = controller.matchPercent;
-      final percentInt = (percent * 100).round();
-
+      final double percent = controller.matchPercent;
+      final int percentInt = (percent * 100).round();
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
         decoration: BoxDecoration(
@@ -242,7 +715,6 @@ class _ReadyForCookingCard extends StatelessWidget {
               textAlign: TextAlign.start,
             ),
             SizedBox(height: 8.h),
-            // Progress bar
             Stack(
               children: [
                 Container(
@@ -267,34 +739,29 @@ class _ReadyForCookingCard extends StatelessWidget {
             ),
             SizedBox(height: 6.h),
             RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Your kitchen can handle ',
-                    style: TextStyle(
+              text: TextSpan(children: [
+                TextSpan(
+                  text: 'Your kitchen can handle ',
+                  style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
-                      color: const Color(0xFF888888),
-                    ),
-                  ),
-                  TextSpan(
-                    text: '$percentInt%',
-                    style: TextStyle(
+                      color: const Color(0xFF888888)),
+                ),
+                TextSpan(
+                  text: '$percentInt%',
+                  style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w700,
-                      color: const Color(0xFFFF6D00),
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' of recipes on the platform',
-                    style: TextStyle(
+                      color: const Color(0xFFFF6D00)),
+                ),
+                TextSpan(
+                  text: ' of recipes on the platform',
+                  style: TextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
-                      color: const Color(0xFF888888),
-                    ),
-                  ),
-                ],
-              ),
+                      color: const Color(0xFF888888)),
+                ),
+              ]),
             ),
           ],
         ),
@@ -303,239 +770,37 @@ class _ReadyForCookingCard extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────
-// Kitchen Type Card
-// ─────────────────────────────────────────────────────
-class _KitchenTypeCard extends StatelessWidget {
-  final KitchenEquipmentController controller;
-  final int index;
-  final String emoji;
-  final String title;
-  final String subtitle;
-
-  const _KitchenTypeCard({
-    required this.controller,
-    required this.index,
-    required this.emoji,
-    required this.title,
-    required this.subtitle,
-  });
+class _ErrorRetry extends StatelessWidget {
+  final String message;
+  final VoidCallback onRetry;
+  const _ErrorRetry({required this.message, required this.onRetry});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      final bool isSelected = controller.selectedKitchenType.value == index;
-      return GestureDetector(
-        onTap: () => controller.selectKitchenType(index),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 13.h),
-          decoration: BoxDecoration(
-            color: isSelected ? AppColors.black : const Color(0xFFF7F7F7),
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Row(
-            children: [
-              Text(emoji, style: TextStyle(fontSize: 20.sp)),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CommonText(
-                      text: title,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: isSelected ? AppColors.white : AppColors.black,
-                      textAlign: TextAlign.start,
-                    ),
-                    if (subtitle.isNotEmpty) ...[
-                      SizedBox(height: 2.h),
-                      CommonText(
-                        text: subtitle,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w400,
-                        color: isSelected
-                            ? const Color(0xFFCCCCCC)
-                            : const Color(0xFF888888),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    });
-  }
-}
-
-// ─────────────────────────────────────────────────────
-// Collapsible Section (Appliances / Pans / Tools / Special)
-// ─────────────────────────────────────────────────────
-class _CollapsibleSection extends StatelessWidget {
-  final String label;
-  final bool isRequired;
-  final bool Function() isExpandedFn;
-  final VoidCallback onToggle;
-  final List<String> items;
-  final bool Function(int) isCheckedFn;
-  final void Function(int) onItemTap;
-
-  const _CollapsibleSection({
-    required this.label,
-    required this.isRequired,
-    required this.isExpandedFn,
-    required this.onToggle,
-    required this.items,
-    required this.isCheckedFn,
-    required this.onItemTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      final bool expanded = isExpandedFn();
-      return Column(
-        children: [
-          // ── Section header ──
-          GestureDetector(
-            onTap: onToggle,
-            behavior: HitTestBehavior.opaque,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 14.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: label,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.black,
-                          ),
-                        ),
-                        if (isRequired)
-                          TextSpan(
-                            text: ' *',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  AnimatedRotation(
-                    turns: expanded ? 0 : 0.5,
-                    duration: const Duration(milliseconds: 250),
-                    child: Icon(
-                      Icons.keyboard_arrow_up_rounded,
-                      size: 22.sp,
-                      color: AppColors.black,
-                    ),
-                  ),
-                ],
-              ),
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 16.h),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CommonText(
+                text: message,
+                fontSize: 13,
+                color: const Color(0xFF888888),
+                maxLines: 3,
+                textAlign: TextAlign.center),
+            SizedBox(height: 10.h),
+            GestureDetector(
+              onTap: onRetry,
+              child: CommonText(
+                  text: 'Tap to retry',
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.black),
             ),
-          ),
-
-          // ── Animated expand/collapse ──
-          AnimatedCrossFade(
-            firstChild: Column(
-              children: List.generate(items.length, (index) {
-                return Column(
-                  children: [
-                    _CheckboxRow(
-                      label: items[index],
-                      isCheckedFn: () => isCheckedFn(index),
-                      onTap: () => onItemTap(index),
-                    ),
-                    if (index < items.length - 1)
-                      Divider(height: 1, color: const Color(0xFFF0F0F0)),
-                  ],
-                );
-              }),
-            ),
-            secondChild: const SizedBox.shrink(),
-            crossFadeState: expanded
-                ? CrossFadeState.showFirst
-                : CrossFadeState.showSecond,
-            duration: const Duration(milliseconds: 250),
-          ),
-
-          Divider(height: 1, color: const Color(0xFFEEEEEE)),
-        ],
-      );
-    });
-  }
-}
-
-// ─────────────────────────────────────────────────────
-// Checkbox Row
-// ─────────────────────────────────────────────────────
-class _CheckboxRow extends StatelessWidget {
-  final String label;
-  final bool Function() isCheckedFn;
-  final VoidCallback onTap;
-
-  const _CheckboxRow({
-    required this.label,
-    required this.isCheckedFn,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      final bool isChecked = isCheckedFn();
-      return GestureDetector(
-        onTap: onTap,
-        behavior: HitTestBehavior.opaque,
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 13.h),
-          child: Row(
-            children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                width: 22.w,
-                height: 22.w,
-                decoration: BoxDecoration(
-                  color: isChecked ? AppColors.black : Colors.transparent,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: isChecked
-                        ? AppColors.black
-                        : const Color(0xFFCCCCCC),
-                    width: 1.5,
-                  ),
-                ),
-                child: isChecked
-                    ? Icon(
-                  Icons.check_rounded,
-                  size: 14.sp,
-                  color: AppColors.white,
-                )
-                    : null,
-              ),
-              SizedBox(width: 14.w),
-              CommonText(
-                text: label,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: AppColors.black,
-                textAlign: TextAlign.start,
-              ),
-            ],
-          ),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 }

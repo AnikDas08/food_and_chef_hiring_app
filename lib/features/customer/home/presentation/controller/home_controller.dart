@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
@@ -163,7 +165,7 @@ class HomeController extends GetxController {
     try {
       final response = await ApiService.get(
         //"user/nearby-chefs?lat=$currentLat&lng=$currentLng",
-        "user/nearby-chefs?lat=23.746445&lng=90.376013",
+        "user/nearby-chefs?lat=$currentLat&lng=$currentLng",
       );
 
       if (response.statusCode == 200) {

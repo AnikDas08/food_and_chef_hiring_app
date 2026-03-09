@@ -193,7 +193,7 @@ class ProfileScreen extends StatelessWidget {
                             icon: CupertinoIcons.list_number,
                             title: AppString.manageKitchenEquipment,
                             onTap: () {
-                              if(!controller.isKitchen){
+                              if(controller.isKitchen){
                                 Get.to(()=>KitchenEquipmentScreen());
                               }
                               else{

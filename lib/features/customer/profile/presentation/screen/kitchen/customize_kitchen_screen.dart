@@ -1,11 +1,23 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 
 import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../controller/customize_kitchen_controller.dart';
+import '../../controller/kitchen_equipment_controller.dart';
+
+const List<String> _kCategories = [
+  'Cooking Appliances',
+  'Pots & Pans',
+  'Tools',
+  'Special Equipment',
+];
 
 class CustomizeKitchenScreen extends StatelessWidget {
   const CustomizeKitchenScreen({super.key});
@@ -18,10 +30,9 @@ class CustomizeKitchenScreen extends StatelessWidget {
       backgroundColor: AppColors.white,
       body: Column(
         children: [
-          // ── Hero image ──
-          _KitchenHeroImage(),
+          // ── Hero image with edit button ──
+          _KitchenHeroImage(controller: controller),
 
-          // ── Scrollable content ──
           Expanded(
             child: ListView(
               padding: EdgeInsets.zero,
@@ -32,7 +43,6 @@ class CustomizeKitchenScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20.h),
-
                       CommonText(
                         text: 'Your Kitchen Equipment',
                         fontSize: 20,
@@ -41,99 +51,41 @@ class CustomizeKitchenScreen extends StatelessWidget {
                         textAlign: TextAlign.start,
                       ),
                       SizedBox(height: 14.h),
-
-                      // ── Ready for Cooking card ──
                       _ReadyForCookingCard(controller: controller),
                       SizedBox(height: 20.h),
-
-                      // ── Kitchen type label ──
                       RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Which kitchen best describes yours? ',
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.black,
-                              ),
+                        text: TextSpan(children: [
+                          TextSpan(
+                            text: 'Which kitchen best describes yours? ',
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.black,
                             ),
-                            TextSpan(
-                              text: '*',
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.red,
-                              ),
+                          ),
+                          TextSpan(
+                            text: '*',
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.red,
                             ),
-                          ],
-                        ),
+                          ),
+                        ]),
                       ),
                       SizedBox(height: 10.h),
                     ],
                   ),
                 ),
 
-                // ── Kitchen type cards ──
-                _KitchenTypeSection(controller: controller),
+                // ── Preset cards + Custom Setup ──
+                _PresetCards(controller: controller),
 
-                // ── Divider ──
                 Divider(height: 1, color: const Color(0xFFEEEEEE)),
                 SizedBox(height: 4.h),
 
-                // ── Cooking Appliances (quantity rows, expanded) ──
-                _QuantitySection(
-                  label: 'Cooking Appliances',
-                  isRequired: true,
-                  isExpandedFn: () => controller.appliancesExpanded.value,
-                  onToggle: controller.toggleAppliances,
-                  items: controller.appliances,
-                  qtyFn: (i) => controller.appliancesQty[i],
-                  onIncrement: controller.incrementAppliance,
-                  onDecrement: controller.decrementAppliance,
-                  selectedCountFn: () => controller.appliancesSelectedCount,
-                ),
-
-                // ── Pans & Pots (collapsed, shows arrow + count) ──
-                _QuantitySection(
-                  label: 'Pans & Pots',
-                  isRequired: true,
-                  isExpandedFn: () => controller.pansPotsExpanded.value,
-                  onToggle: controller.togglePansPots,
-                  items: controller.pansPots,
-                  qtyFn: (i) => controller.pansPotsQty[i],
-                  onIncrement: controller.incrementPanPot,
-                  onDecrement: controller.decrementPanPot,
-                  selectedCountFn: () => controller.pansPotsSelectedCount,
-                ),
-
-                // ── Tools ──
-                _QuantitySection(
-                  label: 'Tools',
-                  isRequired: true,
-                  isExpandedFn: () => controller.toolsExpanded.value,
-                  onToggle: controller.toggleTools,
-                  items: controller.tools,
-                  qtyFn: (i) => controller.toolsQty[i],
-                  onIncrement: controller.incrementTool,
-                  onDecrement: controller.decrementTool,
-                  selectedCountFn: () => controller.toolsSelectedCount,
-                ),
-
-                // ── Special Equipment ──
-                _QuantitySection(
-                  label: 'Special Equipment',
-                  isRequired: true,
-                  isExpandedFn: () =>
-                  controller.specialEquipmentExpanded.value,
-                  onToggle: controller.toggleSpecialEquipment,
-                  items: controller.specialEquipment,
-                  qtyFn: (i) => controller.specialEquipmentQty[i],
-                  onIncrement: controller.incrementSpecial,
-                  onDecrement: controller.decrementSpecial,
-                  selectedCountFn: () =>
-                  controller.specialEquipmentSelectedCount,
-                ),
+                // ── Equipment sections (qty or read-only) ──
+                _EquipmentBody(controller: controller),
 
                 SizedBox(height: 100.h),
               ],
@@ -142,174 +94,271 @@ class CustomizeKitchenScreen extends StatelessWidget {
         ],
       ),
 
-      // ── Sticky Save button ──
       bottomNavigationBar: Container(
         color: AppColors.white,
         padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 28.h),
-        child: CommonButton(
-          titleText: 'Save',
-          buttonColor: AppColors.black,
+        child: Obx(() => CommonButton(
+          titleText: controller.isSaving.value ? 'Saving...' : 'Save',
+          buttonColor: controller.isSaving.value
+              ? const Color(0xFFAAAAAA)
+              : AppColors.black,
           titleColor: AppColors.white,
-          onTap: () {
-            Get.back();
-          },
-        ),
+          onTap: controller.isSaving.value ? null : controller.save,
+        )),
       ),
     );
   }
 }
 
 // ─────────────────────────────────────────────────────
-// Hero image with back button
+// Hero image — shows server image or placeholder
+// Edit icon top-right
 // ─────────────────────────────────────────────────────
 class _KitchenHeroImage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: 160.h,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            color: Color(0xFF3A3A3A),
-            image: DecorationImage(
-              image: AssetImage('assets/images/profile_image.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        Container(
-          height: 160.h,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.black.withOpacity(0.25),
-                Colors.black.withOpacity(0.05),
-              ],
-            ),
-          ),
-        ),
-        Positioned(
-          top: MediaQuery.of(context).padding.top + 8.h,
-          left: 16.w,
-          child: GestureDetector(
-            onTap: () => Get.back(),
-            child: Container(
-              width: 34.w,
-              height: 34.w,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.85),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 16.sp,
-                color: AppColors.black,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────
-// Ready for Cooking card — live progress from qty counts
-// ─────────────────────────────────────────────────────
-class _ReadyForCookingCard extends StatelessWidget {
   final CustomizeKitchenController controller;
-
-  const _ReadyForCookingCard({required this.controller});
+  const _KitchenHeroImage({required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final int total = controller.appliances.length +
-          controller.pansPots.length +
-          controller.tools.length +
-          controller.specialEquipment.length;
-      final int selected = controller.appliancesSelectedCount +
-          controller.pansPotsSelectedCount +
-          controller.toolsSelectedCount +
-          controller.specialEquipmentSelectedCount;
-      final double percent = total == 0 ? 0 : selected / total;
-      final int percentInt = (percent * 100).round();
+      final dynamic localFile = controller.localImage.value;
+      final String server = controller.serverImage.value;
+      final bool hasLocal = localFile != null;
+      final bool hasServer = server.isNotEmpty;
 
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
-        decoration: BoxDecoration(
-          color: const Color(0xFFFFF8F0),
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: const Color(0xFFFFE0B2), width: 1),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CommonText(
-              text: 'You\'re Ready for Cooking',
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFFE65100),
-              textAlign: TextAlign.start,
-            ),
-            SizedBox(height: 8.h),
-            Stack(
-              children: [
-                Container(
-                  height: 6.h,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFFE0B2),
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                ),
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeInOut,
-                  height: 6.h,
-                  width: (MediaQuery.of(context).size.width - 68.w) * percent,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF6D00),
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 6.h),
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Your kitchen can handle ',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: const Color(0xFF888888),
-                    ),
-                  ),
-                  TextSpan(
-                    text: '$percentInt%',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFFFF6D00),
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' of recipes on the platform',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: const Color(0xFF888888),
-                    ),
-                  ),
+      return Stack(
+        children: [
+          SizedBox(
+            height: 160.h,
+            width: double.infinity,
+            child: hasLocal
+                ? Image.file(File(localFile.path),
+                fit: BoxFit.cover, width: double.infinity)
+                : hasServer
+                ? CachedNetworkImage(
+              imageUrl: '${ApiEndPoint.imageUrl}$server',
+              fit: BoxFit.cover,
+              width: double.infinity,
+              placeholder: (_, __) => _placeholder(),
+              errorWidget: (_, __, ___) => _placeholder(),
+            )
+                : _placeholder(),
+          ),
+          Container(
+            height: 160.h,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.25),
+                  Colors.black.withOpacity(0.05),
                 ],
               ),
             ),
-          ],
+          ),
+          // Back
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 8.h,
+            left: 16.w,
+            child: GestureDetector(
+              onTap: () => Get.back(),
+              child: _overlayBtn(Icons.arrow_back_ios_new_rounded),
+            ),
+          ),
+          // Edit
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 8.h,
+            right: 16.w,
+            child: GestureDetector(
+              onTap: controller.pickImage,
+              child: _overlayBtn(Icons.edit_outlined),
+            ),
+          ),
+        ],
+      );
+    });
+  }
+
+  Widget _placeholder() => Container(
+    height: 160,
+    color: const Color(0xFF3A3A3A),
+    child: Center(
+        child: Icon(Icons.kitchen_outlined, size: 48, color: Colors.white24)),
+  );
+
+  Widget _overlayBtn(IconData icon) => Container(
+    width: 34,
+    height: 34,
+    decoration: BoxDecoration(
+      color: Colors.white.withOpacity(0.85),
+      shape: BoxShape.circle,
+    ),
+    child: Icon(icon, size: 16, color: Colors.black),
+  );
+}
+
+// ─────────────────────────────────────────────────────
+// Preset cards + Custom Setup
+// ─────────────────────────────────────────────────────
+class _PresetCards extends StatelessWidget {
+  final CustomizeKitchenController controller;
+  const _PresetCards({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      if (controller.isLoadingPresets.value) {
+        return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: CircularProgressIndicator(color: Colors.black),
+            ));
+      }
+
+      final int total = controller.presets.length + 1; // +1 for Custom Setup
+      return Column(
+        children: List.generate(total, (index) {
+          final bool isCustom = index == controller.presets.length;
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.h),
+            child: isCustom
+                ? _CustomSetupCard(controller: controller)
+                : _PresetCard(controller: controller, index: index),
+          );
+        }),
+      );
+    });
+  }
+}
+
+class _PresetCard extends StatelessWidget {
+  final CustomizeKitchenController controller;
+  final int index;
+  const _PresetCard({required this.controller, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final preset = controller.presets[index];
+      final bool isSelected = controller.selectedPresetIndex.value == index;
+      return GestureDetector(
+        onTap: () => controller.onPresetTap(index),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 13.h),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.black : const Color(0xFFF7F7F7),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 40.w,
+                height: 40.w,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? Colors.white.withOpacity(0.15)
+                      : const Color(0xFFEEEEEE),
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Icon(Icons.kitchen_outlined,
+                    size: 22.sp,
+                    color: isSelected ? Colors.white70 : const Color(0xFF888888)),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonText(
+                      text: preset.name,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: isSelected ? AppColors.white : AppColors.black,
+                      textAlign: TextAlign.start,
+                    ),
+                    if (preset.items.isNotEmpty) ...[
+                      SizedBox(height: 2.h),
+                      CommonText(
+                        text: preset.items,
+                        fontSize: 11,
+                        color: isSelected
+                            ? const Color(0xFFCCCCCC)
+                            : const Color(0xFF888888),
+                        textAlign: TextAlign.start,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              if (isSelected && controller.isLoadingPresetDetail.value)
+                SizedBox(
+                  width: 16.w,
+                  height: 16.w,
+                  child: const CircularProgressIndicator(
+                      strokeWidth: 2, color: Colors.white),
+                ),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+}
+
+class _CustomSetupCard extends StatelessWidget {
+  final CustomizeKitchenController controller;
+  const _CustomSetupCard({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final bool isSelected = controller.selectedPresetIndex.value == 9999;
+      return GestureDetector(
+        onTap: controller.selectCustomSetup,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 13.h),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.black : const Color(0xFFF7F7F7),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 40.w,
+                height: 40.w,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? Colors.white.withOpacity(0.15)
+                      : const Color(0xFFEEEEEE),
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Center(
+                    child: Text('🔨', style: TextStyle(fontSize: 20.sp))),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: CommonText(
+                  text: 'Custom Setup',
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: isSelected ? AppColors.white : AppColors.black,
+                  textAlign: TextAlign.start,
+                ),
+              ),
+              if (isSelected && controller.isLoadingCustomSetup.value)
+                SizedBox(
+                  width: 16.w,
+                  height: 16.w,
+                  child: const CircularProgressIndicator(
+                      strokeWidth: 2, color: Colors.white),
+                ),
+            ],
+          ),
         ),
       );
     });
@@ -317,173 +366,114 @@ class _ReadyForCookingCard extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────
-// Kitchen type selection row
+// Equipment body
+// selected = -1 (default) → show nothing / placeholder
+// selected = preset index or 9999 (custom) → show +/- qty rows
 // ─────────────────────────────────────────────────────
-class _KitchenTypeSection extends StatelessWidget {
+class _EquipmentBody extends StatelessWidget {
   final CustomizeKitchenController controller;
-
-  const _KitchenTypeSection({required this.controller});
-
-  static const List<Map<String, String>> _types = [
-    {
-      'title': 'Standard Home Kitchen',
-      'subtitle': 'Oven, stove-top, basic pans, knives',
-      'emoji': '🏠',
-    },
-    {
-      'title': 'Minimal Kitchen',
-      'subtitle': 'Stove-top only, basic tools',
-      'emoji': '🔍',
-    },
-    {
-      'title': 'Well-Equipped',
-      'subtitle': 'Oven, blender, food processor, grill pan',
-      'emoji': '⭐',
-    },
-    {
-      'title': 'Custom Setup',
-      'subtitle': '',
-      'emoji': '🔨',
-    },
-  ];
+  const _EquipmentBody({required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: List.generate(_types.length, (index) {
+    return Obx(() {
+      // Loading equipment list (init, preset tap or custom setup)
+      if (controller.isLoadingEquipmentList.value ||
+          controller.isLoadingPresetDetail.value ||
+          controller.isLoadingMyKitchen.value) {
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.h),
-          child: Obx(() {
-            final bool isSelected =
-                controller.selectedKitchenType.value == index;
-            return GestureDetector(
-              onTap: () => controller.selectedKitchenType.value = index,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding:
-                EdgeInsets.symmetric(horizontal: 14.w, vertical: 13.h),
-                decoration: BoxDecoration(
-                  color:
-                  isSelected ? AppColors.black : const Color(0xFFF7F7F7),
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      _types[index]['emoji']!,
-                      style: TextStyle(fontSize: 20.sp),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CommonText(
-                            text: _types[index]['title']!,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: isSelected
-                                ? AppColors.white
-                                : AppColors.black,
-                            textAlign: TextAlign.start,
-                          ),
-                          if (_types[index]['subtitle']!.isNotEmpty) ...[
-                            SizedBox(height: 2.h),
-                            CommonText(
-                              text: _types[index]['subtitle']!,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w400,
-                              color: isSelected
-                                  ? const Color(0xFFCCCCCC)
-                                  : const Color(0xFF888888),
-                              textAlign: TextAlign.start,
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }),
+          padding: EdgeInsets.symmetric(vertical: 24.h),
+          child: const Center(
+              child: CircularProgressIndicator(color: Colors.black)),
         );
-      }),
-    );
+      }
+
+      // Error
+      if (controller.equipmentListError.value.isNotEmpty) {
+        return Padding(
+          padding: EdgeInsets.all(20.h),
+          child: Center(
+            child: CommonText(
+              text: controller.equipmentListError.value,
+              fontSize: 13,
+              color: const Color(0xFF888888),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+
+      // Qty +/- sections — same for both preset and custom setup
+      return Column(
+        children: _kCategories.map((cat) {
+          final catData = controller.customSetupCategories
+              .firstWhereOrNull((c) => c.category == cat);
+          return _QuantitySection(
+            controller: controller,
+            categoryName: cat,
+            items: catData?.items ?? [],
+          );
+        }).toList(),
+      );
+    });
   }
 }
 
 // ─────────────────────────────────────────────────────
-// Quantity Section — collapsible with +/- counters
+// Quantity Section — collapsible with +/- per item
+// Same design as original CustomizeKitchenScreen
 // ─────────────────────────────────────────────────────
 class _QuantitySection extends StatelessWidget {
-  final String label;
-  final bool isRequired;
-  final bool Function() isExpandedFn;
-  final VoidCallback onToggle;
-  final List<String> items;
-  final int Function(int) qtyFn;
-  final void Function(int) onIncrement;
-  final void Function(int) onDecrement;
-  final int Function() selectedCountFn;
+  final CustomizeKitchenController controller;
+  final String categoryName;
+  final List<EquipmentListItem> items;
 
   const _QuantitySection({
-    required this.label,
-    required this.isRequired,
-    required this.isExpandedFn,
-    required this.onToggle,
+    required this.controller,
+    required this.categoryName,
     required this.items,
-    required this.qtyFn,
-    required this.onIncrement,
-    required this.onDecrement,
-    required this.selectedCountFn,
   });
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final bool expanded = isExpandedFn();
-      final int count = selectedCountFn();
+      final bool expanded = controller.isExpanded(categoryName);
+      final int count = controller.selectedCountFor(categoryName);
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // ── Header ──
           GestureDetector(
-            onTap: onToggle,
+            onTap: () => controller.toggleCategory(categoryName),
             behavior: HitTestBehavior.opaque,
             child: Padding(
-              padding:
-              EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: label,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.black,
-                          ),
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: categoryName,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black,
                         ),
-                        if (isRequired)
-                          TextSpan(
-                            text: ' *',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red,
-                            ),
-                          ),
-                      ],
-                    ),
+                      ),
+                      TextSpan(
+                        text: ' *',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ]),
                   ),
                   Row(
                     children: [
-                      // show selected count badge when collapsed
                       if (!expanded && count > 0) ...[
                         Container(
                           padding: EdgeInsets.symmetric(
@@ -504,11 +494,8 @@ class _QuantitySection extends StatelessWidget {
                       AnimatedRotation(
                         turns: expanded ? 0 : 0.5,
                         duration: const Duration(milliseconds: 250),
-                        child: Icon(
-                          Icons.keyboard_arrow_up_rounded,
-                          size: 22.sp,
-                          color: AppColors.black,
-                        ),
+                        child: Icon(Icons.keyboard_arrow_up_rounded,
+                            size: 22.sp, color: AppColors.black),
                       ),
                     ],
                   ),
@@ -517,26 +504,39 @@ class _QuantitySection extends StatelessWidget {
             ),
           ),
 
-          // ── Expanded items ──
+          // ── Items ──
           AnimatedCrossFade(
-            firstChild: Column(
-              children: List.generate(items.length, (index) {
+            firstChild: items.isEmpty
+                ? Padding(
+              padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 12.h),
+              child: CommonText(
+                text: 'No items',
+                fontSize: 13,
+                color: const Color(0xFFAAAAAA),
+                textAlign: TextAlign.start,
+              ),
+            )
+                : Column(
+              children: List.generate(items.length, (i) {
                 return Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 20.w),
                       child: _QuantityRow(
-                        label: items[index],
-                        qtyFn: () => qtyFn(index),
-                        onIncrement: () => onIncrement(index),
-                        onDecrement: () => onDecrement(index),
+                        controller: controller,
+                        categoryName: categoryName,
+                        index: i,
+                        item: items[i],
                       ),
                     ),
-                    if (index < items.length - 1)
+                    if (i < items.length - 1)
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        padding:
+                        EdgeInsets.symmetric(horizontal: 20.w),
                         child: Divider(
-                            height: 1, color: const Color(0xFFF0F0F0)),
+                            height: 1,
+                            color: const Color(0xFFF0F0F0)),
                       ),
                   ],
                 );
@@ -557,41 +557,47 @@ class _QuantitySection extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────
-// Quantity Row — item name + decrement / count / increment
+// Quantity row — item name + decrement / count / increment
 // ─────────────────────────────────────────────────────
 class _QuantityRow extends StatelessWidget {
-  final String label;
-  final int Function() qtyFn;
-  final VoidCallback onIncrement;
-  final VoidCallback onDecrement;
+  final CustomizeKitchenController controller;
+  final String categoryName;
+  final int index;
+  final EquipmentListItem item;
 
   const _QuantityRow({
-    required this.label,
-    required this.qtyFn,
-    required this.onIncrement,
-    required this.onDecrement,
+    required this.controller,
+    required this.categoryName,
+    required this.index,
+    required this.item,
   });
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final int qty = qtyFn();
+      final int qty = controller.customSetupCategories
+          .firstWhereOrNull((c) => c.category == categoryName)
+          ?.items[index]
+          .quantity ??
+          0;
+
       return Padding(
         padding: EdgeInsets.symmetric(vertical: 13.h),
         child: Row(
           children: [
             Expanded(
               child: CommonText(
-                text: label,
+                text: item.name,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: AppColors.black,
                 textAlign: TextAlign.start,
               ),
             ),
-            // ── Decrement ──
+            // Decrement
             GestureDetector(
-              onTap: onDecrement,
+              onTap: () =>
+                  controller.decrementCustomItem(categoryName, index),
               child: Container(
                 width: 28.w,
                 height: 28.w,
@@ -599,17 +605,14 @@ class _QuantityRow extends StatelessWidget {
                   color: const Color(0xFFF2F2F2),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.remove_rounded,
-                  size: 16.sp,
-                  color: qty == 0
-                      ? const Color(0xFFCCCCCC)
-                      : AppColors.black,
-                ),
+                child: Icon(Icons.remove_rounded,
+                    size: 16.sp,
+                    color: qty == 0
+                        ? const Color(0xFFCCCCCC)
+                        : AppColors.black),
               ),
             ),
             SizedBox(width: 12.w),
-            // ── Count ──
             SizedBox(
               width: 20.w,
               child: CommonText(
@@ -620,9 +623,10 @@ class _QuantityRow extends StatelessWidget {
               ),
             ),
             SizedBox(width: 12.w),
-            // ── Increment ──
+            // Increment
             GestureDetector(
-              onTap: onIncrement,
+              onTap: () =>
+                  controller.incrementCustomItem(categoryName, index),
               child: Container(
                 width: 28.w,
                 height: 28.w,
@@ -630,12 +634,105 @@ class _QuantityRow extends StatelessWidget {
                   color: const Color(0xFFF2F2F2),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.add_rounded,
-                  size: 16.sp,
-                  color: AppColors.black,
-                ),
+                child: Icon(Icons.add_rounded,
+                    size: 16.sp, color: AppColors.black),
               ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+}
+
+
+// ─────────────────────────────────────────────────────
+// Ready for Cooking card
+// ─────────────────────────────────────────────────────
+class _ReadyForCookingCard extends StatelessWidget {
+  final CustomizeKitchenController controller;
+  const _ReadyForCookingCard({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      // Count items with qty > 0 across all custom setup categories
+      int total = 0;
+      int selected = 0;
+      for (final cat in controller.customSetupCategories) {
+        for (final item in cat.items) {
+          total++;
+          if (item.quantity > 0) selected++;
+        }
+      }
+      final double percent = total == 0 ? 0 : selected / total;
+      final int percentInt = (percent * 100).round();
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFFF8F0),
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(color: const Color(0xFFFFE0B2), width: 1),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CommonText(
+              text: "You're Ready for Cooking",
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFFE65100),
+              textAlign: TextAlign.start,
+            ),
+            SizedBox(height: 8.h),
+            Stack(
+              children: [
+                Container(
+                  height: 6.h,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFE0B2),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                ),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInOut,
+                  height: 6.h,
+                  width:
+                  (MediaQuery.of(context).size.width - 68.w) * percent,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFF6D00),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 6.h),
+            RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                  text: 'Your kitchen can handle ',
+                  style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xFF888888)),
+                ),
+                TextSpan(
+                  text: '$percentInt%',
+                  style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFFFF6D00)),
+                ),
+                TextSpan(
+                  text: ' of recipes on the platform',
+                  style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xFF888888)),
+                ),
+              ]),
             ),
           ],
         ),
