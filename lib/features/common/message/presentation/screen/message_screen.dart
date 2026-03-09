@@ -11,8 +11,25 @@ import '../../../../../../utils/constants/app_string.dart';
 import '../controller/message_controller.dart';
 import '../widgets/chat_bubble_message.dart';
 
-class MessageScreen extends StatelessWidget {
+class MessageScreen extends StatefulWidget {
   const MessageScreen({super.key});
+
+  @override
+  State<MessageScreen> createState() => _MessageScreenState();
+}
+
+class _MessageScreenState extends State<MessageScreen> {
+  String chatId = Get.parameters["chatId"] ?? "";
+  String name = Get.parameters["name"] ?? "";
+  String image = Get.parameters["image"] ?? "";
+
+  @override
+  void initState() {
+    super.initState();
+    MessageController.instance.name = name;
+    MessageController.instance.image = image;
+    MessageController.instance.init(chatId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,30 +38,34 @@ class MessageScreen extends StatelessWidget {
         return Scaffold(
           backgroundColor: Colors.white,
 
+          /// ── AppBar ──────────────────────────────────────────────────────
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 0.5,
             titleSpacing: 0,
             title: Row(
               children: [
+                /// Participant image
                 CircleAvatar(
                   radius: 20.sp,
                   backgroundColor: Colors.transparent,
                   child: ClipOval(
                     child: CommonImage(
-                      imageSrc: controller.image,
+                      imageSrc: image,
                       size: 40,
                       fill: BoxFit.fill,
                     ),
                   ),
                 ),
                 12.width,
+
+                /// Participant name + status
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonText(
-                      text: controller.name,
+                      text: name,
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
                       color: const Color(0xff272727),
@@ -71,8 +92,10 @@ class MessageScreen extends StatelessWidget {
             ],
           ),
 
+          /// ── Body ────────────────────────────────────────────────────────
           body: Column(
             children: [
+              /// Sending indicator
               if (controller.isSendingImage)
                 Container(
                   width: double.infinity,
@@ -99,6 +122,7 @@ class MessageScreen extends StatelessWidget {
                   ),
                 ),
 
+              /// Messages list
               Expanded(
                 child: controller.isLoading
                     ? const Center(
@@ -142,6 +166,7 @@ class MessageScreen extends StatelessWidget {
                       ? controller.messages.length + 1
                       : controller.messages.length,
                   itemBuilder: (context, index) {
+                    /// Pagination loader
                     if (index == controller.messages.length) {
                       return Padding(
                         padding: EdgeInsets.all(16.h),
@@ -154,8 +179,7 @@ class MessageScreen extends StatelessWidget {
                       );
                     }
 
-                    ChatMessageModel message =
-                    controller.messages[index];
+                    ChatMessageModel message = controller.messages[index];
 
                     return ChatBubbleMessage(
                       avatarImage: message.avatarImage,
@@ -175,6 +199,7 @@ class MessageScreen extends StatelessWidget {
             ],
           ),
 
+          /// ── Bottom Input Bar ─────────────────────────────────────────────
           bottomNavigationBar: SafeArea(
             child: AnimatedPadding(
               padding: MediaQuery.of(context).viewInsets,
@@ -200,6 +225,7 @@ class MessageScreen extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    /// Text input
                     Expanded(
                       child: CommonTextField(
                         hintText: AppString.messageHere,
@@ -221,10 +247,12 @@ class MessageScreen extends StatelessWidget {
 
                     8.width,
 
+                    /// Attachment button (image + doc)
                     _AttachmentButton(controller: controller),
 
                     8.width,
 
+                    /// Send button
                     GestureDetector(
                       onTap: controller.isSending || controller.isSendingImage
                           ? null
@@ -234,8 +262,7 @@ class MessageScreen extends StatelessWidget {
                         width: 46.sp,
                         height: 46.sp,
                         decoration: BoxDecoration(
-                          color: controller.isSending ||
-                              controller.isSendingImage
+                          color: controller.isSending || controller.isSendingImage
                               ? const Color(0xffCCCCCC)
                               : const Color(0xffFD713F),
                           shape: BoxShape.circle,
@@ -269,6 +296,7 @@ class MessageScreen extends StatelessWidget {
   }
 }
 
+/// ── Attachment Button Widget ───────────────────────────────────────────────
 class _AttachmentButton extends StatelessWidget {
   final MessageController controller;
 
@@ -281,8 +309,8 @@ class _AttachmentButton extends StatelessWidget {
       child: Container(
         width: 46.sp,
         height: 46.sp,
-        decoration: const BoxDecoration(
-          color: Color(0xffF2F2F2),
+        decoration: BoxDecoration(
+          color: const Color(0xffF2F2F2),
           shape: BoxShape.circle,
         ),
         child: Center(
@@ -310,6 +338,7 @@ class _AttachmentButton extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            /// Handle
             Container(
               width: 40,
               height: 4,
@@ -319,6 +348,8 @@ class _AttachmentButton extends StatelessWidget {
               ),
             ),
             20.height,
+
+            /// Options row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

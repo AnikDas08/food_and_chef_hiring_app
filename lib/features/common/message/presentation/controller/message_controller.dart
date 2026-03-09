@@ -409,11 +409,6 @@ class MessageController extends GetxController {
     if (Get.arguments != null) {
       name = Get.arguments['name'] ?? '';
       image = Get.arguments['image'] ?? '';
-      final String id = Get.arguments['chatId'] ?? '';
-
-      if (id.isNotEmpty) {
-        init(id);
-      }
     }
   }
 

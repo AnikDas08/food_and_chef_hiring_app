@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -97,7 +98,7 @@ class ChatListScreen extends StatelessWidget {
                     return InkWell(
                       onTap: () => Get.toNamed(
                         AppRoutes.message,
-                        arguments: {
+                        parameters: {
                           "chatId": item.id,
                           "name": item.participant.fullName,
                           "image": item.participant.image,

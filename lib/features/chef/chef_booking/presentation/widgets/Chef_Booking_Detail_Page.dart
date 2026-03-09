@@ -610,22 +610,22 @@ class _ActionButtons extends StatelessWidget {
   final Map order;
   const _ActionButtons({required this.status, required this.order});
 
-
   Future<void> _openChat(Map order) async {
     try {
       final userId = order['user']?['_id']?.toString() ?? "";
+      final userName = order['user']?['name']?.toString() ?? "User";
+      final userImage = order['user']?['image']?.toString() ?? "";
       if (userId.isEmpty) return;
 
       final response = await ApiService.post("chat/$userId", body: {});
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final chatData = response.data['data'];
-        final chatId = chatData['_id']?.toString() ?? "";
+      if (response.statusCode == 200 && response.data != null) {
+        final chatId = response.data['data']['_id']?.toString() ?? "";
 
-        Get.toNamed(AppRoutes.message, arguments: {
+        Get.toNamed(AppRoutes.message, parameters: {
           'chatId': chatId,
-          'userName': order['user']?['name'] ?? "User",
-          'userImage': order['user']?['image'] ?? "",
+          'name': userName,
+          'image': userImage,
         });
       } else {
         Get.snackbar("Error", "Failed to open chat");
