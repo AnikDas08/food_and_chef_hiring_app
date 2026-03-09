@@ -167,6 +167,7 @@ class ChefDetailsScreen extends StatelessWidget {
                               text: controller.chefArg?.distance ??
                                   "N/A",
                               fontSize: 12,
+                              textAlign: TextAlign.start,
                               left: 4,
                               color: Color(0xff777777),
                             ),
@@ -186,7 +187,12 @@ class ChefDetailsScreen extends StatelessWidget {
                               left: 4,
                               color: Color(0xff777777),
                             ),
-                            SizedBox(width: 4.w,),
+                          ],
+                        ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
                             Flexible(
                               child: Icon(
                                 Icons.star,
@@ -203,6 +209,7 @@ class ChefDetailsScreen extends StatelessWidget {
                                 color: Color(0xff777777),
                               ),
                             ),
+                            SizedBox(width: 4.w,),
                           ],
                         ),
 
