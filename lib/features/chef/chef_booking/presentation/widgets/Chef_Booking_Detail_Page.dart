@@ -806,20 +806,25 @@ void stopConfirmationPopUp({
     builder: (_) => _StopConfirmationDialog(
       totalTime: totalTime,
       orderId: orderId,
-      onSuccess: onSuccess,
+      onConfirm: () {
+        Get.back(); // dialog বন্ধ
+        onSuccess();
+      },
+      onCheckAgain: () => Get.back(),
     ),
   );
 }
-
 class _StopConfirmationDialog extends StatelessWidget {
   final Duration totalTime;
   final String orderId;
-  final VoidCallback onSuccess;
+  final VoidCallback onConfirm;
+  final VoidCallback onCheckAgain;
 
   const _StopConfirmationDialog({
     required this.totalTime,
     required this.orderId,
-    required this.onSuccess,
+    required this.onConfirm,
+    required this.onCheckAgain,
   });
 
   String _formatShort(Duration d) {
@@ -894,8 +899,7 @@ class _StopConfirmationDialog extends StatelessWidget {
                     body: {"time": timeString},
                   );
                   if (response.statusCode == 200 || response.statusCode == 201) {
-                    Get.back(); // dialog বন্ধ
-                    onSuccess();
+                    onConfirm(); // ← Get.back() না, onConfirm call করো
                   } else {
                     Get.snackbar("Error", "Failed to submit cooking time");
                   }
@@ -926,7 +930,7 @@ class _StopConfirmationDialog extends StatelessWidget {
 
             // Check again button
             GestureDetector(
-              onTap: () => Get.back(),
+              onTap: onCheckAgain,
               child: Container(
                 width: double.infinity,
                 height: 50.h,

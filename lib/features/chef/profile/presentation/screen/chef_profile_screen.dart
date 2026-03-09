@@ -266,47 +266,65 @@ class ChefProfileScreen extends StatelessWidget {
                               subtitle: 'Click here when you\'ve arrived to the customer and you\'re ready to start cooking!',
                               onTap: () {
 
-                                BookingDetailsSheet.show(
+
+                                BookingBannerPopup.show(
                                   context,
-                                  booking: BookingDetailsModel(
-                                    chefName: 'Tony Ferguson',
-                                    bookingId: '#HC-3289445',
-                                    chefImage: 'assets/images/chef.png',
-                                    status: 'Upcoming',
-                                    customerName: 'Darren Monarch',
-                                    address: '4140 Parker Rd. Allentown, New Mexico 31134',
-                                    date: 'August 30, 2024',
-                                    time: 'at 01:00 PM - 03:40 PM',
-                                    orderItems: [
-                                      OrderItem(name: 'Chopped Burrito', description: '2 Items + Without Onions'),
-                                      OrderItem(name: 'Chopped Chicken', description: '2 Items + Without Onions'),
-                                    ],
-                                    estimatedTime: '1-1.5 hours',
-                                    hourlyRate: 32.00,
-                                    estimatedTaxes: 2.84,
-                                    onStartCooking: () {
+                                  image: AppImages.profile,
+                                  title: 'Your booking with Jimmy starts in 1 hour',
+                                  subtitle: 'Click here when you\'ve arrived...',
+                                  onTap: () async {
+                                    final homeC = Get.find<ChefHomeController>();
 
+                                    Get.dialog(
+                                      const Center(child: CircularProgressIndicator()),
+                                      barrierDismissible: false,
+                                    );
 
-                                      Get.to(() => CookingStopwatchScreen(
-                                        orderItems: [
-                                          CookingOrderItem(
-                                            name: 'Chopped Burrito (x2)',
-                                            description: '1 Items / Without Onions',
-                                            image: 'assets/images/burrito.png',
+                                    try {
+                                      final order = await homeC.fetchSingleOrder("69a66ebdf0507595e4636281");
+                                      Get.back();
+
+                                      if (order != null) {
+                                        final user = order['user'] ?? {};
+                                        final staticItems = order['static_items'] as List? ?? [];
+                                        final breakdown = order['price_breakdown'] ?? {};
+
+                                        BookingDetailsSheet.show(
+                                          context,
+                                          booking: BookingDetailsModel(
+                                            chefName: user['name'] ?? '',
+                                            bookingId: order['order_id'] ?? '',
+                                            chefImage: user['image'] ?? '',
+                                            status: order['status'] ?? '',
+                                            customerName: user['name'] ?? '',
+                                            address: order['formatted_address'] ?? '',
+                                            date: order['formatted_date'] ?? '',
+                                            time: order['strTime'] ?? '',
+                                            orderItems: staticItems.map((item) => OrderItem(
+                                              name: item['menu']?['name'] ?? '',
+                                              description: '${item['quantity']} Items + ${(item['customizations'] as List?)?.join(', ') ?? ''}',
+                                            )).toList(),
+                                            estimatedTime: order['duration'] ?? '',
+                                            hourlyRate: (breakdown['subtotal'] ?? 0).toDouble(),
+                                            estimatedTaxes: (breakdown['taxs'] ?? 0).toDouble(),
+                                            onStartCooking: () {
+                                              Get.back();
+                                              Get.to(() => CookingStopwatchScreen(
+                                                orderId: order['_id']?.toString() ?? "",
+                                                orderItems: staticItems.map((item) => CookingOrderItem(
+                                                  name: '${item['menu']?['name']} (x${item['quantity']})',
+                                                  description: (item['customizations'] as List?)?.join(', ') ?? '',
+                                                )).toList(),
+                                              ));
+                                            },
                                           ),
-                                          CookingOrderItem(
-                                            name: 'Italian Pizza (x1)',
-                                            description: '1 Items / Without Onions',
-                                            image: 'assets/images/pizza.png',
-                                          ),
-                                        ],
-                                        onDone: (Duration totalTime) {
-                                          print('Total: $totalTime');
-                                        },
-                                      ));
-                                      // navigate or action
-                                    },
-                                  ),
+                                        );
+                                      }
+                                    } catch (e) {
+                                      Get.back();
+                                      Get.snackbar("Error", "Something went wrong");
+                                    }
+                                  },
                                 );
 
                               },
