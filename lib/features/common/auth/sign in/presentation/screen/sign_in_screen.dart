@@ -127,19 +127,18 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
 
-                      /// Submit Button here
                       CommonButton(
                         titleText: AppString.signIn,
                         isLoading: controller.isLoading,
                         onTap: controller.signInUser,
                       ),
 
-                      20.height,
-                      CommonButton(
-                        titleText: "Sign as Chef",
-                        isLoading: controller.isLoadingChef,
-                        onTap: controller.signInChef,
-                      ),
+                      // 20.height,
+                      // CommonButton(
+                      //   titleText: "Sign as Chef",
+                      //   isLoading: controller.isLoadingChef,
+                      //   onTap: controller.signInChef,
+                      // ),
                       20.height,
 
                       Row(
