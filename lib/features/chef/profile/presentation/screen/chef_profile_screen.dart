@@ -20,6 +20,8 @@ import '../../../../../../utils/constants/app_images.dart';
 import '../../../../../../utils/constants/app_string.dart';
 import '../../../../common/auth/signup_chef/presentation/screen/BankManagementPage.dart';
 import '../../../../customer/profile/presentation/widgets/profile_list.dart';
+import '../../../chef_booking_control/Cooking_OrderItem_page/Cooking_OrderItem.dart';
+import '../../../chef_booking_control/widgets/BookingDetailsSheet.dart';
 import '../../../chef_booking_control/widgets/Booking_Banner_Popup.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_profile_controller.dart';
@@ -263,6 +265,49 @@ class ChefProfileScreen extends StatelessWidget {
                               title: 'Your booking with Jimmy starts in 1 hour',
                               subtitle: 'Click here when you\'ve arrived to the customer and you\'re ready to start cooking!',
                               onTap: () {
+
+                                BookingDetailsSheet.show(
+                                  context,
+                                  booking: BookingDetailsModel(
+                                    chefName: 'Tony Ferguson',
+                                    bookingId: '#HC-3289445',
+                                    chefImage: 'assets/images/chef.png',
+                                    status: 'Upcoming',
+                                    customerName: 'Darren Monarch',
+                                    address: '4140 Parker Rd. Allentown, New Mexico 31134',
+                                    date: 'August 30, 2024',
+                                    time: 'at 01:00 PM - 03:40 PM',
+                                    orderItems: [
+                                      OrderItem(name: 'Chopped Burrito', description: '2 Items + Without Onions'),
+                                      OrderItem(name: 'Chopped Chicken', description: '2 Items + Without Onions'),
+                                    ],
+                                    estimatedTime: '1-1.5 hours',
+                                    hourlyRate: 32.00,
+                                    estimatedTaxes: 2.84,
+                                    onStartCooking: () {
+
+
+                                      Get.to(() => CookingStopwatchScreen(
+                                        orderItems: [
+                                          CookingOrderItem(
+                                            name: 'Chopped Burrito (x2)',
+                                            description: '1 Items / Without Onions',
+                                            image: 'assets/images/burrito.png',
+                                          ),
+                                          CookingOrderItem(
+                                            name: 'Italian Pizza (x1)',
+                                            description: '1 Items / Without Onions',
+                                            image: 'assets/images/pizza.png',
+                                          ),
+                                        ],
+                                        onDone: (Duration totalTime) {
+                                          print('Total: $totalTime');
+                                        },
+                                      ));
+                                      // navigate or action
+                                    },
+                                  ),
+                                );
 
                               },
                             );
