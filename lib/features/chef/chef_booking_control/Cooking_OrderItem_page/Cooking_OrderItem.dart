@@ -418,7 +418,6 @@ class _StopConfirmationDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Warning icon
             Container(
               width: 56.r,
               height: 56.r,

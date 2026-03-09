@@ -40,6 +40,7 @@ class ApiEndPoint {
   static const String transaction = '/transaction';
   static const String singleOrder = '/order/';
   static const String ChefReview = '/review';
+  static const String ChefChatNav = '/chat/';
 
 
 

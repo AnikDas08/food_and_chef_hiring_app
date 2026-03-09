@@ -97,7 +97,7 @@ class ChatListScreen extends StatelessWidget {
                     return InkWell(
                       onTap: () => Get.toNamed(
                         AppRoutes.message,
-                        parameters: {
+                        arguments: {
                           "chatId": item.id,
                           "name": item.participant.fullName,
                           "image": item.participant.image,
