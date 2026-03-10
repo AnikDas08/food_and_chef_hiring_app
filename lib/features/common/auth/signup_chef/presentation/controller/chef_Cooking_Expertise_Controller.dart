@@ -195,7 +195,9 @@ void showAccountCreatedPopup() {
               child: ElevatedButton(
                 onPressed: () {
                   Get.back();
-                  Get.offAllNamed(AppRoutes.signIn);
+                 // Get.offAllNamed(AppRoutes.signIn);
+                  Get.offAllNamed(AppRoutes.chefHomeScreen);
+
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF1C1C1C),
