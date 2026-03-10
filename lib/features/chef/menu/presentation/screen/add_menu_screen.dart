@@ -51,10 +51,10 @@ class AddMenuScreen extends StatelessWidget {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _dialogField(nameCtrl, "Ingredient name (e.g. Tomato)",
+              _dialogField(nameCtrl, "Enter Ingredient name",
                   autofocus: true),
               10.verticalSpace,
-              _dialogField(qtyCtrl, "Quantity (e.g. 2)", isNumber: true),
+              _dialogField(qtyCtrl, "Enter Quantity", isNumber: true),
               10.verticalSpace,
               Obx(() {
                 if (c.isLoadingUnits.value) {

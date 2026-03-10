@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../../../../config/api/api_end_point.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../../services/api/api_service.dart';
+import '../../../../../../services/storage/storage_keys.dart';
 import '../../../../../../services/storage/storage_services.dart';
 import 'package:flutter/material.dart';
 
@@ -87,6 +88,7 @@ class CafeCookingExpertiseController extends GetxController {
     }
 
     isLoading.value = true;
+
     try {
 
       final Map<String, dynamic> body = {};
@@ -103,13 +105,15 @@ class CafeCookingExpertiseController extends GetxController {
       );
 
       if (response.statusCode == 200) {
+
+        LocalStorage.token = response.data['data']['accessToken'];
+        await LocalStorage.setString(LocalStorageKeys.token, response.data['data']['accessToken']);
         Get.snackbar(
           "Success",
           response.data['message'] ?? "Cuisine expertise saved!",
 
         );
         showAccountCreatedPopup();
-
         // Get.to(() => YourNextScreen()); // next screen এ যাও
       } else {
         Get.snackbar(

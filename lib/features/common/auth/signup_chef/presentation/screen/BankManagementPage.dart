@@ -303,12 +303,7 @@ class BankManagementPage extends StatelessWidget {
 
                     const SizedBox(height: 24),
 
-                    // ── Feature rows ──
-                    _featureTile(
-                      icon: Icons.lock_outline_rounded,
-                      title: "Bank-level Security",
-                      subtitle: "256-bit SSL encryption",
-                    ),
+
                     const SizedBox(height: 12),
                     _featureTile(
                       icon: Icons.bolt_rounded,
