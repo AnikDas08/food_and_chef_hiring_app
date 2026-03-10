@@ -351,6 +351,11 @@ class ChefProfileController extends GetxController {
         LocalStorage.setString("myName", LocalStorage.myName);
         LocalStorage.setString("myEmail", LocalStorage.myEmail);
         Utils.successSnackBar("Success", "Profile updated successfully");
+
+        await Get.find<ChefHomeController>().fetchChefProfile();
+        update();
+
+
         Get.toNamed(AppRoutes.chefHomeScreen, arguments: {"index": 4});
       } else {
         Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
