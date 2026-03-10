@@ -44,13 +44,13 @@ class SignInController extends GetxController {
     if (response.statusCode == 200) {
       var data = response.data;
 
-      /*if (response.data["data"]["onboarding"] == false) {
+      if (response.data["data"]["onboarding"] == false) {
         isLoading = false;
         update();
         Get.toNamed(AppRoutes.createSignUpPassword);
         await Utils.errorSnackBar("Complete Profile", "First Complete your all details");
         return;
-      }*/
+      }
 
       LocalStorage.token = data['data']["accessToken"];
       LocalStorage.userId = data['data']["userId"];

@@ -61,7 +61,7 @@ accountCreatePopup() {
                         buttonHeight: 48,
                         buttonRadius: 16,
                         onTap: () {
-                          Get.offAllNamed(AppRoutes.onboarding);
+                          Get.offAllNamed(AppRoutes.customerHomeScreen);
                         },
                       ),
                       12.height,

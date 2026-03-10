@@ -58,55 +58,68 @@ class DietaryPreferencesScreen extends StatelessWidget {
                       child: Icon(CupertinoIcons.search),
                     ),
                     paddingHorizontal: 10,
+                    controller: controller.dietarySearchController,
+                    onChanged: (value) {
+                      controller.onSearchDietary(value);
+                    },
                   ),
                   20.height,
 
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: controller.dietaryOption.length,
-                      itemBuilder: (context, index) {
-                        String value = controller.dietaryOption[index];
-                        return InkWell(
-                          onTap: () {
-                            controller.onChangeDietary(value);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 14),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 15.sp,
-                                  height: 15.sp,
-                                  decoration: BoxDecoration(
-                                    color:
-                                        controller.selectDietary.contains(value)
-                                            ? Color(0xff272727)
-                                            : Color(0xffF1F1F1),
-                                    shape: BoxShape.circle,
+                  /// Loading state
+                  if (controller.isLoadingDietary)
+                    const Expanded(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  else
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: controller.filteredDietaryOption.length,
+                        itemBuilder: (context, index) {
+                          String value =
+                          controller.filteredDietaryOption[index];
+                          return InkWell(
+                            onTap: () {
+                              controller.onChangeDietary(value);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 14),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 15.sp,
+                                    height: 15.sp,
+                                    decoration: BoxDecoration(
+                                      color: controller.selectDietary
+                                          .contains(value)
+                                          ? Color(0xff272727)
+                                          : Color(0xffF1F1F1),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: !controller.selectDietary
+                                        .contains(value)
+                                        ? null
+                                        : Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                      size: 10,
+                                    ),
                                   ),
-                                  child:
-                                      !controller.selectDietary.contains(value)
-                                          ? null
-                                          : Icon(
-                                            Icons.check,
-                                            color: Colors.white,
-                                            size: 10,
-                                          ),
-                                ),
-                                CommonText(
-                                  text: value,
-                                  fontSize: 12,
-                                  left: 8,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff272727),
-                                ),
-                              ],
+                                  CommonText(
+                                    text: value,
+                                    fontSize: 12,
+                                    left: 8,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xff272727),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
-                  ),
 
                   /// Submit Button Here
                 ],

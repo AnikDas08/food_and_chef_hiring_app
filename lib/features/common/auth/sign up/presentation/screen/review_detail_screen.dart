@@ -47,9 +47,8 @@ class ReviewDetailScreen extends StatelessWidget {
                   ),
 
                   const CommonText(
-                    text:
-                        AppString
-                            .hereAreTheDetailsOfTheDataYouHaveFilledInPreviouslyYouCanChangeItIfItIsWrong,
+                    text: AppString
+                        .hereAreTheDetailsOfTheDataYouHaveFilledInPreviouslyYouCanChangeItIfItIsWrong,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
@@ -79,7 +78,7 @@ class ReviewDetailScreen extends StatelessWidget {
                     paddingHorizontal: 10,
                     controller: TextEditingController(
                       text:
-                          "${controller.firstNameController.text} ${controller.lastNameController.text}",
+                      "${controller.firstNameController.text} ${controller.lastNameController.text}",
                     ),
                     validator: OtherHelper.validator,
                   ),
@@ -105,19 +104,13 @@ class ReviewDetailScreen extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     top: 16,
                   ),
-
-                  // CommonTextField(
-                  //   hintText: AppString.phoneNumber,
-                  //   paddingHorizontal: 10,
-                  //   controller: controller.numberController,
-                  //   validator: OtherHelper.validator,
-                  // ),
                   CommonPhoneNumberTextFiled(
                     controller: controller.numberController,
                     countryChange: (value) {
                       controller.countryCode = value.dialCode;
                     },
                   ),
+
                   CommonText(
                     text: AppString.detailedAddress,
                     fontSize: 12,
@@ -131,6 +124,8 @@ class ReviewDetailScreen extends StatelessWidget {
                     color: Color(0xff272727),
                     fontWeight: FontWeight.w600,
                   ),
+
+                  /// Address field — same as before, now shows suggestions below
                   CommonTextField(
                     hintText: AppString.enterYourAddress,
                     paddingHorizontal: 10,
@@ -139,7 +134,7 @@ class ReviewDetailScreen extends StatelessWidget {
                       hoverColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       onTap: () {
-                        controller.addressController.text = "Dhaka Bangladesh";
+                        controller.addressController.text = "";
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(12),
@@ -151,6 +146,80 @@ class ReviewDetailScreen extends StatelessWidget {
                     ),
                     validator: OtherHelper.validator,
                   ),
+
+                  /// Suggestions dropdown — appears while typing
+                  if (controller.showAddressSuggestions)
+                    Container(
+                      margin: const EdgeInsets.only(top: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.08),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: controller.isLoadingSuggestions
+                          ? const Padding(
+                        padding: EdgeInsets.all(12),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2),
+                        ),
+                      )
+                          : controller.addressSuggestions.isEmpty
+                          ? const Padding(
+                        padding: EdgeInsets.all(12),
+                        child: Text(
+                          "No results found",
+                          style:
+                          TextStyle(color: Color(0xff777777)),
+                        ),
+                      )
+                          : ListView.separated(
+                        shrinkWrap: true,
+                        physics:
+                        const NeverScrollableScrollPhysics(),
+                        itemCount:
+                        controller.addressSuggestions.length,
+                        separatorBuilder: (_, __) =>
+                        const Divider(height: 1),
+                        itemBuilder: (context, i) {
+                          final s =
+                          controller.addressSuggestions[i];
+                          return ListTile(
+                            dense: true,
+                            leading: const Icon(
+                              Icons.location_on_outlined,
+                              color: Color(0xffFD713F),
+                              size: 18,
+                            ),
+                            title: Text(
+                              s['main_text'] ?? '',
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xff272727),
+                              ),
+                            ),
+                            subtitle: Text(
+                              s['secondary_text'] ?? '',
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: Color(0xff777777),
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            onTap: () => controller
+                                .onAddressSuggestionSelected(s),
+                          );
+                        },
+                      ),
+                    ),
 
                   CommonText(
                     text: AppString.allergicPreferences.toUpperCase(),
