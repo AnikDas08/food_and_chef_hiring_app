@@ -21,29 +21,35 @@ class ProfileController extends GetxController {
   ];
 
   final formKey = GlobalKey<FormState>();
+  final deletePasswordController = TextEditingController();
 
-  /// --- State Variables ---
+  /// --- Rx State Variables ---
+  RxString imagePath = "".obs;         // Local file path for preview
+  RxString name = "".obs;
+  RxString email = "".obs;
+  RxString profileImage = "".obs;
+  RxList linkAccounts = [].obs;
+  RxBool isLoading = false.obs;
+  RxBool isDeleteLoading = false.obs;
+  RxBool isKitchen = false.obs;
+
   String selectedLanguage = "English";
-  Map<String, dynamic> selectedProfile = {"name": "Customers", "image": AppIcons.customers};
+  Map<String, dynamic> selectedProfile = {
+    "name": "Customers",
+    "image": AppIcons.customers
+  };
 
-  String? image;           // Stores local file path for preview
-  String name = "";        // User name from API
-  String email = "";       // User email from API
-  String profileImage = "";  // Network image URL from API
-  List linkAccounts = [];  // Dynamic list for linked social accounts
-  bool isLoading = false;
-
-  String savedCountryCode = "+880";     // e.g., +880
-  String savedCountryIsoCode = "BD";    // e.g., BD
-  bool isKitchen=false;
-
-  /// International Phone Logic
+  String savedCountryCode = "+880";
+  String savedCountryIsoCode = "BD";
   String fullPhoneNumber = "";
 
   /// --- Controllers ---
   TextEditingController nameController = TextEditingController();
   TextEditingController numberController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+
+  // Convenience getter for image nullable string
+  String? get image => imagePath.value.isEmpty ? null : imagePath.value;
 
   @override
   void onInit() {
@@ -60,27 +66,23 @@ class ProfileController extends GetxController {
         final data = response.data['data'];
 
         if (data != null) {
-          name = data["name"] ?? "";
-          email = data["email"] ?? "";
-          profileImage = data["image"] ?? "";
-          linkAccounts = data["link_accounts"] ?? [];
+          name.value = data["name"] ?? "";
+          email.value = data["email"] ?? "";
+          profileImage.value = data["image"] ?? "";
+          linkAccounts.value = data["link_accounts"] ?? [];
+          isKitchen.value = data["is_kitchen_has"] ?? false;
 
-          isKitchen=data["is_kitchen_has"];
-
-
-          nameController.text = name;
+          nameController.text = name.value;
           addressController.text = data["address"] ?? "";
 
-          // ✅ Split stored contact into countryCode and number
           String existingPhone = data["contact"] ?? "";
           fullPhoneNumber = existingPhone;
 
           if (existingPhone.contains(" ")) {
             List<String> parts = existingPhone.split(" ");
-            savedCountryCode = parts[0];       // e.g., +880
-            numberController.text = parts[1];  // e.g., 1712345678
+            savedCountryCode = parts[0];
+            numberController.text = parts[1];
 
-            // ✅ Lookup ISO code from intl_phone_field countries list
             String cleanCode = parts[0].replaceAll("+", "");
             try {
               savedCountryIsoCode = countries
@@ -96,8 +98,6 @@ class ProfileController extends GetxController {
             numberController.text = existingPhone;
             savedCountryIsoCode = "BD";
           }
-
-          update();
         }
       }
     } catch (e) {
@@ -107,45 +107,39 @@ class ProfileController extends GetxController {
 
   /// 2. Handle International Phone Changes
   void onPhoneChanged(PhoneNumber phone) {
-    String complete = phone.completeNumber;  // e.g., +8801712345678
-    String number = phone.number;            // e.g., 1712345678
-    String code = complete.replaceAll(number, ""); // e.g., +880
-    String countryCode=phone.countryCode;
+    String complete = phone.completeNumber;
+    String number = phone.number;
+    String code = complete.replaceAll(number, "");
+    String countryCode = phone.countryCode;
 
     savedCountryCode = code;
-    savedCountryIsoCode = phone.countryISOCode; // ✅ Save ISO directly e.g., "BD"
-    fullPhoneNumber = "$countryCode $number";           // ✅ e.g., +880 1712345678
-
-    update();
+    savedCountryIsoCode = phone.countryISOCode;
+    fullPhoneNumber = "$countryCode $number";
   }
 
   /// 3. Select Image from Gallery
   Future<void> getProfileImage() async {
     final ImagePicker picker = ImagePicker();
-
     final XFile? pickedFile = await picker.pickImage(
       source: ImageSource.gallery,
       imageQuality: 60,
     );
 
     if (pickedFile != null) {
-      image = pickedFile.path;
-      update();
+      imagePath.value = pickedFile.path;
     }
   }
 
   /// 4. Update Profile (PATCH Method with Multipart)
   Future<void> editProfileRepo() async {
     if (formKey.currentState == null || !formKey.currentState!.validate()) return;
-
     if (!LocalStorage.isLogIn) return;
 
-    isLoading = true;
-    update();
+    isLoading.value = true;
 
     Map<String, dynamic> body = {
       "name": nameController.text.trim(),
-      "contact": fullPhoneNumber, // e.g., +880 1712345678
+      "contact": fullPhoneNumber,
     };
 
     List files = [];
@@ -169,6 +163,11 @@ class ProfileController extends GetxController {
         LocalStorage.myName = data?["name"] ?? "";
         LocalStorage.myEmail = data?["email"] ?? "";
 
+        // Update Rx values so UI reflects immediately
+        name.value = LocalStorage.myName;
+        email.value = LocalStorage.myEmail;
+        profileImage.value = LocalStorage.myImage;
+
         LocalStorage.setString("userId", LocalStorage.userId);
         LocalStorage.setString("myImage", LocalStorage.myImage);
         LocalStorage.setString("myName", LocalStorage.myName);
@@ -184,8 +183,53 @@ class ProfileController extends GetxController {
       Utils.errorSnackBar("Error", "Something went wrong while uploading");
     }
 
-    isLoading = false;
-    update();
+    isLoading.value = false;
+  }
+
+  /// 5. Show Delete Account Popup
+  void showDeleteAccountPopup() {
+    deletePasswordController.clear();
+    Get.dialog(
+      _DeleteAccountDialog(controller: this),
+      barrierDismissible: false,
+    );
+  }
+
+  /// 6. Delete Account API
+  Future<void> deleteAccount() async {
+    final password = deletePasswordController.text.trim();
+    if (password.isEmpty) {
+      Utils.errorSnackBar("Error", "Please enter your password");
+      return;
+    }
+
+    isDeleteLoading.value = true;
+
+    try {
+      var response = await ApiService.delete(
+        "user/account-delete",
+        body: {"password": password},
+      );
+
+      if (response.statusCode == 200) {
+        Get.back(); // Close dialog
+        Utils.successSnackBar("Success", "Account deleted successfully");
+
+        // Clear local storage and navigate to login
+        await LocalStorage.removeAllPrefData();
+        Get.offAllNamed(AppRoutes.signIn);
+      } else {
+        Utils.errorSnackBar(
+          response.statusCode,
+          response.message ?? "Incorrect password or request failed",
+        );
+      }
+    } catch (e) {
+      debugPrint("Delete Account Error: $e");
+      Utils.errorSnackBar("Error", "Something went wrong. Please try again.");
+    }
+
+    isDeleteLoading.value = false;
   }
 
   @override
@@ -193,6 +237,143 @@ class ProfileController extends GetxController {
     nameController.dispose();
     numberController.dispose();
     addressController.dispose();
+    deletePasswordController.dispose();
     super.onClose();
+  }
+}
+
+/// ── Delete Account Dialog Widget ──────────────────────────────────────────────
+class _DeleteAccountDialog extends StatelessWidget {
+  final ProfileController controller;
+  const _DeleteAccountDialog({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Big title
+            const Text(
+              "Delete Account",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+                color: Color(0xffFF0000),
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            // Warning text
+            const Text(
+              "Are you sure you want to delete your account? This action is permanent and cannot be undone.\n\nTo confirm, please enter your password below.",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Color(0xff555555),
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Password field
+            TextField(
+              controller: controller.deletePasswordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: "Enter your password",
+                labelStyle: const TextStyle(color: Color(0xff777777)),
+                prefixIcon: const Icon(Icons.lock_outline, color: Color(0xff777777)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Color(0xffDDDDDD)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Color(0xffDDDDDD)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Color(0xffFF0000), width: 1.5),
+                ),
+                filled: true,
+                fillColor: const Color(0xffF9F9F9),
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Buttons
+            Obx(() => Row(
+              children: [
+                // Cancel
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: controller.isDeleteLoading.value
+                        ? null
+                        : () => Get.back(),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      side: const BorderSide(color: Color(0xffDDDDDD)),
+                    ),
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff444444),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+
+                // Confirm Delete
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: controller.isDeleteLoading.value
+                        ? null
+                        : controller.deleteAccount,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xffFF0000),
+                      disabledBackgroundColor: const Color(0xffFF6666),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: controller.isDeleteLoading.value
+                        ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                        : const Text(
+                      "Confirm",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )),
+          ],
+        ),
+      ),
+    );
   }
 }

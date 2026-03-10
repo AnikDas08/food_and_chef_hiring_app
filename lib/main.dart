@@ -25,15 +25,16 @@ Future<void> main() async {
 init() async {
   DependencyInjection dI = DependencyInjection();
   dI.dependencies();
-  SocketServices.connectToSocket();
-  LocalStorage.getAllPrefData();
 
   await Future.wait([
+    LocalStorage.getAllPrefData(),
+    NotificationService.initLocalNotification(),
+    dotenv.load(fileName: ".env"),
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]),
-    NotificationService.initLocalNotification(),
-    dotenv.load(fileName: ".env"),
   ]);
+
+  SocketServices.connectToSocket();
 }

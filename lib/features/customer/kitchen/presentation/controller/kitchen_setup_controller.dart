@@ -87,6 +87,14 @@ class KitchenSetupController extends GetxController {
       if (response.statusCode == 200) {
         final Map<dynamic, dynamic> json = response.data;
         if (json['success'] == true) {
+          Get.snackbar(
+            'Successful', json['message'],
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green.shade400,
+            colorText: Colors.white,
+            margin: const EdgeInsets.all(16),
+            borderRadius: 12,
+          );
           return true;
         } else {
           Get.snackbar(

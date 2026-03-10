@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../component/text/common_text.dart';
@@ -21,7 +22,8 @@ class EditProfileAllFiled extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        /// --- Full Name ---
+
+        // ── Full Name ─────────────────────────────────────────────────────
         const CommonText(
           text: AppString.fullName,
           fontWeight: FontWeight.w600,
@@ -35,7 +37,7 @@ class EditProfileAllFiled extends StatelessWidget {
           keyboardType: TextInputType.text,
         ),
 
-        /// --- Phone Number with International Formatting ---
+        // ── Phone Number ──────────────────────────────────────────────────
         const CommonText(
           text: AppString.phoneNumber,
           fontWeight: FontWeight.w600,
@@ -44,14 +46,12 @@ class EditProfileAllFiled extends StatelessWidget {
         ),
         CommonPhoneNumberTextFiled(
           controller: controller.numberController,
-          initialCountryCode: controller.savedCountryIsoCode, // ✅ Use ISO directly
-          onChanged: (phone) {
-            controller.onPhoneChanged(phone);
-          },
+          initialCountryCode: controller.savedCountryIsoCode,
+          onChanged: (phone) => controller.onPhoneChanged(phone),
           countryChange: (value) {},
         ),
 
-        /// --- Dynamic Link Account List ---
+        // ── Linked Accounts ───────────────────────────────────────────────
         CommonText(
           text: "Link Account".toUpperCase(),
           fontWeight: FontWeight.w500,
@@ -62,69 +62,81 @@ class EditProfileAllFiled extends StatelessWidget {
         ),
         12.height,
 
-        if (controller.linkAccounts.isEmpty)
-          const CommonText(text: "No linked accounts found", fontSize: 12, color: Colors.grey)
-        else
-          ...controller.linkAccounts.map((account) {
-            String type = account['type'] ?? "social";
-            return Padding(
-              padding: EdgeInsets.only(bottom: 16.h),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: const BoxDecoration(
-                      color: Color(0xffF9F9F9),
-                      shape: BoxShape.circle,
-                    ),
-                    child: CommonImage(
-                      imageSrc: type == 'google' ? AppIcons.google : AppIcons.google,
-                      width: 24.sp,
-                      height: 24.sp,
-                    ),
-                  ),
-                  12.width,
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CommonText(
-                          text: "${type[0].toUpperCase()}${type.substring(1).toLowerCase()}",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xff272727),
-                        ),
-                        CommonText(
-                          text: account['email'] ?? "",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xff777777),
-                          top: 2,
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  /// Disconnect Button
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: const Color(0xffF2F2F2),
-                    ),
-                    child: const CommonText(
-                      text: "Disconnect",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff272727),
-                    ),
-                  ),
-                ],
-              ),
+        // Reactive linked accounts list
+        Obx(() {
+          if (controller.linkAccounts.isEmpty) {
+            return const CommonText(
+              text: "No linked accounts found",
+              fontSize: 12,
+              color: Colors.grey,
             );
-          }).toList(),
+          }
+          return Column(
+            children: controller.linkAccounts.map((account) {
+              String type = account['type'] ?? "social";
+              return Padding(
+                padding: EdgeInsets.only(bottom: 16.h),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: const BoxDecoration(
+                        color: Color(0xffF9F9F9),
+                        shape: BoxShape.circle,
+                      ),
+                      child: CommonImage(
+                        imageSrc: type == 'google'
+                            ? AppIcons.google
+                            : AppIcons.google,
+                        width: 24.sp,
+                        height: 24.sp,
+                      ),
+                    ),
+                    12.width,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CommonText(
+                            text:
+                            "${type[0].toUpperCase()}${type.substring(1).toLowerCase()}",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xff272727),
+                          ),
+                          CommonText(
+                            text: account['email'] ?? "",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xff777777),
+                            top: 2,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Disconnect button
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: const Color(0xffF2F2F2),
+                      ),
+                      child: const CommonText(
+                        text: "Disconnect",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff272727),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          );
+        }),
 
-        /// --- Account Actions ---
+        // ── Account Action ────────────────────────────────────────────────
         const CommonText(
           text: "ACCOUNT ACTION",
           fontWeight: FontWeight.w500,
@@ -134,21 +146,22 @@ class EditProfileAllFiled extends StatelessWidget {
           bottom: 16,
         ),
 
-        /// Delete Account Row
+        // Delete Account row — calls showDeleteAccountPopup()
         InkWell(
-          onTap: () {
-            // Confirm delete dialog
-          },
+          onTap: controller.showDeleteAccountPopup,
+          borderRadius: BorderRadius.circular(20.r),
           child: Container(
             height: 60.h,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            padding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
             decoration: BoxDecoration(
               color: const Color(0xffF2F2F2),
               borderRadius: BorderRadius.circular(20.r),
             ),
             child: Row(
               children: [
-                const Icon(CupertinoIcons.trash, color: Color(0xffFF3C3C)),
+                const Icon(CupertinoIcons.trash,
+                    color: Color(0xffFF3C3C)),
                 const CommonText(
                   text: AppString.deleteAccount,
                   color: Color(0xffFF3C3C),

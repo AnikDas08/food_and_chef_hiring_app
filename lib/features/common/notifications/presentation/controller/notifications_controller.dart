@@ -13,7 +13,7 @@ class NotificationsController extends GetxController {
   bool isLoadingMore = false;
   bool hasNoData = false;
   int page = 1;
-  int unreadCount = 0;
+  RxInt unreadCount = 0.obs;
 
   final ScrollController scrollController = ScrollController();
 
@@ -39,7 +39,7 @@ class NotificationsController extends GetxController {
 
       if (response.statusCode == 200) {
         var responseData = response.data['data'];
-        unreadCount = responseData['unreadCount'] ?? 0;
+        unreadCount.value = responseData['unreadCount'] ?? 0;
 
         List rawList = responseData['data'];
         notifications = rawList.map((e) => NotificationModel.fromJson(e)).toList();
@@ -98,7 +98,7 @@ class NotificationsController extends GetxController {
       notifications[index].isRead = true;
 
       // Sync unreadCount for the AppBar Badge
-      if (unreadCount > 0) unreadCount--;
+      if (unreadCount.value> 0) unreadCount.value--;
       update();
 
       try {
@@ -106,12 +106,12 @@ class NotificationsController extends GetxController {
         if (response.statusCode != 200) {
           // Rollback on failure
           notifications[index].isRead = false;
-          unreadCount++;
+          unreadCount.value++;
           update();
         }
       } catch (e) {
         notifications[index].isRead = false;
-        unreadCount++;
+        unreadCount.value++;
         update();
       }
     }

@@ -71,12 +71,16 @@ AppBar homeAppbar() {
             },
             child: Badge(
               // Use the unreadCount from the controller
-              label: Text(
-                controller.unreadCount > 99 ? "99+" : "${controller.unreadCount}",
-                style: const TextStyle(color: Colors.white, fontSize: 10),
+              label: Obx(
+                    () => Text(
+                  controller.unreadCount.value > 99
+                      ? "99+"
+                      : "${controller.unreadCount.value}",
+                  style: const TextStyle(color: Colors.white, fontSize: 10),
+                ),
               ),
               // Only show badge if count is greater than 0
-              isLabelVisible: controller.unreadCount > 0,
+              isLabelVisible: controller.unreadCount.value > 0,
               backgroundColor: Colors.red,
               child: Container(
                 padding: EdgeInsets.all(8.sp),
