@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
@@ -52,7 +49,7 @@ class ChefBookingDetailController extends GetxController {
         order.value = Map<String, dynamic>.from(response.data['data']);
       } else {
         Get.snackbar("Error",
-            response.data?['message']?.toString() ?? "Something went wrong",
+            response.data['message']?.toString() ?? "Something went wrong",
             backgroundColor: Colors.red, colorText: Colors.white);
       }
     } catch (e) {

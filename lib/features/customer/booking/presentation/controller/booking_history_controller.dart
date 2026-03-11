@@ -68,14 +68,14 @@ class BookingHistoryController extends GetxController {
 
       final response = await ApiService.get(url);
 
-      if (response.statusCode == 200 && response.data != null) {
+      if (response.statusCode == 200) {
         // Assuming BookingHistoryResponse is your list wrapper model
         final result = BookingHistoryResponse.fromJson(response.data);
         orders.addAll(result.data);
         hasMore = currentPage < result.pagination.totalPage;
         if (hasMore) currentPage++;
       } else {
-        errorMessage = response.data?['message'] ?? 'Failed to load data';
+        errorMessage = response.data['message'] ?? 'Failed to load data';
       }
     } catch (e) {
       errorMessage = 'Connection error. Please try again.';
@@ -90,7 +90,7 @@ class BookingHistoryController extends GetxController {
   Future<void> createChat(String id,String name, String image) async {
     try {
       final response = await ApiService.post("chat/$id");
-      if (response.statusCode == 200 && response.data != null) {
+      if (response.statusCode == 200) {
         final data=response.data;
         String chatId=data["data"]["_id"];
         Get.toNamed(AppRoutes.message,parameters: {
@@ -117,7 +117,7 @@ class BookingHistoryController extends GetxController {
 
     try {
       final response = await ApiService.get("order/$id");
-      if (response.statusCode == 200 && response.data != null) {
+      if (response.statusCode == 200) {
         // Map using the detailed OrderResponse model
         final result = OrderResponse.fromJson(response.data);
         selectedOrderDetail = result.data;
@@ -138,7 +138,7 @@ class BookingHistoryController extends GetxController {
 
     try {
       final response = await ApiService.get("order/$id");
-      if (response.statusCode == 200 && response.data != null) {
+      if (response.statusCode == 200) {
         // Map using the detailed OrderResponse model
         final result = OrderResponse.fromJson(response.data);
         selectedOrderDetail = result.data;

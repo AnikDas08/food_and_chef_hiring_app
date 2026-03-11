@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
@@ -9,7 +8,6 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_images.dart';
 import '../../data/mamu_model.dart';
-import '../controller/chef_detail_controller.dart';
 import 'item_details.dart';
 
 class FoodItem extends StatefulWidget {

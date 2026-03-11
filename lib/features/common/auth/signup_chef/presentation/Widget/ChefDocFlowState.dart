@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/features/common/auth/signup_chef/presentation/screen/Cafe_Setup_Profile_Screen.dart';
-import '../../../../../../config/route/app_routes.dart';
 import '../add documents/Model/UploadedFileModel.dart';
 import '../add documents/screen/ChefVerificationReviewPage.dart';
 import '../add documents/screen/CulinaryCertPage.dart';

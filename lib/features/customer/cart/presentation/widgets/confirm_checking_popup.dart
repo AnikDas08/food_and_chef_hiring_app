@@ -10,8 +10,6 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../utils/constants/app_string.dart';
-import 'failled_popup.dart';
-import 'success_popup.dart';
 
 confirmCheckingPopup() {
   showDialog(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
@@ -292,12 +291,12 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
 
                       Get.back();
 
-                      if (res.statusCode == 200 && res.data?['success'] == true) {
+                      if (res.statusCode == 200 && res.data['success'] == true) {
                         c.requestedBookings.removeWhere((e) => e.id == booking.id);
                         c.fetchUpcomingBookings();
                         showSuccessDialog();
                       } else {
-                        Get.snackbar("Message", res.data?['message']?.toString() ?? "Something went wrong");
+                        Get.snackbar("Message", res.data['message']?.toString() ?? "Something went wrong");
                       }
                     } catch (e) {
                       Get.back();
@@ -534,13 +533,13 @@ void cancelBookingPopUp({
 
                       Get.back();
 
-                      if (res.statusCode == 200 && res.data?['success'] == true) {
+                      if (res.statusCode == 200 && res.data['success'] == true) {
                         onSuccess();
                         Get.snackbar("Success", "Booking cancelled successfully");
                       } else {
                         Get.snackbar(
                           "Error",
-                          res.data?['message']?.toString() ?? "Something went wrong",
+                          res.data['message']?.toString() ?? "Something went wrong",
                         );
                       }
                     } catch (e) {

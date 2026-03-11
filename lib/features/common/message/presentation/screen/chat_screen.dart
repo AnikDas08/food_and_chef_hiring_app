@@ -78,7 +78,7 @@ class ChatListScreen extends StatelessWidget {
           ),
 
         /// Data
-          Status.completed => (controller.filteredChats.isEmpty || controller.filteredChats.length == 0)
+          Status.completed => (controller.filteredChats.isEmpty || controller.filteredChats.isEmpty)
               ? _buildEmptyState(): Padding(
             padding:
             EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),

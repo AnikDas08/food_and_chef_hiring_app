@@ -113,7 +113,9 @@ class _AppInformationScreenState extends State<AppInformationScreen>
   @override
   void dispose() {
     _heroController.dispose();
-    for (final c in _itemControllers) c.dispose();
+    for (final c in _itemControllers) {
+      c.dispose();
+    }
     super.dispose();
   }
 

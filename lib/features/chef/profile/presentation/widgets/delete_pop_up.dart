@@ -149,7 +149,7 @@ deletePopUp() {
                               Get.back();
 
                               if (res.statusCode == 200 &&
-                                  res.data?['success'] == true) {
+                                  res.data['success'] == true) {
                                 Get.snackbar(
                                   "Success",
                                   "Account deleted successfully",
@@ -158,7 +158,7 @@ deletePopUp() {
                               } else {
                                 Get.snackbar(
                                   "Message",
-                                  res.data?['message']?.toString() ??
+                                  res.data['message']?.toString() ??
                                       "Something went wrong",
                                 );
                               }

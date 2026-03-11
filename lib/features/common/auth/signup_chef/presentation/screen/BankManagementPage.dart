@@ -37,7 +37,7 @@ class BankManagementController extends GetxController {
       } else {
         Get.snackbar(
           "Error",
-          response.data?['message']?.toString() ?? "Something went wrong",
+          response.data['message']?.toString() ?? "Something went wrong",
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );

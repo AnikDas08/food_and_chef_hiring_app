@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
-import '../../../../../utils/constants/app_colors.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/extensions/extension.dart';
 

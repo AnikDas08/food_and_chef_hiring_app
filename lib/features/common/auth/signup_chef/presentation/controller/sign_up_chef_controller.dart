@@ -255,18 +255,24 @@ class SignUpChefController extends GetxController {
     try {
       final List files = [];
 
-      if (idCardFrontPath != null && idCardFrontPath.isNotEmpty)
+      if (idCardFrontPath != null && idCardFrontPath.isNotEmpty) {
         files.add({"name": "id_card_front", "image": await _compressImage(idCardFrontPath)});
-      if (idCardBackPath != null && idCardBackPath.isNotEmpty)
+      }
+      if (idCardBackPath != null && idCardBackPath.isNotEmpty) {
         files.add({"name": "id_card_back", "image": await _compressImage(idCardBackPath)});
-      if (proofOfAddressPath != null && proofOfAddressPath.isNotEmpty)
+      }
+      if (proofOfAddressPath != null && proofOfAddressPath.isNotEmpty) {
         files.add({"name": "proof_of_address", "image": await _compressImage(proofOfAddressPath)});
-      if (foodSafetyCertPath != null && foodSafetyCertPath.isNotEmpty)
+      }
+      if (foodSafetyCertPath != null && foodSafetyCertPath.isNotEmpty) {
         files.add({"name": "food_safety_certificate", "image": await _compressImage(foodSafetyCertPath)});
-      if (additionalCulinaryPath != null && additionalCulinaryPath.isNotEmpty)
+      }
+      if (additionalCulinaryPath != null && additionalCulinaryPath.isNotEmpty) {
         files.add({"name": "additional_culinary_licenses", "image": await _compressImage(additionalCulinaryPath)});
-      if (image != null && image!.isNotEmpty)
+      }
+      if (image != null && image!.isNotEmpty) {
         files.add({"name": "image", "image": await _compressImage(image!)});
+      }
 
       final response = await ApiService.multipartImage(
         _onboardingEndpoint,
@@ -301,8 +307,9 @@ class SignUpChefController extends GetxController {
     update();
     try {
       final List files = [];
-      if (imagePath != null && imagePath.isNotEmpty)
+      if (imagePath != null && imagePath.isNotEmpty) {
         files.add({"name": "image", "image": imagePath});
+      }
 
       final response = await ApiService.multipartImage(
         _onboardingEndpoint,
@@ -506,8 +513,9 @@ class SignUpChefController extends GetxController {
       }
 
       List files = [];
-      if (image != null && image!.isNotEmpty)
+      if (image != null && image!.isNotEmpty) {
         files.add({"name": "image", "image": image});
+      }
 
       final response = await ApiService.multipartImage(
         _onboardingEndpoint,

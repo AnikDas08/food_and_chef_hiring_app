@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/features/chef/chef_booking/presentation/widgets/booking_details_popup.dart';
-import 'package:new_untitled/features/customer/booking/presentation/widgets/details_popup.dart';
 import 'package:new_untitled/features/customer/past_order/presentation/widgets/past_item_details_popup.dart';
 import '../../repository/past_order_repository.dart';
 import '../data/past_order_model.dart';

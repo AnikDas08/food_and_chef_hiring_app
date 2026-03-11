@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
@@ -65,7 +64,7 @@ confirmBookingPopUp({required String orderMongoId}) {
                       // 3) Loader close
                       if (Get.isDialogOpen == true) Get.back();
 
-                      if (res.statusCode == 200 && res.data?['success'] == true) {
+                      if (res.statusCode == 200 && res.data['success'] == true) {
                         // 4) List refresh (চাইলে instant removeও করতে পারো)
                         homeC.fetchRequestedBookings();
                         homeC.fetchUpcomingBookings();
@@ -76,7 +75,7 @@ confirmBookingPopUp({required String orderMongoId}) {
                       } else {
                         Get.snackbar(
                           "Error",
-                          res.data?['message']?.toString() ?? "Something went wrong",
+                          res.data['message']?.toString() ?? "Something went wrong",
                         );
                       }
                     } catch (e) {

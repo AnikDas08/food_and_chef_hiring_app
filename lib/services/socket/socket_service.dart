@@ -1,8 +1,5 @@
 import 'package:get/get.dart';
 import 'package:new_untitled/features/chef/chef_booking/presentation/widgets/booking_details_popup.dart';
-import 'package:new_untitled/features/chef/chef_booking/presentation/widgets/confirmation_booking_pop_up.dart';
-import 'package:new_untitled/features/chef/chef_booking/presentation/widgets/upcoming_pop_up.dart';
-import 'package:new_untitled/features/chef/chef_booking_control/widgets/Booking_Banner_Popup.dart';
 import 'package:new_untitled/features/common/notifications/presentation/controller/notifications_controller.dart';
 import 'package:new_untitled/utils/log/app_log.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;

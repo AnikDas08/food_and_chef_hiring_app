@@ -128,7 +128,7 @@ class ChefProfileController extends GetxController {
         Get.find<ChefHomeController>().fetchChefProfile();
         Get.toNamed(AppRoutes.chefProfile);
       } else {
-        Get.snackbar("Error", response.data?['message']?.toString() ?? "Something went wrong");
+        Get.snackbar("Error", response.data['message']?.toString() ?? "Something went wrong");
       }
     } catch (e) {
       debugPrint("Update profile error: $e");
@@ -266,7 +266,9 @@ class ChefProfileController extends GetxController {
       final parts = token.split('.');
       if (parts.length != 3) return '';
       String payload = parts[1];
-      while (payload.length % 4 != 0) payload += '=';
+      while (payload.length % 4 != 0) {
+        payload += '=';
+      }
       final decoded = utf8.decode(base64Url.decode(payload));
       final map = jsonDecode(decoded) as Map<String, dynamic>;
       return map['id']?.toString() ?? '';

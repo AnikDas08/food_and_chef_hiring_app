@@ -11,7 +11,6 @@ import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../../../../../utils/extensions/extension.dart';
-import '../../../../../utils/helpers/other_helper.dart';
 import '../../../address/data/address_model.dart';
 import '../../../cart/presentation/controller/cart_controller.dart';
 import '../../../cart/presentation/widgets/booking_date_time_pop_up.dart';
@@ -182,7 +181,7 @@ class RequestChangeScreen extends StatelessWidget {
                       CommonText(text: "\$${item.totalPrice.toStringAsFixed(2)}", fontSize: 14),
                     ],
                   ),
-                )).toList(),
+                )),
 
                 28.height,
                 const CommonText(text: AppString.notesToPrivaeChef, fontSize: 14, fontWeight: FontWeight.w600, bottom: 8),

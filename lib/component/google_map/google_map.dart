@@ -130,7 +130,7 @@ class ShowGoogleMapController extends GetxController {
           "&key=${ApiEndPoint.googleMapsApiKey}";
 
       final response = await ApiService.get(url);
-      if (response.statusCode != 200 || response.data == null) return;
+      if (response.statusCode != 200) return;
 
       final status = response.data['status'] as String? ?? '';
 

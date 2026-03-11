@@ -9,9 +9,7 @@ import '../../../../../component/text/common_text.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_string.dart';
-import '../../../chef_details/presentation/screen/chef_details_screen.dart';
 import '../data/chef_model.dart';
-import '../data/search_chef_mofel.dart';
 
 Widget searchResult(List<ChefData> chefs) {
   return Column(

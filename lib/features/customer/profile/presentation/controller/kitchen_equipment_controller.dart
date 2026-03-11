@@ -205,7 +205,7 @@ class KitchenEquipmentController extends GetxController {
         }
       } else {
         myKitchenError.value =
-            response.data?['message'] ?? 'Server error ${response.statusCode}';
+            response.data['message'] ?? 'Server error ${response.statusCode}';
         _populateActiveMap([]);
       }
     } catch (e) {
@@ -244,7 +244,7 @@ class KitchenEquipmentController extends GetxController {
         }
       } else {
         presetsError.value =
-            response.data?['message'] ?? 'Server error ${response.statusCode}';
+            response.data['message'] ?? 'Server error ${response.statusCode}';
       }
     } catch (e) {
       presetsError.value = 'Something went wrong. Please try again.';
@@ -317,7 +317,7 @@ class KitchenEquipmentController extends GetxController {
         }
       } else {
         customSetupError.value =
-            response.data?['message'] ?? 'Server error ${response.statusCode}';
+            response.data['message'] ?? 'Server error ${response.statusCode}';
       }
     } catch (e) {
       customSetupError.value = 'Something went wrong. Please try again.';
@@ -412,7 +412,7 @@ class KitchenEquipmentController extends GetxController {
         }
       } else {
         presetDetailError.value =
-            response.data?['message'] ?? 'Server error ${response.statusCode}';
+            response.data['message'] ?? 'Server error ${response.statusCode}';
         _populateActiveMap([]);
       }
     } catch (e) {

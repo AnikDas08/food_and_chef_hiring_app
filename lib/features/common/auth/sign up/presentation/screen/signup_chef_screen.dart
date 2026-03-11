@@ -11,7 +11,6 @@ import '../../../../../../component/text_field/common_text_field.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/helpers/other_helper.dart';
-import '../controller/sign_up_controller.dart';
 import '../../../../../../../utils/constants/app_string.dart';
 
 class SignupChefScreen extends StatelessWidget {

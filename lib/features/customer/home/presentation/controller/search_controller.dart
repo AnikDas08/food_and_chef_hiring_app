@@ -8,7 +8,6 @@ import '../../../../../services/api/api_response_model.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/app_utils.dart';
 import '../data/cousine_data.dart';
-import '../data/search_chef_mofel.dart';
 
 class SearchController extends GetxController {
   final TextEditingController searchController = TextEditingController();

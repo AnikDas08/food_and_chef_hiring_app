@@ -619,7 +619,7 @@ class _ActionButtons extends StatelessWidget {
 
       final response = await ApiService.post("chat/$userId", body: {});
 
-      if (response.statusCode == 200 && response.data != null) {
+      if (response.statusCode == 200) {
         final chatId = response.data['data']['_id']?.toString() ?? "";
 
         Get.toNamed(AppRoutes.message, parameters: {

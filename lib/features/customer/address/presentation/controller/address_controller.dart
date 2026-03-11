@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_untitled/utils/app_utils.dart';
-import 'package:new_untitled/utils/constants/app_string.dart';
 
 import '../../data/address_model.dart';
 import '../../repsozitory/address_repository.dart';

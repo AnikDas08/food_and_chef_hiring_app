@@ -3,7 +3,6 @@ import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-import '../../data/Earning_Model.dart';
 import '../../data/Top_Menu_Model.dart';
 
 class MenuTopItem extends StatefulWidget {

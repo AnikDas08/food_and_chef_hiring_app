@@ -123,7 +123,7 @@ class _CulinaryCertPageState extends State<CulinaryCertPage> {
       child: Row(children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: isPdf || file.path == null
+          child: isPdf
               ? Container(
             width: 34,
             height: 34,
@@ -132,7 +132,7 @@ class _CulinaryCertPageState extends State<CulinaryCertPage> {
                 size: 17, color: Colors.red[400]),
           )
               : Image.file(
-            File(file.path!),
+            File(file.path),
             width: 34,
             height: 34,
             fit: BoxFit.cover,

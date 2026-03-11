@@ -171,7 +171,7 @@ void requestChangePopUp({String? orderId}) {
                             );
 
                             if (response.statusCode == 200 &&
-                                response.data?['success'] == true) {
+                                response.data['success'] == true) {
                               controller.resetChangeRequest();
                               Get.back();
                               Get.snackbar(
@@ -183,7 +183,7 @@ void requestChangePopUp({String? orderId}) {
                             } else {
                               Get.snackbar(
                                 "Error",
-                                response.data?['message']?.toString() ??
+                                response.data['message']?.toString() ??
                                     "Something went wrong",
                               );
                             }

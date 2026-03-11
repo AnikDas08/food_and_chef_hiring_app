@@ -407,7 +407,7 @@ class CafeAddMenuItemController extends GetxController {
             backgroundColor: Colors.green,
             colorText: Colors.white);
       } else {
-        Get.snackbar("Error", "${response.data?['message'] ?? 'Failed to add menu item.'}",
+        Get.snackbar("Error", "${response.data['message'] ?? 'Failed to add menu item.'}",
             snackPosition: SnackPosition.BOTTOM);
       }
     } catch (e) {
@@ -484,7 +484,7 @@ class CafeAddMenuItemController extends GetxController {
             backgroundColor: Colors.green,
             colorText: Colors.white);
       } else {
-        Get.snackbar("Error", "${response.data?['message'] ?? 'Failed to update menu item.'}",
+        Get.snackbar("Error", "${response.data['message'] ?? 'Failed to update menu item.'}",
             snackPosition: SnackPosition.BOTTOM);
       }
     } catch (e) {

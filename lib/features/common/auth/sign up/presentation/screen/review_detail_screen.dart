@@ -11,7 +11,6 @@ import '../../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/helpers/other_helper.dart';
 import '../controller/sign_up_controller.dart';
 import '../../../../../../../utils/constants/app_string.dart';
-import '../widget/account_create_popup.dart';
 import '../widget/profile_image.dart';
 
 class ReviewDetailScreen extends StatelessWidget {
