@@ -264,76 +264,78 @@ class ChefProfileScreen extends StatelessWidget {
 
 
 
-                            // BookingBannerPopup.show(
-                            //   context,
-                            //   image: AppImages.profile, // অথবা null দিলে default icon
-                            //   title: 'Your booking with Jimmy starts in 1 hour',
-                            //   subtitle: 'Click here when you\'ve arrived to the customer and you\'re ready to start cooking!',
-                            //   // onTap: () {
-                            //   //
-                            //   //
-                            //   //   BookingBannerPopup.show(
-                            //   //     context,
-                            //   //     image: AppImages.profile,
-                            //   //     title: 'Your booking with Jimmy starts in 1 hour',
-                            //   //     subtitle: 'Click here when you\'ve arrived...',
-                            //   //     onTap: () async {
-                            //   //       final homeC = Get.find<ChefHomeController>();
-                            //   //
-                            //   //       Get.dialog(
-                            //   //         const Center(child: CircularProgressIndicator()),
-                            //   //         barrierDismissible: false,
-                            //   //       );
-                            //   //
-                            //   //       try {
-                            //   //         final order = await homeC.fetchSingleOrder("69a66ebdf0507595e4636281");
-                            //   //         Get.back();
-                            //   //
-                            //   //         if (order != null) {
-                            //   //           final user = order['user'] ?? {};
-                            //   //           final staticItems = order['static_items'] as List? ?? [];
-                            //   //           final breakdown = order['price_breakdown'] ?? {};
-                            //   //
-                            //   //           BookingDetailsSheet.show(
-                            //   //             context,
-                            //   //             booking: BookingDetailsModel(
-                            //   //               chefName: user['name'] ?? '',
-                            //   //               bookingId: order['order_id'] ?? '',
-                            //   //               chefImage: user['image'] ?? '',
-                            //   //               status: order['status'] ?? '',
-                            //   //               customerName: user['name'] ?? '',
-                            //   //               address: order['formatted_address'] ?? '',
-                            //   //               date: order['formatted_date'] ?? '',
-                            //   //               time: order['strTime'] ?? '',
-                            //   //               orderItems: staticItems.map((item) => OrderItem(
-                            //   //                 name: item['menu']?['name'] ?? '',
-                            //   //                 description: '${item['quantity']} Items + ${(item['customizations'] as List?)?.join(', ') ?? ''}',
-                            //   //               )).toList(),
-                            //   //               estimatedTime: order['duration'] ?? '',
-                            //   //               hourlyRate: (breakdown['subtotal'] ?? 0).toDouble(),
-                            //   //               estimatedTaxes: (breakdown['taxs'] ?? 0).toDouble(),
-                            //   //               onStartCooking: () {
-                            //   //                 Get.back();
-                            //   //                 Get.to(() => CookingStopwatchScreen(
-                            //   //                   orderId: order['_id']?.toString() ?? "",
-                            //   //                   orderItems: staticItems.map((item) => CookingOrderItem(
-                            //   //                     name: '${item['menu']?['name']} (x${item['quantity']})',
-                            //   //                     description: (item['customizations'] as List?)?.join(', ') ?? '',
-                            //   //                   )).toList(),
-                            //   //                 ));
-                            //   //               },
-                            //   //             ),
-                            //   //           );
-                            //   //         }
-                            //   //       } catch (e) {
-                            //   //         Get.back();
-                            //   //         Get.snackbar("Error", "Something went wrong");
-                            //   //       }
-                            //   //     },
-                            //   //   );
-                            //   //
-                            //   // },
-                            // );
+                            BookingBannerPopup.show(
+                              context,
+                              image: AppImages.profile, // অথবা null দিলে default icon
+                              title: 'Your booking with Jimmy starts in 1 hour',
+                              subtitle: 'Click here when you\'ve arrived to the customer and you\'re ready to start cooking!',
+                              onTap: () {
+
+
+                                BookingBannerPopup.show(
+                                  context,
+                                  image: AppImages.profile,
+                                  title: 'Your booking with Jimmy starts in 1 hour',
+                                  subtitle: 'Click here when you\'ve arrived...',
+                                  onTap: () async {
+
+
+                                    final homeC = Get.find<ChefHomeController>();
+
+                                    Get.dialog(
+                                      const Center(child: CircularProgressIndicator()),
+                                      barrierDismissible: false,
+                                    );
+
+                                    try {
+                                      final order = await homeC.fetchSingleOrder("69a66ebdf0507595e4636281");
+                                      Get.back();
+
+                                      if (order != null) {
+                                        final user = order['user'] ?? {};
+                                        final staticItems = order['static_items'] as List? ?? [];
+                                        final breakdown = order['price_breakdown'] ?? {};
+
+                                        BookingDetailsSheet.show(
+                                          context,
+                                          booking: BookingDetailsModel(
+                                            chefName: user['name'] ?? '',
+                                            bookingId: order['order_id'] ?? '',
+                                            chefImage: user['image'] ?? '',
+                                            status: order['status'] ?? '',
+                                            customerName: user['name'] ?? '',
+                                            address: order['formatted_address'] ?? '',
+                                            date: order['formatted_date'] ?? '',
+                                            time: order['strTime'] ?? '',
+                                            orderItems: staticItems.map((item) => OrderItem(
+                                              name: item['menu']?['name'] ?? '',
+                                              description: '${item['quantity']} Items + ${(item['customizations'] as List?)?.join(', ') ?? ''}',
+                                            )).toList(),
+                                            estimatedTime: order['duration'] ?? '',
+                                            hourlyRate: (breakdown['subtotal'] ?? 0).toDouble(),
+                                            estimatedTaxes: (breakdown['taxs'] ?? 0).toDouble(),
+                                            onStartCooking: () {
+                                              Get.back();
+                                              Get.to(() => CookingStopwatchScreen(
+                                                orderId: order['_id']?.toString() ?? "",
+                                                orderItems: staticItems.map((item) => CookingOrderItem(
+                                                  name: '${item['menu']?['name']} (x${item['quantity']})',
+                                                  description: (item['customizations'] as List?)?.join(', ') ?? '',
+                                                )).toList(),
+                                              ));
+                                            },
+                                          ),
+                                        );
+                                      }
+                                    } catch (e) {
+                                      Get.back();
+                                      Get.snackbar("Error", "Something went wrong");
+                                    }
+                                  },
+                                );
+
+                              },
+                            );
 
                           },
                         ),
