@@ -49,5 +49,4 @@ class ApiEndPoint {
   static const String ChefChatNav = '/chat/';
 
 
-
 }
