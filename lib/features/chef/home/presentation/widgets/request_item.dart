@@ -38,7 +38,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
             children: [
               CommonImage(
                 imageSrc: booking.customerImage.isNotEmpty
-                    ? Uri.parse(ApiEndPoint.imageUrl).resolve(booking.customerImage).toString()
+                    ? ApiEndPoint.imageUrl + booking.customerImage
                     : AppImages.img8,
                 size: 40,
                 borderRadius: 50,

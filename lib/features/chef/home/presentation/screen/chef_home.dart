@@ -109,81 +109,82 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
             ),
 
             /// Banner Above BottomNav
-            Positioned(
-              bottom: 100.h,
-              left: 16.w,
-              right: 16.w,
-              child: InkWell(
-                onTap: () async {
-                  final homeC = Get.find<ChefHomeController>();
+            if (selectedTabIndex == 0)
+              Positioned(
+                bottom: 100.h,
+                left: 16.w,
+                right: 16.w,
+                child: InkWell(
+                  onTap: () async {
+                    final homeC = Get.find<ChefHomeController>();
 
-                  Get.dialog(
-                    const Center(child: CircularProgressIndicator()),
-                    barrierDismissible: false,
-                  );
+                    Get.dialog(
+                      const Center(child: CircularProgressIndicator()),
+                      barrierDismissible: false,
+                    );
 
-                  try {
-                    final order =
-                    await homeC.fetchSingleOrder("69a66ebdf0507595e4636281");
+                    try {
+                      final order =
+                      await homeC.fetchSingleOrder("69a66ebdf0507595e4636281");
 
-                    Get.back();
+                      Get.back();
 
-                    if (order != null) {
-                      final user = order['user'] ?? {};
-                      final staticItems = order['static_items'] as List? ?? [];
-                      final breakdown = order['price_breakdown'] ?? {};
+                      if (order != null) {
+                        final user = order['user'] ?? {};
+                        final staticItems = order['static_items'] as List? ?? [];
+                        final breakdown = order['price_breakdown'] ?? {};
 
-                      BookingDetailsSheet.show(
-                        context,
-                        booking: BookingDetailsModel(
-                          chefName: user['name'] ?? '',
-                          bookingId: order['order_id'] ?? '',
-                          chefImage: user['image'] ?? '',
-                          status: order['status'] ?? '',
-                          customerName: user['name'] ?? '',
-                          address: order['formatted_address'] ?? '',
-                          date: order['formatted_date'] ?? '',
-                          time: order['strTime'] ?? '',
-                          orderItems: staticItems.map((item) {
-                            return OrderItem(
-                              name: item['menu']?['name'] ?? '',
-                              description:
-                              '${item['quantity']} Items + ${(item['customizations'] as List?)?.join(', ') ?? ''}',
-                            );
-                          }).toList(),
-                          estimatedTime: order['duration'] ?? '',
-                          hourlyRate: (breakdown['subtotal'] ?? 0).toDouble(),
-                          estimatedTaxes: (breakdown['taxs'] ?? 0).toDouble(),
-                          onStartCooking: () {
-                            Get.back();
-                            Get.to(
-                                  () => CookingStopwatchScreen(
-                                orderId: order['_id']?.toString() ?? "",
-                                orderItems: staticItems.map((item) {
-                                  return CookingOrderItem(
-                                    name:
-                                    '${item['menu']?['name']} (x${item['quantity']})',
-                                    description:
-                                    (item['customizations'] as List?)
-                                        ?.join(', ') ??
-                                        '',
-                                  );
-                                }).toList(),
-                              ),
-                            );
-                          },
-                        ),
-                      );
+                        BookingDetailsSheet.show(
+                          context,
+                          booking: BookingDetailsModel(
+                            chefName: user['name'] ?? '',
+                            bookingId: order['order_id'] ?? '',
+                            chefImage: user['image'] ?? '',
+                            status: order['status'] ?? '',
+                            customerName: user['name'] ?? '',
+                            address: order['formatted_address'] ?? '',
+                            date: order['formatted_date'] ?? '',
+                            time: order['strTime'] ?? '',
+                            orderItems: staticItems.map((item) {
+                              return OrderItem(
+                                name: item['menu']?['name'] ?? '',
+                                description:
+                                '${item['quantity']} Items + ${(item['customizations'] as List?)?.join(', ') ?? ''}',
+                              );
+                            }).toList(),
+                            estimatedTime: order['duration'] ?? '',
+                            hourlyRate: (breakdown['subtotal'] ?? 0).toDouble(),
+                            estimatedTaxes: (breakdown['taxs'] ?? 0).toDouble(),
+                            onStartCooking: () {
+                              Get.back();
+                              Get.to(
+                                    () => CookingStopwatchScreen(
+                                  orderId: order['_id']?.toString() ?? "",
+                                  orderItems: staticItems.map((item) {
+                                    return CookingOrderItem(
+                                      name:
+                                      '${item['menu']?['name']} (x${item['quantity']})',
+                                        description:
+                                       (item['customizations'] as List?)
+                                          ?.join(', ') ??
+                                          '',
+                                    );
+                                  }).toList(),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      Get.back();
+                      Get.snackbar("Message", "Something went wrong");
                     }
-                  } catch (e) {
-                    Get.back();
-                    Get.snackbar("Message", "Something went wrong");
-                  }
-                },
-                borderRadius: BorderRadius.circular(16.r),
-                child: menuWorkingBanner(),
+                  },
+                  borderRadius: BorderRadius.circular(16.r),
+                  child: menuWorkingBanner(),
+                ),
               ),
-            ),
           ],
         ),
         bottomNavigationBar: _buildBottomBar(),
@@ -216,8 +217,6 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(_list.length, (index) {
             bool isSelected = index == selectedTabIndex;
-
-            // Using Expanded ensures each tab gets exactly 20% of the bar width
             return Expanded(
               child: InkWell(
                 onTap: () => onTabTap(index),
@@ -227,13 +226,13 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
                   children: [
                     CommonImage(
                       imageSrc: _list[index],
-                      size: 22.r, // Scaled icon
+                      size: 22.r,
                       imageColor: isSelected ? Colors.black : const Color(0xff777777),
                     ),
                     SizedBox(height: 4.h),
                     CommonText(
                       text: _string[index],
-                      fontSize: 10.sp, // Scaled text
+                      fontSize: 10.sp,
                       fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                       color: isSelected ? const Color(0xff272727) : const Color(0xff777777),
                     ),

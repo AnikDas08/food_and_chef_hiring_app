@@ -724,6 +724,7 @@ class _ActionButtons extends StatelessWidget {
 
     return Row(
       children: [
+
         Expanded(
           child: _btn(
             label: "Chat with Customer",
@@ -960,18 +961,21 @@ class _StopConfirmationDialog extends StatelessWidget {
     );
   }
 }
-
 void showChefBookingDetailPopup(BuildContext context, String orderId) {
+
+  if (Get.isRegistered<ChefBookingDetailController>()) {
+    Get.delete<ChefBookingDetailController>(force: true);
+  }
+
   final ctrl = Get.put(ChefBookingDetailController());
   ctrl.fetchOrder(orderId);
 
   showModalBottomSheet(
     context: context,
-    isScrollControlled: true, // এটি পুরো স্ক্রিন বা বড় কন্টেন্টের জন্য প্রয়োজন
-    backgroundColor: Colors.transparent, // নিচে ব্যাকগ্রাউন্ড কালার বাদ দিচ্ছি যাতে আমরা নিজের মতো ডিজাইন করতে পারি
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
     builder: (context) {
       return Container(
-        // স্ক্রিনের উচ্চতার ৮০% পর্যন্ত পপআপটি বড় হবে
         constraints: BoxConstraints(maxHeight: Get.height * 0.8),
         decoration: BoxDecoration(
           color: const Color(0xffF7F7F7),
@@ -980,7 +984,6 @@ void showChefBookingDetailPopup(BuildContext context, String orderId) {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // একটি ছোট বার (হ্যান্ডেল) যাতে ইউজার বুঝতে পারে এটি নিচ থেকে এসেছে
             Container(
               margin: EdgeInsets.only(top: 12.h, bottom: 8.h),
               height: 4.h,
@@ -990,14 +993,12 @@ void showChefBookingDetailPopup(BuildContext context, String orderId) {
                 borderRadius: BorderRadius.circular(10.r),
               ),
             ),
-
-            // হেডার বা অ্যাপবার স্টাইল
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(width: 40), // ব্যালেন্সের জন্য
+                  const SizedBox(width: 40),
                   Text(
                     "Booking Details",
                     style: TextStyle(
@@ -1013,8 +1014,6 @@ void showChefBookingDetailPopup(BuildContext context, String orderId) {
                 ],
               ),
             ),
-
-            // মূল বডি (আপনার আগের _Body উইজেটটি এখানে ব্যবহার হবে)
             Expanded(
               child: Obx(() {
                 if (ctrl.isLoading.value) {
