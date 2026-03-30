@@ -13,6 +13,8 @@ class AddressController extends GetxController {
   // ── Address Type ──────────────────────────────────────────
   List<String> addressTypeList = ["Office", "Home", "Work", "Other"];
   bool isDefault = false;
+  bool _isSettingAddressText = false;
+  bool _isSettingAdditionalText = false;
 
   AddressModel? editingAddress;      // currently loaded address for edit
   bool isLoadingEdit = false;        // loading single address
@@ -275,6 +277,7 @@ class AddressController extends GetxController {
 
   void _listenAddressField() {
     addressController.addListener(() {
+      if (_isSettingAddressText) return; // ← skip if we set it programmatically
       final q = addressController.text.trim();
       if (q.length >= 2) {
         _fetchAddressSuggestions(q);
@@ -301,17 +304,21 @@ class AddressController extends GetxController {
   }
 
   /// User picks a suggestion from the address field
-  Future<void> onAddressSuggestionSelected(
-      Map<String, dynamic> suggestion) async {
+  Future<void> onAddressSuggestionSelected(Map<String, dynamic> suggestion) async {
     final placeId = suggestion['place_id'] as String?;
     if (placeId == null) return;
 
-    // Fill address field with the main text (area name only)
+    _isSettingAddressText = true; // ← block listener
     addressController.text = suggestion['main_text'] ?? suggestion['description'] ?? '';
+    addressSuggestions.clear();
     showAddressSuggestions = false;
+
+    // Unfocus keyboard/field
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    _isSettingAddressText = false; // ← unblock listener
     update();
 
-    // Fetch lat/lng + details for this place
     try {
       final detail = await AddressRepository.getPlaceDetail(placeId);
       if (detail != null) {
@@ -329,6 +336,7 @@ class AddressController extends GetxController {
 
   void _listenAdditionalField() {
     additionalAddressController.addListener(() {
+      if (_isSettingAdditionalText) return; // ← skip if programmatic
       final q = additionalAddressController.text.trim();
       if (q.length >= 2) {
         _fetchAdditionalSuggestions(q);

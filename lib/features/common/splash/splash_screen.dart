@@ -20,8 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState(){
     Future.delayed(const Duration(seconds: 3), () async{
       print("My userId👌👌👌👌👌: ${LocalStorage.userId}");
-      bool isLogin=LocalStorage.isLogIn;
-      if(!isLogin){
+
         if (LocalStorage.isLogIn&&LocalStorage.token!="") {
           if (LocalStorage.myRole == 'CUSTOMER') {
             Get.offAllNamed(AppRoutes.customerHomeScreen);
@@ -32,10 +31,6 @@ class _SplashScreenState extends State<SplashScreen> {
         else{
           Get.offAllNamed(AppRoutes.onboarding);
         }
-      }
-      else{
-        Get.offAllNamed(AppRoutes.onboarding);
-      }
     });
     super.initState();
   }
