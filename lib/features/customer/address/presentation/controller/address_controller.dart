@@ -365,11 +365,13 @@ class AddressController extends GetxController {
 
   /// User picks a suggestion from the additional address field (no lat/lng)
   void onAdditionalSuggestionSelected(Map<String, dynamic> suggestion) {
-    // Build a 3-part label from the suggestion
+    _isSettingAdditionalText = true; // ← block listener
     final parts = _buildThreePartLabel(suggestion);
     additionalAddressController.text = parts;
     additionalSuggestions.clear();
     showAdditionalSuggestions = false;
+    FocusManager.instance.primaryFocus?.unfocus(); // ← unfocus field
+    _isSettingAdditionalText = false; // ← unblock listener
     update();
   }
 

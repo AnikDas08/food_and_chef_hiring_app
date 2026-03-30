@@ -91,8 +91,8 @@ class ChefDetailsController extends GetxController {
     selectedTime = ""; // Reset time when date changes
 
     // Update the controller's chefId with the one passed from the popup
-    await fetchChefDetails(passedChefId);
     chefId = passedChefId;
+    await fetchChefDetails(passedChefId);
 
     // 1. Fetch the slots for the calendar
     fetchAvailableSlots();
