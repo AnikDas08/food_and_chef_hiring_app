@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_untitled/features/customer/home/presentation/controller/home_controller.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../config/route/app_routes.dart';
 import 'package:get/get.dart';
@@ -16,14 +17,20 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
-  void initState() {
-    Future.delayed(const Duration(seconds: 3), () {
+  void initState(){
+    Future.delayed(const Duration(seconds: 3), () async{
       print("My userId👌👌👌👌👌: ${LocalStorage.userId}");
-      if (LocalStorage.isLogIn&&LocalStorage.token!="") {
-        if (LocalStorage.myRole == 'CUSTOMER') {
-          Get.offAllNamed(AppRoutes.customerHomeScreen);
-        } else {
-          Get.offAllNamed(AppRoutes.chefHomeScreen);
+      bool isLogin=LocalStorage.isLogIn;
+      if(!isLogin){
+        if (LocalStorage.isLogIn&&LocalStorage.token!="") {
+          if (LocalStorage.myRole == 'CUSTOMER') {
+            Get.offAllNamed(AppRoutes.customerHomeScreen);
+          } else {
+            Get.offAllNamed(AppRoutes.chefHomeScreen);
+          }
+        }
+        else{
+          Get.offAllNamed(AppRoutes.onboarding);
         }
       }
       else{
