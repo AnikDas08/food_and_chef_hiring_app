@@ -231,6 +231,8 @@ class HomeController extends GetxController {
     }
   }
 
+
+
   void getCusine() async {
     try {
       final response = await ApiService.get("cusine");

@@ -289,9 +289,29 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
                                   height: 52.r,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.r),
-                                    image: DecorationImage(
-                                      image: AssetImage(item.image!),
+                                    color: Colors.grey[200], // loading এর সময় background
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    child: Image.network(
+                                      item.image!,
                                       fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Icon(
+                                          Icons.broken_image,
+                                          color: Colors.grey,
+                                          size: 24.r,
+                                        );
+                                      },
+                                      loadingBuilder: (context, child, progress) {
+                                        if (progress == null) return child;
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: Color(0xFFF07B3F),
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ),
@@ -435,7 +455,7 @@ class _StopConfirmationDialog extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              "Are you sure you're done?",
+              "Are you sure you're done ?",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16.sp,
@@ -468,11 +488,12 @@ class _StopConfirmationDialog extends StatelessWidget {
                 try {
                   final timeString = _formatShort(totalTime);
                   final response = await ApiService.post(
-                    "order/clearence/$orderId", // ← Get.arguments সরানো
+                    "order/clearence/$orderId",
                     body: {"time": timeString},
                   );
                   if (response.statusCode == 200 || response.statusCode == 201) {
                     onConfirm();
+                    Get.snackbar("Message", "Successfully submitted cooking time",backgroundColor: Colors.green);
                   } else {
                     Get.snackbar("Error", "Failed to submit cooking time");
                   }

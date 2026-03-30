@@ -307,10 +307,10 @@ class ChefProfileController extends GetxController {
         update();
         return;
       }
-
       final Map<String, dynamic> body = {
         "role": "CHEF",
-        "fullName": nameController.text.trim(),
+        "first_name": nameController.text.trim().split(' ').first,
+        "last_name": nameController.text.trim().split(' ').skip(1).join(' '),
         "phone": numberController.text.trim(),
         "address": addressController.text.trim(),
         "lat": selectedLat.toString(),

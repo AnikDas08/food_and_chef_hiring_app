@@ -20,7 +20,8 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
   return InkWell(
     // onTap: () => bookingDetails(context),
     onTap: () {
-      Get.to(() => ChefBookingDetailPage(orderId: booking.id));
+      showChefBookingDetailPopup(context, booking.id);
+      //Get.to(() => ChefBookingDetailPage(orderId: booking.id));
     },
     child: Container(
       padding: EdgeInsets.all(12.sp),
@@ -36,7 +37,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
             children: [
               CommonImage(
                 imageSrc: booking.customerImage.isNotEmpty
-                    ? Uri.parse(ApiEndPoint.imageUrl).resolve(booking.customerImage).toString()
+                    ? ApiEndPoint.imageUrl + booking.customerImage
                     : AppImages.img8,
                 size: 40,
                 borderRadius: 50,

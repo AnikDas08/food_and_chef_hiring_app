@@ -78,11 +78,11 @@ class CustomerHome extends StatelessWidget {
                   color: Color(0xff272727),
                   fontWeight: FontWeight.w600,
                 ),
-                CommonText(
+                /*CommonText(
                   text: AppString.seeAll,
                   color: Color(0xffFD713F),
                   fontWeight: FontWeight.w500,
-                ),
+                ),*/
               ],
             ),
 

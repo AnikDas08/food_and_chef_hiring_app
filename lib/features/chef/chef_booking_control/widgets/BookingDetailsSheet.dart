@@ -125,23 +125,23 @@ class _BookingDetailsContent extends StatelessWidget {
   Widget _buildChefHeader() {
     return Row(
       children: [
-        // Avatar
         Container(
           width: 52.r,
           height: 52.r,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.grey[200],
-            image: booking.chefImage != null
-                ? DecorationImage(
-              image: AssetImage(booking.chefImage!),
-              fit: BoxFit.cover,
-            )
-                : null,
           ),
-          child: booking.chefImage == null
-              ? Icon(Icons.person_rounded, color: Colors.grey[400], size: 28.r)
-              : null,
+          child: ClipOval(
+            child: booking.chefImage != null
+                ? Image.network(
+              booking.chefImage!,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) =>
+                  Icon(Icons.person_rounded, color: Colors.grey[400], size: 28.r),
+            )
+                : Icon(Icons.person_rounded, color: Colors.grey[400], size: 28.r),
+          ),
         ),
         SizedBox(width: 12.w),
         Expanded(

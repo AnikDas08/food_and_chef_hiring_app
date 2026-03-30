@@ -70,6 +70,7 @@ class ProfileController extends GetxController {
           profileImage.value = data["image"] ?? "";
           linkAccounts.value = data["link_accounts"] ?? [];
           isKitchen.value = data["is_kitchen_has"] ?? false;
+          print("dkfjdsf : ${ApiEndPoint.imageUrl+profileImage.value}");
 
           nameController.text = name.value;
           addressController.text = data["address"] ?? "";

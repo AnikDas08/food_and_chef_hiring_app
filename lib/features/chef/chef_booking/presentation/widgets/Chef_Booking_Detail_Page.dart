@@ -695,7 +695,7 @@ class _ActionButtons extends StatelessWidget {
                   onSuccess: () {
                     final homeC = Get.find<ChefHomeController>();
                     homeC.fetchUpcomingBookings();
-                    Get.back(); // detail page থেকে বের হবে
+                    Get.back();
                     Get.snackbar("Success", "Booking cancelled successfully");
                   },
                 );
@@ -724,6 +724,7 @@ class _ActionButtons extends StatelessWidget {
 
     return Row(
       children: [
+
         Expanded(
           child: _btn(
             label: "Chat with Customer",
@@ -762,12 +763,16 @@ class _ActionButtons extends StatelessWidget {
                 Icon(icon, color: textColor, size: 18),
                 const SizedBox(width: 6),
               ],
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: textColor,
+              Flexible(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: textColor,
+                  ),
                 ),
               ),
             ],
@@ -955,4 +960,75 @@ class _StopConfirmationDialog extends StatelessWidget {
       ),
     );
   }
+}
+void showChefBookingDetailPopup(BuildContext context, String orderId) {
+
+  if (Get.isRegistered<ChefBookingDetailController>()) {
+    Get.delete<ChefBookingDetailController>(force: true);
+  }
+
+  final ctrl = Get.put(ChefBookingDetailController());
+  ctrl.fetchOrder(orderId);
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (context) {
+      return Container(
+        constraints: BoxConstraints(maxHeight: Get.height * 0.8),
+        decoration: BoxDecoration(
+          color: const Color(0xffF7F7F7),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 12.h, bottom: 8.h),
+              height: 4.h,
+              width: 40.w,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(width: 40),
+                  Text(
+                    "Booking Details",
+                    style: TextStyle(
+                      color: const Color(0xff1A1A1A),
+                      fontSize: 17.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: Colors.black),
+                    onPressed: () => Get.back(),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Obx(() {
+                if (ctrl.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                final order = ctrl.order.value;
+                if (order == null) {
+                  return const Center(child: Text("No data"));
+                }
+                return _Body(order: order, ctrl: ctrl);
+              }),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }

@@ -11,6 +11,9 @@ import '../../../../../config/api/api_end_point.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/constants/app_icons.dart';
+import '../../../chef_booking_control/Cooking_OrderItem_page/Cooking_OrderItem.dart';
+import '../../../chef_booking_control/widgets/BookingDetailsSheet.dart';
+import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../../../home/presentation/widgets/request_item.dart';
 import '../controller/chef_booking_controller.dart';
 import 'booking_details_popup.dart';
@@ -388,8 +391,9 @@ Widget chefBookingItem({required Map order}) {
                 ),
                 12.width,
               ],
-
               if (controller.selectedBookingHistory == "Upcoming") ...[
+
+                // ✅ Chat with Customer
                 InkWell(
                   onTap: () async {
                     try {
@@ -414,13 +418,14 @@ Widget chefBookingItem({required Map order}) {
                     }
                   },
                   child: Container(
-                    margin: EdgeInsets.only(right: 12.w),
+                    margin: EdgeInsets.only(right: 8.w),
                     padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10.sp),
                     ),
                     child: Row(
+                      mainAxisSize: MainAxisSize.min, // ✅ এটা যোগ করুন
                       children: [
                         CommonImage(
                           imageSrc: AppIcons.chat,
@@ -438,6 +443,90 @@ Widget chefBookingItem({required Map order}) {
                     ),
                   ),
                 ),
+
+                InkWell(
+                  onTap: () async {
+                    final realOrderId = order['_id']?.toString() ?? "";
+                    if (realOrderId.isEmpty) {
+                      Get.snackbar("Error", "Order ID not found");
+                      return;
+                    }
+
+                    final homeC = Get.find<ChefHomeController>();
+
+                    Get.dialog(
+                      const Center(child: CircularProgressIndicator()),
+                      barrierDismissible: false,
+                    );
+
+                    try {
+                      final orderData = await homeC.fetchSingleOrder(realOrderId); // ✅ real ID দিয়ে
+                      Get.back();
+
+                      if (orderData != null) {
+                        final user = orderData['user'] ?? {};
+                        final staticItems = orderData['static_items'] as List? ?? [];
+                        final breakdown = orderData['price_breakdown'] ?? {};
+
+                        BookingDetailsSheet.show(
+                          Get.context!,
+                          booking: BookingDetailsModel(
+                            chefName: user['name'] ?? '',
+                            bookingId: orderData['order_id'] ?? '',
+                            chefImage: user['image'] ?? '',
+                            status: orderData['status'] ?? '',
+                            customerName: user['name'] ?? '',
+                            address: orderData['formatted_address'] ?? '',
+                            date: _formatDate(orderData['formatted_date']),
+                            time: orderData['strTime'] ?? '',
+                            orderItems: staticItems.map((item) => OrderItem(
+                              name: item['menu']?['name'] ?? '',
+                              description: '${item['quantity']} Items + ${(item['customizations'] as List?)?.join(', ') ?? ''}',
+                            )).toList(),
+                            estimatedTime: orderData['duration'] ?? '',
+                            hourlyRate: (breakdown['subtotal'] ?? 0).toDouble(),
+                            estimatedTaxes: (breakdown['taxs'] ?? 0).toDouble(),
+                            onStartCooking: () {
+                              Get.back();
+                              Get.to(() => CookingStopwatchScreen(
+                                orderId: realOrderId, // ✅ real ID
+                                orderItems: staticItems.map((item) => CookingOrderItem(
+                                  name: '${item['menu']?['name']} (x${item['quantity']})',
+                                  description: (item['customizations'] as List?)?.join(', ') ?? '',
+                                )).toList(),
+                              ));
+                            },
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      if (Get.isDialogOpen == true) Get.back();
+                      Get.snackbar("Error", "Something went wrong");
+                    }
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 12.w),
+                    padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
+                    decoration: BoxDecoration(
+                      color: Color(0xff272727),
+                      borderRadius: BorderRadius.circular(10.sp),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(CupertinoIcons.flame, size: 16, color: Colors.white),
+                        CommonText(
+                          text: "Start Cooking",
+                          fontSize: 12,
+                          left: 6,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
               ],
 
               if (controller.selectedBookingHistory == "Completed") ...[
