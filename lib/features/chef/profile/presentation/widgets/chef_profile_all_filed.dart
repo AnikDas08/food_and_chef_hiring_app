@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/text/common_text.dart';
@@ -20,17 +19,26 @@ class ChefProfileAllFiled extends StatelessWidget {
       children: [
 
         // ── Full Name ──────────────────────────────────────────────────────
-        _FieldLabel(text: AppString.fullName),
+        // _FieldLabel(text: AppString.fullName),
+        // _gap(),
+        //_FieldLabel(text: 'First Name'),
         _gap(),
         CommonTextField(
-          controller: controller.nameController,
+          controller: controller.firstNameController,
           validator: OtherHelper.validator,
-          hintText: AppString.fullName,
+          hintText: 'First Name',
           keyboardType: TextInputType.text,
           borderRadius: 12,
         ),
-
-        // ── Cooking Area ───────────────────────────────────────────────────
+        _FieldLabel(text: 'Last Name', top: 16),
+        _gap(),
+        CommonTextField(
+          controller: controller.lastNameController,
+          validator: OtherHelper.validator,
+          hintText: 'Last Name',
+          keyboardType: TextInputType.text,
+          borderRadius: 12,
+        ),
         _FieldLabel(text: 'Cooking Area', top: 20),
         SizedBox(height: 4),
         Text(
@@ -618,6 +626,7 @@ class _CuisineSelector extends StatelessWidget {
           border: Border.all(color: const Color(0xffE8E8E8)),
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: hasSelected
@@ -628,7 +637,7 @@ class _CuisineSelector extends StatelessWidget {
                     .map(
                       (c) => Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 5),
+                        horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
@@ -641,7 +650,7 @@ class _CuisineSelector extends StatelessWidget {
                         Text(
                           c,
                           style: const TextStyle(
-                            fontSize: 13,
+                            fontSize: 12,
                             color: Color(0xff272727),
                             fontWeight: FontWeight.w500,
                           ),
@@ -650,7 +659,7 @@ class _CuisineSelector extends StatelessWidget {
                         GestureDetector(
                           onTap: () => controller.toggleCuisine(c),
                           child: const Icon(Icons.close,
-                              size: 13,
+                              size: 12,
                               color: Color(0xff999999)),
                         ),
                       ],

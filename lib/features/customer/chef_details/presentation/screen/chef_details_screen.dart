@@ -226,7 +226,7 @@ class ChefDetailsScreen extends StatelessWidget {
                           titleText: AppString.checkAvailability,
                           titleColor: Colors.white,
                           onTap: (){
-                            print("chef id: 🤣🤣🤣🤣${controller.chefId}");
+                            print("chef id: ${controller.chefId}");
                             availabilityPopup(context,controller.chefId);
                           },
                         ),

@@ -130,7 +130,6 @@ void bookingDetailsPopup(
 
               16.height,
 
-              // ✅ Date
               Row(
                 children: [
                   Container(

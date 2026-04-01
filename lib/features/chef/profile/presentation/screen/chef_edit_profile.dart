@@ -15,10 +15,17 @@ class ChefEditProfile extends StatefulWidget {
   State<ChefEditProfile> createState() => _ChefEditProfileState();
 
 }
-
 class _ChefEditProfileState extends State<ChefEditProfile> {
 
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<ChefProfileController>().loadProfileData();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

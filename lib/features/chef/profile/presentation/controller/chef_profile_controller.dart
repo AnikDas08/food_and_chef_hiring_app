@@ -58,7 +58,8 @@ class ChefProfileController extends GetxController {
 
   /// Text Controllers
   TextEditingController selectExpertiseController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
   TextEditingController numberController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController aboutController = TextEditingController();
@@ -274,6 +275,35 @@ class ChefProfileController extends GetxController {
       return '';
     }
   }
+
+  void loadProfileData() {
+    final profile = Get.find<ChefHomeController>().chefProfile.value;
+    if (profile == null) return;
+
+    final nameParts = profile.name.split(' ');
+    firstNameController.text = nameParts.isNotEmpty ? nameParts.first : '';
+    lastNameController.text = nameParts.length > 1 ? nameParts.skip(1).join(' ') : '';
+
+    aboutController.text = profile.about;
+    experienceController.text = profile.experience.toString();
+    pricingController.text = profile.pricing.toString();
+    addressController.text = profile.address;
+    distanceController.text = profile.cookingAreaDistance.toString();
+
+
+
+    isAutoAccept = profile.orderAutoAccept;
+    isDiscount = profile.weekDaysDiscountHas;
+
+    isWeekend = profile.weekendDiscountHas;
+    weekendRateController.text = profile.weekendDiscountAmount.toString();
+
+    selectedCuisines = List<String>.from(profile.foods);
+
+    update();
+  }
+
+
   Future<void> editProfileRepo(GlobalKey<FormState> formKey) async {
     if (!formKey.currentState!.validate()) return;
     if (!LocalStorage.isLogIn) return;
@@ -306,9 +336,8 @@ class ChefProfileController extends GetxController {
         return;
       }
       final Map<String, dynamic> body = {
-        "role": "CHEF",
-        "first_name": nameController.text.trim().split(' ').first,
-        "last_name": nameController.text.trim().split(' ').skip(1).join(' '),
+        "role": "CHEF","first_name": firstNameController.text.trim(),
+        "last_name": lastNameController.text.trim(),
         "phone": numberController.text.trim(),
         "address": addressController.text.trim(),
         "lat": selectedLat.toString(),
@@ -371,7 +400,8 @@ class ChefProfileController extends GetxController {
   @override
   void onClose() {
     selectExpertiseController.dispose();
-    nameController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
     numberController.dispose();
     addressController.dispose();
     aboutController.dispose();
