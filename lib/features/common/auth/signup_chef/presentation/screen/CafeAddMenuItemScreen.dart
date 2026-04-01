@@ -170,6 +170,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                       final safeVal = c.safeCategoryValue;
 
                       return Container(
+                        width: double.infinity,
                         padding: EdgeInsets.symmetric(horizontal: 14.w),
                         decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
                         child: DropdownButtonHideUnderline(

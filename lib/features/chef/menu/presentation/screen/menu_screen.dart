@@ -138,7 +138,6 @@ class MenuScreen extends StatelessWidget {
               ),
             ),
 
-            // ── Footer: Add Section ──
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 8.h),
               child: GestureDetector(
@@ -147,6 +146,7 @@ class MenuScreen extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (_) => AlertDialog(
+                      backgroundColor: Colors.white,
                       title: Text("Add Menu Section",
                           style: TextStyle(
                               fontSize: 16.sp, fontWeight: FontWeight.w600)),

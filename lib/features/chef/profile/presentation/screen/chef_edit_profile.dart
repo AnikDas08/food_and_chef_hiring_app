@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../../utils/constants/app_images.dart';
+import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_profile_controller.dart';
 import '../widgets/chef_profile_all_filed.dart';
 
@@ -37,6 +38,15 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
             backgroundColor: Colors.white,
             elevation: 0,
             scrolledUnderElevation: 0,
+            centerTitle: true,
+            title: const Text(
+              'Edit Profile',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff272727),
+              ),
+            ),
             leading: GestureDetector(
               onTap: () => Get.back(),
               child: const Icon(
@@ -56,14 +66,6 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 4.h),
-                    const Text(
-                      'Edit Profile',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff1A1A1A),
-                      ),
-                    ),
                     SizedBox(height: 24.h),
                     Stack(
                       clipBehavior: Clip.none,
@@ -80,7 +82,13 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
                               fit: BoxFit.cover,
                             )
                                 : CommonImage(
-                              imageSrc: AppImages.image3,
+                              imageSrc: () {
+                                final profileImage = Get.find<ChefHomeController>()
+                                    .chefProfile.value?.image ?? '';
+                                return profileImage.isNotEmpty
+                                    ? profileImage
+                                    : AppImages.image3;
+                              }(),
                               height: 72.sp,
                               width: 72.sp,
                               fill: BoxFit.cover,

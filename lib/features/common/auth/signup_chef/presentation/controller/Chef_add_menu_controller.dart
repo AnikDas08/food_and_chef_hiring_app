@@ -283,7 +283,6 @@ class CafeAddMenuItemController extends GetxController {
       isLoadingEquipment.value = false;
     }
   }
-
   Future<void> fetchCategories() async {
     isLoadingCategory.value = true;
     try {
@@ -297,18 +296,35 @@ class CafeAddMenuItemController extends GetxController {
             .where((e) => e.name.isNotEmpty && seen.add(e.name))
             .toList();
         categoryList.value = categoryModels.map((e) => e.name).toList();
+
+        if (categoryList.isEmpty) {
+          final defaults = ['Starter', 'Main Dish', 'Dessert'];
+          for (final name in defaults) {
+            try {
+              await ApiService.post(
+                "${ApiEndPoint.AddMenuSection}${LocalStorage.userId}",
+                body: {"name": name},
+              );
+            } catch (_) {}
+          }
+          categoryList.assignAll(defaults);
+          categoryModels.value = defaults
+              .map((e) => MenuCategoryModel(id: '', name: e))
+              .toList();
+        }
+
         if (categoryList.isNotEmpty) {
           _selectedCategory.value = categoryList.first;
         }
       }
     } catch (e) {
       debugPrint("❌ Category fetch error: $e");
-      Get.snackbar("Error", "Failed to load categories.", snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar("Error", "Failed to load categories.",
+          snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoadingCategory.value = false;
     }
   }
-
   Future<void> fetchMenus() async {
     isLoadingMenu.value = true;
     try {

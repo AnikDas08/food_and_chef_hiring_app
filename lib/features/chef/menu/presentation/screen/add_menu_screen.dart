@@ -255,12 +255,11 @@ class AddMenuScreen extends StatelessWidget {
                       }
                       final safeVal = c.safeCategoryValue;
                       return Container(
-                        padding:
-                        EdgeInsets.symmetric(horizontal: 14.w),
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(horizontal: 14.w),
                         decoration: BoxDecoration(
                             color: const Color(0xFFF7F7F7),
-                            borderRadius:
-                            BorderRadius.circular(12.r)),
+                            borderRadius: BorderRadius.circular(12.r)),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: safeVal,
@@ -646,6 +645,7 @@ class AddMenuScreen extends StatelessWidget {
     if (safeValue == null) return const SizedBox.shrink();
 
     return Container(
+      width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 14.w),
       decoration: BoxDecoration(
           color: const Color(0xFFF7F7F7),
