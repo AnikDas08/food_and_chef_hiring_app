@@ -133,13 +133,48 @@ class DietaryPreferencesScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 40, right: 16, left: 16),
         child: SafeArea(
-          child: CommonButton(
-            titleText: AppString.continueString,
-            onTap: () {
-              if (_formKey.currentState!.validate()) {
-                Get.toNamed(AppRoutes.reviewDetail);
-              }
-            },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CommonButton(
+                titleText: AppString.continueString,
+                onTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    Get.toNamed(AppRoutes.reviewDetail);
+                  }
+                },
+              ),
+              const SizedBox(height: 12),
+              InkWell(
+                onTap: () => Get.find<SignUpController>().completeProfile(),
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.10),
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: const Text(
+                    'Skip',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xff272727),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

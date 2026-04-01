@@ -68,17 +68,33 @@ class ReviewDetailScreen extends StatelessWidget {
                     top: 28,
                   ),
                   const CommonText(
-                    text: AppString.fullName,
+                    text: AppString.firstName,
                     bottom: 8,
                     color: Color(0xff272727),
                     fontWeight: FontWeight.w600,
                   ),
                   CommonTextField(
-                    hintText: AppString.fullName,
+                    hintText: AppString.firstName,
                     paddingHorizontal: 10,
                     controller: TextEditingController(
                       text:
-                      "${controller.firstNameController.text} ${controller.lastNameController.text}",
+                      controller.firstNameController.text,
+                    ),
+                    validator: OtherHelper.validator,
+                  ),
+
+                  const CommonText(
+                    text: AppString.lastName,
+                    bottom: 8,
+                    color: Color(0xff272727),
+                    fontWeight: FontWeight.w600,
+                  ),
+                  CommonTextField(
+                    hintText: AppString.lastName,
+                    paddingHorizontal: 10,
+                    controller: TextEditingController(
+                      text:
+                      controller.lastNameController.text,
                     ),
                     validator: OtherHelper.validator,
                   ),

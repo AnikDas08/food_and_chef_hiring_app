@@ -1,33 +1,118 @@
+// widgets/recommended.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/home_controller.dart';
 import 'chef_item.dart';
 
+class _ShimmerBox extends StatefulWidget {
+  final double width;
+  final double height;
+  final double borderRadius;
+  const _ShimmerBox({required this.width, required this.height, this.borderRadius = 8});
+
+  @override
+  State<_ShimmerBox> createState() => _ShimmerBoxState();
+}
+
+class _ShimmerBoxState extends State<_ShimmerBox>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat(reverse: true);
+    _animation = Tween<double>(begin: 0.3, end: 0.9).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (_, __) => Container(
+        width: widget.width,
+        height: widget.height,
+        decoration: BoxDecoration(
+          color: Color(0xffE0E0E0).withOpacity(_animation.value),
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+        ),
+      ),
+    );
+  }
+}
+
+Widget _chefShimmerCard() {
+  return Container(
+    margin: const EdgeInsets.only(right: 12),
+    width: 240,
+    decoration: BoxDecoration(
+      color: const Color(0xffF2F2F2),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Image placeholder
+        _ShimmerBox(width: 240, height: 200, borderRadius: 10),
+        const SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _ShimmerBox(width: 120, height: 12),
+                  _ShimmerBox(width: 40, height: 12),
+                ],
+              ),
+              const SizedBox(height: 8),
+              _ShimmerBox(width: 160, height: 12),
+              const SizedBox(height: 16),
+              _ShimmerBox(width: 80, height: 14),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 Widget recommended() {
   return GetBuilder<HomeController>(
     builder: (controller) {
-      // Show loading indicator while fetching location or chefs
+      // Smooth shimmer while loading location or chefs
       if (controller.isLoadingLocation || controller.isLoadingChefs) {
-        return Center(
-          child: CircularProgressIndicator(
-            color: Color(0xffFD713F),
-          ),
+        return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 3,
+          itemBuilder: (_, __) => _chefShimmerCard(),
         );
       }
 
-      // Show message if no chefs found
+      // No chefs found
       if (controller.nearbyChefsList.isEmpty) {
         return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.location_off,
-                size: 48,
-                color: Colors.grey,
-              ),
-              SizedBox(height: 16),
-              Text(
+              const Icon(Icons.location_off, size: 48, color: Colors.grey),
+              const SizedBox(height: 16),
+              const Text(
                 'No nearby chefs found',
                 style: TextStyle(
                   fontSize: 16,
@@ -35,10 +120,10 @@ Widget recommended() {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextButton(
                 onPressed: () => controller.refreshChefs(),
-                child: Text(
+                child: const Text(
                   'Retry',
                   style: TextStyle(
                     color: Color(0xffFD713F),
@@ -51,13 +136,23 @@ Widget recommended() {
         );
       }
 
-      // Display the list of nearby chefs
+      // Animate list in smoothly
       return ListView.builder(
         itemCount: controller.nearbyChefsList.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return chefItem(
-            chef: controller.nearbyChefsList[index],
+          return TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0.0, end: 1.0),
+            duration: Duration(milliseconds: 300 + (index * 80)),
+            curve: Curves.easeOut,
+            builder: (_, value, child) => Opacity(
+              opacity: value,
+              child: Transform.translate(
+                offset: Offset(20 * (1 - value), 0),
+                child: child,
+              ),
+            ),
+            child: chefItem(chef: controller.nearbyChefsList[index]),
           );
         },
       );
