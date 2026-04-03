@@ -65,8 +65,26 @@ class _CafeSetAvailabilityScreenState
             to: const TimeOfDay(hour: 17, minute: 30)),
       ],
     ),
-    DaySchedule(name: "Thursday"),
-    DaySchedule(name: "Friday"),
+    DaySchedule(
+      name: "Thursday",
+      isEnabled: true,
+      slots: [
+        TimeSlot(
+          from: const TimeOfDay(hour: 9, minute: 0),
+          to: const TimeOfDay(hour: 17, minute: 30),
+        ),
+      ],
+    ),
+    DaySchedule(
+      name: "Friday",
+      isEnabled: true,
+      slots: [
+        TimeSlot(
+          from: const TimeOfDay(hour: 9, minute: 0),
+          to: const TimeOfDay(hour: 17, minute: 30),
+        ),
+      ],
+    ),
     DaySchedule(name: "Saturday"),
     DaySchedule(name: "Sunday"),
   ];
@@ -105,10 +123,14 @@ class _CafeSetAvailabilityScreenState
     );
     if (picked != null) {
       setState(() {
-        if (isFrom) {
-          slot.from = picked;
-        } else {
-          slot.to = picked;
+        for (final d in _days) {
+          if (d.isEnabled && slotIndex < d.slots.length) {
+            if (isFrom) {
+              d.slots[slotIndex].from = picked;
+            } else {
+              d.slots[slotIndex].to = picked;
+            }
+          }
         }
       });
     }

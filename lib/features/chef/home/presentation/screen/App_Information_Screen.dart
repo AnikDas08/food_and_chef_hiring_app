@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/utils/constants/app_images.dart';
 
 class AppInformationScreen extends StatelessWidget {
+
   const AppInformationScreen({super.key});
 
   @override
@@ -15,33 +17,28 @@ class AppInformationScreen extends StatelessWidget {
         leading: InkWell(onTap: () {
          Get.back();
         }, child: Icon(Icons.arrow_back_ios_new, color: Colors.black)),
+
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
-            /// App Logo Container
             Container(
-              width: 150.w,
-              height: 150.h,
+              width: 200.w,
+              height: 180.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.r),
-                color: Colors.black,
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.black, // optional
               ),
-              child: const Center(
-                child: Text(
-                  "PRIVAE",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  AppImages.app_logo,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
-
             SizedBox(height: 20.h),
 
             /// Version Text

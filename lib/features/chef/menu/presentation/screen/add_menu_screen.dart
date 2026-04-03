@@ -74,6 +74,8 @@ class AddMenuScreen extends StatelessWidget {
                     child: DropdownButton<String>(
                       value: localUnit,
                       isExpanded: true,
+                      dropdownColor: Colors.white,
+                      borderRadius: BorderRadius.circular(12.r),
                       icon: Icon(Icons.keyboard_arrow_down,
                           size: 18.sp,
                           color: const Color(0xFF272727)),
@@ -264,6 +266,8 @@ class AddMenuScreen extends StatelessWidget {
                           child: DropdownButton<String>(
                             value: safeVal,
                             isExpanded: true,
+                            dropdownColor: Colors.white,
+                            borderRadius: BorderRadius.circular(12.r),
                             icon: Icon(Icons.keyboard_arrow_down,
                                 size: 18.sp,
                                 color: const Color(0xFF272727)),
@@ -654,6 +658,8 @@ class AddMenuScreen extends StatelessWidget {
         child: DropdownButton<String>(
           value: safeValue,
           isExpanded: true,
+          dropdownColor: Colors.white,
+          borderRadius: BorderRadius.circular(12.r),
           icon: Icon(Icons.keyboard_arrow_down,
               size: 18.sp, color: const Color(0xFF272727)),
           style:

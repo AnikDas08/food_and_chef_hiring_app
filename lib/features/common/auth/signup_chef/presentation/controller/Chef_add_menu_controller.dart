@@ -297,20 +297,19 @@ class CafeAddMenuItemController extends GetxController {
             .toList();
         categoryList.value = categoryModels.map((e) => e.name).toList();
 
-        if (categoryList.isEmpty) {
-          final defaults = ['Starter', 'Main Dish', 'Dessert'];
-          for (final name in defaults) {
+        final defaults = ['Starter', 'Main Dish', 'Dessert'];
+
+        for (final name in defaults) {
+          if (!categoryList.contains(name)) {
             try {
               await ApiService.post(
                 "${ApiEndPoint.AddMenuSection}${LocalStorage.userId}",
                 body: {"name": name},
               );
+              categoryList.add(name);
+              categoryModels.add(MenuCategoryModel(id: '', name: name));
             } catch (_) {}
           }
-          categoryList.assignAll(defaults);
-          categoryModels.value = defaults
-              .map((e) => MenuCategoryModel(id: '', name: e))
-              .toList();
         }
 
         if (categoryList.isNotEmpty) {
@@ -325,6 +324,7 @@ class CafeAddMenuItemController extends GetxController {
       isLoadingCategory.value = false;
     }
   }
+
   Future<void> fetchMenus() async {
     isLoadingMenu.value = true;
     try {
@@ -353,8 +353,14 @@ class CafeAddMenuItemController extends GetxController {
   }
 
   Future<void> submitMenuItem() async {
+
     if (nameController.text.trim().isEmpty) {
-      Get.snackbar("Error", "Item name is required", snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar("Message", "Item name is required", snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
+    if (ingredientsList.isEmpty) {
+      Get.snackbar("message", "Please add at least one ingredient", snackPosition: SnackPosition.BOTTOM);
       return;
     }
 

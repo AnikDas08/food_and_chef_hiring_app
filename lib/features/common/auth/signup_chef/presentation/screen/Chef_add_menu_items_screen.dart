@@ -67,8 +67,7 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                             await c.fetchCategories();
                             await Get.to(() => const CafeAddMenuItemScreen());
                             c.resetForm();
-                            // ✅ fetchMenus() lagbe na — submitMenuItem e direct UI update hoy
-                          },
+                            },
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
                             decoration: BoxDecoration(

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/switch_button.dart';
 import 'package:new_untitled/features/chef/home/presentation/screen/App_Information_Screen.dart';
+import 'package:new_untitled/features/chef/profile/presentation/screen/help_and_Support_Screen.dart';
 import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
@@ -254,9 +255,7 @@ class ChefProfileScreen extends StatelessWidget {
                           title: AppString.contactSupport,
                           onTap: (){
 
-
-                            Get.snackbar("Message", "I couldn’t find the contact and support page in your Figma file, so I wasn’t able to complete that part.",backgroundColor: Colors.green);
-
+                            Get.to(HelpSupportScreen());
 
                           },
                         ),

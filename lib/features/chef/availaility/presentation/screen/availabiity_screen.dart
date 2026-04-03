@@ -4,18 +4,17 @@ import 'package:get/get.dart';
 
 import '../../../../common/auth/signup_chef/presentation/controller/sign_up_chef_controller.dart';
 import '../../../../common/auth/signup_chef/presentation/screen/cafe_set_availability.dart';
+import '../../../profile/presentation/widgets/custom_TimePicker.dart';
+
 
 class AvailabiityScreen extends StatefulWidget {
   const AvailabiityScreen({super.key});
 
   @override
-  State<AvailabiityScreen> createState() =>
-      _CafeSetAvailabilityScreenState();
+  State<AvailabiityScreen> createState() => _CafeSetAvailabilityScreenState();
 }
 
-class _CafeSetAvailabilityScreenState
-    extends State<AvailabiityScreen> {
-
+class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
   final List<DaySchedule> _days = [
     DaySchedule(
       name: "Monday",
@@ -47,8 +46,26 @@ class _CafeSetAvailabilityScreenState
             to: const TimeOfDay(hour: 17, minute: 30)),
       ],
     ),
-    DaySchedule(name: "Thursday"),
-    DaySchedule(name: "Friday"),
+    DaySchedule(
+      name: "Thursday",
+      isEnabled: true,
+      slots: [
+        TimeSlot(
+          from: const TimeOfDay(hour: 9, minute: 0),
+          to: const TimeOfDay(hour: 17, minute: 30),
+        ),
+      ],
+    ),
+    DaySchedule(
+      name: "Friday",
+      isEnabled: true,
+      slots: [
+        TimeSlot(
+          from: const TimeOfDay(hour: 9, minute: 0),
+          to: const TimeOfDay(hour: 17, minute: 30),
+        ),
+      ],
+    ),
     DaySchedule(name: "Saturday"),
     DaySchedule(name: "Sunday"),
   ];
@@ -71,18 +88,12 @@ class _CafeSetAvailabilityScreenState
     super.dispose();
   }
 
-  Future<void> _pickTime(
-      DaySchedule day, int slotIndex, bool isFrom) async {
+  Future<void> _pickTime(DaySchedule day, int slotIndex, bool isFrom) async {
     final slot = day.slots[slotIndex];
-    final picked = await showTimePicker(
-      context: context,
+    final picked = await CustomTimePicker.show(
+      context,
       initialTime: isFrom ? slot.from : slot.to,
-      builder: (context, child) => Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: const ColorScheme.light(primary: Color(0xFF1C1C1C)),
-        ),
-        child: child!,
-      ),
+      title: isFrom ? "From Time" : "To Time",
     );
     if (picked != null) {
       setState(() {
@@ -171,11 +182,8 @@ class _CafeSetAvailabilityScreenState
                                 shape: BoxShape.circle,
                               ),
                               child: isSelected
-                                  ? Icon(
-                                Icons.check,
-                                size: 13.sp,
-                                color: Colors.white,
-                              )
+                                  ? Icon(Icons.check,
+                                  size: 13.sp, color: Colors.white)
                                   : null,
                             ),
                           ],
@@ -202,7 +210,8 @@ class _CafeSetAvailabilityScreenState
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+              padding:
+              EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
@@ -223,7 +232,6 @@ class _CafeSetAvailabilityScreenState
                 ),
               ),
             ),
-
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -249,10 +257,8 @@ class _CafeSetAvailabilityScreenState
                       ),
                     ),
                     20.verticalSpace,
-
                     ..._days.map((day) => _buildDayItem(day)),
                     20.verticalSpace,
-
                     Text(
                       "Booking Preferences",
                       style: TextStyle(
@@ -262,7 +268,6 @@ class _CafeSetAvailabilityScreenState
                       ),
                     ),
                     10.verticalSpace,
-
                     Text.rich(
                       TextSpan(
                         children: [
@@ -286,9 +291,12 @@ class _CafeSetAvailabilityScreenState
                                 setState(() => _editingMin = true);
                               },
                               onEditDone: () {
-                                final val = int.tryParse(_minController.text);
+                                final val =
+                                int.tryParse(_minController.text);
                                 setState(() {
-                                  if (val != null && val >= 1 && val <= 24) {
+                                  if (val != null &&
+                                      val >= 1 &&
+                                      val <= 24) {
                                     _minHours = val;
                                   }
                                   _editingMin = false;
@@ -325,9 +333,12 @@ class _CafeSetAvailabilityScreenState
                                 setState(() => _editingMax = true);
                               },
                               onEditDone: () {
-                                final val = int.tryParse(_maxController.text);
+                                final val =
+                                int.tryParse(_maxController.text);
                                 setState(() {
-                                  if (val != null && val >= 1 && val <= 30) {
+                                  if (val != null &&
+                                      val >= 1 &&
+                                      val <= 30) {
                                     _maxDays = val;
                                   }
                                   _editingMax = false;
@@ -360,7 +371,6 @@ class _CafeSetAvailabilityScreenState
                 ),
               ),
             ),
-
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
               child: SizedBox(
@@ -372,10 +382,13 @@ class _CafeSetAvailabilityScreenState
                       : () async {
                     setState(() => _isSubmitting = true);
                     try {
-                      final controller = SignUpChefController.instance;
-                      await controller.setupChefAvailability2(days: _days);
+                      final controller =
+                          SignUpChefController.instance;
+                      await controller
+                          .setupChefAvailability2(days: _days);
                     } finally {
-                      if (mounted) setState(() => _isSubmitting = false);
+                      if (mounted)
+                        setState(() => _isSubmitting = false);
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -402,14 +415,16 @@ class _CafeSetAvailabilityScreenState
                       Text(
                         "Loading...",
                         style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.w600),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600),
                       ),
                     ],
                   )
                       : Text(
                     "Save Changes",
                     style: TextStyle(
-                        fontSize: 16.sp, fontWeight: FontWeight.w600),
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -445,7 +460,6 @@ class _CafeSetAvailabilityScreenState
             ),
           ],
         ),
-
         if (day.isEnabled) ...[
           ...day.slots.asMap().entries.map((entry) {
             final i = entry.key;
@@ -513,7 +527,6 @@ class _CafeSetAvailabilityScreenState
               ],
             );
           }),
-
           GestureDetector(
             onTap: () {
               setState(() {
@@ -545,7 +558,6 @@ class _CafeSetAvailabilityScreenState
             ),
           ),
         ],
-
         Divider(color: Colors.grey.shade200, height: 20.h),
       ],
     );
@@ -567,7 +579,8 @@ class _CafeSetAvailabilityScreenState
           onTap: onEditStart,
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 2.w),
-            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+            padding:
+            EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10.r),
@@ -610,14 +623,13 @@ class _CafeSetAvailabilityScreenState
             ),
           ),
         ),
-
         4.horizontalSpace,
-
         GestureDetector(
           onTapDown: (details) => onUnitTap(details.globalPosition),
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 2.w),
-            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+            padding:
+            EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10.r),
