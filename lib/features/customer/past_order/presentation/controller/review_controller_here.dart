@@ -48,7 +48,7 @@ class ReviewController extends GetxController {
       final response = await ApiService.get(
         "order/${order.id}",
       );
-      if (response.statusCode == 200 && response.data != null) {
+      if (response.statusCode == 200) {
         final data = response.data['data'];
         if (data != null) {
           order = PastOrderModel.fromJson(data);

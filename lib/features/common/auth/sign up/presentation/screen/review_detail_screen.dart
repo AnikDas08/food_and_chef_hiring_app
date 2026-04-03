@@ -11,7 +11,6 @@ import '../../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/helpers/other_helper.dart';
 import '../controller/sign_up_controller.dart';
 import '../../../../../../../utils/constants/app_string.dart';
-import '../widget/account_create_popup.dart';
 import '../widget/profile_image.dart';
 
 class ReviewDetailScreen extends StatelessWidget {
@@ -68,17 +67,33 @@ class ReviewDetailScreen extends StatelessWidget {
                     top: 28,
                   ),
                   const CommonText(
-                    text: AppString.fullName,
+                    text: AppString.firstName,
                     bottom: 8,
                     color: Color(0xff272727),
                     fontWeight: FontWeight.w600,
                   ),
                   CommonTextField(
-                    hintText: AppString.fullName,
+                    hintText: AppString.firstName,
                     paddingHorizontal: 10,
                     controller: TextEditingController(
                       text:
-                      "${controller.firstNameController.text} ${controller.lastNameController.text}",
+                      controller.firstNameController.text,
+                    ),
+                    validator: OtherHelper.validator,
+                  ),
+
+                  const CommonText(
+                    text: AppString.lastName,
+                    bottom: 8,
+                    color: Color(0xff272727),
+                    fontWeight: FontWeight.w600,
+                  ),
+                  CommonTextField(
+                    hintText: AppString.lastName,
+                    paddingHorizontal: 10,
+                    controller: TextEditingController(
+                      text:
+                      controller.lastNameController.text,
                     ),
                     validator: OtherHelper.validator,
                   ),

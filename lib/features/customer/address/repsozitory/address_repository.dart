@@ -14,7 +14,7 @@ class AddressRepository {
     final response = await ApiService.get(
       "${ApiEndPoint.address}?page=$page&limit=$limit",
     );
-    if (response.statusCode == 200 && response.data != null) {
+    if (response.statusCode == 200) {
       return AddressListResponse.fromJson(response.data);
     }
     return null;
@@ -22,8 +22,7 @@ class AddressRepository {
 
   static Future<AddressModel?> createAddress(Map<String, dynamic> body) async {
     final response = await ApiService.post(ApiEndPoint.address, body: body);
-    if ((response.statusCode == 200 || response.statusCode == 201) &&
-        response.data != null) {
+    if ((response.statusCode == 200 || response.statusCode == 201)) {
       return AddressModel.fromJson(response.data['data']);
     }
     return null;
@@ -32,7 +31,7 @@ class AddressRepository {
 
   static Future<AddressModel?> getAddressById(String id) async {
     final response = await ApiService.get("${ApiEndPoint.address}/$id");
-    if (response.statusCode == 200 && response.data != null) {
+    if (response.statusCode == 200) {
       return AddressModel.fromJson(response.data['data']);
     }
     return null;
@@ -43,7 +42,7 @@ class AddressRepository {
       String id, Map<String, dynamic> body) async {
     final response =
     await ApiService.patch("${ApiEndPoint.address}/$id", body: body);
-    if (response.statusCode == 200 && response.data != null) {
+    if (response.statusCode == 200) {
       return AddressModel.fromJson(response.data['data']);
     }
     return null;
@@ -66,7 +65,7 @@ class AddressRepository {
         "&key=${ApiEndPoint.googleMapsApiKey}";
 
     final response = await ApiService.get(url);
-    if (response.statusCode == 200 && response.data != null) {
+    if (response.statusCode == 200) {
       final predictions =
           response.data['predictions'] as List? ?? [];
       return predictions.map<Map<String, dynamic>>((p) {
@@ -91,7 +90,7 @@ class AddressRepository {
         "&key=${ApiEndPoint.googleMapsApiKey}";
 
     final response = await ApiService.get(url);
-    if (response.statusCode == 200 && response.data != null) {
+    if (response.statusCode == 200) {
       final result = response.data['result'];
       if (result == null) return null;
 
@@ -122,7 +121,9 @@ class AddressRepository {
       final name = c['long_name'] ?? '';
       if (types.contains('route')) road = name;
       if (types.contains('sublocality_level_1') ||
-          types.contains('sublocality')) sub = name;
+          types.contains('sublocality')) {
+        sub = name;
+      }
       if (types.contains('locality')) city = name;
       if (types.contains('country')) country = name;
     }

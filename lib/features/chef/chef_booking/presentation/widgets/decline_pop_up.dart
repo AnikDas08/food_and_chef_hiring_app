@@ -130,7 +130,7 @@ declineBookingPopUp({
                               final homeC = Get.find<ChefHomeController>();
                               final res = await homeC.declineBooking(orderId, reason);
 
-                              if (res.statusCode == 200 && res.data?['success'] == true) {
+                              if (res.statusCode == 200 && res.data['success'] == true) {
                                 await AnimationPopUpState.closeDialog();
                                 await Future.delayed(const Duration(milliseconds: 300));
 
@@ -139,7 +139,7 @@ declineBookingPopUp({
                               } else {
                                 Get.snackbar(
                                   "Error",
-                                  res.data?['message']?.toString() ?? "Something went wrong",
+                                  res.data['message']?.toString() ?? "Something went wrong",
                                 );
                               }
                             },

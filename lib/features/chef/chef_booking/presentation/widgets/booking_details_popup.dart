@@ -10,7 +10,6 @@ import '../../../../../config/route/app_routes.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_images.dart';
-import '../../../../customer/cart/presentation/widgets/order_summary.dart';
 import '../controller/chef_booking_controller.dart';
 import 'confirmation_booking_pop_up.dart';
 import 'decline_pop_up.dart';
@@ -221,7 +220,7 @@ void bookingDetailsPopup(
                       ],
                     ),
                   );
-                }).toList(),
+                }),
 
               16.height,
               orderSummarychef(order: order),

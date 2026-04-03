@@ -424,7 +424,7 @@ void itemDetails(
                                         ],
                                       ),
                                     );
-                                  }).toList()
+                                  })
                                 else
                                   const CommonText(
                                     text: 'N/A',

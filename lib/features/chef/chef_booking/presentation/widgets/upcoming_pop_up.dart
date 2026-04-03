@@ -243,7 +243,7 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                           ],
                         ),
                       );
-                    }).toList(),
+                    }),
 
                   const Divider(height: 24),
 

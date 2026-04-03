@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/customer/home/presentation/screen/customer_home_screen.dart';
+import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 
 import '../../../../../component/button/common_button.dart';
@@ -242,7 +244,7 @@ class _PresetImage extends StatelessWidget {
       return ClipRRect(
         borderRadius: BorderRadius.circular(8.r),
         child: CachedNetworkImage(
-          imageUrl: imageUrl!,
+          imageUrl: ApiEndPoint.imageUrl+imageUrl!,
           width: 44.w, height: 44.w, fit: BoxFit.cover,
           placeholder: (_, __) => _defaultBox(),
           errorWidget: (_, __, ___) => _defaultBox(),

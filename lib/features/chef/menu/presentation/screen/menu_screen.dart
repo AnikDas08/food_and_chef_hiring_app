@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../../config/api/api_end_point.dart';
 import '../../../../common/auth/signup_chef/presentation/controller/Chef_add_menu_controller.dart';
-import '../../../../common/auth/signup_chef/presentation/screen/Chef_cooking_expertise_screen.dart';
 import 'add_menu_screen.dart';
 
 class MenuScreen extends StatelessWidget {

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../../../../../../config/api/api_end_point.dart';
@@ -119,7 +118,7 @@ class ForgetPasswordController extends GetxController {
     isLoadingReset = true;
     update();
     Map<String, String> header = {
-      "authorization": "$forgetPasswordToken",
+      "authorization": forgetPasswordToken,
     };
 
     Map<String, String> body = {

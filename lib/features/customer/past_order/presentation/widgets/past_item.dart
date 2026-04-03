@@ -12,7 +12,6 @@ import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../controller/past_order_controller.dart';
 import '../data/past_order_model.dart';
-import 'past_item_details_popup.dart';
 
 Widget pastItem(BuildContext context, PastOrderModel order) {
   // ── Status color helper ───────────────────────────────────

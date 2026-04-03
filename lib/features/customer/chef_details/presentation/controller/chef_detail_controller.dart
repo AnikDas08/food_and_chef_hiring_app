@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/services/api/api_service.dart';
-import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/app_utils.dart';
 import 'package:new_untitled/utils/log/app_log.dart';
 import '../../../cart/presentation/controller/cart_controller.dart';
@@ -41,7 +40,7 @@ class ChefDetailsController extends GetxController {
       fetchChefDetails(chefArg!.id!);
     } else if (Get.arguments != null && Get.arguments is String) {
       chefId = Get.arguments;
-      print("id: 😍😍😍😍😍😍😍${chefId}");
+      print("id: 😍😍😍😍😍😍😍$chefId");
       fetchChefDetails(chefId);
     }
     ever(innerBoxIsScrolled, (bool value) {
@@ -91,8 +90,8 @@ class ChefDetailsController extends GetxController {
     selectedTime = ""; // Reset time when date changes
 
     // Update the controller's chefId with the one passed from the popup
-    await fetchChefDetails(passedChefId);
     chefId = passedChefId;
+    await fetchChefDetails(passedChefId);
 
     // 1. Fetch the slots for the calendar
     fetchAvailableSlots();

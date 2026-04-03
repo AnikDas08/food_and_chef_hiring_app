@@ -218,7 +218,7 @@ class _ChefVerificationReviewPageState
       child: Row(children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: isPdf || file.path == null
+          child: isPdf
               ? Container(
             width: 34,
             height: 34,
@@ -226,7 +226,7 @@ class _ChefVerificationReviewPageState
             child: Icon(Icons.picture_as_pdf_rounded,
                 size: 17, color: Colors.red[400]),
           )
-              : Image.file(File(file.path!),
+              : Image.file(File(file.path),
               width: 34, height: 34, fit: BoxFit.cover),
         ),
         const SizedBox(width: 10),

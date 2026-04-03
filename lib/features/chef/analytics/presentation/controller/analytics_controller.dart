@@ -116,7 +116,6 @@ class AnalyticsController extends GetxController {
           topMenuList.value = model.data;
         }
       }
-    } catch (e) {
     } finally {
       topMenuLoading(false);
     }

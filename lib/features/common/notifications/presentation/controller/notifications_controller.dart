@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../services/api/api_service.dart';
-import '../../../../../utils/app_utils.dart';
 import '../../data/model/notification_model.dart';
-import '../../repository/notification_repository.dart';
 
 class NotificationsController extends GetxController {
   static NotificationsController get instance => Get.find();

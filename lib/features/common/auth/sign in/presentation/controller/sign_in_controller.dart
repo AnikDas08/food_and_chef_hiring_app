@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/utils/app_utils.dart';
 
 import '../../../../../../config/api/api_end_point.dart';
 import '../../../../../../config/route/app_routes.dart';
@@ -70,7 +69,7 @@ class SignInController extends GetxController {
       } else if (response.data["data"]["role"] == "CUSTOMER") {
         Get.offAllNamed(AppRoutes.customerHomeScreen);
       } else {
-        Get.snackbar("Message", "${response.message}");
+        Get.snackbar("Message", response.message);
       }
 
     } else {

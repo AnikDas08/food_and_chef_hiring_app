@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -95,9 +94,33 @@ class HomeController extends GetxController {
       // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        Utils.errorSnackBar(
-          'Location Error',
-          'Location services are disabled. Please enable them.',
+        // Prompt user to enable location services
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Location Services Disabled'),
+            content: const Text(
+              'Please enable location services to find nearby chefs.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Get.back();
+                  await Geolocator.openLocationSettings();
+                  // Retry after user returns from settings
+                  await getCurrentLocationAndFetchChefs();
+                },
+                child: const Text(
+                  'Enable',
+                  style: TextStyle(color: Color(0xffFD713F)),
+                ),
+              ),
+            ],
+          ),
+          barrierDismissible: false,
         );
         isLoadingLocation = false;
         update();
@@ -106,12 +129,36 @@ class HomeController extends GetxController {
 
       // Check location permission
       LocationPermission permission = await Geolocator.checkPermission();
+
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
+
         if (permission == LocationPermission.denied) {
-          Utils.errorSnackBar(
-            'Permission Denied',
-            'Location permission is required to find nearby chefs.',
+          // User denied — show retry dialog
+          Get.dialog(
+            AlertDialog(
+              title: const Text('Permission Denied'),
+              content: const Text(
+                'Location permission is required to find nearby chefs. Please allow it to continue.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Get.back(),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    Get.back();
+                    await getCurrentLocationAndFetchChefs();
+                  },
+                  child: const Text(
+                    'Retry',
+                    style: TextStyle(color: Color(0xffFD713F)),
+                  ),
+                ),
+              ],
+            ),
+            barrierDismissible: false,
           );
           isLoadingLocation = false;
           update();
@@ -120,16 +167,38 @@ class HomeController extends GetxController {
       }
 
       if (permission == LocationPermission.deniedForever) {
-        Utils.errorSnackBar(
-          'Permission Denied',
-          'Location permission is permanently denied. Please enable it in settings.',
+        // Permanently denied — guide user to app settings
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Location Permission Required'),
+            content: const Text(
+              'Location permission is permanently denied. Please enable it in your device settings to find nearby chefs.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                  Geolocator.openAppSettings();
+                },
+                child: const Text(
+                  'Open Settings',
+                  style: TextStyle(color: Color(0xffFD713F)),
+                ),
+              ),
+            ],
+          ),
+          barrierDismissible: false,
         );
         isLoadingLocation = false;
         update();
         return;
       }
 
-      // Get current position
+      // Permission granted — get current position
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
@@ -142,6 +211,7 @@ class HomeController extends GetxController {
 
       // Fetch nearby chefs with the obtained location
       await getNearbyChefs();
+
     } catch (e) {
       isLoadingLocation = false;
       update();

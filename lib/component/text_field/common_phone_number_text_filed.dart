@@ -12,7 +12,7 @@ class CommonPhoneNumberTextFiled extends StatelessWidget {
     this.onChanged,
     required this.controller,
     required this.countryChange,
-    this.initialCountryCode = "BD",
+    this.initialCountryCode = "US",
   });
 
   final TextEditingController controller;

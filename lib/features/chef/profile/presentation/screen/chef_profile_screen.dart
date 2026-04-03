@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/switch_button.dart';
-import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/features/chef/home/presentation/screen/App_Information_Screen.dart';
 import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -19,10 +18,6 @@ import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/constants/app_images.dart';
 import '../../../../../../utils/constants/app_string.dart';
 import '../../../../common/auth/signup_chef/presentation/screen/BankManagementPage.dart';
-import '../../../../customer/profile/presentation/widgets/profile_list.dart';
-import '../../../chef_booking_control/Cooking_OrderItem_page/Cooking_OrderItem.dart';
-import '../../../chef_booking_control/widgets/BookingDetailsSheet.dart';
-import '../../../chef_booking_control/widgets/Booking_Banner_Popup.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_profile_controller.dart';
 

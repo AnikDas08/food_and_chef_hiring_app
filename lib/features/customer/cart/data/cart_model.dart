@@ -1,4 +1,5 @@
 /// Models for GET cart?chefId=... response
+library;
 
 class CartResponseModel {
   bool? success;

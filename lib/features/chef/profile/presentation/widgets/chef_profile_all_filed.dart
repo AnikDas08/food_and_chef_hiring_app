@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_text_field.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../../../../../utils/helpers/other_helper.dart';
@@ -388,7 +387,7 @@ class _ToggleCard extends StatelessWidget {
               Switch(
                 value: isEnabled,
                 onChanged: (_) => onToggle(),
-                activeColor: Colors.white,
+                activeThumbColor: Colors.white,
                 activeTrackColor: const Color(0xff272727),
                 inactiveThumbColor: Colors.white,
                 inactiveTrackColor: const Color(0xffCCCCCC),

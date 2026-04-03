@@ -2,87 +2,114 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/services/api/api_service.dart';
 import 'package:new_untitled/utils/app_utils.dart';
-import 'dart:convert';
 
 class DietaryController extends GetxController {
-  // ── DROPDOWN CATEGORIES ─────────────────────────────────────────────────
+  // ── CATEGORIES ─────────────────────────────────────────────────────────
   final List<String> categories = [
     'Allergies & Intolerance',
     'Religious & Ethical Restrictions',
-    'Preferences & Lifestyle'
+    'Preferences & Lifestyle',
   ];
 
-  RxString selectedCategory = ''.obs;
+  // ── ALL items per category (loaded on init for edit screen) ─────────────
+  RxMap<String, List<String>> itemsByCategory =
+      <String, List<String>>{}.obs;
 
-  // ── DIETARY ITEMS FROM API ──────────────────────────────────────────────
-  RxList<String> dietaryItems = <String>[].obs;
+  // ── SELECTED items (what the user picks) ───────────────────────────────
   RxList<String> selectedDietaryItems = <String>[].obs;
+
+  // ── SAVED items grouped by category (for view screen) ──────────────────
+  RxMap<String, List<String>> groupedSavedItems =
+      <String, List<String>>{}.obs;
+
   RxBool isLoadingDietary = false.obs;
 
-  // ── SEARCH ──────────────────────────────────────────────────────────────
-  RxList<String> filteredDietaryItems = <String>[].obs;
+  // kept for compat
   final TextEditingController searchController = TextEditingController();
 
   @override
   void onInit() {
     super.onInit();
-    searchController.addListener(_filterDietaryItems);
+    // Load categories FIRST, then saved prefs so grouping works correctly
+    _loadAllThenSaved();
   }
 
-  // ── FETCH DIETARY ITEMS FROM API ────────────────────────────────────────
-  Future<void> fetchDietaryItems(String category) async {
-    if (category.isEmpty) return;
-
+  // ── LOAD ALL CATEGORY ITEMS, THEN SAVED PREFS ───────────────────────────
+  Future<void> _loadAllThenSaved() async {
     isLoadingDietary.value = true;
-    selectedDietaryItems.clear();
-
     try {
-      final String encodedCategory = category.replaceAll('&', '%26').replaceAll(' ', '%20');
-      final String url = 'dietary?category=$encodedCategory';
-
-      print('🔍 Fetching from: $url');
-
-      final response = await ApiService.get(url);
-
-      if (response.statusCode == 200) {
-        final List<dynamic> data = response.data['data'] ?? [];
-        dietaryItems.assignAll(data.cast<String>());
-        filteredDietaryItems.assignAll(dietaryItems);
-        print('✅ Loaded ${dietaryItems.length} dietary items');
-      } else {
-        Utils.errorSnackBar('Error', 'Failed to fetch dietary items');
-        dietaryItems.clear();
-        filteredDietaryItems.clear();
-      }
-    } catch (e) {
-      print('❌ Error fetching dietary: $e');
-      Utils.errorSnackBar('Error', e.toString());
-      dietaryItems.clear();
-      filteredDietaryItems.clear();
+      // Step 1: fetch all category items
+      await _loadAllCategoryItems();
+      // Step 2: now itemsByCategory is populated, safe to build grouping
+      await loadSavedPreferences();
     } finally {
       isLoadingDietary.value = false;
     }
   }
 
-  // ── FILTER DIETARY ITEMS BY SEARCH ──────────────────────────────────────
-  void _filterDietaryItems() {
-    final String query = searchController.text.toLowerCase();
+  // ── FETCH ALL CATEGORIES ────────────────────────────────────────────────
+  Future<void> _loadAllCategoryItems() async {
+    try {
+      for (final category in categories) {
+        final encoded =
+        category.replaceAll('&', '%26').replaceAll(' ', '%20');
+        final response =
+        await ApiService.get('dietary?category=$encoded');
 
-    if (query.isEmpty) {
-      filteredDietaryItems.assignAll(dietaryItems);
-    } else {
-      filteredDietaryItems.assignAll(
-        dietaryItems.where((item) => item.toLowerCase().contains(query)).toList(),
-      );
+        if (response.statusCode == 200) {
+          final List<dynamic> data = response.data['data'] ?? [];
+          itemsByCategory[category] = data.cast<String>();
+        }
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
     }
   }
 
-  // ── CHECK IF ITEM IS SELECTED ───────────────────────────────────────────
-  bool isItemSelected(String item) {
-    return selectedDietaryItems.contains(item);
+  // ── LOAD SAVED PREFERENCES FROM API ────────────────────────────────────
+  Future<void> loadSavedPreferences() async {
+    try {
+      final response = await ApiService.get('user/profile');
+      if (response.statusCode == 200) {
+        final List<dynamic> foods =
+            response.data['data']['foods'] ?? [];
+        final saved = foods.cast<String>();
+
+        // Pre-select saved items
+        selectedDietaryItems.assignAll(saved);
+
+        // Group saved items by category for view screen
+        _buildGroupedSaved(saved);
+      }
+    } catch (e) {
+      // silently fail — view screen shows empty state
+    }
   }
 
-  // ── TOGGLE DIETARY ITEM SELECTION ──────────────────────────────────────
+  void _buildGroupedSaved(List<String> saved) {
+    final Map<String, List<String>> grouped = {};
+
+    for (final category in categories) {
+      final allItemsInCategory = itemsByCategory[category] ?? [];
+      // Match saved items that belong to this category
+      final matched =
+      allItemsInCategory.where((i) => saved.contains(i)).toList();
+      if (matched.isNotEmpty) {
+        grouped[category] = matched;
+      }
+    }
+
+    // Fallback: if itemsByCategory still empty, show all saved under one group
+    if (grouped.isEmpty && saved.isNotEmpty) {
+      grouped['Selected'] = saved;
+    }
+
+    groupedSavedItems.assignAll(grouped);
+  }
+
+  // ── CHECK / TOGGLE ──────────────────────────────────────────────────────
+  bool isItemSelected(String item) => selectedDietaryItems.contains(item);
+
   void toggleDietaryItem(String item) {
     if (selectedDietaryItems.contains(item)) {
       selectedDietaryItems.remove(item);
@@ -92,107 +119,35 @@ class DietaryController extends GetxController {
     selectedDietaryItems.refresh();
   }
 
-  // ── SAVE DIETARY PREFERENCES (PATCH /user/profile) ──────────────────────
+  // ── SAVE ────────────────────────────────────────────────────────────────
   Future<void> saveDietaryPreferences() async {
     if (selectedDietaryItems.isEmpty) {
-      Utils.errorSnackBar('Error', 'Please select at least one dietary item');
+      Utils.errorSnackBar('Error', 'Please select at least one item');
       return;
     }
 
     isLoadingDietary.value = true;
-
     try {
-      // ✅ OPTION 1: Send as simple array (most likely format)
-      final List<String> foodsList = selectedDietaryItems.toList();
-
-      final Map<String, dynamic> body = {
-        'foods': foodsList,
-      };
-
-      print('═══════════════════════════════════════════');
-      print('📤 SENDING TO BACKEND');
-      print('═══════════════════════════════════════════');
-      print('Endpoint: PATCH /user/profile');
-      print('Foods List: $foodsList');
-      print('Body Type: ${body.runtimeType}');
-      print('Body: $body');
-      print('JSON String: ${jsonEncode(body)}');
-      print('═══════════════════════════════════════════');
-
       final response = await ApiService.patch(
         'user/profile',
-        body: body,
-      );
-
-      print('✅ Response Status: ${response.statusCode}');
-      print('✅ Response: ${response.data}');
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        Utils.successSnackBar('Success', 'Dietary preferences saved');
-        await Future.delayed(const Duration(milliseconds: 500));
-        Get.back();
-      } else {
-        final errorMsg = response.data['message'] ?? 'Failed to save';
-        print('❌ Error: $errorMsg');
-        Utils.errorSnackBar('Error', errorMsg);
-      }
-    } catch (e) {
-      print('❌ Exception: $e');
-      Utils.errorSnackBar('Error', e.toString());
-    } finally {
-      isLoadingDietary.value = false;
-    }
-  }
-
-  // ── ALTERNATIVE: Save with JSON string (if backend expects string) ──────
-  Future<void> saveDietaryPreferencesAsString() async {
-    if (selectedDietaryItems.isEmpty) {
-      Utils.errorSnackBar('Error', 'Please select at least one dietary item');
-      return;
-    }
-
-    isLoadingDietary.value = true;
-
-    try {
-      // ✅ OPTION 2: Send foods as JSON string
-      final List<String> foodsList = selectedDietaryItems.toList();
-      final String foodsJsonString = jsonEncode(foodsList);
-
-      final Map<String, dynamic> body = {
-        'foods': foodsJsonString,
-      };
-
-      print('📤 Sending as JSON string...');
-      print('Body: $body');
-
-      final response = await ApiService.patch(
-        'user/profile',
-        body: body,
+        body: {'foods': selectedDietaryItems.toList()},
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        // Rebuild grouped map for view screen
+        _buildGroupedSaved(selectedDietaryItems.toList());
         Utils.successSnackBar('Success', 'Dietary preferences saved');
+        await Future.delayed(const Duration(milliseconds: 400));
         Get.back();
       } else {
-        Utils.errorSnackBar('Error', response.data['message'] ?? 'Failed to save');
+        Utils.errorSnackBar(
+            'Error', response.data['message'] ?? 'Failed to save');
       }
     } catch (e) {
       Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoadingDietary.value = false;
     }
-  }
-
-
-  // ── SELECT CATEGORY ────────────────────────────────────────────────────
-  void selectCategory(String category) {
-    selectedCategory.value = category;
-    fetchDietaryItems(category);
-  }
-
-  // ── CLEAR SEARCH ───────────────────────────────────────────────────────
-  void clearSearch() {
-    searchController.clear();
   }
 
   @override

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -62,7 +61,7 @@ class ProfileController extends GetxController {
     try {
       final response = await ApiService.get("user/profile");
 
-      if (response.statusCode == 200 && response.data != null) {
+      if (response.statusCode == 200) {
         final data = response.data['data'];
 
         if (data != null) {

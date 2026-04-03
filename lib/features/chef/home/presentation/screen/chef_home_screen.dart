@@ -5,9 +5,7 @@ import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/features/chef/home/presentation/widgets/chef_home_appbar.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
-import '../../../../../utils/constants/app_images.dart';
 import '../controller/chef_home_controller.dart';
 import '../widgets/request_item.dart';
 

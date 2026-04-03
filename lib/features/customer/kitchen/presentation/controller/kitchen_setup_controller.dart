@@ -39,7 +39,7 @@ class KitchenSetupController extends GetxController {
         }
       } else {
         presetsError.value =
-            response.data?['message'] ?? 'Server error: ${response.statusCode}';
+            response.data['message'] ?? 'Server error: ${response.statusCode}';
       }
     } catch (e) {
       presetsError.value = 'Something went wrong. Please try again.';
@@ -110,7 +110,7 @@ class KitchenSetupController extends GetxController {
       } else {
         Get.snackbar(
           'Error',
-          response.data?['message'] ?? 'Server error: ${response.statusCode}',
+          response.data['message'] ?? 'Server error: ${response.statusCode}',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red.shade400,
           colorText: Colors.white,
@@ -186,7 +186,7 @@ class KitchenSetupController extends GetxController {
         }
       } else {
         equipmentError.value =
-            response.data?['message'] ?? 'Server error: ${response.statusCode}';
+            response.data['message'] ?? 'Server error: ${response.statusCode}';
       }
     } catch (e) {
       equipmentError.value = 'Something went wrong. Please try again.';
@@ -325,7 +325,7 @@ class KitchenSetupController extends GetxController {
       } else {
         Get.snackbar(
           'Error',
-          response.data?['message'] ?? 'Server error: ${response.statusCode}',
+          response.data['message'] ?? 'Server error: ${response.statusCode}',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red.shade400,
           colorText: Colors.white,

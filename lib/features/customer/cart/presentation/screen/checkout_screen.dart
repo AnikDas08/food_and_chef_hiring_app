@@ -54,9 +54,13 @@ class CheckoutScreen extends StatelessWidget {
                   keyboardType: TextInputType.none,
                   borderRadius: 20,
                   hintText: "1 January 2026, 5:20PM",
-                  onTap: () => bookingDateTimePopup(),
+                  onTap: () => bookingDateTimePopup(id: controller.chefGroups.isNotEmpty
+                      ? controller.chefGroups.first.chef?.id
+                      : null,),
                   suffixIcon: InkWell(
-                    onTap: () => bookingDateTimePopup(),
+                    onTap: () => bookingDateTimePopup(id: controller.chefGroups.isNotEmpty
+                        ? controller.chefGroups.first.chef?.id
+                        : null,),
                     child: const Icon(
                       CupertinoIcons.calendar,
                       color: Color(0xffFD713F),

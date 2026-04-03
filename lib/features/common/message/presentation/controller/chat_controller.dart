@@ -66,7 +66,7 @@ class ChatController extends GetxController {
       update();
     }
 
-    var response = await ApiService.get("${ApiEndPoint.chats}");
+    var response = await ApiService.get(ApiEndPoint.chats);
 
     if (response.statusCode == 200) {
       var data = response.data['data'] ?? [];

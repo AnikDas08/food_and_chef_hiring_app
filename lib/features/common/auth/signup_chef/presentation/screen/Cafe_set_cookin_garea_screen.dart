@@ -8,7 +8,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
 import '../controller/sign_up_chef_controller.dart';
-import 'Cafe_set_your_price_screen.dart';
 
 class CafeSetCookingAreaScreen extends StatefulWidget {
   const CafeSetCookingAreaScreen({super.key});

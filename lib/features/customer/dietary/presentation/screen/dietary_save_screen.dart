@@ -4,31 +4,9 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import '../controller/dietary_controller.dart';
-import 'dietary_save_screen.dart';
 
-class DietaryScreen extends StatefulWidget {
-  const DietaryScreen({super.key});
-
-  @override
-  State<DietaryScreen> createState() => _DietaryScreenState();
-}
-
-class _DietaryScreenState extends State<DietaryScreen> {
-  late DietaryController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    // Force delete old instance and create a fresh one every visit
-    Get.delete<DietaryController>(force: true);
-    controller = Get.put(DietaryController());
-  }
-
-  @override
-  void dispose() {
-    Get.delete<DietaryController>(force: true);
-    super.dispose();
-  }
+class DietarySaveScreen extends StatelessWidget {
+  const DietarySaveScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,44 +49,37 @@ class _DietaryScreenState extends State<DietaryScreen> {
                 ),
                 SizedBox(height: 24.h),
 
-                // ── Grouped dietary items ──────────────────────────────────
+                // ── All categories with selectable chips ───────────────────
                 Expanded(
                   child: Obx(() {
                     if (controller.isLoadingDietary.value) {
                       return const Center(child: CircularProgressIndicator());
                     }
 
-                    final grouped = controller.groupedSavedItems;
-
-                    if (grouped.isEmpty) {
-                      return Center(
-                        child: CommonText(
-                          text: 'No dietary preferences saved yet.\nTap Edit to add some.',
-                          fontSize: 13,
-                          color: const Color(0xff777777),
-                        ),
-                      );
-                    }
-
                     return ListView(
-                      children: grouped.entries.map((entry) {
-                        return _CategorySection(
-                          title: entry.key,
-                          items: entry.value,
+                      children: controller.categories.map((category) {
+                        final items = controller.itemsByCategory[category] ?? [];
+                        if (items.isEmpty) return const SizedBox.shrink();
+                        return _EditableCategorySection(
+                          title: category,
+                          items: items,
+                          controller: controller,
                         );
                       }).toList(),
                     );
                   }),
                 ),
 
-                // ── Edit Button ────────────────────────────────────────────
-                CommonButton(
-                  titleText: 'Edit',
-                  onTap: () async {
-                    await Get.to(() => const DietarySaveScreen());
-                    // Refresh after returning from edit screen
-                    controller.loadSavedPreferences();
-                  },
+                // ── Save Changes Button ────────────────────────────────────
+                Obx(
+                      () => CommonButton(
+                    titleText: controller.isLoadingDietary.value
+                        ? 'Saving...'
+                        : 'Save Changes',
+                    onTap: controller.isLoadingDietary.value
+                        ? null
+                        : () => controller.saveDietaryPreferences(),
+                  ),
                 ),
                 SizedBox(height: 24.h),
               ],
@@ -120,11 +91,16 @@ class _DietaryScreenState extends State<DietaryScreen> {
   }
 }
 
-class _CategorySection extends StatelessWidget {
+class _EditableCategorySection extends StatelessWidget {
   final String title;
   final List<String> items;
+  final DietaryController controller;
 
-  const _CategorySection({required this.title, required this.items});
+  const _EditableCategorySection({
+    required this.title,
+    required this.items,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -140,38 +116,39 @@ class _CategorySection extends StatelessWidget {
           ),
         ),
         SizedBox(height: 10.h),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: items.map((item) => _Chip(label: item)).toList(),
+        Obx(
+              () => Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: items.map((item) {
+              final isSelected = controller.isItemSelected(item);
+              return GestureDetector(
+                onTap: () => controller.toggleDietaryItem(item),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 14, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? const Color(0xff272727)
+                        : const Color(0xffF2F2F2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    item,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: isSelected ? Colors.white : const Color(0xff272727),
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
         ),
         SizedBox(height: 24.h),
       ],
-    );
-  }
-}
-
-class _Chip extends StatelessWidget {
-  final String label;
-
-  const _Chip({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-      decoration: BoxDecoration(
-        color: const Color(0xffF2F2F2),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        label,
-        style: const TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
-          color: Color(0xff272727),
-        ),
-      ),
     );
   }
 }

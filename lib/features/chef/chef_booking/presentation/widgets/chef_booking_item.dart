@@ -800,7 +800,7 @@ void reviewPopUp({
                         } else {
                           Get.snackbar(
                             "Error",
-                            response.data?['message'] ?? "Something went wrong",
+                            response.data['message'] ?? "Something went wrong",
                             backgroundColor: Colors.red,
                             colorText: Colors.white,
                           );

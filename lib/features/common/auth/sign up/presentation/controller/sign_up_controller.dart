@@ -18,6 +18,7 @@ class SignUpController extends GetxController {
   bool isLoading = false;
   bool isLoadingVerify = false;
   bool isCompleteProfile = false;
+  String countryCode = "+1";
 
   Timer? _timer;
   int start = 0;
@@ -97,7 +98,6 @@ class SignUpController extends GetxController {
   }
 
   String selectRole = "User";
-  String countryCode = "+880";
 
   String signUpToken = '';
 
@@ -299,11 +299,19 @@ class SignUpController extends GetxController {
         "password": passwordController.text,
         "lat": selectedLat.toString(),
         "lng": selectedLng.toString(),
-        "contact": "$countryCode ${numberController.text}",
       };
+
+      // Only add contact if phone number is provided
+      final phone = numberController.text.trim();
+      if (phone.isNotEmpty) {
+        body["contact"] = "$countryCode $phone";
+      }
+
+      // Only add foods if dietary selections exist
       for (int i = 0; i < selectDietary.length; i++) {
         body["foods[$i]"] = selectDietary[i];
       }
+
       List files = [];
       if (image != null && image!.isNotEmpty) {
         files.add({"name": "image", "image": image});
@@ -315,7 +323,7 @@ class SignUpController extends GetxController {
         files: files,
       );
       if (response.statusCode == 200) {
-        final data=response.data;
+        final data = response.data;
         LocalStorage.token = data['data']["accessToken"];
         LocalStorage.userId = data['data']["userId"];
         LocalStorage.myRole = data["data"]["role"];
@@ -327,11 +335,13 @@ class SignUpController extends GetxController {
         await LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
         accountCreatePopup();
       } else {
-        Utils.errorSnackBar(
-            response.statusCode.toString(), response.message);
+        Utils.errorSnackBar(response.statusCode.toString(), response.message);
       }
     } catch (e) {
       Utils.errorSnackBar("Error", e.toString());
+    } finally {
+      isCompleteProfile = false;
+      update();
     }
   }
 }

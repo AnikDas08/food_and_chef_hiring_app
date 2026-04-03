@@ -148,7 +148,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
                       size: 22.sp, // Scale icon with screen density
                       imageColor: isSelected ? Colors.black : const Color(0xff777777),
                     ),
-                    SizedBox(height: 4.h),
                     Text(
                       tabs[index].title,
                       style: TextStyle(

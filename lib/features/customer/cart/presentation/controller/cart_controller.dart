@@ -27,10 +27,10 @@ class CartController extends GetxController {
   final TextEditingController dateController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   String selectedTime = "";
-  final List<String> timeSlots = [
+  /*final List<String> timeSlots = [
     "10:00 AM", "11:00 AM", "12:00 PM",
     "02:00 PM", "04:00 PM", "06:00 PM",
-  ];
+  ];*/
 
   @override
   void onInit(){
@@ -327,7 +327,7 @@ class CartController extends GetxController {
 
   @override
   void onClose() {
-    dateController.dispose();
+    //dateController.dispose();
     super.onClose();
   }
 }

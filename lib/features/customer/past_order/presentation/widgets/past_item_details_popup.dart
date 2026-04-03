@@ -11,7 +11,6 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
-import '../../../cart/presentation/widgets/order_summary.dart';
 import '../controller/past_order_controller.dart';
 import '../data/past_order_model.dart';
 
@@ -263,7 +262,7 @@ void bookingDetailsShow(BuildContext context) {
                         ),
                       ],
                     ),
-                    if (order.rating != null && order.rating!="")
+                    if (order.rating!="")
                       Container(
                         margin: const EdgeInsets.only(top: 8),
                         padding: const EdgeInsets.all(12),

@@ -11,7 +11,7 @@ bookingDateTimePopup({String? id}) {
   // You can now handle the case where ID is null
   final effectiveId = id;
   print("id : 🤣🤣🤣🤣$id");
-  print("effectiveId: 🤣🤣🤣🤣${effectiveId}");
+  print("effectiveId: 🤣🤣🤣🤣$effectiveId");
 
   showDialog(
     context: Get.context!,
