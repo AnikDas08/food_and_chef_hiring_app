@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 import '../../../../common/auth/signup_chef/presentation/controller/sign_up_chef_controller.dart';
 import '../../../../common/auth/signup_chef/presentation/screen/cafe_set_availability.dart';

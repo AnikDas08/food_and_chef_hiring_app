@@ -14,7 +14,6 @@ import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/other_widgets/item.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../component/text/common_text.dart';
-import '../../../../../config/api/api_end_point.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/constants/app_images.dart';
 import '../../../../../../utils/constants/app_string.dart';

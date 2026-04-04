@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
-import 'package:new_untitled/component/text/common_text.dart';
 import '../controller/dietary_controller.dart';
 
 class DietarySaveScreen extends StatelessWidget {

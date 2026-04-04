@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../../../chef/availaility/data.dart';
 import '../../../../../chef/profile/presentation/widgets/custom_TimePicker.dart';
 import '../controller/sign_up_chef_controller.dart';
 
