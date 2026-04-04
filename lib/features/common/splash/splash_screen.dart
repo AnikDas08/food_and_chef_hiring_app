@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../config/route/app_routes.dart';
 import 'package:get/get.dart';
-
 import '../../../component/image/common_image.dart';
 import '../../../services/storage/storage_services.dart';
 import '../../../utils/constants/app_images.dart';
 
 class SplashScreen extends StatefulWidget {
+
   const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
+
 }
 
 class _SplashScreenState extends State<SplashScreen> {

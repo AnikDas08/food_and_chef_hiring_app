@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:new_untitled/features/chef/profile/presentation/controller/chef_profile_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -30,7 +31,7 @@ class _AccountSettingState extends State<AccountSetting> {
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Form(
-              key: _formKey, // ✅ controller.formKey না
+              key: _formKey,
               child: SafeArea(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,10 +70,33 @@ class _AccountSettingState extends State<AccountSetting> {
                           top: 20,
                           bottom: 8,
                         ),
-                        CommonTextField(
+                        IntlPhoneField(
                           controller: controller.phoneController,
-                          hintText: AppString.phoneNumber,
-                          keyboardType: TextInputType.phone,
+                          initialCountryCode: 'US', // ← default USA
+                          decoration: InputDecoration(
+                            hintText: "Enter phone number",
+                            filled: true,
+                            fillColor: const Color(0xFFF7F7F7),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                              borderSide: BorderSide.none,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
+                          dropdownTextStyle: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
+                          flagsButtonPadding: EdgeInsets.only(left: 12.w),
+                          onChanged: (phone) {
+                            controller.phoneController.text = phone.number;
+                            controller.selectedCountryCode = phone.countryCode;
+                          },
                         ),
                         CommonText(
                           text: "Link Account".toUpperCase(),

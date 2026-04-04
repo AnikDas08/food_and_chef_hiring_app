@@ -15,12 +15,10 @@ class LocalStorage {
   static String myEmail = "";
   static String myRole = "";
 
-  // Create Local Storage Instance
   static SharedPreferences? preferences;
 
   static bool get isChef => myRole.toLowerCase() == "chef";
 
-  /// Get SharedPreferences Instance
   static Future<SharedPreferences> _getStorage() async {
     preferences ??= await SharedPreferences.getInstance();
     return preferences!;

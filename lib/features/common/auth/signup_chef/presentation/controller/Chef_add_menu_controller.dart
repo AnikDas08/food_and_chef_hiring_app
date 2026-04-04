@@ -284,7 +284,12 @@ class CafeAddMenuItemController extends GetxController {
     }
   }
 
+
+  bool _categoriesFetched = false;
+
   Future<void> fetchCategories() async {
+    if (_categoriesFetched) return;
+    _categoriesFetched = true;
     isLoadingCategory.value = true;
     try {
       final response =
@@ -297,13 +302,33 @@ class CafeAddMenuItemController extends GetxController {
             .where((e) => e.name.isNotEmpty && seen.add(e.name))
             .toList();
         categoryList.value = categoryModels.map((e) => e.name).toList();
+
+        // ✅ Fixed — duplicate ছাড়া, সঠিক id সহ
+        final defaults = ['Starter', 'Main Dish', 'Dessert'];
+        for (final name in defaults) {
+          if (!categoryList.contains(name)) {
+            try {
+              final res = await ApiService.post(
+                "${ApiEndPoint.AddMenuSection}${LocalStorage.userId}",
+                body: {"name": name},
+              );
+              if (res.statusCode == 200 || res.statusCode == 201) {
+                final newId = res.data['data']['_id'] ?? '';
+                categoryModels.add(MenuCategoryModel(id: newId, name: name));
+                categoryList.add(name);
+              }
+            } catch (_) {}
+          }
+        }
+
         if (categoryList.isNotEmpty) {
           _selectedCategory.value = categoryList.first;
         }
       }
     } catch (e) {
       debugPrint("❌ Category fetch error: $e");
-      Get.snackbar("Error", "Failed to load categories.", snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar("Error", "Failed to load categories.",
+          snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoadingCategory.value = false;
     }
@@ -337,8 +362,14 @@ class CafeAddMenuItemController extends GetxController {
   }
 
   Future<void> submitMenuItem() async {
+
     if (nameController.text.trim().isEmpty) {
-      Get.snackbar("Error", "Item name is required", snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar("Message", "Item name is required", snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
+    if (ingredientsList.isEmpty) {
+      Get.snackbar("message", "Please add at least one ingredient", snackPosition: SnackPosition.BOTTOM);
       return;
     }
 
@@ -420,10 +451,19 @@ class CafeAddMenuItemController extends GetxController {
 
   Future<void> updateMenuItem() async {
     if (nameController.text.trim().isEmpty) {
-      Get.snackbar("Error", "Item name is required", snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar("Message", "Item name is required", snackPosition: SnackPosition.BOTTOM);
       return;
     }
 
+    if (ingredientsList.isEmpty) {
+      Get.snackbar(
+        "Ingredients Required",
+        "Please add at least one ingredient to save the menu item.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.cyanAccent,
+      );
+      return;
+    }
     isSubmitting.value = true;
     try {
       final formData = FormData();

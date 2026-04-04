@@ -13,6 +13,7 @@ class ApiEndPoint {
   static const signUp = "user";
   static const verifyEmail = "auth/verify-email";
   static const signIn = "auth/login";
+  static const support = "/support";
   static const forgotPassword = "auth/forget-password";
   static const verifyOtp = "auth/verify-email";
   static const googleMapsApiKey = "AIzaSyCZTRv24vE1zWXiLgKt5LbktOVGb1AeX_E";

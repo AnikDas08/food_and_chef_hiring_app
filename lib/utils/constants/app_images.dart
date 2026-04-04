@@ -1,4 +1,5 @@
 class AppImages {
+
   static const String baseurl = "assets/images";
   static const String noData = "$baseurl/noData.png";
   static const String noImage = "$baseurl/noImage.png";
@@ -28,6 +29,7 @@ class AppImages {
   static const String large = "$baseurl/large.png";
   static const String paymentCard = "$baseurl/payment_card.png";
   static const String basket = "$baseurl/basket.png";
+  static const String app_logo = "$baseurl/app_logo.png";
   static const String bellBadge = "$baseurl/bell.badge.png";
   static const String briefcase = "$baseurl/briefcase.png";
   static const String bubbleLeftAndBubbleRight =
@@ -57,4 +59,5 @@ class AppImages {
   static const String stove = "$baseurl/stove.png";
   static const String trash = "$baseurl/trash.png";
   static const String xmark = "$baseurl/xmark.png";
+
 }

@@ -120,7 +120,6 @@ class SignUpChefController extends GetxController {
   }
 
   Future<void> signUpUser(String role) async {
-    //Get.toNamed(AppRoutes.chef_verify_user);
     isLoading = true;
     update();
 
@@ -130,9 +129,7 @@ class SignUpChefController extends GetxController {
     );
 
     if (response.statusCode == 200) {
-
       Get.toNamed(AppRoutes.chef_verify_user);
-
     } else if (response.statusCode == 400 &&
         response.data["suggestRoute"] == "/api/v1/auth/verify-email") {
     } else {
@@ -158,7 +155,6 @@ class SignUpChefController extends GetxController {
     if (response.statusCode == 200) {
       final data = response.data;
 
-      // userId save
       final userId = data["data"]?.toString() ?? "";
       LocalStorage.userId = userId;
       await LocalStorage.setString(LocalStorageKeys.userId, userId);
@@ -184,12 +180,13 @@ class SignUpChefController extends GetxController {
     isLoadingVerify = false;
     update();
   }
+
   Future<void> chefSignUp() async {
     isLoading = true;
     update();
     try {
       final response = await ApiService.patch(
-        _onboardingEndpoint, // ← dynamic endpoint
+        _onboardingEndpoint,
         body: {
           "password": passwordController.text.trim(),
           "first_name": firstNameController.text.trim(),
@@ -200,7 +197,6 @@ class SignUpChefController extends GetxController {
       if (response.statusCode == 200) {
         final data = response.data;
 
-        // ── token save করো ──
         final token = data["data"]?["accessToken"] ??
             data["accessToken"] ??
             data["token"] ?? "";
@@ -210,7 +206,6 @@ class SignUpChefController extends GetxController {
         }
 
         if (data['success'] == true) {
-
         } else {
           Utils.errorSnackBar("Error", data['message'] ?? "Something went wrong");
         }
@@ -316,7 +311,7 @@ class SignUpChefController extends GetxController {
         method: "PATCH",
         body: {
           "about": about,
-          "experience": int.tryParse(experience) ?? 0, // ← String থেকে int
+          "experience": int.tryParse(experience) ?? 0,
           "cooking_area_distance": int.tryParse(cookingAreaDistance) ?? 0,
           "address": address,
           "lat": lat,
@@ -385,7 +380,6 @@ class SignUpChefController extends GetxController {
     }
   }
 
-
   Future<void> setupChefAvailability2({
     required List<DaySchedule> days,
   }) async {
@@ -395,7 +389,7 @@ class SignUpChefController extends GetxController {
       final List<Map<String, dynamic>> availabilityList = days.map((day) {
         return {
           "day": day.name.toLowerCase(),
-          "availableity": day.isEnabled,
+          "availability": day.isEnabled,
           "availability_times": day.isEnabled
               ? day.slots.map((slot) => {
             "start_time": _formatTime(slot.from),
@@ -427,6 +421,7 @@ class SignUpChefController extends GetxController {
       update();
     }
   }
+
   Future<void> setupChefAvailability({
     required List<DaySchedule> days,
   }) async {
@@ -438,7 +433,7 @@ class SignUpChefController extends GetxController {
       for (int i = 0; i < days.length; i++) {
         final day = days[i];
         body["availability[$i][day]"] = day.name.toLowerCase();
-        body["availability[$i][availableity]"] = day.isEnabled.toString();
+        body["availability[$i][availability]"] = day.isEnabled;
 
         if (day.isEnabled) {
           for (int j = 0; j < day.slots.length; j++) {
@@ -471,7 +466,6 @@ class SignUpChefController extends GetxController {
     }
   }
 
-  // ── 8. Auto Accept ──
   Future<void> setupAutoAccept({required bool autoAccept}) async {
     isLoading = true;
     update();

@@ -74,6 +74,8 @@ class AddMenuScreen extends StatelessWidget {
                     child: DropdownButton<String>(
                       value: localUnit,
                       isExpanded: true,
+                      dropdownColor: Colors.white,
+                      borderRadius: BorderRadius.circular(12.r),
                       icon: Icon(Icons.keyboard_arrow_down,
                           size: 18.sp,
                           color: const Color(0xFF272727)),
@@ -95,22 +97,14 @@ class AddMenuScreen extends StatelessWidget {
           ),
           actions: [
             TextButton(
-                onPressed: () => Get.back(),
-                child: Text("Cancel",
-                    style: TextStyle(
-                        fontSize: 13.sp,
-                        color: const Color(0xFF999999)))),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text("Cancel",)),
             TextButton(
-              onPressed: () {
-                c.addIngredient(nameCtrl.text, qtyCtrl.text, localUnit);
-                Get.back();
-              },
-              child: Text("Add",
-                  style: TextStyle(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFF1C1C1C))),
-            ),
+                onPressed: () {
+                  c.addIngredient(nameCtrl.text, qtyCtrl.text, localUnit);
+                  Navigator.of(context).pop();
+                },
+                child: Text("Add",)),
           ],
         ),
       ),
@@ -255,16 +249,17 @@ class AddMenuScreen extends StatelessWidget {
                       }
                       final safeVal = c.safeCategoryValue;
                       return Container(
-                        padding:
-                        EdgeInsets.symmetric(horizontal: 14.w),
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(horizontal: 14.w),
                         decoration: BoxDecoration(
                             color: const Color(0xFFF7F7F7),
-                            borderRadius:
-                            BorderRadius.circular(12.r)),
+                            borderRadius: BorderRadius.circular(12.r)),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: safeVal,
                             isExpanded: true,
+                            dropdownColor: Colors.white,
+                            borderRadius: BorderRadius.circular(12.r),
                             icon: Icon(Icons.keyboard_arrow_down,
                                 size: 18.sp,
                                 color: const Color(0xFF272727)),
@@ -646,6 +641,7 @@ class AddMenuScreen extends StatelessWidget {
     if (safeValue == null) return const SizedBox.shrink();
 
     return Container(
+      width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 14.w),
       decoration: BoxDecoration(
           color: const Color(0xFFF7F7F7),
@@ -654,6 +650,8 @@ class AddMenuScreen extends StatelessWidget {
         child: DropdownButton<String>(
           value: safeValue,
           isExpanded: true,
+          dropdownColor: Colors.white,
+          borderRadius: BorderRadius.circular(12.r),
           icon: Icon(Icons.keyboard_arrow_down,
               size: 18.sp, color: const Color(0xFF272727)),
           style:

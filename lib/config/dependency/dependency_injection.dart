@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/features/chef/menu/presentation/controller/add_menu_screen.dart';
+import 'package:new_untitled/features/chef/profile/presentation/controller/help_and_Support_controller.dart';
 import 'package:new_untitled/features/customer/cart/presentation/controller/cart_service.dart';
 
 import '../../features/chef/analytics/presentation/controller/analytics_controller.dart';
@@ -39,6 +40,7 @@ class DependencyInjection extends Bindings {
   void dependencies() {
 
     Get.lazyPut(() => SignUpChefController(), fenix: true);
+    Get.lazyPut(() => HelpSupportController(), fenix: true);
     Get.lazyPut(() => SignUpController(), fenix: true);
     Get.lazyPut(() => SignInController(), fenix: true);
     Get.lazyPut(() => ForgetPasswordController(), fenix: true);

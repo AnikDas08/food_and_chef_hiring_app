@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../../chef/availaility/data.dart';
+import '../../../../../chef/profile/presentation/widgets/custom_TimePicker.dart';
 import '../controller/sign_up_chef_controller.dart';
 
 class CafeSetYourPriceScreen extends StatefulWidget {
@@ -31,32 +33,21 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
   TimeOfDay _toTime = const TimeOfDay(hour: 15, minute: 0);
   bool _isSubmitting = false;
 
-
   Future<void> _pickTime(bool isFrom) async {
-    final picked = await showTimePicker(
-      context: context,
-      initialTime: isFrom ? _fromTime : _toTime,
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Color(0xFF1C1C1C),
-            ),
-          ),
-          child: child!,
-        );
+    await SetAvailabilityPicker.show(
+      context,
+      initialFromTime: _fromTime,
+      initialToTime: _toTime,
+      onApply: (from, to) {
+        setState(() {
+          _fromTime = from;
+          _toTime = to;
+        });
       },
     );
-    if (picked != null) {
-      setState(() {
-        if (isFrom) {
-          _fromTime = picked;
-        } else {
-          _toTime = picked;
-        }
-      });
-    }
   }
+
+
 
   String _formatTime(TimeOfDay time) {
     final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;

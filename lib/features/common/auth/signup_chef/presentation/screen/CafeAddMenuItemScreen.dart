@@ -14,8 +14,15 @@ class CafeAddMenuItemScreen extends StatelessWidget {
         title: Text("Add $title"),
         content: TextField(controller: ctrl, autofocus: true, decoration: InputDecoration(hintText: title)),
         actions: [
-          TextButton(onPressed: () => Get.back(), child: const Text("Cancel")),
-          TextButton(onPressed: () { onAdd(ctrl.text); Get.back(); }, child: const Text("Add")),
+          TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Cancel")),
+          TextButton(
+              onPressed: () {
+                onAdd(ctrl.text);
+                Navigator.of(context).pop();
+              },
+              child: const Text("Add")),
         ],
       ),
     );
@@ -53,6 +60,8 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     child: DropdownButton<String>(
                       value: localUnit,
                       isExpanded: true,
+                      dropdownColor: Colors.white,
+                      borderRadius: BorderRadius.circular(12.r),
                       icon: Icon(Icons.keyboard_arrow_down, size: 18.sp, color: const Color(0xFF272727)),
                       style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
                       items: units.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
@@ -64,11 +73,9 @@ class CafeAddMenuItemScreen extends StatelessWidget {
             ],
           ),
           actions: [
-            TextButton(onPressed: () => Get.back(), child: Text("Cancel", style: TextStyle(fontSize: 13.sp, color: const Color(0xFF999999)))),
-            TextButton(
-              onPressed: () { c.addIngredient(nameCtrl.text, qtyCtrl.text, localUnit); Get.back(); },
-              child: Text("Add", style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600, color: const Color(0xFF1C1C1C))),
-            ),
+            TextButton(onPressed: () => Navigator.of(context).pop(), child: Text("Cancel",)),
+            TextButton(onPressed: () { c.addIngredient(nameCtrl.text, qtyCtrl.text, localUnit); Navigator.of(context).pop(); }, child: Text("Add",)),
+
           ],
         ),
       ),
@@ -97,23 +104,25 @@ class CafeAddMenuItemScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = CafeAddMenuItemController.instance;
 
-    // ── GetBuilder সম্পূর্ণ সরানো হয়েছে, pure Obx ব্যবহার ──
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
-            // ── Back ──
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
-                  onTap: () => Get.back(),
+                  onTap: () => Navigator.of(context).pop(),
                   child: Container(
                     width: 36.w, height: 36.h,
-                    decoration: BoxDecoration(color: const Color(0xFFF5F5F5), borderRadius: BorderRadius.circular(10.r)),
-                    child: Icon(Icons.arrow_back_ios_new_rounded, size: 16.sp, color: const Color(0xFF272727)),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF5F5F5),
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Icon(Icons.arrow_back_ios_new_rounded,
+                        size: 16.sp, color: const Color(0xFF272727)),
                   ),
                 ),
               ),
@@ -160,6 +169,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                       }
                       if (c.categoryList.isEmpty) {
                         return Container(
+                          width: double.infinity,
                           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
                           decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
                           child: Text("No category found. Add a menu section first.",
@@ -170,12 +180,15 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                       final safeVal = c.safeCategoryValue;
 
                       return Container(
+                        width: double.infinity,
                         padding: EdgeInsets.symmetric(horizontal: 14.w),
                         decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: safeVal,
                             isExpanded: true,
+                            dropdownColor: Colors.white,
+                            borderRadius: BorderRadius.circular(12.r),
                             icon: Icon(Icons.keyboard_arrow_down, size: 18.sp, color: const Color(0xFF272727)),
                             style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
                             items: c.categoryList.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
@@ -441,6 +454,8 @@ class CafeAddMenuItemScreen extends StatelessWidget {
         child: DropdownButton<String>(
           value: safeValue,
           isExpanded: true,
+          dropdownColor: Colors.white,
+          borderRadius: BorderRadius.circular(12.r),
           icon: Icon(Icons.keyboard_arrow_down, size: 18.sp, color: const Color(0xFF272727)),
           style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
           items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
@@ -520,6 +535,8 @@ class _TimeInputRow extends StatelessWidget {
               child: DropdownButton<String>(
                 value: safeUnit,
                 isExpanded: true,
+                dropdownColor: Colors.white,
+                borderRadius: BorderRadius.circular(12.r),
                 icon: Icon(Icons.keyboard_arrow_down, size: 18.sp, color: const Color(0xFF272727)),
                 style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
                 items: units.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
@@ -532,7 +549,6 @@ class _TimeInputRow extends StatelessWidget {
     );
   }
 }
-
 
 class _SectionHeader extends StatelessWidget {
   final String title;
