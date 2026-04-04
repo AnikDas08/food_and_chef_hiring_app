@@ -95,6 +95,7 @@ class ChefProfileController extends GetxController {
   };
 
   /// Image & Loading
+  String selectedCountryCode = '+1';
   String? image;
   bool isLoading = false;
 
@@ -116,7 +117,7 @@ class ChefProfileController extends GetxController {
 
       final Map<String, dynamic> body = {
         "email": emailController.text.trim(),
-        "contact": phoneController.text.trim(),
+        "contact": "$selectedCountryCode${phoneController.text.trim()}",
       };
 
       final response = await ApiService.patch(

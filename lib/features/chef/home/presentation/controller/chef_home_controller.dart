@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../services/api/api_response_model.dart';
 import '../../../../../services/api/api_service.dart';
+import '../../../../common/notifications/presentation/controller/notifications_controller.dart';
 import '../Model/Chef_Profile_Model.dart';
 import '../Model/Request_0edBooking_Model.dart';
 
@@ -28,6 +29,9 @@ class ChefHomeController extends GetxController {
     fetchWalletBalance();
     fetchRequestedBookings();
     fetchUpcomingBookings();
+    if (!Get.isRegistered<NotificationsController>()) {
+      Get.put(NotificationsController());
+    }
   }
 
   Future<Map<String, dynamic>?> fetchSingleOrder(String orderId) async {

@@ -9,6 +9,7 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../config/route/app_routes.dart';
+import '../../../../common/notifications/presentation/controller/notifications_controller.dart';
 import '../controller/chef_home_controller.dart';
 
 
@@ -56,24 +57,58 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         InkWell(
           onTap: () => Get.toNamed(AppRoutes.notifications),
-          child: LiquidGlassLayer(
-            child: LiquidGlass(
-              shape: LiquidRoundedSuperellipse(borderRadius: 30),
-              child: Container(
-                padding: EdgeInsets.all(8.sp),
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.black.withValues(alpha: 0.07),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              LiquidGlassLayer(
+                child: LiquidGlass(
+                  shape: LiquidRoundedSuperellipse(borderRadius: 30),
+                  child: Container(
+                    padding: EdgeInsets.all(8.sp),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.black.withValues(alpha: 0.07),
+                      ),
+                    ),
+                    child: const Icon(
+                      CupertinoIcons.bell,
+                      color: Color(0xff272727),
+                    ),
                   ),
                 ),
-                child: const Icon(
-                  CupertinoIcons.bell,
-                  color: Color(0xff272727),
-                ),
               ),
-            ),
+
+              Obx(() {
+                if (!Get.isRegistered<NotificationsController>()) {
+                  return const SizedBox.shrink();
+                }
+                final count = Get.find<NotificationsController>().unreadCount.value;
+                if (count == 0) return const SizedBox.shrink();
+                return Positioned(
+                  top: -4,
+                  right: -4,
+                  child: Container(
+                    padding: EdgeInsets.all(4.sp),
+                    decoration: const BoxDecoration(
+                      color: Color(0xffFF3B30),
+                      shape: BoxShape.circle,
+                    ),
+                    constraints: BoxConstraints(minWidth: 18.w, minHeight: 18.w),
+                    child: Text(
+                      count > 99 ? '99+' : count.toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }),
+            ],
           ),
         ),
         12.width,

@@ -283,7 +283,13 @@ class CafeAddMenuItemController extends GetxController {
       isLoadingEquipment.value = false;
     }
   }
+
+
+  bool _categoriesFetched = false;
+
   Future<void> fetchCategories() async {
+    if (_categoriesFetched) return;
+    _categoriesFetched = true;
     isLoadingCategory.value = true;
     try {
       final response =
@@ -297,17 +303,20 @@ class CafeAddMenuItemController extends GetxController {
             .toList();
         categoryList.value = categoryModels.map((e) => e.name).toList();
 
+        // ✅ Fixed — duplicate ছাড়া, সঠিক id সহ
         final defaults = ['Starter', 'Main Dish', 'Dessert'];
-
         for (final name in defaults) {
           if (!categoryList.contains(name)) {
             try {
-              await ApiService.post(
+              final res = await ApiService.post(
                 "${ApiEndPoint.AddMenuSection}${LocalStorage.userId}",
                 body: {"name": name},
               );
-              categoryList.add(name);
-              categoryModels.add(MenuCategoryModel(id: '', name: name));
+              if (res.statusCode == 200 || res.statusCode == 201) {
+                final newId = res.data['data']['_id'] ?? '';
+                categoryModels.add(MenuCategoryModel(id: newId, name: name));
+                categoryList.add(name);
+              }
             } catch (_) {}
           }
         }
@@ -442,10 +451,19 @@ class CafeAddMenuItemController extends GetxController {
 
   Future<void> updateMenuItem() async {
     if (nameController.text.trim().isEmpty) {
-      Get.snackbar("Error", "Item name is required", snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar("Message", "Item name is required", snackPosition: SnackPosition.BOTTOM);
       return;
     }
 
+    if (ingredientsList.isEmpty) {
+      Get.snackbar(
+        "Ingredients Required",
+        "Please add at least one ingredient to save the menu item.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.cyanAccent,
+      );
+      return;
+    }
     isSubmitting.value = true;
     try {
       final formData = FormData();

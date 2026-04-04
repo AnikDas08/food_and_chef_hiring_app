@@ -17,14 +17,14 @@ class MenuScreen extends StatelessWidget {
       body: SafeArea(
         child: Obx(() => Column(
           children: [
-            // ── Top Bar ──
+
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                    onTap: () => Get.back(),
+                    onTap: () => Navigator.pop(context),
                     child: Container(
                       width: 36.w, height: 36.h,
                       decoration: BoxDecoration(
@@ -161,17 +161,16 @@ class MenuScreen extends StatelessWidget {
                       ),
                       actions: [
                         TextButton(
-                            onPressed: () => Get.back(),
+                            onPressed: () => Navigator.pop(context),
                             child: const Text("Cancel")),
                         TextButton(
                           onPressed: () {
                             if (ctrl.text.trim().isNotEmpty) {
                               c.addMenuSection(ctrl.text.trim());
-                              Get.back();
+                              Navigator.pop(context); // ✅
                             }
                           },
-                          child: const Text("Add",
-                              style: TextStyle(color: Color(0xFF1C1C1C))),
+                          child: const Text("Add", style: TextStyle(color: Color(0xFF1C1C1C))),
                         ),
                       ],
                     ),

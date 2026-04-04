@@ -23,7 +23,7 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
-                  onTap: () => Get.back(),
+                  onTap: () => Navigator.of(context).pop(),
                   child: Container(
                     width: 36.w, height: 36.h,
                     decoration: BoxDecoration(
@@ -141,14 +141,14 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                             ),
                             actions: [
                               TextButton(
-                                onPressed: () => Get.back(),
+                                onPressed: () => Navigator.of(context).pop(),
                                 child: const Text("Cancel"),
                               ),
                               TextButton(
                                 onPressed: () {
+                                  Navigator.of(context).pop(); // ← fix
                                   if (ctrl.text.trim().isNotEmpty) {
                                     c.addMenuSection(ctrl.text.trim());
-                                    Get.back();
                                   }
                                 },
                                 child: const Text("Add",

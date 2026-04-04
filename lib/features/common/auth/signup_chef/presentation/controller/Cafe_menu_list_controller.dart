@@ -18,10 +18,10 @@ class CafeMenuItem {
 
 class CafeMenuSection {
   String title;
-  List<CafeMenuItem> items;
+  RxList<CafeMenuItem> items;
 
   CafeMenuSection({required this.title, List<CafeMenuItem>? items})
-      : items = items ?? [];
+      : items = (items ?? []).obs;
 }
 
 class CafeMenuListController extends GetxController {
@@ -47,23 +47,17 @@ class CafeMenuListController extends GetxController {
   void addSection(String title) {
     if (title.trim().isEmpty) return;
     sections.add(CafeMenuSection(title: title.trim().toUpperCase()));
-    update();
   }
 
   void addItem(CafeMenuSection section, String name, int ingredients, int cookingMinutes) {
     if (name.trim().isEmpty) return;
-    section.items.add(CafeMenuItem(
-      name: name.trim(),
-      ingredients: ingredients,
-      cookingMinutes: cookingMinutes,
-    ));
-    update();
+    section.items.add(CafeMenuItem(name: name.trim(), ingredients: ingredients, cookingMinutes: cookingMinutes));
   }
 
   void deleteItem(CafeMenuSection section, CafeMenuItem item) {
     section.items.remove(item);
-    update();
   }
+
 
   Future<void> pickImage(CafeMenuItem item) async {
     final picked = await ImagePicker()

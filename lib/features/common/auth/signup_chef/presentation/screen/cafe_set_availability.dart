@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../../chef/profile/presentation/widgets/custom_TimePicker.dart';
 import '../controller/sign_up_chef_controller.dart';
 
 class TimeSlot {
@@ -27,6 +28,8 @@ class CafeSetAvailabilityScreen extends StatefulWidget {
   const CafeSetAvailabilityScreen({super.key});
 
   @override
+
+
   State<CafeSetAvailabilityScreen> createState() =>
       _CafeSetAvailabilityScreenState();
 }
@@ -108,32 +111,21 @@ class _CafeSetAvailabilityScreenState
     super.dispose();
   }
 
-  Future<void> _pickTime(
-      DaySchedule day, int slotIndex, bool isFrom) async {
+
+
+  Future<void> _pickTime(DaySchedule day, int slotIndex, bool isFrom) async {
     final slot = day.slots[slotIndex];
-    final picked = await showTimePicker(
-      context: context,
-      initialTime: isFrom ? slot.from : slot.to,
-      builder: (context, child) => Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: const ColorScheme.light(primary: Color(0xFF1C1C1C)),
-        ),
-        child: child!,
-      ),
+    await SetAvailabilityPicker.show(
+      context,
+      initialFromTime: slot.from,
+      initialToTime: slot.to,
+      onApply: (from, to) {
+        setState(() {
+          slot.from = from;
+          slot.to = to;
+        });
+      },
     );
-    if (picked != null) {
-      setState(() {
-        for (final d in _days) {
-          if (d.isEnabled && slotIndex < d.slots.length) {
-            if (isFrom) {
-              d.slots[slotIndex].from = picked;
-            } else {
-              d.slots[slotIndex].to = picked;
-            }
-          }
-        }
-      });
-    }
   }
 
   String _formatTime(TimeOfDay t) {

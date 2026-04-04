@@ -1,105 +1,182 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:new_untitled/component/button/common_button.dart';
 
-class CustomTimePicker extends StatefulWidget {
-  final TimeOfDay initialTime;
-  final String title;
-  final Function(TimeOfDay) onConfirm;
+class SetAvailabilityPicker extends StatefulWidget {
 
-  const CustomTimePicker({
+  final TimeOfDay initialFromTime;
+  final TimeOfDay initialToTime;
+
+  final Function(TimeOfDay from, TimeOfDay to) onApply;
+
+  const SetAvailabilityPicker({
     super.key,
-    required this.initialTime,
-    required this.onConfirm,
-    this.title = "Select Time",
+    required this.initialFromTime,
+    required this.initialToTime,
+    required this.onApply,
   });
 
-  static Future<TimeOfDay?> show(
+  static Future<void> show(
       BuildContext context, {
-        required TimeOfDay initialTime,
-        String title = "Select Time",
+        required TimeOfDay initialFromTime,
+        required TimeOfDay initialToTime,
+        required Function(TimeOfDay from, TimeOfDay to) onApply,
       }) async {
-    TimeOfDay? result;
     await showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (_) => CustomTimePicker(
-        initialTime: initialTime,
-        title: title,
-        onConfirm: (t) {
-          result = t;
-          Navigator.pop(context);
-        },
+      builder: (_) => SetAvailabilityPicker(
+        initialFromTime: initialFromTime,
+        initialToTime: initialToTime,
+        onApply: onApply,
       ),
     );
-    return result;
   }
 
   @override
-  State<CustomTimePicker> createState() => _CustomTimePickerState();
+  State<SetAvailabilityPicker> createState() =>
+      _SetAvailabilityPickerState();
 }
 
-class _CustomTimePickerState extends State<CustomTimePicker> {
-  late int _selectedHour;
-  late int _selectedMinute;
-  late FixedExtentScrollController _hourController;
-  late FixedExtentScrollController _minuteController;
+class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
+  static const double _itemHeight = 80.0;
+  static const int _intervalMinutes = 15;
 
-  static const double _itemHeight = 52.0;
+  late List<TimeOfDay> _timeSlots;
+  late int _fromIndex;
+  late int _toIndex;
+  late FixedExtentScrollController _fromController;
+  late FixedExtentScrollController _toController;
+
+  List<TimeOfDay> _generateTimeSlots() {
+    final slots = <TimeOfDay>[];
+    for (int h = 1; h <= 12; h++) {
+      for (int m = 0; m < 60; m += _intervalMinutes) {
+        slots.add(TimeOfDay(hour: h, minute: m));
+      }
+    }
+    return slots;
+  }
+
+  int _findClosestIndex(TimeOfDay time) {
+    final hourOfPeriod =
+    time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
+    final roundedMinute =
+        ((time.minute / _intervalMinutes).round() * _intervalMinutes) % 60;
+    for (int i = 0; i < _timeSlots.length; i++) {
+      if (_timeSlots[i].hourOfPeriod == hourOfPeriod &&
+          _timeSlots[i].minute == roundedMinute) {
+        return i;
+      }
+    }
+    return 0;
+  }
+
+  String _formatTimeLine1(TimeOfDay time) {
+    final h = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
+    final m = time.minute.toString().padLeft(2, '0');
+    return '${h.toString().padLeft(2, '0')}:$m';
+  }
+
+  String _formatTimeLine2(TimeOfDay time) {
+    return time.period == DayPeriod.am ? 'AM' : 'PM';
+  }
+
+  String _formatTimeSingleLine(TimeOfDay time) {
+    final h = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
+    final m = time.minute.toString().padLeft(2, '0');
+    final period = time.period == DayPeriod.am ? 'AM' : 'PM';
+    return '${h.toString().padLeft(2, '0')}:$m $period';
+  }
 
   @override
   void initState() {
     super.initState();
-    _selectedHour = widget.initialTime.hourOfPeriod == 0
-        ? 12
-        : widget.initialTime.hourOfPeriod;
-    _selectedMinute = widget.initialTime.minute;
-
-    _hourController =
-        FixedExtentScrollController(initialItem: _selectedHour - 1);
-    _minuteController =
-        FixedExtentScrollController(initialItem: _selectedMinute);
+    _timeSlots = _generateTimeSlots();
+    _fromIndex = _findClosestIndex(widget.initialFromTime);
+    _toIndex = _findClosestIndex(widget.initialToTime);
+    _fromController =
+        FixedExtentScrollController(initialItem: _fromIndex);
+    _toController =
+        FixedExtentScrollController(initialItem: _toIndex);
   }
 
   @override
   void dispose() {
-    _hourController.dispose();
-    _minuteController.dispose();
+    _fromController.dispose();
+    _toController.dispose();
     super.dispose();
   }
 
   Widget _buildWheel({
-    required int itemCount,
     required FixedExtentScrollController controller,
     required Function(int) onChanged,
-    required String Function(int) labelBuilder,
   }) {
     return SizedBox(
       height: _itemHeight * 5,
-      width: 72.w,
+      width: 140.w,
       child: ListWheelScrollView.useDelegate(
         controller: controller,
         itemExtent: _itemHeight,
         perspective: 0.003,
-        diameterRatio: 2.5,
+        diameterRatio: 2.8,
         physics: const FixedExtentScrollPhysics(),
         onSelectedItemChanged: onChanged,
         childDelegate: ListWheelChildBuilderDelegate(
-          childCount: itemCount,
+          childCount: _timeSlots.length,
           builder: (context, index) {
-            final isSelected =
-                index == controller.selectedItem;
+            final diff = (index - controller.selectedItem).abs();
+            final isSelected = diff == 0;
+
+            Color color;
+            if (isSelected) {
+              color = const Color(0xFF1C1C1E);
+            } else if (diff == 1) {
+              color = const Color(0xFF8E8E93);
+            } else if (diff == 2) {
+              color = const Color(0xFFAEAEB2);
+            } else {
+              color = const Color(0xFFC7C7CC);
+            }
+
+            if (isSelected) {
+              // 2-line layout for selected item
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _formatTimeLine1(_timeSlots[index]),
+                      style: TextStyle(
+                        fontSize: 26.sp,
+                        fontWeight: FontWeight.w700,
+                        color: color,
+                        height: 1.1,
+                      ),
+                    ),
+                    Text(
+                      _formatTimeLine2(_timeSlots[index]),
+                      style: TextStyle(
+                        fontSize: 26.sp,
+                        fontWeight: FontWeight.w700,
+                        color: color,
+                        height: 1.1,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            // Single line for non-selected
             return Center(
               child: Text(
-                labelBuilder(index),
+                _formatTimeSingleLine(_timeSlots[index]),
                 style: TextStyle(
-                  fontSize: isSelected ? 24.sp : 18.sp,
-                  fontWeight: isSelected
-                      ? FontWeight.w600
-                      : FontWeight.w400,
-                  color: isSelected
-                      ? Colors.white
-                      : Colors.white.withOpacity(0.25),
+                  fontSize: diff == 1 ? 17.sp : 15.sp,
+                  fontWeight: FontWeight.w400,
+                  color: color,
                 ),
               ),
             );
@@ -113,93 +190,46 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28.r)),
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
-      padding: EdgeInsets.fromLTRB(24.w, 14.h, 24.w, 36.h),
+      padding: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 32.h),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Handle bar
-          Container(
-            width: 36.w,
-            height: 4.h,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(4.r),
+          Center(
+            child: Container(
+              width: 36.w,
+              height: 4.h,
+              decoration: BoxDecoration(
+                color: const Color(0xFFD1D1D6),
+                borderRadius: BorderRadius.circular(4.r),
+              ),
             ),
           ),
           18.verticalSpace,
 
-          // Header Row
-          Row(
-            children: [
-              // X Button
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  width: 36.w,
-                  height: 36.w,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 17.sp,
-                  ),
-                ),
-              ),
-
-              // Title
-              Expanded(
-                child: Center(
-                  child: Text(
-                    widget.title,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: -0.2,
-                    ),
-                  ),
-                ),
-              ),
-
-              // ✓ Button
-              GestureDetector(
-                onTap: () => widget.onConfirm(
-                  TimeOfDay(
-                    hour: _selectedHour,
-                    minute: _selectedMinute,
-                  ),
-                ),
-                child: Container(
-                  width: 36.w,
-                  height: 36.w,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFFF9500),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.check,
-                    color: Colors.white,
-                    size: 18.sp,
-                  ),
-                ),
-              ),
-            ],
+          // Title
+          Text(
+            'Set Availability',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF1C1C1E),
+              letterSpacing: -0.3,
+            ),
           ),
-          24.verticalSpace,
+          //16.verticalSpace,
 
-          // Scroll Wheels with center highlight
+          // Scroll Wheels
           SizedBox(
             height: _itemHeight * 5,
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // ✅ Center highlight bar (full width, both columns)
+                // Center highlight bar
                 Positioned(
                   top: _itemHeight * 2,
                   left: 0,
@@ -207,47 +237,36 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
                   child: Container(
                     height: _itemHeight,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.07),
+                      color: const Color(0xFFF2F2F7),
                       borderRadius: BorderRadius.circular(14.r),
                     ),
                   ),
                 ),
 
-                // Wheels Row
+                // Wheels + "to" label
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Hour wheel
                     _buildWheel(
-                      itemCount: 12,
-                      controller: _hourController,
+                      controller: _fromController,
                       onChanged: (i) =>
-                          setState(() => _selectedHour = i + 1),
-                      labelBuilder: (i) =>
-                          (i + 1).toString().padLeft(2, '0'),
+                          setState(() => _fromIndex = i),
                     ),
-
-                    // Colon
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
                       child: Text(
-                        ":",
+                        'to',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.6),
-                          fontSize: 28.sp,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xFF3C3C43),
                         ),
                       ),
                     ),
-
-                    // Minute wheel
                     _buildWheel(
-                      itemCount: 60,
-                      controller: _minuteController,
+                      controller: _toController,
                       onChanged: (i) =>
-                          setState(() => _selectedMinute = i),
-                      labelBuilder: (i) =>
-                          i.toString().padLeft(2, '0'),
+                          setState(() => _toIndex = i),
                     ),
                   ],
                 ),
@@ -256,8 +275,20 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
           ),
 
           20.verticalSpace,
+
+          CommonButton(titleText: "Apply",onTap: (){
+
+            widget.onApply(
+              _timeSlots[_fromIndex],
+              _timeSlots[_toIndex],
+            );
+            Navigator.pop(context);
+
+          },)
         ],
       ),
     );
   }
 }
+
+

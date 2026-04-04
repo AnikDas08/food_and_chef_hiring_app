@@ -97,22 +97,14 @@ class AddMenuScreen extends StatelessWidget {
           ),
           actions: [
             TextButton(
-                onPressed: () => Get.back(),
-                child: Text("Cancel",
-                    style: TextStyle(
-                        fontSize: 13.sp,
-                        color: const Color(0xFF999999)))),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text("Cancel",)),
             TextButton(
-              onPressed: () {
-                c.addIngredient(nameCtrl.text, qtyCtrl.text, localUnit);
-                Get.back();
-              },
-              child: Text("Add",
-                  style: TextStyle(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFF1C1C1C))),
-            ),
+                onPressed: () {
+                  c.addIngredient(nameCtrl.text, qtyCtrl.text, localUnit);
+                  Navigator.of(context).pop();
+                },
+                child: Text("Add",)),
           ],
         ),
       ),
