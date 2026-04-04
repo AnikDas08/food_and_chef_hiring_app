@@ -263,7 +263,6 @@ class ChefDetailsScreen extends StatelessWidget {
                                 "chef id: 🤣🤣🤣🤣${controller.chefId}");
                             availabilityPopup(
                                 context, controller.chefId);
-
                           },
                         ),
 
