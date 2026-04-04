@@ -27,108 +27,110 @@ bookingDateTimePopup({String? id}) {
               builder: (chefCtrl) {
                 return SingleChildScrollView(
                   padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      /// Calendar
-                      TableCalendar(
-                        rowHeight: 38,
-                        daysOfWeekHeight: 20,
-                        firstDay: DateTime.now(),
-                        lastDay: DateTime.now().add(const Duration(days: 60)),
-                        focusedDay: controller.selectedDate,
-                        headerStyle: const HeaderStyle(
-                          formatButtonVisible: false,
-                          titleCentered: false,
-                        ),
-                        selectedDayPredicate:
-                            (day) => isSameDay(day, controller.selectedDate),
-                        onDaySelected: (selectedDay, focusedDay) {
-                          // 1. Update the date in the CartController (UI update)
-                          controller.selectDate(selectedDay);
-
-                          // 2. Determine which ID to use
-                          // We check if effectiveId is not null AND not an empty string
-                          final bool hasPassedId = effectiveId != null && effectiveId.isNotEmpty;
-
-                          // 3. Trigger the slot fetch in ChefDetailsController
-                          if (hasPassedId) {
-                            chefCtrl.selectDate(selectedDay, effectiveId);
-                          } else {
-                            // Fallback to the ID already stored in the controller
-                            chefCtrl.selectDate(selectedDay, chefCtrl.chefId);
-                          }
-                        },
-                        calendarStyle: CalendarStyle(
-                          cellMargin: EdgeInsets.zero,
-                          selectedDecoration: const BoxDecoration(
-                            color: Colors.black,
-                            shape: BoxShape.circle,
+                  child: SafeArea(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        /// Calendar
+                        TableCalendar(
+                          rowHeight: 38,
+                          daysOfWeekHeight: 20,
+                          firstDay: DateTime.now(),
+                          lastDay: DateTime.now().add(const Duration(days: 60)),
+                          focusedDay: controller.selectedDate,
+                          headerStyle: const HeaderStyle(
+                            formatButtonVisible: false,
+                            titleCentered: false,
                           ),
-                          todayDecoration: BoxDecoration(
-                            color: Colors.green.withValues(alpha: 0.3),
-                            shape: BoxShape.circle,
+                          selectedDayPredicate:
+                              (day) => isSameDay(day, controller.selectedDate),
+                          onDaySelected: (selectedDay, focusedDay) {
+                            // 1. Update the date in the CartController (UI update)
+                            controller.selectDate(selectedDay);
+                    
+                            // 2. Determine which ID to use
+                            // We check if effectiveId is not null AND not an empty string
+                            final bool hasPassedId = effectiveId != null && effectiveId.isNotEmpty;
+                    
+                            // 3. Trigger the slot fetch in ChefDetailsController
+                            if (hasPassedId) {
+                              chefCtrl.selectDate(selectedDay, effectiveId);
+                            } else {
+                              // Fallback to the ID already stored in the controller
+                              chefCtrl.selectDate(selectedDay, chefCtrl.chefId);
+                            }
+                          },
+                          calendarStyle: CalendarStyle(
+                            cellMargin: EdgeInsets.zero,
+                            selectedDecoration: const BoxDecoration(
+                              color: Colors.black,
+                              shape: BoxShape.circle,
+                            ),
+                            todayDecoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.3),
+                              shape: BoxShape.circle,
+                            ),
                           ),
                         ),
-                      ),
-
-                      const Divider(height: 24),
-
-                      /// Time Slots
-                      const CommonText(
-                        text: "Select start time",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff272727),
-                      ),
-
-                      const SizedBox(height: 12),
-
-                      // ✅ Show loader or slots from ChefDetailsController
-                      if (chefCtrl.isSlotLoading)
-                        const Center(child: CircularProgressIndicator())
-                      else if (chefCtrl.timeSlots.isEmpty)
-                        const Center(
-                          child: CommonText(
-                            text: "No slots available for this date",
-                            fontSize: 12,
-                          ),
-                        )
-                      else
-                        Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: chefCtrl.timeSlots.map((time) {
-                            final isSelected = controller.selectedTime == time;
-
-                            return GestureDetector(
-                              onTap: () {
-                                controller.selectTime(time);
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 14,
-                                  vertical: 10,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? const Color(0xff272727)
-                                      : const Color(0xffF2F2F2),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: CommonText(
-                                  text: time,
-                                  color:
-                                  isSelected ? Colors.white : Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            );
-                          }).toList(),
+                    
+                        const Divider(height: 24),
+                    
+                        /// Time Slots
+                        const CommonText(
+                          text: "Select start time",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff272727),
                         ),
-                    ],
+                    
+                        const SizedBox(height: 12),
+                    
+                        // ✅ Show loader or slots from ChefDetailsController
+                        if (chefCtrl.isSlotLoading)
+                          const Center(child: CircularProgressIndicator())
+                        else if (chefCtrl.timeSlots.isEmpty)
+                          const Center(
+                            child: CommonText(
+                              text: "No slots available for this date",
+                              fontSize: 12,
+                            ),
+                          )
+                        else
+                          Wrap(
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: chefCtrl.timeSlots.map((time) {
+                              final isSelected = controller.selectedTime == time;
+                    
+                              return GestureDetector(
+                                onTap: () {
+                                  controller.selectTime(time);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 14,
+                                    vertical: 10,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? const Color(0xff272727)
+                                        : const Color(0xffF2F2F2),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: CommonText(
+                                    text: time,
+                                    color:
+                                    isSelected ? Colors.white : Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                      ],
+                    ),
                   ),
                 );
               },

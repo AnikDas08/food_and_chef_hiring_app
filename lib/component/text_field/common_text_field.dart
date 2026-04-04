@@ -9,6 +9,7 @@ class CommonTextField extends StatelessWidget {
   CommonTextField({
     super.key,
     this.hintText,
+    this.readOnly = false,
     this.labelText,
     this.prefixIcon,
     this.isPassword = false,
@@ -39,6 +40,7 @@ class CommonTextField extends StatelessWidget {
   });
 
   final String? hintText;
+  final bool readOnly;
   final String? labelText;
   final String? prefixText;
   final Widget? prefixIcon;
@@ -75,6 +77,7 @@ class CommonTextField extends StatelessWidget {
         autovalidateMode: AutovalidateMode.onUnfocus,
         keyboardType: keyboardType,
         controller: controller,
+            readOnly: readOnly,
         focusNode: focusNode,
         obscureText: isPassword ? !obscureText.value : obscureText.value,
         textInputAction: textInputAction,

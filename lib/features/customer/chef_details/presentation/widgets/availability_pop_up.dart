@@ -36,7 +36,19 @@ void availabilityPopup(BuildContext context, String chefId) {
                     onDaySelected: (selectedDay, focusedDay) {
                       controller.selectDate(selectedDay, chefId); // Pass chefId here
                     },
-                    // ... calendar style ...
+                    calendarStyle: CalendarStyle(
+                      selectedDecoration: const BoxDecoration(
+                        color: Colors.black,        // 🔥 selected date circle color
+                        shape: BoxShape.circle,
+                      ),
+                      todayDecoration: BoxDecoration(
+                        color: Colors.grey.shade300, // optional: today color
+                        shape: BoxShape.circle,
+                      ),
+                      defaultDecoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                    ),
                   ),
 
                   20.height,

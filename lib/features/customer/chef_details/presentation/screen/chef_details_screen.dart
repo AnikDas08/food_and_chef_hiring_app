@@ -37,8 +37,7 @@ class ChefDetailsScreen extends StatelessWidget {
 
         // Total price in cart
         final double totalCartPrice =
-            (controller.cartItems.length) *
-                (chef?.priceWithFee ?? 0);
+            (controller.cartItems.length) * (chef?.priceWithFee ?? 0);
 
         return Scaffold(
           body: NestedScrollView(
@@ -54,13 +53,47 @@ class ChefDetailsScreen extends StatelessWidget {
                     onTap: Get.back,
                     child: Padding(
                       padding: EdgeInsets.only(left: 16.w),
-                      child: CommonImage(imageSrc: AppIcons.back),
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.50),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   actions: [
+                    // ── Favourite button ──────────────────────────────────
                     InkWell(
-                      onTap: controller.onChange,
-                      child: CommonImage(imageSrc: AppIcons.favorite),
+                      onTap: controller.toggleFavourite, // ✅ calls API + toggles
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.50),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Icon(
+                            // ✅ Filled when favourite, outlined when not
+                            controller.isFavorite
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: controller.isFavorite
+                                ? Colors.red
+                                : Colors.white,
+                            size: 24,
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(width: 12),
                     InkWell(
@@ -161,8 +194,7 @@ class ChefDetailsScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            CommonImage(
-                                imageSrc: AppIcons.location),
+                            CommonImage(imageSrc: AppIcons.location),
                             CommonText(
                               text: controller.chefArg?.distance ??
                                   "N/A",
@@ -178,8 +210,7 @@ class ChefDetailsScreen extends StatelessWidget {
                                   horizontal: 8),
                               color: Color(0xffF1F1F1),
                             ),
-                            CommonImage(
-                                imageSrc: AppIcons.briefcase),
+                            CommonImage(imageSrc: AppIcons.briefcase),
                             CommonText(
                               text:
                               "${chef?.experience ?? 0} years Experience",
@@ -209,7 +240,9 @@ class ChefDetailsScreen extends StatelessWidget {
                                 color: Color(0xff777777),
                               ),
                             ),
-                            SizedBox(width: 4.w,),
+                            SizedBox(
+                              width: 4.w,
+                            ),
                           ],
                         ),
 
@@ -225,9 +258,11 @@ class ChefDetailsScreen extends StatelessWidget {
                         CommonButton(
                           titleText: AppString.checkAvailability,
                           titleColor: Colors.white,
-                          onTap: (){
-                            print("chef id: 🤣🤣🤣🤣${controller.chefId}");
-                            availabilityPopup(context,controller.chefId);
+                          onTap: () {
+                            print(
+                                "chef id: 🤣🤣🤣🤣${controller.chefId}");
+                            availabilityPopup(
+                                context, controller.chefId);
                           },
                         ),
 
@@ -273,8 +308,7 @@ class ChefDetailsScreen extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                         child: CommonText(
-                          text:
-                          "${controller.cartItems.length}",
+                          text: "${controller.cartItems.length}",
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: Color(0xff272727),
@@ -303,6 +337,46 @@ class ChefDetailsScreen extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _AppBarIconButton extends StatelessWidget {
+  final String icon;
+  final VoidCallback onTap;
+
+  const _AppBarIconButton({
+    required this.icon,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(50),
+      child: Container(
+        width: 36.w,
+        height: 36.w,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white.withOpacity(0.85),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        alignment: Alignment.center,
+        child: CommonImage(
+          imageSrc: icon,
+          height: 18.w,
+          width: 18.w,
+          fill: BoxFit.contain,
+        ),
+      ),
     );
   }
 }

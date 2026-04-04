@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:new_untitled/utils/constants/app_colors.dart';
 
 import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/text/common_text.dart';
+import '../../../../../../config/api/api_end_point.dart';
 import '../../controller/kitchen_equipment_controller.dart';
 import 'customize_kitchen_screen.dart';
 
@@ -28,7 +30,7 @@ class KitchenEquipmentScreen extends StatelessWidget {
       body: Column(
         children: [
           // ── Hero kitchen image ──
-          _KitchenHeroImage(),
+          _KitchenHeroImage(controller: controller,),
 
           // ── Scrollable body ──
           Expanded(
@@ -108,54 +110,73 @@ class KitchenEquipmentScreen extends StatelessWidget {
 // Hero image — original design, no edit button
 // ─────────────────────────────────────────────────────
 class _KitchenHeroImage extends StatelessWidget {
+  final KitchenEquipmentController controller;
+  const _KitchenHeroImage({required this.controller});
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: 200.h,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            color: Color(0xFF2C2C2C),
-            image: DecorationImage(
-              image: AssetImage('assets/images/profile_image.png'),
+    return Obx(() {
+      final String image = controller.myKitchenImage.value;
+      final bool hasImage = image.isNotEmpty;
+
+      return Stack(
+        children: [
+          Container(
+            height: 200.h,
+            width: double.infinity,
+            color: const Color(0xFF2C2C2C),
+            child: hasImage
+                ? CachedNetworkImage(
+              imageUrl: ApiEndPoint.imageUrl + image,
+              width: double.infinity,
+              height: 200.h,
               fit: BoxFit.cover,
-            ),
+              placeholder: (_, __) => _defaultImage(),
+              errorWidget: (_, __, ___) => _defaultImage(),
+            )
+                : _defaultImage(),
           ),
-        ),
-        Container(
-          height: 200.h,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.black.withOpacity(0.3),
-                Colors.black.withOpacity(0.1),
-              ],
-            ),
-          ),
-        ),
-        Positioned(
-          top: MediaQuery.of(context).padding.top + 8.h,
-          left: 16.w,
-          child: GestureDetector(
-            onTap: () => Get.back(),
-            child: Container(
-              width: 34.w,
-              height: 34.w,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.85),
-                shape: BoxShape.circle,
+          Container(
+            height: 200.h,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.3),
+                  Colors.black.withOpacity(0.1),
+                ],
               ),
-              child: Icon(Icons.arrow_back_ios_new_rounded,
-                  size: 16.sp, color: AppColors.black),
             ),
           ),
-        ),
-      ],
-    );
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 8.h,
+            left: 16.w,
+            child: GestureDetector(
+              onTap: () => Get.back(),
+              child: Container(
+                width: 34.w,
+                height: 34.w,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.85),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.arrow_back_ios_new_rounded,
+                    size: 16.sp, color: AppColors.black),
+              ),
+            ),
+          ),
+        ],
+      );
+    });
   }
+
+  Widget _defaultImage() => Image.asset(
+    'assets/images/noImage.png',
+    width: double.infinity,
+    height: 200,
+    fit: BoxFit.cover,
+  );
 }
 
 // ─────────────────────────────────────────────────────
@@ -213,6 +234,8 @@ class _PresetCard extends StatelessWidget {
     return Obx(() {
       final preset = controller.presets[index];
       final bool isSelected = controller.selectedPresetIndex.value == index;
+      final String? imageUrl = preset.image; // add this field to your preset model if not there
+
       return GestureDetector(
         onTap: () => controller.onPresetTap(index),
         child: AnimatedContainer(
@@ -224,21 +247,8 @@ class _PresetCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Container(
-                width: 40.w,
-                height: 40.w,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? Colors.white.withOpacity(0.15)
-                      : const Color(0xFFEEEEEE),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Icon(Icons.kitchen_outlined,
-                    size: 22.sp,
-                    color: isSelected
-                        ? Colors.white70
-                        : const Color(0xFF888888)),
-              ),
+              // ── Image or icon ──
+              _PresetThumbnail(imageUrl: imageUrl, isSelected: isSelected),
               SizedBox(width: 12.w),
               Expanded(
                 child: Column(
@@ -267,7 +277,6 @@ class _PresetCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // Loading spinner while fetching this preset's detail
               if (isSelected && controller.isLoadingPresetDetail.value)
                 SizedBox(
                   width: 16.w,
@@ -281,6 +290,49 @@ class _PresetCard extends StatelessWidget {
       );
     });
   }
+}
+
+// ── Thumbnail: network image if available, icon fallback ──
+class _PresetThumbnail extends StatelessWidget {
+  final String? imageUrl;
+  final bool isSelected;
+
+  const _PresetThumbnail({this.imageUrl, required this.isSelected});
+
+  bool get _hasImage => imageUrl != null && imageUrl!.isNotEmpty;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8.r),
+      child: Container(
+        width: 40.w,
+        height: 40.w,
+        decoration: BoxDecoration(
+          color: isSelected
+              ? Colors.white.withOpacity(0.15)
+              : const Color(0xFFEEEEEE),
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: _hasImage
+            ? CachedNetworkImage(
+          imageUrl: ApiEndPoint.imageUrl + imageUrl!,
+          width: 40.w,
+          height: 40.w,
+          fit: BoxFit.cover,
+          placeholder: (_, __) => _iconFallback(),
+          errorWidget: (_, __, ___) => _iconFallback(),
+        )
+            : _iconFallback(),
+      ),
+    );
+  }
+
+  Widget _iconFallback() => Icon(
+    Icons.kitchen_outlined,
+    size: 22.sp,
+    color: isSelected ? Colors.white70 : const Color(0xFF888888),
+  );
 }
 
 class _CustomSetupCard extends StatelessWidget {

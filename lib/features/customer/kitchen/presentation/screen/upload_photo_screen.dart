@@ -260,12 +260,6 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
 
               const Spacer(),
 
-              CommonButton(
-                titleText: 'Skip For Now',
-                buttonColor: const Color(0xFFF2F2F2),
-                titleColor: AppColors.black,
-                onTap: () => Get.offAllNamed('/home'),
-              ),
               SizedBox(height: 10.h),
               Obx(
                     () {
@@ -290,6 +284,17 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: 20.h),
+
+              CommonButton(
+                titleText: "Skip for Now",
+                onTap: () {
+                  controller.submitCustomKitchen();
+                },
+                buttonColor: Colors.transparent,
+                borderColor: Colors.transparent,
+                titleColor: Colors.black,
+                titleSize: 14.sp,
+              )
             ],
           ),
         ),

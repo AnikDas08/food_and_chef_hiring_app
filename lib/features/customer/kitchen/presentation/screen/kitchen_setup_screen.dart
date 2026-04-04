@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
-import 'package:new_untitled/features/customer/home/presentation/screen/customer_home_screen.dart';
-import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 
 import '../../../../../component/button/common_button.dart';
@@ -125,18 +123,13 @@ class KitchenSetupScreen extends StatelessWidget {
                 textAlign: TextAlign.start,
               ),
               SizedBox(height: 16.h),
-              CommonButton(
-                titleText: 'Skip For Now',
-                buttonColor: const Color(0xFFF2F2F2),
-                titleColor: AppColors.black,
-                onTap: () => Get.to(() => const CookingAppliancesScreen()),
-              ),
               SizedBox(height: 10.h),
               Obx(() {
                 final selected = controller.isAnythingSelected;
                 final submitting = controller.isSubmittingPreset.value;
-                final loading = controller.isLoadingEquipment.value;
-                final busy = submitting || loading;
+                final loadingEquipment = controller.isLoadingEquipment.value;
+                final loadingPresetItems = controller.isLoadingPresetItems.value;
+                final busy = submitting || loadingEquipment || loadingPresetItems;
 
                 return CommonButton(
                   titleText: busy ? 'Please wait...' : 'Continue',
@@ -146,16 +139,18 @@ class KitchenSetupScreen extends StatelessWidget {
                       ? null
                       : () async {
                     if (controller.isCustomSetup) {
-                      // Custom Setup: just go to next screen
-                      // Equipment list will be fetched there
+                      // Custom Setup: fetch equipment (all unselected), go to next screen
                       await controller.fetchEquipmentList();
                       Get.to(() => const CookingAppliancesScreen());
                     } else {
-                      // Preset: POST first, then navigate on success
-                      final success = await controller.submitPresetKitchen();
-                      if (success) {
-                        Get.offAll(()=>CustomerHomeScreen());
-                      }
+                      // Preset: fetch preset items first (to know which to pre-select),
+                      // then fetch full equipment list (applyPresetSelections is called
+                      // inside fetchEquipmentList after build), then navigate
+                      final preset = controller
+                          .kitchenPresets[controller.selectedKitchenIndex.value];
+                      await controller.fetchPresetItems(preset.kitchen);
+                      await controller.fetchEquipmentList();
+                      Get.to(() => const CookingAppliancesScreen());
                     }
                   },
                 );
@@ -169,7 +164,7 @@ class KitchenSetupScreen extends StatelessWidget {
   }
 }
 
-// ─── Preset Card (tap = select only, no API) ───
+// ─── Preset Card ───
 class _PresetCard extends StatelessWidget {
   final KitchenSetupController controller;
   final int index;
@@ -186,7 +181,7 @@ class _PresetCard extends StatelessWidget {
     return Obx(() {
       final bool isSelected = controller.selectedKitchenIndex.value == index;
       return GestureDetector(
-        onTap: () => controller.selectPreset(index), // just selection, no API
+        onTap: () => controller.selectPreset(index),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
@@ -244,7 +239,7 @@ class _PresetImage extends StatelessWidget {
       return ClipRRect(
         borderRadius: BorderRadius.circular(8.r),
         child: CachedNetworkImage(
-          imageUrl: ApiEndPoint.imageUrl+imageUrl!,
+          imageUrl: ApiEndPoint.imageUrl + imageUrl!,
           width: 44.w, height: 44.w, fit: BoxFit.cover,
           placeholder: (_, __) => _defaultBox(),
           errorWidget: (_, __, ___) => _defaultBox(),

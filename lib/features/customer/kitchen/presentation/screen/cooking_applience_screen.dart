@@ -99,12 +99,12 @@ class CookingAppliancesScreen extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 28.h),
               child: Column(
                 children: [
-                  CommonButton(
+                  /*CommonButton(
                     titleText: 'Skip For Now',
                     buttonColor: const Color(0xFFF2F2F2),
                     titleColor: AppColors.black,
                     onTap: () => Get.to(() => const CookwareToolsScreen()),
-                  ),
+                  ),*/
                   SizedBox(height: 10.h),
                   CommonButton(
                     titleText: 'Continue',

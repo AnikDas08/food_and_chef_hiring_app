@@ -59,9 +59,6 @@ class ChefDetailsController extends GetxController {
     update();
 
     try {
-      // Formatting date to "yyyy-MM-dd" or as required by your logic
-      // The example shows "2026-01-12 8:20 PM", but usually availability
-      // check only needs the date part.
       String formattedDate = "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}";
 
       final response = await ApiService.post(
@@ -70,7 +67,6 @@ class ChefDetailsController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        // Map the "data" list from response to our timeSlots list
         timeSlots = List<String>.from(response.data['data']);
       } else {
         timeSlots = [];
@@ -85,17 +81,14 @@ class ChefDetailsController extends GetxController {
     }
   }
 
-  void selectDate(DateTime date, String passedChefId)async {
+  void selectDate(DateTime date, String passedChefId) async {
     selectedDate = date;
     selectedTime = ""; // Reset time when date changes
 
-    // Update the controller's chefId with the one passed from the popup
     chefId = passedChefId;
     await fetchChefDetails(passedChefId);
 
-    // 1. Fetch the slots for the calendar
     fetchAvailableSlots();
-
 
     update();
   }
@@ -115,6 +108,10 @@ class ChefDetailsController extends GetxController {
       if (response.statusCode == 200) {
         chefDetailModel = ChefDetailModel.fromJson(response.data);
         chefDetail = chefDetailModel?.data;
+
+        // ✅ Read isFavorite from API response
+        isFavorite = chefDetail?.isFavorite ?? false;
+
         final sections = chefDetail?.menuSections ?? [];
         if (sections.isNotEmpty) selectedMenuSection = sections.first;
       } else {
@@ -132,7 +129,7 @@ class ChefDetailsController extends GetxController {
 
   Future<void> fetchMenuForSection(String section) async {
     if (menuCache.containsKey(section)) return;
-    if (chefArg?.id == null && chefId.isEmpty) return; // ← allow chefId alone
+    if (chefArg?.id == null && chefId.isEmpty) return;
     await _fetchMenuPage(section, page: 1);
   }
 
@@ -197,13 +194,10 @@ class ChefDetailsController extends GetxController {
 
   // ── Cart ─────────────────────────────────────────────────────────────────────
 
-  /// Proxy to CartController so chef_details_screen.dart bottom bar stays reactive.
   List get cartItems => CartController.instance.chefGroups
       .expand((g) => g.menus ?? [])
       .toList();
 
-  /// Called from item_details.dart "Add to Order" button.
-  /// POSTs to cart API then navigates to CartScreen.
   Future<void> addToCart(Map<String, dynamic> data) async {
     final String menuId = data['id'] ?? '';
     final String chefId = chefArg?.id ?? '';
@@ -215,7 +209,7 @@ class ChefDetailsController extends GetxController {
       return;
     }
 
-    Get.back(); // close the bottom sheet first
+    Get.back();
 
     await CartController.instance.postCartAndNavigate(
       menuId: menuId,
@@ -225,9 +219,36 @@ class ChefDetailsController extends GetxController {
     );
   }
 
+  // ── Favourite toggle ─────────────────────────────────────────────────────────
+
+  Future<void> toggleFavourite() async {
+    // Optimistically toggle the UI immediately
+    isFavorite = !isFavorite;
+    update();
+
+    try {
+      final response = await ApiService.post(
+        "favourite",
+        body: {"chef": chefId},
+      );
+      if (response.statusCode == 200) {
+        //Utils.successSnackBar("Successful", response.message);
+      } else {
+        // Revert on failure
+        isFavorite = !isFavorite;
+        update();
+        //Utils.errorSnackBar('Error', 'Failed to update favourite');
+      }
+    } catch (e) {
+      // Revert on error
+      isFavorite = !isFavorite;
+      update();
+      Utils.errorSnackBar('Error', e.toString());
+    }
+  }
+
   // ── Cart item count (for bottom bar badge) ───────────────────────────────────
 
-  /// Returns total items from the last fetched cart data.
   int get cartItemCount {
     final groups = CartController.instance.chefGroups;
     return groups.fold(0, (sum, g) => sum + (g.menus?.length ?? 0));
@@ -253,8 +274,16 @@ class ChefDetailsController extends GetxController {
     innerBoxIsScrolled(value);
   }
 
-  onChange() { isFavorite = !isFavorite; update(); }
-  onChangeExpand() { isExpanded = !isExpanded; update(); }
+  onChange() {
+    isFavorite = !isFavorite;
+    update();
+  }
+
+  onChangeExpand() {
+    isExpanded = !isExpanded;
+    update();
+  }
+
   onChangeDish(int index) {
     dish[index]["isSelected"] = !dish[index]["isSelected"];
     update();

@@ -252,8 +252,9 @@ class ReviewDetailScreen extends StatelessWidget {
                   CommonTextField(
                     hintText: AppString.selectedFood,
                     paddingHorizontal: 10,
+                    readOnly: true,
                     controller: controller.dietaryController,
-                    validator: OtherHelper.validator,
+                    //validator: OtherHelper.validator,
                   ),
 
                   /// Submit Button Here

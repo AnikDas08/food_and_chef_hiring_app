@@ -26,6 +26,7 @@ class ChefDetailData {
   List<String>? menuSections;
   double? priceWithFee;
   String? estCookingTime;
+  bool? isFavorite;
 
   ChefDetailData({
     this.id,
@@ -39,6 +40,7 @@ class ChefDetailData {
     this.menuSections,
     this.priceWithFee,
     this.estCookingTime,
+    this.isFavorite,
   });
 
   ChefDetailData.fromJson(Map<String, dynamic> json) {
@@ -55,5 +57,6 @@ class ChefDetailData {
         : [];
     priceWithFee = (json['price_with_fee'] as num?)?.toDouble();
     estCookingTime = json['est_cooking_time'];
+    isFavorite = json['isFavorite'];
   }
 }

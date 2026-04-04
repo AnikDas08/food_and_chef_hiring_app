@@ -50,7 +50,7 @@ class KitchenSetupController extends GetxController {
   }
 
   // ────────────────────────────────────────────────────
-  // Selection state — just marks, no API call on tap
+  // Selection state
   // -1   = nothing selected
   // 0…n  = preset index from API
   // 9999 = Custom Setup (fixed)
@@ -62,7 +62,6 @@ class KitchenSetupController extends GetxController {
 
   void selectPreset(int index) {
     selectedKitchenIndex.value = index;
-    // NO API call here — fires only when Continue is tapped
   }
 
   void selectCustomSetup() {
@@ -70,9 +69,66 @@ class KitchenSetupController extends GetxController {
   }
 
   // ════════════════════════════════════════════════════
-  // POST equipment/kitchen
-  // Body: { "presetId": "<kitchen id>" }
-  // Called ONLY when Continue is tapped with a preset selected
+  // Fetch preset's pre-selected items
+  // GET equipment/kitchen/{presetId}
+  // ════════════════════════════════════════════════════
+  // Store preset item IDs to pre-select after equipment list loads
+  final RxSet<String> presetItemIds = <String>{}.obs;
+  final RxBool isLoadingPresetItems = false.obs;
+
+  Future<bool> fetchPresetItems(String presetId) async {
+    try {
+      isLoadingPresetItems.value = true;
+      presetItemIds.clear();
+      final response = await ApiService.get('equipment/kitchen/$presetId');
+      if (response.statusCode == 200) {
+        final Map<dynamic, dynamic> json = response.data;
+        if (json['success'] == true) {
+          final data = json['data'];
+          final List<dynamic> categoryList = data['items'] as List<dynamic>? ?? [];
+
+          // Extract all item names from all categories
+          for (final cat in categoryList) {
+            final List<dynamic> items = cat['items'] as List<dynamic>? ?? [];
+            for (final item in items) {
+              final String? name = item['name']?.toString();
+              if (name != null && name.isNotEmpty) {
+                presetItemIds.add(name.trim().toLowerCase()); // store lowercase name
+              }
+            }
+          }
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      debugPrint('fetchPresetItems error: $e');
+      return false;
+    } finally {
+      isLoadingPresetItems.value = false;
+    }
+  }
+
+  // Apply preset pre-selections after equipment list is built
+  void applyPresetSelections() {
+    if (presetItemIds.isEmpty) return;
+    final updated = Map<String, List<EquipmentItemModel>>.from(categoryItemsMap);
+    for (final entry in updated.entries) {
+      for (final item in entry.value) {
+        // Match by name (case-insensitive)
+        if (presetItemIds.contains(item.name.trim().toLowerCase())) {
+          item.isSelected = true;
+          item.quantity = 1;
+        }
+      }
+    }
+    categoryItemsMap.value = updated;
+    categoryItemsMap.refresh();
+  }
+
+  // ════════════════════════════════════════════════════
+  // POST equipment/kitchen  (preset submit — now only
+  // called from UploadKitchenPhotoScreen for both flows)
   // ════════════════════════════════════════════════════
   final RxBool isSubmittingPreset = false.obs;
 
@@ -97,38 +153,32 @@ class KitchenSetupController extends GetxController {
           );
           return true;
         } else {
-          Get.snackbar(
-            'Error', json['message'] ?? 'Something went wrong.',
+          Get.snackbar('Error', json['message'] ?? 'Something went wrong.',
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.red.shade400,
+              colorText: Colors.white,
+              margin: const EdgeInsets.all(16),
+              borderRadius: 12);
+          return false;
+        }
+      } else {
+        Get.snackbar('Error',
+            response.data['message'] ?? 'Server error: ${response.statusCode}',
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.red.shade400,
             colorText: Colors.white,
             margin: const EdgeInsets.all(16),
-            borderRadius: 12,
-          );
-          return false;
-        }
-      } else {
-        Get.snackbar(
-          'Error',
-          response.data['message'] ?? 'Server error: ${response.statusCode}',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red.shade400,
-          colorText: Colors.white,
-          margin: const EdgeInsets.all(16),
-          borderRadius: 12,
-        );
+            borderRadius: 12);
         return false;
       }
     } catch (e) {
       debugPrint('submitPresetKitchen error: $e');
-      Get.snackbar(
-        'Error', 'Something went wrong. Please try again.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red.shade400,
-        colorText: Colors.white,
-        margin: const EdgeInsets.all(16),
-        borderRadius: 12,
-      );
+      Get.snackbar('Error', 'Something went wrong. Please try again.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.shade400,
+          colorText: Colors.white,
+          margin: const EdgeInsets.all(16),
+          borderRadius: 12);
       return false;
     } finally {
       isSubmittingPreset.value = false;
@@ -137,19 +187,15 @@ class KitchenSetupController extends GetxController {
 
   // ════════════════════════════════════════════════════
   // GET equipment?type=list
-  // Called when Continue is tapped with a preset selected
-  // (after preset POST succeeds) AND also for Custom Setup Continue
   // ════════════════════════════════════════════════════
   final RxList<EquipmentCategoryModel> equipmentCategories =
       <EquipmentCategoryModel>[].obs;
   final RxBool isLoadingEquipment = false.obs;
   final RxString equipmentError = ''.obs;
 
-  // Keyed by category name → list of items with isSelected state
   final RxMap<String, List<EquipmentItemModel>> categoryItemsMap =
       <String, List<EquipmentItemModel>>{}.obs;
 
-  // Collapse state per category — true = expanded
   final RxMap<String, bool> categoryExpanded = <String, bool>{}.obs;
 
   Future<void> fetchEquipmentList() async {
@@ -162,11 +208,11 @@ class KitchenSetupController extends GetxController {
         if (json['success'] == true) {
           final List<dynamic> data = json['data'] as List<dynamic>;
           final categories = data
-              .map((e) => EquipmentCategoryModel.fromJson(e as Map<String, dynamic>))
+              .map((e) =>
+              EquipmentCategoryModel.fromJson(e as Map<String, dynamic>))
               .toList();
           equipmentCategories.value = categories;
 
-          // Build item map + default all expanded
           final Map<String, List<EquipmentItemModel>> map = {};
           final Map<String, bool> expanded = {};
           for (final cat in categories) {
@@ -181,6 +227,9 @@ class KitchenSetupController extends GetxController {
           }
           categoryItemsMap.value = map;
           categoryExpanded.value = expanded;
+
+          // Apply preset pre-selections if any preset IDs were fetched
+          applyPresetSelections();
         } else {
           equipmentError.value = json['message'] ?? 'Failed to load equipment';
         }
@@ -200,7 +249,6 @@ class KitchenSetupController extends GetxController {
     final list = categoryItemsMap[category];
     if (list != null && itemIndex < list.length) {
       list[itemIndex].isSelected = !list[itemIndex].isSelected;
-      // Reset quantity to 1 when toggling on, keep when toggling off
       if (list[itemIndex].isSelected) {
         list[itemIndex].quantity = 1;
       }
@@ -235,13 +283,10 @@ class KitchenSetupController extends GetxController {
   int selectedCountFor(String category) =>
       categoryItemsMap[category]?.where((e) => e.isSelected).length ?? 0;
 
-  bool isExpanded(String category) =>
-      categoryExpanded[category] ?? true;
+  bool isExpanded(String category) => categoryExpanded[category] ?? true;
 
   // ════════════════════════════════════════════════════
   // UPLOAD PHOTO SCREEN — POST custom kitchen setup
-  // Called when Continue is tapped on UploadKitchenPhotoScreen
-  // This is the API that saves the full custom setup
   // ════════════════════════════════════════════════════
   final Rx<XFile?> selectedImage = Rx<XFile?>(null);
   final _picker = ImagePicker();
@@ -258,8 +303,6 @@ class KitchenSetupController extends GetxController {
 
   void removeImage() => selectedImage.value = null;
 
-  // Build payload: [{ "_id": "xxx", "quantity": 3 }, ...]
-  // Uses actual quantity set by user via +/- controls
   List<Map<String, dynamic>> get selectedItemsPayload {
     final List<Map<String, dynamic>> result = [];
     for (final items in categoryItemsMap.values) {
@@ -283,26 +326,22 @@ class KitchenSetupController extends GetxController {
       ApiResponseModel response;
 
       if (hasImage) {
-        // ── With image: multipartImage ──
-        // items sent as JSON-encoded array in body field
         response = await ApiService.multipartImage(
           'equipment/kitchen',
           method: 'POST',
           body: {
-            'items': items, // List<Map> — multipartImage jsonEncodes this
+            'items': items,
           },
           files: [
             {'name': 'image', 'image': imagePath},
           ],
         );
       } else {
-        // ── No image: plain JSON POST ──
-        // Dio sends List<Map> as proper JSON array: [{"_id":"xxx","quantity":1}]
         response = await ApiService.multipartImage(
           'equipment/kitchen',
           method: 'POST',
           body: {
-            'items': items, // List<Map> — multipartImage jsonEncodes this
+            'items': items,
           },
         );
       }
@@ -312,38 +351,32 @@ class KitchenSetupController extends GetxController {
         if (json['success'] == true) {
           return true;
         } else {
-          Get.snackbar(
-            'Error', json['message'] ?? 'Something went wrong.',
+          Get.snackbar('Error', json['message'] ?? 'Something went wrong.',
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.red.shade400,
+              colorText: Colors.white,
+              margin: const EdgeInsets.all(16),
+              borderRadius: 12);
+          return false;
+        }
+      } else {
+        Get.snackbar('Error',
+            response.data['message'] ?? 'Server error: ${response.statusCode}',
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.red.shade400,
             colorText: Colors.white,
             margin: const EdgeInsets.all(16),
-            borderRadius: 12,
-          );
-          return false;
-        }
-      } else {
-        Get.snackbar(
-          'Error',
-          response.data['message'] ?? 'Server error: ${response.statusCode}',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red.shade400,
-          colorText: Colors.white,
-          margin: const EdgeInsets.all(16),
-          borderRadius: 12,
-        );
+            borderRadius: 12);
         return false;
       }
     } catch (e) {
       debugPrint('submitCustomKitchen error: $e');
-      Get.snackbar(
-        'Error', 'Something went wrong. Please try again.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red.shade400,
-        colorText: Colors.white,
-        margin: const EdgeInsets.all(16),
-        borderRadius: 12,
-      );
+      Get.snackbar('Error', 'Something went wrong. Please try again.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.shade400,
+          colorText: Colors.white,
+          margin: const EdgeInsets.all(16),
+          borderRadius: 12);
       return false;
     } finally {
       isSubmittingCustom.value = false;

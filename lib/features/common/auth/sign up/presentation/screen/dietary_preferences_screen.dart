@@ -145,7 +145,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 12),
-              InkWell(
+              /*InkWell(
                 onTap: () => Get.find<SignUpController>().completeProfile(),
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
@@ -173,7 +173,17 @@ class DietaryPreferencesScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
+              ),*/
+              CommonButton(
+                titleText: "Skip for Now",
+                onTap: () {
+                  Get.toNamed(AppRoutes.reviewDetail);
+                },
+                buttonColor: Colors.transparent,
+                borderColor: Colors.transparent,
+                titleColor: Colors.black,
+                titleSize: 14.sp,
+              )
             ],
           ),
         ),

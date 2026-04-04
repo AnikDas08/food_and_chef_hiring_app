@@ -93,12 +93,12 @@ class SpecialEquipmentScreen extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 28.h),
               child: Column(
                 children: [
-                  CommonButton(
-                    titleText: 'Skip For Now',
-                    buttonColor: const Color(0xFFF2F2F2),
-                    titleColor: AppColors.black,
-                    onTap: () => Get.to(() => const UploadKitchenPhotoScreen()),
-                  ),
+                  // CommonButton(
+                  //   titleText: 'Skip For Now',
+                  //   buttonColor: const Color(0xFFF2F2F2),
+                  //   titleColor: AppColors.black,
+                  //   onTap: () => Get.to(() => const UploadKitchenPhotoScreen()),
+                  // ),
                   SizedBox(height: 10.h),
                   CommonButton(
                     titleText: 'Continue',

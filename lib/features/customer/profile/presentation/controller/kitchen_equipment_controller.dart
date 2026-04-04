@@ -6,15 +6,17 @@ import 'package:new_untitled/services/storage/storage_services.dart';
 // ── Preset card model ──
 class KitchenPreset {
   final String id;
+  final String? image;
   final String name;
   final String items;
 
-  KitchenPreset({required this.id, required this.name, required this.items});
+  KitchenPreset({required this.id, required this.name, required this.items,this.image});
 
   factory KitchenPreset.fromJson(Map<String, dynamic> json) => KitchenPreset(
     id: json['kitchen'] ?? '',
     name: json['name'] ?? '',
     items: json['items'] ?? '',
+    image: json['image'] ?? '',
   );
 }
 
@@ -113,6 +115,7 @@ class KitchenEquipmentController extends GetxController {
     }
     _expandedMap.refresh();
   }
+  final RxString myKitchenImage = ''.obs;
 
   // ════════════════════════════════════════════════════
   // Collapse / expand — shared for both my kitchen & preset detail
@@ -182,6 +185,8 @@ class KitchenEquipmentController extends GetxController {
         if (json['success'] == true) {
           final data = json['data'] as Map<String, dynamic>;
           final rawItems = data['items'] as List<dynamic>? ?? [];
+          final String? image = data['image']?.toString();
+          myKitchenImage.value = image ?? '';
           final categories = rawItems
               .map((e) =>
               KitchenDetailCategory.fromJson(e as Map<String, dynamic>))
