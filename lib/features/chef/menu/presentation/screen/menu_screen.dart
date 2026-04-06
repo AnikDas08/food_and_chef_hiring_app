@@ -11,13 +11,11 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = CafeAddMenuItemController.instance;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Obx(() => Column(
           children: [
-
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
               child: Row(

@@ -37,7 +37,8 @@ class ChefProfileController extends GetxController {
     );
 
     if (response.statusCode == 200 && response.data['success'] == true) {
-      Get.snackbar("Message", "notification setting updated",backgroundColor: Colors.green,colorText: Colors.white);
+      Get.snackbar("Message", "notification setting updated",
+          backgroundColor: Colors.green, colorText: Colors.white);
     } else {
       isNotification.value = !newValue;
       Utils.errorSnackBar("Error", "Failed to update notification setting");
@@ -114,7 +115,6 @@ class ChefProfileController extends GetxController {
     update();
 
     try {
-
       final Map<String, dynamic> body = {
         "email": emailController.text.trim(),
         "contact": "$selectedCountryCode${phoneController.text.trim()}",
@@ -130,7 +130,8 @@ class ChefProfileController extends GetxController {
         Get.find<ChefHomeController>().fetchChefProfile();
         Get.toNamed(AppRoutes.chefProfile);
       } else {
-        Get.snackbar("Error", response.data['message']?.toString() ?? "Something went wrong");
+        Get.snackbar("Error",
+            response.data['message']?.toString() ?? "Something went wrong");
       }
     } catch (e) {
       debugPrint("Update profile error: $e");
@@ -279,13 +280,16 @@ class ChefProfileController extends GetxController {
     }
   }
 
+  // ✅ FIX 1: loadProfileData2() মুছে দেওয়া হয়েছে
+  // ✅ FIX 2: loadProfileData() তে email load যোগ করা হয়েছে
   void loadProfileData() {
     final profile = Get.find<ChefHomeController>().chefProfile.value;
     if (profile == null) return;
 
     final nameParts = profile.name.split(' ');
     firstNameController.text = nameParts.isNotEmpty ? nameParts.first : '';
-    lastNameController.text = nameParts.length > 1 ? nameParts.skip(1).join(' ') : '';
+    lastNameController.text =
+    nameParts.length > 1 ? nameParts.skip(1).join(' ') : '';
 
     aboutController.text = profile.about;
     experienceController.text = profile.experience.toString();
@@ -293,29 +297,21 @@ class ChefProfileController extends GetxController {
     addressController.text = profile.address;
     distanceController.text = profile.cookingAreaDistance.toString();
 
-
+    // ✅ Email এখন load হবে
+    emailController.text = profile.email.isNotEmpty
+        ? profile.email
+        : LocalStorage.myEmail;
 
     isAutoAccept = profile.orderAutoAccept;
     isDiscount = profile.weekDaysDiscountHas;
-
     isWeekend = profile.weekendDiscountHas;
     weekendRateController.text = profile.weekendDiscountAmount.toString();
-
     selectedCuisines = List<String>.from(profile.foods);
 
     update();
   }
 
-
   Future<void> editProfileRepo(GlobalKey<FormState> formKey) async {
-    if (!formKey.currentState!.validate()) return;
-    if (!LocalStorage.isLogIn) return;
-
-
-    if (selectedLat == null || selectedLng == null) {
-      Utils.errorSnackBar("Error", "Please select a valid address from the suggestions");
-      return;
-    }
 
     isLoading = true;
     update();
@@ -333,13 +329,18 @@ class ChefProfileController extends GetxController {
       }
 
       if (userId.isEmpty) {
-        Utils.errorSnackBar("Error", "User not logged in. Please login again.");
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Utils.errorSnackBar(
+              "Error", "User not logged in. Please login again.");
+        });
         isLoading = false;
         update();
         return;
       }
+
       final Map<String, dynamic> body = {
-        "role": "CHEF","first_name": firstNameController.text.trim(),
+        "role": "CHEF",
+        "first_name": firstNameController.text.trim(),
         "last_name": lastNameController.text.trim(),
         "phone": numberController.text.trim(),
         "address": addressController.text.trim(),
@@ -387,10 +388,10 @@ class ChefProfileController extends GetxController {
         await Get.find<ChefHomeController>().fetchChefProfile();
         update();
 
-
         Get.toNamed(AppRoutes.chefHomeScreen, arguments: {"index": 4});
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
+        Utils.errorSnackBar(
+            "Error", response.data['message'] ?? "Something went wrong");
       }
     } catch (e) {
       Utils.errorSnackBar("Error", e.toString());
