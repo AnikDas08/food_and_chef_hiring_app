@@ -6,11 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/button/common_button.dart';
-import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../../utils/constants/app_string.dart';
 import '../../../../../component/text_field/common_text_field.dart';
-import '../../../../../utils/constants/app_icons.dart';
 import '../widgets/delete_pop_up.dart';
 
 class AccountSetting extends StatefulWidget {
@@ -20,7 +18,16 @@ class AccountSetting extends StatefulWidget {
 }
 
 class _AccountSettingState extends State<AccountSetting> {
+
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<ChefProfileController>().loadProfileData();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +60,7 @@ class _AccountSettingState extends State<AccountSetting> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // ── Email ──
                         const CommonText(
                           text: "Email",
                           fontWeight: FontWeight.w600,
@@ -64,6 +72,8 @@ class _AccountSettingState extends State<AccountSetting> {
                           hintText: "Enter email",
                           keyboardType: TextInputType.emailAddress,
                         ),
+
+                        // ── Phone ──
                         const CommonText(
                           text: AppString.phoneNumber,
                           fontWeight: FontWeight.w600,
@@ -72,7 +82,7 @@ class _AccountSettingState extends State<AccountSetting> {
                         ),
                         IntlPhoneField(
                           controller: controller.phoneController,
-                          initialCountryCode: 'US', // ← default USA
+                          initialCountryCode: 'US',
                           decoration: InputDecoration(
                             hintText: "Enter phone number",
                             filled: true,
@@ -90,72 +100,20 @@ class _AccountSettingState extends State<AccountSetting> {
                               borderSide: BorderSide.none,
                             ),
                           ),
-                          style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
-                          dropdownTextStyle: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
+                          style: TextStyle(
+                              fontSize: 13.sp,
+                              color: const Color(0xFF272727)),
+                          dropdownTextStyle: TextStyle(
+                              fontSize: 13.sp,
+                              color: const Color(0xFF272727)),
                           flagsButtonPadding: EdgeInsets.only(left: 12.w),
                           onChanged: (phone) {
                             controller.phoneController.text = phone.number;
                             controller.selectedCountryCode = phone.countryCode;
                           },
                         ),
-                        CommonText(
-                          text: "Link Account".toUpperCase(),
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                          color: Color(0xff777777),
-                          top: 28,
-                          bottom: 8,
-                        ),
-                        12.height,
-                        Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: Color(0xffF8F4F1),
-                                shape: BoxShape.circle,
-                              ),
-                              child: CommonImage(imageSrc: AppIcons.google),
-                            ),
-                            12.width,
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CommonText(
-                                    text: "Google",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff272727),
-                                  ),
-                                  CommonText(
-                                    text: "darremonarch@gmail.com",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xff777777),
-                                    top: 2,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Color(0xffF2F2F2),
-                              ),
-                              child: CommonText(
-                                text: "Disconnect",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff272727),
-                              ),
-                            ),
-                          ],
-                        ),
+
+                        // ── Account Action ──
                         CommonText(
                           text: "ACCOUNT ACTION",
                           fontWeight: FontWeight.w500,
