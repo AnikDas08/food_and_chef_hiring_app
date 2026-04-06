@@ -343,9 +343,8 @@ class ChefProfileController extends GetxController {
         "first_name": firstNameController.text.trim(),
         "last_name": lastNameController.text.trim(),
         "phone": numberController.text.trim(),
-        "address": addressController.text.trim(),
-        "lat": selectedLat.toString(),
-        "lng": selectedLng.toString(),
+        if (selectedLat != null) "lat": selectedLat.toString(),
+        if (selectedLng != null) "lng": selectedLng.toString(),
         "about": aboutController.text.trim(),
         "experience": experienceController.text.trim().replaceAll(",", ""),
         "pricing": pricingController.text.trim(),
@@ -367,7 +366,7 @@ class ChefProfileController extends GetxController {
       }
 
       final response = await ApiService.multipartImage(
-        "user/onboarding/$userId",
+        "/user/profile",
         method: "PATCH",
         body: body,
         files: files,

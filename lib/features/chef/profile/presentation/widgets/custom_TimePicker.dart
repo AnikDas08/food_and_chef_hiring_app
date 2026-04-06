@@ -3,10 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 
 class SetAvailabilityPicker extends StatefulWidget {
-
   final TimeOfDay initialFromTime;
   final TimeOfDay initialToTime;
-
   final Function(TimeOfDay from, TimeOfDay to) onApply;
 
   const SetAvailabilityPicker({
@@ -35,8 +33,7 @@ class SetAvailabilityPicker extends StatefulWidget {
   }
 
   @override
-  State<SetAvailabilityPicker> createState() =>
-      _SetAvailabilityPickerState();
+  State<SetAvailabilityPicker> createState() => _SetAvailabilityPickerState();
 }
 
 class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
@@ -60,8 +57,7 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
   }
 
   int _findClosestIndex(TimeOfDay time) {
-    final hourOfPeriod =
-    time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
+    final hourOfPeriod = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
     final roundedMinute =
         ((time.minute / _intervalMinutes).round() * _intervalMinutes) % 60;
     for (int i = 0; i < _timeSlots.length; i++) {
@@ -96,10 +92,8 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
     _timeSlots = _generateTimeSlots();
     _fromIndex = _findClosestIndex(widget.initialFromTime);
     _toIndex = _findClosestIndex(widget.initialToTime);
-    _fromController =
-        FixedExtentScrollController(initialItem: _fromIndex);
-    _toController =
-        FixedExtentScrollController(initialItem: _toIndex);
+    _fromController = FixedExtentScrollController(initialItem: _fromIndex);
+    _toController = FixedExtentScrollController(initialItem: _toIndex);
   }
 
   @override
@@ -111,6 +105,7 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
 
   Widget _buildWheel({
     required FixedExtentScrollController controller,
+    required int selectedIndex,
     required Function(int) onChanged,
   }) {
     return SizedBox(
@@ -126,7 +121,7 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
         childDelegate: ListWheelChildBuilderDelegate(
           childCount: _timeSlots.length,
           builder: (context, index) {
-            final diff = (index - controller.selectedItem).abs();
+            final diff = (index - selectedIndex).abs();
             final isSelected = diff == 0;
 
             Color color;
@@ -141,7 +136,6 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
             }
 
             if (isSelected) {
-              // 2-line layout for selected item
               return Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -169,7 +163,6 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
               );
             }
 
-            // Single line for non-selected
             return Center(
               child: Text(
                 _formatTimeSingleLine(_timeSlots[index]),
@@ -221,7 +214,6 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
               letterSpacing: -0.3,
             ),
           ),
-          //16.verticalSpace,
 
           // Scroll Wheels
           SizedBox(
@@ -247,10 +239,11 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // ✅ FIX: selectedIndex: _fromIndex pass করা হয়েছে
                     _buildWheel(
                       controller: _fromController,
-                      onChanged: (i) =>
-                          setState(() => _fromIndex = i),
+                      selectedIndex: _fromIndex,
+                      onChanged: (i) => setState(() => _fromIndex = i),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -263,10 +256,11 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
                         ),
                       ),
                     ),
+                    // ✅ FIX: selectedIndex: _toIndex pass করা হয়েছে
                     _buildWheel(
                       controller: _toController,
-                      onChanged: (i) =>
-                          setState(() => _toIndex = i),
+                      selectedIndex: _toIndex,
+                      onChanged: (i) => setState(() => _toIndex = i),
                     ),
                   ],
                 ),
@@ -276,19 +270,18 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
 
           20.verticalSpace,
 
-          CommonButton(titleText: "Apply",onTap: (){
-
-            widget.onApply(
-              _timeSlots[_fromIndex],
-              _timeSlots[_toIndex],
-            );
-            Navigator.pop(context);
-
-          },)
+          CommonButton(
+            titleText: "Apply",
+            onTap: () {
+              widget.onApply(
+                _timeSlots[_fromIndex],
+                _timeSlots[_toIndex],
+              );
+              Navigator.pop(context);
+            },
+          ),
         ],
       ),
     );
   }
 }
-
-

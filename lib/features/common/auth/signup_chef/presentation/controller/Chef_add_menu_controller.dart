@@ -287,8 +287,8 @@ class CafeAddMenuItemController extends GetxController {
 
   bool _categoriesFetched = false;
 
-  Future<void> fetchCategories() async {
-    if (_categoriesFetched) return;
+  Future<void> fetchCategories({bool force = false}) async {
+    if (_categoriesFetched && !force) return; // ✅ force parameter add
     _categoriesFetched = true;
     isLoadingCategory.value = true;
     try {
@@ -534,14 +534,29 @@ class CafeAddMenuItemController extends GetxController {
       isSubmitting.value = false;
     }
   }
-
   Future<void> addMenuSection(String sectionName) async {
-    menuSections.add(MenuSectionModel(menuSection: sectionName, menus: []));
     try {
-      await ApiService.post(
-          "${ApiEndPoint.AddMenuSection}${LocalStorage.userId}", body: {"name": sectionName});
+      final res = await ApiService.post(
+        "${ApiEndPoint.AddMenuSection}${LocalStorage.userId}",
+        body: {"name": sectionName},
+      );
+
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        final newId = res.data['data']['_id'] ?? '';
+
+        menuSections.add(MenuSectionModel(menuSection: sectionName, menus: []));
+
+        if (!categoryList.contains(sectionName)) {
+          categoryModels.add(MenuCategoryModel(id: newId, name: sectionName));
+          categoryList.add(sectionName);
+        }
+
+        _selectedCategory.value = sectionName;
+
+        menuSections.refresh();
+      }
     } catch (e) {
-      debugPrint(" Add section error: $e");
+      debugPrint("Add section error: $e");
     }
   }
 

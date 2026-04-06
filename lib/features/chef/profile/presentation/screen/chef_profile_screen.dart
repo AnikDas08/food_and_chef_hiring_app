@@ -65,11 +65,12 @@ class ChefProfileScreen extends StatelessWidget {
                         return Row(
                           children: [
                             CommonImage(
-                              imageSrc: (profile?.image != null && profile!.image.isNotEmpty)
-                                  ? profile.image
+                              imageSrc: (profile?.image?.isNotEmpty ?? false)
+                                  ? profile!.image!
                                   : AppImages.image3,
-                              size: 52,
-                              fill: BoxFit.fill,
+                              height: 52,
+                              width: 52,
+                              fill: BoxFit.cover,
                               borderRadius: 50,
                             ),
                             12.width,

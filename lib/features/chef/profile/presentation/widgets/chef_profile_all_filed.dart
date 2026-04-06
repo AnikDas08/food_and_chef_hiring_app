@@ -5,6 +5,7 @@ import '../../../../../component/text_field/common_text_field.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../../../../../utils/helpers/other_helper.dart';
 import '../controller/chef_profile_controller.dart';
+import 'custom_TimePicker.dart';
 
 class ChefProfileAllFiled extends StatelessWidget {
   const ChefProfileAllFiled({super.key, required this.controller});
@@ -89,7 +90,7 @@ class ChefProfileAllFiled extends StatelessWidget {
           suffixIcon: const Padding(
             padding: EdgeInsets.all(14),
             child: Text(
-              '/hr',
+              '/h',
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
@@ -98,8 +99,6 @@ class ChefProfileAllFiled extends StatelessWidget {
             ),
           ),
         ),
-
-        // ── Weekday Discount Toggle ────────────────────────────────────────
         _ToggleCard(
           title: 'Offer discounted rate during specific hours on weekdays',
           isEnabled: controller.isDiscount,
@@ -120,8 +119,17 @@ class ChefProfileAllFiled extends StatelessWidget {
                       fontSize: 12,
                       keyboardType: TextInputType.none,
                       borderRadius: 12,
-                      onTap: () => OtherHelper.openTimePickerDialog(
-                          controller.fromController),
+                      onTap: () {
+                        SetAvailabilityPicker.show(
+                          context,
+                          initialFromTime: _parseTime(controller.fromController.text),
+                          initialToTime: _parseTime(controller.toController.text),
+                          onApply: (from, to) {
+                            controller.fromController.text = _formatTime(from);
+                            controller.toController.text = _formatTime(to);
+                          },
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -136,8 +144,18 @@ class ChefProfileAllFiled extends StatelessWidget {
                       keyboardType: TextInputType.none,
                       controller: controller.toController,
                       borderRadius: 12,
-                      onTap: () => OtherHelper.openTimePickerDialog(
-                          controller.toController),
+                      // ✅ এখানে change
+                      onTap: () {
+                        SetAvailabilityPicker.show(
+                          context,
+                          initialFromTime: _parseTime(controller.fromController.text),
+                          initialToTime: _parseTime(controller.toController.text),
+                          onApply: (from, to) {
+                            controller.fromController.text = _formatTime(from);
+                            controller.toController.text = _formatTime(to);
+                          },
+                        );
+                      },
                     ),
                   ),
                 ],
@@ -152,11 +170,12 @@ class ChefProfileAllFiled extends StatelessWidget {
                 suffixIcon: const Padding(
                   padding: EdgeInsets.all(14),
                   child: Text(
-                    '/hr',
+                    '/h',
                     style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff999999)),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff999999),
+                    ),
                   ),
                 ),
               ),
@@ -164,7 +183,6 @@ class ChefProfileAllFiled extends StatelessWidget {
           )
               : null,
         ),
-
         // ── Weekend Rate Toggle ────────────────────────────────────────────
         _ToggleCard(
           title: 'Ask for higher rate on weekends',
@@ -180,7 +198,7 @@ class ChefProfileAllFiled extends StatelessWidget {
             suffixIcon: const Padding(
               padding: EdgeInsets.all(14),
               child: Text(
-                '/hr',
+                '/h',
                 style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
@@ -224,7 +242,7 @@ class ChefProfileAllFiled extends StatelessWidget {
           suffixIcon: const Padding(
             padding: EdgeInsets.all(14),
             child: Text(
-              'hr',
+              'h',
               style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
@@ -240,8 +258,6 @@ class ChefProfileAllFiled extends StatelessWidget {
 
   Widget _gap() => const SizedBox(height: 8);
 }
-
-// ─── Reusable Widgets ─────────────────────────────────────────────────────────
 
 class _FieldLabel extends StatelessWidget {
   final String text;
@@ -342,8 +358,30 @@ class _DropdownStyleField extends StatelessWidget {
   }
 }
 
-/// Toggle card matching screenshot style
+String _formatTime(TimeOfDay time) {
+  final h = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
+  final m = time.minute.toString().padLeft(2, '0');
+  final period = time.period == DayPeriod.am ? 'AM' : 'PM';
+  return '${h.toString().padLeft(2, '0')}:$m $period';
+}
+
+TimeOfDay _parseTime(String text) {
+  try {
+    final parts = text.trim().split(' ');
+    final timeParts = parts[0].split(':');
+    int hour = int.parse(timeParts[0]);
+    final minute = int.parse(timeParts[1]);
+    final isPm = parts.length > 1 && parts[1].toUpperCase() == 'PM';
+    if (isPm && hour != 12) hour += 12;
+    if (!isPm && hour == 12) hour = 0;
+    return TimeOfDay(hour: hour, minute: minute);
+  } catch (_) {
+    return const TimeOfDay(hour: 9, minute: 0);
+  }
+}
+
 class _ToggleCard extends StatelessWidget {
+
   final String title;
   final bool isEnabled;
   final VoidCallback onToggle;

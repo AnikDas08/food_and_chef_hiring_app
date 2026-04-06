@@ -289,7 +289,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                         c.ingredientsList.isEmpty
                             ? Padding(
                           padding: EdgeInsets.symmetric(vertical: 6.h),
-                          child: Text("No ingredients added yet.",
+                          child: Text("select at least one ingredient",
                               style: TextStyle(fontSize: 12.sp, color: const Color(0xFF999999))),
                         )
                             : Column(

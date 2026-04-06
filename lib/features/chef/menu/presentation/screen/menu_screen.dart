@@ -162,10 +162,10 @@ class MenuScreen extends StatelessWidget {
                             onPressed: () => Navigator.pop(context),
                             child: const Text("Cancel")),
                         TextButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            Navigator.of(context).pop();
                             if (ctrl.text.trim().isNotEmpty) {
-                              c.addMenuSection(ctrl.text.trim());
-                              Navigator.pop(context); // ✅
+                              await c.addMenuSection(ctrl.text.trim());
                             }
                           },
                           child: const Text("Add", style: TextStyle(color: Color(0xFF1C1C1C))),
