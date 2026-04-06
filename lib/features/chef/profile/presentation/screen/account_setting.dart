@@ -12,9 +12,9 @@ import '../../../../../../utils/constants/app_string.dart';
 import '../../../../../component/text_field/common_text_field.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../widgets/delete_pop_up.dart';
+
 class AccountSetting extends StatefulWidget {
   const AccountSetting({super.key});
-
   @override
   State<AccountSetting> createState() => _AccountSettingState();
 }
