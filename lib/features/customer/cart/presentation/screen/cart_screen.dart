@@ -24,10 +24,20 @@ class CartScreen extends StatelessWidget {
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            automaticallyImplyLeading: false,
+            automaticallyImplyLeading: false, // আমরা custom leading দিচ্ছি
             centerTitle: false,
             backgroundColor: Colors.white,
             elevation: 0,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: const Color(0xff272727), // আপনার title color এর সাথে মিলিয়ে
+                size: 24.r,
+              ),
+              onPressed: () {
+                Get.back(); // GetX দিয়ে previous screen এ navigate করবে
+              },
+            ),
             title: CommonText(
               text: AppString.cart,
               fontSize: 24.sp, // Scaled title

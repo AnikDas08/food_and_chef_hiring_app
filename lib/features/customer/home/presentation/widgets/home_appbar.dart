@@ -19,8 +19,8 @@ AppBar homeAppbar() {
       children: [
         Expanded(
           child: GetBuilder<HomeController>(
-            builder: (controller)=> GestureDetector(
-              onTap: (){
+            builder: (controller) => GestureDetector(
+              onTap: () {
                 Get.toNamed(AppRoutes.addressScreen);
               },
               child: Column(
@@ -42,14 +42,30 @@ AppBar homeAppbar() {
                         size: 20,
                       ),
 
-                      Flexible(
-                        child: CommonText(
-                          text: controller.address,
-                          color: Color(0xff272727),
-                          fontWeight: FontWeight.w500,
-                          left: 4,
+                      // ✅ Show loader while fetching, address once ready
+                      if (controller.isLoadingLocation)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4),
+                          child: SizedBox(
+                            width: 14,
+                            height: 14,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Color(0xffFD713F),
+                            ),
+                          ),
+                        )
+                      else
+                        Flexible(
+                          child: CommonText(
+                            text: controller.address.isEmpty
+                                ? "Fetching location..."
+                                : controller.address,
+                            color: Color(0xff272727),
+                            fontWeight: FontWeight.w500,
+                            left: 4,
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ],

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:new_untitled/services/api/api_service.dart';
@@ -94,12 +95,12 @@ class HomeController extends GetxController {
       // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        // Prompt user to enable location services
         Get.dialog(
           AlertDialog(
-            title: const Text('Location Services Disabled'),
+            backgroundColor: Colors.white,
+            title: const Text('Location Services Disabled',style: TextStyle(color: Colors.black)),
             content: const Text(
-              'Please enable location services to find nearby chefs.',
+              'Please enable location services to find nearby chefs.',style: TextStyle(color: Colors.black),
             ),
             actions: [
               TextButton(
@@ -110,7 +111,6 @@ class HomeController extends GetxController {
                 onPressed: () async {
                   Get.back();
                   await Geolocator.openLocationSettings();
-                  // Retry after user returns from settings
                   await getCurrentLocationAndFetchChefs();
                 },
                 child: const Text(
@@ -134,7 +134,6 @@ class HomeController extends GetxController {
         permission = await Geolocator.requestPermission();
 
         if (permission == LocationPermission.denied) {
-          // User denied — show retry dialog
           Get.dialog(
             AlertDialog(
               title: const Text('Permission Denied'),
@@ -167,7 +166,6 @@ class HomeController extends GetxController {
       }
 
       if (permission == LocationPermission.deniedForever) {
-        // Permanently denied — guide user to app settings
         Get.dialog(
           AlertDialog(
             title: const Text('Location Permission Required'),
@@ -205,6 +203,30 @@ class HomeController extends GetxController {
 
       currentLat = position.latitude;
       currentLng = position.longitude;
+
+      // Reverse geocode to get human-readable address
+      try {
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+          position.latitude,
+          position.longitude,
+        );
+
+        if (placemarks.isNotEmpty) {
+          Placemark place = placemarks.first;
+
+          // Build address from available fields
+          List<String> addressParts = [
+            place.street ?? '',
+            place.subLocality ?? '',
+            place.locality ?? '',
+          ].where((part) => part.trim().isNotEmpty).toList();
+
+          address = addressParts.join(', ');
+        }
+      } catch (e) {
+        // Reverse geocoding failed — address will remain as profile address
+        debugPrint('Reverse geocoding failed: $e');
+      }
 
       isLoadingLocation = false;
       update();
@@ -287,19 +309,20 @@ class HomeController extends GetxController {
 
   void getProfileData() async {
     try {
-      final response = await ApiService.get(
-        "user/profile",
-      );
+      final response = await ApiService.get("user/profile");
       if (response.statusCode == 200) {
         final data = response.data;
-        address = response.data["data"]["address"]??"";
-        LocalStorage.userId=data["data"]?.id??"";
+
+        // ✅ Only set address from profile if location address isn't set yet
+        if (address.isEmpty) {
+          address = response.data["data"]["address"] ?? "";
+        }
+
+        LocalStorage.userId = data["data"]?.id ?? "";
         await LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
         update();
       }
-    } catch (e) {
-      //Utils.errorSnackBar(e.toString(), e.toString());
-    }
+    } catch (e) {}
   }
 
 

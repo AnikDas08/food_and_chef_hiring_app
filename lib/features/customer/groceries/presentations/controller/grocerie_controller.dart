@@ -14,10 +14,14 @@ class GroceryController extends GetxController {
   var basketItems = <Map<String, dynamic>>[].obs;
   var selectedOrderIds = <String>[].obs;
   var selectedPartner = "".obs;
+  var isBack=false;
 
   @override
   void onInit() {
     super.onInit();
+    if(Get.arguments==null){
+      isBack=true;
+    }
     initializeData();
   }
 

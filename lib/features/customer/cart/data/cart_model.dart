@@ -99,6 +99,7 @@ class CartMenuItem {
     unitPrepTime = json['unit_prep_time'];
     cartId = json['cart_id'];
   }
+  String? get menuId => menu != null && menu!.isNotEmpty ? menu!.first.id : null;
 }
 
 class CartMenuDetail {

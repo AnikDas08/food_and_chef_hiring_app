@@ -20,6 +20,7 @@ class CartController extends GetxController {
 
   bool isLoadingCart = false;
   bool isPostingCart = false;
+  String menuId="";
 
   // ── Other state ─────────────────────────────────────────────────────────────
   bool isDefaultAddress = false;
@@ -289,6 +290,8 @@ class CartController extends GetxController {
     try {
       final response = await ApiService.delete("cart/$cartItemId");
       if (response.statusCode == 200 || response.statusCode == 201) {
+        Get.back();
+        Utils.successSnackBar("Successful", "Successfully Delete the");
         await fetchCart(chefId);
       } else {
         Utils.errorSnackBar('Error', 'Failed to delete item');

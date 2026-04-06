@@ -222,6 +222,7 @@ void _confirmDelete(BuildContext context, CartController controller, String cart
   showDialog(
     context: context,
     builder: (_) => AlertDialog(
+      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       title: Text(
         "Remove Item",
