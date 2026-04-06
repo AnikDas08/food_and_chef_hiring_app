@@ -31,73 +31,13 @@ class MenuPage extends StatelessWidget {
           );
         }
 
-        return DefaultTabController(
-          length: sections.length,
-          child: Scaffold(
-            body: Obx(
-                  () => SafeArea(
-                top: controller.innerBoxIsScrolled.value,
-                child: Column(
-                  children: [
-                    _Header(sections: sections),
-                    Expanded(
-                      child: TabBarView(
-                        children: sections
-                            .map((s) => _MenuList(section: s))
-                            .toList(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+        // TabBarView only — the TabBar header is now a pinned SliverPersistentHeader
+        // in ChefDetailsScreen's headerSliverBuilder, sharing the same
+        // DefaultTabController that wraps the entire NestedScrollView.
+        return TabBarView(
+          children: sections.map((s) => _MenuList(section: s)).toList(),
         );
       },
-    );
-  }
-}
-
-// ── Tab header ──────────────────────────────────────────────────────────────
-
-class _Header extends StatelessWidget {
-  final List<String> sections;
-  const _Header({required this.sections});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GestureDetector(
-          onPanUpdate: (details) => appLog(details.globalPosition),
-          child: CommonText(
-            text: AppString.menu,
-            fontSize: 16,
-            left: 16,
-            fontWeight: FontWeight.w600,
-            color: Color(0xff272727),
-          ),
-        ),
-        8.height,
-        TabBar(
-          indicatorColor: Colors.transparent,
-          unselectedLabelColor: Color(0xff777777),
-          labelPadding: const EdgeInsets.symmetric(horizontal: 20),
-          isScrollable: sections.length > 3,
-          labelStyle: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: Color(0xffFD713F),
-          ),
-          unselectedLabelStyle: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: Color(0xff636363),
-          ),
-          tabs: sections.map((s) => Tab(text: s)).toList(),
-        ),
-      ],
     );
   }
 }
@@ -161,7 +101,9 @@ class _MenuListState extends State<_MenuList>
                 controller.selectedMenuSection == widget.section;
 
         // First load spinner
-        if (isFirst || (isLoading && (controller.menuCache[widget.section]?.isEmpty ?? true))) {
+        if (isFirst ||
+            (isLoading &&
+                (controller.menuCache[widget.section]?.isEmpty ?? true))) {
           return const CommonLoader();
         }
 
@@ -192,9 +134,9 @@ class _MenuListState extends State<_MenuList>
             // Last item — show loader or "no more" indicator
             if (index == items.length) {
               if (loadingMore) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: const Center(child: CircularProgressIndicator()),
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Center(child: CircularProgressIndicator()),
                 );
               }
               if (!hasMore && items.length > 10) {
