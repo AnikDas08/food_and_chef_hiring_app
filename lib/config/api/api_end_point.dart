@@ -48,6 +48,8 @@ class ApiEndPoint {
   static const String singleOrder = '/order/';
   static const String ChefReview = '/review';
   static const String ChefChatNav = '/chat/';
+  static const String getCuisines = "${baseUrl}/cusine";
+
 
 
 }

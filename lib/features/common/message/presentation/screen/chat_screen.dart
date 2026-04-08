@@ -48,15 +48,37 @@ class ChatListScreen extends StatelessWidget {
                 child: GetBuilder<ChatController>(
                   builder: (controller) => CommonTextField(
                     controller: controller.searchControllers,
-                    hintText: AppString.search,
+                    hintText: "Search for food, chef, etc",
                     keyboardType: TextInputType.text,
                     borderRadius: 30,
-                    fillColor: Color(0xffFAFAFA).withValues(alpha: 0.7),
-                    borderColor: Colors.grey.withValues(alpha: 0.3),
+                    fillColor: Color(0xffF5F5F5),
+                    borderColor: Colors.transparent,
                     onChanged: controller.searchChats,
                     prefixIcon: Padding(
                       padding: EdgeInsets.only(left: 16.w),
-                      child: Icon(CupertinoIcons.search),
+                      child: Icon(
+                        CupertinoIcons.search,
+                        color: Color(0xff9CA3AF),
+                        size: 23.sp,
+                      ),
+                    ),
+                    // ── Filter icon with divider ──
+                    suffixIcon: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 1,
+                          height: 22.h,
+                          color: Color(0xffE0E0E0),
+                        ),
+                        SizedBox(width: 12.w),
+                        Icon(
+                          Icons.filter_alt_outlined, // ← এই icon
+                          color: Color(0xff9CA3AF),
+                          size: 22.sp,
+                        ),
+                        SizedBox(width: 16.w),
+                      ],
                     ),
                   ),
                 ),

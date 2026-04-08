@@ -13,24 +13,21 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(NotificationsController());
 
     return Scaffold(
-      backgroundColor: Colors.white, // Figma অনুযায়ী মেইন ব্যাকগ্রাউন্ড সাদা
       appBar: AppBar(
         backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Color(0xff272727), size: 18),
-          onPressed: () => Get.back(),
-        ),
         title: const CommonText(
           text: "Notifications",
           fontWeight: FontWeight.w600,
           fontSize: 16,
           color: Color(0xff272727),
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(height: 1, color: const Color(0xffEEEFF2)),
         ),
       ),
       body: GetBuilder<NotificationsController>(
@@ -43,68 +40,34 @@ class NotificationScreen extends StatelessWidget {
             return const NoNotification();
           }
 
+          final grouped = ctrl.groupedNotifications;
+
           return RefreshIndicator(
             color: const Color(0xff5B5FEF),
             onRefresh: () => ctrl.getNotificationsRepo(),
             child: ListView.builder(
               controller: ctrl.scrollController,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-              itemCount: ctrl.notifications.length + (ctrl.isLoadingMore ? 1 : 0),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
               physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: _totalItemCount(grouped, ctrl.isLoadingMore),
               itemBuilder: (context, index) {
-                if (index == ctrl.notifications.length) {
+                final resolved = _resolveIndex(grouped, index);
+
+                if (resolved == null) {
                   return const Padding(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     child: Center(child: CommonLoader(size: 28)),
                   );
                 }
 
-                final item = ctrl.notifications[index];
-
-                // ─── Header Logic ───────────────────────────────────────────
-                bool showHeader = false;
-                String headerTitle = "";
-
-                DateTime itemDate = DateTime.tryParse(item.createdAt ?? "") ?? DateTime.now();
-                DateTime now = DateTime.now();
-                DateTime today = DateTime(now.year, now.month, now.day);
-                DateTime yesterday = today.subtract(const Duration(days: 1));
-                DateTime itemDay = DateTime(itemDate.year, itemDate.month, itemDate.day);
-
-                if (index == 0) {
-                  showHeader = true;
-                  headerTitle = (itemDay == today) ? "Recent" : (itemDay == yesterday ? "Yesterday" : "Earlier");
-                } else {
-                  final prevItem = ctrl.notifications[index - 1];
-                  DateTime prevDate = DateTime.tryParse(prevItem.createdAt ?? "") ?? DateTime.now();
-                  DateTime prevDay = DateTime(prevDate.year, prevDate.month, prevDate.day);
-
-                  if (itemDay != prevDay) {
-                    showHeader = true;
-                    headerTitle = (itemDay == yesterday) ? "Yesterday" : "Earlier";
-                  }
+                if (resolved is String) {
+                  return _SectionLabel(label: resolved);
                 }
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (showHeader)
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 12.h, top: index == 0 ? 10.h : 20.h),
-                        child: Text(
-                          headerTitle,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xff272727),
-                          ),
-                        ),
-                      ),
-                    _NotificationCard(
-                      item: item,
-                      onTap: () => ctrl.markAsRead(item.id ?? ''),
-                    ),
-                  ],
+                final item = resolved as NotificationModel;
+                return _NotificationCard(
+                  item: item,
+                  onTap: () => ctrl.markAsRead(item.id ?? ''),
                 );
               },
             ),
@@ -114,9 +77,54 @@ class NotificationScreen extends StatelessWidget {
       bottomNavigationBar: const CommonBottomNavBar(currentIndex: 1),
     );
   }
+
+  int _totalItemCount(
+      Map<String, List<NotificationModel>> grouped, bool isLoadingMore) {
+    int count = 0;
+    for (final entry in grouped.entries) {
+      count += 1 + entry.value.length; // 1 for label
+    }
+    if (isLoadingMore) count++;
+    return count;
+  }
+
+  /// Returns String (section label), NotificationModel, or null (loader).
+  dynamic _resolveIndex(
+      Map<String, List<NotificationModel>> grouped, int index) {
+    int cursor = 0;
+    for (final entry in grouped.entries) {
+      if (index == cursor) return entry.key; // section label
+      cursor++;
+      final items = entry.value;
+      if (index < cursor + items.length) return items[index - cursor];
+      cursor += items.length;
+    }
+    return null; // loading indicator
+  }
 }
 
-// ─── Clean Card with #F2F2F2 Background ─────────────────────────────────────
+
+class _SectionLabel extends StatelessWidget {
+  final String label;
+  const _SectionLabel({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 12.h, bottom: 8.h),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 13.sp,
+          fontWeight: FontWeight.w600,
+          color: const Color(0xff272727),
+        ),
+      ),
+    );
+  }
+}
+
+// ─── Notification Card ────────────────────────────────────────────────────────
 
 class _NotificationCard extends StatelessWidget {
   final NotificationModel item;
@@ -130,49 +138,55 @@ class _NotificationCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: EdgeInsets.only(bottom: 10.h),
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
         decoration: BoxDecoration(
-          color: const Color(0xffF2F2F2), // আপনার দেওয়া স্পেসিফিক কালার
-          borderRadius: BorderRadius.circular(20.r), // Figma Radius: 20px
-          // No Border, No Shadow as per clean design request
+          color: const Color(0xffF2F2F2), // ← Figma color, no border
+          borderRadius: BorderRadius.circular(16.r),
         ),
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
+            // Content
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     item.title ?? 'Notification',
                     style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xff272727),
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xff1A1A1A),
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                Text(
-                  _formatTime(item.createdAt),
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: const Color(0xff272727).withOpacity(0.6),
+                  SizedBox(height: 4.h),
+                  Text(
+                    item.message ?? '',
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: const Color(0xff6B7280),
+                      height: 1.45,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              item.message ?? '',
-              style: TextStyle(
-                fontSize: 13.sp,
-                color: const Color(0xff6B7280),
-                height: 1.3,
+                ],
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            ),
+
+            SizedBox(width: 12.w),
+
+            // Time
+            Text(
+              _formatTime(item.createdAt),
+              style: TextStyle(
+                fontSize: 11.sp,
+                color: const Color(0xffA0A0A0),
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ],
         ),
@@ -184,11 +198,16 @@ class _NotificationCard extends StatelessWidget {
     if (dateStr == null) return '';
     final date = DateTime.tryParse(dateStr);
     if (date == null) return '';
-
-    final hour = date.hour > 12 ? date.hour - 12 : (date.hour == 0 ? 12 : date.hour);
-    final period = date.hour >= 12 ? "PM" : "AM";
-    final minute = date.minute.toString().padLeft(2, '0');
-
-    return "$hour:$minute $period";
+    final diff = DateTime.now().difference(date);
+    if (diff.inMinutes < 1) return 'Just now';
+    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
+    if (diff.inHours < 24) {
+      final h = date.hour;
+      final m = date.minute.toString().padLeft(2, '0');
+      final period = h >= 12 ? 'PM' : 'AM';
+      final hour = h % 12 == 0 ? 12 : h % 12;
+      return '$hour:$m $period';
+    }
+    return '${diff.inDays} days ago';
   }
 }

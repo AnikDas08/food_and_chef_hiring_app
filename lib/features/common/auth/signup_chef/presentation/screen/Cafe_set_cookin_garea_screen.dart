@@ -396,7 +396,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                             ),
                             const Spacer(),
                             Text(
-                              "Kilometers",
+                              "Distance",
                               style: TextStyle(
                                 fontSize: 13.sp,
                                 color: const Color(0xFF777777),

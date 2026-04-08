@@ -198,7 +198,7 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
                     elevation: 0,
                   ),
-                  child: Text("Finish & Create Account",
+                  child: Text("Continue",
                       style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
                 ),
               ),
