@@ -15,7 +15,6 @@ class CafeSetYourPriceScreen extends StatefulWidget {
 }
 
 class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
-
   final TextEditingController _baseRateController =
   TextEditingController(text: "");
   final TextEditingController _discountRateController =
@@ -32,6 +31,9 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
   TimeOfDay _toTime = const TimeOfDay(hour: 15, minute: 0);
   bool _isSubmitting = false;
 
+  // validation error message
+  String? _durationError;
+
   Future<void> _pickTime(bool isFrom) async {
     await SetAvailabilityPicker.show(
       context,
@@ -46,13 +48,22 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
     );
   }
 
-
-
   String _formatTime(TimeOfDay time) {
     final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
     final minute = time.minute.toString().padLeft(2, '0');
     final period = time.period == DayPeriod.am ? 'AM' : 'PM';
     return "${hour.toString().padLeft(2, '0')}:$minute $period";
+  }
+
+  /// null = valid, string = error
+  String? _validateDuration(String value) {
+    if (value.trim().isEmpty) return null;
+    final parsed = double.tryParse(value.trim());
+    if (parsed == null) return "Please enter a valid number";
+    if (parsed < 0.5) {
+      return "Minimum booking duration is 30 minutes (0.5h)";
+    }
+    return null;
   }
 
   @override
@@ -103,7 +114,6 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Title
                     Text(
                       "Set Your Price",
                       style: TextStyle(
@@ -135,7 +145,6 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     ),
                     12.verticalSpace,
 
-                    // ── Set Amount ──
                     Text(
                       "Set Amount",
                       style: TextStyle(
@@ -150,14 +159,15 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
 
                     // ── Discount Toggle Card ──
                     _buildToggleCard(
-                      title: "Offer discounted rate during specific\nhours on weekdays",
+                      title:
+                      "Offer discounted rate during specific\nhours on weekdays",
                       value: _offerDiscount,
-                      onChanged: (val) => setState(() => _offerDiscount = val),
+                      onChanged: (val) =>
+                          setState(() => _offerDiscount = val),
                       child: _offerDiscount
                           ? Column(
                         children: [
                           12.verticalSpace,
-                          // From / To time row
                           Row(
                             children: [
                               Expanded(
@@ -189,7 +199,8 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     _buildToggleCard(
                       title: "Ask for higher rate on weekends",
                       value: _weekendRate,
-                      onChanged: (val) => setState(() => _weekendRate = val),
+                      onChanged: (val) =>
+                          setState(() => _weekendRate = val),
                       child: _weekendRate
                           ? Column(
                         children: [
@@ -201,7 +212,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     ),
                     24.verticalSpace,
 
-                    // ── MINIMUM BOOKING DURATION Label ──
+                    // ── MINIMUM BOOKING DURATION ──
                     Text(
                       "MINIMUM BOOKING DURATION",
                       style: TextStyle(
@@ -222,11 +233,17 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     ),
                     8.verticalSpace,
 
-                    // Duration field
+                    // ── Duration Input Field ──
                     Container(
                       decoration: BoxDecoration(
                         color: const Color(0xFFF7F7F7),
                         borderRadius: BorderRadius.circular(12.r),
+                        border: _durationError != null
+                            ? Border.all(
+                          color: const Color(0xFFE53935),
+                          width: 1.2,
+                        )
+                            : null,
                       ),
                       padding: EdgeInsets.symmetric(
                           horizontal: 16.w, vertical: 4.h),
@@ -246,14 +263,23 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                                 fontSize: 14.sp,
                                 color: const Color(0xFF272727),
                               ),
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 hintText: "Enter Your Amount",
+                                hintStyle: TextStyle(
+                                  color: const Color(0xFFAAAAAA),
+                                  fontSize: 13.sp,
+                                ),
                                 border: InputBorder.none,
                               ),
+                              onChanged: (val) {
+                                setState(() {
+                                  _durationError = _validateDuration(val);
+                                });
+                              },
                             ),
                           ),
                           Text(
-                            "hr",
+                            "h",
                             style: TextStyle(
                               fontSize: 13.sp,
                               color: const Color(0xFF777777),
@@ -262,12 +288,45 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                         ],
                       ),
                     ),
+
+                    // ── Error or hint below field ──
+                    4.verticalSpace,
+                    if (_durationError != null)
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.error_outline_rounded,
+                            size: 13.sp,
+                            color: const Color(0xFFE53935),
+                          ),
+                          4.horizontalSpace,
+                          Expanded(
+                            child: Text(
+                              _durationError!,
+                              style: TextStyle(
+                                fontSize: 11.sp,
+                                color: const Color(0xFFE53935),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    else
+                      Text(
+                        "Minimum is 30 minutes (0.5h). e.g. 0.5, 1, 1.5, 2",
+                        style: TextStyle(
+                          fontSize: 11.sp,
+                          color: const Color(0xFF999999),
+                        ),
+                      ),
+
                     32.verticalSpace,
                   ],
                 ),
               ),
             ),
 
+            // ── Continue Button ──
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
               child: SizedBox(
@@ -279,38 +338,54 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                       : () async {
                     if (_baseRateController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Please enter base rate")),
+                        const SnackBar(
+                            content:
+                            Text("Please enter base rate")),
                       );
+                      return;
+                    }
+
+                    // block if duration is invalid
+                    final durErr = _validateDuration(
+                        _minDurationController.text);
+                    if (durErr != null) {
+                      setState(() => _durationError = durErr);
                       return;
                     }
 
                     setState(() => _isSubmitting = true);
                     try {
-                      final controller = SignUpChefController.instance;
+                      final controller =
+                          SignUpChefController.instance;
 
-                      final Map<String, dynamic> weekDaysDiscount = _offerDiscount
+                      final Map<String, dynamic> weekDaysDiscount =
+                      _offerDiscount
                           ? {
                         "from": _formatTime(_fromTime),
                         "to": _formatTime(_toTime),
-                        "amount": _discountRateController.text.trim(),
+                        "amount": _discountRateController
+                            .text
+                            .trim(),
                       }
                           : {};
-
 
                       await controller.setupChefPrice(
                         pricing: _baseRateController.text.trim(),
                         weekDaysDiscountHas: _offerDiscount,
                         weekDaysDiscount: weekDaysDiscount,
                         weekendDiscountHas: _weekendRate,
-                        weekendDiscountAmount: _weekendRateController.text.trim().isEmpty
+                        weekendDiscountAmount:
+                        _weekendRateController.text.trim().isEmpty
                             ? "0"
                             : _weekendRateController.text.trim(),
-                        minimumShortOrderHours: _minDurationController.text.trim().isEmpty
+                        minimumShortOrderHours:
+                        _minDurationController.text.trim().isEmpty
                             ? "1"
                             : _minDurationController.text.trim(),
                       );
                     } finally {
-                      if (mounted) setState(() => _isSubmitting = false);
+                      if (mounted)
+                        setState(() => _isSubmitting = false);
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -396,7 +471,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
             ),
           ),
           Text(
-            "/hr",
+            "/h",
             style: TextStyle(
               fontSize: 13.sp,
               color: const Color(0xFF777777),

@@ -61,6 +61,7 @@ import '../../features/customer/payment/presentation/screen/payment_method_scree
 import '../../features/customer/profile/presentation/screen/edit_profile.dart';
 
 class AppRoutes {
+
   static const String test = "/test_screen.dart";
   static const String splash = "/splash_screen.dart";
   static const String onboarding = "/onboarding_screen.dart";
@@ -73,8 +74,6 @@ class AppRoutes {
   static const String createPassword = "/create_password.dart";
   static const String changePassword = "/change_password_screen.dart";
   static const String notifications = "/notifications_screen.dart";
-
-  // static const String chat = "/chat_screen.dart";
   static const String message = "/message_screen.dart";
 
   // static const String profile = "/profile_screen.dart";
@@ -132,6 +131,9 @@ class AppRoutes {
   static const String promoCode = "/promo_code_screen.dart";
   static const String customerHomeScreen = "/customer_home_screen.dart";
 
+
+  //===============================================================================
+
   static List<GetPage> routes = [
     GetPage(name: create_password_chef_screen, page: () =>  CreatePasswordChefScreen()),
     GetPage(name: create_password_chef_screen, page: () =>  CreatePasswordChefScreen()),
@@ -148,9 +150,7 @@ class AppRoutes {
     GetPage(name: createPassword, page: () => CreatePassword()),
     GetPage(name: changePassword, page: () => ChangePasswordScreen()),
     GetPage(name: notifications, page: () => const NotificationScreen()),
-    // GetPage(name: chat, page: () => const ChatListScreen()),
     GetPage(name: message, page: () => const MessageScreen()),
-    // GetPage(name: profile, page: () => const ProfileScreen()),
     GetPage(name: editProfile, page: () => EditProfile()),
     GetPage(name: privacyPolicy, page: () => const PrivacyPolicyScreen()),
     GetPage(name: termsOfServices, page: () => const TermsOfServicesScreen()),
@@ -159,14 +159,12 @@ class AppRoutes {
     GetPage(name: nameScreen, page: () => NameScreen()),
     GetPage(name: dietaryPreferences, page: () => DietaryPreferencesScreen()),
     GetPage(name: reviewDetail, page: () => ReviewDetailScreen()),
-    // GetPage(name: customerHome, page: () => CustomerHome()),
     GetPage(name: homeSearch, page: () => SearchScreen()),
     GetPage(name: chefDetails, page: () => ChefDetailsScreen()),
     GetPage(name: cart, page: () => CartScreen()),
     GetPage(name: checkout, page: () => CheckoutScreen()),
     GetPage(name: businessTaxDetails, page: () => BusinessTaxDetailsScreen()),
     GetPage(name: personalTaxDetails, page: () => PersonalTaxDetailsScreen()),
-    // GetPage(name: bookingHistory, page: () => BookingHistoryScreen()),
     GetPage(name: requestChange, page: () => RequestChangeScreen()),
     GetPage(name: App_Information_Screen, page: () => AppInformationScreen()),
     GetPage(name: edit_address, page: () => EditAddressScreen()),
@@ -174,7 +172,6 @@ class AppRoutes {
     GetPage(name: addAddress, page: () => AddAddressScreen()),
     GetPage(name: paymentMethod, page: () => PaymentMethodScreen()),
     GetPage(name: addCard, page: () => AddCardScreen()),
-
     GetPage(name: editCard, page: () => EditCardScreen()),
     GetPage(name: pastOrder, page: () => PastOrderScreen()),
     GetPage(name: reorder, page: () => ReorderScreen()),
@@ -189,7 +186,6 @@ class AppRoutes {
     GetPage(name: addMenu, page: () => AddMenuScreen()),
     GetPage(name: editMenu, page: () => EditMenu()),
     GetPage(name: accountSetting, page: () => AccountSetting()),
-    // GetPage(name: analytics, page: () => AnalyticsScreen()),
     GetPage(name: kitchen, page: () => KitchenScreen()),
     GetPage(name: dietary, page: () => DietaryScreen()),
     GetPage(name: addEquipment, page: () => AddEquipmentScreen()),
