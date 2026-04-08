@@ -22,6 +22,33 @@ class NotificationsController extends GetxController {
     _setupScrollListener();
   }
 
+  // notifications_controller.dart এ এটা add করো
+
+  Map<String, List<NotificationModel>> get groupedNotifications {
+    final Map<String, List<NotificationModel>> map = {};
+    final now = DateTime.now();
+
+    for (final n in notifications) {
+      final date = DateTime.tryParse(n.createdAt ?? '');
+      String label;
+      if (date == null) {
+        label = 'Earlier';
+      } else {
+        final diff = now.difference(date).inDays;
+        if (diff == 0) {
+          label = 'Recent';
+        } else if (diff == 1) {
+          label = 'Yesterday';
+        } else {
+          label = 'Earlier';
+        }
+      }
+      map.putIfAbsent(label, () => []).add(n);
+    }
+    return map;
+  }
+
+
   /// Initial Fetch (Page 1)
   Future<void> getNotificationsRepo() async {
     if (isLoading) return;

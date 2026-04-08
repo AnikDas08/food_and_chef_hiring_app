@@ -11,6 +11,7 @@ import '../../../../../utils/app_utils.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 
 class ChefProfileController extends GetxController {
+
   /// Language List
   List languages = ["English", "French", "Arabic"];
 
@@ -45,19 +46,34 @@ class ChefProfileController extends GetxController {
     }
   }
 
-  /// Cuisine Options
-  final List<String> cuisineOptions = [
-    'Chinese', 'Italian', 'American', 'Indian', 'Japanese',
-    'Mexican', 'Thai', 'French', 'Mediterranean',
-  ];
-  List<String> selectedCuisines = [];
+  final RxList<CuisineModel> allCuisines = <CuisineModel>[].obs;
+  final RxList<String> selectedCuisineIds = <String>[].obs;
 
-  /// Expertise Options
+  List<String> get selectedCuisineNames => allCuisines
+      .where((c) => selectedCuisineIds.contains(c.id))
+      .map((c) => c.name)
+      .toList();
+
+  Future<void> fetchCuisines() async {
+    final response = await ApiService.get(ApiEndPoint.getCuisines);
+    if (response.statusCode == 200) {
+      final List data = response.data['data'] ?? [];
+      allCuisines.value = data.map((e) => CuisineModel.fromJson(e)).toList();
+    }
+  }
+
+  void toggleCuisine(String id) {
+    if (selectedCuisineIds.contains(id)) {
+      selectedCuisineIds.remove(id);
+    } else {
+      selectedCuisineIds.add(id);
+    }
+  }
+
   List<String> expertiseInCooking = [
     "Chinese", "Italian", "American", "Indian", "Japanese",
   ];
 
-  /// Text Controllers
   TextEditingController selectExpertiseController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -75,30 +91,26 @@ class ChefProfileController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
-  /// Location Data
   double? selectedLat;
   double? selectedLng;
 
-  /// Address Autocomplete
   List<Map<String, String>> addressSuggestions = [];
   bool isSearchingAddress = false;
 
-  /// Toggles
   bool isDiscount = false;
   bool isWeekend = false;
   bool isAutoAccept = false;
 
-  /// Language & Profile
   String selectedLanguage = "English";
   Map<String, dynamic> selectedProfile = {
     "name": "Customers",
     "image": AppIcons.customers,
   };
 
-  /// Image & Loading
   String selectedCountryCode = '+1';
   String? image;
   bool isLoading = false;
+  bool isLoadingUpdate = false;
 
   @override
   void onInit() {
@@ -108,7 +120,35 @@ class ChefProfileController extends GetxController {
     }
   }
 
-  bool isLoadingUpdate = false;
+  void loadProfileData() {
+    final profile = Get.find<ChefHomeController>().chefProfile.value;
+    if (profile == null) return;
+
+    final nameParts = profile.name.split(' ');
+    firstNameController.text = nameParts.isNotEmpty ? nameParts.first : '';
+    lastNameController.text =
+    nameParts.length > 1 ? nameParts.skip(1).join(' ') : '';
+
+    aboutController.text = profile.about;
+    experienceController.text = profile.experience.toString();
+    pricingController.text = profile.pricing.toString();
+    addressController.text = profile.address;
+    distanceController.text = profile.cookingAreaDistance.toString();
+
+    emailController.text = profile.email.isNotEmpty
+        ? profile.email
+        : LocalStorage.myEmail;
+
+    isAutoAccept = profile.orderAutoAccept;
+    isDiscount = profile.weekDaysDiscountHas;
+    isWeekend = profile.weekendDiscountHas;
+    weekendRateController.text = profile.weekendDiscountAmount.toString();
+
+    // ✅ cuisine ids load
+    selectedCuisineIds.value = List<String>.from(profile.foods);
+
+    update();
+  }
 
   Future<void> updateContactInfo() async {
     isLoadingUpdate = true;
@@ -162,17 +202,18 @@ class ChefProfileController extends GetxController {
       final res = await GetConnect().get(uri.toString());
       if (res.statusCode == 200 && res.body['status'] == 'OK') {
         final predictions = res.body['predictions'] as List;
-        addressSuggestions = predictions.map<Map<String, String>>((p) {
-          final terms = p['terms'] as List? ?? [];
-          final title = terms.isNotEmpty
-              ? terms[0]['value'].toString()
-              : p['description'].toString();
-          return {
-            'title': title,
-            'sub': p['description'].toString(),
-            'placeId': p['place_id'].toString(),
-          };
-        }).toList();
+        addressSuggestions =
+            predictions.map<Map<String, String>>((p) {
+              final terms = p['terms'] as List? ?? [];
+              final title = terms.isNotEmpty
+                  ? terms[0]['value'].toString()
+                  : p['description'].toString();
+              return {
+                'title': title,
+                'sub': p['description'].toString(),
+                'placeId': p['place_id'].toString(),
+              };
+            }).toList();
       } else {
         addressSuggestions = [];
       }
@@ -229,15 +270,6 @@ class ChefProfileController extends GetxController {
     Get.back();
   }
 
-  void toggleCuisine(String cuisine) {
-    if (selectedCuisines.contains(cuisine)) {
-      selectedCuisines.remove(cuisine);
-    } else {
-      selectedCuisines.add(cuisine);
-    }
-    update();
-  }
-
   void onChangeDiscount(v) {
     isDiscount = !isDiscount;
     update();
@@ -280,39 +312,7 @@ class ChefProfileController extends GetxController {
     }
   }
 
-  // ✅ FIX 1: loadProfileData2() মুছে দেওয়া হয়েছে
-  // ✅ FIX 2: loadProfileData() তে email load যোগ করা হয়েছে
-  void loadProfileData() {
-    final profile = Get.find<ChefHomeController>().chefProfile.value;
-    if (profile == null) return;
-
-    final nameParts = profile.name.split(' ');
-    firstNameController.text = nameParts.isNotEmpty ? nameParts.first : '';
-    lastNameController.text =
-    nameParts.length > 1 ? nameParts.skip(1).join(' ') : '';
-
-    aboutController.text = profile.about;
-    experienceController.text = profile.experience.toString();
-    pricingController.text = profile.pricing.toString();
-    addressController.text = profile.address;
-    distanceController.text = profile.cookingAreaDistance.toString();
-
-    // ✅ Email এখন load হবে
-    emailController.text = profile.email.isNotEmpty
-        ? profile.email
-        : LocalStorage.myEmail;
-
-    isAutoAccept = profile.orderAutoAccept;
-    isDiscount = profile.weekDaysDiscountHas;
-    isWeekend = profile.weekendDiscountHas;
-    weekendRateController.text = profile.weekendDiscountAmount.toString();
-    selectedCuisines = List<String>.from(profile.foods);
-
-    update();
-  }
-
   Future<void> editProfileRepo(GlobalKey<FormState> formKey) async {
-
     isLoading = true;
     update();
 
@@ -330,8 +330,7 @@ class ChefProfileController extends GetxController {
 
       if (userId.isEmpty) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          Utils.errorSnackBar(
-              "Error", "User not logged in. Please login again.");
+          Utils.errorSnackBar("Error", "User not logged in. Please login again.");
         });
         isLoading = false;
         update();
@@ -357,7 +356,7 @@ class ChefProfileController extends GetxController {
         "week_days_discount_rate": weekdayRateController.text.trim(),
         "weekend_discount_has": isWeekend.toString(),
         "weekend_discount_rate": weekendRateController.text.trim(),
-        "foods": selectedCuisines.join(','),
+        "foods": selectedCuisineIds.join(','),
       };
 
       final List files = [];
@@ -420,4 +419,18 @@ class ChefProfileController extends GetxController {
     phoneController.dispose();
     super.onClose();
   }
+}
+
+class CuisineModel {
+  final String id;
+  final String name;
+  final String image;
+
+  CuisineModel({required this.id, required this.name, required this.image});
+
+  factory CuisineModel.fromJson(Map<String, dynamic> json) => CuisineModel(
+    id: json['_id'] ?? '',
+    name: json['name'] ?? '',
+    image: json['image'] ?? '',
+  );
 }

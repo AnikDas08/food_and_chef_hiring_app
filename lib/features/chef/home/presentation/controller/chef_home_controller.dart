@@ -20,6 +20,7 @@ class ChefHomeController extends GetxController {
   final RxBool isLoadingBookings = false.obs;
   final RxBool isLoadingProfile = false.obs;
   final RxDouble walletBalance = 0.0.obs;
+  final selectedBookingTab = 0.obs;
 
 
   @override

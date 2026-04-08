@@ -25,6 +25,7 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<ChefProfileController>().loadProfileData();
+      Get.find<ChefProfileController>().fetchCuisines();
     });
   }
 

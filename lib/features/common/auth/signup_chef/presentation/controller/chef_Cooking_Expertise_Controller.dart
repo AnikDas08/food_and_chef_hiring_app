@@ -26,6 +26,7 @@ class CuisineModel {
   );
 }
 
+
 class CafeCookingExpertiseController extends GetxController {
   final RxList<CuisineModel> allCuisines = <CuisineModel>[].obs;
   final RxList<String> selectedIds = <String>[].obs;

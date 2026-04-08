@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/text_field/common_text_field.dart';
 import '../../../../../utils/constants/app_string.dart';
@@ -17,11 +18,6 @@ class ChefProfileAllFiled extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
-        // ── Full Name ──────────────────────────────────────────────────────
-        // _FieldLabel(text: AppString.fullName),
-        // _gap(),
-        //_FieldLabel(text: 'First Name'),
         _gap(),
         CommonTextField(
           controller: controller.firstNameController,
@@ -40,7 +36,7 @@ class ChefProfileAllFiled extends StatelessWidget {
           borderRadius: 12,
         ),
         _FieldLabel(text: 'Cooking Area', top: 20),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(
           'Accept orders within ${controller.distanceController.text}km of your location',
           style: const TextStyle(
@@ -49,7 +45,7 @@ class ChefProfileAllFiled extends StatelessWidget {
             color: Color(0xff999999),
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         _AddressAutocompleteField(controller: controller),
 
         _FieldLabel(text: 'Chef Experience', top: 20),
@@ -76,8 +72,8 @@ class ChefProfileAllFiled extends StatelessWidget {
           borderRadius: 12,
         ),
 
-        SizedBox(height: 28),
-        _SectionLabel(text: 'PRICING'),
+        const SizedBox(height: 28),
+        const _SectionLabel(text: 'PRICING'),
         _FieldLabel(text: 'Set Amount', top: 14),
         _gap(),
         CommonTextField(
@@ -99,6 +95,7 @@ class ChefProfileAllFiled extends StatelessWidget {
             ),
           ),
         ),
+
         _ToggleCard(
           title: 'Offer discounted rate during specific hours on weekdays',
           isEnabled: controller.isDiscount,
@@ -122,11 +119,15 @@ class ChefProfileAllFiled extends StatelessWidget {
                       onTap: () {
                         SetAvailabilityPicker.show(
                           context,
-                          initialFromTime: _parseTime(controller.fromController.text),
-                          initialToTime: _parseTime(controller.toController.text),
+                          initialFromTime: _parseTime(
+                              controller.fromController.text),
+                          initialToTime:
+                          _parseTime(controller.toController.text),
                           onApply: (from, to) {
-                            controller.fromController.text = _formatTime(from);
-                            controller.toController.text = _formatTime(to);
+                            controller.fromController.text =
+                                _formatTime(from);
+                            controller.toController.text =
+                                _formatTime(to);
                           },
                         );
                       },
@@ -144,15 +145,18 @@ class ChefProfileAllFiled extends StatelessWidget {
                       keyboardType: TextInputType.none,
                       controller: controller.toController,
                       borderRadius: 12,
-                      // ✅ এখানে change
                       onTap: () {
                         SetAvailabilityPicker.show(
                           context,
-                          initialFromTime: _parseTime(controller.fromController.text),
-                          initialToTime: _parseTime(controller.toController.text),
+                          initialFromTime: _parseTime(
+                              controller.fromController.text),
+                          initialToTime:
+                          _parseTime(controller.toController.text),
                           onApply: (from, to) {
-                            controller.fromController.text = _formatTime(from);
-                            controller.toController.text = _formatTime(to);
+                            controller.fromController.text =
+                                _formatTime(from);
+                            controller.toController.text =
+                                _formatTime(to);
                           },
                         );
                       },
@@ -183,7 +187,7 @@ class ChefProfileAllFiled extends StatelessWidget {
           )
               : null,
         ),
-        // ── Weekend Rate Toggle ────────────────────────────────────────────
+
         _ToggleCard(
           title: 'Ask for higher rate on weekends',
           isEnabled: controller.isWeekend,
@@ -209,7 +213,6 @@ class ChefProfileAllFiled extends StatelessWidget {
               : null,
         ),
 
-        // ── Auto Accept Toggle ─────────────────────────────────────────────
         _ToggleCard(
           title: 'Enable Auto-Accept',
           isEnabled: controller.isAutoAccept,
@@ -219,9 +222,8 @@ class ChefProfileAllFiled extends StatelessWidget {
           child: null,
         ),
 
-        // ── Minimum Booking Duration ───────────────────────────────────────
-        SizedBox(height: 28),
-        _SectionLabel(text: 'MINIMUM BOOKING DURATION'),
+        const SizedBox(height: 28),
+        const _SectionLabel(text: 'MINIMUM BOOKING DURATION'),
         const SizedBox(height: 12),
         const Text(
           'Set shortest session length you accept',
@@ -236,8 +238,7 @@ class ChefProfileAllFiled extends StatelessWidget {
           controller: controller.minBookingController,
           validator: OtherHelper.validator,
           hintText: '1.0',
-          keyboardType:
-          const TextInputType.numberWithOptions(decimal: true),
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
           borderRadius: 12,
           suffixIcon: const Padding(
             padding: EdgeInsets.all(14),
@@ -258,6 +259,7 @@ class ChefProfileAllFiled extends StatelessWidget {
 
   Widget _gap() => const SizedBox(height: 8);
 }
+
 
 class _FieldLabel extends StatelessWidget {
   final String text;
@@ -298,7 +300,6 @@ class _SectionLabel extends StatelessWidget {
   }
 }
 
-/// TextField that looks like a dropdown (chevron icon on the right)
 class _DropdownStyleField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
@@ -338,20 +339,20 @@ class _DropdownStyleField extends StatelessWidget {
                   color: Color(0xffAAAAAA),
                 ),
                 border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 14),
+                contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               ),
             ),
           ),
           if (suffix != null) suffix!,
-          const Padding(
-            padding: EdgeInsets.only(right: 12),
-            child: Icon(
-              Icons.keyboard_arrow_down_rounded,
-              color: Color(0xff272727),
-              size: 22,
-            ),
-          ),
+          // const Padding(
+          //   padding: EdgeInsets.only(right: 12),
+          //   child: Icon(
+          //     Icons.keyboard_arrow_down_rounded,
+          //     color: Color(0xff272727),
+          //     size: 22,
+          //   ),
+          // ),
         ],
       ),
     );
@@ -381,7 +382,6 @@ TimeOfDay _parseTime(String text) {
 }
 
 class _ToggleCard extends StatelessWidget {
-
   final String title;
   final bool isEnabled;
   final VoidCallback onToggle;
@@ -466,7 +466,8 @@ class _AddressAutocompleteField extends StatefulWidget {
       _AddressAutocompleteFieldState();
 }
 
-class _AddressAutocompleteFieldState extends State<_AddressAutocompleteField> {
+class _AddressAutocompleteFieldState
+    extends State<_AddressAutocompleteField> {
   Timer? _debounce;
 
   void _onChanged(String value) {
@@ -487,7 +488,6 @@ class _AddressAutocompleteFieldState extends State<_AddressAutocompleteField> {
     final ctrl = widget.controller;
     return Column(
       children: [
-        // Search field
         Container(
           decoration: BoxDecoration(
             color: const Color(0xffF7F7F7),
@@ -542,13 +542,11 @@ class _AddressAutocompleteFieldState extends State<_AddressAutocompleteField> {
                     color: Color(0xffFF6B35), size: 20),
               ),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16, vertical: 14),
+              contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             ),
           ),
         ),
-
-        // Suggestions dropdown
         if (ctrl.addressSuggestions.isNotEmpty)
           ConstrainedBox(
             constraints: const BoxConstraints(maxHeight: 220),
@@ -617,8 +615,6 @@ class _AddressAutocompleteFieldState extends State<_AddressAutocompleteField> {
               ),
             ),
           ),
-
-        // Location confirmed badge
         if (ctrl.selectedLat != null && ctrl.addressSuggestions.isEmpty)
           const Padding(
             padding: EdgeInsets.only(top: 6, left: 2),
@@ -643,81 +639,88 @@ class _AddressAutocompleteFieldState extends State<_AddressAutocompleteField> {
   }
 }
 
-// ─── Cuisine Selector ─────────────────────────────────────────────────────────
-
 class _CuisineSelector extends StatelessWidget {
   const _CuisineSelector({required this.controller});
   final ChefProfileController controller;
 
   @override
   Widget build(BuildContext context) {
-    final hasSelected = controller.selectedCuisines.isNotEmpty;
+    return Obx(() {
 
-    return GestureDetector(
-      onTap: () => _showCuisineBottomSheet(context),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(
-          color: const Color(0xffF7F7F7),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: const Color(0xffE8E8E8)),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: hasSelected
-                  ? Wrap(
-                spacing: 6,
-                runSpacing: 4,
-                children: controller.selectedCuisines
-                    .map(
-                      (c) => Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                          color: const Color(0xffE0E0E0)),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          c,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Color(0xff272727),
-                            fontWeight: FontWeight.w500,
+      final hasSelected = controller.selectedCuisineNames.isNotEmpty;
+
+      return GestureDetector(
+        onTap: () => _showCuisineBottomSheet(context),
+        child: Container(
+          padding:
+          const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            color: const Color(0xffF7F7F7),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xffE8E8E8)),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: hasSelected
+                    ? Wrap(
+                  spacing: 6,
+                  runSpacing: 4,
+                  children: controller.selectedCuisineNames.map((name) {
+                    final cuisine = controller.allCuisines
+                        .firstWhereOrNull((c) => c.name == name);
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                            color: const Color(0xffE0E0E0)),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            name,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Color(0xff272727),
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 4),
-                        GestureDetector(
-                          onTap: () => controller.toggleCuisine(c),
-                          child: const Icon(Icons.close,
-                              size: 12,
-                              color: Color(0xff999999)),
-                        ),
-                      ],
-                    ),
-                  ),
+                          const SizedBox(width: 4),
+                          GestureDetector(
+                            onTap: () {
+                              if (cuisine != null) {
+                                controller
+                                    .toggleCuisine(cuisine.id);
+                              }
+                            },
+                            child: const Icon(Icons.close,
+                                size: 12,
+                                color: Color(0xff999999)),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 )
-                    .toList(),
-              )
-                  : const Text(
-                'Select cuisines',
-                style: TextStyle(
-                    fontSize: 14, color: Color(0xffAAAAAA)),
+                    : const Text(
+                  'Select cuisines',
+                  style: TextStyle(
+                      fontSize: 14, color: Color(0xffAAAAAA)),
+                ),
               ),
-            ),
-            const SizedBox(width: 6),
-            const Icon(Icons.keyboard_arrow_down_rounded,
-                color: Color(0xff272727), size: 22),
-          ],
+              const SizedBox(width: 6),
+              const Icon(Icons.keyboard_arrow_down_rounded,
+                  color: Color(0xff272727), size: 22),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   void _showCuisineBottomSheet(BuildContext context) {
@@ -732,6 +735,8 @@ class _CuisineSelector extends StatelessWidget {
   }
 }
 
+// ─── Cuisine Bottom Sheet ─────────────────────────────────────────────────────
+
 class _CuisineBottomSheet extends StatefulWidget {
   const _CuisineBottomSheet({required this.controller});
   final ChefProfileController controller;
@@ -741,23 +746,24 @@ class _CuisineBottomSheet extends StatefulWidget {
 }
 
 class _CuisineBottomSheetState extends State<_CuisineBottomSheet> {
-  late List<String> _selected;
+  late List<String> _selectedIds;
 
   @override
   void initState() {
     super.initState();
-    _selected = List.from(widget.controller.selectedCuisines);
+    _selectedIds = List.from(widget.controller.selectedCuisineIds);
   }
 
   @override
   Widget build(BuildContext context) {
+    final allCuisines = widget.controller.allCuisines;
+
     return Padding(
       padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Handle bar
           Container(
             margin: const EdgeInsets.only(top: 12),
             width: 40,
@@ -773,23 +779,31 @@ class _CuisineBottomSheetState extends State<_CuisineBottomSheet> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Select Cuisines',
-                style: TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.w700),
+                style:
+                TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
               ),
             ),
           ),
           Flexible(
-            child: SingleChildScrollView(
+            child: allCuisines.isEmpty
+                ? const Padding(
+              padding: EdgeInsets.all(32),
+              child: Center(child: CircularProgressIndicator()),
+            )
+                : SingleChildScrollView(
               child: Column(
-                children: widget.controller.cuisineOptions.map((cuisine) {
-                  final isSelected = _selected.contains(cuisine);
+                children: allCuisines.map((cuisine) {
+                  final isSelected =
+                  _selectedIds.contains(cuisine.id);
                   return ListTile(
-                    contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 20),
-                    title: Text(cuisine,
-                        style: const TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500)),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20),
+                    title: Text(
+                      cuisine.name,
+                      style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500),
+                    ),
                     trailing: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       width: 22,
@@ -814,8 +828,8 @@ class _CuisineBottomSheetState extends State<_CuisineBottomSheet> {
                     onTap: () {
                       setState(() {
                         isSelected
-                            ? _selected.remove(cuisine)
-                            : _selected.add(cuisine);
+                            ? _selectedIds.remove(cuisine.id)
+                            : _selectedIds.add(cuisine.id);
                       });
                     },
                   );
@@ -836,15 +850,17 @@ class _CuisineBottomSheetState extends State<_CuisineBottomSheet> {
                   elevation: 0,
                 ),
                 onPressed: () {
-                  widget.controller.selectedCuisines = _selected;
-                  widget.controller.update();
+                  widget.controller.selectedCuisineIds.value =
+                      _selectedIds;
                   Navigator.pop(context);
                 },
-                child: const Text('Done',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600)),
+                child: const Text(
+                  'Done',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
             ),
           ),
