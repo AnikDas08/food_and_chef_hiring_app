@@ -23,11 +23,13 @@ class CommonPhoneNumberTextFiled extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IntlPhoneField(
+      // ✅ KEY FIX: Forces widget to rebuild when country code changes
+      key: ValueKey(initialCountryCode),
       controller: controller,
       onCountryChanged: countryChange,
       dropdownTextStyle: TextStyle(color: AppColors.black, fontSize: 14),
       onChanged: (phone) {
-        onChanged?.call(phone); // ✅ Forward to controller
+        onChanged?.call(phone);
       },
       style: TextStyle(color: AppColors.black, fontSize: 14),
       pickerDialogStyle: PickerDialogStyle(backgroundColor: Color(0xffF2F2F2)),
@@ -63,7 +65,7 @@ class CommonPhoneNumberTextFiled extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
       ),
-      initialCountryCode: initialCountryCode, // ✅ Dynamic ISO code
+      initialCountryCode: initialCountryCode,
       disableLengthCheck: true,
     );
   }

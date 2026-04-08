@@ -117,6 +117,7 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
                 fontSize: 22,
                 fontWeight: FontWeight.w700,
                 color: AppColors.black,
+                maxLines: 3,
                 textAlign: TextAlign.start,
               ),
               SizedBox(height: 8.h),

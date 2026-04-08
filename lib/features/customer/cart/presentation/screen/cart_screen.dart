@@ -164,7 +164,7 @@ class CartScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CommonText(
-              text: "Total",
+              text: "Subtotals",
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),
@@ -226,7 +226,7 @@ class CartScreen extends StatelessWidget {
         ),
         CommonText(
           text: "\$${(amount ?? 0).toStringAsFixed(2)}",
-          fontSize: 14.sp,
+          fontSize: 12.sp,
           fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
           color: const Color(0xff555555),
         ),

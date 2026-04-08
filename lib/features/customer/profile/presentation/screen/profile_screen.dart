@@ -66,7 +66,7 @@ class ProfileScreen extends StatelessWidget {
                     return CommonImage(
                       imageSrc: src,
                       size: 52,
-                      fill: BoxFit.fill,
+                      fill: BoxFit.cover,
                       borderRadius: 50,
                     );
                   }),

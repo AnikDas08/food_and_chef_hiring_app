@@ -23,7 +23,7 @@ class ProfileController extends GetxController {
   final deletePasswordController = TextEditingController();
 
   /// --- Rx State Variables ---
-  RxString imagePath = "".obs;         // Local file path for preview
+  RxString imagePath = "".obs;
   RxString name = "".obs;
   RxString email = "".obs;
   RxString profileImage = "".obs;
@@ -32,6 +32,9 @@ class ProfileController extends GetxController {
   RxBool isDeleteLoading = false.obs;
   RxBool isKitchen = false.obs;
 
+  // ✅ Make savedCountryIsoCode reactive so UI rebuilds when profile loads
+  RxString savedCountryIsoCode = "US".obs;
+
   String selectedLanguage = "English";
   Map<String, dynamic> selectedProfile = {
     "name": "Customers",
@@ -39,7 +42,6 @@ class ProfileController extends GetxController {
   };
 
   String savedCountryCode = "+1";
-  String savedCountryIsoCode = "US";
   String fullPhoneNumber = "";
 
   /// --- Controllers ---
@@ -65,12 +67,12 @@ class ProfileController extends GetxController {
         final data = response.data['data'];
 
         if (data != null) {
-          name.value = data["name"] ?? "";
+          name.value = data["orginal_name"] ?? "";
           email.value = data["email"] ?? "";
           profileImage.value = data["image"] ?? "";
           linkAccounts.value = data["link_accounts"] ?? [];
           isKitchen.value = data["is_kitchen_has"] ?? false;
-          print("dkfjdsf : ${ApiEndPoint.imageUrl+profileImage.value}");
+          print("Profile image: ${ApiEndPoint.imageUrl + profileImage.value}");
 
           nameController.text = name.value;
           addressController.text = data["address"] ?? "";
@@ -80,29 +82,42 @@ class ProfileController extends GetxController {
 
           if (existingPhone.contains(" ")) {
             List<String> parts = existingPhone.split(" ");
-            savedCountryCode = parts[0];
-            numberController.text = parts[1];
 
+            // ✅ parts[0] = "+1", parts[1..] = the number
+            savedCountryCode = parts[0];
+            numberController.text = parts.sublist(1).join(" ");
+
+            // ✅ Strip "+" and find matching ISO code from dial code
             String cleanCode = parts[0].replaceAll("+", "");
             try {
-              savedCountryIsoCode = countries
+              savedCountryIsoCode.value = countries
                   .firstWhere(
                     (c) => c.dialCode == cleanCode,
-                orElse: () => countries.firstWhere((c) => c.code == "BD"),
+                orElse: () => countries.firstWhere((c) => c.code == "US"),
               )
                   .code;
             } catch (e) {
-              savedCountryIsoCode = "BD";
+              savedCountryIsoCode.value = "US";
             }
           } else {
+            // No space found — treat entire string as number, default to US
             numberController.text = existingPhone;
-            savedCountryIsoCode = "BD";
+            savedCountryIsoCode.value = "US";
           }
         }
       }
     } catch (e) {
       debugPrint("Error fetching profile: $e");
     }
+  }
+
+  void onCountryChanged(Country country) {
+    savedCountryCode = "${country.dialCode}";
+    savedCountryIsoCode.value = country.code;
+
+    // ✅ Rebuild fullPhoneNumber with new country code + existing number
+    String currentNumber = numberController.text.trim();
+    fullPhoneNumber = "${country.dialCode} $currentNumber";
   }
 
   /// 2. Handle International Phone Changes
@@ -113,7 +128,7 @@ class ProfileController extends GetxController {
     String countryCode = phone.countryCode;
 
     savedCountryCode = code;
-    savedCountryIsoCode = phone.countryISOCode;
+    savedCountryIsoCode.value = phone.countryISOCode; // ✅ Update reactive ISO code on manual change
     fullPhoneNumber = "$countryCode $number";
   }
 
@@ -212,7 +227,7 @@ class ProfileController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        Get.back(); // Close dialog
+        Navigator.of(Get.context!).pop();
         Utils.successSnackBar("Success", "Account deleted successfully");
 
         // Clear local storage and navigate to login

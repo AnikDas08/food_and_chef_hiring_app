@@ -44,12 +44,13 @@ class EditProfileAllFiled extends StatelessWidget {
           top: 20,
           bottom: 8,
         ),
-        CommonPhoneNumberTextFiled(
+        // In EditProfileAllFiled, replace the phone field section:
+        Obx(() => CommonPhoneNumberTextFiled(
           controller: controller.numberController,
-          initialCountryCode: controller.savedCountryIsoCode,
+          initialCountryCode: controller.savedCountryIsoCode.value,
           onChanged: (phone) => controller.onPhoneChanged(phone),
-          countryChange: (value) {},
-        ),
+          countryChange: (country) => controller.onCountryChanged(country), // ✅
+        )),
 
         // ── Linked Accounts ───────────────────────────────────────────────
         CommonText(

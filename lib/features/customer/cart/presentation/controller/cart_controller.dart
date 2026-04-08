@@ -290,7 +290,7 @@ class CartController extends GetxController {
     try {
       final response = await ApiService.delete("cart/$cartItemId");
       if (response.statusCode == 200 || response.statusCode == 201) {
-        Get.back();
+        Navigator.pop(Get.context!);
         Utils.successSnackBar("Successful", "Successfully Delete the");
         await fetchCart(chefId);
       } else {
@@ -313,7 +313,7 @@ class CartController extends GetxController {
     dateController.text = "${selectedDate.dateMonthYear}, $time";
 
     // Close the dialog
-    Get.back();
+    Navigator.pop(Get.context!);
 
     update();
   }

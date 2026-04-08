@@ -527,7 +527,7 @@ class CheckoutScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CommonText(
-                text: "Total",
+                text: "Totals",
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xff272727),
@@ -567,13 +567,13 @@ class CheckoutScreen extends StatelessWidget {
       children: [
         CommonText(
           text: label,
-          fontSize: 13,
+          fontSize: 12,
           fontWeight: FontWeight.w400,
           color: const Color(0xff555555),
         ),
         CommonText(
           text: "\$${amount.toStringAsFixed(2)}",
-          fontSize: 13,
+          fontSize: 12,
           fontWeight: FontWeight.w400,
           color: const Color(0xff555555),
         ),

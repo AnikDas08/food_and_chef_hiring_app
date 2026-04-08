@@ -67,7 +67,16 @@ void availabilityPopup(BuildContext context, String chefId) {
                       children: controller.timeSlots.map((time) {
                         final isSelected = controller.selectedTime == time;
                         return GestureDetector(
-                          onTap: () => controller.selectTime(time),
+                          onTap: () {
+                            // 1. Update selected time
+                            controller.selectTime(time);
+
+                            // 2. Close bottom sheet and return selected date & time
+                            Navigator.pop(context, {
+                              'date': controller.selectedDate,
+                              'time': controller.selectedTime,
+                            });
+                          },
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                             decoration: BoxDecoration(
@@ -90,9 +99,9 @@ void availabilityPopup(BuildContext context, String chefId) {
                       titleText: "Done",
                       onTap: () {
                         // You can return the data back to the screen
-                        Get.back(result: {
+                        Navigator.pop(context, {
                           'date': controller.selectedDate,
-                          'time': controller.selectedTime
+                          'time': controller.selectedTime,
                         });
                       }
                   ),

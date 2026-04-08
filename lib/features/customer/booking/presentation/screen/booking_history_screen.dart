@@ -72,7 +72,7 @@ class BookingHistoryScreen extends StatelessWidget {
                                 ),
                                 color: isSelected
                                     ? const Color(0xff272727)
-                                    : Colors.transparent,
+                                    : Color(0xffF2F2F2),
                                 borderRadius: BorderRadius.circular(30.sp),
                               ),
                               child: CommonText(

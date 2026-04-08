@@ -182,7 +182,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                 buttonColor: Colors.transparent,
                 borderColor: Colors.transparent,
                 titleColor: Colors.black,
-                titleSize: 14.sp,
+                titleSize: 10.sp,
               )
             ],
           ),
