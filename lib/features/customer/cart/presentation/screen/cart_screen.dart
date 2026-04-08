@@ -35,7 +35,7 @@ class CartScreen extends StatelessWidget {
                 size: 24.r,
               ),
               onPressed: () {
-                Get.back(); // GetX দিয়ে previous screen এ navigate করবে
+                Navigator.pop(context);
               },
             ),
             title: CommonText(

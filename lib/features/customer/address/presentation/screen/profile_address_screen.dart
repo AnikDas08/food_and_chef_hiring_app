@@ -89,7 +89,7 @@ class ProfileAddressScreen extends StatelessWidget {
 
                           if (fromCheckout) {
                             return GestureDetector(
-                              onTap: () => Get.back(result: address),
+                              onTap: () => Navigator.pop(context, address),
                               child: addressItem(
                                 address,
                                 controller,

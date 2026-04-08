@@ -32,7 +32,7 @@ class CheckoutScreen extends StatelessWidget {
             CupertinoIcons.back, // iPhone style back arrow
             color: Color(0xff272727),
           ),
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.pop(context),
         ),
         title: CommonText(
           text: AppString.checkout,

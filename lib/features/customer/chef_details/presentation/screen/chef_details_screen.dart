@@ -123,7 +123,9 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                       ),
                     )
                         : InkWell(
-                      onTap: Get.back,
+                      onTap: (){
+                        Navigator.pop(Get.context!);
+                      },
                       child: Padding(
                         padding: EdgeInsets.only(left: 16.w),
                         child: Container(

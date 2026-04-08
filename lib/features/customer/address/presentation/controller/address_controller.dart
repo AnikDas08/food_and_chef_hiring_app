@@ -224,7 +224,7 @@ class AddressController extends GetxController {
         final idx = addressList.indexWhere((e) => e.id == editingAddress!.id);
         if (idx != -1) addressList[idx] = result;
         //_clearForm();
-        Get.back();
+        Navigator.pop(Get.context!);
         Utils.successSnackBar("Successful", "Successfully update your location");
       } else {
         _showError("Failed to update address");
@@ -405,7 +405,7 @@ class AddressController extends GetxController {
   void onChangeAddressType(int value) {
     addressLabelController.text = addressTypeList[value];
     update();
-    Get.back();
+    Navigator.pop(Get.context!);
   }
 
   Future<void> submitAddress() async {
@@ -450,7 +450,7 @@ class AddressController extends GetxController {
       if (result != null) {
         _resetForm();
         fetchAddresses();
-        Get.back();
+        Navigator.pop(Get.context!);
         Get.snackbar("Success", "Address added successfully",
             snackPosition: SnackPosition.BOTTOM);
       } else {

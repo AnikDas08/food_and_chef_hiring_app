@@ -198,12 +198,12 @@ void _showDeleteDialog(AddressModel address, AddressController controller) {
       content: const Text("Are you sure you want to delete this address?"),
       actions: [
         TextButton(
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.pop(Get.context!),
           child: const Text("Cancel"),
         ),
         TextButton(
           onPressed: () {
-            Get.back();
+            Navigator.pop(Get.context!);
             controller.deleteAddress(address.id);
           },
           child: const Text("Delete", style: TextStyle(color: Colors.red)),

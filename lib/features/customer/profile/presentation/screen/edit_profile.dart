@@ -59,16 +59,20 @@ class EditProfile extends StatelessWidget {
                               File(controller.imagePath.value),
                               fit: BoxFit.cover,
                             )
-                                : CommonImage(
-                              imageSrc: controller.profileImage.value
-                                  .isNotEmpty
-                                  ? ApiEndPoint.imageUrl +
-                                  controller.profileImage.value
-                                  : AppImages.image3,
-                              height: 100,
-                              width: 100,
-                              fill: BoxFit.cover,
-                            ),
+                                : (controller.profileImage.value.isNotEmpty
+                                ? (controller.profileImage.value.startsWith("http")
+                                ? Image.network(
+                              controller.profileImage.value,
+                              fit: BoxFit.cover,
+                            )
+                                : Image.network(
+                              ApiEndPoint.imageUrl + controller.profileImage.value,
+                              fit: BoxFit.cover,
+                            ))
+                                : Image.asset(
+                              AppImages.image3,
+                              fit: BoxFit.cover,
+                            )),
                           ),
                         ),
 
