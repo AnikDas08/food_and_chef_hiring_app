@@ -4,12 +4,14 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/features/customer/cart/presentation/controller/cart_controller.dart';
+import 'package:new_untitled/features/customer/cart/presentation/widgets/success_popup.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../utils/constants/app_string.dart';
+import 'failled_popup.dart';
 
 confirmCheckingPopup() {
   showDialog(
@@ -61,12 +63,12 @@ confirmCheckingPopup() {
                         titleWeight: FontWeight.w600,
                         titleColor: Color(0xffFFFFFF),
                         onTap: () async {
-                         /* await AnimationPopUpState.closeDialog();
+                          await AnimationPopUpState.closeDialog();
                           await Future.delayed(
                             const Duration(milliseconds: 500),
                           );
-                          successPopup();*/
-                          Get.back();
+                          successPopup();
+                          Navigator.pop(Get.context!);
                           Get.find<CartController>().placeOrder();
                         },
                       ),
@@ -81,12 +83,12 @@ confirmCheckingPopup() {
                         titleWeight: FontWeight.w600,
                         titleColor: Color(0xff777777),
                         onTap: () async {
-                          /*await AnimationPopUpState.closeDialog();
+                          await AnimationPopUpState.closeDialog();
                           await Future.delayed(
                             const Duration(milliseconds: 500),
                           );
-                          failledPopup();*/
-                          Get.back();
+                          failledPopup();
+                          Navigator.pop(Get.context!);
                         },
                       ),
                       16.height,

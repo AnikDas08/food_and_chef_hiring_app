@@ -146,7 +146,7 @@ deletePopUp() {
                                 body: {"password": password},
                               );
 
-                              Get.back();
+                              Navigator.pop(Get.context!);
 
                               if (res.statusCode == 200 &&
                                   res.data['success'] == true) {
@@ -163,7 +163,7 @@ deletePopUp() {
                                 );
                               }
                             } catch (e) {
-                              Get.back();
+                              Navigator.pop(Get.context!);
                               Get.snackbar("Message", "Something went wrong");
                             }
                           },

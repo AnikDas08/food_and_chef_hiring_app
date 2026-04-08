@@ -17,7 +17,9 @@ const List<String> _sortList = [
 ];
 
 class SearchItem extends StatelessWidget {
-  const SearchItem({super.key});
+  final ScrollController scrollController;
+
+  const SearchItem({super.key, required this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -89,14 +91,16 @@ class SearchItem extends StatelessWidget {
               color: const Color(0xff272727),
               top: 20,
             ).start,
-            CommonText(
-              text: "Showing ${chefs.length} related results",
-              fontSize: 12,
-              color: const Color(0xff777777),
-              fontWeight: FontWeight.w400,
-              top: 2,
-              bottom: 16,
-            ).start,
+            Obx(
+                  () => CommonText(
+                text: "Showing ${chefs.length} related results",
+                fontSize: 12,
+                color: const Color(0xff777777),
+                fontWeight: FontWeight.w400,
+                top: 2,
+                bottom: 16,
+              ).start,
+            ),
 
             // ── Grid ─────────────────────────────────────────────────────
             Expanded(
@@ -112,7 +116,12 @@ class SearchItem extends StatelessWidget {
                 ),
               )
                   : GridView.builder(
-                itemCount: chefs.length,
+                // ✅ Attach the shared scroll controller
+                controller: scrollController,
+                // Allow the grid to scroll inside Column/Stack
+                physics: const AlwaysScrollableScrollPhysics(),
+                // +1 for the bottom loader row
+                itemCount: chefs.length + 1,
                 gridDelegate:
                 SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -121,6 +130,39 @@ class SearchItem extends StatelessWidget {
                   crossAxisSpacing: 10.w,
                 ),
                 itemBuilder: (context, index) {
+                  // ── Last slot → loading indicator or end label ──
+                  if (index == chefs.length) {
+                    return Obx(
+                          () => controller.isLoadingMore.value
+                          ? Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 20.h),
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: Color(0xffFD713F),
+                            strokeWidth: 2,
+                          ),
+                        ),
+                      )
+                          : controller.hasMoreData.value
+                          ? const SizedBox.shrink()
+                          : Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 20.h),
+                        /*child: Center(
+                          child: CommonText(
+                            text:
+                            "You've seen all ${chefs.length} chefs",
+                            fontSize: 12,
+                            color:
+                            const Color(0xffAAAAAA),
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),*/
+                      ),
+                    );
+                  }
+
                   return chefItem(
                     height: 140.h,
                     isSearch: true,

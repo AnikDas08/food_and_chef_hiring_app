@@ -19,8 +19,12 @@ class GroceryScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
-          onPressed: () => Get.back(),
+          icon: controller.isBack == false
+              ? Icon(Icons.arrow_back_ios, color: Colors.black, size: 20)
+              : SizedBox.shrink(), // empty widget when false
+          onPressed: controller.isBack == false
+              ? () => Get.back()
+              : null, // disable button when false
         ),
         backgroundColor: Colors.white,
         elevation: 0,

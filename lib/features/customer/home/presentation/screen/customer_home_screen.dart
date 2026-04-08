@@ -108,7 +108,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
       )).toList(),
       tint: const Color(0xff272727),
       backgroundColor: Colors.white.withOpacity(0.9),
-      height: 90.h, // Scaled height
+      //height: 90.h, // Scaled height
       currentIndex: selectedTabIndex,
       onTap: onTabTap,
     );
@@ -118,8 +118,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
   Widget _buildAndroidBar() {
     return SafeArea(
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-        height: 65.h, // Fixed relative height
+        margin: EdgeInsets.symmetric(horizontal: 16.w).copyWith(bottom: 12.h),
+        height: 68.h, // same as Chef Home
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(35.r), // Scaled corners

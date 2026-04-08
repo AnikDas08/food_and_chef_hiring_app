@@ -98,7 +98,7 @@ void itemDetails(
                                   borderRadius: 8,
                                   height: 232,
                                   width: Get.width,
-                                  fill: BoxFit.fill,
+                                  fill: BoxFit.cover,
                                 ),
 
                                 // ── Name ─────────────────────────────────

@@ -23,6 +23,13 @@ class SearchController extends GetxController {
   double? currentLat;
   double? currentLng;
 
+  // ── PAGINATION ─────────────────────────────────────────────────────────────
+  RxInt currentPage = 1.obs;
+  RxInt totalPages = 1.obs;
+  RxBool isLoadingMore = false.obs;
+  RxBool hasMoreData = true.obs;
+  static const int _pageLimit = 10;
+
   // ── CUISINES ────────────────────────────────────────────────────────────────
   RxBool isLoadingCuisines = false.obs;
   List<CuisineData> cuisineList = [];
@@ -30,7 +37,7 @@ class SearchController extends GetxController {
   ChefModel? chefModel;
   ChefData? chefArg;
   CuisineData? cuisineData;
-  List<ChefData> nearbyChefsList = [];
+  RxList<ChefData> nearbyChefsList = <ChefData>[].obs;
 
   /// Currently active sort/filter label (matches the chip label in SearchItem)
   String selectedSortLabel = "Recommended";
@@ -75,7 +82,6 @@ class SearchController extends GetxController {
       }
     });
 
-    // Fetch cuisines for filter panel
     fetchCuisines();
   }
 
@@ -83,7 +89,6 @@ class SearchController extends GetxController {
 
   Future<void> fetchCuisines() async {
     isLoadingCuisines.value = true;
-
     try {
       final response = await ApiService.get("cusine");
       if (response.statusCode == 200) {
@@ -105,7 +110,6 @@ class SearchController extends GetxController {
 
   // ── SORT / FILTER ──────────────────────────────────────────────────────────
 
-  /// Called when user taps a sort chip
   Future<void> onSortChanged(String label) async {
     if (selectedSortLabel == label) return;
     selectedSortLabel = label;
@@ -115,49 +119,44 @@ class SearchController extends GetxController {
 
   // ── BUILD FILTER URL ───────────────────────────────────────────────────────
 
-  /// Builds the complete URL with all active filters
-  String _buildFilterUrl({String? searchTerm}) {
+  String _buildFilterUrl({String? searchTerm, int page = 1}) {
     final List<String> params = [];
 
-    // Search term
+    // Pagination
+    params.add("page=$page");
+    params.add("limit=$_pageLimit");
+
     if (searchTerm != null && searchTerm.isNotEmpty) {
       params.add("searchTerm=$searchTerm");
     }
 
-    // Cuisine IDs (from selectedCuisines list)
     if (selectedCuisines.isNotEmpty) {
-      params.add("cusine=${selectedCuisines.first}"); // API expects single cusine param
+      params.add("cusine=${selectedCuisines.first}");
     }
 
-    // Price range
     if (minPrice.value > 0 || maxPrice.value < 100) {
       params.add("minPrice=${minPrice.value.toInt()}");
       params.add("maxPrice=${maxPrice.value.toInt()}");
     }
 
-    // Availability
     if (selectedAvailability.isNotEmpty) {
       params.add("availability=${selectedAvailability.first}");
     }
 
-    // Professional level
     if (selectedProfessionalLevels.isNotEmpty) {
       String levels = selectedProfessionalLevels.join(',');
       params.add("chef_professional_level=$levels");
     }
 
-    // Dietary preferences (as JSON array)
     if (selectedDietaryPrefs.isNotEmpty) {
       String dietary = jsonEncode(selectedDietaryPrefs);
       params.add("dietary=$dietary");
     }
 
-    // Saved chefs only
     if (savedChefsOnly.value) {
       params.add("save=true");
     }
 
-    // Sort
     final String sortParam = _sortParamMap[selectedSortLabel] ?? "";
     if (sortParam.isNotEmpty) {
       params.add(sortParam);
@@ -169,13 +168,11 @@ class SearchController extends GetxController {
 
   // ── APPLY FILTERS ──────────────────────────────────────────────────────────
 
-  /// Called when user taps "Apply" button in filter panel
   Future<void> applyFilters() async {
-    Get.back(); // Close filter panel
+    Get.back();
     await _fetchWithCurrentFilter();
   }
 
-  /// Clears all filters and resets to defaults
   void clearAllFilters() {
     minPrice.value = 0.0;
     maxPrice.value = 100.0;
@@ -188,21 +185,30 @@ class SearchController extends GetxController {
     update();
   }
 
-  // ── FETCH WITH FILTERS ─────────────────────────────────────────────────────
+  // ── FETCH WITH FILTERS (PAGE 1 — FRESH LOAD) ──────────────────────────────
 
   Future<void> _fetchWithCurrentFilter({String? searchTerm}) async {
     isLoadingChefs = true;
+    currentPage.value = 1;
+    hasMoreData.value = true;
     update();
 
     try {
-      final String url = _buildFilterUrl(searchTerm: searchTerm);
-      print("🔍 Filter URL: $url"); // Debug log
+      final String url = _buildFilterUrl(searchTerm: searchTerm, page: 1);
+      print("🔍 Filter URL: $url");
 
       final response = await ApiService.get(url);
 
       if (response.statusCode == 200) {
         chefModel = ChefModel.fromJson(response.data);
-        nearbyChefsList = chefModel?.data ?? [];
+        nearbyChefsList.assignAll(chefModel?.data ?? []);
+
+        // Read pagination from response
+        final pagination = response.data['pagination'];
+        if (pagination != null) {
+          totalPages.value = pagination['totalPage'] ?? 1;
+        }
+        hasMoreData.value = currentPage.value < totalPages.value;
       } else {
         Utils.errorSnackBar('Error', 'Failed to fetch chefs');
       }
@@ -211,6 +217,42 @@ class SearchController extends GetxController {
     } finally {
       isLoadingChefs = false;
       update();
+    }
+  }
+
+  // ── LOAD MORE (NEXT PAGE) ──────────────────────────────────────────────────
+
+  Future<void> loadMoreChefs({String? searchTerm}) async {
+    if (isLoadingMore.value || !hasMoreData.value) return;
+
+    isLoadingMore.value = true;
+
+    try {
+      final int nextPage = currentPage.value + 1;
+      final String url = _buildFilterUrl(searchTerm: searchTerm, page: nextPage);
+      print("📄 Load more URL (page $nextPage): $url");
+
+      final response = await ApiService.get(url);
+
+      if (response.statusCode == 200) {
+        final moreModel = ChefModel.fromJson(response.data);
+        final newChefs = moreModel.data ?? [];
+
+        nearbyChefsList.addAll(newChefs);
+        currentPage.value = nextPage;
+
+        final pagination = response.data['pagination'];
+        if (pagination != null) {
+          totalPages.value = pagination['totalPage'] ?? totalPages.value;
+        }
+        hasMoreData.value = currentPage.value < totalPages.value;
+      } else {
+        Utils.errorSnackBar('Error', 'Failed to load more chefs');
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+    } finally {
+      isLoadingMore.value = false;
     }
   }
 
@@ -247,8 +289,7 @@ class SearchController extends GetxController {
         searchResults.assignAll(searchResponse.data ?? []);
         hasSearched.value = true;
       } else {
-        errorMessage.value =
-            response.data['message'] ?? 'Error fetching data';
+        errorMessage.value = response.data['message'] ?? 'Error fetching data';
       }
     } catch (e) {
       errorMessage.value = 'Connection error';
@@ -266,8 +307,7 @@ class SearchController extends GetxController {
     try {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        Utils.errorSnackBar(
-            'Location Error', 'Location services are disabled.');
+        Utils.errorSnackBar('Location Error', 'Location services are disabled.');
         isLoadingLocation = false;
         update();
         return;
@@ -277,8 +317,7 @@ class SearchController extends GetxController {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          Utils.errorSnackBar(
-              'Permission Denied', 'Location permission is required.');
+          Utils.errorSnackBar('Permission Denied', 'Location permission is required.');
           isLoadingLocation = false;
           update();
           return;
@@ -286,8 +325,7 @@ class SearchController extends GetxController {
       }
 
       if (permission == LocationPermission.deniedForever) {
-        Utils.errorSnackBar(
-            'Permission Denied', 'Enable location in settings.');
+        Utils.errorSnackBar('Permission Denied', 'Enable location in settings.');
         isLoadingLocation = false;
         update();
         return;
@@ -311,16 +349,24 @@ class SearchController extends GetxController {
 
   Future<void> getChefsByCuisineId(String cuisineId) async {
     isLoadingChefs = true;
+    currentPage.value = 1;
+    hasMoreData.value = true;
     update();
 
     try {
       final response = await ApiService.get(
-        "user/search-chefs?cusine=$cuisineId",
+        "user/search-chefs?cusine=$cuisineId&page=1&limit=$_pageLimit",
       );
 
       if (response.statusCode == 200) {
         chefModel = ChefModel.fromJson(response.data);
-        nearbyChefsList = chefModel?.data ?? [];
+        nearbyChefsList.assignAll(chefModel?.data ?? []);
+
+        final pagination = response.data['pagination'];
+        if (pagination != null) {
+          totalPages.value = pagination['totalPage'] ?? 1;
+        }
+        hasMoreData.value = currentPage.value < totalPages.value;
       } else {
         Utils.errorSnackBar('Error', 'No chefs found for this category');
       }

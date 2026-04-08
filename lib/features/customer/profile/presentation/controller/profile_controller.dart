@@ -38,8 +38,8 @@ class ProfileController extends GetxController {
     "image": AppIcons.customers
   };
 
-  String savedCountryCode = "+880";
-  String savedCountryIsoCode = "BD";
+  String savedCountryCode = "+1";
+  String savedCountryIsoCode = "US";
   String fullPhoneNumber = "";
 
   /// --- Controllers ---

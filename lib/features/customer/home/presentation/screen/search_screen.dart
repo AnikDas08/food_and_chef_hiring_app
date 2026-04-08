@@ -23,6 +23,37 @@ class _SearchScreenState extends State<SearchScreen> {
   final SearchController _controller = Get.put(SearchController());
   final FocusNode _focusNode = FocusNode();
 
+  /// Scroll controller used to detect when user reaches the bottom of the list.
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  /// Fires when the user scrolls within 200 px of the bottom → load next page.
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    const threshold = 200.0;
+
+    if (currentScroll >= maxScroll - threshold) {
+      // Pass current search term if the user had submitted a search
+      final term = _controller.isSubmitted.value
+          ? _controller.searchController.text.trim()
+          : null;
+      _controller.loadMoreChefs(searchTerm: term);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,85 +107,143 @@ class _SearchScreenState extends State<SearchScreen> {
           );
         }
 
-        // ── MAIN RESULTS VIEW WITH CLEAR FILTERS OPTION ─────────────────
+        // ── MAIN RESULTS VIEW WITH PAGINATION ───────────────────────────
         return Stack(
           children: [
-            // Results grid/list
+            // Results grid/list — uses the shared scroll controller
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: const SearchItem(),
+              child: SearchItem(scrollController: _scrollController),
             ),
 
-            // ── CLEAR FILTERS BUTTON (Floating at top) ──────────────────
-            Obx(
-                  () {
-                // Show clear button only if filters are applied
-                final hasActiveFilters = _controller.minPrice.value > 0 ||
-                    _controller.maxPrice.value < 100 ||
-                    _controller.selectedAvailability.isNotEmpty ||
-                    _controller.selectedProfessionalLevels.isNotEmpty ||
-                    _controller.selectedDietaryPrefs.isNotEmpty ||
-                    _controller.selectedCuisines.isNotEmpty ||
-                    _controller.savedChefsOnly.value;
-
-                if (!hasActiveFilters) {
-                  return SizedBox.shrink(); // Hide if no filters active
-                }
-
-                return Positioned(
-                  top: 16.h,
-                  right: 16.w,
+            // ── LOAD MORE INDICATOR (bottom) ─────────────────────────────
+            Obx(() {
+              if (!_controller.isLoadingMore.value) return const SizedBox.shrink();
+              return Positioned(
+                bottom: 16.h,
+                left: 0,
+                right: 0,
+                child: Center(
                   child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                     decoration: BoxDecoration(
-                      color: const Color(0xffFD713F),
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 8,
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 12,
                           offset: const Offset(0, 2),
                         ),
                       ],
                     ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          // Clear all filters
-                          _controller.clearAllFilters();
-                          // Fetch unfiltered results
-                          _controller.getNearbyChefs();
-                        },
-                        borderRadius: BorderRadius.circular(20),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16.w,
-                            vertical: 10.h,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: const Color(0xffFD713F),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.close,
-                                color: Colors.white,
-                                size: 16,
-                              ),
-                              6.width,
-                              CommonText(
-                                text: "Clear Filters",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ],
-                          ),
+                        ),
+                        8.width,
+                        CommonText(
+                          text: "Loading more chefs...",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xff636363),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
+
+            // ── "END OF RESULTS" INDICATOR ────────────────────────────────
+            Obx(() {
+              if (_controller.hasMoreData.value ||
+                  _controller.nearbyChefsList.isEmpty ||
+                  _controller.isLoadingMore.value) {
+                return const SizedBox.shrink();
+              }
+              return Positioned(
+                bottom: 16.h,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: CommonText(
+                    text: "You've seen all ${_controller.nearbyChefsList.length} chefs",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xffAAAAAA),
+                  ),
+                ),
+              );
+            }),
+
+            // ── CLEAR FILTERS BUTTON (Floating at top) ───────────────────
+            Obx(() {
+              final hasActiveFilters =
+                  _controller.minPrice.value > 0 ||
+                      _controller.maxPrice.value < 100 ||
+                      _controller.selectedAvailability.isNotEmpty ||
+                      _controller.selectedProfessionalLevels.isNotEmpty ||
+                      _controller.selectedDietaryPrefs.isNotEmpty ||
+                      _controller.selectedCuisines.isNotEmpty ||
+                      _controller.savedChefsOnly.value;
+
+              if (!hasActiveFilters) return const SizedBox.shrink();
+
+              return Positioned(
+                top: 16.h,
+                right: 16.w,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xffFD713F),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        _controller.clearAllFilters();
+                        _controller.getNearbyChefs();
+                      },
+                      borderRadius: BorderRadius.circular(20),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 10.h,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.close, color: Colors.white, size: 16),
+                            6.width,
+                            CommonText(
+                              text: "Clear Filters",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            }),
           ],
         );
       }),
@@ -168,11 +257,7 @@ class _SearchScreenState extends State<SearchScreen> {
         if (_controller.searchText.value.isNotEmpty)
           IconButton(
             visualDensity: VisualDensity.compact,
-            icon: const Icon(
-              Icons.clear,
-              size: 20,
-              color: Color(0xff636363),
-            ),
+            icon: const Icon(Icons.clear, size: 20, color: Color(0xff636363)),
             onPressed: () {
               _controller.clearSearch();
               _focusNode.requestFocus();

@@ -27,6 +27,13 @@ class CheckoutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            CupertinoIcons.back, // iPhone style back arrow
+            color: Color(0xff272727),
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: CommonText(
           text: AppString.checkout,
           fontSize: 14,
