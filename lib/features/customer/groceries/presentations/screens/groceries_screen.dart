@@ -28,7 +28,7 @@ class GroceryScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const CommonText(text: "Groceries", fontWeight: FontWeight.bold),
+        title: const CommonText(text: "Groceries", fontWeight: FontWeight.bold,fontSize: 16,),
         centerTitle: true,
       ),
       body: Obx(() {
@@ -45,7 +45,7 @@ class GroceryScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10.h),
-                const CommonText(text: "My groceries", fontSize: 24, fontWeight: FontWeight.bold),
+                const CommonText(text: "My groceries", fontSize: 24, fontWeight: FontWeight.w500),
                 SizedBox(height: 8.h),
 
                 // --- 1. BOOKING LIST (SINGLE vs ALL) ---

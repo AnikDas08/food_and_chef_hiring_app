@@ -6,7 +6,7 @@ import '../../utils/constants/app_colors.dart';
 
 ThemeData themeData = ThemeData(
   scaffoldBackgroundColor: AppColors.background,
-  fontFamily: Platform.isIOS ? null : 'Roboto',
+  fontFamily: 'SFProDisplay',
   useMaterial3: true,
   splashColor: Colors.transparent,
   highlightColor: Colors.transparent,

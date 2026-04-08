@@ -26,16 +26,10 @@ class ChefDetailsScreen extends StatefulWidget {
 }
 
 class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
-  // Track whether the hero image has been fully scrolled away
   bool _isCollapsed = false;
   final ScrollController _scrollController = ScrollController();
 
-  // expandedHeight for the SliverAppBar hero image
   static const double _expandedHeight = 300;
-
-  // The appbar collapses once scroll offset exceeds expandedHeight minus
-  // the standard toolbar height (~56). We use a small buffer (–10) so the
-  // transition feels snappy.
   static const double _collapseThreshold = _expandedHeight - 56 - 10;
 
   @override
@@ -65,7 +59,6 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
       builder: (controller) {
         final chef = controller.chefDetail;
 
-        // Build image URL
         final String imageUrl =
         (chef?.image != null && chef!.image!.isNotEmpty)
             ? (chef.image!.startsWith('http')
@@ -73,7 +66,6 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
             : ApiEndPoint.imageUrl + chef.image!)
             : AppImages.image3;
 
-        // Total price in cart
         final double totalCartPrice =
             (controller.cartItems.length) * (chef?.priceWithFee ?? 0);
 
@@ -87,43 +79,27 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
               controller: _scrollController,
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return [
-                  // ── Hero image app bar ──────────────────────────────
                   SliverAppBar(
                     pinned: true,
                     expandedHeight: _expandedHeight.h,
-                    // Use _isCollapsed (from StatefulWidget) — NOT innerBoxIsScrolled
                     backgroundColor: Colors.white,
                     elevation: _isCollapsed ? 1 : 0,
                     titleSpacing: 0,
 
-                    // ── Title: only visible when collapsed ─────────────
+                    // ── When collapsed: disable default leading so we
+                    //    render back button INSIDE the title card
+                    automaticallyImplyLeading: !_isCollapsed,
+
+                    // ── Title: full-width card with back btn inside ─────
                     title: _isCollapsed
                         ? _CollapsedAppBarTitle(controller: controller)
                         : null,
 
-                    // ── Leading ────────────────────────────────────────
+                    // ── Leading: only shown when NOT collapsed ──────────
                     leading: _isCollapsed
-                        ? InkWell(
-                      onTap: Get.back,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 16.w),
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.2),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.arrow_back_ios_new_rounded,
-                            color: Color(0xff272727),
-                            size: 22,
-                          ),
-                        ),
-                      ),
-                    )
+                        ? null // back button lives inside the title card
                         : InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pop(Get.context!);
                       },
                       child: Padding(
@@ -148,19 +124,8 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
 
                     // ── Actions ────────────────────────────────────────
                     actions: _isCollapsed
-                        ? [
-                      /*// Collapsed: search icon only
-                      Padding(
-                        padding: EdgeInsets.only(right: 16.w),
-                        child: const Icon(
-                          Icons.search,
-                          color: Color(0xff272727),
-                          size: 24,
-                        ),
-                      ),*/
-                    ]
+                        ? []
                         : [
-                      // Expanded: favourite + share
                       InkWell(
                         onTap: controller.toggleFavourite,
                         child: Container(
@@ -195,7 +160,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                       const SizedBox(width: 12),
                     ],
 
-                    // ── Hero image (expandable background) ─────────────
+                    // ── Hero image ─────────────────────────────────────
                     flexibleSpace: FlexibleSpaceBar(
                       collapseMode: CollapseMode.pin,
                       background: SizedBox(
@@ -204,7 +169,8 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                           children: [
                             Positioned.fill(
                               child: controller.isLoadingDetail
-                                  ? Container(color: const Color(0xffF2F2F2))
+                                  ? Container(
+                                  color: const Color(0xffF2F2F2))
                                   : CommonImage(
                                 imageSrc: imageUrl,
                                 fill: BoxFit.cover,
@@ -241,8 +207,6 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                       child: Column(
                         children: [
                           const SizedBox(height: 12),
-
-                          // Name + price
                           Row(
                             mainAxisAlignment:
                             MainAxisAlignment.spaceBetween,
@@ -277,10 +241,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                               ),
                             ],
                           ),
-
                           const SizedBox(height: 8),
-
-                          // Distance | Experience
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -300,7 +261,8 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                     horizontal: 8),
                                 color: const Color(0xffF1F1F1),
                               ),
-                              CommonImage(imageSrc: AppIcons.briefcase),
+                              CommonImage(
+                                  imageSrc: AppIcons.briefcase),
                               CommonText(
                                 text:
                                 "${chef?.experience ?? 0} years Experience",
@@ -310,7 +272,6 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                               ),
                             ],
                           ),
-
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -333,16 +294,12 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                               SizedBox(width: 4.w),
                             ],
                           ),
-
-                          // About / bio
                           ExtendText(
                             text: chef?.about ?? "",
                             isExpanded: controller.isExpanded,
                             onTap: controller.onChangeExpand,
                           ),
-
                           const SizedBox(height: 16),
-
                           CommonButton(
                             titleText: AppString.checkAvailability,
                             titleColor: Colors.white,
@@ -353,7 +310,6 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                   context, controller.chefId);
                             },
                           ),
-
                           const SizedBox(height: 16),
                         ],
                       ),
@@ -437,8 +393,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
 }
 
 // ── Collapsed app bar title ───────────────────────────────────────────────────
-// Shown only when _isCollapsed == true
-// Matches the screenshot: chef name bold + price chip + star rating
+// Back button + chef name + price chip + star rating — all inside ONE card
 
 class _CollapsedAppBarTitle extends StatelessWidget {
   final ChefDetailsController controller;
@@ -449,78 +404,107 @@ class _CollapsedAppBarTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final chef = controller.chefDetail;
 
-    return Padding(
-      padding: EdgeInsets.only(left: 4.w,right: 20),
-      child: Container(
-        padding: EdgeInsets.all(20.h),
-        decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.1),
-          borderRadius: BorderRadius.all(Radius.circular(30)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Chef name
-            Text(
-              chef?.name ?? "N/A",
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      decoration: BoxDecoration(
+        color: const Color(0xffF2F2F2),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        children: [
+          // ── White circle back button ─────────────────────────────
+          InkWell(
+            onTap: () => Navigator.pop(Get.context!),
+            borderRadius: BorderRadius.circular(50),
+            child: Container(
+              height: 36,
+              width: 36,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.arrow_back_ios_new_rounded,
                 color: Color(0xff272727),
+                size: 18,
               ),
             ),
-            const SizedBox(height: 2),
-            Row(
+          ),
+          SizedBox(width: 12.w),
+
+          // ── Chef name + price + rating ───────────────────────────
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                // Price chip — grey pill like in screenshot
-                Container(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: const Color(0xffF2F2F2),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SvgPicture.asset(
-                    'assets/icons/price.svg',
-                    height: 24,
-                    width: 24,
-                    colorFilter: ColorFilter.mode(
-                      Colors.grey,
-                      BlendMode.srcIn,
-                    ),
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}/hr",
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff555555),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                // Star + rating value
-                const Icon(Icons.star, size: 14, color: Color(0xffFD713F)),
-                const SizedBox(width: 3),
+                // Chef name
                 Text(
-                  (chef?.avgRating ?? 0).toStringAsFixed(1),
+                  chef?.name ?? "N/A",
                   style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                const SizedBox(height: 3),
+                Row(
+                  children: [
+                    // Price chip
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/price.svg',
+                            height: 12,
+                            width: 12,
+                            colorFilter: const ColorFilter.mode(
+                              Color(0xff777777),
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}/hr",
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff555555),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    // Star + rating
+                    const Icon(Icons.star,
+                        size: 14, color: Color(0xffFD713F)),
+                    const SizedBox(width: 3),
+                    Text(
+                      (chef?.avgRating ?? 0).toStringAsFixed(1),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff272727),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -542,8 +526,6 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    // If sections <= 2: fixed tabs (fills full width, centered)
-    // If sections > 2: scrollable tabs (left-aligned, scroll right)
     final bool isScrollable = sections.length > 2;
 
     return Container(
@@ -552,7 +534,6 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-
           CommonText(
             text: AppString.menu,
             fontSize: 16,
@@ -560,17 +541,14 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
             fontWeight: FontWeight.w600,
             color: const Color(0xff272727),
           ),
-
           const SizedBox(height: 8),
-
           SizedBox(
             height: 36,
             child: TabBar(
               isScrollable: isScrollable,
               tabAlignment: isScrollable
-                  ? TabAlignment.start  // scrollable: left-aligned
-                  : TabAlignment.fill,  // 1 or 2 items: fill full width
-
+                  ? TabAlignment.start
+                  : TabAlignment.fill,
               indicator: const UnderlineTabIndicator(
                 borderSide: BorderSide(
                   width: 2.5,
@@ -578,25 +556,19 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
                 ),
                 insets: EdgeInsets.symmetric(horizontal: 10),
               ),
-
               dividerColor: Colors.transparent,
               indicatorColor: Colors.transparent,
-
               labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-
               labelColor: Color(0xffFD713F),
               unselectedLabelColor: Color(0xff777777),
-
               labelStyle: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
-
               unselectedLabelStyle: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
               ),
-
               tabs: sections
                   .map(
                     (s) => Tab(

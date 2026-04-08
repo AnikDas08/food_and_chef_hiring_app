@@ -61,7 +61,7 @@ class CustomerHome extends StatelessWidget {
             20.height,
             CommonText(
               text: AppString.recommendedPrivaeChefsNearby,
-              fontSize: 16,
+              fontSize: 16.sp,
               color: Color(0xff272727),
               fontWeight: FontWeight.w600,
               bottom: 16,

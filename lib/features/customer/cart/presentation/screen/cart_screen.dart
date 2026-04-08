@@ -47,16 +47,18 @@ class CartScreen extends StatelessWidget {
           ),
 
           body: controller.isLoadingCart
-              ? const CommonLoader()
+              ? const CommonLoader()  // show loader while fetching
+              : controller.cartResponse == null  // data never loaded / error
+              ? const SizedBox.shrink()      // show nothing
               : controller.chefGroups.isEmpty
-          // ── Empty state ─────────────────────────────────────────
+          // ── Empty state ─────────────────────────────────
               ? Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   Icons.shopping_cart_outlined,
-                  size: 64.r, // Scaled Icon
+                  size: 64.r,
                   color: const Color(0xffC0C0C0),
                 ),
                 16.height,

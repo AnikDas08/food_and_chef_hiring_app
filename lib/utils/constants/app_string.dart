@@ -142,7 +142,7 @@ class AppString {
   static const String signInSuccessfullyMessage =
       "Sign in successful! You’re all set to explore Privae and manage your bookings or chef services. Let’s go!";
   static const String takingYouToYourHomepage = "Taking you to your Homepage";
-  static const String registerAccount = "Register Account with Customer";
+  static const String registerAccount = "Register Account";
   static const String registerAccountchef = "Register Account with Chef";
   static const String register = "Register";
   static const String registerAccountMessage =
@@ -182,7 +182,7 @@ class AppString {
   static const String createUniquePassword =
       "Create a unique password for your account";
   static const String yourLocation = "Your location";
-  static const String searchForFoodChefEtc = "Search for food, chef, etc";
+  static const String searchForFoodChefEtc = "Search for food, chef, etc.";
   static const String recommendedPrivaeChefsNearby =
       "Recommended Privae Chefs Nearby";
   static const String orderAgain = "Order Again";

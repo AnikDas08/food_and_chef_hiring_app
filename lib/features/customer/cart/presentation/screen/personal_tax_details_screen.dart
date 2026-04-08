@@ -41,7 +41,7 @@ class PersonalTaxDetailsScreen extends StatelessWidget {
                 bottom: 8,
               ),
               CommonTextField(
-                hintText: "Privae LLC",
+                hintText: "Company name",
                 controller: controller.nameController,
               ),
 

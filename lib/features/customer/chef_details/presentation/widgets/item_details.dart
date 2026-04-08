@@ -175,13 +175,13 @@ void itemDetails(
                                         decoration: BoxDecoration(
                                           color: kitchenReady
                                               ? const Color(0xffDBEBD9)
-                                              : const Color(0xffFFF0E0),
+                                              : const Color(0xffDBEBD9),
                                           borderRadius:
                                           BorderRadius.circular(8),
                                           border: Border.all(
                                             color: kitchenReady
                                                 ? const Color(0xffC2E2BE)
-                                                : const Color(0xffFFD4A0),
+                                                : const Color(0xffFDBEBD9),
                                           ),
                                         ),
                                         child: CommonText(
@@ -189,7 +189,7 @@ void itemDetails(
                                               'Kitchen Ready',
                                           color: kitchenReady
                                               ? const Color(0xff2F8328)
-                                              : const Color(0xffC17A00),
+                                              : const Color(0xff2F8328),
                                           fontSize: 10,
                                           fontWeight: FontWeight.w400,
                                         ),
@@ -236,7 +236,7 @@ void itemDetails(
                                 ],
 
                                 // ── Diet types ───────────────────────────
-                                if (item.dietTypes != null &&
+                                /*if (item.dietTypes != null &&
                                     item.dietTypes!.isNotEmpty) ...[
                                   8.height,
                                   Wrap(
@@ -293,7 +293,7 @@ void itemDetails(
                                       );
                                     }).toList(),
                                   ),
-                                ],
+                                ],*/
 
                                 // ── Description ──────────────────────────
                                 if (item.description != null) ...[

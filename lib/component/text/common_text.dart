@@ -47,6 +47,8 @@ class CommonText extends StatelessWidget {
         maxLines: maxLines,
         overflow: overflow,
         style: TextStyle(
+          fontFamily: 'SFProDisplay',
+          fontStyle: FontStyle.normal,
           fontSize: fontSize.sp,
           fontWeight: fontWeight,
           color: color,
