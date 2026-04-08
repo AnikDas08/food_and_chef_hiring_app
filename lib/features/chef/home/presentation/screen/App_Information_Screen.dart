@@ -15,7 +15,7 @@ class AppInformationScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: InkWell(onTap: () {
-         Get.back();
+          Get.back();
         }, child: Icon(Icons.arrow_back_ios_new, color: Colors.black)),
 
       ),
@@ -26,10 +26,10 @@ class AppInformationScreen extends StatelessWidget {
 
             Container(
               width: 200.w,
-              height: 180.h,
+              height: 200.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Colors.black, // optional
+                color: Colors.black,
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
@@ -41,7 +41,6 @@ class AppInformationScreen extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
 
-            /// Version Text
             Text(
               "Version 1.01.01",
               style: TextStyle(
