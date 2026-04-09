@@ -425,7 +425,6 @@ class SignUpChefController extends GetxController {
       update();
     }
   }
-
   Future<void> setupChefAvailability2({
     required List<DaySchedule> days,
   }) async {
@@ -435,7 +434,8 @@ class SignUpChefController extends GetxController {
       final List<Map<String, dynamic>> availabilityList = days.map((day) {
         return {
           "day": day.name.toLowerCase(),
-          "availability": day.isEnabled,
+          "availableity": day.isEnabled,   // ✅ typo fix (server এর মতো)
+          "availability": day.isEnabled,    // ✅ দুটোই পাঠাচ্ছি
           "availability_times": day.isEnabled
               ? day.slots.map((slot) => {
             "start_time": _formatTime(slot.from),
@@ -455,8 +455,15 @@ class SignUpChefController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        Get.snackbar("Message", "Set Your Availability",
-            backgroundColor: Colors.green);
+        if (Get.context != null) {
+          ScaffoldMessenger.of(Get.context!).showSnackBar(
+            const SnackBar(
+              content: Text("Availability saved successfully!"),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+        Navigator.pop(Get.context!);
       } else {
         Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
       }

@@ -90,7 +90,6 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                     //    render back button INSIDE the title card
                     automaticallyImplyLeading: !_isCollapsed,
 
-                    // ── Title: full-width card with back btn inside ─────
                     title: _isCollapsed
                         ? _CollapsedAppBarTitle(controller: controller)
                         : null,
@@ -160,7 +159,6 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                       const SizedBox(width: 12),
                     ],
 
-                    // ── Hero image ─────────────────────────────────────
                     flexibleSpace: FlexibleSpaceBar(
                       collapseMode: CollapseMode.pin,
                       background: SizedBox(

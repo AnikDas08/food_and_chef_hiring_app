@@ -114,7 +114,7 @@ class CafeCookingExpertiseController extends GetxController {
 
         );
         showAccountCreatedPopup();
-        // Get.to(() => YourNextScreen()); // next screen এ যাও
+
       } else {
         Get.snackbar(
             "Error", response.data['message'] ?? "Something went wrong");

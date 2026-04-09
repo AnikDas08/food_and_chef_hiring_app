@@ -32,7 +32,6 @@ class TabData {
   final String title;
   final String icon;
   final String selectedIcon;
-
   TabData({required this.title, required this.icon, required this.selectedIcon});
 }
 
@@ -106,7 +105,6 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
               children: pages,
             ),
 
-            /// Banner Above BottomNav
             if (selectedTabIndex == 0)
               Positioned(
                 bottom: 100.h,
@@ -197,7 +195,7 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
     return SafeArea(
       bottom: true,
       child: Container(
-        height: 68.h, // Scaled height for the bar
+        height: 68.h,
         margin: EdgeInsets.symmetric(horizontal: 16.w).copyWith(bottom: 12.h),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -208,7 +206,7 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
               offset: const Offset(0, 4),
             ),
           ],
-          borderRadius: BorderRadius.circular(40.r), // Responsive corner radius
+          borderRadius: BorderRadius.circular(40.r),
           border: Border.all(color: Colors.grey.withOpacity(0.2)),
         ),
         child: Row(
@@ -245,7 +243,6 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
   }
 }
 
-// Data lists moved outside for cleanliness
 final List<String> _list = [
   AppIcons.home,
   AppIcons.analytics,

@@ -160,10 +160,8 @@ class MenuScreen extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(vertical: 14.h),
-                    // ✅ No border — grey background pill style
                     decoration: BoxDecoration(
                       color: const Color(0xFFF0F0F0),
-                      borderRadius: BorderRadius.circular(100.r),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

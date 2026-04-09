@@ -43,7 +43,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
     super.initState();
     _loadExistingAvailability();
   }
-
   Future<void> _loadExistingAvailability() async {
     try {
       final response = await ApiService.get(ApiEndPoint.chefProfile);
@@ -51,27 +50,40 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
         final List existingAvailability =
             response.data['data']['availability'] ?? [];
 
+        if (existingAvailability.isEmpty) {
+          // No availability saved yet — just show defaults
+          setState(() => _isLoadingData = false);
+          return;
+        }
+
         setState(() {
           for (var item in existingAvailability) {
             final index = _days.indexWhere(
                   (d) => d.name.toLowerCase() == item['day']?.toString().toLowerCase(),
             );
             if (index != -1) {
-
-              final isEnabled =
-                  item['availableity']?.toString() == 'true' ||
-                      item['availability']?.toString() == 'true';
+              final dynamic rawEnabled = item['is_available'] ??
+                  item['availability'] ??
+                  item['availableity'] ?? false;
+              final isEnabled = rawEnabled == true ||
+                  rawEnabled.toString() == 'true';
 
               _days[index].isEnabled = isEnabled;
 
-              final times = item['availability_times'];
-              if (isEnabled && times != null && (times as List).isNotEmpty) {
+              final times = item['availability_times'] as List?;
+              if (isEnabled && times != null && times.isNotEmpty) {
                 _days[index].slots = times
                     .map<TimeSlot>((t) => TimeSlot(
                   from: _parseTime(t['start_time'] ?? '09:00 AM'),
                   to: _parseTime(t['end_time'] ?? '05:00 PM'),
                 ))
                     .toList();
+              } else if (isEnabled && _days[index].slots.isEmpty) {
+
+                _days[index].slots.add(TimeSlot(
+                  from: const TimeOfDay(hour: 9, minute: 0),
+                  to: const TimeOfDay(hour: 17, minute: 0),
+                ));
               }
             }
           }
@@ -83,7 +95,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
       if (mounted) setState(() => _isLoadingData = false);
     }
   }
-
   TimeOfDay _parseTime(String timeStr) {
     try {
       final parts = timeStr.trim().split(' ');
