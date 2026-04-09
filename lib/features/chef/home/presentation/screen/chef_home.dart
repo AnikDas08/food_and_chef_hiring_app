@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
 // Note: Ensure cupertino_native is still in your pubspec if using CNTabBar
 // import 'package:cupertino_native/cupertino_native.dart';
 
@@ -8,6 +11,8 @@ import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
+import 'package:cupertino_native/cupertino_native.dart';
+
 
 // Import your screens...
 import '../../../analytics/presentation/screen/analytics_screen.dart';
@@ -17,7 +22,6 @@ import '../../../chef_booking_control/widgets/BookingDetailsSheet.dart';
 import '../../../profile/presentation/screen/chef_profile_screen.dart';
 import '../../../../common/message/presentation/screen/chat_screen.dart';
 import '../controller/chef_home_controller.dart';
-import '../widgets/menu_Working_Banner.dart';
 import '../widgets/show_ExitDialog.dart';
 import 'chef_home_screen.dart';
 
@@ -32,19 +36,37 @@ class TabData {
   final String title;
   final String icon;
   final String selectedIcon;
-  TabData({required this.title, required this.icon, required this.selectedIcon});
+
+  TabData({
+    required this.title,
+    required this.icon,
+    required this.selectedIcon,
+  });
 }
 
-class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin {
+class _ChefHomeState extends State<ChefHome>
+    with SingleTickerProviderStateMixin {
   late final TabController tabController;
   int selectedTabIndex = 0;
 
   final List<TabData> tabs = [
     TabData(title: "Home", icon: "house", selectedIcon: "house.fill"),
-    TabData(title: "Analytics", icon: "chart.xyaxis.line", selectedIcon: "chart.xyaxis.line"),
+    TabData(
+      title: "Analytics",
+      icon: "chart.xyaxis.line",
+      selectedIcon: "chart.xyaxis.line",
+    ),
     TabData(title: "Booking", icon: "basket", selectedIcon: "basket.fill"),
-    TabData(title: "Chats", icon: "ellipsis.message", selectedIcon: "ellipsis.message.fill"),
-    TabData(title: "Profile", icon: "person.crop.circle", selectedIcon: "person.circle.fill"),
+    TabData(
+      title: "Chats",
+      icon: "ellipsis.message",
+      selectedIcon: "ellipsis.message.fill",
+    ),
+    TabData(
+      title: "Profile",
+      icon: "person.crop.circle",
+      selectedIcon: "person.circle.fill",
+    ),
   ];
 
   final List<Widget> pages = [
@@ -100,16 +122,14 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
         extendBody: true,
         body: Stack(
           children: [
-            TabBarView(
-              controller: tabController,
-              children: pages,
-            ),
+            TabBarView(controller: tabController, children: pages),
 
             if (selectedTabIndex == 0)
               Positioned(
                 bottom: 100.h,
                 left: 16.w,
                 right: 16.w,
+                top: 0,
                 child: InkWell(
                   onTap: () async {
                     final homeC = Get.find<ChefHomeController>();
@@ -120,14 +140,16 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
                     );
 
                     try {
-                      final order =
-                      await homeC.fetchSingleOrder("69a66ebdf0507595e4636281");
+                      final order = await homeC.fetchSingleOrder(
+                        "69a66ebdf0507595e4636281",
+                      );
 
                       Navigator.pop(Get.context!);
 
                       if (order != null) {
                         final user = order['user'] ?? {};
-                        final staticItems = order['static_items'] as List? ?? [];
+                        final staticItems =
+                            order['static_items'] as List? ?? [];
                         final breakdown = order['price_breakdown'] ?? {};
 
                         BookingDetailsSheet.show(
@@ -141,31 +163,33 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
                             address: order['formatted_address'] ?? '',
                             date: order['formatted_date'] ?? '',
                             time: order['strTime'] ?? '',
-                            orderItems: staticItems.map((item) {
-                              return OrderItem(
-                                name: item['menu']?['name'] ?? '',
-                                description:
-                                '${item['quantity']} Items + ${(item['customizations'] as List?)?.join(', ') ?? ''}',
-                              );
-                            }).toList(),
+                            orderItems:
+                                staticItems.map((item) {
+                                  return OrderItem(
+                                    name: item['menu']?['name'] ?? '',
+                                    description:
+                                        '${item['quantity']} Items + ${(item['customizations'] as List?)?.join(', ') ?? ''}',
+                                  );
+                                }).toList(),
                             estimatedTime: order['duration'] ?? '',
                             hourlyRate: (breakdown['subtotal'] ?? 0).toDouble(),
                             estimatedTaxes: (breakdown['taxs'] ?? 0).toDouble(),
                             onStartCooking: () {
                               Navigator.pop(Get.context!);
                               Get.to(
-                                    () => CookingStopwatchScreen(
+                                () => CookingStopwatchScreen(
                                   orderId: order['_id']?.toString() ?? "",
-                                  orderItems: staticItems.map((item) {
-                                    return CookingOrderItem(
-                                      name:
-                                      '${item['menu']?['name']} (x${item['quantity']})',
-                                        description:
-                                       (item['customizations'] as List?)
-                                          ?.join(', ') ??
-                                          '',
-                                    );
-                                  }).toList(),
+                                  orderItems:
+                                      staticItems.map((item) {
+                                        return CookingOrderItem(
+                                          name:
+                                              '${item['menu']?['name']} (x${item['quantity']})',
+                                          description:
+                                              (item['customizations'] as List?)
+                                                  ?.join(', ') ??
+                                              '',
+                                        );
+                                      }).toList(),
                                 ),
                               );
                             },
@@ -183,15 +207,13 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
               ),
           ],
         ),
-        bottomNavigationBar: _buildBottomBar(),
+        bottomNavigationBar:
+          Platform.isIOS ? _buildCupertinoBar() :  _buildBottomBar(),
       ),
     );
   }
 
-
-
   Widget _buildBottomBar() {
-
     return SafeArea(
       bottom: true,
       child: Container(
@@ -223,14 +245,19 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
                     CommonImage(
                       imageSrc: _list[index],
                       size: 22.r,
-                      imageColor: isSelected ? Colors.black : const Color(0xff777777),
+                      imageColor:
+                          isSelected ? Colors.black : const Color(0xff777777),
                     ),
                     SizedBox(height: 4.h),
                     CommonText(
                       text: _string[index],
                       fontSize: 10.sp,
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                      color: isSelected ? const Color(0xff272727) : const Color(0xff777777),
+                      fontWeight:
+                          isSelected ? FontWeight.w600 : FontWeight.w400,
+                      color:
+                          isSelected
+                              ? const Color(0xff272727)
+                              : const Color(0xff777777),
                     ),
                   ],
                 ),
@@ -239,6 +266,29 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
           }),
         ),
       ),
+    );
+  }
+
+  Widget _buildCupertinoBar() {
+    return CNTabBar(
+      items:
+      tabs
+          .map(
+            (tab) => CNTabBarItem(
+          label: tab.title,
+          icon: CNSymbol(
+            tabs[selectedTabIndex] == tab ? tab.selectedIcon : tab.icon,
+            color: const Color(0xff272727),
+            size: 18.sp, // Responsive size
+          ),
+        ),
+      )
+          .toList(),
+      tint: const Color(0xff272727),
+      backgroundColor: Colors.white.withOpacity(0.9),
+      //height: 90.h, // Scaled height
+      currentIndex: selectedTabIndex,
+      onTap: onTabTap,
     );
   }
 }

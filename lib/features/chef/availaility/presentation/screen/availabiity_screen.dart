@@ -480,6 +480,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
         ),
       ),
     );
+
   }
 
   Widget _buildDayItem(DaySchedule day) {

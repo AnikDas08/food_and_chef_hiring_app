@@ -5,7 +5,6 @@ import '../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../component/button/common_button.dart';
-import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/profile_controller.dart';
 import '../../../../../../utils/constants/app_images.dart';
