@@ -116,7 +116,7 @@ class CommonTextField extends StatelessWidget {
           errorBorder: _buildBorder(),
           hintText: hintText,
           labelText: labelText,
-          hintStyle: TextStyle(fontSize: fontSize, color: hintTextColor),
+          hintStyle: TextStyle(fontSize: 12, color: hintTextColor),
           labelStyle: TextStyle(fontSize: fontSize, color: labelTextColor),
           prefixText: prefixText,
           prefixStyle: TextStyle(

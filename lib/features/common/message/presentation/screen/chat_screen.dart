@@ -6,11 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import '../../../../../../config/route/app_routes.dart';
+import '../../../../../component/image/common_image.dart';
 import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/screen/error_screen.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_text_field.dart';
+import '../../../../../utils/constants/app_icons.dart';
 import '../controller/chat_controller.dart';
 import '../../data/model/chat_list_model.dart';
 import '../../../../../../utils/enum/enum.dart';
@@ -48,7 +50,7 @@ class ChatListScreen extends StatelessWidget {
                 child: GetBuilder<ChatController>(
                   builder: (controller) => CommonTextField(
                     controller: controller.searchControllers,
-                    hintText: "Search for food, chef, etc",
+                    hintText: "Search",
                     keyboardType: TextInputType.text,
                     borderRadius: 30,
                     fillColor: Color(0xffF5F5F5),
@@ -58,7 +60,7 @@ class ChatListScreen extends StatelessWidget {
                       padding: EdgeInsets.only(left: 16.w),
                       child: Icon(
                         CupertinoIcons.search,
-                        color: Color(0xff9CA3AF),
+                        color: Color(0xff636363),
                         size: 23.sp,
                       ),
                     ),
@@ -72,12 +74,13 @@ class ChatListScreen extends StatelessWidget {
                           color: Color(0xffE0E0E0),
                         ),
                         SizedBox(width: 12.w),
-                        Icon(
-                          Icons.filter_alt_outlined, // ← এই icon
-                          color: Color(0xff9CA3AF),
-                          size: 22.sp,
+                        Padding(
+                          padding: EdgeInsets.only(right: 20.w),
+                          child: CommonImage(
+                            imageSrc: AppIcons.fliter,
+                            imageColor: Color(0xff636363),
+                          ),
                         ),
-                        SizedBox(width: 16.w),
                       ],
                     ),
                   ),
@@ -150,15 +153,15 @@ class ChatListScreen extends StatelessWidget {
           SizedBox(height: 16.h),
           CommonText(
             text: "No chats found",
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w500,
-            color: Colors.grey,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+            color: Color(0xff272727),
           ),
           SizedBox(height: 8.h),
           CommonText(
             text: "Start a conversation to see them here.",
             fontSize: 14.sp,
-            color: Colors.grey.withValues(alpha: 0.7),
+            color: Colors.grey,
           ),
         ],
       ),

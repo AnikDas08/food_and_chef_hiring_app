@@ -15,6 +15,7 @@ import '../../../../../component/other_widgets/item.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
+import '../../../../chef/profile/presentation/screen/help_and_Support_Screen.dart';
 import '../controller/profile_controller.dart';
 import '../../../../../../utils/constants/app_string.dart';
 
@@ -193,12 +194,15 @@ class ProfileScreen extends StatelessWidget {
                   Item(
                     icon: CupertinoIcons.question_circle,
                     title: AppString.contactSupport,
+                    onTap: (){
+                      Get.to(HelpSupportScreen());
+                    },
                   ),
                   Item(
                     icon: CupertinoIcons.info,
                     title: AppString.appVersion,
                     onTap: (){
-                      Get.to(()=>AppInformationScreen());
+                      Get.to(AppInformationScreen());
                     },
                   ),
                 ],

@@ -21,7 +21,7 @@ Widget orderAgain() {
         return Center(
           child: CommonText(
             text: "No previous orders",
-            fontSize: 13,
+            fontSize: 12,
             color: Color(0xff777777),
             fontWeight: FontWeight.w400,
           ),

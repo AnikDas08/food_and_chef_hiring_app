@@ -54,14 +54,14 @@ class GroceryScreen extends StatelessWidget {
                   SizedBox(height: 16.h),
                   _buildSingleOrderView(controller),
                 ] else ...[
-                  const CommonText(text: "Select bookings for grocery delivery", color: Colors.grey),
-                  SizedBox(height: 16.h),
+                  CommonText(text: "Select bookings for grocery delivery", color: Colors.grey,fontSize: 12.sp,),
+                  SizedBox(height: 12.h),
                   // Inside the Column, replace _buildFullListView(controller) with:
                   controller.availableOrders.isEmpty
                       ? Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 20.h),
-                      child: const CommonText(text: "No pending bookings available", color: Colors.grey),
+                      child: CommonText(text: "No pending bookings available", color: Colors.grey,fontSize: 12.sp,),
                     ),
                   )
                       : _buildFullListView(controller),
@@ -71,7 +71,8 @@ class GroceryScreen extends StatelessWidget {
 
                 // --- 2. PARTNER SELECTION (RESTORED LOGIC) ---
                 const CommonText(text: "Choose your grocery delivery partner", fontWeight: FontWeight.bold),
-                const CommonText(text: "Order groceries for your booking", color: Colors.grey, fontSize: 12),
+                SizedBox(height: 6.h,),
+                CommonText(text: "Order groceries for your booking", color: Colors.grey, fontSize: 12.sp),
 
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.h),

@@ -51,7 +51,7 @@ class CustomerHome extends StatelessWidget {
               ),
               prefixIcon: Padding(
                 padding: const EdgeInsets.only(left: 16),
-                child: Icon(CupertinoIcons.search),
+                child: Icon(CupertinoIcons.search,color: Color(0xff636363),),
               ),
             ),
 

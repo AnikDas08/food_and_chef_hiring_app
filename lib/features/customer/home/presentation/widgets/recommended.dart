@@ -1,6 +1,7 @@
 // widgets/recommended.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../component/text/common_text.dart';
 import '../controller/home_controller.dart';
 import 'chef_item.dart';
 
@@ -112,23 +113,35 @@ Widget recommended() {
             children: [
               const Icon(Icons.location_off, size: 48, color: Colors.grey),
               const SizedBox(height: 16),
-              const Text(
+              const /*Text(
                 'No nearby chefs found',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 12,
                   color: Colors.grey,
                   fontWeight: FontWeight.w500,
                 ),
+              ),*/
+              CommonText(
+                text: "No nearby chefs found",
+                fontSize: 12,
+                color: Color(0xff777777),
+                fontWeight: FontWeight.w400,
               ),
               const SizedBox(height: 8),
               TextButton(
                 onPressed: () => controller.refreshChefs(),
-                child: const Text(
+                child: const /*Text(
                   'Retry',
                   style: TextStyle(
                     color: Color(0xffFD713F),
                     fontWeight: FontWeight.w600,
                   ),
+                ),*/
+                CommonText(
+                  text: "Retry",
+                  fontSize: 16,
+                  color: Color(0xffFD713F),
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],

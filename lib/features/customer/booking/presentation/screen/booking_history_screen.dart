@@ -158,7 +158,7 @@ class BookingHistoryScreen extends StatelessWidget {
             const SizedBox(height: 8),
             CommonText(
               text: "You don't have any ${controller.selectedBookingHistory.toLowerCase()} bookings.",
-              fontSize: 13,
+              fontSize: 12,
               fontWeight: FontWeight.w400,
               color: const Color(0xff777777),
             ),
