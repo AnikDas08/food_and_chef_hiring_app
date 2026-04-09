@@ -279,7 +279,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                             ),
                           ),
                           Text(
-                            "h",
+                            "/h",
                             style: TextStyle(
                               fontSize: 13.sp,
                               color: const Color(0xFF777777),
