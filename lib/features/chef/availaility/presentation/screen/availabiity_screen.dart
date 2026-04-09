@@ -32,7 +32,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
   int _maxDays = 14;
   String _maxUnit = "Days";
   bool _isSubmitting = false;
-
   bool _editingMin = false;
   bool _editingMax = false;
   final TextEditingController _minController = TextEditingController();
@@ -43,6 +42,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
     super.initState();
     _loadExistingAvailability();
   }
+
   Future<void> _loadExistingAvailability() async {
     try {
       final response = await ApiService.get(ApiEndPoint.chefProfile);
@@ -51,7 +51,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
             response.data['data']['availability'] ?? [];
 
         if (existingAvailability.isEmpty) {
-          // No availability saved yet — just show defaults
           setState(() => _isLoadingData = false);
           return;
         }
@@ -63,10 +62,11 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
             );
             if (index != -1) {
               final dynamic rawEnabled = item['is_available'] ??
+                  item['availableity'] ??
                   item['availability'] ??
-                  item['availableity'] ?? false;
-              final isEnabled = rawEnabled == true ||
-                  rawEnabled.toString() == 'true';
+                  false;
+              final isEnabled =
+                  rawEnabled == true || rawEnabled.toString() == 'true';
 
               _days[index].isEnabled = isEnabled;
 
@@ -79,7 +79,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                 ))
                     .toList();
               } else if (isEnabled && _days[index].slots.isEmpty) {
-
                 _days[index].slots.add(TimeSlot(
                   from: const TimeOfDay(hour: 9, minute: 0),
                   to: const TimeOfDay(hour: 17, minute: 0),
@@ -95,6 +94,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
       if (mounted) setState(() => _isLoadingData = false);
     }
   }
+
   TimeOfDay _parseTime(String timeStr) {
     try {
       final parts = timeStr.trim().split(' ');
@@ -167,11 +167,12 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(14.r),
+                  border: Border.all(color: const Color(0xFFF1F1F1), width: 1),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.08),
                       blurRadius: 20,
-                      offset: const Offset(0, 4),
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
@@ -180,6 +181,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   children: ["Hours", "Days"].map((unit) {
                     final isSelected = unit == selected;
                     return InkWell(
+                      borderRadius: BorderRadius.circular(14.r),
                       onTap: () {
                         onSelect(unit);
                         entry.remove();
@@ -198,19 +200,37 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                                 color: const Color(0xFF272727),
                               ),
                             ),
-                            Container(
+                            isSelected
+                                ? Container(
                               width: 22.w,
                               height: 22.w,
-                              decoration: BoxDecoration(
-                                color: isSelected
-                                    ? const Color(0xFF272727)
-                                    : const Color(0xFFEEEEEE),
+                              decoration: const BoxDecoration(
+                                color: Color(0xFF272727),
                                 shape: BoxShape.circle,
                               ),
-                              child: isSelected
-                                  ? Icon(Icons.check,
-                                  size: 13.sp, color: Colors.white)
-                                  : null,
+                              child: Icon(Icons.check,
+                                  size: 13.sp, color: Colors.white),
+                            )
+                                : Container(
+                              width: 36.w,
+                              height: 22.w,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFDDDDDD),
+                                borderRadius:
+                                BorderRadius.circular(100.r),
+                              ),
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Container(
+                                  margin: EdgeInsets.all(2.w),
+                                  width: 18.w,
+                                  height: 18.w,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -235,13 +255,13 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // ── Back Button ── ✅ Navigator.pop দিয়ে fix করা
+            // Back Button
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
-                  onTap: () => Navigator.pop(context), // ✅ FIXED
+                  onTap: () => Navigator.pop(context),
                   child: Container(
                     width: 36.w,
                     height: 36.h,
@@ -259,7 +279,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
               ),
             ),
 
-            // ✅ Loading spinner যখন data আসছে
+            // Loading
             if (_isLoadingData)
               const Expanded(
                 child: Center(
@@ -292,107 +312,105 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                         ),
                       ),
                       20.verticalSpace,
+
                       ..._days.map((day) => _buildDayItem(day)),
                       20.verticalSpace,
+
+                      // Booking Preferences
                       Text(
                         "Booking Preferences",
                         style: TextStyle(
                           fontSize: 13.sp,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xFF777777),
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF272727),
                         ),
                       ),
                       10.verticalSpace,
-                      Text.rich(
-                        TextSpan(
+
+                      // Summary text
+                      RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: const Color(0xFF777777),
+                            height: 1.6,
+                          ),
                           children: [
+                            const TextSpan(
+                                text: "Customers can place orders at least "),
                             TextSpan(
-                              text: "Customers can place orders at least ",
+                              text: "$_minHours $_minUnit",
                               style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xFF272727),
                                 fontSize: 13.sp,
-                                color: const Color(0xFF777777),
-                                height: 1.6,
                               ),
                             ),
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: _buildValueChip(
-                                value: _minHours.toString(),
-                                unit: _minUnit,
-                                isEditing: _editingMin,
-                                controller: _minController,
-                                onEditStart: () {
-                                  _minController.text = _minHours.toString();
-                                  setState(() => _editingMin = true);
-                                },
-                                onEditDone: () {
-                                  final val = int.tryParse(_minController.text);
-                                  setState(() {
-                                    if (val != null && val >= 1 && val <= 24) {
-                                      _minHours = val;
-                                    }
-                                    _editingMin = false;
-                                  });
-                                },
-                                onUnitTap: (offset) {
-                                  _showUnitPopup(
-                                    context: context,
-                                    offset: offset,
-                                    selected: _minUnit,
-                                    onSelect: (v) =>
-                                        setState(() => _minUnit = v),
-                                  );
-                                },
-                              ),
-                            ),
+                            const TextSpan(text: " in advance and a maximum of "),
                             TextSpan(
-                              text: " in advance and a maximum of ",
+                              text: "$_maxDays $_maxUnit",
                               style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: const Color(0xFF272727),
                                 fontSize: 13.sp,
-                                color: const Color(0xFF777777),
-                                height: 1.6,
                               ),
                             ),
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: _buildValueChip(
-                                value: _maxDays.toString(),
-                                unit: _maxUnit,
-                                isEditing: _editingMax,
-                                controller: _maxController,
-                                onEditStart: () {
-                                  _maxController.text = _maxDays.toString();
-                                  setState(() => _editingMax = true);
-                                },
-                                onEditDone: () {
-                                  final val = int.tryParse(_maxController.text);
-                                  setState(() {
-                                    if (val != null && val >= 1 && val <= 30) {
-                                      _maxDays = val;
-                                    }
-                                    _editingMax = false;
-                                  });
-                                },
-                                onUnitTap: (offset) {
-                                  _showUnitPopup(
-                                    context: context,
-                                    offset: offset,
-                                    selected: _maxUnit,
-                                    onSelect: (v) =>
-                                        setState(() => _maxUnit = v),
-                                  );
-                                },
-                              ),
-                            ),
-                            TextSpan(
-                              text: " in advance",
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                color: const Color(0xFF777777),
-                                height: 1.6,
-                              ),
-                            ),
+                            const TextSpan(text: " in advance"),
                           ],
+                        ),
+                      ),
+                      14.verticalSpace,
+
+                      // Min booking row
+                      _buildBookingInputRow(
+                        value: _minHours,
+                        unit: _minUnit,
+                        isEditing: _editingMin,
+                        controller: _minController,
+                        onEditStart: () {
+                          _minController.text = _minHours.toString();
+                          setState(() => _editingMin = true);
+                        },
+                        onEditDone: () {
+                          final val = int.tryParse(_minController.text);
+                          setState(() {
+                            if (val != null && val >= 1 && val <= 24)
+                              _minHours = val;
+                            _editingMin = false;
+                          });
+                        },
+                        onUnitTap: (offset) => _showUnitPopup(
+                          context: context,
+                          offset: offset,
+                          selected: _minUnit,
+                          onSelect: (v) => setState(() => _minUnit = v),
+                        ),
+                      ),
+                      12.verticalSpace,
+
+                      // Max booking row
+                      _buildBookingInputRow(
+                        value: _maxDays,
+                        unit: _maxUnit,
+                        isEditing: _editingMax,
+                        controller: _maxController,
+                        onEditStart: () {
+                          _maxController.text = _maxDays.toString();
+                          setState(() => _editingMax = true);
+                        },
+                        onEditDone: () {
+                          final val = int.tryParse(_maxController.text);
+                          setState(() {
+                            if (val != null && val >= 1 && val <= 30)
+                              _maxDays = val;
+                            _editingMax = false;
+                          });
+                        },
+                        onUnitTap: (offset) => _showUnitPopup(
+                          context: context,
+                          offset: offset,
+                          selected: _maxUnit,
+                          onSelect: (v) => setState(() => _maxUnit = v),
                         ),
                       ),
                       32.verticalSpace,
@@ -401,7 +419,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                 ),
               ),
 
-            // ── Save Button ──
+            // Save Button
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
               child: SizedBox(
@@ -599,8 +617,8 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
     );
   }
 
-  Widget _buildValueChip({
-    required String value,
+  Widget _buildBookingInputRow({
+    required int value,
     required String unit,
     required bool isEditing,
     required TextEditingController controller,
@@ -608,89 +626,76 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
     required VoidCallback onEditDone,
     required Function(Offset) onUnitTap,
   }) {
+    final boxDecoration = BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(8.r),
+      border: Border.all(color: const Color(0xFFF1F1F1), width: 1),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.08),
+          blurRadius: 20,
+          offset: const Offset(0, 8),
+        ),
+      ],
+    );
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
+        // Number box
         GestureDetector(
           onTap: onEditStart,
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 2.w),
-            padding:
-            EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.06),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
+            width: 70.w,
+            height: 48.h,
+            decoration: boxDecoration,
+            alignment: Alignment.center,
             child: isEditing
-                ? SizedBox(
-              width: 40.w,
-              child: TextField(
-                controller: controller,
-                autofocus: true,
-                keyboardType: TextInputType.number,
-                textAlign: TextAlign.center,
-                style: TextStyle(
+                ? TextField(
+              controller: controller,
+              autofocus: true,
+              keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
+              style: TextStyle(
                   fontSize: 15.sp,
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xFF272727),
-                ),
-                decoration: const InputDecoration(
+                  color: const Color(0xFF272727)),
+              decoration: const InputDecoration(
                   border: InputBorder.none,
                   isDense: true,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                onSubmitted: (_) => onEditDone(),
-              ),
+                  contentPadding: EdgeInsets.zero),
+              onSubmitted: (_) => onEditDone(),
             )
                 : Text(
-              value,
+              value.toString(),
               style: TextStyle(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF272727),
-              ),
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF272727)),
             ),
           ),
         ),
-        4.horizontalSpace,
+        8.horizontalSpace,
+        // Unit dropdown box
         GestureDetector(
           onTapDown: (details) => onUnitTap(details.globalPosition),
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 2.w),
-            padding:
-            EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.06),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
+            height: 48.h,
+            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+            decoration: boxDecoration,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   unit,
                   style: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFF272727),
-                  ),
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF272727)),
                 ),
                 4.horizontalSpace,
                 Icon(Icons.keyboard_arrow_down,
-                    size: 16.sp, color: const Color(0xFF272727)),
+                    size: 18.sp, color: const Color(0xFF272727)),
               ],
             ),
           ),

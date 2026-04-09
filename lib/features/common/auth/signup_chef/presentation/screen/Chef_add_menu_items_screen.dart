@@ -186,16 +186,16 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
               ),
             ),
 
-            Padding(
-              padding: EdgeInsets.only(bottom: 20.h),
-              child: TextButton(
-                onPressed: (){
-                  Get.offAllNamed(AppRoutes.chefHomeScreen);
-                },
-                child: Text("Skip For Now",
-                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500, color: const Color(0xFF272727))),
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.only(bottom: 20.h),
+            //   child: TextButton(
+            //     onPressed: (){
+            //       Get.offAllNamed(AppRoutes.chefHomeScreen);
+            //     },
+            //     child: Text("Skip For Now",
+            //         style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500, color: const Color(0xFF272727))),
+            //   ),
+            // ),
           ],
         )),
       ),

@@ -45,6 +45,7 @@ class ChefBookingScreen extends StatelessWidget {
                   itemCount: controller.bookingHistoryList.length,
                   itemBuilder: (context, index) {
                     String value = controller.bookingHistoryList[index];
+                    final isSelected = controller.selectedBookingHistory == value;
                     return Padding(
                       padding: EdgeInsets.only(right: 8.w),
                       child: InkWell(
@@ -64,13 +65,9 @@ class ChefBookingScreen extends StatelessWidget {
                                 vertical: 8.h,
                               ),
                               decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey.withValues(alpha: 0.2),
-                                ),
-                                color: controller.selectedBookingHistory == value
-                                    ? Color(0xff272727)
-                                    : Colors.transparent,
+                                color: isSelected ? Color(0xff272727) : Colors.grey.shade200,
                                 borderRadius: BorderRadius.circular(30.sp),
+                                // border একদম নেই
                               ),
                               child: CommonText(
                                 text: value,

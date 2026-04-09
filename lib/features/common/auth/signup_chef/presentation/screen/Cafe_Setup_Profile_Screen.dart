@@ -155,7 +155,6 @@ class _CafeSetupProfileScreenState extends State<CafeSetupProfileScreen> {
                       ),
                       28.verticalSpace,
 
-                      // ── PERSONAL DETAILS ──
                       Text(
                         "PERSONAL DETAILS",
                         style: TextStyle(

@@ -165,12 +165,12 @@ class SignUpChefController extends GetxController {
 
       if (token.toString().isNotEmpty) {
         await LocalStorage.setString(LocalStorageKeys.token, token.toString());
-        print("✅ token saved: $token");
+        print("token saved: $token");
       } else {
-        print("⚠️ token পাওয়া যায়নি! response: $data");
+        print("token পাওয়া যায়নি! response: $data");
       }
 
-      print("✅ userId: $userId");
+      print("userId: $userId");
 
       Get.toNamed(AppRoutes.create_password_chef_screen);
     } else {
@@ -434,8 +434,8 @@ class SignUpChefController extends GetxController {
       final List<Map<String, dynamic>> availabilityList = days.map((day) {
         return {
           "day": day.name.toLowerCase(),
-          "availableity": day.isEnabled,   // ✅ typo fix (server এর মতো)
-          "availability": day.isEnabled,    // ✅ দুটোই পাঠাচ্ছি
+          "availableity": day.isEnabled,
+          "availability": day.isEnabled,
           "availability_times": day.isEnabled
               ? day.slots.map((slot) => {
             "start_time": _formatTime(slot.from),
@@ -446,7 +446,7 @@ class SignUpChefController extends GetxController {
       }).toList();
 
       final response = await ApiService.multipartImage(
-        ApiEndPoint.chefProfile,
+        _onboardingEndpoint,
         method: "PATCH",
         body: {
           "availability": jsonEncode(availabilityList),
@@ -465,7 +465,8 @@ class SignUpChefController extends GetxController {
         }
         Navigator.pop(Get.context!);
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
+        Utils.errorSnackBar(
+            "Error", response.data['message'] ?? "Something went wrong");
       }
     } catch (e) {
       Utils.errorSnackBar("Error", e.toString());
@@ -474,7 +475,6 @@ class SignUpChefController extends GetxController {
       update();
     }
   }
-
   Future<void> setupChefAvailability({
     required List<DaySchedule> days,
   }) async {

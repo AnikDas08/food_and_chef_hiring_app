@@ -123,7 +123,9 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                         letterSpacing: -0.5,
                       ),
                     ),
+
                     8.verticalSpace,
+
                     Text(
                       "Set your hourly rate that customers will pay you to cook for them! No pressure though--you can change this any time.",
                       style: TextStyle(
@@ -132,6 +134,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                         height: 1.5,
                       ),
                     ),
+
                     24.verticalSpace,
 
                     Text(
@@ -143,6 +146,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                         letterSpacing: 1.2,
                       ),
                     ),
+
                     12.verticalSpace,
 
                     Text(
@@ -157,7 +161,6 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     _buildPriceField(_baseRateController),
                     20.verticalSpace,
 
-                    // ── Discount Toggle Card ──
                     _buildToggleCard(
                       title:
                       "Offer discounted rate during specific\nhours on weekdays",
