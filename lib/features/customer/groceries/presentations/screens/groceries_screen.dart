@@ -128,11 +128,16 @@ class GroceryScreen extends StatelessWidget {
                     onTap: () {
                       // We send the list of selected IDs to the next screen
                       if (controller.selectedOrderIds.isNotEmpty) {
-                        Get.to(
-                              () => const ConfirmedGroceryScreen(),
-                          arguments: controller.selectedOrderIds.toList(), // Sending the list
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ConfirmedGroceryScreen(),
+                            settings: RouteSettings(
+                              arguments: controller.selectedOrderIds.toList(), // same as Get.arguments
+                            ),
+                          ),
                         );
-                      } else {
+                      }else {
                         Get.snackbar("Selection Required", "Please select at least one booking.");
                       }
                     },

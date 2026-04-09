@@ -261,13 +261,13 @@ class ChefProfileController extends GetxController {
   void onChangeProfile(int index) {
     selectedProfile = profileOptions[index];
     update();
-    Get.back();
+    Navigator.pop(Get.context!);
   }
 
   void onTap(int value) {
     selectExpertiseController.text = expertiseInCooking[value];
     update();
-    Get.back();
+    Navigator.pop(Get.context!);
   }
 
   void onChangeDiscount(v) {
@@ -288,7 +288,7 @@ class ChefProfileController extends GetxController {
   void selectLanguage(int index) {
     selectedLanguage = languages[index];
     update();
-    Get.back();
+    Navigator.pop(Get.context!);
   }
 
   Future<void> getProfileImage() async {

@@ -200,7 +200,7 @@ class BookingHistoryController extends GetxController {
         },
       );
 
-      Get.back(); // Close loading indicator
+      Navigator.pop(Get.context!); // Close loading indicator
 
       if (response.statusCode == 200) {
         Get.snackbar("Success", "Booking cancelled", backgroundColor: Colors.green, colorText: Colors.white);
@@ -209,7 +209,7 @@ class BookingHistoryController extends GetxController {
         Get.snackbar("Error", response.data['message'] ?? "Failed to cancel");
       }
     } catch (e) {
-      Get.back(); // Close loading
+      Navigator.pop(Get.context!); // Close loading
       debugPrint("Cancel Error: $e");
     }
   }
@@ -261,7 +261,7 @@ class BookingHistoryController extends GetxController {
       // End URL: order/change-status/{id}
       final response = await ApiService.post("order/change-schedule/$orderId", body: body);
 
-      Get.back(); // Close loading
+      Navigator.pop(Get.context!); // Close loading
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         Get.snackbar("Success", "Request change sent successfully",
@@ -274,7 +274,7 @@ class BookingHistoryController extends GetxController {
         Utils.errorSnackBar("Error", response.message);
       }
     } catch (e) {
-      Get.back();
+      Navigator.pop(Get.context!);
       debugPrint("Request Change Error: $e");
       Utils.errorSnackBar("Error", "Somthing error");
     }

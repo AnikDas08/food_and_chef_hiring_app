@@ -54,7 +54,7 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
                   icon: Icons.camera_alt_outlined,
                   label: 'Take a Photo',
                   onTap: () {
-                    Get.back();
+                    Navigator.pop(Get.context!);
                     controller.pickImage(ImageSource.camera);
                   },
                 ),
@@ -65,7 +65,7 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
                   icon: Icons.photo_library_outlined,
                   label: 'Choose from Gallery',
                   onTap: () {
-                    Get.back();
+                    Navigator.pop(Get.context!);
                     controller.pickImage(ImageSource.gallery);
                   },
                 ),

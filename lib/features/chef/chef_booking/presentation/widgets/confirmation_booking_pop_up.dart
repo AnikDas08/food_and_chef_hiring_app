@@ -50,7 +50,7 @@ confirmBookingPopUp({required String orderMongoId}) {
                   titleColor: const Color(0xffFFFFFF),
                   onTap: () async {
 
-                    if (Get.isDialogOpen == true) Get.back();
+                    if (Get.isDialogOpen == true) Navigator.pop(Get.context!);
 
                     Get.dialog(
                       const Center(child: CircularProgressIndicator()),
@@ -62,7 +62,7 @@ confirmBookingPopUp({required String orderMongoId}) {
                       final res = await homeC.confirmBooking(orderMongoId);
 
                       // 3) Loader close
-                      if (Get.isDialogOpen == true) Get.back();
+                      if (Get.isDialogOpen == true) Navigator.pop(Get.context!);
 
                       if (res.statusCode == 200 && res.data['success'] == true) {
                         // 4) List refresh (চাইলে instant removeও করতে পারো)
@@ -79,7 +79,7 @@ confirmBookingPopUp({required String orderMongoId}) {
                         );
                       }
                     } catch (e) {
-                      if (Get.isDialogOpen == true) Get.back();
+                      if (Get.isDialogOpen == true) Navigator.pop(Get.context!);
                       Get.snackbar("Error", "Something went wrong");
                     }
                   },
@@ -98,7 +98,7 @@ confirmBookingPopUp({required String orderMongoId}) {
                   titleColor: const Color(0xff777777),
                   onTap: () async {
 
-                    Get.back();
+                    Navigator.pop(Get.context!);
                   },
                 ),
                 16.height,

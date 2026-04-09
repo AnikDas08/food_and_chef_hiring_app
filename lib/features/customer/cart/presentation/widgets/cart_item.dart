@@ -239,7 +239,7 @@ void _confirmDelete(BuildContext context, CartController controller, String cart
         ),
         TextButton(
           onPressed: () {
-            Get.back();
+            Navigator.pop(Get.context!);
             controller.deleteCartItem(cartItemId: cartItemId, chefId: chefId);
           },
           child: Text("Remove", style: TextStyle(color: const Color(0xffE53935), fontWeight: FontWeight.w600, fontSize: 13.sp)),

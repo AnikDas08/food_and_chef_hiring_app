@@ -320,7 +320,7 @@ class SignUpChefController extends GetxController {
 
       if (response.statusCode == 200) {
 
-        Get.back();
+        Navigator.pop(Get.context!);
 
       } else {
         Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");

@@ -35,7 +35,9 @@ Widget category() {
                   CommonImage(
                     imageSrc: item.image == null
                         ? AppImages.noImage
-                        : ApiEndPoint.imageUrl+item.image!,
+                        : (item.image!.startsWith('http')
+                        ? item.image!
+                        : ApiEndPoint.imageUrl + item.image!),
                     size: 60,
                   ),
 

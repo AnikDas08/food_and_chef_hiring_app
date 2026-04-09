@@ -15,7 +15,7 @@ class AppInformationScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: InkWell(onTap: () {
-          Get.back();
+          Navigator.pop(Get.context!);
         }, child: Icon(Icons.arrow_back_ios_new, color: Colors.black)),
 
       ),

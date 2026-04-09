@@ -198,7 +198,7 @@ void showAccountCreatedPopup() {
               height: 54.h,
               child: ElevatedButton(
                 onPressed: () {
-                  Get.back();
+                  Navigator.pop(Get.context!);
                  // Get.offAllNamed(AppRoutes.signIn);
                   Get.offAllNamed(AppRoutes.chefHomeScreen);
 

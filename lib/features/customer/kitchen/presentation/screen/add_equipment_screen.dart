@@ -102,7 +102,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
-            Get.back();
+            Navigator.pop(Get.context!);
           },
           icon: Icon(Icons.arrow_back_ios, color: Colors.black),
         ),

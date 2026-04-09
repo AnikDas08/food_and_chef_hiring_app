@@ -60,8 +60,8 @@ reviewSuccessPopUp() {
                         titleColor: Color(0xffFFFFFF),
                         onTap: () async {
                           await AnimationPopUpState.closeDialog();
-                          Get.back();
-                          Get.back();
+                          Navigator.pop(Get.context!);
+                          Navigator.pop(Get.context!);
                         },
                       ),
 

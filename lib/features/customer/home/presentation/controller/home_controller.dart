@@ -109,7 +109,7 @@ class HomeController extends GetxController {
               ),
               TextButton(
                 onPressed: () async {
-                  Get.back();
+                  Navigator.pop(Get.context!);
                   await Geolocator.openLocationSettings();
                   await getCurrentLocationAndFetchChefs();
                 },
@@ -147,7 +147,7 @@ class HomeController extends GetxController {
                 ),
                 TextButton(
                   onPressed: () async {
-                    Get.back();
+                    Navigator.pop(Get.context!);
                     await getCurrentLocationAndFetchChefs();
                   },
                   child: const Text(
@@ -179,7 +179,7 @@ class HomeController extends GetxController {
               ),
               TextButton(
                 onPressed: () {
-                  Get.back();
+                  Navigator.pop(Get.context!);
                   Geolocator.openAppSettings();
                 },
                 child: const Text(

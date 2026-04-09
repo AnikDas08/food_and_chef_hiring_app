@@ -138,7 +138,7 @@ class DietaryController extends GetxController {
         _buildGroupedSaved(selectedDietaryItems.toList());
         Utils.successSnackBar('Success', 'Dietary preferences saved');
         await Future.delayed(const Duration(milliseconds: 400));
-        Get.back();
+        Navigator.pop(Get.context!);
       } else {
         Utils.errorSnackBar(
             'Error', response.data['message'] ?? 'Failed to save');

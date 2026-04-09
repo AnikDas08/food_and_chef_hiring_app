@@ -97,7 +97,7 @@ class TaxController extends GetxController {
       final response = await ApiService.post("tax-details", body: body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         await fetchTaxDetails();
-        Get.back();
+        Navigator.pop(Get.context!);
         Utils.successSnackBar('Success', 'Tax details saved successfully');
       } else {
         Utils.errorSnackBar('Error', response.data['message'] ?? 'Failed');
@@ -129,7 +129,7 @@ class TaxController extends GetxController {
       if (response.statusCode == 200) {
         await fetchTaxDetails();
         await Utils.successSnackBar('Success', 'Tax details updated successfully');
-        //Get.back();
+        //Navigator.pop(Get.context!);
       } else {
         Utils.errorSnackBar('Error', response.data['message'] ?? 'Failed');
       }

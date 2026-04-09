@@ -121,7 +121,7 @@ Widget earning() {
                                 return ListTile(
                                   onTap: () {
                                     controller.changeFilter(filter);
-                                    Get.back();
+                                    Navigator.pop(Get.context!);
                                   },
                                   title: Text(
                                     filter,

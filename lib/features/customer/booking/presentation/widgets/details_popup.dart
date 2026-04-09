@@ -326,7 +326,7 @@ Widget _buildBottomActions(BuildContext context, dynamic order,BookingHistoryCon
             buttonHeight: 48,
             buttonRadius: 16,
             onTap: () {
-              Get.back(); // Close BottomSheet
+              Navigator.pop(Get.context!); // Close BottomSheet
               Get.to(() => const GroceryScreen(), arguments: order.id);
             },
           ),
@@ -341,7 +341,7 @@ Widget _buildBottomActions(BuildContext context, dynamic order,BookingHistoryCon
 
       if (showEditButton)
         _circularIconButton(AppIcons.edit, () {
-          Get.back();
+          Navigator.pop(Get.context!);
           requestChange(context,order);
         }),
     ],

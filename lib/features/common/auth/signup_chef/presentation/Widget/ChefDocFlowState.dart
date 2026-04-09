@@ -28,7 +28,7 @@ class _ChefDocFlowState extends State<ChefDocFlow> {
 
   void _back() {
     if (_step == 0) {
-      Get.back();
+      Navigator.pop(Get.context!);
     } else {
       setState(() => _step--);
     }

@@ -653,7 +653,7 @@ class _ActionButtons extends StatelessWidget {
                   onSuccess: () {
                     final homeC = Get.find<ChefHomeController>();
                     homeC.fetchRequestedBookings();
-                    Get.back();
+                    Navigator.pop(Get.context!);
                     Get.snackbar("Success", "Booking declined");
                   },
                 );
@@ -695,7 +695,7 @@ class _ActionButtons extends StatelessWidget {
                   onSuccess: () {
                     final homeC = Get.find<ChefHomeController>();
                     homeC.fetchUpcomingBookings();
-                    Get.back();
+                    Navigator.pop(Get.context!);
                     Get.snackbar("Success", "Booking cancelled successfully");
                   },
                 );
@@ -812,7 +812,7 @@ void stopConfirmationPopUp({
       totalTime: totalTime,
       orderId: orderId,
       onConfirm: () {
-        Get.back(); // dialog বন্ধ
+        Navigator.pop(Get.context!); // dialog বন্ধ
         onSuccess();
       },
       onCheckAgain: () => Get.back(),

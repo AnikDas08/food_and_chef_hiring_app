@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class ChefPublicProfileController extends GetxController {
@@ -22,7 +23,7 @@ class ChefPublicProfileController extends GetxController {
   addToCart(value) {
     cartItems.add(value);
     update();
-    Get.back();
+    Navigator.pop(Get.context!);
   }
 
   onChangeDish(int index) {

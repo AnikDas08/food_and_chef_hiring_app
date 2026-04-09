@@ -125,7 +125,7 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
                       final order =
                       await homeC.fetchSingleOrder("69a66ebdf0507595e4636281");
 
-                      Get.back();
+                      Navigator.pop(Get.context!);
 
                       if (order != null) {
                         final user = order['user'] ?? {};
@@ -154,7 +154,7 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
                             hourlyRate: (breakdown['subtotal'] ?? 0).toDouble(),
                             estimatedTaxes: (breakdown['taxs'] ?? 0).toDouble(),
                             onStartCooking: () {
-                              Get.back();
+                              Navigator.pop(Get.context!);
                               Get.to(
                                     () => CookingStopwatchScreen(
                                   orderId: order['_id']?.toString() ?? "",
@@ -175,7 +175,7 @@ class _ChefHomeState extends State<ChefHome> with SingleTickerProviderStateMixin
                         );
                       }
                     } catch (e) {
-                      Get.back();
+                      Navigator.pop(Get.context!);
                       Get.snackbar("Message", "Something went wrong");
                     }
                   },
