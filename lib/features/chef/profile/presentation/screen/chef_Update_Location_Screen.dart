@@ -226,7 +226,11 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
-                  onTap: () => Get.back(),
+                  onTap: (){
+
+                    Navigator.pop(Get.context!);
+
+                  },
                   child: Container(
                     width: 36.w,
                     height: 36.h,

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import '../../Widget/UploadSectionWidget.dart';
 import '../Model/UploadedFileModel.dart';
@@ -8,6 +7,7 @@ import '../controller/SingleUploadController.dart';
 class CulinaryCertPage extends StatefulWidget {
   final VoidCallback onContinue;
   final VoidCallback? onBack;
+  final VoidCallback? onSkip;
   final void Function(List<UploadedFileModel>) onFilesSelected;
 
   const CulinaryCertPage({
@@ -15,6 +15,7 @@ class CulinaryCertPage extends StatefulWidget {
     required this.onContinue,
     required this.onFilesSelected,
     this.onBack,
+    this.onSkip,
   });
 
   @override
@@ -28,8 +29,6 @@ class _CulinaryCertPageState extends State<CulinaryCertPage> {
   static const _textPrimary = Color(0xFF1A1A1A);
   static const _textMuted = Color(0xFF8A8A8A);
   static const _border = Color(0xFFE0E0E0);
-  static const _securityGreen = Color(0xFF4CAF50);
-  static const _bg = Color(0xFFFFFFFF);
 
   @override
   void dispose() {
@@ -47,6 +46,17 @@ class _CulinaryCertPageState extends State<CulinaryCertPage> {
         title: 'Additional Culinary Certifications (Optional)',
         description: 'Showcase your extra culinary qualifications to strengthen your profile.',
         onBack: widget.onBack,
+        trailingAction: TextButton(
+          onPressed: widget.onSkip,
+          child: const Text(
+            'Skip',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF8A8A8A),
+            ),
+          ),
+        ),
         onContinue: () {
           widget.onFilesSelected(_ctrl.files);
           widget.onContinue();
@@ -66,12 +76,10 @@ class _CulinaryCertPageState extends State<CulinaryCertPage> {
               ),
               const SizedBox(height: 10),
 
-              // Uploaded files list
               ..._ctrl.files.map((f) => _fileTile(f)),
 
               const SizedBox(height: 8),
 
-              // Add new file button
               if (!_showAddMore)
                 GestureDetector(
                   onTap: () => setState(() => _showAddMore = true),
@@ -94,7 +102,6 @@ class _CulinaryCertPageState extends State<CulinaryCertPage> {
               const SizedBox(height: 8),
             ],
 
-            // Upload zone — প্রথমবার বা Add new file চাপলে দেখাবে
             if (_ctrl.files.isEmpty || _showAddMore)
               UploadSectionWidget(
                 files: const [],

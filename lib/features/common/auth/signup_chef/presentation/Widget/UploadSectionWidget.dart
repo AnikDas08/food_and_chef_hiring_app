@@ -76,15 +76,6 @@ class UploadSectionWidget extends StatelessWidget {
                 const SizedBox(height: 12),
                 const Text('Drag & Drop file(s) to upload',
                     style: TextStyle(fontSize: 13, color: _textMuted)),
-                // const SizedBox(height: 4),
-                // const Text('or browse',
-                //     style: TextStyle(
-                //       fontSize: 13,
-                //       color: _textPrimary,
-                //       fontWeight: FontWeight.w500,
-                //       decoration: TextDecoration.underline,
-                //       decorationColor: _textPrimary,
-                //     )),
               ]),
             ),
           ),
@@ -122,7 +113,6 @@ class UploadSectionWidget extends StatelessWidget {
             Text(file.size, style: const TextStyle(fontSize: 11, color: _textMuted)),
           ]),
         ),
-        // 👇 Edit button — onEdit দিলে দেখাবে
         if (onEdit != null)
           IconButton(
             onPressed: onEdit,
@@ -148,6 +138,7 @@ class BaseDocPage extends StatelessWidget {
   final Widget body;
   final VoidCallback onContinue;
   final VoidCallback? onBack;
+  final Widget? trailingAction; // ← Skip button এর জন্য
 
   static const _textPrimary = Color(0xFF1A1A1A);
   static const _border = Color(0xFFE0E0E0);
@@ -163,6 +154,7 @@ class BaseDocPage extends StatelessWidget {
     required this.onContinue,
     this.onBack,
     this.totalSteps = 7,
+    this.trailingAction, // ← নতুন
   });
 
   @override
@@ -173,16 +165,22 @@ class BaseDocPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Back button
+            // ── AppBar Row (Back + Skip) ──
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-              child: IconButton(
-                onPressed: onBack ?? () => Navigator.of(context).maybePop(),
-                icon: const Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  size: 18,
-                  color: _textPrimary,
-                ),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: onBack ?? () => Navigator.of(context).maybePop(),
+                    icon: const Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      size: 18,
+                      color: _textPrimary,
+                    ),
+                  ),
+                  const Spacer(),
+                  if (trailingAction != null) trailingAction!, // ← Skip এখানে
+                ],
               ),
             ),
 
@@ -281,4 +279,3 @@ class BaseDocPage extends StatelessWidget {
     );
   }
 }
-

@@ -58,10 +58,10 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
   /// null = valid, string = error
   String? _validateDuration(String value) {
     if (value.trim().isEmpty) return null;
-    final parsed = double.tryParse(value.trim());
+    final parsed = int.tryParse(value.trim());
     if (parsed == null) return "Please enter a valid number";
-    if (parsed < 0.5) {
-      return "Minimum booking duration is 30 minutes (0.5h)";
+    if (parsed < 1) {
+      return "Minimum booking duration is 1 hour";
     }
     return null;
   }
@@ -199,12 +199,10 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     _buildToggleCard(
                       title: "Ask for higher rate on weekends",
                       value: _weekendRate,
-                      onChanged: (val) =>
-                          setState(() => _weekendRate = val),
+                      onChanged: (val) => setState(() => _weekendRate = val),
                       child: _weekendRate
                           ? Column(
                         children: [
-                          12.verticalSpace,
                           _buildPriceField(_weekendRateController),
                         ],
                       )
@@ -252,19 +250,16 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                           Expanded(
                             child: TextField(
                               controller: _minDurationController,
-                              keyboardType:
-                              const TextInputType.numberWithOptions(
-                                  decimal: true),
+                              keyboardType: TextInputType.number,
                               inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'^\d+\.?\d*')),
+                                FilteringTextInputFormatter.digitsOnly,
                               ],
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: const Color(0xFF272727),
                               ),
                               decoration: InputDecoration(
-                                hintText: "Enter Your Amount",
+                                hintText: "Enter hours",
                                 hintStyle: TextStyle(
                                   color: const Color(0xFFAAAAAA),
                                   fontSize: 13.sp,
@@ -311,9 +306,11 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                           ),
                         ],
                       )
+
                     else
+
                       Text(
-                        "Minimum is 30 minutes (0.5h). e.g. 0.5, 1, 1.5, 2",
+                        "Use whole hours only — for example: 1h 2h 3h.",
                         style: TextStyle(
                           fontSize: 11.sp,
                           color: const Color(0xFF999999),

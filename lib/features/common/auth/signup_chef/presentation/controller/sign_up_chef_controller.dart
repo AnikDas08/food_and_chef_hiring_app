@@ -320,7 +320,9 @@ class SignUpChefController extends GetxController {
 
       if (response.statusCode == 200) {
 
-        Get.back();
+        Get.snackbar("Success", "Your location has been updated successfully.");
+
+        Navigator.pop(Get.context!);
 
       } else {
         Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");

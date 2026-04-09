@@ -65,6 +65,7 @@ class _ChefDocFlowState extends State<ChefDocFlow> {
         return CulinaryCertPage(
           onBack: _back,
           onContinue: _next,
+          onSkip: _next,
           onFilesSelected: (files) => _culinary = List.from(files),
         );
       case 4:

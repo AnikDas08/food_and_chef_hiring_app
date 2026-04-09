@@ -11,7 +11,7 @@ class ChefVerificationReviewPage extends StatefulWidget {
   final List<UploadedFileModel> criminalBackground;
   final List<UploadedFileModel> foodSafety;
   final List<UploadedFileModel> culinaryCerts;
-  final Future<void> Function() onSubmit; // ← Future করা হয়েছে
+  final Future<void> Function() onSubmit;
   final VoidCallback? onBack;
 
   const ChefVerificationReviewPage({
@@ -38,8 +38,10 @@ class _ChefVerificationReviewPageState
   static const _textMuted = Color(0xFF8A8A8A);
   static const _border = Color(0xFFE0E0E0);
   static const _bg = Color(0xFFFFFFFF);
+  static const _red = Color(0xFFE53935);
 
-  bool _isLoading = false; // ← loading state
+  bool _isLoading = false;
+  bool _showErrors = false; // ← Continue চাপলে error দেখাবে
 
   late List<UploadedFileModel> _govIdFront;
   late List<UploadedFileModel> _govIdBack;
@@ -60,6 +62,12 @@ class _ChefVerificationReviewPageState
     _foodSafety = List.from(widget.foodSafety);
     _culinaryCerts = List.from(widget.culinaryCerts);
   }
+
+  bool get _allRequiredFilled =>
+      _govIdFront.isNotEmpty &&
+          _govIdBack.isNotEmpty &&
+          _proofOfAddress.isNotEmpty &&
+          _foodSafety.isNotEmpty;
 
   void _deleteFile(List<UploadedFileModel> list, UploadedFileModel file) {
     setState(() => list.remove(file));
@@ -85,6 +93,12 @@ class _ChefVerificationReviewPageState
   }
 
   Future<void> _handleSubmit() async {
+    // Required check
+    if (!_allRequiredFilled) {
+      setState(() => _showErrors = true);
+      return;
+    }
+
     setState(() => _isLoading = true);
     try {
       await widget.onSubmit();
@@ -96,15 +110,12 @@ class _ChefVerificationReviewPageState
   @override
   Widget build(BuildContext context) {
     final sections = [
-      _DocSection('Government-issued Photo ID (Front)', _govIdFront),
-      _DocSection('Government-issued Photo ID (Back)', _govIdBack),
-      _DocSection('Proof of Address', _proofOfAddress),
-      _DocSection('Non-Sexual Offender Clearance', _nonSexualOffender),
-      _DocSection('Criminal Background Check', _criminalBackground),
-      _DocSection('Food Safety Certification', _foodSafety),
-      _DocSection('Additional Culinary Certifications (Optional)', _culinaryCerts),
+      _DocSection('Government-issued Photo ID (Front)', _govIdFront, required: true),
+      _DocSection('Government-issued Photo ID (Back)', _govIdBack, required: true),
+      _DocSection('Proof of Address', _proofOfAddress, required: true),
+      _DocSection('Food Safety Certification', _foodSafety, required: true),
+      _DocSection('Additional Culinary Certifications', _culinaryCerts, required: false),
     ];
-
     return Scaffold(
       backgroundColor: _bg,
       body: SafeArea(
@@ -161,7 +172,7 @@ class _ChefVerificationReviewPageState
                 backgroundColor: _textPrimary,
                 foregroundColor: Colors.white,
                 disabledBackgroundColor: _textPrimary,
-                disabledForegroundColor: Colors.white, 
+                disabledForegroundColor: Colors.white,
                 minimumSize: const Size(double.infinity, 54),
                 elevation: 0,
                 shape: RoundedRectangleBorder(
@@ -178,8 +189,7 @@ class _ChefVerificationReviewPageState
               )
                   : const Text(
                 'Continue',
-                style: TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -189,18 +199,73 @@ class _ChefVerificationReviewPageState
   }
 
   Widget _buildSection(_DocSection section) {
-    if (section.files.isEmpty) return const SizedBox.shrink();
+    final isEmpty = section.files.isEmpty;
+    final showError = _showErrors && section.required && isEmpty;
+
+    // Optional + empty → কিছু দেখাবে না
+    if (!section.required && isEmpty) return const SizedBox.shrink();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 20),
-        Text(section.title,
-            style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: _textPrimary)),
+
+        // Section title
+        Row(
+          children: [
+            Text(
+              section.title,
+              style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: _textPrimary),
+            ),
+            if (section.required)
+              const Text(
+                ' *',
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: _red),
+              ),
+          ],
+        ),
         const SizedBox(height: 10),
-        ...section.files.map((f) => _fileTile(section.files, f)),
+
+        // File আছে → tile দেখাও
+        if (!isEmpty)
+          ...section.files.map((f) => _fileTile(section.files, f))
+
+        // File নেই + required → red empty box
+        else
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFF5F5),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: showError ? _red : const Color(0xFFFFCDD2),
+                width: showError ? 1.5 : 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.upload_file_outlined,
+                    size: 18,
+                    color: showError ? _red : const Color(0xFFEF9A9A)),
+                const SizedBox(width: 8),
+                Text(
+                  showError ? 'This file is required' : 'No file uploaded',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: showError ? _red : const Color(0xFFEF9A9A),
+                    fontWeight: showError ? FontWeight.w500 : FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
       ],
     );
   }
@@ -262,5 +327,6 @@ class _ChefVerificationReviewPageState
 class _DocSection {
   final String title;
   final List<UploadedFileModel> files;
-  _DocSection(this.title, this.files);
+  final bool required;
+  _DocSection(this.title, this.files, {this.required = true});
 }
