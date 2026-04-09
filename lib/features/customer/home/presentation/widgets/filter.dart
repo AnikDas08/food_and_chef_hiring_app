@@ -51,7 +51,7 @@ class Filter extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           controller.clearAllFilters();
-                          Get.back();
+                          Navigator.pop(context);
                         },
                         child: CommonText(
                           text: AppString.clearFilters,
