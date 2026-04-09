@@ -169,7 +169,7 @@ class SearchController extends GetxController {
   // ── APPLY FILTERS ──────────────────────────────────────────────────────────
 
   Future<void> applyFilters() async {
-    Get.back();
+    Navigator.pop(Get.context!);
     await _fetchWithCurrentFilter();
   }
 
