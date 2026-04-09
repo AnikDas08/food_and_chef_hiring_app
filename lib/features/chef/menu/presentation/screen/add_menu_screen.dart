@@ -24,7 +24,7 @@ class AddMenuScreen extends StatelessWidget {
           TextButton(
               onPressed: () {
                 onAdd(ctrl.text);
-                Get.back();
+                Navigator.pop(Get.context!);
               },
               child: const Text("Add")),
         ],

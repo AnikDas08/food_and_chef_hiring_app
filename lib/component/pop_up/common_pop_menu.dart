@@ -140,7 +140,7 @@ logOutPopUp() {
                         buttonRadius: 16,
                         onTap: () {
                           LocalStorage.removeAllPrefData();
-                          Get.back();
+                          Navigator.pop(Get.context!);
                         },
                       ),
                       16.height,
@@ -337,7 +337,7 @@ class AnimationPopUpState extends State<AnimationPopUp>
   static Future<void> closeDialog() async {
     await _animationController.reverse();
     if (Get.context!.mounted) {
-      Get.back();
+      Navigator.pop(Get.context!);
     }
   }
 

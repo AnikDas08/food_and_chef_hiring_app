@@ -85,7 +85,7 @@ class AddPaymentMethod extends StatelessWidget {
               CommonButton(
                 titleText: AppString.continues,
                 onTap: () {
-                  Get.back();
+                  Navigator.pop(Get.context!);
                 },
               ),
             ],

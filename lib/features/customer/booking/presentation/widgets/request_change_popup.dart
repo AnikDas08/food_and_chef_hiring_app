@@ -42,7 +42,7 @@ void requestChange(BuildContext context,dynamic order) {
                           titleColor: Color(0xffFF3C3C),
                           buttonColor: Color(0xffF2F2F2),
                           onTap: (){
-                            Get.back();
+                            Navigator.pop(Get.context!);
                             final TextEditingController reasonController = TextEditingController();
 
                             Get.dialog(
@@ -74,7 +74,7 @@ void requestChange(BuildContext context,dynamic order) {
                                       if (reasonController.text.trim().isEmpty) {
                                         Get.snackbar("Reason Required", "Please enter a reason before cancelling.");
                                       } else {
-                                        Get.back(); // Close dialog
+                                        Navigator.pop(Get.context!); // Close dialog
                                         Get.find<BookingHistoryController>().cancelBooking(order.id, reasonController.text.trim());
                                       }
                                     },

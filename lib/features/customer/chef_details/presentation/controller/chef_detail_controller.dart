@@ -209,7 +209,7 @@ class ChefDetailsController extends GetxController {
       return;
     }
 
-    Get.back();
+    Navigator.pop(Get.context!);
 
     await CartController.instance.postCartAndNavigate(
       menuId: menuId,

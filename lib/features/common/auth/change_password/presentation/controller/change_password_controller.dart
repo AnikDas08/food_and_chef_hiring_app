@@ -17,7 +17,7 @@ class ChangePasswordController extends GetxController {
 
   Future<void> changePasswordRepo() async {
     if (!formKey.currentState!.validate()) return;
-    Get.back();
+    Navigator.pop(Get.context!);
     return;
     isLoading = true;
     update();
@@ -38,7 +38,7 @@ class ChangePasswordController extends GetxController {
       newPasswordController.clear();
       confirmPasswordController.clear();
 
-      Get.back();
+      Navigator.pop(Get.context!);
     } else {
       Get.snackbar(response.statusCode.toString(), response.message);
     }

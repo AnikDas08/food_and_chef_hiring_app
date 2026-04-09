@@ -173,7 +173,7 @@ void requestChangePopUp({String? orderId}) {
                             if (response.statusCode == 200 &&
                                 response.data['success'] == true) {
                               controller.resetChangeRequest();
-                              Get.back();
+                              Navigator.pop(Get.context!);
                               Get.snackbar(
                                 "Success",
                                 "Change request sent successfully",

@@ -15,6 +15,7 @@ import '../../../../../utils/constants/app_images.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../../../address/data/address_model.dart';
 import '../controller/cart_controller.dart';
+import '../controller/text_controller.dart';
 import '../widgets/booking_date_time_pop_up.dart';
 import '../widgets/confirm_checking_popup.dart';
 import '../widgets/tax_popup.dart';
@@ -29,7 +30,7 @@ class CheckoutScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(
-            CupertinoIcons.back, // iPhone style back arrow
+            CupertinoIcons.back,
             color: Color(0xff272727),
           ),
           onPressed: () => Navigator.pop(context),
@@ -61,13 +62,17 @@ class CheckoutScreen extends StatelessWidget {
                   keyboardType: TextInputType.none,
                   borderRadius: 20,
                   hintText: "1 January 2026, 5:20PM",
-                  onTap: () => bookingDateTimePopup(id: controller.chefGroups.isNotEmpty
-                      ? controller.chefGroups.first.chef?.id
-                      : null,),
-                  suffixIcon: InkWell(
-                    onTap: () => bookingDateTimePopup(id: controller.chefGroups.isNotEmpty
+                  onTap: () => bookingDateTimePopup(
+                    id: controller.chefGroups.isNotEmpty
                         ? controller.chefGroups.first.chef?.id
-                        : null,),
+                        : null,
+                  ),
+                  suffixIcon: InkWell(
+                    onTap: () => bookingDateTimePopup(
+                      id: controller.chefGroups.isNotEmpty
+                          ? controller.chefGroups.first.chef?.id
+                          : null,
+                    ),
                     child: const Icon(
                       CupertinoIcons.calendar,
                       color: Color(0xffFD713F),
@@ -78,7 +83,6 @@ class CheckoutScreen extends StatelessWidget {
                 20.height,
 
                 // ── Address ────────────────────────────────────────────
-                // Replace the hardcoded address Container with this:
                 GestureDetector(
                   onTap: () async {
                     final result = await Get.toNamed(
@@ -94,7 +98,8 @@ class CheckoutScreen extends StatelessWidget {
                   },
                   child: Container(
                     constraints: BoxConstraints(minHeight: 60.h),
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 16.w, vertical: 12.h),
                     decoration: BoxDecoration(
                       color: const Color(0xffF0F0F0),
                       borderRadius: BorderRadius.circular(20),
@@ -114,15 +119,18 @@ class CheckoutScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               CommonText(
-                                text: controller.selectedAddress!.ownerName.isNotEmpty
-                                    ? controller.selectedAddress!.ownerName
+                                text: controller.selectedAddress!
+                                    .ownerName.isNotEmpty
+                                    ? controller
+                                    .selectedAddress!.ownerName
                                     : controller.selectedAddress!.label,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                                 color: const Color(0xff272727),
                               ),
                               CommonText(
-                                text: controller.selectedAddress!.detailsAddress,
+                                text: controller
+                                    .selectedAddress!.detailsAddress,
                                 fontSize: 12,
                                 top: 2,
                                 fontWeight: FontWeight.w400,
@@ -154,12 +162,6 @@ class CheckoutScreen extends StatelessWidget {
                   final menus = group.menus ?? [];
                   final chef = group.chef;
 
-                  // Calculate group total
-                  double groupTotal = 0;
-                  for (final item in menus) {
-                    groupTotal += (item.totalPrice ?? 0);
-                  }
-
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -175,7 +177,8 @@ class CheckoutScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CommonText(
-                              text: "${menus.length} Item${menus.length != 1 ? 's' : ''}",
+                              text:
+                              "${menus.length} Item${menus.length != 1 ? 's' : ''}",
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
                               color: const Color(0xff777777),
@@ -208,7 +211,6 @@ class CheckoutScreen extends StatelessWidget {
                 42.height,
 
                 // ── Promo Code ─────────────────────────────────────────
-                // Replace the promo code InkWell with this:
                 InkWell(
                   onTap: () async {
                     final result = await Get.toNamed(AppRoutes.promoCode);
@@ -228,7 +230,6 @@ class CheckoutScreen extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                             color: const Color(0xff272727),
                           ),
-                          // Show applied promo code below
                           if (controller.promoCode != null)
                             CommonText(
                               text: controller.promoCode!,
@@ -239,10 +240,10 @@ class CheckoutScreen extends StatelessWidget {
                             ),
                         ],
                       ),
-                      // Show remove icon if promo applied, else arrow
                       controller.promoCode != null
                           ? InkWell(
-                        onTap: () => controller.onPromoCodeApplied(''),
+                        onTap: () =>
+                            controller.onPromoCodeApplied(''),
                         child: const Icon(
                           Icons.close,
                           size: 16,
@@ -261,92 +262,7 @@ class CheckoutScreen extends StatelessWidget {
                 24.height,
 
                 // ── Tax / Invoice ──────────────────────────────────────
-                InkWell(
-                  onTap: taxPopup,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 15.sp,
-                        width: 15.sp,
-                        decoration: BoxDecoration(
-                          color: const Color(0xffF2F2F2),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                      ),
-                      12.width,
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CommonText(
-                              text: "Request an invoice",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xff272727),
-                            ),
-                            CommonText(
-                              text: "Add tax details",
-                              fontSize: 12,
-                              top: 4,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xff818181),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Icon(
-                        Icons.arrow_forward_ios_sharp,
-                        size: 16,
-                        color: Color(0xff777777),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // ── Payment Method ─────────────────────────────────────
-                /*CommonText(
-                  text: AppString.paymentMethod,
-                  bottom: 8,
-                  fontSize: 16,
-                  top: 16,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xff272727),
-                ),
-                Container(
-                  height: 60.h,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  decoration: BoxDecoration(
-                    color: const Color(0xffF0F0F0),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      CommonImage(imageSrc: AppIcons.master, size: 24),
-                      8.width,
-                      CommonText(
-                        text: "Mastercard",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xff272727),
-                      ),
-                      CommonText(
-                        text: "**** 4356",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xff777777),
-                        left: 8,
-                      ),
-                      const Spacer(),
-                      const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 16,
-                        color: Color(0xff777777),
-                      ),
-                    ],
-                  ),
-                ),*/
+                _buildTaxSection(controller),
 
                 // ── Terms ──────────────────────────────────────────────
                 Row(
@@ -388,10 +304,86 @@ class CheckoutScreen extends StatelessWidget {
               titleText: controller.isCheckingOut
                   ? "Placing Order..."
                   : AppString.checkoutNow,
-              onTap: controller.isCheckingOut ? () {} :confirmCheckingPopup ,
+              onTap: controller.isCheckingOut ? () {} : confirmCheckingPopup,
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  // ── Tax / Invoice Section ──────────────────────────────────────────────────
+  Widget _buildTaxSection(CartController controller) {
+    final TaxController? taxCtrl = Get.isRegistered<TaxController>()
+        ? Get.find<TaxController>()
+        : null;
+
+    String taxLabel = "Add tax details";
+    if (controller.selectedTaxId != null && taxCtrl != null) {
+      if (taxCtrl.businessTax?.id == controller.selectedTaxId) {
+        taxLabel = taxCtrl.businessTax!.name;
+      } else if (taxCtrl.personalTax?.id == controller.selectedTaxId) {
+        taxLabel = taxCtrl.personalTax!.name;
+      }
+    }
+
+    return InkWell(
+      onTap: taxPopup,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            height: 15.sp,
+            width: 15.sp,
+            decoration: BoxDecoration(
+              color: controller.selectedTaxId != null
+                  ? Colors.black
+                  : const Color(0xffF2F2F2),
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: controller.selectedTaxId != null
+                ? Icon(Icons.check, color: Colors.white, size: 10.sp)
+                : null,
+          ),
+          12.width,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CommonText(
+                  text: "Request an invoice",
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xff272727),
+                ),
+                CommonText(
+                  text: taxLabel,
+                  fontSize: 12,
+                  top: 4,
+                  fontWeight: FontWeight.w500,
+                  color: controller.selectedTaxId != null
+                      ? const Color(0xffFD713F)
+                      : const Color(0xff818181),
+                ),
+              ],
+            ),
+          ),
+          controller.selectedTaxId != null
+              ? InkWell(
+            onTap: () => controller.onTaxSelected(null),
+            child: const Icon(
+              Icons.close,
+              size: 16,
+              color: Color(0xffE53935),
+            ),
+          )
+              : const Icon(
+            Icons.arrow_forward_ios_sharp,
+            size: 16,
+            color: Color(0xff777777),
+          ),
+        ],
       ),
     );
   }

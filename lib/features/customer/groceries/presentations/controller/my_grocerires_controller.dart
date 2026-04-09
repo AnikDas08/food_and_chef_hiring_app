@@ -52,7 +52,7 @@ class ConfirmedGroceryController extends GetxController {
         }
       }
 
-      Get.back(); // Close loading indicator
+      Navigator.pop(Get.context!); // Close loading indicator
 
       if (successCount == receivedOrderIds.length) {
         Get.snackbar("Success", "All groceries confirmed!",

@@ -74,7 +74,7 @@ class HelpSupportController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         _clearForm();
-        Get.back();
+        Navigator.pop(Get.context!);
         Get.snackbar("Message", "Support submitted successfully",backgroundColor: Colors.green,colorText: Colors.white);
 
       } else {

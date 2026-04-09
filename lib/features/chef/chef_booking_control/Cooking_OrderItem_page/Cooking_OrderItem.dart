@@ -91,7 +91,7 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
           Navigator.pop(context);
           _timer?.cancel();
           widget.onDone?.call(_elapsed);
-          Get.back();
+          Navigator.pop(Get.context!);
         },
         onCheckAgain: () {
           Navigator.pop(context);

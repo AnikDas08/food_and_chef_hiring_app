@@ -238,7 +238,7 @@ void bookingDetailsPopup(
                         buttonHeight: 48,
                         buttonRadius: 16,
                         onTap: () {
-                          Get.back();
+                          Navigator.pop(Get.context!);
                           declineBookingPopUp(
                             orderId: order['_id'] ?? "",
                             onSuccess: () {
@@ -270,7 +270,7 @@ void bookingDetailsPopup(
                             final chatData = response.data['data'];
                             final chatId = chatData['_id']?.toString() ?? "";
 
-                            Get.back();
+                            Navigator.pop(Get.context!);
 
                             Get.toNamed(AppRoutes.message, parameters: {
                               'chatId': chatId,
@@ -314,7 +314,7 @@ void bookingDetailsPopup(
                         final chatData = response.data['data'];
                         final chatId = chatData['_id']?.toString() ?? "";
 
-                        Get.back(); // popup বন্ধ
+                        Navigator.pop(Get.context!); // popup বন্ধ
                         Get.toNamed(AppRoutes.message, parameters: {
                           'chatId': chatId,
                           'name': order['user']?['name'] ?? "User",

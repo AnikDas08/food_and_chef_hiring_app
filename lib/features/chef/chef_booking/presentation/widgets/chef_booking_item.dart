@@ -121,7 +121,7 @@ Widget chefBookingItem({required Map order}) {
                         final c = Get.find<ChefBookingController>();
                         final orderData = await c.fetchSingleOrder(order['_id'] ?? "");
 
-                        if (Get.isDialogOpen == true) Get.back();
+                        if (Get.isDialogOpen == true) Navigator.pop(Get.context!);
 
                         if (orderData != null) {
                           upcomingPopUp(orderData: orderData);
@@ -129,7 +129,7 @@ Widget chefBookingItem({required Map order}) {
                           Get.snackbar("Error", "Could not load order details");
                         }
                       } catch (e) {
-                        if (Get.isDialogOpen == true) Get.back();
+                        if (Get.isDialogOpen == true) Navigator.pop(Get.context!);
                         Get.snackbar("Error", "Something went wrong");
                       }
                     }
@@ -461,7 +461,7 @@ Widget chefBookingItem({required Map order}) {
 
                     try {
                       final orderData = await homeC.fetchSingleOrder(realOrderId); // ✅ real ID দিয়ে
-                      Get.back();
+                      Navigator.pop(Get.context!);
 
                       if (orderData != null) {
                         final user = orderData['user'] ?? {};
@@ -487,7 +487,7 @@ Widget chefBookingItem({required Map order}) {
                             hourlyRate: (breakdown['subtotal'] ?? 0).toDouble(),
                             estimatedTaxes: (breakdown['taxs'] ?? 0).toDouble(),
                             onStartCooking: () {
-                              Get.back();
+                              Navigator.pop(Get.context!);
                               Get.to(() => CookingStopwatchScreen(
                                 orderId: realOrderId, // ✅ real ID
                                 orderItems: staticItems.map((item) => CookingOrderItem(
@@ -500,7 +500,7 @@ Widget chefBookingItem({required Map order}) {
                         );
                       }
                     } catch (e) {
-                      if (Get.isDialogOpen == true) Get.back();
+                      if (Get.isDialogOpen == true) Navigator.pop(Get.context!);
                       Get.snackbar("Error", "Something went wrong");
                     }
                   },
@@ -792,7 +792,7 @@ void reviewPopUp({
                         );
                         if (response.statusCode == 200 &&
                             response.data['success'] == true) {
-                          Get.back();
+                          Navigator.pop(Get.context!);
                           onSuccess();
                           Get.snackbar("Success", "Review submitted!",
                               backgroundColor: Colors.green,

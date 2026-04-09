@@ -282,7 +282,7 @@ class EditMenu extends StatelessWidget {
                   CommonButton(
                     titleText: AppString.saveItem,
                     onTap: () {
-                      Get.back();
+                      Navigator.pop(Get.context!);
                     },
                   ),
                 ],

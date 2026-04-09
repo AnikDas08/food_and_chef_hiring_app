@@ -129,7 +129,7 @@ Widget bookingItem(BookingHistoryModel order) {
                               if (reasonController.text.trim().isEmpty) {
                                 Get.snackbar("Reason Required", "Please enter a reason before cancelling.");
                               } else {
-                                Get.back(); // Close dialog
+                                Navigator.pop(Get.context!); // Close dialog
                                 Get.find<BookingHistoryController>().cancelBooking(order.id, reasonController.text.trim());
                               }
                             },

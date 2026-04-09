@@ -45,7 +45,7 @@ class RequestChangeChefController extends GetxController {
             : null;
         await home?.fetchUpcomingBookings();
 
-        Get.back();
+        Navigator.pop(Get.context!);
         Get.snackbar("Success", "Change request submitted successfully",
             backgroundColor: Colors.green, colorText: Colors.white);
       } else {

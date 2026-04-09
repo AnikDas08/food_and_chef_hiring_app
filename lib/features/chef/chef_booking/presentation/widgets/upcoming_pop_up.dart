@@ -330,7 +330,7 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                           buttonHeight: 48,
                           buttonRadius: 16,
                           onTap: () async {
-                            Get.back();
+                            Navigator.pop(Get.context!);
                             await Future.delayed(
                                 const Duration(milliseconds: 300));
                             requestChangePopUp(orderId: orderData?['_id']?.toString());
@@ -357,7 +357,7 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                                 final chatData = response.data['data'];
                                 final chatId = chatData['_id']?.toString() ?? "";
 
-                                Get.back();Get.toNamed(AppRoutes.message, parameters: {
+                                Navigator.pop(Get.context!);Get.toNamed(AppRoutes.message, parameters: {
                                   'chatId': chatId,
                                   'name': orderData?['user']?['name'] ?? "User",
                                   'image': orderData?['user']?['image'] ?? "",

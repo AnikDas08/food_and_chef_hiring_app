@@ -59,7 +59,7 @@ class BookTime extends StatelessWidget {
                                   return ListTile(
                                     onTap: () {
                                       controller.changeDay(day);
-                                      Get.back();
+                                      Navigator.pop(Get.context!);
                                     },
                                     title: Text(
                                       day,

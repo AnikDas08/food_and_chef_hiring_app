@@ -165,12 +165,12 @@ class SignUpChefController extends GetxController {
 
       if (token.toString().isNotEmpty) {
         await LocalStorage.setString(LocalStorageKeys.token, token.toString());
-        print("token saved: $token");
+        print("✅ token saved: $token");
       } else {
-        print("token পাওয়া যায়নি! response: $data");
+        print("⚠️ token পাওয়া যায়নি! response: $data");
       }
 
-      print("userId: $userId");
+      print("✅ userId: $userId");
 
       Get.toNamed(AppRoutes.create_password_chef_screen);
     } else {
@@ -320,8 +320,6 @@ class SignUpChefController extends GetxController {
 
       if (response.statusCode == 200) {
 
-        Get.snackbar("Success", "Your location has been updated successfully.");
-
         Navigator.pop(Get.context!);
 
       } else {
@@ -425,6 +423,7 @@ class SignUpChefController extends GetxController {
       update();
     }
   }
+
   Future<void> setupChefAvailability2({
     required List<DaySchedule> days,
   }) async {
@@ -434,7 +433,6 @@ class SignUpChefController extends GetxController {
       final List<Map<String, dynamic>> availabilityList = days.map((day) {
         return {
           "day": day.name.toLowerCase(),
-          "availableity": day.isEnabled,
           "availability": day.isEnabled,
           "availability_times": day.isEnabled
               ? day.slots.map((slot) => {
@@ -446,7 +444,7 @@ class SignUpChefController extends GetxController {
       }).toList();
 
       final response = await ApiService.multipartImage(
-        _onboardingEndpoint,
+        ApiEndPoint.chefProfile,
         method: "PATCH",
         body: {
           "availability": jsonEncode(availabilityList),
@@ -455,18 +453,10 @@ class SignUpChefController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        if (Get.context != null) {
-          ScaffoldMessenger.of(Get.context!).showSnackBar(
-            const SnackBar(
-              content: Text("Availability saved successfully!"),
-              backgroundColor: Colors.green,
-            ),
-          );
-        }
-        Navigator.pop(Get.context!);
+        Get.snackbar("Message", "Set Your Availability",
+            backgroundColor: Colors.green);
       } else {
-        Utils.errorSnackBar(
-            "Error", response.data['message'] ?? "Something went wrong");
+        Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
       }
     } catch (e) {
       Utils.errorSnackBar("Error", e.toString());
@@ -475,6 +465,7 @@ class SignUpChefController extends GetxController {
       update();
     }
   }
+
   Future<void> setupChefAvailability({
     required List<DaySchedule> days,
   }) async {

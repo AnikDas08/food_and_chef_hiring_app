@@ -13,18 +13,18 @@ class AddMenuController extends GetxController {
   onChangeMenu(int index) {
     menuController.text = menuOption[index];
     update();
-    Get.back();
+    Navigator.pop(Get.context!);
   }
 
   onChangeDiet(int index) {
     dietTypeController.text = dietOption[index];
     update();
-    Get.back();
+    Navigator.pop(Get.context!);
   }
 
   onChangeAllergens(int index) {
     allergensController.text = allergensOption[index];
     update();
-    Get.back();
+    Navigator.pop(Get.context!);
   }
 }

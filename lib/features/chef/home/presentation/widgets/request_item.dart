@@ -102,7 +102,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                         final homeC = Get.find<ChefHomeController>();
                         final orderData = await homeC.fetchSingleOrder(booking.id);
 
-                        Get.back();
+                        Navigator.pop(Get.context!);
 
                         if (orderData != null) {
                           upcomingPopUp(orderData: orderData);
@@ -110,7 +110,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                           Get.snackbar("Error", "Could not load order details");
                         }
                       } catch (e) {
-                        Get.back();
+                        Navigator.pop(Get.context!);
                         Get.snackbar("Error", "Something went wrong");
                       }
 
@@ -290,7 +290,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       final c = Get.find<ChefHomeController>();
                       final res = await c.confirmBooking(booking.id);
 
-                      Get.back();
+                      Navigator.pop(Get.context!);
 
                       if (res.statusCode == 200 && res.data['success'] == true) {
                         c.requestedBookings.removeWhere((e) => e.id == booking.id);
@@ -300,7 +300,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                         Get.snackbar("Message", res.data['message']?.toString() ?? "Something went wrong");
                       }
                     } catch (e) {
-                      Get.back();
+                      Navigator.pop(Get.context!);
                       Get.snackbar("Error", "Something went wrong");
                     }
                   },
@@ -330,7 +330,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       final homeC = Get.find<ChefHomeController>();
                       final orderData = await homeC.fetchSingleOrder(booking.id);
 
-                      Get.back();
+                      Navigator.pop(Get.context!);
 
                       if (orderData != null) {
                         upcomingPopUp(orderData: orderData);
@@ -338,7 +338,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                         Get.snackbar("Message", "Could not load order details");
                       }
                     } catch (e) {
-                      Get.back();
+                      Navigator.pop(Get.context!);
                       Get.snackbar("Message", "Something went wrong");
                     }
                   },
@@ -413,7 +413,7 @@ void showSuccessDialog() {
               height: 48,
               child: ElevatedButton(
                 onPressed: () {
-                  Get.back();
+                  Navigator.pop(Get.context!);
                   final c = Get.find<ChefHomeController>();
                   c.fetchRequestedBookings();
                 },
@@ -520,7 +520,7 @@ void cancelBookingPopUp({
                       return;
                     }
 
-                    Get.back();
+                    Navigator.pop(Get.context!);
 
                     Get.dialog(
                       const Center(child: CircularProgressIndicator()),
@@ -532,7 +532,7 @@ void cancelBookingPopUp({
 
                       final res = await homeC.cancelBooking(orderId, selectedReason.value);
 
-                      Get.back();
+                      Navigator.pop(Get.context!);
 
                       if (res.statusCode == 200 && res.data['success'] == true) {
                         onSuccess();
@@ -544,7 +544,7 @@ void cancelBookingPopUp({
                         );
                       }
                     } catch (e) {
-                      Get.back();
+                      Navigator.pop(Get.context!);
                       Get.snackbar("Error", "Something went wrong");
                     }
                   },

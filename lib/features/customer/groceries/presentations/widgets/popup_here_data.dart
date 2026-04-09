@@ -56,7 +56,7 @@ class GroceryConfirmationPopup extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   // 1. Close the popup first
-                  Get.back();
+                  Navigator.pop(Get.context!);
 
                   // 2. Find the controller and trigger the API loop
                   final controller = Get.find<ConfirmedGroceryController>();
