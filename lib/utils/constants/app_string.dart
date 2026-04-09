@@ -10,6 +10,7 @@ class AppString {
   static const String no = "No";
   static const String contactSupport = "Contact & Support";
   static const String other = "OTHER";
+  static const String updateChefLocation = "Update Chef Location";
   static const String noNotification = "No notifications";
   static const String management = "MANAGEMENT";
   static const String congratulations = "Congratulations!";
