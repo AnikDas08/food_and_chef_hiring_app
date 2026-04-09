@@ -79,7 +79,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 hintText: "Search chefs...",
                 prefixIcon: IconButton(
                   icon: Icon(Icons.arrow_back_ios_new, size: 20.sp),
-                  onPressed: () => Get.back(),
+                  onPressed: () => Navigator.pop(context),
                 ),
                 suffixIcon: _buildSuffixIcon(),
                 border: InputBorder.none,
