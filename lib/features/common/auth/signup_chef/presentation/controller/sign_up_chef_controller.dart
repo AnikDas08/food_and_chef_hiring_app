@@ -289,6 +289,50 @@ class SignUpChefController extends GetxController {
     }
   }
 
+
+
+  Future<void> ChefProfileLocationUpdate({
+    required String cookingAreaDistance,
+    required String address,
+    required String lat,
+    required String lng,
+    String? imagePath,
+  }) async {
+    isLoading = true;
+    update();
+    try {
+      final List files = [];
+      if (imagePath != null && imagePath.isNotEmpty) {
+        files.add({"name": "image", "image": imagePath});
+      }
+
+      final response = await ApiService.multipartImage(
+        _onboardingEndpoint,
+        method: "PATCH",
+        body: {
+          "cooking_area_distance": int.tryParse(cookingAreaDistance) ?? 0,
+          "address": address,
+          "lat": lat,
+          "lng": lng,
+        },
+        files: files,
+      );
+
+      if (response.statusCode == 200) {
+
+        Get.back();
+
+      } else {
+        Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
+      }
+    } catch (e) {
+      Utils.errorSnackBar("Error", e.toString());
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
+
   Future<void> setupChefProfile({
     required String about,
     required String experience,

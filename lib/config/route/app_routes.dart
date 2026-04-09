@@ -7,6 +7,7 @@ import 'package:new_untitled/features/chef/menu/presentation/screen/add_menu_scr
 import 'package:new_untitled/features/chef/menu/presentation/screen/edit_menu.dart';
 import 'package:new_untitled/features/chef/menu/presentation/screen/menu_screen.dart';
 import 'package:new_untitled/features/chef/profile/presentation/screen/account_setting.dart';
+import 'package:new_untitled/features/chef/profile/presentation/screen/chef_Update_Location_Screen.dart';
 import 'package:new_untitled/features/common/auth/sign%20up/presentation/screen/signup_chef_screen.dart';
 import 'package:new_untitled/features/common/auth/signup_chef/presentation/screen/chef_name_screen.dart';
 import 'package:new_untitled/features/common/auth/signup_chef/presentation/screen/chef_verify_user.dart';
@@ -129,6 +130,7 @@ class AppRoutes {
   static const String withdrawMethod = "/withdraw_method_screen.dart";
   static const String history = "/history_screen.dart";
   static const String promoCode = "/promo_code_screen.dart";
+  static const String chefUpdateLocationScreen = "/chefUpdateLocationScreen.dart";
   static const String customerHomeScreen = "/customer_home_screen.dart";
 
 
@@ -142,6 +144,7 @@ class AppRoutes {
     GetPage(name: splash, page: () => const SplashScreen()),
     GetPage(name: onboarding, page: () => OnboardingScreen()),
     GetPage(name: signUp, page: () => SignUpScreen()),
+    GetPage(name: chefUpdateLocationScreen, page: () => ChefUpdateLocationScreen()),
     GetPage(name: signUpChef, page: () => SignupChefScreen()),
     GetPage(name: verifyUser, page: () => const VerifyUser()),
     GetPage(name: signIn, page: () => SignInScreen()),

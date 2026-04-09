@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/switch_button.dart';
 import 'package:new_untitled/features/chef/home/presentation/screen/App_Information_Screen.dart';
+import 'package:new_untitled/features/chef/profile/presentation/screen/chef_Update_Location_Screen.dart';
 import 'package:new_untitled/features/chef/profile/presentation/screen/help_and_Support_Screen.dart';
 import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -188,7 +189,7 @@ class ChefProfileScreen extends StatelessWidget {
                         title: AppString.bankManagement,
                         onTap: () {
                           final profile = Get.find<ChefHomeController>().chefProfile.value;
-                          final stripeUrl = profile?.stripeLoginLink; // বা যে field নামে আছে
+                          final stripeUrl = profile?.stripeLoginLink;
 
                           if (stripeUrl != null && stripeUrl.isNotEmpty) {
                             Get.to(() => StripeWebViewPage(url: stripeUrl));
@@ -210,6 +211,18 @@ class ChefProfileScreen extends StatelessWidget {
                         title: AppString.accountSettings,
                         onTap: () => Get.toNamed(AppRoutes.accountSetting),
                       ),
+
+                      Item(
+                        image: AppIcons.addressIcon,
+                        title: AppString.updateChefLocation,
+                        onTap: (){
+
+                          Get.to(ChefUpdateLocationScreen());
+
+                        },
+
+                      ),
+
                       14.height,
                       Obx(
                             () => Row(
