@@ -430,7 +430,9 @@ class SignUpChefController extends GetxController {
     isLoading = true;
     update();
     try {
+
       final List<Map<String, dynamic>> availabilityList = days.map((day) {
+
         return {
           "day": day.name.toLowerCase(),
           "availability": day.isEnabled,
@@ -441,10 +443,11 @@ class SignUpChefController extends GetxController {
           }).toList()
               : [],
         };
+
       }).toList();
 
       final response = await ApiService.multipartImage(
-        ApiEndPoint.chefProfile,
+        ApiEndPoint.user,
         method: "PATCH",
         body: {
           "availability": jsonEncode(availabilityList),
@@ -453,8 +456,10 @@ class SignUpChefController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        Get.snackbar("Message", "Set Your Availability",
-            backgroundColor: Colors.green);
+
+        if (Get.context != null) {
+          Navigator.pop(Get.context!);
+        }
       } else {
         Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
       }
