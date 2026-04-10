@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../component/text/common_text.dart';
 import '../../../../common/auth/signup_chef/presentation/controller/sign_up_chef_controller.dart';
 import '../../../../common/auth/signup_chef/presentation/screen/cafe_set_availability.dart';
 import '../../../profile/presentation/widgets/custom_TimePicker.dart';
@@ -170,7 +171,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   border: Border.all(color: const Color(0xFFF1F1F1), width: 1),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
+                      color: Colors.black.withValues(alpha: 0.08),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
@@ -192,13 +193,12 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              unit,
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xFF272727),
-                              ),
+                            CommonText(
+                              text: unit,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFF272727),
+                              textAlign: TextAlign.start,
                             ),
                             isSelected
                                 ? Container(
@@ -279,7 +279,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
               ),
             ),
 
-            // Loading
             if (_isLoadingData)
               const Expanded(
                 child: Center(
@@ -293,23 +292,23 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Set Availability",
-                        style: TextStyle(
-                          fontSize: 26.sp,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFF272727),
-                          letterSpacing: -0.5,
-                        ),
+                      const CommonText(
+                        text: "Set Availability",
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF272727),
+                        textAlign: TextAlign.start,
                       ),
                       8.verticalSpace,
-                      Text(
+                      const CommonText(
+                        text:
                         "Set up your availability to let customers know when you're available to cook. This helps you get booked at the right times.",
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: const Color(0xFF777777),
-                          height: 1.5,
-                        ),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF777777),
+                        maxLines: 5,
+                        textAlign: TextAlign.start,
+                        overflow: TextOverflow.visible,
                       ),
                       20.verticalSpace,
 
@@ -317,17 +316,16 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       20.verticalSpace,
 
                       // Booking Preferences
-                      Text(
-                        "Booking Preferences",
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF272727),
-                        ),
+                      const CommonText(
+                        text: "Booking Preferences",
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF272727),
+                        textAlign: TextAlign.start,
                       ),
                       10.verticalSpace,
 
-                      // Summary text
+                      // Summary text — RichText রাখতে হবে কারণ mixed styles
                       RichText(
                         text: TextSpan(
                           style: TextStyle(
@@ -361,7 +359,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       ),
                       14.verticalSpace,
 
-                      // Min booking row
                       _buildBookingInputRow(
                         value: _minHours,
                         unit: _minUnit,
@@ -388,7 +385,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       ),
                       12.verticalSpace,
 
-                      // Max booking row
                       _buildBookingInputRow(
                         value: _maxDays,
                         unit: _maxUnit,
@@ -432,8 +428,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                     setState(() => _isSubmitting = true);
                     try {
                       final controller = SignUpChefController.instance;
-                      await controller
-                          .setupChefAvailability2(days: _days);
+                      await controller.setupChefAvailability2(days: _days);
                     } finally {
                       if (mounted)
                         setState(() => _isSubmitting = false);
@@ -460,18 +455,19 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                         ),
                       ),
                       10.horizontalSpace,
-                      Text(
-                        "Loading...",
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600),
+                      const CommonText(
+                        text: "Loading...",
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ],
                   )
-                      : Text(
-                    "Save Changes",
-                    style: TextStyle(
-                        fontSize: 16.sp, fontWeight: FontWeight.w600),
+                      : const CommonText(
+                    text: "Save Changes",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -480,7 +476,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
         ),
       ),
     );
-
   }
 
   Widget _buildDayItem(DaySchedule day) {
@@ -489,13 +484,12 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
       children: [
         Row(
           children: [
-            Text(
-              day.name,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF272727),
-              ),
+            CommonText(
+              text: day.name,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF272727),
+              textAlign: TextAlign.start,
             ),
             const Spacer(),
             Switch.adaptive(
@@ -526,12 +520,12 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                 if (i > 0)
                   Padding(
                     padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
-                    child: Text(
-                      "And",
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: const Color(0xFF777777),
-                      ),
+                    child: const CommonText(
+                      text: "And",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFF777777),
+                      textAlign: TextAlign.start,
                     ),
                   ),
                 Container(
@@ -543,37 +537,41 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
                   child: Row(
                     children: [
-                      Text("From",
-                          style: TextStyle(
-                              fontSize: 12.sp,
-                              color: const Color(0xFF777777))),
+                      const CommonText(
+                        text: "From",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF777777),
+                        textAlign: TextAlign.start,
+                      ),
                       10.horizontalSpace,
                       GestureDetector(
                         onTap: () => _pickTime(day, i, true),
-                        child: Text(
-                          _formatTime(slot.from),
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xFF272727),
-                          ),
+                        child: CommonText(
+                          text: _formatTime(slot.from),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF272727),
+                          textAlign: TextAlign.start,
                         ),
                       ),
                       const Spacer(),
-                      Text("To",
-                          style: TextStyle(
-                              fontSize: 12.sp,
-                              color: const Color(0xFF777777))),
+                      const CommonText(
+                        text: "To",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF777777),
+                        textAlign: TextAlign.start,
+                      ),
                       10.horizontalSpace,
                       GestureDetector(
                         onTap: () => _pickTime(day, i, false),
-                        child: Text(
-                          _formatTime(slot.to),
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xFF272727),
-                          ),
+                        child: CommonText(
+                          text: _formatTime(slot.to),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF272727),
+                          textAlign: TextAlign.start,
                         ),
                       ),
                     ],
@@ -583,9 +581,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
               ],
             );
           }),
-
-
-
 
           GestureDetector(
             onTap: () {
@@ -604,13 +599,12 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                 children: [
                   Icon(Icons.add, size: 16.sp, color: const Color(0xFF272727)),
                   6.horizontalSpace,
-                  Text(
-                    "Add Additional Time",
-                    style: TextStyle(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF272727),
-                    ),
+                  const CommonText(
+                    text: "Add Additional Time",
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF272727),
+                    textAlign: TextAlign.start,
                   ),
                 ],
               ),
@@ -647,7 +641,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Number box
         GestureDetector(
           onTap: onEditStart,
           child: Container(
@@ -671,17 +664,15 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   contentPadding: EdgeInsets.zero),
               onSubmitted: (_) => onEditDone(),
             )
-                : Text(
-              value.toString(),
-              style: TextStyle(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF272727)),
+                : CommonText(
+              text: value.toString(),
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF272727),
             ),
           ),
         ),
         8.horizontalSpace,
-        // Unit dropdown box
         GestureDetector(
           onTapDown: (details) => onUnitTap(details.globalPosition),
           child: Container(
@@ -691,12 +682,12 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  unit,
-                  style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF272727)),
+                CommonText(
+                  text: unit,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xFF272727),
+                  textAlign: TextAlign.start,
                 ),
                 4.horizontalSpace,
                 Icon(Icons.keyboard_arrow_down,

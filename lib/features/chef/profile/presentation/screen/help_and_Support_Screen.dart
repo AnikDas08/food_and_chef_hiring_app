@@ -2,11 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../../utils/constants/app_colors.dart';
 import '../../../../../../utils/extensions/extension.dart';
+import '../../../../../component/text/common_text.dart';
 import '../controller/help_and_Support_controller.dart';
 
 class HelpSupportScreen extends StatelessWidget {
@@ -25,13 +25,11 @@ class HelpSupportScreen extends StatelessWidget {
           onTap: () => Get.back(),
           child: Icon(Icons.chevron_left, size: 28.r, color: Colors.black87),
         ),
-        title: Text(
-          "Contact & Support",
-          style: GoogleFonts.arimo(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.w600,
-            color: Colors.black87,
-          ),
+        title: const CommonText(
+          text: "Contact & Support",
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: Colors.black87,
         ),
         centerTitle: true,
       ),
@@ -40,13 +38,11 @@ class HelpSupportScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Issue Title",
-              style: GoogleFonts.arimo(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87,
-              ),
+            const CommonText(
+              text: "Issue Title",
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
             ),
             10.height,
             _buildTextField(
@@ -55,13 +51,11 @@ class HelpSupportScreen extends StatelessWidget {
               maxLines: 1,
             ),
             20.height,
-            Text(
-              "Description",
-              style: GoogleFonts.arimo(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87,
-              ),
+            const CommonText(
+              text: "Description",
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
             ),
             10.height,
             _buildTextField(
@@ -88,13 +82,11 @@ class HelpSupportScreen extends StatelessWidget {
                     Icon(Icons.attach_file_rounded,
                         size: 18.r, color: AppColors.primaryColor),
                     6.width,
-                    Text(
-                      "Attach File",
-                      style: GoogleFonts.arimo(
-                        fontSize: 14.sp,
-                        color: AppColors.primaryColor,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    const CommonText(
+                      text: "Attach File",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.primaryColor,
                     ),
                   ],
                 ),
@@ -175,20 +167,18 @@ class HelpSupportScreen extends StatelessWidget {
                     ),
                     child: c.isLoading
                         ? const CircularProgressIndicator(color: Colors.white)
-                        : Text(
-                      "Submit",
-                      style: GoogleFonts.arimo(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
+                        : const CommonText(
+                      text: "Submit",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
                     ),
                   ),
                 );
               },
             ),
 
-            20.height, // extra bottom padding
+            20.height,
           ],
         ),
       ),
@@ -208,10 +198,14 @@ class HelpSupportScreen extends StatelessWidget {
           children: [
             12.height,
             ListTile(
-              leading:
-              Icon(Icons.photo_library, color: AppColors.primaryColor),
-              title: Text("Pick from Gallery",
-                  style: GoogleFonts.arimo(fontSize: 14.sp)),
+              leading: Icon(Icons.photo_library, color: AppColors.primaryColor),
+              title: const CommonText(
+                text: "Pick from Gallery",
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.black87,
+                textAlign: TextAlign.start,
+              ),
               onTap: () {
                 Navigator.pop(context);
                 ctrl.pickImage(ImageSource.gallery);
@@ -272,11 +266,10 @@ class HelpSupportScreen extends StatelessWidget {
       child: TextField(
         controller: controller,
         maxLines: maxLines,
-        style: GoogleFonts.arimo(fontSize: 13.sp, color: Colors.black87),
+        style: TextStyle(fontSize: 13.sp, color: Colors.black87),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle:
-          GoogleFonts.arimo(fontSize: 13.sp, color: Colors.black38),
+          hintStyle: TextStyle(fontSize: 13.sp, color: Colors.black38),
           border: InputBorder.none,
           contentPadding:
           EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),

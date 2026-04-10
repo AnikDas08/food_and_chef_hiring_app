@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_untitled/component/button/common_button.dart';
+import '../../../../../component/text/common_text.dart';
 
 class SetAvailabilityPicker extends StatefulWidget {
   final TimeOfDay initialFromTime;
@@ -140,23 +141,17 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      _formatTimeLine1(_timeSlots[index]),
-                      style: TextStyle(
-                        fontSize: 26.sp,
-                        fontWeight: FontWeight.w700,
-                        color: color,
-                        height: 1.1,
-                      ),
+                    CommonText(
+                      text: _formatTimeLine1(_timeSlots[index]),
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                      color: color,
                     ),
-                    Text(
-                      _formatTimeLine2(_timeSlots[index]),
-                      style: TextStyle(
-                        fontSize: 26.sp,
-                        fontWeight: FontWeight.w700,
-                        color: color,
-                        height: 1.1,
-                      ),
+                    CommonText(
+                      text: _formatTimeLine2(_timeSlots[index]),
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                      color: color,
                     ),
                   ],
                 ),
@@ -164,13 +159,11 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
             }
 
             return Center(
-              child: Text(
-                _formatTimeSingleLine(_timeSlots[index]),
-                style: TextStyle(
-                  fontSize: diff == 1 ? 17.sp : 15.sp,
-                  fontWeight: FontWeight.w400,
-                  color: color,
-                ),
+              child: CommonText(
+                text: _formatTimeSingleLine(_timeSlots[index]),
+                fontSize: diff == 1 ? 17 : 15,
+                fontWeight: FontWeight.w400,
+                color: color,
               ),
             );
           },
@@ -205,14 +198,12 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
           18.verticalSpace,
 
           // Title
-          Text(
-            'Set Availability',
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w700,
-              color: const Color(0xFF1C1C1E),
-              letterSpacing: -0.3,
-            ),
+          const CommonText(
+            text: 'Set Availability',
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: Color(0xFF1C1C1E),
+            textAlign: TextAlign.start,
           ),
 
           // Scroll Wheels
@@ -221,7 +212,6 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // Center highlight bar
                 Positioned(
                   top: _itemHeight * 2,
                   left: 0,
@@ -235,11 +225,9 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
                   ),
                 ),
 
-                // Wheels + "to" label
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // ✅ FIX: selectedIndex: _fromIndex pass করা হয়েছে
                     _buildWheel(
                       controller: _fromController,
                       selectedIndex: _fromIndex,
@@ -247,16 +235,13 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
-                      child: Text(
-                        'to',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xFF3C3C43),
-                        ),
+                      child: const CommonText(
+                        text: 'to',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF3C3C43),
                       ),
                     ),
-                    // ✅ FIX: selectedIndex: _toIndex pass করা হয়েছে
                     _buildWheel(
                       controller: _toController,
                       selectedIndex: _toIndex,

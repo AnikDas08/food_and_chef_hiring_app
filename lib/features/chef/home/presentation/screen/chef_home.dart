@@ -17,11 +17,9 @@ import 'package:cupertino_native/cupertino_native.dart';
 // Import your screens...
 import '../../../analytics/presentation/screen/analytics_screen.dart';
 import '../../../chef_booking/presentation/screen/chef_booking_screen.dart';
-import '../../../chef_booking_control/Cooking_OrderItem_page/Cooking_OrderItem.dart';
-import '../../../chef_booking_control/widgets/BookingDetailsSheet.dart';
+
 import '../../../profile/presentation/screen/chef_profile_screen.dart';
 import '../../../../common/message/presentation/screen/chat_screen.dart';
-import '../controller/chef_home_controller.dart';
 import '../widgets/show_ExitDialog.dart';
 import 'chef_home_screen.dart';
 
@@ -123,88 +121,6 @@ class _ChefHomeState extends State<ChefHome>
         body: Stack(
           children: [
             TabBarView(controller: tabController, children: pages),
-
-            if (selectedTabIndex == 0)
-              Positioned(
-                bottom: 100.h,
-                left: 16.w,
-                right: 16.w,
-                top: 0,
-                child: InkWell(
-                  onTap: () async {
-                    final homeC = Get.find<ChefHomeController>();
-
-                    Get.dialog(
-                      const Center(child: CircularProgressIndicator()),
-                      barrierDismissible: false,
-                    );
-
-                    try {
-                      final order = await homeC.fetchSingleOrder(
-                        "69a66ebdf0507595e4636281",
-                      );
-
-                      Navigator.pop(Get.context!);
-
-                      if (order != null) {
-                        final user = order['user'] ?? {};
-                        final staticItems =
-                            order['static_items'] as List? ?? [];
-                        final breakdown = order['price_breakdown'] ?? {};
-
-                        BookingDetailsSheet.show(
-                          context,
-                          booking: BookingDetailsModel(
-                            chefName: user['name'] ?? '',
-                            bookingId: order['order_id'] ?? '',
-                            chefImage: user['image'] ?? '',
-                            status: order['status'] ?? '',
-                            customerName: user['name'] ?? '',
-                            address: order['formatted_address'] ?? '',
-                            date: order['formatted_date'] ?? '',
-                            time: order['strTime'] ?? '',
-                            orderItems:
-                                staticItems.map((item) {
-                                  return OrderItem(
-                                    name: item['menu']?['name'] ?? '',
-                                    description:
-                                        '${item['quantity']} Items + ${(item['customizations'] as List?)?.join(', ') ?? ''}',
-                                  );
-                                }).toList(),
-                            estimatedTime: order['duration'] ?? '',
-                            hourlyRate: (breakdown['subtotal'] ?? 0).toDouble(),
-                            estimatedTaxes: (breakdown['taxs'] ?? 0).toDouble(),
-                            onStartCooking: () {
-                              Navigator.pop(Get.context!);
-                              Get.to(
-                                () => CookingStopwatchScreen(
-                                  orderId: order['_id']?.toString() ?? "",
-                                  orderItems:
-                                      staticItems.map((item) {
-                                        return CookingOrderItem(
-                                          name:
-                                              '${item['menu']?['name']} (x${item['quantity']})',
-                                          description:
-                                              (item['customizations'] as List?)
-                                                  ?.join(', ') ??
-                                              '',
-                                        );
-                                      }).toList(),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      }
-                    } catch (e) {
-                      Navigator.pop(Get.context!);
-                      Get.snackbar("Message", "Something went wrong");
-                    }
-                  },
-                  borderRadius: BorderRadius.circular(16.r),
-                  //child: menuWorkingBanner(),
-                ),
-              ),
           ],
         ),
         bottomNavigationBar:
