@@ -583,6 +583,10 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
               ],
             );
           }),
+
+
+
+
           GestureDetector(
             onTap: () {
               setState(() {
