@@ -439,15 +439,11 @@ class _CollapsedAppBarTitle extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 // Chef name
-                Text(
-                  chef?.name ?? "N/A",
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
+                CommonText(
+                    text: chef?.name??"N/A",
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff272727),
                 ),
                 const SizedBox(height: 3),
                 Row(

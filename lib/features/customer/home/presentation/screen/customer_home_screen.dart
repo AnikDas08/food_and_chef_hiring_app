@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:cupertino_native/cupertino_native.dart';
+import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/groceries_screen.dart';
 
 import '../../../../../component/image/common_image.dart';
@@ -29,11 +30,36 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
   int selectedTabIndex = 0;
 
   final List<TabData> tabs = [
-    TabData(title: "Home", icon: "house", selectedIcon: "house.fill", asset: AppIcons.home),
-    TabData(title: "Bookings", icon: "calendar", selectedIcon: "calendar.fill", asset: AppIcons.booking),
-    TabData(title: "Groceries", icon: "basket", selectedIcon: "basket.fill", asset: AppIcons.groceries),
-    TabData(title: "Chats", icon: "message", selectedIcon: "message.fill", asset: AppIcons.chats),
-    TabData(title: "Profile", icon: "person", selectedIcon: "person.fill", asset: AppIcons.profile),
+    TabData(
+      title: "Home",
+      icon: "house",
+      selectedIcon: "house.fill",
+      asset: AppIcons.home,
+    ),
+    TabData(
+      title: "Bookings",
+      icon: "calendar",
+      selectedIcon: "calendar",
+      asset: AppIcons.booking,
+    ),
+    TabData(
+      title: "Groceries",
+      icon: "basket",
+      selectedIcon: "basket.fill",
+      asset: AppIcons.groceries,
+    ),
+    TabData(
+      title: "Chats",
+      icon: "message",
+      selectedIcon: "message.fill",
+      asset: AppIcons.chats,
+    ),
+    TabData(
+      title: "Profile",
+      icon: "person",
+      selectedIcon: "person.fill",
+      asset: AppIcons.profile,
+    ),
   ];
 
   final List<Widget> pages = [
@@ -50,16 +76,17 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
     // Get initial index from arguments safely
     selectedTabIndex = Get.arguments?["index"] ?? 0;
     tabController = TabController(
-        length: tabs.length,
-        vsync: this,
-        initialIndex: selectedTabIndex
+      length: tabs.length,
+      vsync: this,
+      initialIndex: selectedTabIndex,
     );
     tabController.addListener(_updateTabIndex);
   }
 
   void _updateTabIndex() {
     // Only update if the index actually changed and isn't in the middle of an animation
-    if (!tabController.indexIsChanging && tabController.index != selectedTabIndex) {
+    if (!tabController.indexIsChanging &&
+        tabController.index != selectedTabIndex) {
       setState(() {
         selectedTabIndex = tabController.index;
       });
@@ -91,21 +118,27 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
         physics: const NeverScrollableScrollPhysics(),
         children: pages,
       ),
-      bottomNavigationBar: Platform.isIOS ? _buildCupertinoBar() : _buildAndroidBar(),
+      bottomNavigationBar:
+          Platform.isIOS ? _buildCupertinoBar() : _buildAndroidBar(),
     );
   }
 
   // IOS NATIVE STYLE
   Widget _buildCupertinoBar() {
     return CNTabBar(
-      items: tabs.map((tab) => CNTabBarItem(
-        label: tab.title,
-        icon: CNSymbol(
-          tabs[selectedTabIndex] == tab ? tab.selectedIcon : tab.icon,
-          color: const Color(0xff272727),
-          size: 18.sp, // Responsive size
-        ),
-      )).toList(),
+      items:
+          tabs
+              .map(
+                (tab) => CNTabBarItem(
+                  label: tab.title,
+                  icon: CNSymbol(
+                    tabs[selectedTabIndex] == tab ? tab.selectedIcon : tab.icon,
+                    color: const Color(0xff272727),
+                    size: 18.sp, // Responsive size
+                  ),
+                ),
+              )
+              .toList(),
       tint: const Color(0xff272727),
       backgroundColor: Colors.white.withOpacity(0.9),
       //height: 90.h, // Scaled height
@@ -146,16 +179,27 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
                     CommonImage(
                       imageSrc: tabs[index].asset,
                       size: 22.sp, // Scale icon with screen density
-                      imageColor: isSelected ? Colors.black : const Color(0xff777777),
+                      imageColor:
+                          isSelected ? Colors.black : const Color(0xff777777),
                     ),
-                    Text(
+                    /*Text(
                       tabs[index].title,
                       style: TextStyle(
                         fontSize: 10.sp, // Scale text
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                        color: isSelected ? const Color(0xff272727) : const Color(0xff777777),
+                        fontWeight:
+                            isSelected ? FontWeight.w600 : FontWeight.w400,
+                        color:
+                            isSelected
+                                ? const Color(0xff272727)
+                                : const Color(0xff777777),
                       ),
-                    ),
+                    ),*/
+                    CommonText(
+                        text: tabs[index].title,
+                      fontSize: 10.sp, // Scale text
+                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                      color: isSelected ? const Color(0xff272727) : const Color(0xff777777),
+                    )
                   ],
                 ),
               ),

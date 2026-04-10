@@ -74,10 +74,10 @@ class CustomerHome extends StatelessWidget {
               children: [
                 CommonText(
                   text: AppString.orderAgain,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   color: Color(0xff272727),
                   fontWeight: FontWeight.w600,
-                ),
+                ).start,
                 /*CommonText(
                   text: AppString.seeAll,
                   color: Color(0xffFD713F),
