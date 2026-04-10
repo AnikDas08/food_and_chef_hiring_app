@@ -139,7 +139,7 @@ class CartScreen extends StatelessWidget {
   // Extracted Price Section for cleaner code and responsiveness
   Widget _buildPriceSection(CartController controller) {
     // calculation logic remains the same
-    double subtotal = 0;
+    /*double subtotal = 0;
     for (final group in controller.chefGroups) {
       final double chefPrice = group.chef?.pricing ?? 0;
       final int totalQty = (group.menus ?? [])
@@ -148,12 +148,13 @@ class CartScreen extends StatelessWidget {
     }
     final double tax = controller.priceBreakdown?.tax ?? 0;
     final double fee = controller.priceBreakdown?.fee ?? 0;
-    final double total = subtotal + tax + fee;
+    final double total = subtotal + tax + fee;*/
+    final double subtotal=controller.priceBreakdown?.subtotal??0.0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _priceRow("Subtotal", subtotal),
+        /*_priceRow("Subtotal", subtotal),
         8.height,
         _priceRow("Tax", tax),
         8.height,
@@ -161,18 +162,18 @@ class CartScreen extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(vertical: 12.h),
           child: const Divider(height: 1),
-        ),
+        ),*/
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CommonText(
               text: "Subtotals",
-              fontSize: 16.sp,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),
             ),
             CommonText(
-              text: "\$${total.toStringAsFixed(2)}",
+              text: subtotal.toString(),
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),

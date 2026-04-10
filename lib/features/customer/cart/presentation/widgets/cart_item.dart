@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
@@ -54,15 +55,13 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(
-                        child: Text(
-                          name,
+                        child: CommonText(
+                          text: name,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff272727),
-                          ),
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff272727),
                         ),
                       ),
                       SizedBox(width: 4.w),
@@ -134,13 +133,11 @@ Widget _buildPill(String text) {
       borderRadius: BorderRadius.circular(20.r),
       border: Border.all(color: const Color(0xffE0E0E0)),
     ),
-    child: Text(
-      text,
-      style: TextStyle(
-        fontSize: 10.sp,
-        fontWeight: FontWeight.w400,
-        color: const Color(0xff555555),
-      ),
+    child: CommonText(
+      text: text,
+      fontSize: 10.sp,
+      fontWeight: FontWeight.w400,
+      color: const Color(0xff555555),
     ),
   );
 }
@@ -158,13 +155,11 @@ Widget _buildCookingTimeBadge(String time) {
         Icon(Icons.timer_outlined, size: 14.r, color: const Color(0xff777777)),
         SizedBox(width: 4.w),
         Flexible(
-          child: Text(
-            "Cooking Time: $time",
-            style: TextStyle(
-              fontSize: 11.sp,
-              color: const Color(0xff777777),
-              fontWeight: FontWeight.w400,
-            ),
+          child: CommonText(
+            text: "Cooking Time: $time",
+            fontSize: 11.sp,
+            color: const Color(0xff777777),
+            fontWeight: FontWeight.w400,
           ),
         ),
       ],
@@ -190,10 +185,10 @@ Widget _buildStepper(BuildContext context, CartController controller, String id,
         ),
         SizedBox(
           width: 32.w,
-          child: Text(
-            qty.toString(),
+          child: CommonText(
+            text: qty.toString(),
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+            fontSize: 14.sp, fontWeight: FontWeight.w600
           ),
         ),
         _stepperActionBtn(
@@ -224,25 +219,26 @@ void _confirmDelete(BuildContext context, CartController controller, String cart
     builder: (_) => AlertDialog(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-      title: Text(
-        "Remove Item",
-        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+      title: CommonText(
+        text: "Remove Item",
+        fontSize: 16.sp, fontWeight: FontWeight.w600
       ),
-      content: Text(
-        "Are you sure you want to remove this item from your cart?",
-        style: TextStyle(fontSize: 13.sp, color: const Color(0xff777777)),
+
+      content: CommonText(
+        text: "Are you sure you want to remove this item from your cart?",
+        fontSize: 13.sp, color: const Color(0xff777777)
       ),
       actions: [
         TextButton(
           onPressed: () => Get.back(),
-          child: Text("Cancel", style: TextStyle(color: const Color(0xff777777), fontSize: 13.sp)),
+          child: CommonText(text: "Cancel", color: const Color(0xff777777), fontSize: 13.sp),
         ),
         TextButton(
           onPressed: () {
             Navigator.pop(Get.context!);
             controller.deleteCartItem(cartItemId: cartItemId, chefId: chefId);
           },
-          child: Text("Remove", style: TextStyle(color: const Color(0xffE53935), fontWeight: FontWeight.w600, fontSize: 13.sp)),
+          child: CommonText(text: "Remove", color: const Color(0xffE53935), fontWeight: FontWeight.w600, fontSize: 13.sp),
         ),
       ],
     ),

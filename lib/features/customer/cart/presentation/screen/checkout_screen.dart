@@ -501,16 +501,16 @@ class CheckoutScreen extends StatelessWidget {
         children: [
           CommonText(
             text: "Order Summary",
-            fontSize: 15,
+            fontSize: 16.sp,
             fontWeight: FontWeight.w600,
             color: const Color(0xff272727),
             bottom: 12,
           ),
           _summaryRow("Subtotal", subtotal),
           8.height,
-          _summaryRow("Tax", tax),
+          _summaryRow("Fees", fee),
           8.height,
-          _summaryRow("Service Fee", fee),
+          _summaryRow("Estimated Taxes", tax),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 12.h),
             child: const Divider(height: 1, color: Color(0xffE0E0E0)),
@@ -520,15 +520,15 @@ class CheckoutScreen extends StatelessWidget {
             children: [
               CommonText(
                 text: "Totals",
-                fontSize: 15,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xff272727),
               ),
               CommonText(
                 text: "\$${total.toStringAsFixed(2)}",
-                fontSize: 15,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xffFD713F),
+                color: const Color(0xff272727),
               ),
             ],
           ),
@@ -559,15 +559,15 @@ class CheckoutScreen extends StatelessWidget {
       children: [
         CommonText(
           text: label,
-          fontSize: 12,
+          fontSize: 14,
           fontWeight: FontWeight.w400,
-          color: const Color(0xff555555),
+          color: const Color(0xff777777),
         ),
         CommonText(
           text: "\$${amount.toStringAsFixed(2)}",
-          fontSize: 12,
+          fontSize: 14,
           fontWeight: FontWeight.w400,
-          color: const Color(0xff555555),
+          color: const Color(0xff272727),
         ),
       ],
     );

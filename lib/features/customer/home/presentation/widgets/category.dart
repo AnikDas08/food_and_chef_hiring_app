@@ -20,7 +20,7 @@ Widget category() {
         itemBuilder: (context, index) {
 
           final item = controller.cuisineList[index];
-          print("image ${ApiEndPoint.imageUrl+item.image!}");
+          //print("image ${ApiEndPoint.imageUrl+item.image!}");
 
           return GestureDetector(
             onTap: (){

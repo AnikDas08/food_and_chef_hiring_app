@@ -469,14 +469,20 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 4),
-                          Text(
+                          /*Text(
                             "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}/hr",
                             style: const TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff555555),
                             ),
-                          ),
+                          ),*/
+                          CommonText(
+                              text: "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}/hr",
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff555555),
+                          )
                         ],
                       ),
                     ),
@@ -485,13 +491,19 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                     const Icon(Icons.star,
                         size: 14, color: Color(0xffFD713F)),
                     const SizedBox(width: 3),
-                    Text(
+                    /*Text(
                       (chef?.avgRating ?? 0).toStringAsFixed(1),
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         color: Color(0xff272727),
                       ),
+                    ),*/
+                    CommonText(
+                        text: (chef?.avgRating ?? 0).toStringAsFixed(1),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff272727),
                     ),
                   ],
                 ),

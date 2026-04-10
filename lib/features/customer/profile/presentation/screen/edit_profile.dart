@@ -20,7 +20,7 @@ class EditProfile extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Profile"),
+        title: const Text(""),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

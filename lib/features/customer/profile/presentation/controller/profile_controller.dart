@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/countries.dart';
 import 'package:intl_phone_field/phone_number.dart';
+import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 
@@ -187,9 +188,8 @@ class ProfileController extends GetxController {
         LocalStorage.setString("myImage", LocalStorage.myImage);
         LocalStorage.setString("myName", LocalStorage.myName);
         LocalStorage.setString("myEmail", LocalStorage.myEmail);
-
-        Utils.successSnackBar("Success", "Profile Updated Successfully");
         Get.offAllNamed(AppRoutes.customerHomeScreen, arguments: {"index": 4});
+        Utils.successSnackBar("Success", "Profile Updated Successfully");
       } else {
         Utils.errorSnackBar(response.statusCode, response.message);
       }
@@ -274,18 +274,24 @@ class _DeleteAccountDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Big title
-            const Text(
+            /*const Text(
               "Delete Account",
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
                 color: Color(0xffFF0000),
               ),
+            ),*/
+            CommonText(
+                text: "Delete Account",
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+              color: Color(0xffFF0000),
             ),
             const SizedBox(height: 12),
 
             // Warning text
-            const Text(
+            /*const Text(
               "Are you sure you want to delete your account? This action is permanent and cannot be undone.\n\nTo confirm, please enter your password below.",
               style: TextStyle(
                 fontSize: 14,
@@ -293,6 +299,12 @@ class _DeleteAccountDialog extends StatelessWidget {
                 color: Color(0xff555555),
                 height: 1.5,
               ),
+            ),*/
+            CommonText(
+              text: "Are you sure you want to delete your account? This action is permanent and cannot be undone.\n\nTo confirm, please enter your password below.",
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: Color(0xff555555),
             ),
             const SizedBox(height: 20),
 
@@ -338,14 +350,20 @@ class _DeleteAccountDialog extends StatelessWidget {
                       ),
                       side: const BorderSide(color: Color(0xffDDDDDD)),
                     ),
-                    child: const Text(
+                    child: /*const Text(
                       "Cancel",
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff444444),
                       ),
-                    ),
+                    ),*/
+                    CommonText(
+                        text: "Cancel",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff444444),
+                    )
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -374,14 +392,20 @@ class _DeleteAccountDialog extends StatelessWidget {
                         strokeWidth: 2,
                       ),
                     )
-                        : const Text(
+                        : /*const Text(
                       "Confirm",
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
-                    ),
+                    ),*/
+                    CommonText(
+                        text: "Confirm",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    )
                   ),
                 ),
               ],
