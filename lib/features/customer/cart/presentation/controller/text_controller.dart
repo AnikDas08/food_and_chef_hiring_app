@@ -1,5 +1,3 @@
-// lib/features/customer/cart/presentation/controller/tax_controller.dart
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/utils/app_utils.dart';
@@ -7,13 +5,11 @@ import '../../../../../services/api/api_service.dart';
 import '../../data/tax_model.dart';
 
 class TaxController extends GetxController {
-  // ── State ──────────────────────────────────────────────────────────────────
   TaxModel? businessTax;
   TaxModel? personalTax;
   bool isLoading = false;
   bool isSubmitting = false;
 
-  // ── Form Controllers ───────────────────────────────────────────────────────
   final nameController = TextEditingController();
   final streetController = TextEditingController();
   final cityController = TextEditingController();
@@ -31,7 +27,6 @@ class TaxController extends GetxController {
     super.onClose();
   }
 
-  // ── Fetch Tax Details ──────────────────────────────────────────────────────
   Future<void> fetchTaxDetails() async {
     isLoading = true;
     update();

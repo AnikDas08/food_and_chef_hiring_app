@@ -10,7 +10,6 @@ import '../controller/chef_home_controller.dart';
 import '../widgets/request_item.dart';
 
 class ChefHomeScreen extends StatelessWidget {
-
   const ChefHomeScreen({super.key});
 
   @override
@@ -20,7 +19,6 @@ class ChefHomeScreen extends StatelessWidget {
       extendBody: true,
       backgroundColor: Colors.white,
       appBar: ChefHomeAppBar(),
-
       body: RefreshIndicator(
         onRefresh: () async {
           final c = Get.find<ChefHomeController>();
@@ -84,22 +82,20 @@ class ChefHomeScreen extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Current Balance",
-                                    style: TextStyle(
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white60,
-                                    ),
+                                  const CommonText(
+                                    text: "Current Balance",
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white60,
+                                    textAlign: TextAlign.start,
                                   ),
                                   SizedBox(height: 4.h),
-                                  Text(
-                                    "\$${c.walletBalance.value.toStringAsFixed(0)}",
-                                    style: TextStyle(
-                                      fontSize: 34.sp,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white,
-                                    ),
+                                  CommonText(
+                                    text: "\$${c.walletBalance.value.toStringAsFixed(0)}",
+                                    fontSize: 34,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    textAlign: TextAlign.start,
                                   ),
                                   SizedBox(height: 4.h),
                                   Row(
@@ -108,6 +104,7 @@ class ChefHomeScreen extends StatelessWidget {
                                           color: const Color(0xff4CAF50),
                                           size: 13.sp),
                                       SizedBox(width: 3.w),
+                                      // RichText রাখতে হবে — mixed colors একই line এ
                                       RichText(
                                         text: TextSpan(
                                           children: [
@@ -143,10 +140,8 @@ class ChefHomeScreen extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 16.w, vertical: 12.h),
                                 child: InkWell(
-                                  onTap: (){
-
+                                  onTap: () {
                                     Get.toNamed(AppRoutes.chefPayment);
-
                                   },
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -157,13 +152,12 @@ class ChefHomeScreen extends StatelessWidget {
                                         size: 18.sp,
                                       ),
                                       SizedBox(width: 6.w),
-                                      Text(
-                                        "Cash Out",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                      const CommonText(
+                                        text: "Cash Out",
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                        textAlign: TextAlign.start,
                                       ),
                                     ],
                                   ),
@@ -191,7 +185,8 @@ class ChefHomeScreen extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Get.offAndToNamed(AppRoutes.chefHomeScreen, arguments: {"index": 2});
+                      Get.offAndToNamed(AppRoutes.chefHomeScreen,
+                          arguments: {"index": 2});
                     },
                     child: CommonText(
                       text: AppString.seeAll,
@@ -212,12 +207,11 @@ class ChefHomeScreen extends StatelessWidget {
                   return Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 32.h),
-                      child: Text(
-                        "No requested bookings",
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: Colors.grey,
-                        ),
+                      child: const CommonText(
+                        text: "No requested bookings",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey,
                       ),
                     ),
                   );
@@ -227,33 +221,33 @@ class ChefHomeScreen extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: c.requestedBookings.length,
                   itemBuilder: (context, index) {
-                    return requestItem(context, c.requestedBookings[index], isRequested: true);
+                    return requestItem(context, c.requestedBookings[index],
+                        isRequested: true);
                   },
                 );
               }),
+
               32.height,
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CommonText(
+                  const CommonText(
                     text: "Upcoming Bookings",
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                   ),
                   InkWell(
                     onTap: () {
-                      Get.offAndToNamed(AppRoutes.chefHomeScreen, arguments: {"index": 2});
+                      Get.offAndToNamed(AppRoutes.chefHomeScreen,
+                          arguments: {"index": 2});
                     },
-
-                    child: InkWell(
-                      child: CommonText(
-                        text: AppString.seeAll,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xffFD713F),
-                      ),
+                    child: CommonText(
+                      text: AppString.seeAll,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xffFD713F),
                     ),
                   ),
                 ],
@@ -268,9 +262,11 @@ class ChefHomeScreen extends StatelessWidget {
                   return Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 32.h),
-                      child: Text(
-                        "No upcoming bookings",
-                        style: TextStyle(fontSize: 14.sp, color: Colors.grey),
+                      child: const CommonText(
+                        text: "No upcoming bookings",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey,
                       ),
                     ),
                   );
@@ -284,8 +280,6 @@ class ChefHomeScreen extends StatelessWidget {
                   },
                 );
               }),
-
-
             ],
           ),
         ),

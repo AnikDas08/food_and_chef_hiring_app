@@ -113,11 +113,9 @@ class EditProfile extends StatelessWidget {
                   color: const Color(0xff777777),
                 ),
 
-                // ── All fields ────────────────────────────────────────────
                 EditProfileAllFiled(controller: controller),
                 30.height,
 
-                // ── Save button — reactive loading ────────────────────────
                 Obx(() => CommonButton(
                   titleText: AppString.saveChanges,
                   buttonRadius: 20,

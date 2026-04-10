@@ -152,7 +152,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
           ),
           belowBarData: BarAreaData(
             show: true,
-            color: const Color(0xffFD713F).withOpacity(0.08),
+            color: const Color(0xffFD713F).withValues(alpha: 0.08),
           ),
         ),
       ],
