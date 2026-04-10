@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:cupertino_native/cupertino_native.dart';
+import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/groceries_screen.dart';
 
 import '../../../../../component/image/common_image.dart';
@@ -181,7 +182,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
                       imageColor:
                           isSelected ? Colors.black : const Color(0xff777777),
                     ),
-                    Text(
+                    /*Text(
                       tabs[index].title,
                       style: TextStyle(
                         fontSize: 10.sp, // Scale text
@@ -192,7 +193,13 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
                                 ? const Color(0xff272727)
                                 : const Color(0xff777777),
                       ),
-                    ),
+                    ),*/
+                    CommonText(
+                        text: tabs[index].title,
+                      fontSize: 10.sp, // Scale text
+                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                      color: isSelected ? const Color(0xff272727) : const Color(0xff777777),
+                    )
                   ],
                 ),
               ),
