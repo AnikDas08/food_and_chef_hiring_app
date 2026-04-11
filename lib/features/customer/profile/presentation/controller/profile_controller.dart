@@ -342,7 +342,7 @@ class _DeleteAccountDialog extends StatelessWidget {
                   child: OutlinedButton(
                     onPressed: controller.isDeleteLoading.value
                         ? null
-                        : () => Get.back(),
+                        : () => Navigator.pop(context),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(

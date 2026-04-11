@@ -341,8 +341,9 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                 ),
                 child: Container(
                   padding: const EdgeInsets.all(16),
-                  decoration: const BoxDecoration(
-                    color: Colors.black,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.9),
                     borderRadius: BorderRadius.all(
                       Radius.circular(20),
                     ),
@@ -358,7 +359,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                         ),
                         child: CommonText(
                           text: "${controller.cartItems.length}",
-                          fontSize: 12,
+                          fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xff272727),
                         ).center,
@@ -366,7 +367,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                       CommonText(
                         text: AppString.viewCart,
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
                         left: 8,
                       ),
@@ -375,7 +376,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                         text:
                         "\$${totalCartPrice.toStringAsFixed(2)}  •  ${chef?.estCookingTime ?? ''}",
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
                     ],

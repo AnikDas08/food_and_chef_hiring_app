@@ -80,7 +80,7 @@ class GroceryConfirmationPopup extends StatelessWidget {
               width: double.infinity,
               height: 55.h,
               child: TextButton(
-                onPressed: () => Get.back(),
+                onPressed: () => Navigator.pop(context),
                 style: TextButton.styleFrom(
                   backgroundColor: const Color(0xffF5F5F5),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),

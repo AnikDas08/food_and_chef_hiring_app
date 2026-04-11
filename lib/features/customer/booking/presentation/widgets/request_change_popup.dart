@@ -42,7 +42,7 @@ void requestChange(BuildContext context,dynamic order) {
                           titleColor: Color(0xffFF3C3C),
                           buttonColor: Color(0xffF2F2F2),
                           onTap: (){
-                            Navigator.pop(Get.context!);
+                            Navigator.pop(context);
                             final TextEditingController reasonController = TextEditingController();
 
                             Get.dialog(

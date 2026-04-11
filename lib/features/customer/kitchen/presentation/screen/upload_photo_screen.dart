@@ -77,7 +77,7 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
                   titleText: 'Cancel',
                   buttonColor: const Color(0xFFF2F2F2),
                   titleColor: AppColors.black,
-                  onTap: () => Get.back(),
+                  onTap: () => Navigator.pop(context),
                 ),
                 SizedBox(height: 8.h),
               ],
@@ -104,7 +104,7 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
               _ProgressBar(totalSteps: 5, currentStep: 5),
               SizedBox(height: 20.h),
               GestureDetector(
-                onTap: () => Get.back(),
+                onTap: () => Navigator.pop(context),
                 child: Icon(
                   Icons.arrow_back_ios,
                   size: 20.sp,

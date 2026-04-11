@@ -49,7 +49,7 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
               ),
             ),
             leading: GestureDetector(
-              onTap: () => Get.back(),
+              onTap: () => Navigator.pop(context),
               child: const Icon(
                 Icons.arrow_back_ios_new,
                 size: 18,

@@ -230,7 +230,7 @@ void _confirmDelete(BuildContext context, CartController controller, String cart
       ),
       actions: [
         TextButton(
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.pop(context),
           child: CommonText(text: "Cancel", color: const Color(0xff777777), fontSize: 13.sp),
         ),
         TextButton(

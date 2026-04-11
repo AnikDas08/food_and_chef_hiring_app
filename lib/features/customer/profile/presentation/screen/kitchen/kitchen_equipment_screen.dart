@@ -153,7 +153,7 @@ class _KitchenHeroImage extends StatelessWidget {
             top: MediaQuery.of(context).padding.top + 8.h,
             left: 16.w,
             child: GestureDetector(
-              onTap: () => Get.back(),
+              onTap: () => Navigator.pop(context),
               child: Container(
                 width: 34.w,
                 height: 34.w,

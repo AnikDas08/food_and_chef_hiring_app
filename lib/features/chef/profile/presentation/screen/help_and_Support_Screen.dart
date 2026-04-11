@@ -22,7 +22,7 @@ class HelpSupportScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: GestureDetector(
-          onTap: () => Get.back(),
+          onTap: () => Navigator.pop(context),
           child: Icon(Icons.chevron_left, size: 28.r, color: Colors.black87),
         ),
         title: const CommonText(

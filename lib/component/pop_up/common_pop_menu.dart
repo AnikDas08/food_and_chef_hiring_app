@@ -153,7 +153,7 @@ logOutPopUp() {
                         borderColor: Color(0xffF2F2F2),
                         buttonColor: Color(0xffF2F2F2),
                         titleColor: AppColors.primaryColor,
-                        onTap: () => Get.back(),
+                        onTap: () => Navigator.pop(context),
                       ),
                     ],
                   ),

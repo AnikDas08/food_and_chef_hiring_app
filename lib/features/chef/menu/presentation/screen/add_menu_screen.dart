@@ -20,7 +20,7 @@ class AddMenuScreen extends StatelessWidget {
             decoration: InputDecoration(hintText: title)),
         actions: [
           TextButton(
-              onPressed: () => Get.back(), child: const Text("Cancel")),
+              onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
           TextButton(
               onPressed: () {
                 onAdd(ctrl.text);
@@ -152,7 +152,7 @@ class AddMenuScreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
-                  onTap: () => Get.back(),
+                  onTap: () => Navigator.pop(context),
                   child: Container(
                     width: 36.w,
                     height: 36.h,

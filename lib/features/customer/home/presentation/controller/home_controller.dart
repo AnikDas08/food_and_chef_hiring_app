@@ -104,7 +104,7 @@ class HomeController extends GetxController {
             ),
             actions: [
               TextButton(
-                onPressed: () => Get.back(),
+                onPressed: () => Navigator.pop(Get.context!),
                 child: const Text('Cancel'),
               ),
               TextButton(
@@ -142,7 +142,7 @@ class HomeController extends GetxController {
               ),
               actions: [
                 TextButton(
-                  onPressed: () => Get.back(),
+                  onPressed: () => Navigator.pop(Get.context!),
                   child: const Text('Cancel'),
                 ),
                 TextButton(
@@ -174,7 +174,7 @@ class HomeController extends GetxController {
             ),
             actions: [
               TextButton(
-                onPressed: () => Get.back(),
+                onPressed: () => Navigator.pop(Get.context!),
                 child: const Text('Cancel'),
               ),
               TextButton(
