@@ -405,7 +405,7 @@ class _CollapsedAppBarTitle extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       decoration: BoxDecoration(
         color: const Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(10),
@@ -439,20 +439,17 @@ class _CollapsedAppBarTitle extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Chef name
                 CommonText(
-                    text: chef?.name??"N/A",
+                  text: chef?.name ?? "N/A",
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xff272727),
+                  color: const Color(0xff272727),
                 ),
                 const SizedBox(height: 3),
                 Row(
                   children: [
-                    // Price chip
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(4),
@@ -470,45 +467,49 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 4),
-                          /*Text(
-                            "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}/hr",
-                            style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff555555),
-                            ),
-                          ),*/
                           CommonText(
-                              text: "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}/hr",
+                            text: "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}/hr",
                             fontSize: 11,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xff555555),
+                            color: const Color(0xff555555),
                           )
                         ],
                       ),
                     ),
                     const SizedBox(width: 10),
-                    // Star + rating
-                    const Icon(Icons.star,
-                        size: 14, color: Color(0xffFD713F)),
+                    const Icon(Icons.star, size: 14, color: Color(0xffFD713F)),
                     const SizedBox(width: 3),
-                    /*Text(
-                      (chef?.avgRating ?? 0).toStringAsFixed(1),
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff272727),
-                      ),
-                    ),*/
                     CommonText(
-                        text: (chef?.avgRating ?? 0).toStringAsFixed(1),
+                      text: (chef?.avgRating ?? 0).toStringAsFixed(1),
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                     ),
                   ],
                 ),
               ],
+            ),
+          ),
+
+          // ── Search Icon ──────────────────────────────────────────
+          InkWell(
+            onTap: () {
+              // Handle search logic here, e.g., focus a text field or
+              // trigger a search state in your controller
+              print("Search icon tapped");
+            },
+            child: Container(
+              height: 36,
+              width: 36,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.search,
+                color: Color(0xff272727),
+                size: 20,
+              ),
             ),
           ),
         ],

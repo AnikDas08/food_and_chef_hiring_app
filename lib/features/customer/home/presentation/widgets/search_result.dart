@@ -39,7 +39,7 @@ Widget searchResult(List<ChefData> chefs) {
                 text: 'No chefs found',
                 fontSize: 16,
                 color: Color(0xff777777),
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w400,
               ),
             ],
           ),

@@ -226,7 +226,8 @@ void _confirmDelete(BuildContext context, CartController controller, String cart
 
       content: CommonText(
         text: "Are you sure you want to remove this item from your cart?",
-        fontSize: 13.sp, color: const Color(0xff777777)
+        fontSize: 13.sp, color: const Color(0xff777777),
+        maxLines: 2,
       ),
       actions: [
         TextButton(

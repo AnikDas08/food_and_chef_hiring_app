@@ -163,7 +163,7 @@ class _SearchScreenState extends State<SearchScreen> {
             }),
 
             // ── "END OF RESULTS" INDICATOR ────────────────────────────────
-            Obx(() {
+            /*Obx(() {
               if (_controller.hasMoreData.value ||
                   _controller.nearbyChefsList.isEmpty ||
                   _controller.isLoadingMore.value) {
@@ -182,7 +182,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
               );
-            }),
+            }),*/
 
             // ── CLEAR FILTERS BUTTON (Floating at top) ───────────────────
             Obx(() {
