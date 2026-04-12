@@ -117,7 +117,7 @@ class _StripeWebViewPageState extends State<StripeWebViewPage> {
         title: const Text("Connect Bank Account"),
         leading: IconButton(
           icon: const Icon(Icons.close),
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Stack(
@@ -220,7 +220,7 @@ class BankManagementPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded,
               color: Color(0xff1A1A1A), size: 20),
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: SafeArea(

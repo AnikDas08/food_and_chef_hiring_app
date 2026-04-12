@@ -21,7 +21,7 @@ class CafeCookingExpertiseScreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
-                  onTap: () => Get.back(),
+                  onTap: () => Navigator.pop(context),
                   child: Container(
                     width: 36.w,
                     height: 36.h,

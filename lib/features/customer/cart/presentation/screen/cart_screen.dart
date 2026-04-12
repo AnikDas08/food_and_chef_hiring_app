@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/component/text/common_text.dart';
@@ -23,107 +25,88 @@ class CartScreen extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           backgroundColor: Colors.white,
+          // CRITICAL: This allows the cart items to scroll behind the AppBar
+          extendBodyBehindAppBar: true,
           appBar: AppBar(
-            automaticallyImplyLeading: false, // আমরা custom leading দিচ্ছি
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+            automaticallyImplyLeading: false,
             centerTitle: false,
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.transparent,
             elevation: 0,
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: const Color(0xff272727), // আপনার title color এর সাথে মিলিয়ে
-                size: 24.r,
+
+            // ── Liquid Glass Header ──────────────────────────────────────────
+            flexibleSpace: LiquidGlassLayer(
+              child: LiquidGlass(
+                shape: LiquidRoundedSuperellipse(borderRadius: 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.white.withOpacity(0.2),
+                        Colors.white.withOpacity(0.05),
+                      ],
+                    ),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.black.withOpacity(0.05),
+                        width: 0.5,
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
             ),
+
+            // ── Styled Back Button with Background ──────────────────────────
+            leadingWidth: 56.w, // Ensure enough width for the background
+            leading: Center(
+              child: Container(
+                margin: EdgeInsets.only(left: 12.w),
+                height: 36.r,
+                width: 36.r,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.5), // Semi-transparent white
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.black.withOpacity(0.05),
+                    width: 0.5,
+                  ),
+                ),
+                child: IconButton(
+                  padding: EdgeInsets.zero, // Remove default padding to center the icon
+                  icon: Icon(
+                    Icons.arrow_back_ios_new, // A cleaner iOS style icon
+                    color: const Color(0xff272727),
+                    size: 16.r,
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
+            ),
+
             title: CommonText(
               text: AppString.cart,
-              fontSize: 24.sp, // Scaled title
+              fontSize: 24.sp,
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),
             ),
           ),
 
           body: controller.isLoadingCart
-              ? const CommonLoader()  // show loader while fetching
-              : controller.cartResponse == null  // data never loaded / error
-              ? const SizedBox.shrink()      // show nothing
+              ? const CommonLoader()
+              : controller.cartResponse == null
+              ? const SizedBox.shrink()
               : controller.chefGroups.isEmpty
-          // ── Empty state ─────────────────────────────────
-              ? Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.shopping_cart_outlined,
-                  size: 64.r,
-                  color: const Color(0xffC0C0C0),
-                ),
-                16.height,
-                CommonText(
-                  text: "Your cart is empty",
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xff777777),
-                ),
-              ],
-            ),
-          )
-          // ── Cart content ────────────────────────────────────────
-              : ListView(
-            // Bottom padding 120.h ensures list content clears the floating checkout button
-            padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 120.h),
-            children: [
-              // Each chef group
-              ...controller.chefGroups.map((group) {
-                final menus = group.menus ?? [];
-                final chefId = group.chef?.id ?? '';
+              ? _buildEmptyState()
+              : _buildCartContent(controller, context),
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // ── Chef info ───────────────────────────────
-                    chefInfo(group.chef),
-
-                    // ── Cart items ──────────────────────────────
-                    ...menus.map(
-                          (item) => cartItem(context, item, chefId),
-                    ),
-
-                    16.height,
-                  ],
-                );
-              }),
-
-              // ── Notes to chef ───────────────────────────────────
-              CommonText(
-                text: AppString.notesToPrivaeChef,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xff272727),
-                textAlign: TextAlign.start,
-                top: 8.h,
-                bottom: 8.h,
-              ),
-              CommonTextField(
-                hintText: AppString.notesToPrivaeChef,
-              ),
-
-              24.height,
-
-              // ── Price breakdown ─────────────────────────────────
-              _buildPriceSection(controller),
-            ],
-          ),
-
-          // ── Continue to checkout button ───────────────────────────────────
+          // ── Bottom Checkout Button ───────────────────────────────────────
           bottomNavigationBar: controller.chefGroups.isEmpty
               ? null
               : Padding(
-            padding: EdgeInsets.only(
-                left: 16.w, right: 16.w, bottom: 16.h),
+            padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
             child: SafeArea(
               child: CommonButton(
                 titleText: AppString.continueToCheckout,
@@ -136,33 +119,77 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  // Extracted Price Section for cleaner code and responsiveness
+  // ── Helper: Empty State UI ──────────────────────────────────────────────
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.shopping_cart_outlined,
+            size: 64.r,
+            color: const Color(0xffC0C0C0),
+          ),
+          16.height,
+          CommonText(
+            text: "Your cart is empty",
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xff777777),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Helper: Main Cart Content ────────────────────────────────────────────
+  Widget _buildCartContent(CartController controller, BuildContext context) {
+    return ListView(
+      // Top padding (110.h) ensures content starts visually below the AppBar
+      padding: EdgeInsets.fromLTRB(16.w, 110.h, 16.w, 120.h),
+      physics: const BouncingScrollPhysics(), // Better feel for glass scrolling
+      children: [
+        SizedBox(height: 12,),
+        ...controller.chefGroups.map((group) {
+          final menus = group.menus ?? [];
+          final chefId = group.chef?.id ?? '';
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              chefInfo(group.chef),
+              ...menus.map((item) => cartItem(context, item, chefId)),
+              16.height,
+            ],
+          );
+        }),
+
+        CommonText(
+          text: AppString.notesToPrivaeChef,
+          fontSize: 14.sp,
+          fontWeight: FontWeight.w600,
+          color: const Color(0xff272727),
+          textAlign: TextAlign.start,
+          top: 8.h,
+          bottom: 8.h,
+        ),
+        CommonTextField(
+          hintText: AppString.notesToPrivaeChef,
+        ),
+
+        24.height,
+        _buildPriceSection(controller),
+      ],
+    );
+  }
+
+  // ── Helper: Price Section ────────────────────────────────────────────────
   Widget _buildPriceSection(CartController controller) {
-    // calculation logic remains the same
-    /*double subtotal = 0;
-    for (final group in controller.chefGroups) {
-      final double chefPrice = group.chef?.pricing ?? 0;
-      final int totalQty = (group.menus ?? [])
-          .fold(0, (sum, m) => sum + (m.quantity ?? 1));
-      subtotal += chefPrice * totalQty;
-    }
-    final double tax = controller.priceBreakdown?.tax ?? 0;
-    final double fee = controller.priceBreakdown?.fee ?? 0;
-    final double total = subtotal + tax + fee;*/
-    final double subtotal=controller.priceBreakdown?.subtotal??0.0;
+    final double subtotal = controller.priceBreakdown?.subtotal ?? 0.0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        /*_priceRow("Subtotal", subtotal),
-        8.height,
-        _priceRow("Tax", tax),
-        8.height,
-        _priceRow("Service Fee", fee),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 12.h),
-          child: const Divider(height: 1),
-        ),*/
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -173,34 +200,30 @@ class CartScreen extends StatelessWidget {
               color: const Color(0xff272727),
             ),
             CommonText(
-              text: subtotal.toString(),
+              text: "\$${subtotal.toStringAsFixed(2)}",
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),
             ),
           ],
         ),
-
-        // Estimated time section - Fixed responsiveness
         if (controller.estimatedTime != null) ...[
           12.height,
           Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: 8.w, vertical: 8.h),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
             decoration: BoxDecoration(
               color: const Color(0xffF2F2F2),
-              borderRadius: BorderRadius.circular(8.r),
+              borderRadius: BorderRadius.circular(12.r),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
                   Icons.timer_outlined,
-                  size: 16.r, // Scaled Icon size
+                  size: 16.r,
                   color: const Color(0xff777777),
                 ),
                 8.width,
-                // Flexible ensures the text wraps if the screen is too narrow
                 Flexible(
                   child: CommonText(
                     text: "Estimated time: ${controller.estimatedTime}",
@@ -213,26 +236,6 @@ class CartScreen extends StatelessWidget {
             ),
           ),
         ],
-      ],
-    );
-  }
-
-  Widget _priceRow(String label, double? amount, {bool isBold = false}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        CommonText(
-          text: label,
-          fontSize: 14.sp,
-          fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
-          color: const Color(0xff272727),
-        ),
-        CommonText(
-          text: "\$${(amount ?? 0).toStringAsFixed(2)}",
-          fontSize: 12.sp,
-          fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
-          color: const Color(0xff555555),
-        ),
       ],
     );
   }

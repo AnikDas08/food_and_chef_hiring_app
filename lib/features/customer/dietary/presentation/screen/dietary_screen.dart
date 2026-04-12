@@ -42,7 +42,7 @@ class _DietaryScreenState extends State<DietaryScreen> {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios_new,
                   color: Colors.black, size: 20),
-              onPressed: () => Get.back(),
+              onPressed: () => Navigator.pop(context),
             ),
           ),
           body: Padding(
@@ -161,7 +161,8 @@ class _Chip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xffF2F2F2),
+        // Changed to black background
+        color: const Color(0xff272727),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
@@ -169,7 +170,8 @@ class _Chip extends StatelessWidget {
         style: const TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w500,
-          color: Color(0xff272727),
+          // Changed to white text
+          color: Colors.white,
         ),
       ),
     );

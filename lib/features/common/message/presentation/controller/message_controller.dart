@@ -171,7 +171,7 @@ class MessageController extends GetxController {
             ListTile(
               leading: const Icon(Icons.cancel, color: Colors.red),
               title: const Text('Cancel'),
-              onTap: () => Get.back(),
+              onTap: () => Navigator.pop(Get.context!),
             ),
           ],
         ),

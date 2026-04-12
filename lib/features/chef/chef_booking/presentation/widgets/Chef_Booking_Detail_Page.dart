@@ -29,7 +29,7 @@ class ChefBookingDetailPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded,
               color: Color(0xff1A1A1A), size: 20),
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           "Booking Details",
@@ -815,7 +815,7 @@ void stopConfirmationPopUp({
         Navigator.pop(Get.context!); // dialog বন্ধ
         onSuccess();
       },
-      onCheckAgain: () => Get.back(),
+      onCheckAgain: () => Navigator.pop(Get.context!),
     ),
   );
 }
@@ -1009,7 +1009,7 @@ void showChefBookingDetailPopup(BuildContext context, String orderId) {
                   ),
                   IconButton(
                     icon: const Icon(Icons.close, color: Colors.black),
-                    onPressed: () => Get.back(),
+                    onPressed: () => Navigator.pop(context),
                   ),
                 ],
               ),

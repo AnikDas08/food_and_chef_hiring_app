@@ -35,8 +35,12 @@ class SocketServices {
       appLog("================> get Data on socket: $data");
       //final String id = data['_id'];
       Map<String, dynamic> orderData = Map<String, dynamic>.from(data);
+      if(LocalStorage.myRole=="CUSTOMER"){
 
-      bookingDetailsPopup(Get.context!, order: orderData, selectedTab: "Unconfirmed");
+      }
+      else{
+        bookingDetailsPopup(Get.context!, order: orderData, selectedTab: "Unconfirmed");
+      }
     });
 
   }

@@ -67,9 +67,9 @@ confirmCheckingPopup() {
                           await Future.delayed(
                             const Duration(milliseconds: 500),
                           );
-                          successPopup();
-                          Navigator.pop(Get.context!);
-                          Get.find<CartController>().placeOrder();
+                          //successPopup();
+                          //Navigator.pop(Get.context!);
+                          await Get.find<CartController>().placeOrder();
                         },
                       ),
                       12.height,

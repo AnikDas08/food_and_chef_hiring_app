@@ -143,7 +143,7 @@ void showAccountCreatedPopup() {
             Align(
               alignment: Alignment.centerRight,
               child: GestureDetector(
-                onTap: () => Get.back(),
+                onTap: () => Navigator.pop(Get.context!),
                 child: Container(
                   width: 32.w,
                   height: 32.w,

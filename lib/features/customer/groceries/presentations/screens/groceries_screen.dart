@@ -28,7 +28,7 @@ class GroceryScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const CommonText(text: "Groceries", fontWeight: FontWeight.bold,fontSize: 16,),
+        title: const CommonText(text: "", fontWeight: FontWeight.bold,fontSize: 16,),
         centerTitle: true,
       ),
       body: Obx(() {

@@ -122,7 +122,7 @@ Widget bookingItem(BookingHistoryModel order) {
                           ],
                         ),
                         actions: [
-                          TextButton(onPressed: () => Get.back(), child: const Text("Cancel")),
+                          TextButton(onPressed: () => Navigator.pop(Get.context!), child: const Text("Cancel")),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(backgroundColor: Colors.red, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r))),
                             onPressed: () {

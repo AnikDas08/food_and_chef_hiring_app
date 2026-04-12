@@ -17,7 +17,7 @@ class ConfirmedGroceryScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
-          onPressed: () => Get.back(),
+          onPressed: () => Navigator.pop(context),
         ),
         backgroundColor: Colors.white,
         elevation: 0,

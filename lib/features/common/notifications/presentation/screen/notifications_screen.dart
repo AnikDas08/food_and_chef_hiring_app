@@ -170,7 +170,7 @@ class _NotificationCard extends StatelessWidget {
                       height: 1.45,
                       fontWeight: FontWeight.w400,
                     ),
-                    maxLines: 1,
+                    maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],

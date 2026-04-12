@@ -34,7 +34,7 @@ class CookwareToolsScreen extends StatelessWidget {
                   _ProgressBar(totalSteps: 5, currentStep: 3),
                   SizedBox(height: 20.h),
                   GestureDetector(
-                    onTap: () => Get.back(),
+                    onTap: () => Navigator.pop(context),
                     child: Icon(Icons.arrow_back_ios, size: 20.sp, color: AppColors.black),
                   ),
                   SizedBox(height: 24.h),
