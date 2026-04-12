@@ -401,6 +401,7 @@ class ChefProfileController extends GetxController {
           }
         });
       }
+
     } catch (e) {
       Utils.errorSnackBar("Error", e.toString());
     } finally {
