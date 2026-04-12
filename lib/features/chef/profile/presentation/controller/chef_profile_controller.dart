@@ -124,7 +124,11 @@ class ChefProfileController extends GetxController {
     final profile = Get.find<ChefHomeController>().chefProfile.value;
     if (profile == null) return;
 
-    final nameParts = profile.name.split(' ');
+    final rawName = profile.originalName.isNotEmpty
+        ? profile.originalName
+        : profile.name;
+
+    final nameParts = rawName.trim().split(' ');
     firstNameController.text = nameParts.isNotEmpty ? nameParts.first : '';
     lastNameController.text =
     nameParts.length > 1 ? nameParts.skip(1).join(' ') : '';
@@ -144,7 +148,6 @@ class ChefProfileController extends GetxController {
     isWeekend = profile.weekendDiscountHas;
     weekendRateController.text = profile.weekendDiscountAmount.toString();
 
-    // ✅ cuisine ids load
     selectedCuisineIds.value = List<String>.from(profile.foods);
 
     update();
@@ -381,15 +384,22 @@ class ChefProfileController extends GetxController {
         LocalStorage.setString("myImage", LocalStorage.myImage);
         LocalStorage.setString("myName", LocalStorage.myName);
         LocalStorage.setString("myEmail", LocalStorage.myEmail);
-        Utils.successSnackBar("Success", "Profile updated successfully");
 
         await Get.find<ChefHomeController>().fetchChefProfile();
         update();
 
         Get.toNamed(AppRoutes.chefHomeScreen, arguments: {"index": 4});
-      } else {
-        Utils.errorSnackBar(
-            "Error", response.data['message'] ?? "Something went wrong");
+
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (Get.context != null) {
+            ScaffoldMessenger.of(Get.context!).showSnackBar(
+              const SnackBar(
+                content: Text("Profile updated successfully"),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        });
       }
     } catch (e) {
       Utils.errorSnackBar("Error", e.toString());

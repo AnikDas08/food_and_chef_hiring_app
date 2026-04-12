@@ -1,5 +1,6 @@
 class ChefProfileModel {
   final String name;
+  final String originalName;
   final String email;
   final String image;
   final String about;
@@ -23,6 +24,7 @@ class ChefProfileModel {
 
   ChefProfileModel({
     required this.name,
+    this.originalName = '',
     required this.email,
     required this.image,
     this.about = '',
@@ -51,6 +53,7 @@ class ChefProfileModel {
 
     return ChefProfileModel(
       name: json['name'] ?? '',
+      originalName: json['orginal_name'] ?? json['name'] ?? '',
       email: json['email'] ?? '',
       image: json['image'] ?? '',
       about: json['about'] ?? '',
@@ -72,7 +75,8 @@ class ChefProfileModel {
           ?.expand((e) => e.toString().split(','))
           .map((e) => e.trim())
           .where((e) => e.isNotEmpty)
-          .toList() ?? [],
+          .toList() ??
+          [],
       stripeLoginLink: json['stripe_login_link'],
       notificationEnabled: json['notification_enabled'] ?? false,
     );

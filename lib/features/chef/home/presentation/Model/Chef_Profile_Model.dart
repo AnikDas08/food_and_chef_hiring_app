@@ -8,6 +8,7 @@ class ChefProfileModel {
   final String address;
   final int experience;
   final double avgRating;
+  final String originalName;
   final int totalRating;
   final double pricing;
   final int cookingAreaDistance;
@@ -56,6 +57,7 @@ class ChefProfileModel {
   ChefProfileModel({
     required this.id,
     required this.email,
+    this.originalName = '',
     required this.name,
     required this.role,
     required this.about,
@@ -104,6 +106,7 @@ class ChefProfileModel {
       name: json['name'] ?? '',
       role: json['role'] ?? '',
       about: json['about'] ?? '',
+      originalName: json['orginal_name'] ?? json['name'] ?? '',
       image: json['image'] ?? '',
       address: json['address'] ?? '',
       experience: json['experience'] ?? 0,
