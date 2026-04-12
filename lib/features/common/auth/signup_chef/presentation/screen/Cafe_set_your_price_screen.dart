@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../../../component/text/common_text.dart';
 import '../../../../../chef/profile/presentation/widgets/custom_TimePicker.dart';
 import '../controller/sign_up_chef_controller.dart';
 
@@ -31,7 +32,6 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
   TimeOfDay _toTime = const TimeOfDay(hour: 15, minute: 0);
   bool _isSubmitting = false;
 
-  // validation error message
   String? _durationError;
 
   Future<void> _pickTime(bool isFrom) async {
@@ -55,14 +55,11 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
     return "${hour.toString().padLeft(2, '0')}:$minute $period";
   }
 
-  /// null = valid, string = error
   String? _validateDuration(String value) {
     if (value.trim().isEmpty) return null;
     final parsed = int.tryParse(value.trim());
     if (parsed == null) return "Please enter a valid number";
-    if (parsed < 1) {
-      return "Minimum booking duration is 1 hour";
-    }
+    if (parsed < 1) return "Minimum booking duration is 1 hour";
     return null;
   }
 
@@ -84,8 +81,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
           children: [
             // ── Back Button ──
             Padding(
-              padding:
-              EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
@@ -114,53 +110,47 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Set Your Price",
-                      style: TextStyle(
-                        fontSize: 26.sp,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF272727),
-                        letterSpacing: -0.5,
-                      ),
+                    CommonText(
+                      text: "Set Your Price",
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF272727),
+                      textAlign: TextAlign.left,
                     ),
-
                     8.verticalSpace,
 
-                    Text(
+                    CommonText(
+                      text:
                       "Set your hourly rate that customers will pay you to cook for them! No pressure though--you can change this any time.",
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: const Color(0xFF777777),
-                        height: 1.5,
-                      ),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xFF777777),
+                      textAlign: TextAlign.left,
+                      maxLines: 4,
                     ),
-
                     24.verticalSpace,
 
-                    Text(
-                      "PRICING",
-                      style: TextStyle(
-                        fontSize: 11.sp,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xFF777777),
-                        letterSpacing: 1.2,
-                      ),
+                    CommonText(
+                      text: "PRICING",
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF777777),
+                      textAlign: TextAlign.left,
                     ),
-
                     12.verticalSpace,
 
-                    Text(
-                      "Set Amount",
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFF272727),
-                      ),
+                    CommonText(
+                      text: "Set Amount",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF272727),
+                      textAlign: TextAlign.left,
                     ),
                     8.verticalSpace,
                     _buildPriceField(_baseRateController),
                     20.verticalSpace,
 
+                    // ── Weekday Discount Toggle ──
                     _buildToggleCard(
                       title:
                       "Offer discounted rate during specific\nhours on weekdays",
@@ -202,7 +192,8 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     _buildToggleCard(
                       title: "Ask for higher rate on weekends",
                       value: _weekendRate,
-                      onChanged: (val) => setState(() => _weekendRate = val),
+                      onChanged: (val) =>
+                          setState(() => _weekendRate = val),
                       child: _weekendRate
                           ? Column(
                         children: [
@@ -214,23 +205,21 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     24.verticalSpace,
 
                     // ── MINIMUM BOOKING DURATION ──
-                    Text(
-                      "MINIMUM BOOKING DURATION",
-                      style: TextStyle(
-                        fontSize: 11.sp,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xFF777777),
-                        letterSpacing: 1.2,
-                      ),
+                    CommonText(
+                      text: "MINIMUM BOOKING DURATION",
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF777777),
+                      textAlign: TextAlign.left,
                     ),
                     12.verticalSpace,
-                    Text(
-                      "Set shortest session length you accept",
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFF272727),
-                      ),
+
+                    CommonText(
+                      text: "Set shortest session length you accept",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF272727),
+                      textAlign: TextAlign.left,
                     ),
                     8.verticalSpace,
 
@@ -276,18 +265,17 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                               },
                             ),
                           ),
-                          Text(
-                            "/h",
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              color: const Color(0xFF777777),
-                            ),
+                          CommonText(
+                            text: "/h",
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xFF777777),
                           ),
                         ],
                       ),
                     ),
 
-                    // ── Error or hint below field ──
+                    // ── Error or Hint ──
                     4.verticalSpace,
                     if (_durationError != null)
                       Row(
@@ -299,25 +287,24 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                           ),
                           4.horizontalSpace,
                           Expanded(
-                            child: Text(
-                              _durationError!,
-                              style: TextStyle(
-                                fontSize: 11.sp,
-                                color: const Color(0xFFE53935),
-                              ),
+                            child: CommonText(
+                              text: _durationError!,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xFFE53935),
+                              textAlign: TextAlign.left,
+                              maxLines: 2,
                             ),
                           ),
                         ],
                       )
-
                     else
-
-                      Text(
-                        "Use whole hours only — for example: 1h 2h 3h.",
-                        style: TextStyle(
-                          fontSize: 11.sp,
-                          color: const Color(0xFF999999),
-                        ),
+                      CommonText(
+                        text: "Use whole hours only — for example: 1h 2h 3h.",
+                        fontSize: 11,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xFF999999),
+                        textAlign: TextAlign.left,
                       ),
 
                     32.verticalSpace,
@@ -339,13 +326,11 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     if (_baseRateController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content:
-                            Text("Please enter base rate")),
+                            content: Text("Please enter base rate")),
                       );
                       return;
                     }
 
-                    // block if duration is invalid
                     final durErr = _validateDuration(
                         _minDurationController.text);
                     if (durErr != null) {
@@ -355,16 +340,14 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
 
                     setState(() => _isSubmitting = true);
                     try {
-                      final controller =
-                          SignUpChefController.instance;
+                      final controller = SignUpChefController.instance;
 
                       final Map<String, dynamic> weekDaysDiscount =
                       _offerDiscount
                           ? {
                         "from": _formatTime(_fromTime),
                         "to": _formatTime(_toTime),
-                        "amount": _discountRateController
-                            .text
+                        "amount": _discountRateController.text
                             .trim(),
                       }
                           : {};
@@ -409,21 +392,19 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                         ),
                       ),
                       10.horizontalSpace,
-                      Text(
-                        "Loading...",
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      CommonText(
+                        text: "Loading...",
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ],
                   )
-                      : Text(
-                    "Continue",
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
+                      : CommonText(
+                    text: "Continue",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -443,13 +424,11 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
       child: Row(
         children: [
-          Text(
-            "\$",
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w500,
-              color: const Color(0xFF272727),
-            ),
+          CommonText(
+            text: "\$",
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFF272727),
           ),
           12.horizontalSpace,
           Expanded(
@@ -470,12 +449,11 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
               ),
             ),
           ),
-          Text(
-            "/h",
-            style: TextStyle(
-              fontSize: 13.sp,
-              color: const Color(0xFF777777),
-            ),
+          CommonText(
+            text: "/h",
+            fontSize: 13,
+            fontWeight: FontWeight.w400,
+            color: const Color(0xFF777777),
           ),
         ],
       ),
@@ -500,14 +478,13 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF272727),
-                    height: 1.4,
-                  ),
+                child: CommonText(
+                  text: title,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF272727),
+                  textAlign: TextAlign.left,
+                  maxLines: 3,
                 ),
               ),
               12.horizontalSpace,
@@ -542,21 +519,18 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
         child: Row(
           children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: const Color(0xFF777777),
-              ),
+            CommonText(
+              text: label,
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: const Color(0xFF777777),
             ),
             const Spacer(),
-            Text(
-              _formatTime(time),
-              style: TextStyle(
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF272727),
-              ),
+            CommonText(
+              text: _formatTime(time),
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF272727),
             ),
           ],
         ),

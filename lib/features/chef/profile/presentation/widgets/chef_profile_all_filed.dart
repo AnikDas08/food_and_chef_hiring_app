@@ -615,6 +615,7 @@ class _AddressAutocompleteFieldState
               ),
             ),
           ),
+
         if (ctrl.selectedLat != null && ctrl.addressSuggestions.isEmpty)
           const Padding(
             padding: EdgeInsets.only(top: 6, left: 2),

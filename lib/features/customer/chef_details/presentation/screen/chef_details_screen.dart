@@ -26,6 +26,7 @@ class ChefDetailsScreen extends StatefulWidget {
 }
 
 class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
+
   bool _isCollapsed = false;
   final ScrollController _scrollController = ScrollController();
 

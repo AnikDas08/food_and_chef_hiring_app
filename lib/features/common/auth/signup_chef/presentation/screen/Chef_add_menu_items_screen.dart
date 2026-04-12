@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../../../component/text/common_text.dart';
 import '../../../../../../config/api/api_end_point.dart';
 import '../controller/Chef_add_menu_controller.dart';
 import 'CafeAddMenuItemScreen.dart';
@@ -45,18 +46,35 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                      Text("Add Menu Items",
-                        style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w700, color: const Color(0xFF272727), letterSpacing: -0.5)),
+                    CommonText(
+                      text: "Add Menu Items",
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF272727),
+                      textAlign: TextAlign.left,
+                      maxLines: 2,
+                    ),
                     8.verticalSpace,
-                    Text("Build your menu to showcase what you can cook for customers.",
-                        style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777), height: 1.5)),
+                    CommonText(
+                      text: "Build your menu to showcase what you can cook for customers.",
+                      fontSize: 12,
+                      color: const Color(0xFF777777),
+                      fontWeight: FontWeight.w400,
+                      textAlign: TextAlign.left,
+                      maxLines: 3,
+                    ),
                     20.verticalSpace,
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Menu",
-                            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700, color: const Color(0xFF272727))),
+                        CommonText(
+                          text: "Menu",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF272727),
+                          textAlign: TextAlign.left,
+                        ),
                         GestureDetector(
                           onTap: () async {
                             c.resetForm();
@@ -72,8 +90,12 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                             child: Row(children: [
                               Icon(Icons.add, size: 14.sp, color: const Color(0xFF272727)),
                               4.horizontalSpace,
-                              Text("Add Menu Item",
-                                  style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600, color: const Color(0xFF272727))),
+                              CommonText(
+                                text: "Add Menu Item",
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFF272727),
+                              ),
                             ]),
                           ),
                         ),
@@ -85,10 +107,12 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                       Center(
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 40.h),
-                          child: Text(
-                            "No menu items yet.\nAdd your first item!",
+                          child: CommonText(
+                            text: "No menu items yet.\nAdd your first item!",
+                            fontSize: 14,
+                            color: const Color(0xFF999999),
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 14.sp, color: const Color(0xFF999999), height: 1.6),
+                            maxLines: 3,
                           ),
                         ),
                       )
@@ -102,9 +126,11 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                               color: const Color(0xFF272727),
                               borderRadius: BorderRadius.circular(6.r),
                             ),
-                            child: Text(
-                              section.menuSection.toUpperCase(),
-                              style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w600, color: Colors.white, letterSpacing: 1.1),
+                            child: CommonText(
+                              text: section.menuSection.toUpperCase(),
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
                             ),
                           ),
                           10.verticalSpace,
@@ -119,18 +145,25 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                         showDialog(
                           context: context,
                           builder: (_) => AlertDialog(
-                            title: Text("Add Menu Section",
-                                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+                            title: CommonText(
+                              text: "Add Menu Section",
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              textAlign: TextAlign.left,
+                            ),
                             content: TextField(
                               controller: ctrl,
                               autofocus: true,
                               decoration: InputDecoration(
                                 hintText: "Enter Your Menu",
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.r)),
                               ),
                             ),
                             actions: [
-                              TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text("Cancel")),
+                              TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const CommonText(text: "Cancel", color: Colors.grey)),
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
@@ -138,7 +171,11 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                                     c.addMenuSection(ctrl.text.trim());
                                   }
                                 },
-                                child: const Text("Add", style: TextStyle(color: Color(0xFF1C1C1C))),
+                                child: const CommonText(
+                                  text: "Add",
+                                  color: Color(0xFF1C1C1C),
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ],
                           ),
@@ -147,16 +184,18 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                       child: Container(
                         width: double.infinity,
                         padding: EdgeInsets.symmetric(vertical: 14.h),
-                        decoration: BoxDecoration(
-                            color: const Color(0xFFF0F0F0),
-                        ),
+                        decoration: const BoxDecoration(color: Color(0xFFF0F0F0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.add, size: 16.sp, color: const Color(0xFF272727)),
                             6.horizontalSpace,
-                            Text("Add Menu Section",
-                                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: const Color(0xFF272727))),
+                            CommonText(
+                              text: "Add Menu Section",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF272727),
+                            ),
                           ],
                         ),
                       ),
@@ -177,24 +216,19 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1C1C1C),
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14.r)),
                     elevation: 0,
                   ),
-                  child: Text("Continue", style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600)),
+                  child: CommonText(
+                    text: "Continue",
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-
-            // Padding(
-            //   padding: EdgeInsets.only(bottom: 20.h),
-            //   child: TextButton(
-            //     onPressed: (){
-            //       Get.offAllNamed(AppRoutes.chefHomeScreen);
-            //     },
-            //     child: Text("Skip For Now",
-            //         style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500, color: const Color(0xFF272727))),
-            //   ),
-            // ),
           ],
         )),
       ),
@@ -224,21 +258,36 @@ class _ApiMenuCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(item.name,
-                      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w700, color: const Color(0xFF272727))),
+                  CommonText(
+                    text: item.name,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFF272727),
+                    textAlign: TextAlign.left,
+                  ),
                   8.verticalSpace,
                   Row(children: [
                     Icon(Icons.restaurant_menu, size: 13.sp, color: const Color(0xFF777777)),
                     4.horizontalSpace,
-                    Text("Ingredients: ${item.ingredients.length} items",
-                        style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777))),
+                    CommonText(
+                      text: "Ingredients: ${item.ingredients.length} items",
+                      fontSize: 12,
+                      color: const Color(0xFF777777),
+                      fontWeight: FontWeight.w400,
+                      textAlign: TextAlign.left,
+                    ),
                   ]),
                   4.verticalSpace,
                   Row(children: [
                     Icon(Icons.access_time, size: 13.sp, color: const Color(0xFF777777)),
                     4.horizontalSpace,
-                    Text("Cooking: ${item.estCookingTime}",
-                        style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777))),
+                    CommonText(
+                      text: "Cooking: ${item.estCookingTime}",
+                      fontSize: 12,
+                      color: const Color(0xFF777777),
+                      fontWeight: FontWeight.w400,
+                      textAlign: TextAlign.left,
+                    ),
                   ]),
                   12.verticalSpace,
                   Row(
@@ -265,8 +314,12 @@ class _ApiMenuCard extends StatelessWidget {
                           child: Row(children: [
                             Icon(Icons.edit_outlined, size: 13.sp, color: const Color(0xFF272727)),
                             4.horizontalSpace,
-                            Text("Edit Item",
-                                style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: const Color(0xFF272727))),
+                            CommonText(
+                              text: "Edit Item",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFF272727),
+                            ),
                           ]),
                         ),
                       ),
@@ -306,7 +359,8 @@ class _ApiMenuCard extends StatelessWidget {
                   width: 110.w, height: 130.h,
                   color: const Color(0xFFE0E0E0),
                   child: const Center(
-                    child: CircularProgressIndicator(color: Color(0xFF272727), strokeWidth: 2),
+                    child: CircularProgressIndicator(
+                        color: Color(0xFF272727), strokeWidth: 2),
                   ),
                 );
               },
