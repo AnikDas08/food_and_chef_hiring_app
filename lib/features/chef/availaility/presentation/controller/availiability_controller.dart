@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../services/storage/storage_services.dart';
 import '../../../../../utils/app_utils.dart';
@@ -190,12 +188,6 @@ class AvailabilityController extends GetxController {
           }
         }
       }
-
-      final response = await ApiService.patch(
-        ApiEndPoint.user,
-        body: body,
-      );
-
       debugPrint("Body to send: $body");
     } catch (e) {
       Get.snackbar("Error", e.toString());

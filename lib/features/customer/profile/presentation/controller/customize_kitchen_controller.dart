@@ -154,10 +154,7 @@ class CustomizeKitchenController extends GetxController {
       isLoadingMyKitchen.value = false;
     }
   }
-
-  // ════════════════════════════════════════════════════
-  // PRESETS — GET equipment/kitchen-presets
-  // ════════════════════════════════════════════════════
+  
   final RxList<KitchenPreset> presets = <KitchenPreset>[].obs;
   final RxBool isLoadingPresets = false.obs;
   final RxString presetsError = ''.obs;

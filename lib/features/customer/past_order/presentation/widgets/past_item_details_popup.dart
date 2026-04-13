@@ -309,45 +309,45 @@ void bookingDetailsShow(BuildContext context) {
   );
 }
 
-// ── History Timeline Item ───────────────────────────────────────────────────
-class _HistoryItem extends StatelessWidget {
-  final OrderHistory history;
-  const _HistoryItem({required this.history});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        children: [
-          Container(
-            width: 8,
-            height: 8,
-            decoration: const BoxDecoration(
-              color: Color(0xffFD713F),
-              shape: BoxShape.circle,
-            ),
-          ),
-          8.width,
-          Expanded(
-            child: CommonText(
-              text: history.type,
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: const Color(0xff272727),
-            ),
-          ),
-          CommonText(
-            text: _formatDateOnly(history.date),
-            fontSize: 11,
-            fontWeight: FontWeight.w400,
-            color: const Color(0xff777777),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// // ── History Timeline Item ───────────────────────────────────────────────────
+// class _HistoryItem extends StatelessWidget {
+//   final OrderHistory history;
+//   const _HistoryItem({required this.history});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.only(bottom: 8),
+//       child: Row(
+//         children: [
+//           Container(
+//             width: 8,
+//             height: 8,
+//             decoration: const BoxDecoration(
+//               color: Color(0xffFD713F),
+//               shape: BoxShape.circle,
+//             ),
+//           ),
+//           8.width,
+//           Expanded(
+//             child: CommonText(
+//               text: history.type,
+//               fontSize: 12,
+//               fontWeight: FontWeight.w500,
+//               color: const Color(0xff272727),
+//             ),
+//           ),
+//           CommonText(
+//             text: _formatDateOnly(history.date),
+//             fontSize: 11,
+//             fontWeight: FontWeight.w400,
+//             color: const Color(0xff777777),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 // ── Order Item Row ──────────────────────────────────────────────────────────
 class _OrderItemRow extends StatelessWidget {

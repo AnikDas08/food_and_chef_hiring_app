@@ -29,7 +29,6 @@ void bookingDetailsPopup(
   String address = order['formatted_address'] ?? "No address";
   String strTime = order['strTime'] ?? "";
   String formattedDate = _formatDatePopup(order['formatted_date']);
-  double totalPrice = (order['user_paid'] ?? 0).toDouble();
   List staticItems = order['static_items'] ?? [];
 
   showModalBottomSheet(

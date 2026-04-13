@@ -34,7 +34,7 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Obx(() {
-                  final name = c.chefProfile.value?.name ?? '';
+                  final name = c.chefProfile.value?.originalName ?? '';
                   return CommonText(
                     text: "Hello, $name 👋",
                     fontSize: 20,
