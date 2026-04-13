@@ -133,7 +133,7 @@ class CartScreen extends StatelessWidget {
           16.height,
           CommonText(
             text: "Your cart is empty",
-            fontSize: 16.sp,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w500,
             color: const Color(0xff777777),
           ),

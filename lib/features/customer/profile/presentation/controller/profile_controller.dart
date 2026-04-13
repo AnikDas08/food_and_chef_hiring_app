@@ -304,7 +304,9 @@ class _DeleteAccountDialog extends StatelessWidget {
               text: "Are you sure you want to delete your account? This action is permanent and cannot be undone.\n\nTo confirm, please enter your password below.",
               fontSize: 14,
               fontWeight: FontWeight.w400,
+              maxLines: 4,
               color: Color(0xff555555),
+              textAlign: TextAlign.start,
             ),
             const SizedBox(height: 20),
 

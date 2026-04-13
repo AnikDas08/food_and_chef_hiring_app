@@ -1,6 +1,8 @@
 // lib/features/address/controller/address_controller.dart
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_untitled/utils/app_utils.dart';
@@ -30,6 +32,7 @@ class AddressController extends GetxController {
   // ── Location ──────────────────────────────────────────────
   double? selectedLatitude;
   double? selectedLongitude;
+  bool isLoadingCurrentLocation = false; // NEW: for current location loading
 
   // ── Address Suggestions ───────────────────────────────────
   List<Map<String, dynamic>> addressSuggestions = [];
@@ -129,6 +132,111 @@ class AddressController extends GetxController {
   }
 
   bool get hasMorePages => _currentPage < _totalPage;
+
+  // ══════════════════════════════════════════════════════════
+  //  CURRENT LOCATION — NEW IMPLEMENTATION
+  // ══════════════════════════════════════════════════════════
+
+  /// Get device current location and fill address fields
+  Future<void> getCurrentLocationAndFillAddress() async {
+    // Check location permission first
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      // Request permission
+      permission = await Geolocator.requestPermission();
+
+      if (permission == LocationPermission.denied) {
+        _showError("Location permission denied");
+        return;
+      }
+    }
+
+    // If permission is permanently denied, show dialog to open settings
+    if (permission == LocationPermission.deniedForever) {
+      _showLocationSettingsDialog();
+      return;
+    }
+
+    isLoadingCurrentLocation = true;
+    update();
+
+    try {
+      // Get current position
+      final Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: const Duration(seconds: 10),
+      );
+
+      selectedLatitude = position.latitude;
+      selectedLongitude = position.longitude;
+      update();
+
+      // Fetch address details from coordinates (reverse geocoding)
+      final detail = await AddressRepository.getPlaceDetailFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      if (detail != null) {
+        _isSettingAddressText = true;
+        addressController.text = detail['address'] ?? '';
+        detailsAddressController.text = detail['details'] ?? '';
+        _isSettingAddressText = false;
+
+        showAddressSuggestions = false;
+        update(); // ← FIX: rebuild GetBuilder so text fields refresh in UI
+      }
+    } catch (e) {
+      _showError("Failed to get current location: ${e.toString()}");
+    } finally {
+      isLoadingCurrentLocation = false;
+      update();
+    }
+  }
+
+  void onCurrentLocationResolved({
+    required double lat,
+    required double lng,
+    required String area,
+    required String details,
+  }) {
+    selectedLatitude = lat;
+    selectedLongitude = lng;
+
+    // Only overwrite fields if we got actual data back
+    if (area.isNotEmpty) addressController.text = area;
+    if (details.isNotEmpty) detailsAddressController.text = details;
+
+    showAddressSuggestions = false;
+    update();
+  }
+
+  /// Show dialog to open location settings
+  void _showLocationSettingsDialog() {
+    Get.dialog(
+      AlertDialog(
+        title: const Text("Location Permission Required"),
+        content: const Text(
+          "Location access is permanently disabled. "
+              "Please enable it in your device settings.",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(),
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              Geolocator.openLocationSettings();
+              Get.back();
+            },
+            child: const Text("Open Settings"),
+          ),
+        ],
+      ),
+    );
+  }
 
   // ══════════════════════════════════════════════════════════
   //  LOCATION — called from ShowGoogleMap widget
@@ -248,26 +356,6 @@ class AddressController extends GetxController {
     selectedLongitude = null;
     isDefault = false;
     editingAddress = null;
-  }
-
-  /// Called when ShowGoogleMapController resolves a current-location address
-  // lib/features/address/controller/address_controller.dart
-
-  void onCurrentLocationResolved({
-    required double lat,
-    required double lng,
-    required String area,
-    required String details,
-  }) {
-    selectedLatitude = lat;
-    selectedLongitude = lng;
-
-    // Only overwrite fields if we got actual data back
-    if (area.isNotEmpty) addressController.text = area;
-    if (details.isNotEmpty) detailsAddressController.text = details;
-
-    showAddressSuggestions = false;
-    update();
   }
 
   // ══════════════════════════════════════════════════════════

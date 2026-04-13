@@ -54,7 +54,7 @@ class PastOrderScreen extends StatelessWidget {
                             const SizedBox(height: 12),
                             CommonText(
                               text: "No past orders found",
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: const Color(0xff777777),
                             ),

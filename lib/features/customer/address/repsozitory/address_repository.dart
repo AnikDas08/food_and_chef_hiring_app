@@ -1,5 +1,7 @@
 // lib/features/address/repository/address_repository.dart
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../../../../config/api/api_end_point.dart';
 import '../../../../services/api/api_service.dart';
 import '../data/address_model.dart';
@@ -27,7 +29,6 @@ class AddressRepository {
     }
     return null;
   }
-
 
   static Future<AddressModel?> getAddressById(String id) async {
     final response = await ApiService.get("${ApiEndPoint.address}/$id");
@@ -66,8 +67,7 @@ class AddressRepository {
 
     final response = await ApiService.get(url);
     if (response.statusCode == 200) {
-      final predictions =
-          response.data['predictions'] as List? ?? [];
+      final predictions = response.data['predictions'] as List? ?? [];
       return predictions.map<Map<String, dynamic>>((p) {
         final structured = p['structured_formatting'] ?? {};
         return {
@@ -95,8 +95,7 @@ class AddressRepository {
       if (result == null) return null;
 
       final loc = result['geometry']?['location'];
-      final components =
-          result['address_components'] as List? ?? [];
+      final components = result['address_components'] as List? ?? [];
 
       // Build a details string: road + sublocality + city + country
       String details = _buildDetailsFromComponents(components);
@@ -131,5 +130,78 @@ class AddressRepository {
     return [road, sub, city, country]
         .where((e) => e.isNotEmpty)
         .join(', ');
+  }
+
+  // ══════════════════════════════════════════════════════════
+  //  REVERSE GEOCODING (Lat/Lng → Address)
+  // ══════════════════════════════════════════════════════════
+
+  /// Fetch address details from latitude and longitude (reverse geocoding).
+  /// Uses the SAME _buildDetailsFromComponents as getPlaceDetail so the
+  /// address field and details field are built identically to suggestion picks.
+  ///
+  /// Returns:
+  ///   - address : area name  — sublocality + city  (fills the Address field)
+  ///   - details : road + sublocality + city + country (fills Details Address)
+  ///   - lat     : provided latitude
+  ///   - lng     : provided longitude
+  static Future<Map<String, dynamic>?> getPlaceDetailFromCoordinates(
+      double latitude, double longitude) async {
+    try {
+      final String url =
+          'https://maps.googleapis.com/maps/api/geocode/json'
+          '?latlng=$latitude,$longitude'
+          '&key=${ApiEndPoint.googleMapsApiKey}';
+
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+        final results = json['results'] as List?;
+
+        if (results != null && results.isNotEmpty) {
+          // Use the first result's address_components — same source as
+          // getPlaceDetail — so we can reuse _buildDetailsFromComponents.
+          final firstResult = results[0] as Map<String, dynamic>;
+          final List components =
+              firstResult['address_components'] as List? ?? [];
+
+          // ── address field ──────────────────────────────────────────
+          // Build a short human-readable area label: sublocality + city
+          // This mirrors what the user sees as "main_text" in suggestions.
+          String sub = '';
+          String city = '';
+          for (final c in components) {
+            final types = List<String>.from(c['types'] ?? []);
+            final name = (c['long_name'] ?? '') as String;
+            if (types.contains('sublocality_level_1') ||
+                types.contains('sublocality')) {
+              sub = name;
+            }
+            if (types.contains('locality')) city = name;
+          }
+          final String address =
+          [sub, city].where((e) => e.isNotEmpty).join(', ');
+
+          // ── details field ──────────────────────────────────────────
+          // Reuse the exact same helper as getPlaceDetail:
+          // road + sublocality + city + country
+          final String details = _buildDetailsFromComponents(components);
+
+          return {
+            'address': address.isNotEmpty
+                ? address
+                : firstResult['formatted_address'] ?? '',
+            'details': details,
+            'lat': latitude,
+            'lng': longitude,
+          };
+        }
+      }
+      return null;
+    } catch (e) {
+      print('Error fetching place detail from coordinates: $e');
+      return null;
+    }
   }
 }

@@ -37,7 +37,7 @@ Widget searchResult(List<ChefData> chefs) {
               SizedBox(height: 16.h),
               CommonText(
                 text: 'No chefs found',
-                fontSize: 16,
+                fontSize: 14,
                 color: Color(0xff777777),
                 fontWeight: FontWeight.w400,
               ),

@@ -33,7 +33,7 @@ class BookingHistoryScreen extends StatelessWidget {
               shape: LiquidRoundedSuperellipse(borderRadius: 0),
               child: Container(
                 // The "Glass" look comes from having a semi-transparent color here
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withOpacity(0.05),
                 child: appBarOpacity(),
               ),
             ),
@@ -75,7 +75,7 @@ class BookingHistoryScreen extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 8.h),
                     decoration: BoxDecoration(
-                      color: isSelected ? const Color(0xff272727) : Colors.white.withOpacity(0.2),
+                      color: isSelected ? const Color(0xff272727) : Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(30.r),
                     ),
                     child: CommonText(
@@ -103,7 +103,7 @@ class BookingHistoryScreen extends StatelessWidget {
       displacement: 100.h,
       child: ListView.builder(
         // Padding top must be enough to clear the AppBar height (approx 140)
-        padding: EdgeInsets.fromLTRB(16.w, 140.h, 16.w, 24.h),
+        padding: EdgeInsets.fromLTRB(16.w, 140.h, 16.w, 100.h),
         itemCount: controller.orders.length + (controller.isPaginationLoading ? 1 : 0),
         itemBuilder: (context, index) {
           if (index == controller.orders.length) {

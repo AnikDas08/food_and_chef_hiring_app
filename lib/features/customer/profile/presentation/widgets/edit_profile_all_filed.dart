@@ -53,7 +53,7 @@ class EditProfileAllFiled extends StatelessWidget {
         )),
 
         // ── Linked Accounts ───────────────────────────────────────────────
-        CommonText(
+        /*CommonText(
           text: "Link Account".toUpperCase(),
           fontWeight: FontWeight.w500,
           fontSize: 12,
@@ -135,7 +135,7 @@ class EditProfileAllFiled extends StatelessWidget {
               );
             }).toList(),
           );
-        }),
+        }),*/
 
         // ── Account Action ────────────────────────────────────────────────
         const CommonText(

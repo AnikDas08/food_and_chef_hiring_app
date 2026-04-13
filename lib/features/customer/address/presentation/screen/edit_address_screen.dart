@@ -72,14 +72,6 @@ class EditAddressScreen extends StatelessWidget {
                               controller.selectedLongitude = latLng.longitude;
                               controller.update();
                             },
-                            onCurrentLocationResolved: (lat, lng, area, details) {
-                              controller.onCurrentLocationResolved(
-                                lat: lat,
-                                lng: lng,
-                                area: area,
-                                details: details,
-                              );
-                            },
                           ),
                         ),
                         Positioned(
@@ -89,23 +81,24 @@ class EditAddressScreen extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, bottom: 16),
-                            child: CommonButton(
-                              buttonHeight: 48,
-                              buttonRadius: 20,
-                              titleText: AppString.useCurrentLocation,
-                              onTap: () {
-                                final mapCtrl =
-                                Get.find<ShowGoogleMapController>();
-                                mapCtrl.onCurrentLocationResolved =
-                                    (lat, lng, area, details) {
-                                  controller.onCurrentLocationResolved(
-                                    lat: lat,
-                                    lng: lng,
-                                    area: area,
-                                    details: details,
-                                  );
-                                };
-                                mapCtrl.getCurrentLocation();
+                            child: GetBuilder<AddressController>(
+                              builder: (ctrl) {
+                                return CommonButton(
+                                  buttonHeight: 48,
+                                  buttonRadius: 20,
+                                  titleText: ctrl.isLoadingCurrentLocation
+                                      ? "Getting Location..."
+                                      : AppString.useCurrentLocation,
+                                  isLoading: ctrl.isLoadingCurrentLocation,
+                                  onTap: ctrl.isLoadingCurrentLocation
+                                      ? null
+                                      : () {
+                                    // Same method as AddAddressScreen —
+                                    // gets GPS, reverse geocodes, and
+                                    // fills address + details fields
+                                    ctrl.getCurrentLocationAndFillAddress();
+                                  },
+                                );
                               },
                             ),
                           ),

@@ -52,15 +52,6 @@ class AddAddressScreen extends StatelessWidget {
                               controller.selectedLongitude = latLng.longitude;
                               controller.update();
                             },
-                            // Wire up current-location callback
-                            onCurrentLocationResolved: (lat, lng, area, details) {
-                              controller.onCurrentLocationResolved(
-                                lat: lat,
-                                lng: lng,
-                                area: area,
-                                details: details,
-                              );
-                            },
                           ),
                         ),
                         Positioned(
@@ -70,24 +61,22 @@ class AddAddressScreen extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, bottom: 16),
-                            child: CommonButton(
-                              buttonHeight: 48,
-                              buttonRadius: 20,
-                              titleText: AppString.useCurrentLocation,
-                              onTap: () {
-                                // Re-trigger current location fetch
-                                final mapCtrl =
-                                Get.find<ShowGoogleMapController>();
-                                mapCtrl.onCurrentLocationResolved =
-                                    (lat, lng, area, details) {
-                                  controller.onCurrentLocationResolved(
-                                    lat: lat,
-                                    lng: lng,
-                                    area: area,
-                                    details: details,
-                                  );
-                                };
-                                mapCtrl.getCurrentLocation();
+                            child: GetBuilder<AddressController>(
+                              builder: (ctrl) {
+                                return CommonButton(
+                                  buttonHeight: 48,
+                                  buttonRadius: 20,
+                                  titleText: ctrl.isLoadingCurrentLocation
+                                      ? "Getting Location..."
+                                      : AppString.useCurrentLocation,
+                                  isLoading: ctrl.isLoadingCurrentLocation,
+                                  onTap: ctrl.isLoadingCurrentLocation
+                                      ? null
+                                      : () {
+                                    // Simply call the new method
+                                    ctrl.getCurrentLocationAndFillAddress();
+                                  },
+                                );
                               },
                             ),
                           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
@@ -21,7 +22,7 @@ Widget orderAgain() {
         return Center(
           child: CommonText(
             text: "No previous orders",
-            fontSize: 12,
+            fontSize: 12.sp,
             color: Color(0xff777777),
             fontWeight: FontWeight.w400,
           ),

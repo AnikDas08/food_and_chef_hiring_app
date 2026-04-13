@@ -268,7 +268,7 @@ class BookingHistoryController extends GetxController {
             backgroundColor: Colors.green, colorText: Colors.white);
 
         // Navigate back to Booking History or Home
-        Get.offAllNamed(AppRoutes.customerHomeScreen);
+        //Get.offAllNamed(AppRoutes.customerHomeScreen);
       } else {
         //Get.snackbar("Error", response.data['message'] ?? "Failed to send request");
         Utils.errorSnackBar("Error", response.message);
