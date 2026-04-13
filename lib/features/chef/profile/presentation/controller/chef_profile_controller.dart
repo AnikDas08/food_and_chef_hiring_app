@@ -340,10 +340,12 @@ class ChefProfileController extends GetxController {
         return;
       }
 
+      final String fullName =
+      "${firstNameController.text.trim()} ${lastNameController.text.trim()}".trim();
+
       final Map<String, dynamic> body = {
         "role": "CHEF",
-        "first_name": firstNameController.text.trim(),
-        "last_name": lastNameController.text.trim(),
+        "name": fullName,
         "phone": numberController.text.trim(),
         if (selectedLat != null) "lat": selectedLat.toString(),
         if (selectedLng != null) "lng": selectedLng.toString(),
@@ -401,7 +403,6 @@ class ChefProfileController extends GetxController {
           }
         });
       }
-
     } catch (e) {
       Utils.errorSnackBar("Error", e.toString());
     } finally {

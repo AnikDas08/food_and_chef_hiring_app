@@ -79,7 +79,7 @@ class ChefProfileScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CommonText(
-                                    text: profile?.name ?? 'Unknown',
+                                    text: profile?.originalName ?? 'Unknown',
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                     color: Color(0xff272727),
