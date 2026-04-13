@@ -46,8 +46,6 @@ class _ChefVerificationReviewPageState
   late List<UploadedFileModel> _govIdFront;
   late List<UploadedFileModel> _govIdBack;
   late List<UploadedFileModel> _proofOfAddress;
-  late List<UploadedFileModel> _nonSexualOffender;
-  late List<UploadedFileModel> _criminalBackground;
   late List<UploadedFileModel> _foodSafety;
   late List<UploadedFileModel> _culinaryCerts;
 
@@ -57,8 +55,6 @@ class _ChefVerificationReviewPageState
     _govIdFront = List.from(widget.govIdFront);
     _govIdBack = List.from(widget.govIdBack);
     _proofOfAddress = List.from(widget.proofOfAddress);
-    _nonSexualOffender = List.from(widget.nonSexualOffender);
-    _criminalBackground = List.from(widget.criminalBackground);
     _foodSafety = List.from(widget.foodSafety);
     _culinaryCerts = List.from(widget.culinaryCerts);
   }

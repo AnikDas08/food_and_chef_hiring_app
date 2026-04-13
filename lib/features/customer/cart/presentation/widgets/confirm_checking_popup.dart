@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/features/customer/cart/presentation/controller/cart_controller.dart';
-import 'package:new_untitled/features/customer/cart/presentation/widgets/success_popup.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 

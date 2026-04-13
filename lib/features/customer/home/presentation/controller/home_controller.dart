@@ -331,7 +331,6 @@ class HomeController extends GetxController {
     try {
       final response = await ApiService.get("cusine");
       if (response.statusCode == 200) {
-        final data = response.data;
         cuisineModel = CuisineModel.fromJson(response.data);
         cuisineList = cuisineModel?.data ?? [];
       }

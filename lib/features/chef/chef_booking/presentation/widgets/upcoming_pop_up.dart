@@ -32,7 +32,6 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
           final orderId      = orderData?['order_id']          ?? '';
           final address      = orderData?['formatted_address'] ?? 'No address';
           final strTime      = orderData?['strTime']           ?? '';
-          final status       = orderData?['status']            ?? 'Upcoming';
           final items        = (orderData?['static_items'] as List?) ?? [];
           final breakdown    = orderData?['price_breakdown'] as Map<String, dynamic>?;
           final duration     = orderData?['duration'] ?? '';
