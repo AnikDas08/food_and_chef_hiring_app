@@ -92,43 +92,16 @@ class _ChefVerificationReviewPageState
     if (!_allRequiredFilled) {
       setState(() => _showErrors = true);
 
-      // Missing files এর নাম বের করো
       final missing = <String>[];
       if (_govIdFront.isEmpty) missing.add('Gov ID Front');
       if (_govIdBack.isEmpty) missing.add('Gov ID Back');
       if (_proofOfAddress.isEmpty) missing.add('Proof of Address');
       if (_foodSafety.isEmpty) missing.add('Food Safety Cert');
 
-      // Snackbar দেখাও
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                const Icon(Icons.info_outline, color: Colors.white, size: 18),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    'Please upload: ${missing.join(', ')}',
-                    style: const TextStyle(fontSize: 13),
-                  ),
-                ),
-              ],
-            ),
-            backgroundColor: _red,
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      }
-      return;
     }
 
     setState(() => _isLoading = true);
+
     try {
       await widget.onSubmit();
     } finally {
@@ -285,7 +258,8 @@ class _ChefVerificationReviewPageState
                     color: showError ? _red : const Color(0xFFEF9A9A)),
                 const SizedBox(width: 8),
                 Text(
-                  showError ? 'This file is required' : 'No file uploaded',
+                  maxLines: 5,
+                  showError ? 'This file is required.\n If you do not select it,\n you cannot create the menu.' : 'This file is required.\n If you do not select it,\n you cannot create the menu.',
                   style: TextStyle(
                     fontSize: 13,
                     color: showError ? _red : const Color(0xFFEF9A9A),

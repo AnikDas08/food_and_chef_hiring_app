@@ -139,7 +139,7 @@ class BaseDocPage extends StatelessWidget {
   final VoidCallback onContinue;
   final VoidCallback? onBack;
   final Widget? trailingAction;
-  final VoidCallback? onSkip; // ← নতুন
+  final VoidCallback? onSkip;
 
   static const _textPrimary = Color(0xFF1A1A1A);
   static const _border = Color(0xFFE0E0E0);
@@ -156,7 +156,7 @@ class BaseDocPage extends StatelessWidget {
     this.onBack,
     this.totalSteps = 7,
     this.trailingAction,
-    this.onSkip, // ← নতুন
+    this.onSkip,
   });
 
   @override
@@ -167,7 +167,7 @@ class BaseDocPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── AppBar Row ──
+
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
               child: Row(
@@ -186,7 +186,6 @@ class BaseDocPage extends StatelessWidget {
               ),
             ),
 
-            // Progress bar
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
               child: Row(
@@ -206,7 +205,6 @@ class BaseDocPage extends StatelessWidget {
               ),
             ),
 
-            // Scrollable content
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -223,7 +221,9 @@ class BaseDocPage extends StatelessWidget {
                         letterSpacing: -0.3,
                       ),
                     ),
+
                     const SizedBox(height: 8),
+
                     Text(
                       description,
                       style: const TextStyle(
@@ -236,7 +236,6 @@ class BaseDocPage extends StatelessWidget {
                     body,
                     const SizedBox(height: 20),
 
-                    // Security note
                     Row(children: const [
                       Icon(Icons.shield_outlined, size: 14, color: _securityGreen),
                       SizedBox(width: 6),
@@ -251,7 +250,6 @@ class BaseDocPage extends StatelessWidget {
               ),
             ),
 
-            // ── Continue + Skip buttons ──
             Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
