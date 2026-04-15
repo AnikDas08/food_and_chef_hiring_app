@@ -41,7 +41,7 @@ Widget chatListItem({required ChatModel item}) {
 
               /// participant Last Message here
               CommonText(
-                text: item.latestMessage.displayMessage,
+                text: item.latestMessage.displayMessage,  // ← was .message
                 fontWeight: FontWeight.w400,
                 fontSize: 12,
                 color: Color(0xff777777),

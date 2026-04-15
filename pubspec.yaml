@@ -72,6 +72,8 @@ dependencies:
   google_fonts: ^6.3.3
   device_info_plus: ^10.0.0
   flutter_launcher_icons: ^0.14.4
+  photo_view: ^0.15.0
+  open_filex: ^4.5.0
 
 
 
@@ -122,25 +124,25 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: SFProDisplay
-      fonts:
-        - asset: assets/fonts/SFProDisplayRegular.otf
-          weight: 400
-        - asset: assets/fonts/SFProDisplayMedium.otf
-          weight: 500
-        - asset: assets/fonts/SFProDisplayBold.otf
-          weight: 700
-        - asset: assets/fonts/SFProDisplayLightItalic.otf
-          weight: 300
-        - asset: assets/fonts/SFProDisplayThinItalic.otf
-          weight: 200
-        - asset: assets/fonts/SFProDisplayUltraLightItalic.otf
-          style: italic
-          weight: 100
-        - asset: assets/fonts/SFProDisplayBold.otf
-          weight: 600
-        - asset: assets/fonts/SFProDisplayHeavyItalic.otf
-          weight: 800
-        - asset: assets/fonts/SFProDisplayBlackItalic.otf
-          weight: 900
+#  fonts:
+#    - family: SFProDisplay
+#      fonts:
+#        - asset: assets/fonts/SFProDisplayRegular.otf
+#          weight: 400
+#        - asset: assets/fonts/SFProDisplayMedium.otf
+#          weight: 500
+#        - asset: assets/fonts/SFProDisplayBold.otf
+#          weight: 700
+#        - asset: assets/fonts/SFProDisplayLightItalic.otf
+#          weight: 300
+#        - asset: assets/fonts/SFProDisplayThinItalic.otf
+#          weight: 200
+#        - asset: assets/fonts/SFProDisplayUltraLightItalic.otf
+#          style: italic
+#          weight: 100
+#        - asset: assets/fonts/SFProDisplayBold.otf
+#          weight: 600
+#        - asset: assets/fonts/SFProDisplayHeavyItalic.otf
+#          weight: 800
+#        - asset: assets/fonts/SFProDisplayBlackItalic.otf
+#          weight: 900
