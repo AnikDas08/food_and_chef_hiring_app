@@ -249,7 +249,7 @@ class BookingHistoryController extends GetxController {
 
     try {
       // Show loading overlay
-      Get.dialog(const Center(child: CircularProgressIndicator(color: Color(0xffFD713F))), barrierDismissible: false);
+      //Get.dialog(const Center(child: CircularProgressIndicator(color: Color(0xffFD713F))), barrierDismissible: false);
 
       final Map<String, dynamic> body = {
         "requested_date": date,
@@ -261,7 +261,7 @@ class BookingHistoryController extends GetxController {
       // End URL: order/change-status/{id}
       final response = await ApiService.post("order/change-schedule/$orderId", body: body);
 
-      Navigator.pop(Get.context!); // Close loading
+      //Navigator.pop(Get.context!); // Close loading
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         Get.snackbar("Success", "Request change sent successfully",
@@ -271,7 +271,14 @@ class BookingHistoryController extends GetxController {
         //Get.offAllNamed(AppRoutes.customerHomeScreen);
       } else {
         //Get.snackbar("Error", response.data['message'] ?? "Failed to send request");
-        Utils.errorSnackBar("Error", response.message);
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          SnackBar(
+            content: Text(response.data["message"]),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating, // Optional: makes it float like Get.snackbar
+            duration: const Duration(seconds: 3),
+          ),
+        );
       }
     } catch (e) {
       Navigator.pop(Get.context!);

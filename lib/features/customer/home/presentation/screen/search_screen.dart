@@ -263,6 +263,11 @@ class _SearchScreenState extends State<SearchScreen> {
               _focusNode.requestFocus();
             },
           ),
+        Container(
+          width: 1,
+          height: 22.h,
+          color: Color(0xffE0E0E0),
+        ),
         IconButton(
           visualDensity: VisualDensity.compact,
           onPressed: () {

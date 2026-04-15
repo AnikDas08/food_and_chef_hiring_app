@@ -52,22 +52,22 @@ class _DietaryScreenState extends State<DietaryScreen> {
               children: [
                 SizedBox(height: 8.h),
 
-                // ── Title ──────────────────────────────────────────────────
-                const Text(
-                  'Dietary Restrictions & Allergies',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xff272727),
-                  ),
-                ),
+                CommonText(text: "Dietary Restrictions & Allergies",fontSize: 24,fontWeight: FontWeight.w600,color: Color(0xff272727),maxLines: 2,textAlign: TextAlign.start,),
                 SizedBox(height: 6.h),
-                const Text(
+                /*const Text(
                   'Vegetarian? Kosher? Halal? Food allergies? Enter the details below.',
                   style: TextStyle(
                     fontSize: 13,
                     color: Color(0xff777777),
                   ),
+                ),*/
+                CommonText(
+                  text: "Vegetarian? Kosher? Halal? Food allergies? Enter the details below.",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff777777),
+                  maxLines: 2,
+                  textAlign: TextAlign.start,
                 ),
                 SizedBox(height: 24.h),
 
@@ -131,13 +131,21 @@ class _CategorySection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        /*Text(
           title,
           style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
             color: Color(0xff272727),
           ),
+        ),*/
+        CommonText(
+          text: title,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: Color(0xff1F1F1F),
+          maxLines: 2,
+          textAlign: TextAlign.start,
         ),
         SizedBox(height: 10.h),
         Wrap(
@@ -165,7 +173,7 @@ class _Chip extends StatelessWidget {
         color: const Color(0xff272727),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(
+      child: /*Text(
         label,
         style: const TextStyle(
           fontSize: 13,
@@ -173,7 +181,14 @@ class _Chip extends StatelessWidget {
           // Changed to white text
           color: Colors.white,
         ),
-      ),
+      ),*/
+      CommonText(
+          text: label,
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: Color(0xffFFFFFF),
+
+      )
     );
   }
 }

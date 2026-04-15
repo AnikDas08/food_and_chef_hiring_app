@@ -136,9 +136,9 @@ class DietaryController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         // Rebuild grouped map for view screen
         _buildGroupedSaved(selectedDietaryItems.toList());
-        Utils.successSnackBar('Success', 'Dietary preferences saved');
         await Future.delayed(const Duration(milliseconds: 400));
         Navigator.pop(Get.context!);
+        Utils.successSnackBar('Success', 'Dietary preferences saved');
       } else {
         Utils.errorSnackBar(
             'Error', response.data['message'] ?? 'Failed to save');

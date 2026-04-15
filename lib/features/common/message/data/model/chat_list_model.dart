@@ -68,22 +68,36 @@ class LatestMessage {
   final String message;
   final String sender;
   final DateTime createdAt;
+  final String? image;
+  final String? file;
 
   LatestMessage({
     required this.id,
     this.message = '',
     this.sender = '',
     required this.createdAt,
+    this.image,
+    this.file,
   });
+
+  /// Helper to get display text
+  String get displayMessage {
+    if (message.isNotEmpty) return message;
+    if (image != null && image!.isNotEmpty) return '📷 Photo';
+    if (file != null && file!.isNotEmpty) return '📎 File';
+    return '';
+  }
 
   factory LatestMessage.fromJson(Map<String, dynamic> json) {
     return LatestMessage(
       id: json['_id'] ?? '',
-      message: json['message'] ?? '',
+      message: json['text'] ?? '',          // ← was 'message', now 'text'
       sender: json['sender'] ?? '',
       createdAt: json['createdAt'] != null
           ? DateTime.tryParse(json['createdAt']) ?? DateTime.now()
           : DateTime.now(),
+      image: json['image'],                 // ← new
+      file: json['file'],                   // ← new
     );
   }
 }

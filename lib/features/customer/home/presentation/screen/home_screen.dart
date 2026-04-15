@@ -42,12 +42,23 @@ class CustomerHome extends StatelessWidget {
               onTap: () => Get.toNamed(AppRoutes.homeSearch),
               borderRadius: 30,
               fillColor: Color(0xffF2F2F2),
-              suffixIcon: Padding(
-                padding: EdgeInsets.only(right: 20.w),
-                child: CommonImage(
-                  imageSrc: AppIcons.fliter,
-                  imageColor: Color(0xff636363),
-                ),
+              suffixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 1,
+                    height: 22.h,
+                    color: Color(0xffE0E0E0),
+                  ),
+                  SizedBox(width: 12.w),
+                  Padding(
+                    padding: EdgeInsets.only(right: 20.w),
+                    child: CommonImage(
+                      imageSrc: AppIcons.fliter,
+                      imageColor: Color(0xff636363),
+                    ),
+                  ),
+                ],
               ),
               prefixIcon: Padding(
                 padding: const EdgeInsets.only(left: 16),
