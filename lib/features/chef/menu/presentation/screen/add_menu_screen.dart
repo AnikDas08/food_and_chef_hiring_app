@@ -8,24 +8,43 @@ class AddMenuScreen extends StatelessWidget {
   const AddMenuScreen({super.key});
 
   void _showAddDialog(
+
       BuildContext context, String title, Function(String) onAdd) {
+
     final ctrl = TextEditingController();
+
     showDialog(
+
       context: context,
+
       builder: (_) => AlertDialog(
+
         title: Text("Add $title"),
+
         content: TextField(
+
             controller: ctrl,
+
             autofocus: true,
+
             decoration: InputDecoration(hintText: title)),
+
         actions: [
+
           TextButton(
+
               onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
+
           TextButton(
+
               onPressed: () {
+
                 onAdd(ctrl.text);
+
                 Navigator.pop(Get.context!);
+
               },
+
               child: const Text("Add")),
         ],
       ),
@@ -33,33 +52,59 @@ class AddMenuScreen extends StatelessWidget {
   }
 
   void _showIngredientDialog(
+
       BuildContext context, CafeAddMenuItemController c) {
+
     final nameCtrl = TextEditingController();
+
     final qtyCtrl = TextEditingController();
+
     String localUnit = c.unitsList.isNotEmpty ? c.unitsList.first : "kg";
 
     showDialog(
+
       context: context,
+
       builder: (_) => StatefulBuilder(
+
         builder: (ctx, setState) => AlertDialog(
+
           backgroundColor: Colors.white,
+
           shape: RoundedRectangleBorder(
+
               borderRadius: BorderRadius.circular(16.r)),
+
           title: Text("Add Ingredient",
+
               style: TextStyle(
+
                   fontSize: 16.sp, fontWeight: FontWeight.w700)),
+
           content: Column(
+
             mainAxisSize: MainAxisSize.min,
+
             children: [
+
               _dialogField(nameCtrl, "Enter Ingredient name",
+
                   autofocus: true),
+
               10.verticalSpace,
+
               _dialogField(qtyCtrl, "Enter Quantity", isNumber: true),
+
               10.verticalSpace,
+
               Obx(() {
+
                 if (c.isLoadingUnits.value) {
+
                   return const Center(
+
                       child:
+
                       CircularProgressIndicator(strokeWidth: 2));
                 }
                 final units =
@@ -332,27 +377,33 @@ class AddMenuScreen extends StatelessWidget {
 
                     // ── Prep Time ──
                     _label("Est. Preparation Time"),
+
                     8.verticalSpace,
+
                     Obx(() => _TimeInputRow(
                       controller: c.prepTimeController,
                       selectedUnit: c.selectedPrepUnit,
                       units: c.timeUnits,
                       onUnitChanged: c.setPrepUnit,
                     )),
+
                     16.verticalSpace,
 
                     // ── Cook Time ──
                     _label("Est. Cooking Time"),
+
                     8.verticalSpace,
+
                     Obx(() => _TimeInputRow(
                       controller: c.cookTimeController,
                       selectedUnit: c.selectedCookUnit,
                       units: c.timeUnits,
                       onUnitChanged: c.setCookUnit,
                     )),
+
+
                     16.verticalSpace,
 
-                    // ── Customize ──
                     Obx(() => _SectionHeader(
                       title: "Customize the Dish",
                       expanded: c.customizeExpanded.value,
@@ -360,42 +411,77 @@ class AddMenuScreen extends StatelessWidget {
                           "Customize Option", c.addCustomizeOption),
                       onToggle: c.toggleCustomize,
                     )),
+
+
                     Obx(() => c.customizeExpanded.value
+
                         ? Column(
+
                       children: [
+
                         8.verticalSpace,
+
                         ...c.customizeOptions.map((opt) =>
+
                             _CheckItem(
+
                                 label: opt,
+
                                 onRemove: () =>
+
                                     c.removeCustomizeOption(opt))),
                       ],
                     )
+
+
                         : const SizedBox.shrink()),
+
+
                     16.verticalSpace,
 
-                    // ── Ingredients ──
                     Obx(() => _SectionHeader(
+
                       title: "Ingredients",
+
                       expanded: c.ingredientsExpanded.value,
+
                       onAddTap: () =>
+
                           _showIngredientDialog(context, c),
+
                       onToggle: c.toggleIngredients,
+
                     )),
+
+
                     Obx(() => c.ingredientsExpanded.value
+
                         ? Column(
+
                       children: [
+
                         8.verticalSpace,
+
                         c.ingredientsList.isEmpty
+
                             ? Padding(
+
                           padding: EdgeInsets.symmetric(
+
                               vertical: 6.h),
+
                           child: Text(
+
                               "No ingredients added yet.",
+
                               style: TextStyle(
+
                                   fontSize: 12.sp,
+
                                   color: const Color(
+
                                       0xFF999999))),
+
                         )
                             : Column(
                           children: List.generate(
@@ -412,16 +498,22 @@ class AddMenuScreen extends StatelessWidget {
                               }),
                         ),
                       ],
+
                     )
                         : const SizedBox.shrink()),
                     16.verticalSpace,
 
                     // ── Special Equipment ──
                     _label("Special Equipment"),
+
                     8.verticalSpace,
+
                     Obx(() => GestureDetector(
+
                       onTap: c.toggleEquipment,
+
                       child: Container(
+
                         padding: EdgeInsets.symmetric(
                             horizontal: 14.w, vertical: 14.h),
                         decoration: BoxDecoration(
@@ -431,51 +523,104 @@ class AddMenuScreen extends StatelessWidget {
                               top: Radius.circular(12.r))
                               : BorderRadius.circular(12.r),
                         ),
+
                         child: Row(
+
                           children: [
+
                             Expanded(
+
                               child: Text(
+
                                 c.selectedEquipmentIds.isEmpty
+
                                     ? "Select equipment..."
+
                                     : c.selectedEquipmentNames
+
                                     .join(", "),
+
                                 style: TextStyle(
+
                                     fontSize: 13.sp,
+
                                     color: c.selectedEquipmentIds
+
                                         .isEmpty
+
                                         ? const Color(0xFFBBBBBB)
+
                                         : const Color(0xFF272727)),
+
                                 maxLines: 1,
+
                                 overflow: TextOverflow.ellipsis,
+
                               ),
                             ),
+
                             Icon(
-                                c.equipmentExpanded.value
-                                    ? Icons.keyboard_arrow_up
-                                    : Icons.keyboard_arrow_down,
-                                size: 18.sp,
+
+
+                                c
+                                    .
+                                equipmentExpanded.
+
+                                value
+
+                                    ? Icons.
+
+                                keyboard_arrow_up
+
+                                    : Icons
+
+                                    .
+
+                                keyboard_arrow_down,
+
+                                size: 18.
+
+                                sp,
+
                                 color: const Color(0xFF272727)),
                           ],
                         ),
                       ),
                     )),
+
                     Obx(() => c.equipmentExpanded.value
+
                         ? c.isLoadingEquipment.value
+
                         ? Container(
+
                       padding: EdgeInsets.all(16.w),
+
                       decoration: BoxDecoration(
+
                           color: const Color(0xFFF7F7F7),
+
                           borderRadius: BorderRadius.vertical(
+
                               bottom: Radius.circular(12.r))),
+
                       child: const Center(
+
                           child: CircularProgressIndicator(
+
                               color: Color(0xFF1C1C1C),
+
                               strokeWidth: 2)),
+
                     )
                         : c.equipmentList.isEmpty
+
                         ? Container(
+
                       padding: EdgeInsets.all(14.w),
+
                       decoration: BoxDecoration(
+
                           color: const Color(0xFFF7F7F7),
                           borderRadius:
                           BorderRadius.vertical(

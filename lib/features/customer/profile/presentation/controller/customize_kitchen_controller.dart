@@ -26,16 +26,11 @@ class CustomizeKitchenController extends GetxController {
   }
 
   Future<void> _initLoad() async {
-    // fetch my kitchen first so _myItemQty is ready, then load all equipment
     await fetchMyKitchen();
     await fetchPresets();
-    // Show all equipment by default (qty all 0 — no preset selected yet)
     await _loadEquipmentList({});
   }
 
-  // ════════════════════════════════════════════════════
-  // IMAGE
-  // ════════════════════════════════════════════════════
   final Rx<dynamic> localImage = Rx<dynamic>(null);
   final RxString serverImage = ''.obs;
 
@@ -94,17 +89,10 @@ class CustomizeKitchenController extends GetxController {
         0;
   }
 
-  // ════════════════════════════════════════════════════
-  // STATE
-  // -1  = default (my kitchen, read-only)
-  // 0..n = preset index — qty editable
-  // 9999 = custom setup — qty editable
-  // ════════════════════════════════════════════════════
+
   final RxInt selectedPresetIndex = (-1).obs;
 
-  // The id used in PATCH URL:
-  // preset selected → preset's kitchen id
-  // custom / default → LocalStorage.userId
+
   String get _patchId {
     if (selectedPresetIndex.value >= 0 &&
         selectedPresetIndex.value < presets.length) {
@@ -113,19 +101,14 @@ class CustomizeKitchenController extends GetxController {
     return LocalStorage.userId ?? '';
   }
 
-  // ════════════════════════════════════════════════════
-  // MY KITCHEN — GET equipment/kitchen/:userId
-  // Read-only default view; also seeds _myItemQty
-  // ════════════════════════════════════════════════════
   final RxBool isLoadingMyKitchen = false.obs;
 
-  // name → quantity from user's own kitchen
   final Map<String, int> _myItemQty = {};
 
-  // Also stores my kitchen id (same as userId) — used for PATCH
   String _myKitchenId = '';
 
   Future<void> fetchMyKitchen() async {
+
     try {
       isLoadingMyKitchen.value = true;
       final String userId = LocalStorage.userId ?? '';
