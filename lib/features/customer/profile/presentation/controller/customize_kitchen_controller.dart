@@ -160,6 +160,7 @@ class CustomizeKitchenController extends GetxController {
   final RxString presetsError = ''.obs;
 
   Future<void> fetchPresets() async {
+
     try {
       isLoadingPresets.value = true;
       presetsError.value = '';
