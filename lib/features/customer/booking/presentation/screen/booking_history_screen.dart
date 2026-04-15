@@ -74,6 +74,7 @@ class BookingHistoryScreen extends StatelessWidget {
                   shape: LiquidRoundedSuperellipse(borderRadius: 30.r),
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 8.h),
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: isSelected ? const Color(0xff272727) : Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(30.r),
@@ -81,6 +82,7 @@ class BookingHistoryScreen extends StatelessWidget {
                     child: CommonText(
                       text: value,
                       fontSize: 12.sp,
+                      textAlign: TextAlign.center,
                       fontWeight: FontWeight.w500,
                       color: isSelected ? Colors.white : const Color(0xff272727),
                     ),

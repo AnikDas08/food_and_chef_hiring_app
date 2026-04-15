@@ -77,8 +77,12 @@ class MessageController extends GetxController {
             localImagePath: '',
             isMe: isMe,
             isNotice: item['type'] == 'notice',
-            docs: List<String>.from(item['docs'] ?? []),
-            images: List<String>.from(item['image'] ?? []),
+            images: (item['image'] as List<dynamic>? ?? [])
+                .whereType<String>()
+                .toList(),
+            docs: (item['docs'] as List<dynamic>? ?? [])
+                .whereType<String>()
+                .toList(),
             type: item['type'] ?? 'text',
             seen: item['seen'] ?? false,
           ),
@@ -367,8 +371,12 @@ class MessageController extends GetxController {
           localImagePath: '',
           isMe: isMe,
           type: data['type'] ?? 'text',
-          docs: List<String>.from(data['docs'] ?? []),
-          images: List<String>.from(data['image'] ?? []),
+          images: (data['image'] as List<dynamic>? ?? [])
+              .whereType<String>()
+              .toList(),
+          docs: (data['docs'] as List<dynamic>? ?? [])
+              .whereType<String>()
+              .toList(),
           seen: false,
         ),
       );

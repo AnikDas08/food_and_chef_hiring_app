@@ -68,21 +68,34 @@ class LatestMessage {
   final String message;
   final String sender;
   final DateTime createdAt;
+  final String type;        // ← add this
 
   LatestMessage({
     required this.id,
     this.message = '',
     this.sender = '',
     required this.createdAt,
+    this.type = 'text',     // ← add this
   });
+
+  // ✅ Smart display text
+  String get displayMessage {
+    if (message.isNotEmpty) return message;
+    switch (type) {
+      case 'image': return '📷 Photo';
+      case 'document': return '📎 File';
+      default: return '';
+    }
+  }
 
   factory LatestMessage.fromJson(Map<String, dynamic> json) {
     return LatestMessage(
       id: json['_id'] ?? '',
-      message: json['message'] ?? '',
-      sender: json['sender'] ?? '',
+      message: json['text']?.toString() ?? 'Send a file',
+      sender: json['sender']?.toString() ?? '',
+      type: json['type']?.toString() ?? 'text',   // ← add this
       createdAt: json['createdAt'] != null
-          ? DateTime.tryParse(json['createdAt']) ?? DateTime.now()
+          ? DateTime.tryParse(json['createdAt'].toString()) ?? DateTime.now()
           : DateTime.now(),
     );
   }

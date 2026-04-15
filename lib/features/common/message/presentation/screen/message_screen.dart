@@ -195,7 +195,6 @@ class _MessageScreenState extends State<MessageScreen> {
                       type: message.type,
                       docs: message.docs,
                       images: message.images,
-                      onTap: () {},
                     );
                   },
                 ),
