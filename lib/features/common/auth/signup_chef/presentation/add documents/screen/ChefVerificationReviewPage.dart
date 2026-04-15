@@ -41,7 +41,7 @@ class _ChefVerificationReviewPageState
   static const _red = Color(0xFFE53935);
 
   bool _isLoading = false;
-  bool _showErrors = false; // ← Continue চাপলে error দেখাবে
+  bool _showErrors = false;
 
   late List<UploadedFileModel> _govIdFront;
   late List<UploadedFileModel> _govIdBack;
@@ -89,13 +89,19 @@ class _ChefVerificationReviewPageState
   }
 
   Future<void> _handleSubmit() async {
-    // Required check
     if (!_allRequiredFilled) {
       setState(() => _showErrors = true);
-      return;
+
+      final missing = <String>[];
+      if (_govIdFront.isEmpty) missing.add('Gov ID Front');
+      if (_govIdBack.isEmpty) missing.add('Gov ID Back');
+      if (_proofOfAddress.isEmpty) missing.add('Proof of Address');
+      if (_foodSafety.isEmpty) missing.add('Food Safety Cert');
+
     }
 
     setState(() => _isLoading = true);
+
     try {
       await widget.onSubmit();
     } finally {
@@ -106,24 +112,29 @@ class _ChefVerificationReviewPageState
   @override
   Widget build(BuildContext context) {
     final sections = [
-      _DocSection('Government-issued Photo ID (Front)', _govIdFront, required: true),
-      _DocSection('Government-issued Photo ID (Back)', _govIdBack, required: true),
+      _DocSection('Government-issued Photo ID (Front)', _govIdFront,
+          required: true),
+      _DocSection('Government-issued Photo ID (Back)', _govIdBack,
+          required: true),
       _DocSection('Proof of Address', _proofOfAddress, required: true),
       _DocSection('Food Safety Certification', _foodSafety, required: true),
-      _DocSection('Additional Culinary Certifications', _culinaryCerts, required: false),
+      _DocSection(
+          'Additional Culinary Certifications', _culinaryCerts,
+          required: false),
     ];
+
     return Scaffold(
       backgroundColor: _bg,
       body: SafeArea(
         child: Column(children: [
-
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
             child: Row(children: [
               IconButton(
                 onPressed: _isLoading
                     ? null
-                    : (widget.onBack ?? () => Navigator.of(context).maybePop()),
+                    : (widget.onBack ??
+                        () => Navigator.of(context).maybePop()),
                 icon: Icon(
                   Icons.arrow_back_ios_new_rounded,
                   size: 18,
@@ -185,7 +196,8 @@ class _ChefVerificationReviewPageState
               )
                   : const Text(
                 'Continue',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    fontSize: 16, fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -198,15 +210,12 @@ class _ChefVerificationReviewPageState
     final isEmpty = section.files.isEmpty;
     final showError = _showErrors && section.required && isEmpty;
 
-    // Optional + empty → কিছু দেখাবে না
     if (!section.required && isEmpty) return const SizedBox.shrink();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 20),
-
-        // Section title
         Row(
           children: [
             Text(
@@ -227,16 +236,13 @@ class _ChefVerificationReviewPageState
           ],
         ),
         const SizedBox(height: 10),
-
-        // File আছে → tile দেখাও
         if (!isEmpty)
           ...section.files.map((f) => _fileTile(section.files, f))
-
-        // File নেই + required → red empty box
         else
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+            padding:
+            const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
             decoration: BoxDecoration(
               color: const Color(0xFFFFF5F5),
               borderRadius: BorderRadius.circular(10),
@@ -252,11 +258,14 @@ class _ChefVerificationReviewPageState
                     color: showError ? _red : const Color(0xFFEF9A9A)),
                 const SizedBox(width: 8),
                 Text(
-                  showError ? 'This file is required' : 'No file uploaded',
+                  maxLines: 5,
+                  showError ? 'This file is required.\n If you do not select it,\n you cannot create the menu.' : 'This file is required.\n If you do not select it,\n you cannot create the menu.',
                   style: TextStyle(
                     fontSize: 13,
                     color: showError ? _red : const Color(0xFFEF9A9A),
-                    fontWeight: showError ? FontWeight.w500 : FontWeight.w400,
+                    fontWeight: showError
+                        ? FontWeight.w500
+                        : FontWeight.w400,
                   ),
                 ),
               ],

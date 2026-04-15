@@ -39,8 +39,6 @@ class MessageController extends GetxController {
 
   static MessageController get instance => Get.put(MessageController());
 
-  // ─── Fetch Messages ────────────────────────────────────────────────────────
-
   Future<void> getMessageRepo() async {
     if (page == 1) {
       messages.clear();
@@ -88,7 +86,6 @@ class MessageController extends GetxController {
           ),
         );
       }
-
       page++;
       isLoading = false;
       status = Status.completed;
@@ -100,8 +97,6 @@ class MessageController extends GetxController {
       update();
     }
   }
-
-  // ─── Image Picker ──────────────────────────────────────────────────────────
 
   Future<void> pickImageFromCamera() async {
     try {

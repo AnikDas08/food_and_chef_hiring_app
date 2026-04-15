@@ -138,7 +138,8 @@ class BaseDocPage extends StatelessWidget {
   final Widget body;
   final VoidCallback onContinue;
   final VoidCallback? onBack;
-  final Widget? trailingAction; // ← Skip button এর জন্য
+  final Widget? trailingAction;
+  final VoidCallback? onSkip;
 
   static const _textPrimary = Color(0xFF1A1A1A);
   static const _border = Color(0xFFE0E0E0);
@@ -154,7 +155,8 @@ class BaseDocPage extends StatelessWidget {
     required this.onContinue,
     this.onBack,
     this.totalSteps = 7,
-    this.trailingAction, // ← নতুন
+    this.trailingAction,
+    this.onSkip,
   });
 
   @override
@@ -165,7 +167,7 @@ class BaseDocPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── AppBar Row (Back + Skip) ──
+
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
               child: Row(
@@ -179,12 +181,11 @@ class BaseDocPage extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  if (trailingAction != null) trailingAction!, // ← Skip এখানে
+                  if (trailingAction != null) trailingAction!,
                 ],
               ),
             ),
 
-            // Progress bar
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
               child: Row(
@@ -204,7 +205,6 @@ class BaseDocPage extends StatelessWidget {
               ),
             ),
 
-            // Scrollable content
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -221,7 +221,9 @@ class BaseDocPage extends StatelessWidget {
                         letterSpacing: -0.3,
                       ),
                     ),
+
                     const SizedBox(height: 8),
+
                     Text(
                       description,
                       style: const TextStyle(
@@ -234,7 +236,6 @@ class BaseDocPage extends StatelessWidget {
                     body,
                     const SizedBox(height: 20),
 
-                    // Security note
                     Row(children: const [
                       Icon(Icons.shield_outlined, size: 14, color: _securityGreen),
                       SizedBox(width: 6),
@@ -249,28 +250,50 @@ class BaseDocPage extends StatelessWidget {
               ),
             ),
 
-            // Continue button
             Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
               color: _bg,
-              child: ElevatedButton(
-                onPressed: onContinue,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _textPrimary,
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(double.infinity, 54),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: onContinue,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _textPrimary,
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size(double.infinity, 54),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
+                    child: const Text('Continue'),
                   ),
-                  textStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.2,
-                  ),
-                ),
-                child: const Text('Continue'),
+
+                  if (onSkip != null) ...[
+                    const SizedBox(height: 12),
+                    GestureDetector(
+                      onTap: onSkip,
+                      child: const SizedBox(
+                        width: double.infinity,
+                        child: Text(
+                          'Skip',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF8A8A8A),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ),
           ],
