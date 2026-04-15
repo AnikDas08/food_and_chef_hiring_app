@@ -44,19 +44,10 @@ class _CulinaryCertPageState extends State<CulinaryCertPage> {
         currentStep: 3,
         totalSteps: 5,
         title: 'Additional Culinary Certifications (Optional)',
-        description: 'Showcase your extra culinary qualifications to strengthen your profile.',
+        description:
+        'Showcase your extra culinary qualifications to strengthen your profile.',
         onBack: widget.onBack,
-        trailingAction: TextButton(
-          onPressed: widget.onSkip,
-          child: const Text(
-            'Skip',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF8A8A8A),
-            ),
-          ),
-        ),
+        onSkip: widget.onSkip,
         onContinue: () {
           widget.onFilesSelected(_ctrl.files);
           widget.onContinue();
@@ -64,7 +55,6 @@ class _CulinaryCertPageState extends State<CulinaryCertPage> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             if (_ctrl.files.isNotEmpty) ...[
               const Text(
                 'File',
@@ -75,16 +65,13 @@ class _CulinaryCertPageState extends State<CulinaryCertPage> {
                 ),
               ),
               const SizedBox(height: 10),
-
               ..._ctrl.files.map((f) => _fileTile(f)),
-
               const SizedBox(height: 8),
-
               if (!_showAddMore)
                 GestureDetector(
                   onTap: () => setState(() => _showAddMore = true),
-                  child: Row(
-                    children: const [
+                  child: const Row(
+                    children: [
                       Icon(Icons.add, size: 16, color: _textPrimary),
                       SizedBox(width: 6),
                       Text(
@@ -98,10 +85,8 @@ class _CulinaryCertPageState extends State<CulinaryCertPage> {
                     ],
                   ),
                 ),
-
               const SizedBox(height: 8),
             ],
-
             if (_ctrl.files.isEmpty || _showAddMore)
               UploadSectionWidget(
                 files: const [],
@@ -138,34 +123,28 @@ class _CulinaryCertPageState extends State<CulinaryCertPage> {
             child: Icon(Icons.picture_as_pdf_rounded,
                 size: 17, color: Colors.red[400]),
           )
-              : Image.file(
-            File(file.path),
-            width: 34,
-            height: 34,
-            fit: BoxFit.cover,
-          ),
+              : Image.file(File(file.path),
+              width: 34, height: 34, fit: BoxFit.cover),
         ),
         const SizedBox(width: 10),
         Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
-              file.name,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                color: _textPrimary,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-            Text(
-              file.size,
-              style: const TextStyle(fontSize: 11, color: _textMuted),
-            ),
+          child:
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(file.name,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: _textPrimary,
+                ),
+                overflow: TextOverflow.ellipsis),
+            Text(file.size,
+                style: const TextStyle(fontSize: 11, color: _textMuted)),
           ]),
         ),
         IconButton(
           onPressed: () => _ctrl.removeFile(file),
-          icon: const Icon(Icons.delete_outline_rounded, size: 18, color: _textMuted),
+          icon: const Icon(Icons.delete_outline_rounded,
+              size: 18, color: _textMuted),
           style: IconButton.styleFrom(minimumSize: const Size(32, 32)),
         ),
       ]),

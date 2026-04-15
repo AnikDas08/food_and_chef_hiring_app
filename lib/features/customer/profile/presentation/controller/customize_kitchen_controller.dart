@@ -148,6 +148,7 @@ class CustomizeKitchenController extends GetxController {
           }
         }
       }
+
     } catch (e) {
       debugPrint('fetchMyKitchen error: $e');
     } finally {
