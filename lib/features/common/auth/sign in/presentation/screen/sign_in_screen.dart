@@ -67,6 +67,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         text: AppString.welcomeBack,
                         fontSize: 24,
                         color: Color(0xff272727),
+                        fontWeight: FontWeight.w700,
                         top: 10,
                       ),
 

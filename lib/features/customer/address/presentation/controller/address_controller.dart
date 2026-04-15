@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_untitled/features/customer/home/presentation/controller/home_controller.dart';
+import 'package:new_untitled/services/api/api_service.dart';
 import 'package:new_untitled/utils/app_utils.dart';
 
 import '../../data/address_model.dart';
@@ -586,6 +588,25 @@ class AddressController extends GetxController {
       update();
     }
   }
+
+  /*Future<void> updateLocation(String id) async {
+    isDeleting = true;
+    update();
+    try {
+      final response = await ApiService.patch("user/profile/$id");
+      if (response.statusCode==200) {
+        //await Get.find<HomeControlle
+       Utils.successSnackBar("Update Current Location", "Change your current location. Now you can find your nearby chef by this location");
+      } else {
+        _showError("Failed to delete address");
+      }
+    } catch (_) {
+      _showError("Something went wrong");
+    } finally {
+      isDeleting = false;
+      update();
+    }
+  }*/
 
   // ══════════════════════════════════════════════════════════
   //  HELPERS
