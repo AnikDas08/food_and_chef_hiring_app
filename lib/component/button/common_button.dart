@@ -93,7 +93,7 @@ class _CommonButtonState extends State<CommonButton>
       padding: WidgetStateProperty.all(EdgeInsets.zero),
       shape: WidgetStateProperty.all(
         RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(widget.buttonRadius),
+          borderRadius: BorderRadius.circular(widget.buttonRadius.r),
           side: BorderSide(
             color: widget.borderColor ?? Colors.transparent,
             width: widget.borderWidth,
