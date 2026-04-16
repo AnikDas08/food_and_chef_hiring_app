@@ -18,39 +18,40 @@ class BookingHistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<BookingHistoryController>(
       init: BookingHistoryController(),
-      builder: (controller) => Scaffold(
-        // This MUST be true for the glass effect to see content behind it
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: false,
-          flexibleSpace: LiquidGlassLayer(
-            child: LiquidGlass(
-              // Using Superellipse with 0 radius creates a perfect rectangle
-              shape: LiquidRoundedSuperellipse(borderRadius: 0),
-              child: Container(
-                // The "Glass" look comes from having a semi-transparent color here
-                color: Colors.white.withOpacity(0.05),
-                child: appBarOpacity(),
+      builder:
+          (controller) => Scaffold(
+            // This MUST be true for the glass effect to see content behind it
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              centerTitle: false,
+              flexibleSpace: LiquidGlassLayer(
+                child: LiquidGlass(
+                  // Using Superellipse with 0 radius creates a perfect rectangle
+                  shape: LiquidRoundedSuperellipse(borderRadius: 0),
+                  child: Container(
+                    // The "Glass" look comes from having a semi-transparent color here
+                    color: Colors.white.withOpacity(0.05),
+                    child: appBarOpacity(),
+                  ),
+                ),
+              ),
+              title: const CommonText(
+                text: AppString.upcomingBookings,
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff272727),
+              ),
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(50.h),
+                child: _buildCategoryTabs(controller),
               ),
             ),
+            body: _buildBody(controller),
           ),
-          title: const CommonText(
-            text: AppString.upcomingBookings,
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-            color: Color(0xff272727),
-          ),
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(50.h),
-            child: _buildCategoryTabs(controller),
-          ),
-        ),
-        body: _buildBody(controller),
-      ),
     );
   }
 
@@ -73,10 +74,16 @@ class BookingHistoryScreen extends StatelessWidget {
                 child: LiquidGlass(
                   shape: LiquidRoundedSuperellipse(borderRadius: 30.r),
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 8.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 18.w,
+                      vertical: 8.h,
+                    ),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: isSelected ? const Color(0xff272727) : Color(0xffF2F2F2),
+                      color:
+                          isSelected
+                              ? const Color(0xff272727)
+                              : Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(30.r),
                     ),
                     child: CommonText(
@@ -84,7 +91,8 @@ class BookingHistoryScreen extends StatelessWidget {
                       fontSize: 12.sp,
                       textAlign: TextAlign.center,
                       fontWeight: FontWeight.w500,
-                      color: isSelected ? Colors.white : const Color(0xff272727),
+                      color:
+                          isSelected ? Colors.white : const Color(0xff272727),
                     ),
                   ),
                 ),
@@ -106,7 +114,8 @@ class BookingHistoryScreen extends StatelessWidget {
       child: ListView.builder(
         // Padding top must be enough to clear the AppBar height (approx 140)
         padding: EdgeInsets.fromLTRB(16.w, 140.h, 16.w, 100.h),
-        itemCount: controller.orders.length + (controller.isPaginationLoading ? 1 : 0),
+        itemCount:
+            controller.orders.length + (controller.isPaginationLoading ? 1 : 0),
         itemBuilder: (context, index) {
           if (index == controller.orders.length) {
             return const Center(child: CircularProgressIndicator());

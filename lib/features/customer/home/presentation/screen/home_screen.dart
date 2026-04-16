@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
-import 'package:new_untitled/features/customer/home/presentation/screen/search_screen.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
@@ -46,15 +45,14 @@ class CustomerHome extends StatelessWidget {
               suffixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    width: 1,
-                    height: 22.h,
-                    color: Color(0xffE0E0E0),
-                  ),
+                  Container(width: 1, height: 22.h, color: Color(0xffE0E0E0)),
                   SizedBox(width: 12.w),
                   InkWell(
-                    onTap: (){
-                      Get.toNamed(AppRoutes.homeSearch,arguments: {'openFilter': true});
+                    onTap: () {
+                      Get.toNamed(
+                        AppRoutes.homeSearch,
+                        arguments: {'openFilter': true},
+                      );
                     },
                     child: Padding(
                       padding: EdgeInsets.only(right: 20.w),
@@ -68,7 +66,7 @@ class CustomerHome extends StatelessWidget {
               ),
               prefixIcon: Padding(
                 padding: const EdgeInsets.only(left: 16),
-                child: Icon(CupertinoIcons.search,color: Color(0xff636363),),
+                child: Icon(CupertinoIcons.search, color: Color(0xff636363)),
               ),
             ),
 

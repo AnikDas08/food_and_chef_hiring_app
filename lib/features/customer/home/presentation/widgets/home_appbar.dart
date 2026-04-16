@@ -19,36 +19,35 @@ AppBar homeAppbar() {
       children: [
         Expanded(
           child: GetBuilder<HomeController>(
-            builder: (controller) => GestureDetector(
-              onTap: () async {
-                await Get.toNamed(
-                  AppRoutes.addressScreen,
-                  arguments: {
-                    'isLoading': true,
+            builder:
+                (controller) => GestureDetector(
+                  onTap: () async {
+                    await Get.toNamed(
+                      AppRoutes.addressScreen,
+                      arguments: {'isLoading': true},
+                    );
                   },
-                );
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CommonText(
-                    text: AppString.yourLocation,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff777777),
-                    bottom: 2,
-                  ),
-                  Row(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        Icons.location_on_rounded,
-                        color: Color(0xffA7A7A7),
-                        size: 20,
+                      CommonText(
+                        text: AppString.yourLocation,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff777777),
+                        bottom: 2,
                       ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on_rounded,
+                            color: Color(0xffA7A7A7),
+                            size: 20,
+                          ),
 
-                      // ✅ Show loader while fetching, address once ready
-                      /*if (controller.isLoadingLocation)
+                          // ✅ Show loader while fetching, address once ready
+                          /*if (controller.isLoadingLocation)
                         Padding(
                           padding: const EdgeInsets.only(left: 4),
                           child: SizedBox(
@@ -61,23 +60,24 @@ AppBar homeAppbar() {
                           ),
                         )
                       else*/
-                        Flexible(
-                          child: Obx(
-                            ()=> CommonText(
-                              text: controller.defaultAddress.value.isEmpty
-                                  ? "Fetching location..."
-                                  : controller.defaultAddress.value,
-                              color: Color(0xff272727),
-                              fontWeight: FontWeight.w500,
-                              left: 4,
+                          Flexible(
+                            child: Obx(
+                              () => CommonText(
+                                text:
+                                    controller.defaultAddress.value.isEmpty
+                                        ? "Fetching location..."
+                                        : controller.defaultAddress.value,
+                                color: Color(0xff272727),
+                                fontWeight: FontWeight.w500,
+                                left: 4,
+                              ),
                             ),
                           ),
-                        ),
+                        ],
+                      ),
                     ],
                   ),
-                ],
-              ),
-            ),
+                ),
           ),
         ),
       ],
@@ -88,14 +88,14 @@ AppBar homeAppbar() {
         init: NotificationsController(),
         builder: (controller) {
           return InkWell(
-            onTap: ()async{
+            onTap: () async {
               //controller.readAllNotification();
               Get.toNamed(AppRoutes.notifications);
             },
             child: Badge(
               // Use the unreadCount from the controller
               label: Obx(
-                    () => Text(
+                () => Text(
                   controller.unreadCount.value > 99
                       ? "99+"
                       : "${controller.unreadCount.value}",
@@ -119,8 +119,8 @@ AppBar homeAppbar() {
       ),
       12.width,
       GestureDetector(
-        onTap: (){
-          Get.toNamed(AppRoutes.cart,arguments: "cart");
+        onTap: () {
+          Get.toNamed(AppRoutes.cart, arguments: "cart");
         },
         child: Container(
           padding: EdgeInsets.all(8.sp),
