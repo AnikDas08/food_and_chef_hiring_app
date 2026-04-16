@@ -20,8 +20,13 @@ AppBar homeAppbar() {
         Expanded(
           child: GetBuilder<HomeController>(
             builder: (controller) => GestureDetector(
-              onTap: () {
-                Get.toNamed(AppRoutes.addressScreen);
+              onTap: () async {
+                await Get.toNamed(
+                  AppRoutes.addressScreen,
+                  arguments: {
+                    'isLoading': true,
+                  },
+                );
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -43,7 +48,7 @@ AppBar homeAppbar() {
                       ),
 
                       // ✅ Show loader while fetching, address once ready
-                      if (controller.isLoadingLocation)
+                      /*if (controller.isLoadingLocation)
                         Padding(
                           padding: const EdgeInsets.only(left: 4),
                           child: SizedBox(
@@ -55,15 +60,17 @@ AppBar homeAppbar() {
                             ),
                           ),
                         )
-                      else
+                      else*/
                         Flexible(
-                          child: CommonText(
-                            text: controller.address.isEmpty
-                                ? "Fetching location..."
-                                : controller.address,
-                            color: Color(0xff272727),
-                            fontWeight: FontWeight.w500,
-                            left: 4,
+                          child: Obx(
+                            ()=> CommonText(
+                              text: controller.defaultAddress.value.isEmpty
+                                  ? "Fetching location..."
+                                  : controller.defaultAddress.value,
+                              color: Color(0xff272727),
+                              fontWeight: FontWeight.w500,
+                              left: 4,
+                            ),
                           ),
                         ),
                     ],

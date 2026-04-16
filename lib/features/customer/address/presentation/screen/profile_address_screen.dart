@@ -16,11 +16,38 @@ class ProfileAddressScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // If navigated from checkout, this will be true
     final bool fromCheckout = Get.arguments?['fromCheckout'] == true;
+    final bool isLoading = Get.arguments?['isLoading'] == true;
 
     return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: GetBuilder<AddressController>(
+      appBar: AppBar(
+      backgroundColor: Colors.transparent, // Keeps the app bar clean
+      elevation: 0,
+      automaticallyImplyLeading: false, // Prevents default back button
+      leadingWidth: 70, // Gives the circle enough space from the edge
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 16),
+        child: Center(
+          child: Container(
+            height: 40,
+            width: 40,
+            decoration: const BoxDecoration(
+              color: Color(0xFFF6F6F6),
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: const Icon(
+                Icons.arrow_back_ios_new, // Modern iOS & Android look
+                size: 18,
+                color: Colors.black,
+              ),
+              onPressed: () => Get.back(),
+            ),
+          ),
+        ),
+      ),
+    ),
+      body: SafeArea(child: GetBuilder<AddressController>(
           builder: (controller) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -60,8 +87,8 @@ class ProfileAddressScreen extends StatelessWidget {
                           const SizedBox(height: 12),
                           CommonText(
                             text: "No addresses found",
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
                             color: const Color(0xff272727),
                           ),
                         ],
@@ -96,6 +123,12 @@ class ProfileAddressScreen extends StatelessWidget {
                                 fromCheckout: true,
                                 selectedAddressId: Get.arguments?['selectedAddressId'],
                               ),
+                            );
+                          }
+                          if(isLoading){
+                            return GestureDetector(
+                              onTap: () => controller.updateLocation(address.id),
+                              child: addressItem(address,controller),
                             );
                           }
 
