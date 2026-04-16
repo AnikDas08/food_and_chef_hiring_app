@@ -244,13 +244,12 @@ class BaseDocPage extends StatelessWidget {
               ),
             ),
 
-            // ── scrollable content ───────────────────
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,          // ✅ fix
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 28),
                     Text(title,

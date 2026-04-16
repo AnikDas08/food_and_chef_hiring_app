@@ -117,14 +117,26 @@ class _VerifyUserState extends State<ChefVerifyUser> {
 
                   /// Resent OTP or show Timer
                   GestureDetector(
+
                     onTap:
+
                     controller.time == '00:00'
+
                         ? () {
+
                       controller.startTimer();
+
                       controller.signUpUser(LocalStorage.myRole);
+
+
                     }
-                        : () {},
+                        : (
+
+
+                        ) {},
+
                     child:
+
                     controller.time == '00:00'
                         ? ResendOtp()
                         : CommonText(

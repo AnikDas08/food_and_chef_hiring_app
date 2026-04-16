@@ -285,7 +285,7 @@ class SignUpChefController extends GetxController {
 
         }else if(LocalStorage.isLogIn == true){
 
-          Get.to(()=> ChefProfileScreen());
+          Get.offAllNamed(AppRoutes.chefHomeScreen);
 
         }else {
 
