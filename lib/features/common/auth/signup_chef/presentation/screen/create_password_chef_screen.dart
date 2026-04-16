@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:new_untitled/features/common/auth/signup_chef/presentation/controller/sign_up_chef_controller.dart';
 import '../../../../../../../utils/extensions/extension.dart';
@@ -19,7 +21,36 @@ class CreatePasswordChefScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       /// App Bar Section Starts Here
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        leadingWidth: 60,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Center(
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFF6F6F6),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  // Conditional Icon based on Platform
+                  Platform.isIOS
+                      ? Icons.arrow_back_ios_new
+                      : Icons.arrow_back,
+                  size: 24,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
 
       /// Body Section Starts Here
       body: GetBuilder<SignUpChefController>(

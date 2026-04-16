@@ -48,6 +48,7 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
 
     final query = _searchController.text.trim();
 
+
     if (query.isEmpty) {
       _debounce?.cancel();
       setState(() {
@@ -277,7 +278,6 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                     ),
                     20.verticalSpace,
 
-                    // ── Search Field ──
                     Container(
                       decoration: BoxDecoration(
                         color: const Color(0xFFF7F7F7),
@@ -356,7 +356,6 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                       ),
                     ],
 
-                    // ── Location Loading ──
                     if (_isLoadingLocation)
                       Center(
                         child: Padding(
@@ -368,7 +367,6 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                         ),
                       ),
 
-                    // ── Map View ──
                     if (_showMap && _selectedLatLng != null) ...[
                       Text(
                         "Order Area Distance",

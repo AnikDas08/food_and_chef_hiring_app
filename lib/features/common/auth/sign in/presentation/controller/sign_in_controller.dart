@@ -20,12 +20,12 @@ class SignInController extends GetxController {
   TextEditingController emailController = TextEditingController(
     text: kDebugMode ? 'feseba4600@azucore.com' : '',
   );
+
   TextEditingController passwordController = TextEditingController(
     text: kDebugMode ? 'hello123' : "",
   );
 
   /// Sign in Api call here
-
   Future<void> signInUser() async {
     isLoading = true;
     update();

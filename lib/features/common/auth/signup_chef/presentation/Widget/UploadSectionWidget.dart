@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../../component/button/common_button.dart';
 import '../add documents/Model/UploadedFileModel.dart';
 
 class UploadSectionWidget extends StatelessWidget {
@@ -11,10 +13,10 @@ class UploadSectionWidget extends StatelessWidget {
   final VoidCallback? onEdit;
 
   static const _textPrimary = Color(0xFF1A1A1A);
-  static const _textMuted = Color(0xFF8A8A8A);
-  static const _border = Color(0xFFE0E0E0);
-  static const _uploadBg = Color(0xFFF9F9F9);
-  static const _required = Color(0xFFE53935);
+  static const _textMuted   = Color(0xFF8A8A8A);
+  static const _border      = Color(0xFFE0E0E0);
+  static const _uploadBg    = Color(0xFFF9F9F9);
+  static const _required    = Color(0xFFE53935);
 
   const UploadSectionWidget({
     super.key,
@@ -30,16 +32,21 @@ class UploadSectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (label != null) ...[
           Row(children: [
             Text(label!,
                 style: const TextStyle(
-                    fontSize: 14, fontWeight: FontWeight.w600, color: _textPrimary)),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: _textPrimary)),
             if (isRequired)
               const Text(' *',
                   style: TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.w600, color: _required)),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: _required)),
           ]),
           const SizedBox(height: 10),
         ],
@@ -56,27 +63,31 @@ class UploadSectionWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: _border),
               ),
-              child: Column(children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.06),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.06),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(Icons.cloud_upload_outlined,
+                        size: 20, color: _textMuted),
                   ),
-                  child: const Icon(Icons.cloud_upload_outlined, size: 20, color: _textMuted),
-                ),
-                const SizedBox(height: 12),
-                const Text('Drag & Drop file(s) to upload',
-                    style: TextStyle(fontSize: 13, color: _textMuted)),
-              ]),
+                  const SizedBox(height: 12),
+                  const Text('Drag & Drop file(s) to upload',
+                      style: TextStyle(fontSize: 13, color: _textMuted)),
+                ],
+              ),
             ),
           ),
       ],
@@ -92,39 +103,69 @@ class UploadSectionWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: _border),
       ),
-      child: Row(children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: isPdf
-              ? Container(
-            width: 34, height: 34,
-            color: const Color(0xFFFFEBEE),
-            child: Icon(Icons.picture_as_pdf_rounded, size: 17, color: Colors.red[400]),
-          )
-              : Image.file(File(file.path), width: 34, height: 34, fit: BoxFit.cover),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(file.name,
-                style: const TextStyle(
-                    fontSize: 13, fontWeight: FontWeight.w500, color: _textPrimary),
-                overflow: TextOverflow.ellipsis),
-            Text(file.size, style: const TextStyle(fontSize: 11, color: _textMuted)),
-          ]),
-        ),
-        if (onEdit != null)
-          IconButton(
-            onPressed: onEdit,
-            icon: const Icon(Icons.edit_outlined, size: 18, color: _textMuted),
-            style: IconButton.styleFrom(minimumSize: const Size(32, 32)),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: isPdf
+                ? Container(
+              width: 34,
+              height: 34,
+              color: const Color(0xFFFFEBEE),
+              child: Icon(Icons.picture_as_pdf_rounded,
+                  size: 17, color: Colors.red[400]),
+            )
+                : Image.file(File(file.path),
+                width: 34, height: 34, fit: BoxFit.cover),
           ),
-        IconButton(
-          onPressed: () => onDelete(file),
-          icon: const Icon(Icons.delete_outline_rounded, size: 18, color: _textMuted),
-          style: IconButton.styleFrom(minimumSize: const Size(32, 32)),
-        ),
-      ]),
+          const SizedBox(width: 10),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  file.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: _textPrimary),
+                ),
+                Text(
+                  file.size,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontSize: 11, color: _textMuted),
+                ),
+              ],
+            ),
+          ),
+
+          // edit button
+          if (onEdit != null)
+            IconButton(
+              onPressed: onEdit,
+              icon: const Icon(Icons.edit_outlined,
+                  size: 18, color: _textMuted),
+              style: IconButton.styleFrom(
+                  minimumSize: const Size(32, 32),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+            ),
+
+          IconButton(
+            onPressed: () => onDelete(file),
+            icon: const Icon(Icons.delete_outline_rounded,
+                size: 18, color: _textMuted),
+            style: IconButton.styleFrom(
+                minimumSize: const Size(32, 32),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -141,10 +182,10 @@ class BaseDocPage extends StatelessWidget {
   final Widget? trailingAction;
   final VoidCallback? onSkip;
 
-  static const _textPrimary = Color(0xFF1A1A1A);
-  static const _border = Color(0xFFE0E0E0);
+  static const _textPrimary   = Color(0xFF1A1A1A);
+  static const _border        = Color(0xFFE0E0E0);
   static const _securityGreen = Color(0xFF4CAF50);
-  static const _bg = Color(0xFFFFFFFF);
+  static const _bg            = Color(0xFFFFFFFF);
 
   const BaseDocPage({
     super.key,
@@ -170,38 +211,30 @@ class BaseDocPage extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: onBack ?? () => Navigator.of(context).maybePop(),
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      size: 18,
-                      color: _textPrimary,
-                    ),
-                  ),
-                  const Spacer(),
-                  if (trailingAction != null) trailingAction!,
-                ],
-              ),
+              child: Row(children: [
+                IconButton(
+                  onPressed: onBack ?? () => Navigator.of(context).maybePop(),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded,
+                      size: 18, color: _textPrimary),
+                ),
+                const Spacer(),
+                if (trailingAction != null) trailingAction!,
+              ]),
             ),
 
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
               child: Row(
-                children: List.generate(
-                  totalSteps,
-                      (i) => Expanded(
-                    child: Container(
-                      height: 3,
-                      margin: EdgeInsets.only(right: i < totalSteps - 1 ? 4 : 0),
-                      decoration: BoxDecoration(
-                        color: i <= currentStep ? _textPrimary : _border,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
+                children: List.generate(totalSteps, (i) => Expanded(
+                  child: Container(
+                    height: 3,
+                    margin: EdgeInsets.only(right: i < totalSteps - 1 ? 4 : 0),
+                    decoration: BoxDecoration(
+                      color: i <= currentStep ? _textPrimary : _border,
+                      borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                ),
+                )),
               ),
             ),
 
@@ -210,38 +243,40 @@ class BaseDocPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 28),
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                        color: _textPrimary,
-                        letterSpacing: -0.3,
-                      ),
-                    ),
-
+                    Text(title,
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                          color: _textPrimary,
+                          letterSpacing: -0.3,
+                        )),
                     const SizedBox(height: 8),
-
-                    Text(
-                      description,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF8A8A8A),
-                        height: 1.5,
-                      ),
-                    ),
+                    Text(description,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFF8A8A8A),
+                          height: 1.5,
+                        )),
                     const SizedBox(height: 24),
+
                     body,
+
                     const SizedBox(height: 20),
 
+                    // security notice
                     Row(children: const [
-                      Icon(Icons.shield_outlined, size: 14, color: _securityGreen),
+                      Icon(Icons.shield_outlined,
+                          size: 14, color: _securityGreen),
                       SizedBox(width: 6),
-                      Text(
-                        'Your documents are encrypted and kept private.',
-                        style: TextStyle(fontSize: 12, color: Color(0xFF2F8328)),
+                      Flexible(
+                        child: Text(
+                          'Your documents are encrypted and kept private.',
+                          style: TextStyle(
+                              fontSize: 12, color: Color(0xFF2F8328)),
+                        ),
                       ),
                     ]),
                     const SizedBox(height: 32),
@@ -252,9 +287,13 @@ class BaseDocPage extends StatelessWidget {
 
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
+              padding: EdgeInsets.fromLTRB(
+                20, 12, 20,
+                28 + MediaQuery.of(context).viewInsets.bottom,
+              ),
               color: _bg,
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   ElevatedButton(
                     onPressed: onContinue,
@@ -264,34 +303,27 @@ class BaseDocPage extends StatelessWidget {
                       minimumSize: const Size(double.infinity, 54),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
+                          borderRadius: BorderRadius.circular(14)),
                       textStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.2,
-                      ),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.2),
                     ),
                     child: const Text('Continue'),
                   ),
-
                   if (onSkip != null) ...[
                     const SizedBox(height: 12),
-                    GestureDetector(
+
+
+                    CommonButton(
+                      titleText: "Skip for Now",
                       onTap: onSkip,
-                      child: const SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          'Skip',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF8A8A8A),
-                          ),
-                        ),
-                      ),
-                    ),
+                      buttonColor: Colors.transparent,
+                      borderColor: Colors.transparent,
+                      titleColor: Colors.black,
+                      titleSize: 10.sp,
+                    )
+
                   ],
                 ],
               ),

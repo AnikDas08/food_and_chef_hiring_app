@@ -18,6 +18,7 @@ import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/constants/app_images.dart';
 import '../../../../../../utils/constants/app_string.dart';
+import '../../../../common/auth/signup_chef/presentation/Widget/ChefDocFlowState.dart';
 import '../../../../common/auth/signup_chef/presentation/screen/BankManagementPage.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_profile_controller.dart';
@@ -211,6 +212,19 @@ class ChefProfileScreen extends StatelessWidget {
                         title: AppString.accountSettings,
                         onTap: () => Get.toNamed(AppRoutes.accountSetting),
                       ),
+
+                      Item(
+                        image: AppIcons.about,
+                        title: AppString.uploadyourrequireddocuments,
+                        onTap: (){
+
+                          Get.to(() => const ChefDocFlow());
+
+
+                        },
+
+                      ),
+
 
                       Item(
                         image: AppIcons.addressIcon,
