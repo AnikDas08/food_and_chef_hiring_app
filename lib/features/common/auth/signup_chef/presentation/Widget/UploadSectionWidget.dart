@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../../component/button/common_button.dart';
 import '../add documents/Model/UploadedFileModel.dart';
 
 class UploadSectionWidget extends StatelessWidget {
@@ -30,7 +32,7 @@ class UploadSectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,          // ✅ overflow fix
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (label != null) ...[
           Row(children: [
@@ -62,7 +64,7 @@ class UploadSectionWidget extends StatelessWidget {
                 border: Border.all(color: _border),
               ),
               child: Column(
-                mainAxisSize: MainAxisSize.min,    // ✅ overflow fix
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
                     width: 40,
@@ -103,7 +105,6 @@ class UploadSectionWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // ✅ thumbnail
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: isPdf
@@ -119,7 +120,6 @@ class UploadSectionWidget extends StatelessWidget {
           ),
           const SizedBox(width: 10),
 
-          // ✅ Expanded — text overflow ঠেকায়
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +127,7 @@ class UploadSectionWidget extends StatelessWidget {
               children: [
                 Text(
                   file.name,
-                  maxLines: 1,                         // ✅ fix
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                       fontSize: 13,
@@ -136,7 +136,7 @@ class UploadSectionWidget extends StatelessWidget {
                 ),
                 Text(
                   file.size,
-                  maxLines: 1,                         // ✅ fix
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                       fontSize: 11, color: _textMuted),
@@ -156,7 +156,6 @@ class UploadSectionWidget extends StatelessWidget {
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap),
             ),
 
-          // delete button
           IconButton(
             onPressed: () => onDelete(file),
             icon: const Icon(Icons.delete_outline_rounded,
@@ -172,9 +171,6 @@ class UploadSectionWidget extends StatelessWidget {
 }
 
 
-// ─────────────────────────────────────────────
-//  BaseDocPage
-// ─────────────────────────────────────────────
 class BaseDocPage extends StatelessWidget {
   final int currentStep;
   final int totalSteps;
@@ -213,7 +209,6 @@ class BaseDocPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            // ── top bar ──────────────────────────────
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
               child: Row(children: [
@@ -227,7 +222,6 @@ class BaseDocPage extends StatelessWidget {
               ]),
             ),
 
-            // ── progress bar ─────────────────────────
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
               child: Row(
@@ -268,7 +262,7 @@ class BaseDocPage extends StatelessWidget {
                         )),
                     const SizedBox(height: 24),
 
-                    body,                                  // ← page content
+                    body,
 
                     const SizedBox(height: 20),
 
@@ -277,7 +271,7 @@ class BaseDocPage extends StatelessWidget {
                       Icon(Icons.shield_outlined,
                           size: 14, color: _securityGreen),
                       SizedBox(width: 6),
-                      Flexible(                           // ✅ fix — long text wraps
+                      Flexible(
                         child: Text(
                           'Your documents are encrypted and kept private.',
                           style: TextStyle(
@@ -291,10 +285,8 @@ class BaseDocPage extends StatelessWidget {
               ),
             ),
 
-            // ── bottom buttons ───────────────────────
             Container(
               width: double.infinity,
-              // ✅ keyboard-aware bottom padding
               padding: EdgeInsets.fromLTRB(
                 20, 12, 20,
                 28 + MediaQuery.of(context).viewInsets.bottom,
@@ -321,18 +313,17 @@ class BaseDocPage extends StatelessWidget {
                   ),
                   if (onSkip != null) ...[
                     const SizedBox(height: 12),
-                    GestureDetector(
+
+
+                    CommonButton(
+                      titleText: "Skip for Now",
                       onTap: onSkip,
-                      child: const SizedBox(
-                        width: double.infinity,
-                        child: Text('Skip',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF8A8A8A))),
-                      ),
-                    ),
+                      buttonColor: Colors.transparent,
+                      borderColor: Colors.transparent,
+                      titleColor: Colors.black,
+                      titleSize: 10.sp,
+                    )
+
                   ],
                 ],
               ),
