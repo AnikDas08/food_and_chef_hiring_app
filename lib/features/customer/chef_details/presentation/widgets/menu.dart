@@ -7,30 +7,39 @@ import '../../data/mamu_model.dart';
 import '../controller/chef_detail_controller.dart';
 
 class MenuPage extends StatelessWidget {
-  const MenuPage({super.key});
+  final bool isSearchMode;
+
+  const MenuPage({super.key, this.isSearchMode = false});
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ChefDetailsController>(
       builder: (controller) {
-        final List<String> sections = controller.chefDetail?.menuSections ?? [];
+        final List<String> sections =
+            controller.chefDetail?.menuSections ?? [];
 
         if (controller.isLoadingDetail) return const SizedBox.shrink();
+
+        // ── Search results view ──────────────────────────────────────
+        if (isSearchMode && controller.isSearching) {
+          return _SearchResultsList(
+            results: controller.searchResults,
+            query: controller.searchQuery,
+          );
+        }
 
         if (sections.isEmpty) {
           return Center(
             child: CommonText(
               text: "No menu sections available",
               fontSize: 14,
-              color: Color(0xff777777),
+              color: const Color(0xff777777),
               fontWeight: FontWeight.w400,
             ),
           );
         }
 
-        // TabBarView only — the TabBar header is now a pinned SliverPersistentHeader
-        // in ChefDetailsScreen's headerSliverBuilder, sharing the same
-        // DefaultTabController that wraps the entire NestedScrollView.
+        // ── Normal tab view ──────────────────────────────────────────
         return TabBarView(
           children: sections.map((s) => _MenuList(section: s)).toList(),
         );
@@ -39,7 +48,50 @@ class MenuPage extends StatelessWidget {
   }
 }
 
-// ── Per-section list with pagination ───────────────────────────────────────
+// ── Search results list ───────────────────────────────────────────────────────
+
+class _SearchResultsList extends StatelessWidget {
+  final List<MenuData> results;
+  final String query;
+
+  const _SearchResultsList({
+    required this.results,
+    required this.query,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (results.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.search_off_rounded,
+              size: 48,
+              color: Color(0xffCCCCCC),
+            ),
+            const SizedBox(height: 12),
+            CommonText(
+              text: "No results for \"$query\"",
+              fontSize: 14,
+              color: const Color(0xff777777),
+              fontWeight: FontWeight.w400,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      itemCount: results.length,
+      itemBuilder: (_, index) => FoodItem(item: results[index]),
+    );
+  }
+}
+
+// ── Per-section list with pagination ─────────────────────────────────────────
 
 class _MenuList extends StatefulWidget {
   final String section;
@@ -51,7 +103,6 @@ class _MenuList extends StatefulWidget {
 
 class _MenuListState extends State<_MenuList>
     with AutomaticKeepAliveClientMixin {
-
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -92,10 +143,10 @@ class _MenuListState extends State<_MenuList>
 
     return GetBuilder<ChefDetailsController>(
       builder: (controller) {
-        final bool isFirst = !controller.menuCache.containsKey(widget.section);
-        final bool isLoading =
-            controller.isLoadingMenu &&
-                controller.selectedMenuSection == widget.section;
+        final bool isFirst =
+        !controller.menuCache.containsKey(widget.section);
+        final bool isLoading = controller.isLoadingMenu &&
+            controller.selectedMenuSection == widget.section;
 
         // First load spinner
         if (isFirst ||
@@ -112,7 +163,7 @@ class _MenuListState extends State<_MenuList>
             child: CommonText(
               text: "No items in this section",
               fontSize: 14,
-              color: Color(0xff777777),
+              color: const Color(0xff777777),
               fontWeight: FontWeight.w400,
             ),
           );
@@ -142,8 +193,8 @@ class _MenuListState extends State<_MenuList>
                   child: Center(
                     child: CommonText(
                       text: "No more items",
-                      fontSize: 12,
-                      color: Color(0xff777777),
+                      fontSize: 14,
+                      color: const Color(0xff777777),
                       fontWeight: FontWeight.w400,
                     ),
                   ),

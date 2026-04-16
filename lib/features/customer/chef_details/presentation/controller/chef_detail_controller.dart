@@ -27,6 +27,11 @@ class ChefDetailsController extends GetxController {
   static const int _pageLimit = 10;
   String chefId = "";
 
+  // ── Search state ─────────────────────────────────────────────────────────────
+  String searchQuery = "";
+  List<MenuData> searchResults = [];
+  bool isSearching = false;
+
   @override
   void onInit() {
     super.onInit();
@@ -59,7 +64,8 @@ class ChefDetailsController extends GetxController {
     update();
 
     try {
-      String formattedDate = "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}";
+      String formattedDate =
+          "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}";
 
       final response = await ApiService.post(
         "user/check-chef-availability/$chefId",
@@ -190,6 +196,45 @@ class ChefDetailsController extends GetxController {
       }
       update();
     }
+  }
+
+  // ── Search ───────────────────────────────────────────────────────────────────
+
+  /// Search across ALL cached menu sections for items matching [query].
+  /// If a section hasn't been loaded yet, it will be skipped (already-cached data is used).
+  void searchMenu(String query) {
+    searchQuery = query.trim();
+
+    if (searchQuery.isEmpty) {
+      searchResults = [];
+      isSearching = false;
+      update();
+      return;
+    }
+
+    isSearching = true;
+    final String lowerQuery = searchQuery.toLowerCase();
+
+    // Collect all cached items across every section
+    final List<MenuData> allItems =
+    menuCache.values.expand((items) => items).toList();
+
+    searchResults = allItems.where((item) {
+      final name = (item.name ?? "").toLowerCase();
+      final ingredients =
+      (item.ingredients ?? []).join(" ").toLowerCase();
+      return name.contains(lowerQuery) || ingredients.contains(lowerQuery);
+    }).toList();
+
+    update();
+  }
+
+  /// Clear search state and return to normal tab view.
+  void clearSearch() {
+    searchQuery = "";
+    searchResults = [];
+    isSearching = false;
+    update();
   }
 
   // ── Cart ─────────────────────────────────────────────────────────────────────
