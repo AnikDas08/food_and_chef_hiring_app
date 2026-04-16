@@ -4,6 +4,7 @@ import '../Model/UploadedFileModel.dart';
 import '../controller/SingleUploadController.dart';
 
 class ProofOfAddressPage extends StatefulWidget {
+  final VoidCallback? onSkip;
   final VoidCallback onContinue;
   final VoidCallback? onBack;
   final void Function(List<UploadedFileModel>) onFilesSelected;
@@ -13,6 +14,7 @@ class ProofOfAddressPage extends StatefulWidget {
     required this.onContinue,
     required this.onFilesSelected,
     this.onBack,
+    this.onSkip,
   });
 
   @override
@@ -36,6 +38,7 @@ class _ProofOfAddressPageState extends State<ProofOfAddressPage> {
         currentStep: 1,
         totalSteps: 5,        // ← এখানে
         title: 'Proof of Address',
+        onSkip: widget.onSkip,
         description: 'Submit a recent utility bill or bank statement to confirm your current address.',
         onBack: widget.onBack,
         onContinue: () {

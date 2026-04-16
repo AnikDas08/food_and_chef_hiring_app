@@ -9,6 +9,7 @@ import '../add documents/screen/government_issued_Page.dart';
 import '../controller/sign_up_chef_controller.dart';
 
 class ChefDocFlow extends StatefulWidget {
+
   const ChefDocFlow({super.key});
 
   @override
@@ -16,6 +17,7 @@ class ChefDocFlow extends StatefulWidget {
 }
 
 class _ChefDocFlowState extends State<ChefDocFlow> {
+
   int _step = 0;
 
   List<UploadedFileModel> _govIdFront = [];
@@ -41,16 +43,17 @@ class _ChefDocFlowState extends State<ChefDocFlow> {
         return GovernmentIssuedPage(
           onBack: _back,
           onContinue: _next,
+          onSkip: _next,
           onFilesSelected: (front, back) {
             _govIdFront = List.from(front);
             _govIdBack = List.from(back);
           },
         );
-
       case 1:
         return ProofOfAddressPage(
           onBack: _back,
           onContinue: _next,
+          onSkip: _next,
           onFilesSelected: (files) => _proofOfAddress = List.from(files),
         );
 
@@ -58,6 +61,7 @@ class _ChefDocFlowState extends State<ChefDocFlow> {
         return FoodSafetyPage(
           onBack: _back,
           onContinue: _next,
+          onSkip: _next,
           onFilesSelected: (files) => _foodSafety = List.from(files),
         );
 
@@ -68,6 +72,7 @@ class _ChefDocFlowState extends State<ChefDocFlow> {
           onSkip: _next,
           onFilesSelected: (files) => _culinary = List.from(files),
         );
+
       case 4:
         return ChefVerificationReviewPage(
           onBack: _back,

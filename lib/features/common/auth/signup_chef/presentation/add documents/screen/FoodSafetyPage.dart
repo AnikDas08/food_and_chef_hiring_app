@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import '../../Widget/UploadSectionWidget.dart';
 import '../Model/UploadedFileModel.dart';
 import '../controller/SingleUploadController.dart';
@@ -6,6 +6,7 @@ import '../controller/SingleUploadController.dart';
 class FoodSafetyPage extends StatefulWidget {
   final VoidCallback onContinue;
   final VoidCallback? onBack;
+  final VoidCallback? onSkip;
   final void Function(List<UploadedFileModel>) onFilesSelected;
 
   const FoodSafetyPage({
@@ -13,6 +14,7 @@ class FoodSafetyPage extends StatefulWidget {
     required this.onContinue,
     required this.onFilesSelected,
     this.onBack,
+    this.onSkip,
   });
 
   @override
@@ -27,6 +29,7 @@ class _FoodSafetyPageState extends State<FoodSafetyPage> {
     _ctrl.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -37,6 +40,7 @@ class _FoodSafetyPageState extends State<FoodSafetyPage> {
         title: 'Food Safety Certification',
         description: "Upload your NYC Food Handler's License or equivalent certification.",
         onBack: widget.onBack,
+        onSkip: widget.onSkip,
         onContinue: () {
           widget.onFilesSelected(_ctrl.files);
           widget.onContinue();

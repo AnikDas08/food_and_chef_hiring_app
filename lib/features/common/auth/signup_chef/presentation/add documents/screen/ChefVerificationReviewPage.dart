@@ -111,16 +111,22 @@ class _ChefVerificationReviewPageState
 
   @override
   Widget build(BuildContext context) {
+
     final sections = [
       _DocSection('Government-issued Photo ID (Front)', _govIdFront,
           required: true),
+
       _DocSection('Government-issued Photo ID (Back)', _govIdBack,
           required: true),
+
       _DocSection('Proof of Address', _proofOfAddress, required: true),
+
       _DocSection('Food Safety Certification', _foodSafety, required: true),
+
       _DocSection(
           'Additional Culinary Certifications', _culinaryCerts,
           required: false),
+
     ];
 
     return Scaffold(
