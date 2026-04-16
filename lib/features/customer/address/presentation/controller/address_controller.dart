@@ -57,6 +57,7 @@ class AddressController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
     _listenScroll();
     fetchAddresses();
     _listenAddressField();
@@ -587,24 +588,42 @@ class AddressController extends GetxController {
     }
   }
 
-  /*Future<void> updateLocation(String id) async {
-    isDeleting = true;
+  Future<void> updateLocation(String id) async {
+    isDeleting = true; // Consider renaming this to isLoading or similar
     update();
     try {
-      final response = await ApiService.patch("user/profile/$id");
-      if (response.statusCode==200) {
-        //await Get.find<HomeControlle
-       Utils.successSnackBar("Update Current Location", "Change your current location. Now you can find your nearby chef by this location");
+      final response = await ApiService.patch(
+          "user/profile",
+          body: {"default_address": id}
+      );
+
+      if (response.statusCode == 200) {
+        // 1. Find the HomeController
+        final homeCtrl = Get.find<HomeController>();
+
+        // 2. Find the selected address string from your local addressList
+        final selectedAddrObj = addressList.firstWhere((e) => e.id == id);
+
+        // 3. Manually update the observable to trigger UI change immediately
+        homeCtrl.defaultAddress.value = selectedAddrObj.address;
+        homeCtrl.address = selectedAddrObj.address;
+
+        // 4. Refresh data in background
+        homeCtrl.getProfileData();
+        homeCtrl.getNearbyChefs(); // No need to call getCurrentLocation again since we have the ID
+
+        Navigator.pop(Get.context!);
+        Utils.successSnackBar("Location Updated", "Nearby chefs have been updated based on your new location.");
       } else {
-        _showError("Failed to delete address");
+        Utils.errorSnackBar("Error", response.message.toString());
       }
-    } catch (_) {
-      _showError("Something went wrong");
+    } catch (e) {
+      Utils.errorSnackBar("Error", e.toString());
     } finally {
       isDeleting = false;
       update();
     }
-  }*/
+  }
 
   // ══════════════════════════════════════════════════════════
   //  HELPERS

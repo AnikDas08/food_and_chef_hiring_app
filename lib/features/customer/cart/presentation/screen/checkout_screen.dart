@@ -466,13 +466,13 @@ class CheckoutScreen extends StatelessWidget {
               ],
             ),
           ),
-          8.width,
+          /*8.width,
           CommonText(
             text: "\$${price.toStringAsFixed(2)}",
             fontSize: 14,
             fontWeight: FontWeight.w400,
             color: const Color(0xff272727),
-          ),
+          ),*/
         ],
       ),
     );
@@ -481,15 +481,17 @@ class CheckoutScreen extends StatelessWidget {
   // ── Order Summary (Price Breakdown) ───────────────────────────────────────
   Widget _buildOrderSummary(CartController controller) {
     double subtotal = 0;
+    double priceSubtotal = 0;
     for (final group in controller.chefGroups) {
       final double chefPrice = group.chef?.pricing ?? 0;
       final int totalQty = (group.menus ?? [])
           .fold(0, (sum, m) => sum + (m.quantity ?? 1));
       subtotal += chefPrice * totalQty;
+      priceSubtotal += chefPrice;
     }
     final double tax = controller.priceBreakdown?.tax ?? 0;
     final double fee = controller.priceBreakdown?.fee ?? 0;
-    final double total = subtotal + tax + fee;
+    final double total = controller.priceBreakdown?.total??0;
 
     return Container(
       padding: EdgeInsets.all(16.r),
@@ -507,7 +509,7 @@ class CheckoutScreen extends StatelessWidget {
             color: const Color(0xff272727),
             bottom: 12,
           ),
-          _summaryRow("Subtotal", subtotal),
+          _summaryRow("Subtotal", priceSubtotal),
           8.height,
           _summaryRow("Fees", fee),
           8.height,
