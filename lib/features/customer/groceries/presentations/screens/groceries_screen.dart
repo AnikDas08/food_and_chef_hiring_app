@@ -45,7 +45,12 @@ class GroceryScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10.h),
-                const CommonText(text: "My groceries", fontSize: 24, fontWeight: FontWeight.w500),
+                const CommonText(
+                    text: "My groceries",
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff272727),
+                ),
                 SizedBox(height: 8.h),
 
                 // --- 1. BOOKING LIST (SINGLE vs ALL) ---

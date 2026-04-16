@@ -23,6 +23,7 @@ filterPanel() {
 class Filter extends StatelessWidget {
   const Filter({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SearchController>(
@@ -367,90 +368,72 @@ class ProfessionalLevelSection extends StatelessWidget {
 }
 
 // ── CUISINE SECTION (FROM API) ─────────────────────────────────────────────
-class CuisineSection extends StatefulWidget {
+class CuisineSection extends StatelessWidget {
   const CuisineSection({super.key});
 
   @override
-  State<CuisineSection> createState() => _CuisineSectionState();
-}
-
-class _CuisineSectionState extends State<CuisineSection> {
-  @override
-  void initState() {
-    super.initState();
-    // Fetch cuisines when this widget is first built
-    final controller = Get.find<SearchController>();
-    if (controller.cuisineList.isEmpty) {
-      controller.fetchCuisines();
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return GetBuilder<SearchController>(
-      builder: (controller) {
-        return Obx(
-              () {
-            /*if (controller.isLoadingCuisines) {
-              return const Center(child: CircularProgressIndicator());
-            }*/
+    final controller = Get.find<SearchController>();
 
-            if (controller.cuisineList.isEmpty) {
-              return const Center(
-                child: CommonText(
-                  text: "No cuisines available",
-                  fontSize: 12,
+    return Obx(() {
+      if (controller.isLoadingCuisines.value) {
+        return const Center(
+          child: Padding(
+            padding: EdgeInsets.all(12),
+            child: CircularProgressIndicator(color: Color(0xffFD713F)),
+          ),
+        );
+      }
+
+      if (controller.cuisineList.isEmpty) {
+        return const Center(
+          child: CommonText(text: "No cuisines available", fontSize: 12),
+        );
+      }
+
+      return SizedBox(
+        width: double.infinity,
+        child: Wrap(
+          spacing: 6,
+          runSpacing: 6,
+          children: controller.cuisineList.map((cuisine) {
+            final cuisineId = cuisine.id ?? '';
+            final cuisineName = cuisine.name ?? 'Unknown';
+
+            return Obx(() {
+              final isSelected = controller.selectedCuisines.contains(cuisineId);
+              return InkWell(
+                onTap: () {
+                  if (isSelected) {
+                    controller.selectedCuisines.remove(cuisineId);
+                  } else {
+                    controller.selectedCuisines.add(cuisineId);
+                  }
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    color: isSelected
+                        ? const Color(0xff272727)
+                        : const Color(0xffEFEFEF),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 7,
+                  ),
+                  child: CommonText(
+                    text: cuisineName,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: isSelected ? Colors.white : const Color(0xff272727),
+                  ),
                 ),
               );
-            }
-
-            return SizedBox(
-              width: double.infinity,
-              child: Wrap(
-                spacing: 6,
-                runSpacing: 6,
-                children: controller.cuisineList.map((cuisine) {
-                  final cuisineId = cuisine.id ?? '';
-                  final cuisineName = cuisine.name ?? 'Unknown';
-                  final isSelected =
-                  controller.selectedCuisines.contains(cuisineId);
-
-                  return InkWell(
-                    onTap: () {
-                      if (controller.selectedCuisines.contains(cuisineId)) {
-                        controller.selectedCuisines.remove(cuisineId);
-                      } else {
-                        controller.selectedCuisines.add(cuisineId);
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
-                        color: isSelected
-                            ? const Color(0xff272727)
-                            : const Color(0xffEFEFEF),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 7,
-                      ),
-                      child: CommonText(
-                        text: cuisineName,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: isSelected
-                            ? Colors.white
-                            : const Color(0xff272727),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            );
-          },
-        );
-      },
-    );
+            });
+          }).toList(),
+        ),
+      );
+    });
   }
 }
 

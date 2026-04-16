@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
+import 'package:new_untitled/features/customer/home/presentation/screen/search_screen.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
@@ -51,11 +52,16 @@ class CustomerHome extends StatelessWidget {
                     color: Color(0xffE0E0E0),
                   ),
                   SizedBox(width: 12.w),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20.w),
-                    child: CommonImage(
-                      imageSrc: AppIcons.fliter,
-                      imageColor: Color(0xff636363),
+                  InkWell(
+                    onTap: (){
+                      Get.toNamed(AppRoutes.homeSearch,arguments: {'openFilter': true});
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 20.w),
+                      child: CommonImage(
+                        imageSrc: AppIcons.fliter,
+                        imageColor: Color(0xff636363),
+                      ),
                     ),
                   ),
                 ],

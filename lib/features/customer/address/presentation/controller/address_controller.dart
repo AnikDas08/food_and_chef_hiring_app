@@ -20,6 +20,7 @@ class AddressController extends GetxController {
 
   AddressModel? editingAddress;      // currently loaded address for edit
   bool isLoadingEdit = false;        // loading single address
+  String defaultAddressid = "";        // loading single address
 
   // ── Form Controllers ──────────────────────────────────────
   TextEditingController addressLabelController =
@@ -60,8 +61,10 @@ class AddressController extends GetxController {
   void onInit() {
     super.onInit();
 
+
     _listenScroll();
     fetchAddresses();
+    getProfileData();
     _listenAddressField();
     _listenAdditionalField();
   }
@@ -110,6 +113,16 @@ class AddressController extends GetxController {
       isLoading = false;
       update();
     }
+  }
+
+  void getProfileData() async {
+    try {
+      final response = await ApiService.get("user/profile");
+      if (response.statusCode == 200) {
+        final data = response.data;
+        defaultAddressid=data["data"]["default_address"];
+      }
+    } catch (e) {}
   }
 
   Future<void> loadMoreAddresses() async {
@@ -590,9 +603,11 @@ class AddressController extends GetxController {
     }
   }
 
+  // lib/features/address/controller/address_controller.dart
+
   Future<void> updateLocation(String id) async {
-    isDeleting = true; // Consider renaming this to isLoading or similar
-    update();
+    isDeleting = true;
+    update(); // Show loader
     try {
       final response = await ApiService.patch(
           "user/profile",
@@ -600,30 +615,25 @@ class AddressController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        // 1. Find the HomeController
-        final homeCtrl = Get.find<HomeController>();
+        // Update local state so Radio Button moves
+        defaultAddressid = id;
 
-        // 2. Find the selected address string from your local addressList
+        final homeCtrl = Get.find<HomeController>();
         final selectedAddrObj = addressList.firstWhere((e) => e.id == id);
 
-        // 3. Manually update the observable to trigger UI change immediately
         homeCtrl.defaultAddress.value = selectedAddrObj.address;
         homeCtrl.address = selectedAddrObj.address;
 
-        // 4. Refresh data in background
         homeCtrl.getProfileData();
-        homeCtrl.getNearbyChefs(); // No need to call getCurrentLocation again since we have the ID
+        homeCtrl.getNearbyChefs();
 
-        Navigator.pop(Get.context!);
-        Utils.successSnackBar("Location Updated", "Nearby chefs have been updated based on your new location.");
-      } else {
-        Utils.errorSnackBar("Error", response.message.toString());
+        Utils.successSnackBar("Location Updated", "Current Location changed.");
       }
     } catch (e) {
       Utils.errorSnackBar("Error", e.toString());
     } finally {
       isDeleting = false;
-      update();
+      update(); // Rebuild UI to show selected radio
     }
   }
 
