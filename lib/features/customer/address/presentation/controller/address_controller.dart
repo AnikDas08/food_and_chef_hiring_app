@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_untitled/features/customer/home/presentation/controller/home_controller.dart';
+import 'package:new_untitled/services/api/api_service.dart';
 import 'package:new_untitled/utils/app_utils.dart';
 
 import '../../data/address_model.dart';
@@ -57,6 +59,7 @@ class AddressController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
     _listenScroll();
     fetchAddresses();
     _listenAddressField();
@@ -581,6 +584,43 @@ class AddressController extends GetxController {
       }
     } catch (_) {
       _showError("Something went wrong");
+    } finally {
+      isDeleting = false;
+      update();
+    }
+  }
+
+  Future<void> updateLocation(String id) async {
+    isDeleting = true; // Consider renaming this to isLoading or similar
+    update();
+    try {
+      final response = await ApiService.patch(
+          "user/profile",
+          body: {"default_address": id}
+      );
+
+      if (response.statusCode == 200) {
+        // 1. Find the HomeController
+        final homeCtrl = Get.find<HomeController>();
+
+        // 2. Find the selected address string from your local addressList
+        final selectedAddrObj = addressList.firstWhere((e) => e.id == id);
+
+        // 3. Manually update the observable to trigger UI change immediately
+        homeCtrl.defaultAddress.value = selectedAddrObj.address;
+        homeCtrl.address = selectedAddrObj.address;
+
+        // 4. Refresh data in background
+        homeCtrl.getProfileData();
+        homeCtrl.getNearbyChefs(); // No need to call getCurrentLocation again since we have the ID
+
+        Navigator.pop(Get.context!);
+        Utils.successSnackBar("Location Updated", "Nearby chefs have been updated based on your new location.");
+      } else {
+        Utils.errorSnackBar("Error", response.message.toString());
+      }
+    } catch (e) {
+      Utils.errorSnackBar("Error", e.toString());
     } finally {
       isDeleting = false;
       update();

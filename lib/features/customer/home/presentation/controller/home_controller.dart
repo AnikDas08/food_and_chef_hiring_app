@@ -17,6 +17,7 @@ class HomeController extends GetxController {
 
   bool saved = false;
   String address = "";
+  RxString defaultAddress = "".obs;
   bool isLoadingChefs = false;
   bool isLoadingLocation = false;
   bool isLoadingOrderAgain = false;
@@ -258,6 +259,7 @@ class HomeController extends GetxController {
       final response = await ApiService.get(
         //"user/nearby-chefs?lat=$currentLat&lng=$currentLng",
         "user/nearby-chefs?lat=$currentLat&lng=$currentLng",
+        // I said"user/nearby-chefs",
       );
 
       if (response.statusCode == 200) {
@@ -316,6 +318,7 @@ class HomeController extends GetxController {
         // ✅ Only set address from profile if location address isn't set yet
         if (address.isEmpty) {
           address = response.data["data"]["address"] ?? "";
+          defaultAddress.value = response.data["data"]["address"] ?? "";
         }
 
         LocalStorage.userId = data["data"]?.id ?? "";

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
@@ -48,7 +50,36 @@ class _SignInScreenState extends State<SignInScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         /// App Bar Sections Starts here
-        appBar: AppBar(),
+        appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        leadingWidth: 60,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Center(
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFF6F6F6),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  // Conditional Icon based on Platform
+                  Platform.isIOS
+                      ? Icons.arrow_back_ios_new
+                      : Icons.arrow_back,
+                  size: 24,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
 
         /// Body Sections Starts here
         body: GetBuilder<SignInController>(
@@ -67,6 +98,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         text: AppString.welcomeBack,
                         fontSize: 24,
                         color: Color(0xff272727),
+                        fontWeight: FontWeight.w700,
                         top: 10,
                       ),
 
