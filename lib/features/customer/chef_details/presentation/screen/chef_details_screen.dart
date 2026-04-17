@@ -26,9 +26,11 @@ class ChefDetailsScreen extends StatefulWidget {
 }
 
 class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
-
   bool _isCollapsed = false;
+  bool _isSearchMode = false;
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchTextController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
 
   static const double _expandedHeight = 300;
   static const double _collapseThreshold = _expandedHeight - 56 - 10;
@@ -44,12 +46,33 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
     if (collapsed != _isCollapsed) {
       setState(() => _isCollapsed = collapsed);
     }
+    // Exit search mode if user scrolls back up to expanded state
+    if (!collapsed && _isSearchMode) {
+      _exitSearchMode();
+    }
+  }
+
+  void _enterSearchMode() {
+    setState(() => _isSearchMode = true);
+    Future.delayed(const Duration(milliseconds: 100), () {
+      _searchFocusNode.requestFocus();
+    });
+  }
+
+  void _exitSearchMode() {
+    setState(() => _isSearchMode = false);
+    _searchTextController.clear();
+    final controller = Get.find<ChefDetailsController>();
+    controller.clearSearch();
+    _searchFocusNode.unfocus();
   }
 
   @override
   void dispose() {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
+    _searchTextController.dispose();
+    _searchFocusNode.dispose();
     super.dispose();
   }
 
@@ -69,6 +92,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
 
         final double totalCartPrice =
             (controller.cartItems.length) * (chef?.priceWithFee ?? 0);
+        final double pricePerChef = chef?.pricing ?? 0.0;
 
         final List<String> sections =
             controller.chefDetail?.menuSections ?? [];
@@ -86,18 +110,24 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                     backgroundColor: Colors.white,
                     elevation: _isCollapsed ? 1 : 0,
                     titleSpacing: 0,
-
-                    // ── When collapsed: disable default leading so we
-                    //    render back button INSIDE the title card
                     automaticallyImplyLeading: !_isCollapsed,
 
                     title: _isCollapsed
-                        ? _CollapsedAppBarTitle(controller: controller)
+                        ? (_isSearchMode
+                        ? _SearchAppBarTitle(
+                      controller: controller,
+                      searchTextController: _searchTextController,
+                      searchFocusNode: _searchFocusNode,
+                      onClose: _exitSearchMode,
+                    )
+                        : _CollapsedAppBarTitle(
+                      controller: controller,
+                      onSearchTap: _enterSearchMode,
+                    ))
                         : null,
 
-                    // ── Leading: only shown when NOT collapsed ──────────
                     leading: _isCollapsed
-                        ? null // back button lives inside the title card
+                        ? null
                         : InkWell(
                       onTap: () {
                         Navigator.pop(Get.context!);
@@ -122,7 +152,6 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                       ),
                     ),
 
-                    // ── Actions ────────────────────────────────────────
                     actions: _isCollapsed
                         ? []
                         : [
@@ -168,8 +197,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                           children: [
                             Positioned.fill(
                               child: controller.isLoadingDetail
-                                  ? Container(
-                                  color: const Color(0xffF2F2F2))
+                                  ? Container(color: const Color(0xffF2F2F2))
                                   : CommonImage(
                                 imageSrc: imageUrl,
                                 fill: BoxFit.cover,
@@ -221,7 +249,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                   children: [
                                     TextSpan(
                                       text:
-                                      "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}",
+                                      "\$${chef?.pricing?.toStringAsFixed(2) ?? '0.00'}",
                                       style: const TextStyle(
                                         color: Color(0xff272727),
                                         fontSize: 14,
@@ -242,11 +270,14 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                           ),
                           const SizedBox(height: 8),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment:
+                            MainAxisAlignment.start,
                             children: [
-                              CommonImage(imageSrc: AppIcons.location),
+                              CommonImage(
+                                  imageSrc: AppIcons.location),
                               CommonText(
-                                text: controller.chefArg?.distance ??
+                                text:
+                                controller.chefArg?.distance ??
                                     "N/A",
                                 fontSize: 12,
                                 textAlign: TextAlign.start,
@@ -272,7 +303,8 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                             ],
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment:
+                            MainAxisAlignment.start,
                             children: [
                               const Flexible(
                                 child: Icon(
@@ -323,7 +355,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                     ),
                 ];
               },
-              body: const MenuPage(),
+              body: MenuPage(isSearchMode: _isSearchMode),
             ),
           ),
 
@@ -345,7 +377,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                   height: 60,
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.9),
-                    borderRadius: BorderRadius.all(
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(20),
                     ),
                   ),
@@ -360,7 +392,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                         ),
                         child: CommonText(
                           text: "${controller.cartItems.length}",
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xff272727),
                         ).center,
@@ -375,7 +407,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                       const Spacer(),
                       CommonText(
                         text:
-                        "\$${totalCartPrice.toStringAsFixed(2)}  •  ${chef?.estCookingTime ?? ''}",
+                        "\$${pricePerChef.toStringAsFixed(2)}  •  ${chef?.estCookingTime ?? ''}",
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -392,13 +424,107 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
   }
 }
 
+// ── Search app bar title (active search mode) ────────────────────────────────
+
+class _SearchAppBarTitle extends StatelessWidget {
+  final ChefDetailsController controller;
+  final TextEditingController searchTextController;
+  final FocusNode searchFocusNode;
+  final VoidCallback onClose;
+
+  const _SearchAppBarTitle({
+    required this.controller,
+    required this.searchTextController,
+    required this.searchFocusNode,
+    required this.onClose,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      decoration: BoxDecoration(
+        color: const Color(0xffF2F2F2),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        children: [
+          // ── Search icon (left) ───────────────────────────────────
+          const Icon(
+            Icons.search,
+            color: Color(0xff777777),
+            size: 20,
+          ),
+          SizedBox(width: 8.w),
+
+          // ── Text field ──────────────────────────────────────────
+          Expanded(
+            child: TextField(
+              controller: searchTextController,
+              focusNode: searchFocusNode,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Color(0xff272727),
+                fontWeight: FontWeight.w400,
+              ),
+              decoration: const InputDecoration(
+                hintText: "Search menu items...",
+                hintStyle: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xff999999),
+                  fontWeight: FontWeight.w400,
+                ),
+                border: InputBorder.none,
+                isDense: true,
+                contentPadding: EdgeInsets.zero,
+              ),
+              onChanged: (value) {
+                controller.searchMenu(value);
+              },
+            ),
+          ),
+
+          // ── Clear / Close icon (right) ──────────────────────────
+          GestureDetector(
+            onTap: () {
+              if (searchTextController.text.isNotEmpty) {
+                searchTextController.clear();
+                controller.clearSearch();
+              } else {
+                onClose();
+              }
+            },
+            child: Container(
+              height: 36,
+              width: 36,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.close,
+                color: Color(0xff272727),
+                size: 18,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 // ── Collapsed app bar title ───────────────────────────────────────────────────
-// Back button + chef name + price chip + star rating — all inside ONE card
 
 class _CollapsedAppBarTitle extends StatelessWidget {
   final ChefDetailsController controller;
+  final VoidCallback onSearchTap;
 
-  const _CollapsedAppBarTitle({required this.controller});
+  const _CollapsedAppBarTitle({
+    required this.controller,
+    required this.onSearchTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -450,7 +576,8 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(4),
@@ -469,7 +596,8 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           CommonText(
-                            text: "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}/hr",
+                            text:
+                            "\$${chef?.pricing?.toStringAsFixed(2) ?? '0.00'}/hr",
                             fontSize: 11,
                             fontWeight: FontWeight.w500,
                             color: const Color(0xff555555),
@@ -478,7 +606,8 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const Icon(Icons.star, size: 14, color: Color(0xffFD713F)),
+                    const Icon(Icons.star,
+                        size: 14, color: Color(0xffFD713F)),
                     const SizedBox(width: 3),
                     CommonText(
                       text: (chef?.avgRating ?? 0).toStringAsFixed(1),
@@ -494,11 +623,7 @@ class _CollapsedAppBarTitle extends StatelessWidget {
 
           // ── Search Icon ──────────────────────────────────────────
           InkWell(
-            onTap: () {
-              // Handle search logic here, e.g., focus a text field or
-              // trigger a search state in your controller
-              print("Search icon tapped");
-            },
+            onTap: onSearchTap,
             child: Container(
               height: 36,
               width: 36,

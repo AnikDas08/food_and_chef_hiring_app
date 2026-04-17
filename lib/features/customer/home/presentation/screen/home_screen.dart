@@ -45,24 +45,28 @@ class CustomerHome extends StatelessWidget {
               suffixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    width: 1,
-                    height: 22.h,
-                    color: Color(0xffE0E0E0),
-                  ),
+                  Container(width: 1, height: 22.h, color: Color(0xffE0E0E0)),
                   SizedBox(width: 12.w),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20.w),
-                    child: CommonImage(
-                      imageSrc: AppIcons.fliter,
-                      imageColor: Color(0xff636363),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(
+                        AppRoutes.homeSearch,
+                        arguments: {'openFilter': true},
+                      );
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 20.w),
+                      child: CommonImage(
+                        imageSrc: AppIcons.fliter,
+                        imageColor: Color(0xff636363),
+                      ),
                     ),
                   ),
                 ],
               ),
               prefixIcon: Padding(
                 padding: const EdgeInsets.only(left: 16),
-                child: Icon(CupertinoIcons.search,color: Color(0xff636363),),
+                child: Icon(CupertinoIcons.search, color: Color(0xff636363)),
               ),
             ),
 

@@ -14,10 +14,13 @@ Widget addressItem(
     AddressModel address,
     AddressController controller, {
       bool fromCheckout = false,
-      String? selectedAddressId,
+      String? selectedAddressId, // Pass controller.defaultAddressid here
+      bool isLoading = false,
     }) {
   final bool isActive = address.status.toLowerCase() == "active";
-  final bool isSelected = fromCheckout && selectedAddressId == address.id;
+
+  // Logic: Check if this specific address ID matches the user's default ID
+  final bool isDefaultSelected = selectedAddressId == address.id;
 
   return Container(
     margin: const EdgeInsets.only(bottom: 12),
@@ -32,7 +35,7 @@ Widget addressItem(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Icon based on label
+            // Icon based on label (Home, Office, Work)
             Container(
               padding: const EdgeInsets.all(14),
               decoration: const BoxDecoration(
@@ -80,18 +83,8 @@ Widget addressItem(
                         ),
                       ),
 
-                      // ── If fromCheckout: show radio, else show status badge ──
-                      if (fromCheckout)
-                        Icon(
-                          isSelected
-                              ? Icons.radio_button_checked
-                              : Icons.radio_button_unchecked,
-                          size: 22,
-                          color: isSelected
-                              ? const Color(0xffFD713F)
-                              : const Color(0xffC0C0C0),
-                        )
-                      else
+                      // Top-right status badge (always show if not checkout)
+                      if (!fromCheckout)
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
@@ -110,13 +103,24 @@ Widget addressItem(
                                 : const Color(0xff777777),
                           ),
                         ),
+
+                      // Checkout-specific Radio button placement
+                      if (fromCheckout)
+                        Icon(
+                          isDefaultSelected
+                              ? Icons.radio_button_checked
+                              : Icons.radio_button_unchecked,
+                          size: 22,
+                          color: isDefaultSelected
+                              ? const Color(0xffFD713F)
+                              : const Color(0xffC0C0C0),
+                        ),
                     ],
                   ),
 
-                  // Full Address
+                  // Full Address Details
                   CommonText(
-                    text:
-                    "${address.address} - ${address.detailsAddress}, ${address.additionalDetails}",
+                    text: "${address.address} - ${address.detailsAddress}, ${address.additionalDetails}",
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xff272727),
@@ -127,7 +131,7 @@ Widget addressItem(
 
                   12.height,
 
-                  // ── If fromCheckout: hide edit/delete buttons ──
+                  // Action Row (Edit, Delete, and the Radio Button)
                   if (!fromCheckout)
                     Row(
                       children: [
@@ -167,8 +171,7 @@ Widget addressItem(
                               vertical: 8,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xffFF3C3C)
-                                  .withValues(alpha: 0.20),
+                              color: const Color(0xffFF3C3C).withOpacity(0.20),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: CommonText(
@@ -178,6 +181,21 @@ Widget addressItem(
                               color: const Color(0xffFF3C3C),
                             ),
                           ),
+                        ),
+
+                        const Spacer(), // Pushes the radio button to the far right
+
+                        // --- THE RADIO BUTTON (ALWAYS SHOWS) ---
+                        // It checks if address.id matches the profile's default ID
+                        if(isLoading)
+                        Icon(
+                          isDefaultSelected
+                              ? Icons.radio_button_checked
+                              : Icons.radio_button_unchecked,
+                          size: 22,
+                          color: isDefaultSelected
+                              ? const Color(0xffFD713F)
+                              : const Color(0xffC0C0C0),
                         ),
                       ],
                     ),
@@ -198,12 +216,12 @@ void _showDeleteDialog(AddressModel address, AddressController controller) {
       content: const Text("Are you sure you want to delete this address?"),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(Get.context!),
+          onPressed: () => Get.back(),
           child: const Text("Cancel"),
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(Get.context!);
+            Get.back();
             controller.deleteAddress(address.id);
           },
           child: const Text("Delete", style: TextStyle(color: Colors.red)),

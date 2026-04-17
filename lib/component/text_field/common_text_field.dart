@@ -73,11 +73,11 @@ class CommonTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-          () => TextFormField(
+      () => TextFormField(
         autovalidateMode: AutovalidateMode.onUnfocus,
         keyboardType: keyboardType,
         controller: controller,
-            readOnly: readOnly,
+        readOnly: readOnly,
         focusNode: focusNode,
         obscureText: isPassword ? !obscureText.value : obscureText.value,
         textInputAction: textInputAction,
@@ -94,7 +94,7 @@ class CommonTextField extends StatelessWidget {
         textAlignVertical: TextAlignVertical.center,
 
         cursorColor:
-        keyboardType == TextInputType.none ? Colors.transparent : textColor,
+            keyboardType == TextInputType.none ? Colors.transparent : textColor,
         decoration: InputDecoration(
           errorMaxLines: 2,
 
@@ -116,8 +116,16 @@ class CommonTextField extends StatelessWidget {
           errorBorder: _buildBorder(),
           hintText: hintText,
           labelText: labelText,
-          hintStyle: TextStyle(fontSize: 12, color: hintTextColor),
-          labelStyle: TextStyle(fontSize: fontSize, color: labelTextColor),
+          hintStyle: TextStyle(
+            fontSize: 12,
+            color: hintTextColor,
+            fontWeight: FontWeight.w400,
+          ),
+          labelStyle: TextStyle(
+            fontSize: fontSize,
+            color: labelTextColor,
+            fontWeight: FontWeight.w400,
+          ),
           prefixText: prefixText,
           prefixStyle: TextStyle(
             fontSize: fontSize,
@@ -144,7 +152,7 @@ class CommonTextField extends StatelessWidget {
       child: Padding(
         padding: EdgeInsetsDirectional.only(end: 10.w),
         child: Obx(
-              () => Icon(
+          () => Icon(
             obscureText.value
                 ? Icons.visibility_off_outlined
                 : Icons.visibility_outlined,

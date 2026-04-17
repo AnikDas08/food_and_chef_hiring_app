@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 
 import '../other_widgets/common_loader.dart';
 import '../text/common_text.dart';
-
 
 class CommonButton extends StatefulWidget {
   final VoidCallback? onTap;
@@ -59,8 +59,8 @@ class _CommonButtonState extends State<CommonButton>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: widget.buttonHeight,
-      width: widget.buttonWidth,
+      height: widget.buttonHeight.h,
+      width: widget.buttonWidth.w,
       child: _buildElevatedButton(),
     );
   }
@@ -93,7 +93,7 @@ class _CommonButtonState extends State<CommonButton>
       padding: WidgetStateProperty.all(EdgeInsets.zero),
       shape: WidgetStateProperty.all(
         RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(widget.buttonRadius),
+          borderRadius: BorderRadius.circular(widget.buttonRadius.r),
           side: BorderSide(
             color: widget.borderColor ?? Colors.transparent,
             width: widget.borderWidth,

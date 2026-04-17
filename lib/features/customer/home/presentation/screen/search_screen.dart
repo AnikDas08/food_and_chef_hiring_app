@@ -20,16 +20,25 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  // Keep this as-is — Put registers it
   final SearchController _controller = Get.put(SearchController());
   final FocusNode _focusNode = FocusNode();
 
   /// Scroll controller used to detect when user reaches the bottom of the list.
   final ScrollController _scrollController = ScrollController();
 
+
+
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_controller.shouldOpenFilter.value) {
+        _controller.shouldOpenFilter.value = false;
+        filterPanel(); // This is your existing filter panel function
+      }
+    });
   }
 
   @override

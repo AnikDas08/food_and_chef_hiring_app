@@ -113,6 +113,8 @@ class ProfileAddressScreen extends StatelessWidget {
                           }
 
                           final address = controller.addressList[index];
+                          final bool isThisItemLoading = controller.isDeleting &&
+                              controller.selectedLatitude == null;
 
                           if (fromCheckout) {
                             return GestureDetector(
@@ -125,10 +127,19 @@ class ProfileAddressScreen extends StatelessWidget {
                               ),
                             );
                           }
-                          if(isLoading){
+                          // lib/features/address/view/profile_address_screen.dart
+
+                          if (isLoading) {
                             return GestureDetector(
                               onTap: () => controller.updateLocation(address.id),
-                              child: addressItem(address,controller),
+                              child: addressItem(
+                                address,
+                                controller,
+                                fromCheckout: false,
+                                // Pass the default ID so the radio button shows checked/unchecked correctly
+                                selectedAddressId: controller.defaultAddressid,
+                                isLoading: true
+                              ),
                             );
                           }
 

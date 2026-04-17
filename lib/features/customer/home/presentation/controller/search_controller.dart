@@ -33,6 +33,7 @@ class SearchController extends GetxController {
   // ── CUISINES ────────────────────────────────────────────────────────────────
   RxBool isLoadingCuisines = false.obs;
   List<CuisineData> cuisineList = [];
+  RxBool shouldOpenFilter = false.obs;
 
   ChefModel? chefModel;
   ChefData? chefArg;
@@ -72,6 +73,13 @@ class SearchController extends GetxController {
       getCurrentLocationAndFetchChefs();
     }
 
+    if (Get.arguments != null && Get.arguments is Map) {
+      final args = Get.arguments as Map;
+      if (args['openFilter'] == true) {
+        shouldOpenFilter.value = true;
+      }
+    }
+
     searchController.addListener(() {
       searchText.value = searchController.text;
       if (searchController.text.isEmpty) {
@@ -93,16 +101,16 @@ class SearchController extends GetxController {
       final response = await ApiService.get("cusine");
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data['data'] ?? [];
-        cuisineList = data
-            .map((item) => CuisineData.fromJson(item as Map<String, dynamic>))
-            .toList();
+        cuisineList.assignAll(  // ← was cuisineList =
+          data.map((item) => CuisineData.fromJson(item as Map<String, dynamic>)).toList(),
+        );
       } else {
         Utils.errorSnackBar('Error', 'Failed to fetch cuisines');
-        cuisineList = [];
+        cuisineList.clear();
       }
     } catch (e) {
       Utils.errorSnackBar('Error', e.toString());
-      cuisineList = [];
+      cuisineList.clear();
     } finally {
       isLoadingCuisines.value = false;
     }

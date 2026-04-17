@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/my_groceries_screen.dart';
 import '../../../../../component/button/common_button.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/grocerie_controller.dart';
 import '../widgets/groceries_item.dart';
@@ -13,30 +16,59 @@ class GroceryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(GroceryController(), tag: DateTime.now().millisecondsSinceEpoch.toString());
+    final controller = Get.put(
+      GroceryController(),
+      tag: DateTime.now().millisecondsSinceEpoch.toString(),
+    );
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-          icon: controller.isBack == false
-              ? Icon(Icons.arrow_back_ios, color: Colors.black, size: 20)
-              : SizedBox.shrink(), // empty widget when false
-          onPressed: controller.isBack == false
-              ? () => Navigator.pop(context)
-              : null, // disable button when false
-        ),
-        backgroundColor: Colors.white,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const CommonText(text: "", fontWeight: FontWeight.bold,fontSize: 16,),
-        centerTitle: true,
+        centerTitle: false,
+
+        leading:
+            controller.isBack == false
+                ? IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.black,
+                    size: 20,
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                )
+                : null,
+        flexibleSpace: LiquidGlassLayer(
+          child: LiquidGlass(
+            // Using Superellipse with 0 radius creates a perfect rectangle
+            shape: LiquidRoundedSuperellipse(borderRadius: 0),
+            child: Container(
+              // The "Glass" look comes from having a semi-transparent color here
+              color: Colors.white.withOpacity(0.05),
+              child: appBarOpacity(),
+            ),
+          ),
+        ),
+        title: const CommonText(
+          text: "My groceries",
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          color: Color(0xff272727),
+        ),
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator(color: Color(0xffFD713F)));
+          return const Center(
+            child: CircularProgressIndicator(color: Color(0xffFD713F)),
+          );
         }
 
-        bool hasInitialId = controller.initialOrderId != null && controller.initialOrderId!.isNotEmpty;
+        bool hasInitialId =
+            controller.initialOrderId != null &&
+            controller.initialOrderId!.isNotEmpty;
 
         return SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -45,34 +77,50 @@ class GroceryScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10.h),
-                const CommonText(text: "My groceries", fontSize: 24, fontWeight: FontWeight.w500),
-                SizedBox(height: 8.h),
 
                 // --- 1. BOOKING LIST (SINGLE vs ALL) ---
                 if (hasInitialId) ...[
-                  const CommonText(text: "Ordering for this booking", color: Colors.grey),
+                  const CommonText(
+                    text: "Ordering for this booking",
+                    color: Colors.grey,
+                  ),
                   SizedBox(height: 16.h),
                   _buildSingleOrderView(controller),
                 ] else ...[
-                  CommonText(text: "Select bookings for grocery delivery", color: Colors.grey,fontSize: 12.sp,),
+                  CommonText(
+                    text: "Select bookings for grocery delivery",
+                    color: Colors.grey,
+                    fontSize: 12.sp,
+                  ),
                   SizedBox(height: 12.h),
                   // Inside the Column, replace _buildFullListView(controller) with:
                   controller.availableOrders.isEmpty
                       ? Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.h),
-                      child: CommonText(text: "No pending bookings available", color: Colors.grey,fontSize: 12.sp,),
-                    ),
-                  )
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20.h),
+                          child: CommonText(
+                            text: "No pending bookings available",
+                            color: Colors.grey,
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                      )
                       : _buildFullListView(controller),
                 ],
 
                 SizedBox(height: 24.h),
 
                 // --- 2. PARTNER SELECTION (RESTORED LOGIC) ---
-                const CommonText(text: "Choose your grocery delivery partner", fontWeight: FontWeight.bold),
-                SizedBox(height: 6.h,),
-                CommonText(text: "Order groceries for your booking", color: Colors.grey, fontSize: 12.sp),
+                const CommonText(
+                  text: "Choose your grocery delivery partner",
+                  fontWeight: FontWeight.bold,
+                ),
+                SizedBox(height: 6.h),
+                CommonText(
+                  text: "Order groceries for your booking",
+                  color: Colors.grey,
+                  fontSize: 12.sp,
+                ),
 
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.h),
@@ -81,10 +129,12 @@ class GroceryScreen extends StatelessWidget {
                       _partnerIcon(
                         label: "Instacart",
                         iconPath: "assets/images/intacart.png",
-                        isSelected: controller.selectedPartner.value == "Instacart",
+                        isSelected:
+                            controller.selectedPartner.value == "Instacart",
                         onTap: () {
                           controller.selectedPartner.value = "Instacart";
-                          controller.createInstacartLink(); // CALLS API IMMEDIATELY
+                          controller
+                              .createInstacartLink(); // CALLS API IMMEDIATELY
                         },
                       ),
                       SizedBox(width: 20.w),
@@ -101,27 +151,35 @@ class GroceryScreen extends StatelessWidget {
                 SizedBox(height: 24.h),
 
                 // --- 3. GROCERY BASKET ---
-                const CommonText(text: "Edit your grocery basket", fontWeight: FontWeight.bold),
+                const CommonText(
+                  text: "Edit your grocery basket",
+                  fontWeight: FontWeight.bold,
+                ),
                 SizedBox(height: 12.h),
 
                 if (controller.isIngredientsLoading.value)
-                  const Center(child: CircularProgressIndicator(color: Color(0xffFD713F)))
+                  const Center(
+                    child: CircularProgressIndicator(color: Color(0xffFD713F)),
+                  )
                 else
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: controller.basketItems.length,
-                    itemBuilder: (context, index) => GroceryItemTile(
-                      data: controller.basketItems[index],
-                      onTap: () => controller.toggleBasketItem(index),
-                    ),
+                    itemBuilder:
+                        (context, index) => GroceryItemTile(
+                          data: controller.basketItems[index],
+                          onTap: () => controller.toggleBasketItem(index),
+                        ),
                   ),
 
                 SizedBox(height: 40.h),
 
                 // --- 4. BOTTOM BUTTON ---
                 if (controller.isInstacartLoading.value)
-                  const Center(child: CircularProgressIndicator(color: Color(0xffFD713F)))
+                  const Center(
+                    child: CircularProgressIndicator(color: Color(0xffFD713F)),
+                  )
                 else
                   CommonButton(
                     titleText: "Add to Cart",
@@ -131,14 +189,20 @@ class GroceryScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ConfirmedGroceryScreen(),
+                            builder:
+                                (context) => const ConfirmedGroceryScreen(),
                             settings: RouteSettings(
-                              arguments: controller.selectedOrderIds.toList(), // same as Get.arguments
+                              arguments:
+                                  controller.selectedOrderIds
+                                      .toList(), // same as Get.arguments
                             ),
                           ),
                         );
-                      }else {
-                        Get.snackbar("Selection Required", "Please select at least one booking.");
+                      } else {
+                        Get.snackbar(
+                          "Selection Required",
+                          "Please select at least one booking.",
+                        );
                       }
                     },
                   ),
@@ -154,7 +218,10 @@ class GroceryScreen extends StatelessWidget {
   // --- Helper Methods using your SAME designs ---
 
   Widget _buildSingleOrderView(GroceryController controller) {
-    final order = controller.availableOrders.firstWhere((e) => e['_id'] == controller.initialOrderId, orElse: () => {});
+    final order = controller.availableOrders.firstWhere(
+      (e) => e['_id'] == controller.initialOrderId,
+      orElse: () => {},
+    );
     if (order.isEmpty) return const SizedBox();
     return _buildBookingCard(order: order, isSelected: true, onTap: () {});
   }
@@ -201,7 +268,10 @@ class GroceryScreen extends StatelessWidget {
         decoration: BoxDecoration(
           color: const Color(0xffF5F5F5),
           borderRadius: BorderRadius.circular(16.r),
-          border: isSelected ? Border.all(color: const Color(0xffFD713F), width: 1.5) : null,
+          border:
+              isSelected
+                  ? Border.all(color: const Color(0xffFD713F), width: 1.5)
+                  : null,
         ),
         child: Row(
           children: [
@@ -226,7 +296,8 @@ class GroceryScreen extends StatelessWidget {
                     fontSize: 14,
                   ),
                   CommonText(
-                    text: "${staticItems.length} Recipe • ${order['order_id'] ?? ''}",
+                    text:
+                        "${staticItems.length} Recipe • ${order['order_id'] ?? ''}",
                     color: Colors.grey,
                     fontSize: 12,
                   ),
@@ -240,20 +311,25 @@ class GroceryScreen extends StatelessWidget {
               Row(
                 children: [
                   // Show max 2 images
-                  ...recipeImages.take(2).map((imageUrl) => Padding(
-                    padding: EdgeInsets.only(left: 6.w),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.r),
-                      child: Image.network(
-                        ApiEndPoint.imageUrl+imageUrl,
-                        width: 40.w,
-                        height: 40.w,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                        const SizedBox.shrink(), // Hide if URL fails
+                  ...recipeImages
+                      .take(2)
+                      .map(
+                        (imageUrl) => Padding(
+                          padding: EdgeInsets.only(left: 6.w),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.r),
+                            child: Image.network(
+                              ApiEndPoint.imageUrl + imageUrl,
+                              width: 40.w,
+                              height: 40.w,
+                              fit: BoxFit.cover,
+                              errorBuilder:
+                                  (context, error, stackTrace) =>
+                                      const SizedBox.shrink(), // Hide if URL fails
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  )),
 
                   // 3. Show "more" count only if recipes exceed the 2 displayed images
                   if (staticItems.length > 2)
@@ -283,7 +359,13 @@ class GroceryScreen extends StatelessWidget {
     );
   }
 
-  Widget _partnerIcon({required String label, String? iconPath, IconData? icon, required bool isSelected, required VoidCallback onTap}) {
+  Widget _partnerIcon({
+    required String label,
+    String? iconPath,
+    IconData? icon,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
@@ -293,17 +375,35 @@ class GroceryScreen extends StatelessWidget {
             height: 60.w,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: isSelected ? const Color(0xffFD713F).withOpacity(0.1) : const Color(0xffF5F5F5),
-              border: isSelected ? Border.all(color: const Color(0xffFD713F), width: 2) : null,
+              color:
+                  isSelected
+                      ? const Color(0xffFD713F).withOpacity(0.1)
+                      : const Color(0xffF5F5F5),
+              border:
+                  isSelected
+                      ? Border.all(color: const Color(0xffFD713F), width: 2)
+                      : null,
             ),
             child: Center(
-              child: icon != null
-                  ? Icon(icon, color: isSelected ? const Color(0xffFD713F) : Colors.grey)
-                  : (iconPath != null ? Image.asset(iconPath, width: 30.w) : const SizedBox()),
+              child:
+                  icon != null
+                      ? Icon(
+                        icon,
+                        color:
+                            isSelected ? const Color(0xffFD713F) : Colors.grey,
+                      )
+                      : (iconPath != null
+                          ? Image.asset(iconPath, width: 30.w)
+                          : const SizedBox()),
             ),
           ),
           SizedBox(height: 8.h),
-          CommonText(text: label, fontSize: 11, textAlign: TextAlign.center, color: isSelected ? Colors.black : Colors.grey),
+          CommonText(
+            text: label,
+            fontSize: 11,
+            textAlign: TextAlign.center,
+            color: isSelected ? Colors.black : Colors.grey,
+          ),
         ],
       ),
     );

@@ -14,7 +14,6 @@ import '../../../../../../services/api/api_service.dart';
 import '../../../../../../services/storage/storage_keys.dart';
 import '../../../../../../services/storage/storage_services.dart';
 import '../../../../../../utils/app_utils.dart';
-import '../../../../../chef/profile/presentation/screen/chef_profile_screen.dart';
 import '../screen/Cafe_Enable_AutoAccept_Screen.dart';
 import '../screen/Cafe_Setup_Profile_Screen.dart';
 import '../screen/Cafe_set_your_price_screen.dart';
