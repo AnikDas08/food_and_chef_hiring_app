@@ -9,7 +9,6 @@ import '../../../config/route/app_routes.dart';
 import '../../../utils/constants/app_string.dart';
 import 'widgets/screen_1.dart';
 
-
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -76,7 +75,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           borderColor: Colors.transparent,
                           titleColor: Colors.black,
                           titleSize: 16,
-                          titleWeight: FontWeight.w600,
                           onTap: () => Get.toNamed(AppRoutes.signUp),
                         ),
                         20.height,

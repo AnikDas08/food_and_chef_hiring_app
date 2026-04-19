@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../config/route/app_routes.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +19,7 @@ class DoNotHaveAccount extends StatelessWidget {
             text: AppString.doNotHaveAccount,
             style: TextStyle(
               color: Color(0xff818181),
-              fontSize: 12,
+              fontSize: 12.sp,
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -33,7 +34,7 @@ class DoNotHaveAccount extends StatelessWidget {
                   },
             style: TextStyle(
               color: Color(0xff272727),
-              fontSize: 12,
+              fontSize: 12.sp,
               fontWeight: FontWeight.w400,
             ),
           ),

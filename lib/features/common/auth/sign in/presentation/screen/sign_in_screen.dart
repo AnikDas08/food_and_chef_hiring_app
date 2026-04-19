@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
@@ -51,42 +52,39 @@ class _SignInScreenState extends State<SignInScreen> {
       child: Scaffold(
         /// App Bar Sections Starts here
         appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Center(
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                height: 40,
-                width: 40,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFF6F6F6),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  // Conditional Icon based on Platform
-                  Platform.isIOS
-                      ? Icons.arrow_back_ios_new
-                      : Icons.arrow_back,
-                  size: 24,
-                  color: Colors.black,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          leadingWidth: 60,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Center(
+              child: GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  height: 40.sp,
+                  width: 40.sp,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFF6F6F6),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Platform.isIOS ? CupertinoIcons.back : Icons.arrow_back,
+                    size: 24,
+                    color: Colors.black,
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),
 
         /// Body Sections Starts here
         body: GetBuilder<SignInController>(
           builder: (controller) {
             return SafeArea(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Form(
                   key: controller.formKey,
                   child: Column(
@@ -98,7 +96,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         text: AppString.welcomeBack,
                         fontSize: 24,
                         color: Color(0xff272727),
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                         top: 10,
                       ),
 
@@ -117,7 +115,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       const CommonText(
                         text: AppString.email,
                         bottom: 8,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w500,
                         color: Color(0xff272727),
                       ),
 
@@ -132,7 +130,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         text: AppString.password,
                         bottom: 8,
                         top: 16,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w500,
                         color: Color(0xff272727),
                       ),
                       CommonTextField(
@@ -201,7 +199,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             CommonText(
                               text: AppString.signInWithFacebook,
                               left: 14,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                             ),
                           ],
                         ),
@@ -222,7 +220,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             CommonText(
                               text: AppString.signInWithGoogle,
                               left: 14,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                             ),
                           ],
                         ),

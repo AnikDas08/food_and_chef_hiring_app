@@ -37,7 +37,6 @@ void requestChange(BuildContext context,dynamic order) {
                           buttonHeight: 48,
                           buttonRadius: 16,
                           titleSize: 12,
-                          titleWeight: FontWeight.w500,
                           borderColor: Colors.transparent,
                           titleColor: Color(0xffFF3C3C),
                           buttonColor: Color(0xffF2F2F2),
@@ -95,7 +94,6 @@ void requestChange(BuildContext context,dynamic order) {
                             buttonHeight: 48,
                             buttonRadius: 16,
                             titleSize: 12,
-                            titleWeight: FontWeight.w500,
                             onTap: () {
                               Get.toNamed(AppRoutes.requestChange, arguments: order.id);
                             },

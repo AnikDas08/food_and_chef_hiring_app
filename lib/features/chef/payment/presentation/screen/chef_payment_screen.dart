@@ -67,7 +67,6 @@ class ChefPaymentScreen extends StatelessWidget {
                     titleText: "Add New Account",
                     titleSize: 14,
 
-                    titleWeight: FontWeight.w600,
                     onTap: () => Get.toNamed(AppRoutes.addPaymentMethod),
                   ),
 
