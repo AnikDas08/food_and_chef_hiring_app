@@ -30,10 +30,8 @@ class BookingHistoryScreen extends StatelessWidget {
               centerTitle: false,
               flexibleSpace: LiquidGlassLayer(
                 child: LiquidGlass(
-                  // Using Superellipse with 0 radius creates a perfect rectangle
                   shape: LiquidRoundedSuperellipse(borderRadius: 0),
                   child: Container(
-                    // The "Glass" look comes from having a semi-transparent color here
                     color: Colors.white.withOpacity(0.05),
                     child: appBarOpacity(),
                   ),
