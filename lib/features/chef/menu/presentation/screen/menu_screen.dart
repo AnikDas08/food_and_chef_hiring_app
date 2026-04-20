@@ -27,7 +27,7 @@ class MenuScreen extends StatelessWidget {
                       width: 36.w, height: 36.h,
                       decoration: BoxDecoration(
                         color: const Color(0xFFF5F5F5),
-                        borderRadius: BorderRadius.circular(10.r),
+                        borderRadius: BorderRadius.circular(30.r),
                       ),
                       child: Icon(Icons.arrow_back_ios_new_rounded,
                           size: 16.sp, color: const Color(0xFF272727)),

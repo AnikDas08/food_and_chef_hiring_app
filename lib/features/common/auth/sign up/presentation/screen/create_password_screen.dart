@@ -22,7 +22,6 @@ class CreatePasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /// App Bar Section Starts Here
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

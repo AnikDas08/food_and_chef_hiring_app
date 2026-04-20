@@ -31,41 +31,31 @@ class ChefProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        automaticallyImplyLeading: false,
-        centerTitle: false,
         backgroundColor: Colors.transparent,
-        flexibleSpace: LiquidGlassLayer(
-          child: LiquidGlass(
-            shape: LiquidRoundedSuperellipse(borderRadius: 0),
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        leadingWidth: 60,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context),
             child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.white.withOpacity(0.2),
-                    Colors.white.withOpacity(0.05),
-                  ],
-                ),
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.black.withOpacity(0.05),
-                    width: 0.5,
-                  ),
-                ),
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: Color(0xffF6F6F6),
+                shape: BoxShape.circle,
+              ),
+              child: CommonImage(
+                imageSrc: AppIcons.backIcon,
+                size: 24,
               ),
             ),
           ),
-        ), // ← এই bracket টা missing ছিল
-        title: const CommonText(
-          text: AppString.myProfile,
-          fontWeight: FontWeight.w600,
-          fontSize: 24,
-          color: Color(0xff272727),
         ),
       ),
+
       /// Body Section Starts here
       body: GetBuilder<ChefProfileController>(
         builder: (controller) {

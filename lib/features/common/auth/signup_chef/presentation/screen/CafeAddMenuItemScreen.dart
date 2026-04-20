@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../../../component/image/common_image.dart';
+import '../../../../../../utils/constants/app_icons.dart';
 import '../controller/Chef_add_menu_controller.dart';
 
 class CafeAddMenuItemScreen extends StatelessWidget {
@@ -105,28 +107,33 @@ class CafeAddMenuItemScreen extends StatelessWidget {
     final c = CafeAddMenuItemController.instance;
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        leadingWidth: 60,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: Color(0xffF6F6F6),
+                shape: BoxShape.circle,
+              ),
+              child: CommonImage(
+                imageSrc: AppIcons.backIcon,
+                size: 24,
+              ),
+            ),
+          ),
+        ),
+      ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Container(
-                    width: 36.w, height: 36.h,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF5F5F5),
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Icon(Icons.arrow_back_ios_new_rounded,
-                        size: 16.sp, color: const Color(0xFF272727)),
-                  ),
-                ),
-              ),
-            ),
 
             Expanded(
               child: SingleChildScrollView(

@@ -207,7 +207,32 @@ class BankManagementPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xffFAFAFA),
         elevation: 0,
+        scrolledUnderElevation: 0,
         centerTitle: true,
+        automaticallyImplyLeading: false,
+        leadingWidth: 60,
+
+        // 🔙 Custom Back Button
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: Color(0xffF6F6F6),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 18,
+                color: Color(0xff1A1A1A),
+              ),
+            ),
+          ),
+        ),
+
+        // 📝 Title
         title: const Text(
           "Bank Management",
           style: TextStyle(
@@ -216,11 +241,6 @@ class BankManagementPage extends StatelessWidget {
             fontWeight: FontWeight.w600,
             letterSpacing: -0.3,
           ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: Color(0xff1A1A1A), size: 20),
-          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: SafeArea(

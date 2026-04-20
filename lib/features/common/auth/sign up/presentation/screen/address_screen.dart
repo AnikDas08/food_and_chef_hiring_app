@@ -22,7 +22,7 @@ class AddressScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /// App Bar Section Starts Here
+
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -47,7 +47,6 @@ class AddressScreen extends StatelessWidget {
         ),
       ),
 
-      /// Body Section Starts Here
       body: GetBuilder<SignUpController>(
         builder: (controller) {
           return Padding(

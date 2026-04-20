@@ -46,7 +46,6 @@ class NameScreen extends StatelessWidget {
           ),
         ),
       ),
-
       /// Body Section Starts Here
       body: GetBuilder<SignUpController>(
         builder: (controller) {
