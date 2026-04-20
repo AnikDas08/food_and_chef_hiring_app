@@ -1,6 +1,4 @@
-import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';

@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/button/switch_button.dart';
 import 'package:new_untitled/features/chef/home/presentation/screen/App_Information_Screen.dart';
 import 'package:new_untitled/features/chef/profile/presentation/screen/chef_Update_Location_Screen.dart';
@@ -12,7 +10,6 @@ import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../component/image/common_image.dart';
-import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/other_widgets/item.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../component/text/common_text.dart';

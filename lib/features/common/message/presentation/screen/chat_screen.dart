@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../component/image/common_image.dart';
-import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/screen/error_screen.dart';
 import '../../../../../component/text/common_text.dart';

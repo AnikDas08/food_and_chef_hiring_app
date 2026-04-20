@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
-import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../common/notifications/presentation/controller/notifications_controller.dart';

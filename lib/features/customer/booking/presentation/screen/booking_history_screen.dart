@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/other_widgets/common_loader.dart';
 
-import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/booking_history_controller.dart';
