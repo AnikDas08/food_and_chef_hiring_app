@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../../../component/image/common_image.dart';
+import '../../../../../../utils/constants/app_icons.dart';
 import '../controller/sign_up_chef_controller.dart';
 
 class CafeSetCookingAreaScreen extends StatefulWidget {
@@ -216,34 +218,32 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        leadingWidth: 60,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: Color(0xffF6F6F6),
+                shape: BoxShape.circle,
+              ),
+              child: CommonImage(
+                imageSrc: AppIcons.backIcon,
+                size: 24,
+              ),
+            ),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            // ── Back Button ──
-            Padding(
-              padding:
-              EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    width: 36.w,
-                    height: 36.h,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF5F5F5),
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      size: 16.sp,
-                      color: const Color(0xFF272727),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),

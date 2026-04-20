@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../../utils/constants/app_images.dart';
+import '../../../../../utils/constants/app_icons.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_profile_controller.dart';
 import '../widgets/chef_profile_all_filed.dart';
@@ -48,12 +49,23 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
                 color: Color(0xff272727),
               ),
             ),
-            leading: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: const Icon(
-                Icons.arrow_back_ios_new,
-                size: 18,
-                color: Color(0xff272727),
+            automaticallyImplyLeading: false,
+            leadingWidth: 60,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    color: Color(0xffF6F6F6),
+                    shape: BoxShape.circle,
+                  ),
+                  child: CommonImage(
+                    imageSrc: AppIcons.backIcon,
+                    size: 24,
+                  ),
+                ),
               ),
             ),
           ),

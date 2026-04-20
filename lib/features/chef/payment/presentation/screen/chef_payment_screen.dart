@@ -19,16 +19,56 @@ class ChefPaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const CommonText(text: "Payment"),
-        actions: [
-          Container(
-            margin: EdgeInsets.only(right: 16),
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Color(0xffF9F9F9),
-              shape: BoxShape.circle,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        leadingWidth: 60,
+
+        // 🔙 Back Button
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: Color(0xffF6F6F6),
+                shape: BoxShape.circle,
+              ),
+              child: CommonImage(
+                imageSrc: AppIcons.backIcon,
+                size: 24,
+              ),
             ),
-            child: Icon(Icons.settings),
+          ),
+        ),
+
+        // 📝 Title
+        title: const CommonText(text: "Payment"),
+
+        // ⚙️ Settings Button
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: GestureDetector(
+              onTap: () {
+                // TODO: settings action
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                  color: Color(0xffF6F6F6),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.settings,
+                  size: 20,
+                  color: Color(0xff272727),
+                ),
+              ),
+            ),
           ),
         ],
       ),

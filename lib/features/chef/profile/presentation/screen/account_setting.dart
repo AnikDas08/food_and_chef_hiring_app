@@ -6,9 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/button/common_button.dart';
+import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../../utils/constants/app_string.dart';
 import '../../../../../component/text_field/common_text_field.dart';
+import '../../../../../utils/constants/app_icons.dart';
 import '../widgets/delete_pop_up.dart';
 
 class AccountSetting extends StatefulWidget {
@@ -34,7 +36,29 @@ class _AccountSettingState extends State<AccountSetting> {
     return GetBuilder<ChefProfileController>(
       builder: (controller) {
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            leadingWidth: 60,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    color: Color(0xffF6F6F6),
+                    shape: BoxShape.circle,
+                  ),
+                  child: CommonImage(
+                    imageSrc: AppIcons.backIcon,
+                    size: 24,
+                  ),
+                ),
+              ),
+            ),
+          ),
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Form(
