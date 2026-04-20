@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
@@ -27,13 +30,27 @@ class CheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            CupertinoIcons.back,
-            color: Color(0xff272727),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Padding(
+          padding: EdgeInsets.all(8.sp),
+          child: InkWell(
+            onTap: () => Get.back(),
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Color(0xffF6F6F6),
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  AppIcons.backIcon,
+                ),
+              ),
+            ),
           ),
-          onPressed: () => Navigator.pop(context),
         ),
         title: CommonText(
           text: AppString.checkout,
@@ -41,11 +58,39 @@ class CheckoutScreen extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: const Color(0xff272727),
         ),
+        flexibleSpace: LiquidGlassLayer(
+          child: LiquidGlass(
+            shape: LiquidRoundedSuperellipse(borderRadius: 0),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withOpacity(0.2),
+                    Colors.white.withOpacity(0.05),
+                  ],
+                ),
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.black.withOpacity(0.05),
+                    width: 0.5,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
       body: GetBuilder<CartController>(
         builder: (controller) {
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.only(
+              left: 16.w,
+              right: 16.w,
+              bottom: 16.h,
+              top: 110.h,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

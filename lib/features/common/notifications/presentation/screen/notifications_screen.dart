@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
+import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/notifications_controller.dart';
@@ -14,19 +18,65 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: true,
+        centerTitle: false,
+        leadingWidth: 60,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Center(
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: const BoxDecoration(
+                  color: Color(0xffF6F6F6),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: CommonImage(
+                    imageSrc: AppIcons.backIcon,
+                    size: 24,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        flexibleSpace: LiquidGlassLayer(
+          child: LiquidGlass(
+            shape: LiquidRoundedSuperellipse(borderRadius: 0),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withOpacity(0.2),
+                    Colors.white.withOpacity(0.05),
+                  ],
+                ),
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.black.withOpacity(0.05),
+                    width: 0.5,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         title: const CommonText(
           text: "Notifications",
           fontWeight: FontWeight.w600,
-          fontSize: 16,
+          fontSize: 24,
           color: Color(0xff272727),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(height: 1, color: const Color(0xffEEEFF2)),
         ),
       ),
       body: GetBuilder<NotificationsController>(
@@ -46,7 +96,7 @@ class NotificationScreen extends StatelessWidget {
             onRefresh: () => ctrl.getNotificationsRepo(),
             child: ListView.builder(
               controller: ctrl.scrollController,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+              padding: EdgeInsets.fromLTRB(16.w, 110.h, 16.w, 14.h),
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: _totalItemCount(grouped, ctrl.isLoadingMore),
               itemBuilder: (context, index) {
