@@ -23,14 +23,17 @@ class _CafeSetupProfileScreenState extends State<CafeSetupProfileScreen> {
   File? _profileImage;
 
   Future<void> _pickImage() async {
+
     final XFile? image = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
+
     if (image != null) {
       setState(() {
         _profileImage = File(image.path);
       });
     }
+
   }
 
   @override

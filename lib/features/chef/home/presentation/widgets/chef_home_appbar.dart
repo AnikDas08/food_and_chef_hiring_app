@@ -25,7 +25,29 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       centerTitle: false,
-      flexibleSpace: appBarOpacity(),
+      flexibleSpace: LiquidGlassLayer(
+        child: LiquidGlass(
+          shape: LiquidRoundedSuperellipse(borderRadius: 0),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.white.withOpacity(0.2),
+                  Colors.white.withOpacity(0.05),
+                ],
+              ),
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.black.withOpacity(0.05),
+                  width: 0.5,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
       title: Row(
         children: [
           Expanded(
