@@ -115,7 +115,6 @@ declineBookingPopUp({
                             buttonHeight: 48,
                             titleSize: 16,
                             buttonRadius: 16,
-                            titleWeight: FontWeight.w600,
                             titleColor: Colors.white,
                             onTap: () async {
 

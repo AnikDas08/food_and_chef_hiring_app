@@ -59,7 +59,6 @@ confirmCheckingPopup() {
                         buttonHeight: 48,
                         titleSize: 16,
                         buttonRadius: 16,
-                        titleWeight: FontWeight.w600,
                         titleColor: Color(0xffFFFFFF),
                         onTap: () async {
                           await AnimationPopUpState.closeDialog();
@@ -79,7 +78,6 @@ confirmCheckingPopup() {
                         buttonRadius: 16,
                         buttonColor: Color(0xffF2F2F2),
                         borderColor: Colors.transparent,
-                        titleWeight: FontWeight.w600,
                         titleColor: Color(0xff777777),
                         onTap: () async {
                           await AnimationPopUpState.closeDialog();

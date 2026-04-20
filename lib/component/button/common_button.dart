@@ -26,7 +26,7 @@ class CommonButton extends StatefulWidget {
     this.buttonColor = AppColors.primaryColor,
     this.titleSize = 16,
     this.buttonRadius = 20,
-    this.titleWeight = FontWeight.w600,
+    this.titleWeight = FontWeight.w500,
     this.buttonHeight = 60,
     this.borderWidth = 1,
     this.isLoading = false,
@@ -112,6 +112,7 @@ class _CommonButtonState extends State<CommonButton>
     return CommonText(
       text: widget.titleText,
       maxLines: 1,
+      height: 1.3,
       overflow: TextOverflow.ellipsis,
       textAlign: TextAlign.center,
       fontSize: widget.titleSize,

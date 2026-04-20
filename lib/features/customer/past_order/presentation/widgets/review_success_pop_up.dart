@@ -56,7 +56,6 @@ reviewSuccessPopUp() {
                         buttonHeight: 48,
                         titleSize: 16,
                         buttonRadius: 16,
-                        titleWeight: FontWeight.w600,
                         titleColor: Color(0xffFFFFFF),
                         onTap: () async {
                           await AnimationPopUpState.closeDialog();

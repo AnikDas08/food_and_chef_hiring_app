@@ -33,8 +33,31 @@ class ChatListScreen extends StatelessWidget {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: false,
-        flexibleSpace: appBarOpacity(),
+        flexibleSpace: LiquidGlassLayer(
+          child: LiquidGlass(
+            shape: LiquidRoundedSuperellipse(borderRadius: 0),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withOpacity(0.2),
+                    Colors.white.withOpacity(0.05),
+                  ],
+                ),
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.black.withOpacity(0.05),
+                    width: 0.5,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         title: const CommonText(
           text: AppString.chat,
           fontWeight: FontWeight.w600,
@@ -106,18 +129,16 @@ class ChatListScreen extends StatelessWidget {
           Status.completed => (controller.filteredChats.isEmpty || controller.filteredChats.isEmpty)
               ? _buildEmptyState(): Padding(
             padding:
-            EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+            EdgeInsets.symmetric(horizontal: 16.w),
             child: ListView(
+              padding: EdgeInsets.fromLTRB(0, 150.h, 0, 100.h),
               controller: controller.scrollController,
               children: [
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: controller.filteredChats.length,
-                  padding: EdgeInsets.only(
-                    bottom: 80.h,
-                    top: 16.h,
-                  ).copyWith(bottom: 0),
+                  padding: EdgeInsets.zero,
                   itemBuilder: (context, index) {
                     ChatModel item = controller.filteredChats[index];
                     return InkWell(

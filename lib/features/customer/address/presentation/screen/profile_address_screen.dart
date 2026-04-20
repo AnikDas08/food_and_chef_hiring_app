@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
+import '../../../../../component/image/common_image.dart';
 import '../../../../../config/route/app_routes.dart';
+import '../../../../../utils/constants/app_icons.dart';
 import '../controller/address_controller.dart';
 import '../widgets/address_item.dart';
 
@@ -20,33 +22,28 @@ class ProfileAddressScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-      backgroundColor: Colors.transparent, // Keeps the app bar clean
-      elevation: 0,
-      automaticallyImplyLeading: false, // Prevents default back button
-      leadingWidth: 70, // Gives the circle enough space from the edge
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 16),
-        child: Center(
-          child: Container(
-            height: 40,
-            width: 40,
-            decoration: const BoxDecoration(
-              color: Color(0xFFF6F6F6),
-              shape: BoxShape.circle,
-            ),
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              icon: const Icon(
-                Icons.arrow_back_ios_new, // Modern iOS & Android look
-                size: 18,
-                color: Colors.black,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        leadingWidth: 60,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: Color(0xffF6F6F6),
+                shape: BoxShape.circle,
               ),
-              onPressed: () => Get.back(),
+              child: CommonImage(
+                imageSrc: AppIcons.backIcon,
+                size: 24,
+              ),
             ),
           ),
         ),
       ),
-    ),
       body: SafeArea(child: GetBuilder<AddressController>(
           builder: (controller) {
             return Padding(

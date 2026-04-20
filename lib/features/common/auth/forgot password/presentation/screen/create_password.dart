@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../component/text_field/common_text_field.dart';
@@ -27,24 +29,17 @@ class CreatePassword extends StatelessWidget {
             leadingWidth: 60,
             leading: Padding(
               padding: const EdgeInsets.only(left: 16),
-              child: Center(
-                child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFF6F6F6),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      // Conditional Icon based on Platform
-                      Platform.isIOS
-                          ? Icons.arrow_back_ios_new
-                          : Icons.arrow_back,
-                      size: 24,
-                      color: Colors.black,
-                    ),
+              child: GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    color: Color(0xffF6F6F6),
+                    shape: BoxShape.circle,
+                  ),
+                  child: CommonImage(
+                    imageSrc: AppIcons.backIcon,
+                    size: 24,
                   ),
                 ),
               ),

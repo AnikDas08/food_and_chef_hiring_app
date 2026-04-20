@@ -1,4 +1,6 @@
 import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
@@ -37,13 +39,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   void dispose() {
-
     emailFocusNode.dispose();
-
     passwordFocusNode.dispose();
-
     super.dispose();
-
   }
 
   @override
@@ -54,42 +52,35 @@ class _SignInScreenState extends State<SignInScreen> {
       child: Scaffold(
         /// App Bar Sections Starts here
         appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Center(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          leadingWidth: 60,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16),
             child: GestureDetector(
               onTap: () => Navigator.pop(context),
               child: Container(
-                height: 40,
-                width: 40,
+                alignment: Alignment.center,
                 decoration: const BoxDecoration(
-                  color: Color(0xFFF6F6F6),
+                  color: Color(0xffF6F6F6),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  // Conditional Icon based on Platform
-                  Platform.isIOS
-                      ? Icons.arrow_back_ios_new
-                      : Icons.arrow_back,
+                child: CommonImage(
+                  imageSrc: AppIcons.backIcon,
                   size: 24,
-                  color: Colors.black,
                 ),
               ),
             ),
           ),
         ),
-      ),
 
         /// Body Sections Starts here
         body: GetBuilder<SignInController>(
           builder: (controller) {
             return SafeArea(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Form(
                   key: controller.formKey,
                   child: Column(
@@ -145,6 +136,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         validator: OtherHelper.passwordValidator,
                       ),
 
+                      /// Forget Password Button here
                       Align(
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
@@ -166,9 +158,13 @@ class _SignInScreenState extends State<SignInScreen> {
                         onTap: controller.signInUser,
                       ),
 
-
+                      // 20.height,
+                      // CommonButton(
+                      //   titleText: "Sign as Chef",
+                      //   isLoading: controller.isLoadingChef,
+                      //   onTap: controller.signInChef,
+                      // ),
                       20.height,
-
 
                       Row(
                         children: [
@@ -185,7 +181,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
 
                       20.height,
-
                       Container(
                         height: 60.h,
                         decoration: BoxDecoration(
@@ -205,20 +200,14 @@ class _SignInScreenState extends State<SignInScreen> {
                           ],
                         ),
                       ),
-
                       12.height,
-
                       Container(
-
                         height: 60.h,
                         decoration: BoxDecoration(
                           color: Color(0xffF2F2F2),
                           borderRadius: BorderRadius.circular(20.r),
                           border: Border.all(color: Color(0xffF2F2F2)),
                         ),
-
-
-
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -231,24 +220,9 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ],
                         ),
-
-
-
                       ),
-
-
-
                       24.height,
-
-
-
-                      DoNotHaveAccount(
-
-
-                      ).center,
-
-
-
+                      DoNotHaveAccount().center,
                     ],
                   ),
                 ),

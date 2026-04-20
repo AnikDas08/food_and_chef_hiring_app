@@ -117,7 +117,7 @@ class CommonTextField extends StatelessWidget {
           hintText: hintText,
           labelText: labelText,
           hintStyle: TextStyle(
-            fontSize: 12,
+            fontSize: 14.sp,
             color: hintTextColor,
             fontWeight: FontWeight.w400,
           ),

@@ -325,7 +325,6 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                           borderColor: Colors.transparent,
                           titleColor: const Color(0xff272727),
                           titleSize: 14,
-                          titleWeight: FontWeight.w600,
                           buttonHeight: 48,
                           buttonRadius: 16,
                           onTap: () async {
@@ -343,7 +342,6 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                           buttonHeight: 48,
                           buttonRadius: 16,
                           titleSize: 14,
-                          titleWeight: FontWeight.w600,
                           onTap: () async {
                             try {
 

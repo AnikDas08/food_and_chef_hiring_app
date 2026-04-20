@@ -46,7 +46,6 @@ confirmBookingPopUp({required String orderMongoId}) {
                   buttonHeight: 48,
                   titleSize: 16,
                   buttonRadius: 16,
-                  titleWeight: FontWeight.w600,
                   titleColor: const Color(0xffFFFFFF),
                   onTap: () async {
 
@@ -94,7 +93,6 @@ confirmBookingPopUp({required String orderMongoId}) {
                   buttonRadius: 16,
                   buttonColor: const Color(0xffF2F2F2),
                   borderColor: Colors.transparent,
-                  titleWeight: FontWeight.w600,
                   titleColor: const Color(0xff777777),
                   onTap: () async {
 
