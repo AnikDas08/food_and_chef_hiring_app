@@ -58,21 +58,17 @@ class _SignInScreenState extends State<SignInScreen> {
           leadingWidth: 60,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16),
-            child: Center(
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  height: 40.sp,
-                  width: 40.sp,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFF6F6F6),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Platform.isIOS ? CupertinoIcons.back : Icons.arrow_back,
-                    size: 24,
-                    color: Colors.black,
-                  ),
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  color: Color(0xffF6F6F6),
+                  shape: BoxShape.circle,
+                ),
+                child: CommonImage(
+                  imageSrc: AppIcons.backIcon,
+                  size: 24,
                 ),
               ),
             ),
@@ -96,7 +92,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         text: AppString.welcomeBack,
                         fontSize: 24,
                         color: Color(0xff272727),
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                         top: 10,
                       ),
 
@@ -115,7 +111,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       const CommonText(
                         text: AppString.email,
                         bottom: 8,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         color: Color(0xff272727),
                       ),
 
@@ -130,7 +126,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         text: AppString.password,
                         bottom: 8,
                         top: 16,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         color: Color(0xff272727),
                       ),
                       CommonTextField(
@@ -199,7 +195,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             CommonText(
                               text: AppString.signInWithFacebook,
                               left: 14,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                             ),
                           ],
                         ),
@@ -220,7 +216,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             CommonText(
                               text: AppString.signInWithGoogle,
                               left: 14,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                             ),
                           ],
                         ),

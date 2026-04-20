@@ -23,18 +23,15 @@ class CustomerHome extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
-      extendBody: true,
       appBar: homeAppbar(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: ListView(
-          children: [
-            4.height,
-            CommonImage(
-              imageSrc: AppImages.image1,
-              width: 343.w,
-              fill: BoxFit.fitWidth,
-            ),
+      body: ListView(
+        padding: EdgeInsets.fromLTRB(20, 110.h, 20, 20),
+        children: [
+          CommonImage(
+            imageSrc: AppImages.image1,
+            width: 343.w,
+            fill: BoxFit.fitWidth,
+          ),
             20.height,
             CommonTextField(
               hintText: AppString.searchForFoodChefEtc,
@@ -106,7 +103,6 @@ class CustomerHome extends StatelessWidget {
             10.height,
           ],
         ),
-      ),
     );
   }
 }

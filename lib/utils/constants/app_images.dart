@@ -59,5 +59,5 @@ class AppImages {
   static const String stove = "$baseurl/stove.png";
   static const String trash = "$baseurl/trash.png";
   static const String xmark = "$baseurl/xmark.png";
-
+  static const String backImage = "$baseurl/back_image.png";
 }

@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/my_groceries_screen.dart';
+import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
@@ -23,32 +25,58 @@ class GroceryScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: false,
-
-        leading:
-            controller.isBack == false
-                ? IconButton(
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.black,
-                    size: 20,
+        leadingWidth: 60,
+        leading: controller.isBack == false
+            ? Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Center(
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: const BoxDecoration(
+                        color: Color(0xffF6F6F6),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: CommonImage(
+                          imageSrc: AppIcons.backIcon,
+                          size: 24,
+                        ),
+                      ),
+                    ),
                   ),
-                  onPressed: () => Navigator.pop(context),
-                )
-                : null,
+                ),
+              )
+            : null,
         flexibleSpace: LiquidGlassLayer(
           child: LiquidGlass(
-            // Using Superellipse with 0 radius creates a perfect rectangle
             shape: LiquidRoundedSuperellipse(borderRadius: 0),
             child: Container(
-              // The "Glass" look comes from having a semi-transparent color here
-              color: Colors.white.withOpacity(0.05),
-              child: appBarOpacity(),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withOpacity(0.2),
+                    Colors.white.withOpacity(0.05),
+                  ],
+                ),
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.black.withOpacity(0.05),
+                    width: 0.5,
+                  ),
+                ),
+              ),
             ),
           ),
         ),
@@ -71,12 +99,11 @@ class GroceryScreen extends StatelessWidget {
             controller.initialOrderId!.isNotEmpty;
 
         return SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 10.h),
+          padding: EdgeInsets.fromLTRB(16.w, 110.h, 16.w, 30.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 10.h),
 
                 // --- 1. BOOKING LIST (SINGLE vs ALL) ---
                 if (hasInitialId) ...[
@@ -209,8 +236,7 @@ class GroceryScreen extends StatelessWidget {
                 SizedBox(height: 30.h),
               ],
             ),
-          ),
-        );
+          );
       }),
     );
   }
