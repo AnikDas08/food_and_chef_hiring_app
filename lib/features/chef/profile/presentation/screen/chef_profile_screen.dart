@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/button/switch_button.dart';
 import 'package:new_untitled/features/chef/home/presentation/screen/App_Information_Screen.dart';
 import 'package:new_untitled/features/chef/profile/presentation/screen/chef_Update_Location_Screen.dart';
@@ -35,7 +36,29 @@ class ChefProfileScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         centerTitle: false,
         backgroundColor: Colors.transparent,
-        flexibleSpace: appBarOpacity(),
+        flexibleSpace: LiquidGlassLayer(
+          child: LiquidGlass(
+            shape: LiquidRoundedSuperellipse(borderRadius: 0),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withOpacity(0.2),
+                    Colors.white.withOpacity(0.05),
+                  ],
+                ),
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.black.withOpacity(0.05),
+                    width: 0.5,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ), // ← এই bracket টা missing ছিল
         title: const CommonText(
           text: AppString.myProfile,
           fontWeight: FontWeight.w600,
@@ -43,7 +66,6 @@ class ChefProfileScreen extends StatelessWidget {
           color: Color(0xff272727),
         ),
       ),
-
       /// Body Section Starts here
       body: GetBuilder<ChefProfileController>(
         builder: (controller) {
