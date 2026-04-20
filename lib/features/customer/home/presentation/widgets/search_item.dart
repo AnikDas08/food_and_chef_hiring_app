@@ -35,11 +35,11 @@ class SearchItem extends StatelessWidget {
             // ── Sort by label ────────────────────────────────────────────
             CommonText(
               text: AppString.sortBy,
-              top: 24,
+              top: 0,
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),
-              bottom: 12,
+              bottom: 8,
             ).start,
 
             // ── Sort filter chips ────────────────────────────────────────
@@ -89,7 +89,7 @@ class SearchItem extends StatelessWidget {
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),
-              top: 20,
+              top: 12,
             ).start,
             Obx(
                   () => CommonText(
@@ -97,17 +97,16 @@ class SearchItem extends StatelessWidget {
                 fontSize: 12,
                 color: const Color(0xff777777),
                 fontWeight: FontWeight.w400,
-                top: 2,
-                bottom: 16,
+                top: 0,
+                bottom: 8,
               ).start,
             ),
 
             // ── Grid ─────────────────────────────────────────────────────
-            Expanded(
-              child: isLoading
-                  ? const CommonLoader()
-                  : chefs.isEmpty
-                  ? Center(
+            if (isLoading)
+              const CommonLoader()
+            else if (chefs.isEmpty)
+              Center(
                 child: CommonText(
                   text: "No chefs found nearby",
                   fontSize: 14,
@@ -115,54 +114,21 @@ class SearchItem extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                 ),
               )
-                  : GridView.builder(
-                // ✅ Attach the shared scroll controller
-                controller: scrollController,
-                // Allow the grid to scroll inside Column/Stack
-                physics: const AlwaysScrollableScrollPhysics(),
-                // +1 for the bottom loader row
-                itemCount: chefs.length + 1,
-                gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(
+            else
+            // itemCount is exactly chefs.length — no extra loader slot needed.
+            // The loading indicator lives in SearchScreen below this widget.
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                itemCount: chefs.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  mainAxisExtent: 250.h,
-                  mainAxisSpacing: 10.h,
-                  crossAxisSpacing: 10.w,
+                  mainAxisExtent: 230.h,
+                  mainAxisSpacing: 8.h,
+                  crossAxisSpacing: 8.w,
                 ),
                 itemBuilder: (context, index) {
-                  // ── Last slot → loading indicator or end label ──
-                  if (index == chefs.length) {
-                    return Obx(
-                          () => controller.isLoadingMore.value
-                          ? Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20.h),
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            color: Color(0xffFD713F),
-                            strokeWidth: 2,
-                          ),
-                        ),
-                      )
-                          : controller.hasMoreData.value
-                          ? const SizedBox.shrink()
-                          : Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20.h),
-                        /*child: Center(
-                          child: CommonText(
-                            text:
-                            "You've seen all ${chefs.length} chefs",
-                            fontSize: 12,
-                            color:
-                            const Color(0xffAAAAAA),
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),*/
-                      ),
-                    );
-                  }
-
                   return chefItem(
                     height: 140.h,
                     isSearch: true,
@@ -170,7 +136,6 @@ class SearchItem extends StatelessWidget {
                   );
                 },
               ),
-            ),
           ],
         );
       },

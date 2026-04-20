@@ -27,7 +27,7 @@ class SearchController extends GetxController {
   RxInt currentPage = 1.obs;
   RxInt totalPages = 1.obs;
   RxBool isLoadingMore = false.obs;
-  RxBool hasMoreData = true.obs;
+  RxBool hasMoreData = false.obs;
   static const int _pageLimit = 10;
 
   // ── CUISINES ────────────────────────────────────────────────────────────────
@@ -101,7 +101,7 @@ class SearchController extends GetxController {
       final response = await ApiService.get("cusine");
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data['data'] ?? [];
-        cuisineList.assignAll(  // ← was cuisineList =
+        cuisineList.assignAll(
           data.map((item) => CuisineData.fromJson(item as Map<String, dynamic>)).toList(),
         );
       } else {
@@ -198,7 +198,8 @@ class SearchController extends GetxController {
   Future<void> _fetchWithCurrentFilter({String? searchTerm}) async {
     isLoadingChefs = true;
     currentPage.value = 1;
-    hasMoreData.value = true;
+    totalPages.value = 1;
+    hasMoreData.value = false;
     update();
 
     try {
@@ -214,8 +215,9 @@ class SearchController extends GetxController {
         // Read pagination from response
         final pagination = response.data['pagination'];
         if (pagination != null) {
-          totalPages.value = pagination['totalPage'] ?? 1;
+          totalPages.value = (pagination['totalPage'] ?? 1) as int;
         }
+        // Only enable load-more if there are more pages
         hasMoreData.value = currentPage.value < totalPages.value;
       } else {
         Utils.errorSnackBar('Error', 'Failed to fetch chefs');
@@ -231,14 +233,20 @@ class SearchController extends GetxController {
   // ── LOAD MORE (NEXT PAGE) ──────────────────────────────────────────────────
 
   Future<void> loadMoreChefs({String? searchTerm}) async {
-    if (isLoadingMore.value || !hasMoreData.value) return;
+    // Guard: skip if already loading, no more data, or already on last page
+    if (isLoadingMore.value) return;
+    if (!hasMoreData.value) return;
+    if (currentPage.value >= totalPages.value) {
+      hasMoreData.value = false;
+      return;
+    }
 
     isLoadingMore.value = true;
 
     try {
       final int nextPage = currentPage.value + 1;
       final String url = _buildFilterUrl(searchTerm: searchTerm, page: nextPage);
-      print("📄 Load more URL (page $nextPage): $url");
+      print("📄 Load more URL (page $nextPage / ${totalPages.value}): $url");
 
       final response = await ApiService.get(url);
 
@@ -246,13 +254,17 @@ class SearchController extends GetxController {
         final moreModel = ChefModel.fromJson(response.data);
         final newChefs = moreModel.data ?? [];
 
-        nearbyChefsList.addAll(newChefs);
-        currentPage.value = nextPage;
+        if (newChefs.isNotEmpty) {
+          nearbyChefsList.addAll(newChefs);
+          currentPage.value = nextPage;
 
-        final pagination = response.data['pagination'];
-        if (pagination != null) {
-          totalPages.value = pagination['totalPage'] ?? totalPages.value;
+          final pagination = response.data['pagination'];
+          if (pagination != null) {
+            totalPages.value = (pagination['totalPage'] ?? totalPages.value) as int;
+          }
         }
+
+        // Determine if more pages remain
         hasMoreData.value = currentPage.value < totalPages.value;
       } else {
         Utils.errorSnackBar('Error', 'Failed to load more chefs');
@@ -261,6 +273,7 @@ class SearchController extends GetxController {
       Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoadingMore.value = false;
+      update();
     }
   }
 
@@ -356,34 +369,8 @@ class SearchController extends GetxController {
   }
 
   Future<void> getChefsByCuisineId(String cuisineId) async {
-    isLoadingChefs = true;
-    currentPage.value = 1;
-    hasMoreData.value = true;
-    update();
-
-    try {
-      final response = await ApiService.get(
-        "user/search-chefs?cusine=$cuisineId&page=1&limit=$_pageLimit",
-      );
-
-      if (response.statusCode == 200) {
-        chefModel = ChefModel.fromJson(response.data);
-        nearbyChefsList.assignAll(chefModel?.data ?? []);
-
-        final pagination = response.data['pagination'];
-        if (pagination != null) {
-          totalPages.value = pagination['totalPage'] ?? 1;
-        }
-        hasMoreData.value = currentPage.value < totalPages.value;
-      } else {
-        Utils.errorSnackBar('Error', 'No chefs found for this category');
-      }
-    } catch (e) {
-      Utils.errorSnackBar('Error', e.toString());
-    } finally {
-      isLoadingChefs = false;
-      update();
-    }
+    selectedCuisines.assignAll([cuisineId]);
+    await _fetchWithCurrentFilter();
   }
 
   Future<void> getNearbyChefs() async {

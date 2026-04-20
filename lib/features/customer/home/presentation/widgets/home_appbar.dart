@@ -141,24 +141,45 @@ AppBar homeAppbar() {
                   color: Color(0xffF2F2F2),
                   shape: BoxShape.circle,
                 ),
-                child: CommonImage(imageSrc: AppIcons.notification),
+                child: SvgPicture.asset(AppIcons.notification),
               ),
             ),
           );
         },
       ),
       12.width,
-      GestureDetector(
-        onTap: () {
-          Get.toNamed(AppRoutes.cart, arguments: "cart");
-        },
-        child: Container(
-          padding: EdgeInsets.all(8.sp),
-          decoration: BoxDecoration(
-            color: Color(0xffF2F2F2),
-            shape: BoxShape.circle,
-          ),
-          child: CommonImage(imageSrc: AppIcons.basket),
+      Container(
+        height: 40.r,
+        width: 40.r,
+        decoration: const BoxDecoration(
+          color: Color(0xffF2F2F2),
+          shape: BoxShape.circle,
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            CNIcon(
+              symbol: CNSymbol(
+                "basket",
+                color: const Color(0xff272727),
+              ),
+              size: 24.sp,
+            ),
+            Positioned.fill(
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  Get.toNamed(AppRoutes.cart, arguments: "cart");
+                },
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.transparent,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       12.width,
