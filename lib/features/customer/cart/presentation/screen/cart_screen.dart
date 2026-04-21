@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
@@ -61,14 +59,6 @@ class CartScreen extends StatelessWidget {
               ),
             ),
 
-            leading: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: SvgPicture.asset(
-                AppIcons.backIcon,
-                height: 24.sp,
-              ),
-            ),
-
             title: CommonText(
               text: AppString.cart,
               fontSize: 24.sp,
@@ -77,26 +67,28 @@ class CartScreen extends StatelessWidget {
             ),
           ),
 
-          body: controller.isLoadingCart
-              ? const CommonLoader()
-              : controller.cartResponse == null
-              ? const SizedBox.shrink()
-              : controller.chefGroups.isEmpty
-              ? _buildEmptyState()
-              : _buildCartContent(controller, context),
+          body:
+              controller.isLoadingCart
+                  ? const CommonLoader()
+                  : controller.cartResponse == null
+                  ? const SizedBox.shrink()
+                  : controller.chefGroups.isEmpty
+                  ? _buildEmptyState()
+                  : _buildCartContent(controller, context),
 
           // ── Bottom Checkout Button ───────────────────────────────────────
-          bottomNavigationBar: controller.chefGroups.isEmpty
-              ? null
-              : Padding(
-            padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
-            child: SafeArea(
-              child: CommonButton(
-                titleText: AppString.continueToCheckout,
-                onTap: () => Get.toNamed(AppRoutes.checkout),
-              ),
-            ),
-          ),
+          bottomNavigationBar:
+              controller.chefGroups.isEmpty
+                  ? null
+                  : Padding(
+                    padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
+                    child: SafeArea(
+                      child: CommonButton(
+                        titleText: AppString.continueToCheckout,
+                        onTap: () => Get.toNamed(AppRoutes.checkout),
+                      ),
+                    ),
+                  ),
         );
       },
     );
@@ -132,7 +124,7 @@ class CartScreen extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(16.w, 110.h, 16.w, 120.h),
       physics: const BouncingScrollPhysics(), // Better feel for glass scrolling
       children: [
-        SizedBox(height: 12,),
+        SizedBox(height: 12),
         ...controller.chefGroups.map((group) {
           final menus = group.menus ?? [];
           final chefId = group.chef?.id ?? '';
@@ -156,9 +148,7 @@ class CartScreen extends StatelessWidget {
           top: 8.h,
           bottom: 8.h,
         ),
-        CommonTextField(
-          hintText: AppString.notesToPrivaeChef,
-        ),
+        CommonTextField(hintText: AppString.notesToPrivaeChef),
 
         24.height,
         _buildPriceSection(controller),

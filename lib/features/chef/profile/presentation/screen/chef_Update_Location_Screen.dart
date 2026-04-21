@@ -8,9 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_untitled/component/button/common_button.dart';
 
-import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
-import '../../../../../utils/constants/app_icons.dart';
 import '../../../../common/auth/signup_chef/presentation/controller/sign_up_chef_controller.dart';
 
 class ChefUpdateLocationScreen extends StatefulWidget {
@@ -226,23 +224,6 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
         elevation: 0,
         automaticallyImplyLeading: false,
         leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
-                shape: BoxShape.circle,
-              ),
-              child: CommonImage(
-                imageSrc: AppIcons.backIcon,
-                size: 24,
-              ),
-            ),
-          ),
-        ),
       ),
       body: SafeArea(
         child: Column(

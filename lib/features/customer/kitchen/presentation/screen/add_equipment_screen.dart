@@ -16,7 +16,6 @@ class AddEquipmentScreen extends StatefulWidget {
 }
 
 class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
-
   // Add this inside the _AddEquipmentScreenState class
   Widget buildProgressSection() {
     return Container(
@@ -76,6 +75,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
       ),
     );
   }
+
   List<Map<String, dynamic>> cookingItems = [
     {'name': 'Large pan', 'selected': true},
     {'name': 'Large pot', 'selected': false},
@@ -98,16 +98,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(Get.context!);
-          },
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-        ),
-        elevation: 0,
-      ),
+      appBar: AppBar(backgroundColor: Colors.white),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -122,7 +113,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
               SizedBox(height: 28.h),
               buildProgressSection(),
               SizedBox(height: 32.h),
-        
+
               ///================================ Cooking Equipment Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -153,7 +144,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
                 shrinkWrap: true,
               ),
               SizedBox(height: 32.h),
-        
+
               /// ======================Banking Equipment Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,7 +175,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
                 shrinkWrap: true,
               ),
               SizedBox(height: 40.h),
-        
+
               ///==============================add button
               InkWell(
                 onTap: () {

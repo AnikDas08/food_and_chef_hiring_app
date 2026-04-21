@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../../utils/constants/app_images.dart';
-import '../../../../../utils/constants/app_icons.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_profile_controller.dart';
 import '../widgets/chef_profile_all_filed.dart';
@@ -16,10 +15,9 @@ class ChefEditProfile extends StatefulWidget {
 
   @override
   State<ChefEditProfile> createState() => _ChefEditProfileState();
-
 }
-class _ChefEditProfileState extends State<ChefEditProfile> {
 
+class _ChefEditProfileState extends State<ChefEditProfile> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -58,27 +56,6 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
             ),
             automaticallyImplyLeading: false,
             leadingWidth: 60,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.5),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.6),
-                      width: 1,
-                    ),
-                  ),
-                  child: CommonImage(
-                    imageSrc: AppIcons.backIcon,
-                    size: 24,
-                  ),
-                ),
-              ),
-            ),
           ),
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -98,25 +75,30 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
                           radius: 36.sp,
                           backgroundColor: const Color(0xffF0F0F0),
                           child: ClipOval(
-                            child: controller.image != null
-                                ? Image.file(
-                              File(controller.image!),
-                              width: 72.sp,
-                              height: 72.sp,
-                              fit: BoxFit.cover,
-                            )
-                                : CommonImage(
-                              imageSrc: () {
-                                final profileImage = Get.find<ChefHomeController>()
-                                    .chefProfile.value?.image ?? '';
-                                return profileImage.isNotEmpty
-                                    ? profileImage
-                                    : AppImages.image3;
-                              }(),
-                              height: 72.sp,
-                              width: 72.sp,
-                              fill: BoxFit.cover,
-                            ),
+                            child:
+                                controller.image != null
+                                    ? Image.file(
+                                      File(controller.image!),
+                                      width: 72.sp,
+                                      height: 72.sp,
+                                      fit: BoxFit.cover,
+                                    )
+                                    : CommonImage(
+                                      imageSrc: () {
+                                        final profileImage =
+                                            Get.find<ChefHomeController>()
+                                                .chefProfile
+                                                .value
+                                                ?.image ??
+                                            '';
+                                        return profileImage.isNotEmpty
+                                            ? profileImage
+                                            : AppImages.image3;
+                                      }(),
+                                      height: 72.sp,
+                                      width: 72.sp,
+                                      fill: BoxFit.cover,
+                                    ),
                           ),
                         ),
                         Positioned(
@@ -175,6 +157,7 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
 
 class _SectionLabel extends StatelessWidget {
   final String text;
+
   const _SectionLabel({required this.text});
 
   @override

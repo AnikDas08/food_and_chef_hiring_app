@@ -36,15 +36,7 @@ class _DietaryScreenState extends State<DietaryScreen> {
       builder: (controller) {
         return Scaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(
-            elevation: 0,
-            backgroundColor: Colors.white,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.black, size: 20),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ),
+          appBar: AppBar(elevation: 0, backgroundColor: Colors.white),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
@@ -52,7 +44,14 @@ class _DietaryScreenState extends State<DietaryScreen> {
               children: [
                 SizedBox(height: 8.h),
 
-                CommonText(text: "Dietary Restrictions & Allergies",fontSize: 24,fontWeight: FontWeight.w600,color: Color(0xff272727),maxLines: 2,textAlign: TextAlign.start,),
+                CommonText(
+                  text: "Dietary Restrictions & Allergies",
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff272727),
+                  maxLines: 2,
+                  textAlign: TextAlign.start,
+                ),
                 SizedBox(height: 6.h),
                 /*const Text(
                   'Vegetarian? Kosher? Halal? Food allergies? Enter the details below.',
@@ -62,7 +61,8 @@ class _DietaryScreenState extends State<DietaryScreen> {
                   ),
                 ),*/
                 CommonText(
-                  text: "Vegetarian? Kosher? Halal? Food allergies? Enter the details below.",
+                  text:
+                      "Vegetarian? Kosher? Halal? Food allergies? Enter the details below.",
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff777777),
@@ -83,7 +83,8 @@ class _DietaryScreenState extends State<DietaryScreen> {
                     if (grouped.isEmpty) {
                       return Center(
                         child: CommonText(
-                          text: 'No dietary preferences saved yet.\nTap Edit to add some.',
+                          text:
+                              'No dietary preferences saved yet.\nTap Edit to add some.',
                           fontSize: 13,
                           color: const Color(0xff777777),
                         ),
@@ -91,12 +92,13 @@ class _DietaryScreenState extends State<DietaryScreen> {
                     }
 
                     return ListView(
-                      children: grouped.entries.map((entry) {
-                        return _CategorySection(
-                          title: entry.key,
-                          items: entry.value,
-                        );
-                      }).toList(),
+                      children:
+                          grouped.entries.map((entry) {
+                            return _CategorySection(
+                              title: entry.key,
+                              items: entry.value,
+                            );
+                          }).toList(),
                     );
                   }),
                 ),
@@ -181,14 +183,12 @@ class _Chip extends StatelessWidget {
           // Changed to white text
           color: Colors.white,
         ),
-      ),*/
-      CommonText(
-          text: label,
+      ),*/ CommonText(
+        text: label,
         fontSize: 12,
         fontWeight: FontWeight.w500,
         color: Color(0xffFFFFFF),
-
-      )
+      ),
     );
   }
 }

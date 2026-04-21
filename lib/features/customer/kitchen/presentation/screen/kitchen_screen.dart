@@ -26,10 +26,7 @@ class _KitchenEquipmentScreenState extends State<KitchenScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: false,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: const Color(0xFF272727), size: 20.sp),
-          onPressed: () => Navigator.pop(context),
-        ),
+       
       ),
       body: SafeArea(
         child: Padding(

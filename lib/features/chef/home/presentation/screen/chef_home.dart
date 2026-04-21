@@ -13,7 +13,6 @@ import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:cupertino_native/cupertino_native.dart';
 
-
 // Import your screens...
 import '../../../analytics/presentation/screen/analytics_screen.dart';
 import '../../../chef_booking/presentation/screen/chef_booking_screen.dart';
@@ -119,12 +118,10 @@ class _ChefHomeState extends State<ChefHome>
       child: Scaffold(
         extendBody: true,
         body: Stack(
-          children: [
-            TabBarView(controller: tabController, children: pages),
-          ],
+          children: [TabBarView(controller: tabController, children: pages)],
         ),
         bottomNavigationBar:
-          Platform.isIOS ? _buildCupertinoBar() :  _buildBottomBar(),
+            Platform.isIOS ? _buildCupertinoBar() : _buildBottomBar(),
       ),
     );
   }
@@ -188,18 +185,18 @@ class _ChefHomeState extends State<ChefHome>
   Widget _buildCupertinoBar() {
     return CNTabBar(
       items:
-      tabs
-          .map(
-            (tab) => CNTabBarItem(
-          label: tab.title,
-          icon: CNSymbol(
-            tabs[selectedTabIndex] == tab ? tab.selectedIcon : tab.icon,
-            color: const Color(0xff272727),
-            size: 18.sp, // Responsive size
-          ),
-        ),
-      )
-          .toList(),
+          tabs
+              .map(
+                (tab) => CNTabBarItem(
+                  label: tab.title,
+                  icon: CNSymbol(
+                    tabs[selectedTabIndex] == tab ? tab.selectedIcon : tab.icon,
+                    color: const Color(0xff272727),
+                    size: 18.sp, // Responsive size
+                  ),
+                ),
+              )
+              .toList(),
       tint: const Color(0xff272727),
       backgroundColor: Colors.white.withOpacity(0.9),
       //height: 90.h, // Scaled height

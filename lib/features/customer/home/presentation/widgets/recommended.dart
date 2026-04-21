@@ -1,6 +1,5 @@
 // widgets/recommended.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/home_controller.dart';

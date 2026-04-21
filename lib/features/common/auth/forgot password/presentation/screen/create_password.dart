@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/component/image/common_image.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../component/text_field/common_text_field.dart';
@@ -26,23 +24,6 @@ class CreatePassword extends StatelessWidget {
             elevation: 0,
             automaticallyImplyLeading: false,
             leadingWidth: 60,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: Color(0xffF6F6F6),
-                    shape: BoxShape.circle,
-                  ),
-                  child: CommonImage(
-                    imageSrc: AppIcons.backIcon,
-                    size: 24,
-                  ),
-                ),
-              ),
-            ),
           ),
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 24.w),

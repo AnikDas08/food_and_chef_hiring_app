@@ -28,23 +28,6 @@ class ReviewDetailScreen extends StatelessWidget {
         elevation: 0,
         automaticallyImplyLeading: false,
         leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
-                shape: BoxShape.circle,
-              ),
-              child: CommonImage(
-                imageSrc: AppIcons.backIcon,
-                size: 24,
-              ),
-            ),
-          ),
-        ),
       ),
 
       /// Body Section Starts Here

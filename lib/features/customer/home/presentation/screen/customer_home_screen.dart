@@ -6,8 +6,6 @@ import 'package:cupertino_native/cupertino_native.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/groceries_screen.dart';
 
-import '../../../../../component/image/common_image.dart';
-import '../../../../../utils/constants/app_icons.dart';
 import '../../../../common/message/presentation/screen/chat_screen.dart';
 import '../../../booking/presentation/screen/booking_history_screen.dart';
 import '../../../profile/presentation/screen/profile_screen.dart';

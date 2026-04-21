@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/my_groceries_screen.dart';
 import 'package:new_untitled/component/image/common_image.dart';

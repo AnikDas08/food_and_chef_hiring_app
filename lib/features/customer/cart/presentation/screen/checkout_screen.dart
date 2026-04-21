@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
@@ -35,13 +34,7 @@ class CheckoutScreen extends StatelessWidget {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          onPressed: () => Get.back(),
-          icon: SvgPicture.asset(
-            AppIcons.backIcon,
-            height: 24.sp,
-          ),
-        ),
+
         title: CommonText(
           text: AppString.checkout,
           fontSize: 14,
@@ -99,17 +92,21 @@ class CheckoutScreen extends StatelessWidget {
                   fontSize: 12,
                   hintTextSize: 12,
                   hintText: "1 January 2026, 5:20PM",
-                  onTap: () => bookingDateTimePopup(
-                    id: controller.chefGroups.isNotEmpty
-                        ? controller.chefGroups.first.chef?.id
-                        : null,
-                  ),
+                  onTap:
+                      () => bookingDateTimePopup(
+                        id:
+                            controller.chefGroups.isNotEmpty
+                                ? controller.chefGroups.first.chef?.id
+                                : null,
+                      ),
                   suffixIcon: InkWell(
-                    onTap: () => bookingDateTimePopup(
-                      id: controller.chefGroups.isNotEmpty
-                          ? controller.chefGroups.first.chef?.id
-                          : null,
-                    ),
+                    onTap:
+                        () => bookingDateTimePopup(
+                          id:
+                              controller.chefGroups.isNotEmpty
+                                  ? controller.chefGroups.first.chef?.id
+                                  : null,
+                        ),
                     child: const Icon(
                       CupertinoIcons.calendar,
                       color: Color(0xffFD713F),
@@ -136,7 +133,9 @@ class CheckoutScreen extends StatelessWidget {
                   child: Container(
                     constraints: BoxConstraints(minHeight: 60.h),
                     padding: EdgeInsets.symmetric(
-                        horizontal: 16.w, vertical: 12.h),
+                      horizontal: 16.w,
+                      vertical: 12.h,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xffF0F0F0),
                       borderRadius: BorderRadius.circular(20),
@@ -150,37 +149,47 @@ class CheckoutScreen extends StatelessWidget {
                         ),
                         8.width,
                         Expanded(
-                          child: controller.selectedAddress != null
-                              ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CommonText(
-                                text: controller.selectedAddress!
-                                    .ownerName.isNotEmpty
-                                    ? controller
-                                    .selectedAddress!.ownerName
-                                    : controller.selectedAddress!.label,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xff272727),
-                              ),
-                              CommonText(
-                                text: controller
-                                    .selectedAddress!.detailsAddress,
-                                fontSize: 12,
-                                top: 2,
-                                fontWeight: FontWeight.w400,
-                                color: const Color(0xff777777),
-                              ),
-                            ],
-                          )
-                              : CommonText(
-                            text: "Select delivery address",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xff777777),
-                          ),
+                          child:
+                              controller.selectedAddress != null
+                                  ? Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CommonText(
+                                        text:
+                                            controller
+                                                    .selectedAddress!
+                                                    .ownerName
+                                                    .isNotEmpty
+                                                ? controller
+                                                    .selectedAddress!
+                                                    .ownerName
+                                                : controller
+                                                    .selectedAddress!
+                                                    .label,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: const Color(0xff272727),
+                                      ),
+                                      CommonText(
+                                        text:
+                                            controller
+                                                .selectedAddress!
+                                                .detailsAddress,
+                                        fontSize: 12,
+                                        top: 2,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xff777777),
+                                      ),
+                                    ],
+                                  )
+                                  : CommonText(
+                                    text: "Select delivery address",
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: const Color(0xff777777),
+                                  ),
                         ),
                         const Icon(
                           Icons.arrow_forward_ios_rounded,
@@ -215,7 +224,7 @@ class CheckoutScreen extends StatelessWidget {
                           children: [
                             CommonText(
                               text:
-                              "${menus.length} Item${menus.length != 1 ? 's' : ''}",
+                                  "${menus.length} Item${menus.length != 1 ? 's' : ''}",
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
                               color: const Color(0xff777777),
@@ -279,19 +288,18 @@ class CheckoutScreen extends StatelessWidget {
                       ),
                       controller.promoCode != null
                           ? InkWell(
-                        onTap: () =>
-                            controller.onPromoCodeApplied(''),
-                        child: const Icon(
-                          Icons.close,
-                          size: 16,
-                          color: Color(0xffE53935),
-                        ),
-                      )
+                            onTap: () => controller.onPromoCodeApplied(''),
+                            child: const Icon(
+                              Icons.close,
+                              size: 16,
+                              color: Color(0xffE53935),
+                            ),
+                          )
                           : const Icon(
-                        Icons.arrow_forward_ios_sharp,
-                        size: 16,
-                        color: Color(0xff777777),
-                      ),
+                            Icons.arrow_forward_ios_sharp,
+                            size: 16,
+                            color: Color(0xff777777),
+                          ),
                     ],
                   ),
                 ),
@@ -337,12 +345,15 @@ class CheckoutScreen extends StatelessWidget {
         padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
         child: SafeArea(
           child: GetBuilder<CartController>(
-            builder: (controller) => CommonButton(
-              titleText: controller.isCheckingOut
-                  ? "Placing Order..."
-                  : AppString.checkoutNow,
-              onTap: controller.isCheckingOut ? () {} : confirmCheckingPopup,
-            ),
+            builder:
+                (controller) => CommonButton(
+                  titleText:
+                      controller.isCheckingOut
+                          ? "Placing Order..."
+                          : AppString.checkoutNow,
+                  onTap:
+                      controller.isCheckingOut ? () {} : confirmCheckingPopup,
+                ),
           ),
         ),
       ),
@@ -351,9 +362,8 @@ class CheckoutScreen extends StatelessWidget {
 
   // ── Tax / Invoice Section ──────────────────────────────────────────────────
   Widget _buildTaxSection(CartController controller) {
-    final TaxController? taxCtrl = Get.isRegistered<TaxController>()
-        ? Get.find<TaxController>()
-        : null;
+    final TaxController? taxCtrl =
+        Get.isRegistered<TaxController>() ? Get.find<TaxController>() : null;
 
     String taxLabel = "Add tax details";
     if (controller.selectedTaxId != null && taxCtrl != null) {
@@ -373,14 +383,16 @@ class CheckoutScreen extends StatelessWidget {
             height: 15.sp,
             width: 15.sp,
             decoration: BoxDecoration(
-              color: controller.selectedTaxId != null
-                  ? Colors.black
-                  : const Color(0xffF2F2F2),
+              color:
+                  controller.selectedTaxId != null
+                      ? Colors.black
+                      : const Color(0xffF2F2F2),
               borderRadius: BorderRadius.circular(50),
             ),
-            child: controller.selectedTaxId != null
-                ? Icon(Icons.check, color: Colors.white, size: 10.sp)
-                : null,
+            child:
+                controller.selectedTaxId != null
+                    ? Icon(Icons.check, color: Colors.white, size: 10.sp)
+                    : null,
           ),
           12.width,
           Expanded(
@@ -399,27 +411,28 @@ class CheckoutScreen extends StatelessWidget {
                   fontSize: 12,
                   top: 4,
                   fontWeight: FontWeight.w500,
-                  color: controller.selectedTaxId != null
-                      ? const Color(0xffFD713F)
-                      : const Color(0xff818181),
+                  color:
+                      controller.selectedTaxId != null
+                          ? const Color(0xffFD713F)
+                          : const Color(0xff818181),
                 ),
               ],
             ),
           ),
           controller.selectedTaxId != null
               ? InkWell(
-            onTap: () => controller.onTaxSelected(null),
-            child: const Icon(
-              Icons.close,
-              size: 16,
-              color: Color(0xffE53935),
-            ),
-          )
+                onTap: () => controller.onTaxSelected(null),
+                child: const Icon(
+                  Icons.close,
+                  size: 16,
+                  color: Color(0xffE53935),
+                ),
+              )
               : const Icon(
-            Icons.arrow_forward_ios_sharp,
-            size: 16,
-            color: Color(0xff777777),
-          ),
+                Icons.arrow_forward_ios_sharp,
+                size: 16,
+                color: Color(0xff777777),
+              ),
         ],
       ),
     );
@@ -427,11 +440,12 @@ class CheckoutScreen extends StatelessWidget {
 
   // ── Chef Info Widget ───────────────────────────────────────────────────────
   Widget _buildChefInfo(CartChefInfo? chef) {
-    final String imageUrl = (chef?.image != null && chef!.image!.isNotEmpty)
-        ? (chef.image!.startsWith('http')
-        ? chef.image!
-        : ApiEndPoint.imageUrl + chef.image!)
-        : AppImages.image3;
+    final String imageUrl =
+        (chef?.image != null && chef!.image!.isNotEmpty)
+            ? (chef.image!.startsWith('http')
+                ? chef.image!
+                : ApiEndPoint.imageUrl + chef.image!)
+            : AppImages.image3;
 
     return Row(
       children: [
@@ -453,9 +467,10 @@ class CheckoutScreen extends StatelessWidget {
                 color: const Color(0xff272727),
               ),
               CommonText(
-                text: chef?.pricing != null
-                    ? "\$${chef!.pricing!.toStringAsFixed(0)} per hour"
-                    : '',
+                text:
+                    chef?.pricing != null
+                        ? "\$${chef!.pricing!.toStringAsFixed(0)} per hour"
+                        : '',
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
                 color: const Color(0xff777777),
@@ -470,12 +485,12 @@ class CheckoutScreen extends StatelessWidget {
   // ── Single Order Item Row ──────────────────────────────────────────────────
   Widget _buildOrderItem(CartMenuItem item) {
     final menuDetail =
-    item.menu != null && item.menu!.isNotEmpty ? item.menu!.first : null;
+        item.menu != null && item.menu!.isNotEmpty ? item.menu!.first : null;
     final String name = menuDetail?.name ?? 'Item';
     final String customizations =
-    item.customizations != null && item.customizations!.isNotEmpty
-        ? "${item.quantity ?? 1} Items + ${item.customizations!.join(', ')}"
-        : "${item.quantity ?? 1} Items";
+        item.customizations != null && item.customizations!.isNotEmpty
+            ? "${item.quantity ?? 1} Items + ${item.customizations!.join(', ')}"
+            : "${item.quantity ?? 1} Items";
     final double price = item.totalPrice ?? 0;
 
     return Padding(
@@ -523,14 +538,16 @@ class CheckoutScreen extends StatelessWidget {
     double priceSubtotal = 0;
     for (final group in controller.chefGroups) {
       final double chefPrice = group.chef?.pricing ?? 0;
-      final int totalQty = (group.menus ?? [])
-          .fold(0, (sum, m) => sum + (m.quantity ?? 1));
+      final int totalQty = (group.menus ?? []).fold(
+        0,
+        (sum, m) => sum + (m.quantity ?? 1),
+      );
       subtotal += chefPrice * totalQty;
       priceSubtotal += chefPrice;
     }
     final double tax = controller.priceBreakdown?.tax ?? 0;
     final double fee = controller.priceBreakdown?.fee ?? 0;
-    final double total = controller.priceBreakdown?.total??0;
+    final double total = controller.priceBreakdown?.total ?? 0;
 
     return Container(
       padding: EdgeInsets.all(16.r),
@@ -578,8 +595,11 @@ class CheckoutScreen extends StatelessWidget {
             12.height,
             Row(
               children: [
-                const Icon(Icons.timer_outlined,
-                    size: 14, color: Color(0xff777777)),
+                const Icon(
+                  Icons.timer_outlined,
+                  size: 14,
+                  color: Color(0xff777777),
+                ),
                 6.width,
                 CommonText(
                   text: "Estimated time: ${controller.estimatedTime}",

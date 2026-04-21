@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,10 +6,8 @@ import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../../component/button/common_button.dart';
-import '../../../../../../component/image/common_image.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../component/text_field/common_text_field.dart';
-import '../../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/helpers/other_helper.dart';
 import '../../../forgot password/presentation/widgets/resend_otp.dart';
 import '../../../../../../../utils/constants/app_string.dart';
@@ -40,23 +37,6 @@ class _VerifyUserState extends State<ChefVerifyUser> {
         elevation: 0,
         automaticallyImplyLeading: false,
         leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
-                shape: BoxShape.circle,
-              ),
-              child: CommonImage(
-                imageSrc: AppIcons.backIcon,
-                size: 24,
-              ),
-            ),
-          ),
-        ),
       ),
 
       /// Body Section starts here
@@ -111,35 +91,25 @@ class _VerifyUserState extends State<ChefVerifyUser> {
 
                   /// Resent OTP or show Timer
                   GestureDetector(
-
                     onTap:
+                        controller.time == '00:00'
+                            ? () {
+                              controller.startTimer();
 
-                    controller.time == '00:00'
-
-                        ? () {
-
-                      controller.startTimer();
-
-                      controller.signUpUser(LocalStorage.myRole);
-
-
-                    }
-                        : (
-
-
-                        ) {},
+                              controller.signUpUser(LocalStorage.myRole);
+                            }
+                            : () {},
 
                     child:
-
-                    controller.time == '00:00'
-                        ? ResendOtp()
-                        : CommonText(
-                      text:
-                      "${AppString.resendCodeIn} ${controller.time} ${AppString.minute}",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff272727),
-                    ),
+                        controller.time == '00:00'
+                            ? ResendOtp()
+                            : CommonText(
+                              text:
+                                  "${AppString.resendCodeIn} ${controller.time} ${AppString.minute}",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff272727),
+                            ),
                   ),
 
                   78.height,

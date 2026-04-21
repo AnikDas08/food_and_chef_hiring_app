@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
-import 'package:new_untitled/component/image/common_image.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/notifications_controller.dart';
@@ -27,28 +25,6 @@ class NotificationScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: false,
         leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Center(
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                height: 40,
-                width: 40,
-                decoration: const BoxDecoration(
-                  color: Color(0xffF6F6F6),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: CommonImage(
-                    imageSrc: AppIcons.backIcon,
-                    size: 24,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
         flexibleSpace: LiquidGlassLayer(
           child: LiquidGlass(
             shape: LiquidRoundedSuperellipse(borderRadius: 0),

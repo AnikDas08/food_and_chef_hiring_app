@@ -16,30 +16,20 @@ String text =
     "Javier Alison, born in Barcelona, Spain, is a celebrated chef known for his innovative Mediterranean cuisine. Trained at the Culinary Institute of Barcelona, Javier refined his skills at renowned restaurants like El Celler de Can Roca. In 2005, he opened his first restaurant, La Cuchara earning a Michelin star within three years. Javier has authored bestselling cookbooks and appeared on numerous cooking shows, sharing his passion and expertise. His philanthropic efforts include the Alison Culinary Foundation, supporting aspiring chefs and sustainable farming. Javier Alison continues to inspire with his creativity and dedication to culinary excellence";
 
 class ChefPublicProfile extends StatelessWidget {
-
   const ChefPublicProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return GetBuilder<ChefPublicProfileController>(
-
       init: ChefPublicProfileController(),
 
       builder:
-
           (controller) => Scaffold(
-
             body: SafeArea(
-
               child: Stack(
-
                 children: [
-
                   Stack(
-
                     children: [
-
                       CommonImage(imageSrc: AppImages.image3),
 
                       Positioned(
@@ -52,47 +42,32 @@ class ChefPublicProfile extends StatelessWidget {
                       ),
 
                       Positioned(
-
                         top: 30,
 
                         right: 10,
 
                         child: InkWell(
-
                           onTap: () {
-
                             SharePlus.instance.share(
-
                               ShareParams(text: 'https://example.com'),
-
                             );
-
                           },
 
                           child: CommonImage(imageSrc: AppIcons.share),
-
                         ),
-
                       ),
 
                       Positioned(
                         bottom: 40,
                         left: 20,
                         child: InkWell(
-
                           onTap: controller.onChange,
 
                           child: CommonImage(imageSrc: AppIcons.chef),
-
-
                         ),
-
                       ),
-
                     ],
-
                   ),
-
 
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -102,17 +77,14 @@ class ChefPublicProfile extends StatelessWidget {
                     decoration: BoxDecoration(color: Colors.white),
                     child: Column(
                       children: [
-
                         8.height,
 
                         Row(
-
                           crossAxisAlignment: CrossAxisAlignment.start,
 
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                           children: [
-
                             CommonText(
                               text: "Javier A.",
                               fontSize: 16,
@@ -126,15 +98,12 @@ class ChefPublicProfile extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                               color: Color(0xff272727),
                             ),
-
                           ],
-
                         ),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-
                             CommonImage(imageSrc: AppIcons.location),
 
                             CommonText(
@@ -168,8 +137,6 @@ class ChefPublicProfile extends StatelessWidget {
                               left: 2,
                               color: Color(0xff777777),
                             ),
-
-
                           ],
                         ),
 
@@ -199,7 +166,6 @@ class ChefPublicProfile extends StatelessWidget {
                         ).start,
 
                         Expanded(child: MenuPage()),
-
                       ],
                     ),
                   ),

@@ -10,7 +10,6 @@ import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-import '../../../../../component/button/back_button.dart';
 import '../../../../../component/google_map/google_map.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../data/address_model.dart';
@@ -33,7 +32,7 @@ class EditAddressScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Address"), leading: backButton()),
+      appBar: AppBar(title: const Text("Edit Address"), ),
       body: GetBuilder<AddressController>(
         builder: (controller) {
           // ── Full screen loader while fetching ────────────
