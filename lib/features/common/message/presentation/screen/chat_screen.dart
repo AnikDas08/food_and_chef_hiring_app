@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../component/image/common_image.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/screen/error_screen.dart';
 import '../../../../../component/text/common_text.dart';
@@ -28,82 +29,35 @@ class ChatListScreen extends StatelessWidget {
       extendBody: true,
       backgroundColor: Colors.white,
 
-      appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: false,
-        flexibleSpace: LiquidGlassLayer(
-          child: LiquidGlass(
-            shape: LiquidRoundedSuperellipse(borderRadius: 0),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.white.withOpacity(0.2),
-                    Colors.white.withOpacity(0.05),
-                  ],
-                ),
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.black.withOpacity(0.05),
-                    width: 0.5,
-                  ),
-                ),
-              ),
-            ),
+        appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.transparent,
+          centerTitle: false,
+          flexibleSpace: appBarOpacity(),
+          title: const CommonText(
+            text: AppString.chat,
+            fontWeight: FontWeight.w600,
+            fontSize: 24,
           ),
-        ),
-        title: const CommonText(
-          text: AppString.chat,
-          fontWeight: FontWeight.w600,
-          fontSize: 24,
-        ),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: LiquidGlassLayer(
-              child: LiquidGlass(
-                shape: LiquidRoundedSuperellipse(borderRadius: 30.r),
-                child: GetBuilder<ChatController>(
-                  builder: (controller) => CommonTextField(
-                    controller: controller.searchControllers,
-                    hintText: "Search",
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(60),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: LiquidGlassLayer(
+                child: LiquidGlass(
+                  shape: LiquidRoundedSuperellipse(borderRadius: 30.r),
+                  child: CommonTextField(
+                    hintText: AppString.search,
                     keyboardType: TextInputType.text,
                     borderRadius: 30,
-                    fillColor: Color(0xffF5F5F5),
-                    borderColor: Colors.transparent,
-                    onChanged: controller.searchChats,
+                    fillColor: Color(0xffFAFAFA).withValues(alpha: 0.7),
+                    borderColor: Colors.grey.withValues(alpha: 0.3),
+
                     prefixIcon: Padding(
                       padding: EdgeInsets.only(left: 16.w),
-                      child: Icon(
-                        CupertinoIcons.search,
-                        color: Color(0xff636363),
-                        size: 23.sp,
-                      ),
-                    ),
-                    // ── Filter icon with divider ──
-                    suffixIcon: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: 1,
-                          height: 22.h,
-                          color: Color(0xffE0E0E0),
-                        ),
-                        SizedBox(width: 12.w),
-                        Padding(
-                          padding: EdgeInsets.only(right: 20.w),
-                          child: CommonImage(
-                            imageSrc: AppIcons.fliter,
-                            imageColor: Color(0xff636363),
-                          ),
-                        ),
-                      ],
+                      child: Icon(CupertinoIcons.search),
                     ),
                   ),
                 ),
@@ -111,7 +65,7 @@ class ChatListScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
+
 
       /// Body Section
       body: GetBuilder<ChatController>(
