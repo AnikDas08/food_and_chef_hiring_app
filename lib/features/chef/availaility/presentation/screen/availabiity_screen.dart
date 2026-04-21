@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';

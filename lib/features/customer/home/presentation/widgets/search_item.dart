@@ -8,7 +8,6 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../controller/search_controller.dart';
-import 'chef_item.dart';
 
 const List<String> _sortList = [
   "Recommended",
