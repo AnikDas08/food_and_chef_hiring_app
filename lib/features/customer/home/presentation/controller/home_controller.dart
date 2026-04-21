@@ -314,8 +314,12 @@ class HomeController extends GetxController {
       final response = await ApiService.get("user/profile");
       if (response.statusCode == 200) {
         final data = response.data;
+        final profileAddress = response.data["data"]["address"] ?? "";
 
         // ✅ Only set address from profile if location address isn't set yet
+        if (defaultAddress.value.isEmpty) {
+          defaultAddress.value = profileAddress;
+        }
         if (address.isEmpty) {
           address = response.data["data"]["address"] ?? "";
           defaultAddress.value = response.data["data"]["address"] ?? "";

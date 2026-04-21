@@ -33,7 +33,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
   final FocusNode _searchFocusNode = FocusNode();
 
   static const double _expandedHeight = 300;
-  static const double _collapseThreshold = _expandedHeight - 56 - 10;
+  static const double _collapseThreshold = _expandedHeight - 75 - 10;
 
   @override
   void initState() {
@@ -449,7 +449,7 @@ class _SearchAppBarTitle extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
       decoration: BoxDecoration(
         color: const Color(0xffF2F2F2),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         children: [
@@ -571,7 +571,7 @@ class _CollapsedAppBarTitle extends StatelessWidget {
               children: [
                 CommonText(
                   text: chef?.name ?? "N/A",
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xff272727),
                 ),
@@ -582,7 +582,6 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: Colors.white,
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Row(
@@ -590,8 +589,8 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                         children: [
                           SvgPicture.asset(
                             'assets/icons/price.svg',
-                            height: 12,
-                            width: 12,
+                            height: 16,
+                            width: 16,
                             colorFilter: const ColorFilter.mode(
                               Color(0xff777777),
                               BlendMode.srcIn,
@@ -601,7 +600,7 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                           CommonText(
                             text:
                             "\$${chef?.pricing?.toStringAsFixed(2) ?? '0.00'}/hr",
-                            fontSize: 11,
+                            fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: const Color(0xff555555),
                           )

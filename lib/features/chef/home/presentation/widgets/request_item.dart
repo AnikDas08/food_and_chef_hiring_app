@@ -7,6 +7,7 @@ import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../config/api/api_end_point.dart';
+import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../chef_booking/presentation/widgets/Chef_Booking_Detail_Page.dart';
 import '../../../chef_booking/presentation/widgets/decline_pop_up.dart';
@@ -107,11 +108,11 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                         if (orderData != null) {
                           upcomingPopUp(orderData: orderData);
                         } else {
-                          Get.snackbar("Error", "Could not load order details");
+                          Utils.errorSnackBar("Error", "Could not load order details");
                         }
                       } catch (e) {
                         Navigator.pop(Get.context!);
-                        Get.snackbar("Error", "Something went wrong");
+                        Utils.errorSnackBar("Error", "Something went wrong");
                       }
 
                     } else if (value == 2) {
@@ -121,7 +122,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                           final homeC = Get.find<ChefHomeController>();
                           homeC.upcomingBookings.removeWhere((e) => e.id == booking.id);
                           homeC.fetchUpcomingBookings();
-                          Get.snackbar("Success", "Booking cancelled");
+                          Utils.successSnackBar("Success", "Booking cancelled");
                         },
                       );
                     }
@@ -259,7 +260,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       onSuccess: () {
                         homeC.requestedBookings.removeWhere((e) => e.id == booking.id);
                         homeC.fetchRequestedBookings();
-                        Get.snackbar("Success", "Booking declined");
+                        Utils.successSnackBar("Success", "Booking declined");
                       },
                     );
                   },
@@ -297,11 +298,11 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                         c.fetchUpcomingBookings();
                         showSuccessDialog();
                       } else {
-                        Get.snackbar("Message", res.data['message']?.toString() ?? "Something went wrong");
+                        Utils.successSnackBar("Message", res.data['message']?.toString() ?? "Something went wrong");
                       }
                     } catch (e) {
                       Navigator.pop(Get.context!);
-                      Get.snackbar("Error", "Something went wrong");
+                      Utils.errorSnackBar("Error", "Something went wrong");
                     }
                   },
                   child: Container(
@@ -335,11 +336,11 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       if (orderData != null) {
                         upcomingPopUp(orderData: orderData);
                       } else {
-                        Get.snackbar("Message", "Could not load order details");
+                        Utils.errorSnackBar("Message", "Could not load order details");
                       }
                     } catch (e) {
                       Navigator.pop(Get.context!);
-                      Get.snackbar("Message", "Something went wrong");
+                      Utils.errorSnackBar("Message", "Something went wrong");
                     }
                   },
                   child: Container(
@@ -516,7 +517,7 @@ void cancelBookingPopUp({
               child: ElevatedButton(
                 onPressed: () async {
                     if (selectedReason.value.isEmpty) {
-                      Get.snackbar("Warning", "Please select a reason");
+                      Utils.errorSnackBar("Warning", "Please select a reason");
                       return;
                     }
 
@@ -536,16 +537,16 @@ void cancelBookingPopUp({
 
                       if (res.statusCode == 200 && res.data['success'] == true) {
                         onSuccess();
-                        Get.snackbar("Success", "Booking cancelled successfully");
+                        Utils.successSnackBar("Success", "Booking cancelled successfully");
                       } else {
-                        Get.snackbar(
+                        Utils.errorSnackBar(
                           "Error",
                           res.data['message']?.toString() ?? "Something went wrong",
                         );
                       }
                     } catch (e) {
                       Navigator.pop(Get.context!);
-                      Get.snackbar("Error", "Something went wrong");
+                      Utils.errorSnackBar("Error", "Something went wrong");
                     }
                   },
                 style: ElevatedButton.styleFrom(

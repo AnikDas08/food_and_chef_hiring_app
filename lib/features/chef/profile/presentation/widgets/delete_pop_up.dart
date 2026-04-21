@@ -10,6 +10,7 @@ import '../../../../../component/button/common_button.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
+import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/constants/app_string.dart';
 
 deletePopUp() {
@@ -127,7 +128,7 @@ deletePopUp() {
                             final password = passwordController.text.trim();
 
                             if (password.isEmpty) {
-                              Get.snackbar("Warning", "Please enter your password");
+                              Utils.errorSnackBar("Warning", "Please enter your password");
                               return;
                             }
 
@@ -148,13 +149,13 @@ deletePopUp() {
 
                               if (res.statusCode == 200 &&
                                   res.data['success'] == true) {
-                                Get.snackbar(
+                                Utils.successSnackBar(
                                   "Success",
                                   "Account deleted successfully",
                                 );
                                 Get.offAllNamed('/login');
                               } else {
-                                Get.snackbar(
+                                Utils.errorSnackBar(
                                   "Message",
                                   res.data['message']?.toString() ??
                                       "Something went wrong",
@@ -162,7 +163,7 @@ deletePopUp() {
                               }
                             } catch (e) {
                               Navigator.pop(Get.context!);
-                              Get.snackbar("Message", "Something went wrong");
+                              Utils.errorSnackBar("Message", "Something went wrong");
                             }
                           },
                         ),

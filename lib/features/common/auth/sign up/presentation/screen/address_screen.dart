@@ -60,6 +60,7 @@ class AddressScreen extends StatelessWidget {
                     text: AppString.enterYourAddress,
                     fontSize: 24,
                     color: Color(0xff272727),
+                    fontWeight: FontWeight.w600,
                     top: 10,
                   ),
 

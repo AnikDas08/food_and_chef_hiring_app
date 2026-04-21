@@ -163,7 +163,7 @@ AppBar homeAppbar() {
                 "basket",
                 color: const Color(0xff272727),
               ),
-              size: 24.sp,
+              size: 24,
             ),
             Positioned.fill(
               child: GestureDetector(

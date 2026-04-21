@@ -10,7 +10,7 @@ class Utils {
       message,
       colorText: AppColors.white,
       backgroundColor: AppColors.black,
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition: SnackPosition.TOP,
     );
   }
 

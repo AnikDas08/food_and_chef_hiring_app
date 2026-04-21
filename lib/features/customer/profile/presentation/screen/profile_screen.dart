@@ -145,7 +145,9 @@ class ProfileScreen extends StatelessWidget {
                   Item(
                     icon: CupertinoIcons.location,
                     title: AppString.address,
-                    onTap: () => Get.toNamed(AppRoutes.addressScreen),
+                    onTap: () => Get.toNamed(AppRoutes.addressScreen,arguments: {
+                      "isLoading":false
+                    }),
                   ),
                   Item(
                     icon: CupertinoIcons.arrow_counterclockwise,

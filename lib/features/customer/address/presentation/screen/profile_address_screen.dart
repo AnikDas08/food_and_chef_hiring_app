@@ -3,22 +3,36 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
+import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
-import '../../../../../component/image/common_image.dart';
 import '../../../../../config/route/app_routes.dart';
-import '../../../../../utils/constants/app_icons.dart';
 import '../controller/address_controller.dart';
 import '../widgets/address_item.dart';
 
-class ProfileAddressScreen extends StatelessWidget {
+class ProfileAddressScreen extends StatefulWidget {
   const ProfileAddressScreen({super.key});
+
+  @override
+  State<ProfileAddressScreen> createState() => _ProfileAddressScreenState();
+}
+
+class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
+  late final AddressController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = Get.find<AddressController>();
+    _controller.refreshData();
+  }
 
   @override
   Widget build(BuildContext context) {
     // If navigated from checkout, this will be true
     final bool fromCheckout = Get.arguments?['fromCheckout'] == true;
-    final bool isLoading = Get.arguments?['isLoading'] == true;
+    final bool isLoadingArg = Get.arguments?['isLoading'] == true;
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +58,8 @@ class ProfileAddressScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: SafeArea(child: GetBuilder<AddressController>(
+      body: SafeArea(
+        child: GetBuilder<AddressController>(
           builder: (controller) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -68,82 +83,79 @@ class ProfileAddressScreen extends StatelessWidget {
 
                   Expanded(
                     child: controller.isLoading
-
-                    // ── Loading State ──────────────────────────
+                        // ── Loading State ──────────────────────────
                         ? const Center(child: CircularProgressIndicator())
-
-                    // ── Empty State ────────────────────────────
+                        // ── Empty State ────────────────────────────
                         : controller.addressList.isEmpty
-                        ? Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.location_off_outlined,
-                              size: 64,
-                              color: Color(0xff777777)),
-                          const SizedBox(height: 12),
-                          CommonText(
-                            text: "No addresses found",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xff272727),
-                          ),
-                        ],
-                      ),
-                    )
+                            ? Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.location_off_outlined,
+                                        size: 64, color: Color(0xff777777)),
+                                    const SizedBox(height: 12),
+                                    CommonText(
+                                      text: "No addresses found",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: const Color(0xff272727),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            // ── Address List ───────────────────────────
+                            : RefreshIndicator(
+                                onRefresh: controller.fetchAddresses,
+                                child: ListView.builder(
+                                  controller: controller.scrollController,
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  // +1 for the footer loader item
+                                  itemCount: controller.addressList.length + 1,
+                                  // In the ListView.builder, replace the existing itemBuilder logic:
+                                  itemBuilder: (context, index) {
+                                    if (index == controller.addressList.length) {
+                                      return _PaginationFooter(
+                                        isFetchingMore:
+                                            controller.isFetchingMore,
+                                        hasMorePages: controller.hasMorePages,
+                                      );
+                                    }
 
-                    // ── Address List ───────────────────────────
-                        : RefreshIndicator(
-                      onRefresh: controller.fetchAddresses,
-                      child: ListView.builder(
-                        controller: controller.scrollController,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        // +1 for the footer loader item
-                        itemCount: controller.addressList.length + 1,
-                        // In the ListView.builder, replace the existing itemBuilder logic:
-                        itemBuilder: (context, index) {
-                          if (index == controller.addressList.length) {
-                            return _PaginationFooter(
-                              isFetchingMore: controller.isFetchingMore,
-                              hasMorePages: controller.hasMorePages,
-                            );
-                          }
+                                    final address =
+                                        controller.addressList[index];
 
-                          final address = controller.addressList[index];
-                          final bool isThisItemLoading = controller.isDeleting &&
-                              controller.selectedLatitude == null;
+                                    if (fromCheckout) {
+                                      return GestureDetector(
+                                        onTap: () =>
+                                            Navigator.pop(context, address),
+                                        child: addressItem(
+                                          address,
+                                          controller,
+                                          fromCheckout: true,
+                                          selectedAddressId: Get.arguments?[
+                                              'selectedAddressId'],
+                                        ),
+                                      );
+                                    }
 
-                          if (fromCheckout) {
-                            return GestureDetector(
-                              onTap: () => Navigator.pop(context, address),
-                              child: addressItem(
-                                address,
-                                controller,
-                                fromCheckout: true,
-                                selectedAddressId: Get.arguments?['selectedAddressId'],
+                                    return GestureDetector(
+                                      onTap: isLoadingArg
+                                          ? () => controller.updateLocation(address.id)
+                                          : null,
+                                      child: addressItem(
+                                        address,
+                                        controller,
+                                        fromCheckout: false,
+                                        // Pass the default ID so the radio button shows checked/unchecked correctly
+                                        selectedAddressId:
+                                            controller.defaultAddressid,
+                                        isLoading: isLoadingArg,
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
-                            );
-                          }
-                          // lib/features/address/view/profile_address_screen.dart
-
-                          if (isLoading) {
-                            return GestureDetector(
-                              onTap: () => controller.updateLocation(address.id),
-                              child: addressItem(
-                                address,
-                                controller,
-                                fromCheckout: false,
-                                // Pass the default ID so the radio button shows checked/unchecked correctly
-                                selectedAddressId: controller.defaultAddressid,
-                                isLoading: true
-                              ),
-                            );
-                          }
-
-                          return addressItem(address, controller);
-                        },
-                      ),
-                    ),
                   ),
                 ],
               ),

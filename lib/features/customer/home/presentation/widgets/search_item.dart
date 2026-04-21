@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/features/customer/home/presentation/widgets/search_chefitem.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
@@ -124,13 +125,16 @@ class SearchItem extends StatelessWidget {
                 itemCount: chefs.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  mainAxisExtent: 230.h,
+                  // Let the grid cell height = (screen width / 2 - spacing) * ratio
+                  // 0.68 gives enough room for image + name + distance + price on all phones
+                  childAspectRatio: (Get.width / 2 - 24) / 240,
                   mainAxisSpacing: 8.h,
                   crossAxisSpacing: 8.w,
                 ),
                 itemBuilder: (context, index) {
-                  return chefItem(
-                    height: 140.h,
+                  return SearchChef(
+                    // image height = 55% of the cell height
+                    height: ((Get.width / 2 - 24) / 0.68) * 0.55,
                     isSearch: true,
                     chef: chefs[index],
                   );

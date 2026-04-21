@@ -140,9 +140,9 @@ Widget recommended() {
                 ),*/
                 CommonText(
                   text: "Retry",
-                  fontSize: 15.sp,
+                  fontSize: 12.sp,
                   color: Color(0xff272727),
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],

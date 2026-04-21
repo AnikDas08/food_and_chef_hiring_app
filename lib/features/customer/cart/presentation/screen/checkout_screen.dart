@@ -96,7 +96,8 @@ class CheckoutScreen extends StatelessWidget {
                   controller: controller.dateController,
                   keyboardType: TextInputType.none,
                   borderRadius: 20,
-                  fontSize: 14,
+                  fontSize: 12,
+                  hintTextSize: 12,
                   hintText: "1 January 2026, 5:20PM",
                   onTap: () => bookingDateTimePopup(
                     id: controller.chefGroups.isNotEmpty
@@ -491,11 +492,14 @@ class CheckoutScreen extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xff272727),
+                  bottom: 10,
                 ),
                 CommonText(
                   text: customizations,
                   fontSize: 12,
+                  textAlign: TextAlign.start,
                   fontWeight: FontWeight.w400,
+                  maxLines: 2,
                   color: const Color(0xff777777),
                 ),
               ],

@@ -7,6 +7,7 @@ import '../../../../../../config/route/app_routes.dart';
 import '../../../../../../services/api/api_service.dart';
 import '../../../../../../services/storage/storage_keys.dart';
 import '../../../../../../services/storage/storage_services.dart';
+import '../../../../../../utils/app_utils.dart';
 
 class SignInController extends GetxController {
   /// Sign in Button Loading variable
@@ -69,11 +70,11 @@ class SignInController extends GetxController {
       } else if (response.data["data"]["role"] == "CUSTOMER") {
         Get.offAllNamed(AppRoutes.customerHomeScreen);
       } else {
-        Get.snackbar("Message", response.message);
+        Utils.successSnackBar("Message", response.message);
       }
 
     } else {
-      Get.snackbar(response.statusCode.toString(), response.message);
+      Utils.errorSnackBar("Error", response.message);
     }
 
     isLoading = false;

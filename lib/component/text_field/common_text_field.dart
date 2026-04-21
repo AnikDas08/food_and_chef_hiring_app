@@ -24,6 +24,7 @@ class CommonTextField extends StatelessWidget {
     this.paddingVertical = 18,
     this.borderRadius = 20,
     this.fontSize = 14,
+    this.hintTextSize = 14,
     this.inputFormatters,
     this.fillColor = const Color(0xffF2F2F2),
     this.hintTextColor = AppColors.textFiledColor,
@@ -58,6 +59,7 @@ class CommonTextField extends StatelessWidget {
   final bool isPassword;
   final bool? isDense;
   final double fontSize;
+  final double hintTextSize;
   RxBool obscureText = false.obs;
   final Function(String)? onSubmitted;
   final Function(String)? onFieldSubmitted;
@@ -117,7 +119,7 @@ class CommonTextField extends StatelessWidget {
           hintText: hintText,
           labelText: labelText,
           hintStyle: TextStyle(
-            fontSize: 14.sp,
+            fontSize: hintTextSize,
             color: hintTextColor,
             fontWeight: FontWeight.w400,
           ),

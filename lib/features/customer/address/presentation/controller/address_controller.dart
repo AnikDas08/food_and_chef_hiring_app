@@ -60,13 +60,16 @@ class AddressController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-
     _listenScroll();
-    fetchAddresses();
-    getProfileData();
     _listenAddressField();
     _listenAdditionalField();
+  }
+
+  Future<void> refreshData() async {
+    await Future.wait([
+      fetchAddresses(),
+      getProfileData(),
+    ]);
   }
 
   @override
@@ -95,7 +98,6 @@ class AddressController extends GetxController {
   }
 
   Future<void> fetchAddresses() async {
-    if (isLoading) return;
     isLoading = true;
     _currentPage = 1;
     addressList.clear();
@@ -115,14 +117,17 @@ class AddressController extends GetxController {
     }
   }
 
-  void getProfileData() async {
+  Future<void> getProfileData() async {
     try {
       final response = await ApiService.get("user/profile");
       if (response.statusCode == 200) {
         final data = response.data;
-        defaultAddressid=data["data"]["default_address"];
+        defaultAddressid = data["data"]["default_address"];
+        update();
       }
-    } catch (e) {}
+    } catch (e) {
+      debugPrint("Error fetching profile: $e");
+    }
   }
 
   Future<void> loadMoreAddresses() async {
@@ -554,8 +559,7 @@ class AddressController extends GetxController {
         _resetForm();
         fetchAddresses();
         Navigator.pop(Get.context!);
-        Get.snackbar("Success", "Address added successfully",
-            snackPosition: SnackPosition.BOTTOM);
+        Utils.successSnackBar("Success", "Address added successfully");
       } else {
         _showError("Failed to add address");
       }
@@ -590,8 +594,7 @@ class AddressController extends GetxController {
       final success = await AddressRepository.deleteAddress(id);
       if (success) {
         addressList.removeWhere((e) => e.id == id);
-        Get.snackbar("Success", "Address deleted successfully",
-            snackPosition: SnackPosition.BOTTOM);
+        Utils.successSnackBar("Success", "Address deleted successfully");
       } else {
         _showError("Failed to delete address");
       }
@@ -627,6 +630,7 @@ class AddressController extends GetxController {
         homeCtrl.getProfileData();
         homeCtrl.getNearbyChefs();
 
+        Navigator.pop(Get.context!);
         Utils.successSnackBar("Location Updated", "Current Location changed.");
       }
     } catch (e) {
@@ -642,6 +646,6 @@ class AddressController extends GetxController {
   // ══════════════════════════════════════════════════════════
 
   void _showError(String msg) {
-    Get.snackbar("error", msg.toString(), snackPosition: SnackPosition.BOTTOM);
+    Utils.errorSnackBar("Error", msg.toString());
   }
 }

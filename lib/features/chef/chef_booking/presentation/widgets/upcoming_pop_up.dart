@@ -9,6 +9,7 @@ import '../../../../../component/image/common_image.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../services/api/api_service.dart';
+import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_images.dart';
 import '../../../../../utils/constants/app_string.dart';
@@ -360,10 +361,10 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                                   'image': orderData?['user']?['image'] ?? "",
                                 });
                               } else {
-                                Get.snackbar("Error", "Failed to open chat");
+                                Utils.errorSnackBar("Error", "Failed to open chat");
                               }
                             } catch (e) {
-                              Get.snackbar("Error", e.toString());
+                              Utils.errorSnackBar("Error", e.toString());
                             }
                           },
                         ),

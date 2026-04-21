@@ -184,7 +184,7 @@ class BookingHistoryController extends GetxController {
 
   Future<void> cancelBooking(String id, String reason) async {
     if (reason.isEmpty) {
-      Get.snackbar("Required", "Please provide a reason for cancellation");
+      Utils.errorSnackBar("Required", "Please provide a reason for cancellation");
       return;
     }
 
@@ -203,10 +203,10 @@ class BookingHistoryController extends GetxController {
       Navigator.pop(Get.context!); // Close loading indicator
 
       if (response.statusCode == 200) {
-        Get.snackbar("Success", "Booking cancelled", backgroundColor: Colors.green, colorText: Colors.white);
+        Utils.successSnackBar("Success", "Booking cancelled");
         await fetchOrders(isRefresh: true);
       } else {
-        Get.snackbar("Error", response.data['message'] ?? "Failed to cancel");
+        Utils.errorSnackBar("Error", response.data['message'] ?? "Failed to cancel");
       }
     } catch (e) {
       Navigator.pop(Get.context!); // Close loading
@@ -243,7 +243,7 @@ class BookingHistoryController extends GetxController {
     required String note,
   }) async {
     if (date.isEmpty || time.isEmpty || addressId.isEmpty) {
-      Get.snackbar("Error", "Please select both date/time and address");
+      Utils.errorSnackBar("Error", "Please select both date/time and address");
       return;
     }
 
@@ -264,21 +264,12 @@ class BookingHistoryController extends GetxController {
       //Navigator.pop(Get.context!); // Close loading
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        Get.snackbar("Success", "Request change sent successfully",
-            backgroundColor: Colors.green, colorText: Colors.white);
+        Utils.successSnackBar("Success", "Request change sent successfully");
 
         // Navigate back to Booking History or Home
         //Get.offAllNamed(AppRoutes.customerHomeScreen);
       } else {
-        //Get.snackbar("Error", response.data['message'] ?? "Failed to send request");
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-          SnackBar(
-            content: Text(response.data["message"]),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating, // Optional: makes it float like Get.snackbar
-            duration: const Duration(seconds: 3),
-          ),
-        );
+        Utils.errorSnackBar("Error", response.data['message'] ?? "Failed to send request");
       }
     } catch (e) {
       Navigator.pop(Get.context!);

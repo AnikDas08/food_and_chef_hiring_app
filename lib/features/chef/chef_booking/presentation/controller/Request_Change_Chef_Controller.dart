@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
+import '../../../../../utils/app_utils.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 
 class RequestChangeChefController extends GetxController {
@@ -22,8 +23,7 @@ class RequestChangeChefController extends GetxController {
     }
 
     if (orderId.isEmpty) {
-      Get.snackbar("Error", "Order ID not found",
-          backgroundColor: Colors.red, colorText: Colors.white);
+      Utils.errorSnackBar("Error", "Order ID not found");
       return;
     }
 
@@ -46,19 +46,15 @@ class RequestChangeChefController extends GetxController {
         await home?.fetchUpcomingBookings();
 
         Navigator.pop(Get.context!);
-        Get.snackbar("Success", "Change request submitted successfully",
-            backgroundColor: Colors.green, colorText: Colors.white);
+        Utils.successSnackBar("Success", "Change request submitted successfully");
       } else {
-        Get.snackbar(
+        Utils.errorSnackBar(
           "Error",
           response.data['message']?.toString() ?? "Something went wrong",
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
         );
       }
     } catch (e) {
-      Get.snackbar("Error", e.toString(),
-          backgroundColor: Colors.red, colorText: Colors.white);
+      Utils.errorSnackBar("Error", e.toString());
     } finally {
       isLoading.value = false;
     }

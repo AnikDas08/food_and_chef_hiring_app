@@ -40,7 +40,7 @@ class ChangePasswordController extends GetxController {
 
       Navigator.pop(Get.context!);
     } else {
-      Get.snackbar(response.statusCode.toString(), response.message);
+      Utils.errorSnackBar(response.statusCode.toString(), response.message);
     }
     isLoading = false;
     update();

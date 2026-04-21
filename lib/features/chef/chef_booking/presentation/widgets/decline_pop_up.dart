@@ -5,6 +5,7 @@ import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
+import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_booking_controller.dart';
@@ -119,7 +120,7 @@ declineBookingPopUp({
                             onTap: () async {
 
                               if (controller.selectDietary.isEmpty) {
-                                Get.snackbar("Message", "Please select a reason");
+                                Utils.errorSnackBar("Message", "Please select a reason");
                                 return;
                               }
 
@@ -136,7 +137,7 @@ declineBookingPopUp({
 
                                 onSuccess();
                               } else {
-                                Get.snackbar(
+                                Utils.errorSnackBar(
                                   "Error",
                                   res.data['message']?.toString() ?? "Something went wrong",
                                 );
