@@ -115,8 +115,9 @@ class GroceryScreen extends StatelessWidget {
                 ] else ...[
                   CommonText(
                     text: "Select bookings for grocery delivery",
-                    color: Colors.grey,
-                    fontSize: 12.sp,
+                    color: Color(0xff272727),
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
                   ),
                   SizedBox(height: 12.h),
                   // Inside the Column, replace _buildFullListView(controller) with:
@@ -126,8 +127,9 @@ class GroceryScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(vertical: 20.h),
                           child: CommonText(
                             text: "No pending bookings available",
-                            color: Colors.grey,
+                            color: Color(0xff777777),
                             fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       )
@@ -137,15 +139,18 @@ class GroceryScreen extends StatelessWidget {
                 SizedBox(height: 24.h),
 
                 // --- 2. PARTNER SELECTION (RESTORED LOGIC) ---
-                const CommonText(
+              CommonText(
                   text: "Choose your grocery delivery partner",
-                  fontWeight: FontWeight.bold,
+                  color: Color(0xff272727),
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
                 ),
                 SizedBox(height: 6.h),
                 CommonText(
                   text: "Order groceries for your booking",
-                  color: Colors.grey,
+                  color: Color(0xff777777),
                   fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
                 ),
 
                 Padding(
@@ -177,9 +182,11 @@ class GroceryScreen extends StatelessWidget {
                 SizedBox(height: 24.h),
 
                 // --- 3. GROCERY BASKET ---
-                const CommonText(
+              CommonText(
                   text: "Edit your grocery basket",
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff272727),
+                  fontSize: 16.sp,
                 ),
                 SizedBox(height: 12.h),
 

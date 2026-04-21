@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
+import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
@@ -30,7 +32,7 @@ class CartScreen extends StatelessWidget {
           appBar: AppBar(
             systemOverlayStyle: SystemUiOverlayStyle.dark,
             automaticallyImplyLeading: false,
-            centerTitle: false,
+            centerTitle: true,
             backgroundColor: Colors.transparent,
             elevation: 0,
 
@@ -59,30 +61,11 @@ class CartScreen extends StatelessWidget {
               ),
             ),
 
-            // ── Styled Back Button with Background ──────────────────────────
-            leadingWidth: 56.w, // Ensure enough width for the background
-            leading: Center(
-              child: Container(
-                margin: EdgeInsets.only(left: 12.w),
-                height: 36.r,
-                width: 36.r,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.5), // Semi-transparent white
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.05),
-                    width: 0.5,
-                  ),
-                ),
-                child: IconButton(
-                  padding: EdgeInsets.zero, // Remove default padding to center the icon
-                  icon: Icon(
-                    Icons.arrow_back_ios_new, // A cleaner iOS style icon
-                    color: const Color(0xff272727),
-                    size: 16.r,
-                  ),
-                  onPressed: () => Navigator.pop(context),
-                ),
+            leading: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: SvgPicture.asset(
+                AppIcons.backIcon,
+                height: 24.sp,
               ),
             ),
 

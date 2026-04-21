@@ -89,7 +89,7 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Container(
               height: 60.h,
               decoration: BoxDecoration(
-                color: const Color(0xffF2F2F2).withOpacity(0.6),
+                color: const Color(0xffF2F2F2).withOpacity(0.8),
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Row(

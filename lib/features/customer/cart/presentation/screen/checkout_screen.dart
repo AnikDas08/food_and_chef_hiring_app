@@ -35,21 +35,11 @@ class CheckoutScreen extends StatelessWidget {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: Padding(
-          padding: EdgeInsets.all(8.sp),
-          child: InkWell(
-            onTap: () => Get.back(),
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: SvgPicture.asset(
-                  AppIcons.backIcon,
-                ),
-              ),
-            ),
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: SvgPicture.asset(
+            AppIcons.backIcon,
+            height: 24.sp,
           ),
         ),
         title: CommonText(

@@ -535,7 +535,7 @@ class _CollapsedAppBarTitle extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       decoration: BoxDecoration(
         color: const Color(0xffF2F2F2),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         children: [

@@ -97,7 +97,8 @@ AppBar homeAppbar() {
                                         ? "Fetching location..."
                                         : controller.defaultAddress.value,
                                 color: Color(0xff272727),
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14.sp,
                                 left: 4,
                               ),
                             ),
