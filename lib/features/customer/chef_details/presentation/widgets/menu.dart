@@ -41,6 +41,7 @@ class MenuPage extends StatelessWidget {
 
         // ── Normal tab view ──────────────────────────────────────────
         return TabBarView(
+          controller: controller.tabController,
           children: sections.map((s) => _MenuList(section: s)).toList(),
         );
       },

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/services/api/api_service.dart';
 import 'package:new_untitled/utils/app_utils.dart';
@@ -8,7 +8,7 @@ import '../../../home/presentation/data/chef_model.dart';
 import '../../data/chef_details.dart';
 import '../../data/mamu_model.dart';
 
-class ChefDetailsController extends GetxController {
+class ChefDetailsController extends GetxController with GetSingleTickerProviderStateMixin {
   static ChefDetailsController get instance =>
       Get.find<ChefDetailsController>();
 
@@ -26,6 +26,7 @@ class ChefDetailsController extends GetxController {
   String selectedMenuSection = "Stater";
   static const int _pageLimit = 10;
   String chefId = "";
+  TabController? tabController;
 
   // ── Search state ─────────────────────────────────────────────────────────────
   String searchQuery = "";
@@ -119,7 +120,19 @@ class ChefDetailsController extends GetxController {
         isFavorite = chefDetail?.isFavorite ?? false;
 
         final sections = chefDetail?.menuSections ?? [];
-        if (sections.isNotEmpty) selectedMenuSection = sections.first;
+        if (sections.isNotEmpty) {
+          selectedMenuSection = sections.first;
+          if (tabController == null || tabController!.length != sections.length) {
+            tabController?.dispose();
+            tabController = TabController(length: sections.length, vsync: this);
+            tabController!.addListener(() {
+              if (!tabController!.indexIsChanging) {
+                selectedMenuSection = sections[tabController!.index];
+                update();
+              }
+            });
+          }
+        }
       } else {
         Utils.errorSnackBar('Error', 'Failed to fetch chef details');
       }
@@ -221,10 +234,27 @@ class ChefDetailsController extends GetxController {
 
     searchResults = allItems.where((item) {
       final name = (item.name ?? "").toLowerCase();
-      final ingredients =
-      (item.ingredients ?? []).join(" ").toLowerCase();
+      final ingredients = (item.ingredients ?? [])
+          .map((e) => e.name ?? "")
+          .join(" ")
+          .toLowerCase();
       return name.contains(lowerQuery) || ingredients.contains(lowerQuery);
     }).toList();
+
+    // Automatic select tab based on search result
+    if (searchResults.isNotEmpty) {
+      final sections = chefDetail?.menuSections ?? [];
+      final firstResultSection = searchResults.first.menuSection;
+      if (firstResultSection != null) {
+        int index = sections.indexOf(firstResultSection);
+        if (index != -1 && tabController != null) {
+          if (tabController!.index != index) {
+            tabController!.animateTo(index);
+            selectedMenuSection = firstResultSection;
+          }
+        }
+      }
+    }
 
     update();
   }
@@ -332,5 +362,11 @@ class ChefDetailsController extends GetxController {
   onChangeDish(int index) {
     dish[index]["isSelected"] = !dish[index]["isSelected"];
     update();
+  }
+
+  @override
+  void onClose() {
+    tabController?.dispose();
+    super.onClose();
   }
 }

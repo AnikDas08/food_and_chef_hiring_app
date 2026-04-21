@@ -351,7 +351,10 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                   if (!controller.isLoadingDetail && sections.isNotEmpty)
                     SliverPersistentHeader(
                       pinned: true,
-                      delegate: _MenuTabBarDelegate(sections: sections),
+                      delegate: _MenuTabBarDelegate(
+                        sections: sections,
+                        controller: controller,
+                      ),
                     ),
                 ];
               },
@@ -648,8 +651,12 @@ class _CollapsedAppBarTitle extends StatelessWidget {
 
 class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
   final List<String> sections;
+  final ChefDetailsController controller;
 
-  const _MenuTabBarDelegate({required this.sections});
+  const _MenuTabBarDelegate({
+    required this.sections,
+    required this.controller,
+  });
 
   @override
   double get minExtent => 80;
@@ -679,6 +686,7 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
           SizedBox(
             height: 36,
             child: TabBar(
+              controller: controller.tabController,
               isScrollable: isScrollable,
               tabAlignment: isScrollable
                   ? TabAlignment.start
