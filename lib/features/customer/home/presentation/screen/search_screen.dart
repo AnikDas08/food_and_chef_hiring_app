@@ -81,51 +81,55 @@ class _SearchScreenState extends State<SearchScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         automaticallyImplyLeading: false,
-        toolbarHeight: 80.h,
-        leadingWidth: 60.w,
-        leading: Padding(
-          padding: EdgeInsets.only(left: 16.w, top: 8.h, bottom: 8.h),
-          child: InkWell(
-            onTap: () => Get.back(),
+        toolbarHeight: 90.h,
+        titleSpacing: 16.w,
+        title: LiquidGlassLayer(
+          child: LiquidGlass(
+            shape: LiquidRoundedSuperellipse(borderRadius: 20.r),
             child: Container(
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
-                shape: BoxShape.circle,
+              height: 60.h,
+              decoration: BoxDecoration(
+                color: const Color(0xffF2F2F2).withOpacity(0.6),
+                borderRadius: BorderRadius.circular(20.r),
               ),
-              child: Center(
-                child: SvgPicture.asset(
-                  AppIcons.backIcon,
-                ),
-              ),
-            ),
-          ),
-        ),
-        title: Container(
-          height: 44.h,
-          decoration: BoxDecoration(
-            color: const Color(0xffF6F6F6),
-            borderRadius: BorderRadius.circular(30.r),
-          ),
-          child: TextField(
-            controller: _controller.searchController,
-            focusNode: _focusNode,
-            onChanged: _controller.onSearchChanged,
-            onSubmitted: (value) {
-              _controller.onSearchSubmitted(value);
-              _focusNode.unfocus();
-            },
-            style: TextStyle(fontSize: 14.sp),
-            decoration: InputDecoration(
-              hintText: "Search chefs...",
-              hintStyle: TextStyle(
-                fontSize: 14.sp,
-                color: const Color(0xff777777),
-              ),
-              suffixIcon: _buildSuffixIcon(),
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 16.w,
-                vertical: 10.h,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 4.w),
+                    child: IconButton(
+                      onPressed: () => Get.back(),
+                      icon: Icon(
+                        Icons.arrow_back_ios_new,
+                        size: 18.sp,
+                        color: const Color(0xff272727),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: TextField(
+                      controller: _controller.searchController,
+                      focusNode: _focusNode,
+                      onChanged: _controller.onSearchChanged,
+                      onSubmitted: (value) {
+                        _controller.onSearchSubmitted(value);
+                        _focusNode.unfocus();
+                      },
+                      style: TextStyle(fontSize: 14.sp),
+                      decoration: InputDecoration(
+                        hintText: "Search chefs...",
+                        hintStyle: TextStyle(
+                          fontSize: 14.sp,
+                          color: const Color(0xff777777),
+                        ),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 12.h,
+                        ),
+                      ),
+                    ),
+                  ),
+                  _buildSuffixIcon(),
+                ],
               ),
             ),
           ),
