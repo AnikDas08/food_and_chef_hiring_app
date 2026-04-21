@@ -166,7 +166,7 @@ class BookingHistoryScreen extends StatelessWidget {
       displacement: 130.h,
       child: ListView.builder(
         // Padding top must be enough to clear the AppBar height (80h toolbar + 50h tabs + status bar)
-        padding: EdgeInsets.fromLTRB(16.w, 170.h, 16.w, 100.h),
+        padding: EdgeInsets.fromLTRB(16.w, 140.h, 16.w, 100.h),
         itemCount:
             controller.orders.length + (controller.isPaginationLoading ? 1 : 0),
         itemBuilder: (context, index) {

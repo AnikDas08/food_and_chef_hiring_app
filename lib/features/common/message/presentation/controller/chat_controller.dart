@@ -38,11 +38,14 @@ class ChatController extends GetxController {
     if (query.trim().isEmpty) {
       filteredChats = List.from(chats);
     } else {
-      filteredChats = chats
-          .where((chat) => chat.participant.fullName
-          .toLowerCase()
-          .contains(query.toLowerCase()))
-          .toList();
+      filteredChats =
+          chats
+              .where(
+                (chat) => chat.participant.fullName.toLowerCase().contains(
+                  query.toLowerCase(),
+                ),
+              )
+              .toList();
     }
     update();
   }
