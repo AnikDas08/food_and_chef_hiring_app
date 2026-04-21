@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../component/button/common_button.dart';
+import '../../../../../../component/image/common_image.dart';
+import '../../../../../../utils/constants/app_icons.dart';
 import '../add documents/Model/UploadedFileModel.dart';
 
 class UploadSectionWidget extends StatelessWidget {
@@ -212,16 +214,29 @@ class BaseDocPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
               child: Row(children: [
-                IconButton(
-                  onPressed: onBack ?? () => Navigator.of(context).maybePop(),
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                      size: 18, color: _textPrimary),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8,bottom: 3),
+                  child: GestureDetector(
+                    onTap: onBack ?? () => Navigator.of(context).maybePop(),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        color: Color(0xffF6F6F6),
+                        shape: BoxShape.circle,
+                      ),
+                      child: CommonImage(
+                        imageSrc: AppIcons.backIcon,
+                        size: 24,
+                      ),
+                    ),
+                  ),
                 ),
                 const Spacer(),
                 if (trailingAction != null) trailingAction!,
               ]),
             ),
-
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
               child: Row(

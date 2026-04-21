@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../utils/constants/app_icons.dart';
@@ -12,9 +13,7 @@ class AppInformationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-
       backgroundColor: Colors.white,
-
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -45,12 +44,14 @@ class AppInformationScreen extends StatelessWidget {
           children: [
 
             Container(
+
               width: 200.w,
               height: 200.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.black,
               ),
+
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
@@ -59,15 +60,14 @@ class AppInformationScreen extends StatelessWidget {
                 ),
               ),
             ),
+
             SizedBox(height: 20.h),
 
-            Text(
-              "Version 1.01.01",
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 14.sp,
-              ),
+            CommonText(text: "Version 1.01.01",
+            fontSize: 14.sp,
+            color: Colors.grey,
             ),
+
           ],
         ),
       ),

@@ -66,6 +66,7 @@ class _ChefDocFlowState extends State<ChefDocFlow> {
         );
 
       case 3:
+
         return CulinaryCertPage(
           onBack: _back,
           onContinue: _next,
