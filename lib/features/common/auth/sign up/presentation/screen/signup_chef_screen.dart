@@ -36,7 +36,6 @@ class SignupChefScreen extends StatelessWidget {
             child: Form(
               key: _formKeys,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -76,14 +75,14 @@ class SignupChefScreen extends StatelessWidget {
                     isLoading: controller.isLoading,
                     onTap: () {
                       if (_formKeys.currentState!.validate()) {
-                        controller.signUpUser("CHEF");
+                        controller.signUpUser('CHEF');
                       }
                     },
                   ),
                   28.height,
                   Row(
                     children: [
-                      Expanded(child: Divider()),
+                      const Expanded(child: Divider()),
                       10.width,
                       const CommonText(
                         text: AppString.orUsing,
@@ -91,7 +90,7 @@ class SignupChefScreen extends StatelessWidget {
                         color: Color(0xff777777),
                       ),
                       10.width,
-                      Expanded(child: Divider()),
+                      const Expanded(child: Divider()),
                     ],
                   ),
 
@@ -99,12 +98,11 @@ class SignupChefScreen extends StatelessWidget {
                   Container(
                     height: 60.h,
                     decoration: BoxDecoration(
-                      color: Color(0xffF2F2F2),
+                      color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(20.r),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CommonImage(imageSrc: AppIcons.facebook),
                         CommonText(
@@ -119,12 +117,11 @@ class SignupChefScreen extends StatelessWidget {
                   Container(
                     height: 60.h,
                     decoration: BoxDecoration(
-                      color: Color(0xffF2F2F2),
+                      color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(20.r),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CommonImage(imageSrc: AppIcons.google),
                         CommonText(
@@ -140,19 +137,18 @@ class SignupChefScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 32),
                       child: RichText(
-                        textAlign: TextAlign.start,
                         maxLines: 2,
                         text: TextSpan(
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
                             color: Color(0xff777777),
                           ),
                           children: [
-                            TextSpan(text: "Sign up to Privae as a "),
+                            const TextSpan(text: 'Sign up to Privae as a '),
                             TextSpan(
-                              text: "Customer",
-                              style: TextStyle(
+                              text: 'Customer',
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xff000000),
                               ),

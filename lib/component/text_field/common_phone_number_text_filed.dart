@@ -12,7 +12,7 @@ class CommonPhoneNumberTextFiled extends StatelessWidget {
     this.onChanged,
     required this.controller,
     required this.countryChange,
-    this.initialCountryCode = "US",
+    this.initialCountryCode = 'US',
   });
 
   final TextEditingController controller;
@@ -27,12 +27,12 @@ class CommonPhoneNumberTextFiled extends StatelessWidget {
       key: ValueKey(initialCountryCode),
       controller: controller,
       onCountryChanged: countryChange,
-      dropdownTextStyle: TextStyle(color: AppColors.black, fontSize: 14),
+      dropdownTextStyle: const TextStyle(color: AppColors.black, fontSize: 14),
       onChanged: (phone) {
         onChanged?.call(phone);
       },
-      style: TextStyle(color: AppColors.black, fontSize: 14),
-      pickerDialogStyle: PickerDialogStyle(backgroundColor: Color(0xffF2F2F2)),
+      style: const TextStyle(color: AppColors.black, fontSize: 14),
+      pickerDialogStyle: PickerDialogStyle(backgroundColor: const Color(0xffF2F2F2)),
       decoration: const InputDecoration(
         hintText: AppString.phoneNumber,
         hintStyle: TextStyle(color: AppColors.textFiledColor, fontSize: 14),

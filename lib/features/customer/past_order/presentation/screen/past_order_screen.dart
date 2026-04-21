@@ -20,11 +20,11 @@ class PastOrderScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CommonText(
+              const CommonText(
                 text: AppString.pastBookings,
                 fontWeight: FontWeight.w600,
                 fontSize: 24,
-                color: const Color(0xff272727),
+                color: Color(0xff272727),
                 bottom: 8,
               ),
 
@@ -42,21 +42,19 @@ class PastOrderScreen extends StatelessWidget {
 
                     // ── Empty ──────────────────────────────
                     if (controller.orderList.isEmpty) {
-                      return Center(
+                      return const Center(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.receipt_long_outlined,
                               size: 64,
                               color: Color(0xff777777),
                             ),
-                            const SizedBox(height: 12),
+                            SizedBox(height: 12),
                             CommonText(
-                              text: "No past orders found",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xff777777),
+                              text: 'No past orders found',
+                              color: Color(0xff777777),
                             ),
                           ],
                         ),

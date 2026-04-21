@@ -22,25 +22,25 @@ class StripeWebViewScreen extends StatelessWidget {
             ..setNavigationDelegate(
               NavigationDelegate(
                 onNavigationRequest: (request) {
-                  if (request.url.contains("success")) {
+                  if (request.url.contains('success')) {
                     Get.offAllNamed(AppRoutes.customerHomeScreen);
                     Get.snackbar(
-                      "Successful",
-                      "Your Payment has been successful",
+                      'Successful',
+                      'Your Payment has been successful',
                       backgroundColor: Colors.green,
                       colorText: Colors.white,
                     );
                     return NavigationDecision.prevent;
-                  } else if (request.url.contains("cancel")) {
+                  } else if (request.url.contains('cancel')) {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CheckoutScreen(),
+                        builder: (context) => const CheckoutScreen(),
                       ),
                     );
                     Get.snackbar(
                       AppString.cancel,
-                      "Your payment has been canceled",
+                      'Your payment has been canceled',
                       backgroundColor: AppColors.red,
                       colorText: AppColors.white,
                     );
@@ -50,9 +50,9 @@ class StripeWebViewScreen extends StatelessWidget {
                 },
                 onPageStarted: (_) {},
                 onPageFinished: (url) {
-                  if (url.contains("success")) {
+                  if (url.contains('success')) {
                     Get.offAllNamed(AppRoutes.customerHomeScreen);
-                  } else if (url.contains("cancel")) {
+                  } else if (url.contains('cancel')) {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

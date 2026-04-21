@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 
-void errorLog(dynamic e, {String source = ""}) {
+void errorLog(dynamic e, {String source = ''}) {
   try {
     if (kDebugMode) {
-      log(""""
+      log('''"
       >>>>>>>>>>>>>>>>>>>>>>>>>>>😡😡😡😡😡😡😡😡😡😡😡😡😡😡😡😡😡😡>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
           
           $source
@@ -17,7 +17,7 @@ void errorLog(dynamic e, {String source = ""}) {
       
 
       <<<<<<<<<<<<<<<<<<<<<<<<<<<😡😡😡😡😡😡😡😡😡😡😡😡😡😡😡😡😡😡<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-      """);
+      ''');
     }
   } catch (e) {
     ///////

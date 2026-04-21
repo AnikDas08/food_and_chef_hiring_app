@@ -38,7 +38,6 @@ class SignUpScreen extends StatelessWidget {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -81,7 +80,7 @@ class SignUpScreen extends StatelessWidget {
                     isLoading: controller.isLoading,
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        controller.signUpUser("CUSTOMER");
+                        controller.signUpUser('CUSTOMER');
                       }
                     },
                   ),
@@ -89,7 +88,7 @@ class SignUpScreen extends StatelessWidget {
 
                   Row(
                     children: [
-                      Expanded(child: Divider()),
+                      const Expanded(child: Divider()),
                       10.width,
                       const CommonText(
                         text: AppString.orUsing,
@@ -97,7 +96,7 @@ class SignUpScreen extends StatelessWidget {
                         color: Color(0xff777777),
                       ),
                       10.width,
-                      Expanded(child: Divider()),
+                      const Expanded(child: Divider()),
                     ],
                   ),
 
@@ -105,12 +104,11 @@ class SignUpScreen extends StatelessWidget {
                   Container(
                     height: 60,
                     decoration: BoxDecoration(
-                      color: Color(0xffF2F2F2),
+                      color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(20.r),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CommonImage(imageSrc: AppIcons.facebook),
                         CommonText(
@@ -125,12 +123,11 @@ class SignUpScreen extends StatelessWidget {
                   Container(
                     height: 60,
                     decoration: BoxDecoration(
-                      color: Color(0xffF2F2F2),
+                      color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(20.r),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CommonImage(imageSrc: AppIcons.google),
                         CommonText(
@@ -146,19 +143,18 @@ class SignUpScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 32),
                       child: RichText(
-                        textAlign: TextAlign.start,
                         maxLines: 2,
                         text: TextSpan(
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
                             color: Color(0xff777777),
                           ),
                           children: [
-                            TextSpan(text: "Sign up to Privae as a "),
+                            const TextSpan(text: 'Sign up to Privae as a '),
                             TextSpan(
-                              text: "Chef",
-                              style: TextStyle(
+                              text: 'Chef',
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w600, // different style
                                 color: Color(
                                   0xff000000,

@@ -15,8 +15,6 @@ void requestChangePopUp({String? orderId}) {
   showModalBottomSheet(
     context: Get.context!,
     isScrollControlled: true,
-    enableDrag: true,
-    isDismissible: true,
     backgroundColor: Colors.white,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
@@ -50,22 +48,20 @@ void requestChangePopUp({String? orderId}) {
                         ),
                       ),
 
-                      CommonText(
-                        text: "Request Change",
-                        fontSize: 14,
+                      const CommonText(
+                        text: 'Request Change',
                         fontWeight: FontWeight.w600,
-                        color: const Color(0xff272727),
+                        color: Color(0xff272727),
                       ),
-                      CommonText(
-                        text: "Choose your new preferred time",
+                      const CommonText(
+                        text: 'Choose your new preferred time',
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                        color: const Color(0xff777777),
+                        color: Color(0xff777777),
                       ),
 
                       TableCalendar(
                         daysOfWeekVisible: false,
-                        weekNumbersVisible: false,
                         rowHeight: 40,
                         headerStyle: const HeaderStyle(formatButtonVisible: false),
                         firstDay: DateTime.now(),
@@ -81,8 +77,7 @@ void requestChangePopUp({String? orderId}) {
                       const SizedBox(height: 20),
 
                       const CommonText(
-                        text: "Select start time",
-                        fontSize: 14,
+                        text: 'Select start time',
                         fontWeight: FontWeight.w600,
                         color: Color(0xff272727),
                       ),
@@ -111,7 +106,6 @@ void requestChangePopUp({String? orderId}) {
                               child: CommonText(
                                 text: time,
                                 color: isSelected ? Colors.white : Colors.black,
-                                fontWeight: FontWeight.w500,
                                 fontSize: 12,
                               ),
                             ),
@@ -119,17 +113,17 @@ void requestChangePopUp({String? orderId}) {
                         }).toList(),
                       ),
 
-                      CommonText(
-                        text: "Note",
+                      const CommonText(
+                        text: 'Note',
                         fontWeight: FontWeight.w600,
-                        color: const Color(0xff272727),
+                        color: Color(0xff272727),
                         top: 16,
                         bottom: 8,
                       ),
 
                       CommonTextField(
                         controller: noteController,
-                        hintText: "Enter your reason here",
+                        hintText: 'Enter your reason here',
                         maxLines: 5,
                         borderRadius: 12,
                       ),
@@ -139,17 +133,17 @@ void requestChangePopUp({String? orderId}) {
                       // ✅ Obx সরিয়ে GetBuilder এর bool use করো
                       CommonButton(
                         titleText: controller.isRequestingChange
-                            ? "Sending..."
-                            : "Send Request",
+                            ? 'Sending...'
+                            : 'Send Request',
                         onTap: controller.isRequestingChange
                             ? null
                             : () async {
                           if (controller.selectedTime.isEmpty) {
-                            Get.snackbar("Error", "Please select a time");
+                            Get.snackbar('Error', 'Please select a time');
                             return;
                           }
                           if (orderId == null || orderId.isEmpty) {
-                            Get.snackbar("Error", "Order ID missing");
+                            Get.snackbar('Error', 'Order ID missing');
                             return;
                           }
 
@@ -164,9 +158,9 @@ void requestChangePopUp({String? orderId}) {
                             final response = await ApiService.post(
                               '${ApiEndPoint.changeSchedule}$orderId',
                               body: {
-                                "requested_date": dateStr,
-                                "requested_time": controller.selectedTime,
-                                "note": noteController.text.trim(),
+                                'requested_date': dateStr,
+                                'requested_time': controller.selectedTime,
+                                'note': noteController.text.trim(),
                               },
                             );
 
@@ -175,20 +169,20 @@ void requestChangePopUp({String? orderId}) {
                               controller.resetChangeRequest();
                               Navigator.pop(Get.context!);
                               Get.snackbar(
-                                "Success",
-                                "Change request sent successfully",
+                                'Success',
+                                'Change request sent successfully',
                                 backgroundColor: Colors.green,
                                 colorText: Colors.white,
                               );
                             } else {
                               Get.snackbar(
-                                "Error",
+                                'Error',
                                 response.data['message']?.toString() ??
-                                    "Something went wrong",
+                                    'Something went wrong',
                               );
                             }
                           } catch (e) {
-                            Get.snackbar("Error", "Failed to send request");
+                            Get.snackbar('Error', 'Failed to send request');
                           } finally {
                             controller.isRequestingChange = false;
                             controller.update();

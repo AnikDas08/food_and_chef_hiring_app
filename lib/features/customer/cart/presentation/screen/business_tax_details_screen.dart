@@ -21,33 +21,31 @@ class BusinessTaxDetailsScreen extends StatelessWidget {
       appBar: AppBar(),
       body: GetBuilder<TaxController>(
         builder: (controller) => SingleChildScrollView(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CommonText(
+              const CommonText(
                 text: AppString.businessTaxDetails,
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
               ),
 
-              CommonText(
+              const CommonText(
                 text: AppString.name,
-                fontSize: 14,
                 top: 16,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
                 bottom: 8,
               ),
               CommonTextField(
-                hintText: "Company name",
+                hintText: 'Company name',
                 controller: controller.nameController,
               ),
 
-              CommonText(
+              const CommonText(
                 text: AppString.streetAddress,
-                fontSize: 14,
                 top: 16,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
@@ -58,9 +56,8 @@ class BusinessTaxDetailsScreen extends StatelessWidget {
                 controller: controller.streetController,
               ),
 
-              CommonText(
+              const CommonText(
                 text: AppString.city,
-                fontSize: 14,
                 top: 16,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
@@ -71,9 +68,8 @@ class BusinessTaxDetailsScreen extends StatelessWidget {
                 controller: controller.cityController,
               ),
 
-              CommonText(
+              const CommonText(
                 text: AppString.postalCode,
-                fontSize: 14,
                 top: 16,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
@@ -84,9 +80,8 @@ class BusinessTaxDetailsScreen extends StatelessWidget {
                 controller: controller.postalController,
               ),
 
-              CommonText(
+              const CommonText(
                 text: AppString.taxId,
-                fontSize: 14,
                 top: 16,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
@@ -105,21 +100,21 @@ class BusinessTaxDetailsScreen extends StatelessWidget {
                     width: 24,
                     child: Checkbox(
                       value: controller.isDefault,
-                      activeColor: Color(0xffFD713F),
+                      activeColor: const Color(0xffFD713F),
                       checkColor: Colors.white,
                       onChanged: controller.onChangeDefault,
                     ),
                   ),
-                  Expanded(
+                  const Expanded(
                     child: CommonText(
-                      text: "Make Default Invoicing Address",
+                      text: 'Make Default Invoicing Address',
                       textAlign: TextAlign.start,
                       left: 8,
                     ),
                   ),
                 ],
               ),
-              Divider(),
+              const Divider(),
             ],
           ),
         ),
@@ -129,7 +124,7 @@ class BusinessTaxDetailsScreen extends StatelessWidget {
         child: GetBuilder<TaxController>(
           builder: (controller) => CommonButton(
             titleText: controller.isSubmitting
-                ? "Saving..."
+                ? 'Saving...'
                 : AppString.saveAndChanges,
             onTap: controller.isSubmitting
                 ? () {}

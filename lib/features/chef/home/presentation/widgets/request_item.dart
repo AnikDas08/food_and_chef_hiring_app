@@ -26,9 +26,9 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
     },
     child: Container(
       padding: EdgeInsets.all(12.sp),
-      margin: EdgeInsets.only(top: 16),
+      margin: const EdgeInsets.only(top: 16),
       decoration: BoxDecoration(
-        color: Color(0xffF2F2F2),
+        color: const Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(12.sp),
       ),
       child: Column(
@@ -48,20 +48,19 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
 
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonText(
                       text: booking.customerName.isNotEmpty ? booking.customerName : 'Unknown',
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                     ),
                     CommonText(
                       text: booking.orderId,
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xff777777),
+                      color: const Color(0xff777777),
                     ),
                   ],
                 ),
@@ -71,13 +70,12 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
                   decoration: BoxDecoration(
-                    color: Color(0xffF5EDDD),
+                    color: const Color(0xffF5EDDD),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: CommonText(
-                    text: "Upcoming",
+                  child: const CommonText(
+                    text: 'Upcoming',
                     fontSize: 10,
-                    fontWeight: FontWeight.w500,
                     color: Color(0xffE39400),
                   ),
                 ),
@@ -108,11 +106,11 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                         if (orderData != null) {
                           upcomingPopUp(orderData: orderData);
                         } else {
-                          Utils.errorSnackBar("Error", "Could not load order details");
+                          Utils.errorSnackBar('Error', 'Could not load order details');
                         }
                       } catch (e) {
                         Navigator.pop(Get.context!);
-                        Utils.errorSnackBar("Error", "Something went wrong");
+                        Utils.errorSnackBar('Error', 'Something went wrong');
                       }
 
                     } else if (value == 2) {
@@ -122,7 +120,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                           final homeC = Get.find<ChefHomeController>();
                           homeC.upcomingBookings.removeWhere((e) => e.id == booking.id);
                           homeC.fetchUpcomingBookings();
-                          Utils.successSnackBar("Success", "Booking cancelled");
+                          Utils.successSnackBar('Success', 'Booking cancelled');
                         },
                       );
                     }
@@ -130,28 +128,26 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
 
                   },
                   itemBuilder: (context) => [
-                    PopupMenuItem(
+                    const PopupMenuItem(
                       value: 1,
                       child: Row(
-                        children: const [
+                        children: [
                           Icon(Icons.edit, size: 20, color: Colors.black),
                           SizedBox(width: 10),
-                          CommonText(text: "Request a Change", fontSize: 14),
+                          CommonText(text: 'Request a Change'),
                         ],
                       ),
                     ),
 
-                    PopupMenuItem(
+                    const PopupMenuItem(
                       value: 2,
                       child: Row(
-                        children: const [
+                        children: [
                           Icon(Icons.close, size: 20, color: Colors.red),
                           SizedBox(width: 10),
                           CommonText(
-                            text: "Cancel Booking",
-                            fontSize: 14,
+                            text: 'Cancel Booking',
                             color: Colors.red,
-                            fontWeight: FontWeight.w500,
                           ),
                         ],
                       ),
@@ -164,15 +160,15 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
           Container(
             padding: EdgeInsets.all(8.sp),
             decoration: BoxDecoration(
-              color: Color(0xffF2F2F2),
-              border: Border.all(color: Color(0xffF1F1F1)),
+              color: const Color(0xffF2F2F2),
+              border: Border.all(color: const Color(0xffF1F1F1)),
             ),
             child: Column(
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonImage(
+                    const CommonImage(
                       imageSrc: AppIcons.date,
                       size: 16,
                       imageColor: Color(0xffF5865F),
@@ -181,7 +177,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       text: booking.scheduledAt,
                       fontSize: 12,
                       left: 4,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                       fontWeight: FontWeight.w400,
                     ),
                   ],
@@ -190,7 +186,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonImage(
+                    const CommonImage(
                       imageSrc: AppIcons.ingredients,
                       size: 16,
                       imageColor: Color(0xffF5865F),
@@ -200,7 +196,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       fontSize: 12,
                       left: 4,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                     ),
                   ],
                 ),
@@ -208,7 +204,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonImage(
+                    const CommonImage(
                       imageSrc: AppIcons.location,
                       size: 16,
                       imageColor: Color(0xffF5865F),
@@ -220,7 +216,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       fontSize: 12,
                       left: 4,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                     ),
                   ],
                 ),
@@ -235,7 +231,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
+                  const CommonText(
                     text: AppString.total,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
@@ -244,12 +240,12 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                   CommonText(
                     text: '\$${booking.total.toStringAsFixed(2)}',
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
+                    color: const Color(0xff272727),
                     top: 2,
                   ),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
 
               if (isRequested) ...[
                 InkWell(
@@ -260,7 +256,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       onSuccess: () {
                         homeC.requestedBookings.removeWhere((e) => e.id == booking.id);
                         homeC.fetchRequestedBookings();
-                        Utils.successSnackBar("Success", "Booking declined");
+                        Utils.successSnackBar('Success', 'Booking declined');
                       },
                     );
                   },
@@ -269,10 +265,10 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12.sp),
-                      border: Border.all(color: Color(0xffFD713F)),
+                      border: Border.all(color: const Color(0xffFD713F)),
                     ),
-                    child: CommonText(
-                      text: "Decline",
+                    child: const CommonText(
+                      text: 'Decline',
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: Color(0xffFD713F),
@@ -298,21 +294,21 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                         c.fetchUpcomingBookings();
                         showSuccessDialog();
                       } else {
-                        Utils.successSnackBar("Message", res.data['message']?.toString() ?? "Something went wrong");
+                        Utils.successSnackBar('Message', res.data['message']?.toString() ?? 'Something went wrong');
                       }
                     } catch (e) {
                       Navigator.pop(Get.context!);
-                      Utils.errorSnackBar("Error", "Something went wrong");
+                      Utils.errorSnackBar('Error', 'Something went wrong');
                     }
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                     decoration: BoxDecoration(
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                       borderRadius: BorderRadius.circular(12.sp),
                     ),
-                    child: CommonText(
-                      text: "Accept",
+                    child: const CommonText(
+                      text: 'Accept',
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -336,11 +332,11 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       if (orderData != null) {
                         upcomingPopUp(orderData: orderData);
                       } else {
-                        Utils.errorSnackBar("Message", "Could not load order details");
+                        Utils.errorSnackBar('Message', 'Could not load order details');
                       }
                     } catch (e) {
                       Navigator.pop(Get.context!);
-                      Utils.errorSnackBar("Message", "Something went wrong");
+                      Utils.errorSnackBar('Message', 'Something went wrong');
                     }
                   },
                   child: Container(
@@ -348,10 +344,10 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12.sp),
-                      border: Border.all(color: Color(0xffF1F1F1)),
+                      border: Border.all(color: const Color(0xffF1F1F1)),
                     ),
-                    child: CommonText(
-                      text: "Request Change",
+                    child: const CommonText(
+                      text: 'Request Change',
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: Color(0xff272727),
@@ -391,7 +387,7 @@ void showSuccessDialog() {
             ),
             const SizedBox(height: 14),
             const Text(
-              "Congratulations!",
+              'Congratulations!',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -400,7 +396,7 @@ void showSuccessDialog() {
             ),
             const SizedBox(height: 6),
             Text(
-              "You’ve successfully confirmed the order.",
+              'You’ve successfully confirmed the order.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 13,
@@ -426,7 +422,7 @@ void showSuccessDialog() {
                   elevation: 0,
                 ),
                 child: const Text(
-                  "Close",
+                  'Close',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 14,
@@ -450,9 +446,9 @@ void cancelBookingPopUp({
   final RxString selectedReason = ''.obs;
 
   final List<String> reasons = [
-    "Too Far Away",
-    "Earnings Too Low",
-    "Double Booking",
+    'Too Far Away',
+    'Earnings Too Low',
+    'Double Booking',
   ];
 
   Get.dialog(
@@ -470,7 +466,7 @@ void cancelBookingPopUp({
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Want to cancel order?",
+              'Want to cancel order?',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
@@ -479,7 +475,7 @@ void cancelBookingPopUp({
             ),
             const SizedBox(height: 6),
             Text(
-              "Please select a reason why you want to decline the request?",
+              'Please select a reason why you want to decline the request?',
               style: TextStyle(
                 fontSize: 13,
                 color: Colors.black.withOpacity(0.55),
@@ -517,7 +513,7 @@ void cancelBookingPopUp({
               child: ElevatedButton(
                 onPressed: () async {
                     if (selectedReason.value.isEmpty) {
-                      Utils.errorSnackBar("Warning", "Please select a reason");
+                      Utils.errorSnackBar('Warning', 'Please select a reason');
                       return;
                     }
 
@@ -537,16 +533,16 @@ void cancelBookingPopUp({
 
                       if (res.statusCode == 200 && res.data['success'] == true) {
                         onSuccess();
-                        Utils.successSnackBar("Success", "Booking cancelled successfully");
+                        Utils.successSnackBar('Success', 'Booking cancelled successfully');
                       } else {
                         Utils.errorSnackBar(
-                          "Error",
-                          res.data['message']?.toString() ?? "Something went wrong",
+                          'Error',
+                          res.data['message']?.toString() ?? 'Something went wrong',
                         );
                       }
                     } catch (e) {
                       Navigator.pop(Get.context!);
-                      Utils.errorSnackBar("Error", "Something went wrong");
+                      Utils.errorSnackBar('Error', 'Something went wrong');
                     }
                   },
                 style: ElevatedButton.styleFrom(
@@ -557,7 +553,7 @@ void cancelBookingPopUp({
                   elevation: 0,
                 ),
                 child: const Text(
-                  "Submit",
+                  'Submit',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 14,
@@ -570,6 +566,5 @@ void cancelBookingPopUp({
         ),
       ),
     ),
-    barrierDismissible: true,
   );
 }

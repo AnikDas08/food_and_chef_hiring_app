@@ -32,7 +32,7 @@ class EditAddressScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Address"), ),
+      appBar: AppBar(title: const Text('Edit Address'), ),
       body: GetBuilder<AddressController>(
         builder: (controller) {
           // ── Full screen loader while fetching ────────────
@@ -46,11 +46,11 @@ class EditAddressScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
-                    text: "Edit Address",
+                  const CommonText(
+                    text: 'Edit Address',
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 24,
                   ),
 
@@ -85,10 +85,9 @@ class EditAddressScreen extends StatelessWidget {
                               builder: (ctrl) {
                                 return CommonButton(
                                   buttonHeight: 48,
-                                  buttonRadius: 20,
                                   titleText:
                                       ctrl.isLoadingCurrentLocation
-                                          ? "Getting Location..."
+                                          ? 'Getting Location...'
                                           : AppString.useCurrentLocation,
                                   isLoading: ctrl.isLoadingCurrentLocation,
                                   onTap:
@@ -112,22 +111,20 @@ class EditAddressScreen extends StatelessWidget {
                   CommonText(
                     text: AppString.addressDetails.toUpperCase(),
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
                     color: const Color(0xff777777),
                     bottom: 12,
                     top: 24,
                   ),
 
                   // ── ADDRESS LABEL ────────────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.addressLabel,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 8,
                   ),
                   CommonTextField(
-                    hintText: "Enter Address Label",
+                    hintText: 'Enter Address Label',
                     keyboardType: TextInputType.name,
                     controller: controller.addressLabelController,
                     suffixIcon: PopUpMenu(
@@ -138,19 +135,18 @@ class EditAddressScreen extends StatelessWidget {
                   ),
 
                   // ── ADDRESS (with suggestions) ───────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.address,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 8,
                     top: 16,
                   ),
                   CommonTextField(
-                    hintText: "Enter Address",
+                    hintText: 'Enter Address',
                     controller: controller.addressController,
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.all(14.0),
+                    suffixIcon: const Padding(
+                      padding: EdgeInsets.all(14.0),
                       child: CommonImage(
                         imageSrc: AppImages.house,
                         imageColor: Colors.black,
@@ -165,32 +161,30 @@ class EditAddressScreen extends StatelessWidget {
                     ),
 
                   // ── DETAILS ADDRESS ──────────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.detailedAddress,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 8,
                     top: 16,
                   ),
                   CommonTextField(
-                    hintText: "Enter Detailed Address",
+                    hintText: 'Enter Detailed Address',
                     controller: controller.detailsAddressController,
                     maxLines: 3,
                     keyboardType: TextInputType.multiline,
                   ),
 
                   // ── ADDITIONAL ADDRESS (optional) ────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.additionalAddress,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 8,
                     top: 16,
                   ),
                   CommonTextField(
-                    hintText: "${AppString.additionalAddress} (Optional)",
+                    hintText: '${AppString.additionalAddress} (Optional)',
                     controller: controller.additionalAddressController,
                     maxLines: 3,
                     keyboardType: TextInputType.multiline,
@@ -203,11 +197,10 @@ class EditAddressScreen extends StatelessWidget {
                     ),
 
                   // ── OWNER ────────────────────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.owner,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 8,
                     top: 16,
                   ),
@@ -217,11 +210,10 @@ class EditAddressScreen extends StatelessWidget {
                   ),
 
                   // ── PHONE ────────────────────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.phoneNumber,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 8,
                     top: 16,
                   ),
@@ -239,7 +231,7 @@ class EditAddressScreen extends StatelessWidget {
                         value: controller.isDefault,
                         onChanged: controller.onChangeDefaultAddress,
                       ),
-                      Expanded(
+                      const Expanded(
                         child: CommonText(
                           text: AppString.makeAsActiveAddress,
                           textAlign: TextAlign.start,
@@ -316,7 +308,7 @@ class _SuggestionList extends StatelessWidget {
               ? const Padding(
                 padding: EdgeInsets.all(12),
                 child: Text(
-                  "No results found",
+                  'No results found',
                   style: TextStyle(color: Color(0xff777777)),
                 ),
               )

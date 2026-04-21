@@ -20,7 +20,7 @@ class EditProfile extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(""),
+        title: const Text(''),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -31,11 +31,11 @@ class EditProfile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CommonText(
+                const CommonText(
                   text: AppString.editProfile,
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xff272727),
+                  color: Color(0xff272727),
                   bottom: 28,
                 ),
 
@@ -59,7 +59,7 @@ class EditProfile extends StatelessWidget {
                               fit: BoxFit.cover,
                             )
                                 : (controller.profileImage.value.isNotEmpty
-                                ? (controller.profileImage.value.startsWith("http")
+                                ? (controller.profileImage.value.startsWith('http')
                                 ? Image.network(
                               controller.profileImage.value,
                               fit: BoxFit.cover,
@@ -109,7 +109,6 @@ class EditProfile extends StatelessWidget {
                   bottom: 12,
                   top: 28,
                   fontSize: 12,
-                  fontWeight: FontWeight.w500,
                   color: const Color(0xff777777),
                 ),
 
@@ -118,7 +117,6 @@ class EditProfile extends StatelessWidget {
 
                 Obx(() => CommonButton(
                   titleText: AppString.saveChanges,
-                  buttonRadius: 20,
                   isLoading: controller.isLoading.value,
                   onTap: () => controller.editProfileRepo(),
                 )),

@@ -24,7 +24,7 @@ class ForgetPasswordController extends GetxController {
   /// this is timer , help to resend OTP send time
   int start = 0;
   Timer? _timer;
-  String time = "00:00";
+  String time = '00:00';
 
   /// here all Text Editing Controller
   TextEditingController emailController = TextEditingController();
@@ -56,7 +56,7 @@ class ForgetPasswordController extends GetxController {
         final minutes = (start ~/ 60).toString().padLeft(2, '0');
         final seconds = (start % 60).toString().padLeft(2, '0');
 
-        time = "$minutes:$seconds";
+        time = '$minutes:$seconds';
 
         update();
       } else {
@@ -71,8 +71,8 @@ class ForgetPasswordController extends GetxController {
     isLoadingEmail = true;
     update();
 
-    Map<String, String> body = {"email": emailController.text};
-    var response = await ApiService.post(
+    final Map<String, String> body = {'email': emailController.text};
+    final response = await ApiService.post(
       ApiEndPoint.forgotPassword,
       body: body,
     );
@@ -93,17 +93,17 @@ class ForgetPasswordController extends GetxController {
     //Get.toNamed(AppRoutes.createPassword);
     isLoadingVerify = true;
     update();
-    Map<String, dynamic> body = {
-      "email": emailController.text,
-      "oneTimeCode": int.parse(otpController.text),
+    final Map<String, dynamic> body = {
+      'email': emailController.text,
+      'oneTimeCode': int.parse(otpController.text),
     };
-    var response = await ApiService.post(ApiEndPoint.verifyOtp, body: body);
+    final response = await ApiService.post(ApiEndPoint.verifyOtp, body: body);
 
     if (response.statusCode == 200) {
-      var data = response.data;
+      final data = response.data;
       forgetPasswordToken = data['data'];
       Get.toNamed(AppRoutes.createPassword);
-      Utils.successSnackBar("Successful", "Successfully verified your email here");
+      Utils.successSnackBar('Successful', 'Successfully verified your email here');
     } else {
       Get.snackbar(response.statusCode.toString(), response.message);
     }
@@ -117,15 +117,15 @@ class ForgetPasswordController extends GetxController {
   Future<void> resetPasswordRepo() async {
     isLoadingReset = true;
     update();
-    Map<String, String> header = {
-      "authorization": forgetPasswordToken,
+    final Map<String, String> header = {
+      'authorization': forgetPasswordToken,
     };
 
-    Map<String, String> body = {
-      "newPassword": passwordController.text,
-      "confirmPassword": confirmPasswordController.text,
+    final Map<String, String> body = {
+      'newPassword': passwordController.text,
+      'confirmPassword': confirmPasswordController.text,
     };
-    var response = await ApiService.post(
+    final response = await ApiService.post(
       ApiEndPoint.resetPassword,
       body: body,
       header: header,

@@ -14,13 +14,13 @@ Widget orderAgain() {
   return GetBuilder<HomeController>(
     builder: (controller) {
       if (controller.isLoadingOrderAgain) {
-        return Center(child: CupertinoActivityIndicator());
+        return const Center(child: CupertinoActivityIndicator());
       }
 
       if (controller.orderAgainList.isEmpty) {
-        return Center(
+        return const Center(
           child: CommonText(
-            text: "No orders to show",
+            text: 'No orders to show',
             fontSize: 12,
             color: Color(0xff777777),
             fontWeight: FontWeight.w400,
@@ -41,10 +41,10 @@ Widget orderAgain() {
           final int moreCount = totalItems > 2 ? totalItems - 2 : 0;
 
           return Container(
-            margin: EdgeInsets.only(right: 10),
-            padding: EdgeInsets.all(12),
+            margin: const EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Color(0xffF2F2F2),
+              color: const Color(0xffF2F2F2),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
@@ -66,16 +66,16 @@ Widget orderAgain() {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CommonText(
-                          text: order.chef?.name ?? "Chef",
+                          text: order.chef?.name ?? 'Chef',
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xff272727),
+                          color: const Color(0xff272727),
                         ),
                         CommonText(
-                          text: order.dateStr ?? "",
+                          text: order.dateStr ?? '',
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xff777777),
+                          color: const Color(0xff777777),
                         ),
                       ],
                     ),
@@ -93,7 +93,7 @@ Widget orderAgain() {
                       final menuImages = items[i].menu?.images ?? [];
                       final hasImage =
                           menuImages.isNotEmpty && menuImages[0].isNotEmpty;
-                      final menuName = items[i].menu?.name ?? "";
+                      final menuName = items[i].menu?.name ?? '';
 
                       return Padding(
                         padding: EdgeInsets.only(
@@ -160,7 +160,7 @@ Widget _foodImageWithName({required String imageSrc, required String name}) {
             name,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 9,
               fontWeight: FontWeight.w600,
               color: Colors.white,
@@ -184,12 +184,12 @@ Widget _moreItemsTile(int count) {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(CupertinoIcons.collections, size: 22, color: Color(0xff9E9E9E)),
+        const Icon(CupertinoIcons.collections, size: 22, color: Color(0xff9E9E9E)),
         4.height,
         Text(
-          "$count more\nitems",
+          '$count more\nitems',
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 9,
             fontWeight: FontWeight.w500,
             color: Color(0xff9E9E9E),

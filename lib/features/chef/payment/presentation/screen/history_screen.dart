@@ -17,11 +17,10 @@ class HistoryScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: CommonText(
-          text: "History",
-          fontSize: 14,
+        title: const CommonText(
+          text: 'History',
           fontWeight: FontWeight.w600,
-          color: const Color(0xff272727),
+          color: Color(0xff272727),
         ),
       ),
       body: GetBuilder<HistoryController>(
@@ -32,7 +31,7 @@ class HistoryScreen extends StatelessWidget {
               children: [
 
                 CommonTextField(
-                  hintText: "Search",
+                  hintText: 'Search',
                   hintTextColor: const Color(0xff272727),
                   prefixIcon: const Padding(
                     padding: EdgeInsets.only(left: 16),
@@ -52,7 +51,7 @@ class HistoryScreen extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: controller.bookingHistoryList.length,
                     itemBuilder: (context, index) {
-                      String value = controller.bookingHistoryList[index];
+                      final String value = controller.bookingHistoryList[index];
                       return InkWell(
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
@@ -94,7 +93,7 @@ class HistoryScreen extends StatelessWidget {
                     ? Padding(
                   padding: EdgeInsets.only(top: 40.h),
                   child: CommonText(
-                    text: "No history found",
+                    text: 'No history found',
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xff9CA3AF),
@@ -106,7 +105,7 @@ class HistoryScreen extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    Map value = controller.history[index];
+                    final Map value = controller.history[index];
                     return withdrawItem(item: value);
                   },
                 ),

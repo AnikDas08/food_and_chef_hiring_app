@@ -216,19 +216,17 @@ AppBar homeAppbar() {
     title: GetBuilder<HomeController>(
       builder: (controller) {
         return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CommonText(
+            const CommonText(
               text: AppString.yourLocation,
               fontSize: 12,
               fontWeight: FontWeight.w400,
-              color: Colors.black,
               bottom: 2,
             ),
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.location_on_rounded,
                   color: Color(0xff272727),
                   size: 20,
@@ -239,9 +237,9 @@ AppBar homeAppbar() {
                     () => CommonText(
                       text:
                           controller.defaultAddress.value.isEmpty
-                              ? "Fetching location..."
+                              ? 'Fetching location...'
                               : controller.defaultAddress.value,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                       fontWeight: FontWeight.w600,
                       fontSize: 14.sp,
                       left: 4,
@@ -256,14 +254,14 @@ AppBar homeAppbar() {
     ),
     flexibleSpace: appBarOpacity(),
     bottom: PreferredSize(
-      preferredSize: Size.fromHeight(20),
+      preferredSize: const Size.fromHeight(20),
       child: Container(height: 20),
     ),
 
     actions: [
       LiquidGlassLayer(
         child: LiquidGlass(
-          shape: LiquidRoundedSuperellipse(borderRadius: 30),
+          shape: const LiquidRoundedSuperellipse(borderRadius: 30),
           child: InkWell(
             onTap: () => Get.toNamed(AppRoutes.notifications),
             child: Container(
@@ -275,7 +273,7 @@ AppBar homeAppbar() {
                 border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
               ),
               child:
-                  Icon(
+                  const Icon(
                     CupertinoIcons.bell,
                     color: Colors.black,
                     size: 24,
@@ -287,7 +285,7 @@ AppBar homeAppbar() {
       12.width,
       LiquidGlassLayer(
         child: LiquidGlass(
-          shape: LiquidRoundedSuperellipse(borderRadius: 30),
+          shape: const LiquidRoundedSuperellipse(borderRadius: 30),
           child: Container(
             width: 40.sp,
             height: 40.sp,
@@ -297,7 +295,7 @@ AppBar homeAppbar() {
               border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
             ),
             child:
-                CommonImage(
+                const CommonImage(
                   imageSrc: AppIcons.basketSvg,
                   imageColor: Colors.black,
                 ).center,

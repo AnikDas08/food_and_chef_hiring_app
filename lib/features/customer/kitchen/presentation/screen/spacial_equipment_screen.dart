@@ -30,26 +30,25 @@ class SpecialEquipmentScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 12.h),
-                  _ProgressBar(totalSteps: 5, currentStep: 4),
+                  const _ProgressBar(totalSteps: 5, currentStep: 4),
                   SizedBox(height: 20.h),
                   GestureDetector(
                     onTap: () => Navigator.pop(context),
                     child: Icon(Icons.arrow_back_ios, size: 20.sp, color: AppColors.black),
                   ),
                   SizedBox(height: 24.h),
-                  CommonText(
+                  const CommonText(
                     text: 'Special Equipment',
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.black,
                     textAlign: TextAlign.start,
                   ),
                   SizedBox(height: 8.h),
-                  CommonText(
+                  const CommonText(
                     text: 'Do you have any special equipment? These unlock more advanced recipes.',
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
-                    color: const Color(0xFF888888),
+                    color: Color(0xFF888888),
                     textAlign: TextAlign.start,
                   ),
                   SizedBox(height: 20.h),
@@ -71,8 +70,8 @@ class SpecialEquipmentScreen extends StatelessWidget {
 
                 final items = controller.itemsFor(_category);
                 if (items.isEmpty) {
-                  return Center(
-                    child: CommonText(text: 'No special equipment found.', fontSize: 13, color: const Color(0xFF888888)),
+                  return const Center(
+                    child: CommonText(text: 'No special equipment found.', fontSize: 13, color: Color(0xFF888888)),
                   );
                 }
 
@@ -103,7 +102,6 @@ class SpecialEquipmentScreen extends StatelessWidget {
                   CommonButton(
                     titleText: 'Continue',
                     buttonColor: AppColors.black,
-                    titleColor: AppColors.white,
                     onTap: () => Get.to(() => const UploadKitchenPhotoScreen()),
                   ),
                 ],
@@ -169,7 +167,6 @@ class _CollapsibleSection extends StatelessWidget {
                           child: CommonText(
                             text: '$count selected',
                             fontSize: 11,
-                            fontWeight: FontWeight.w500,
                             color: AppColors.white,
                           ),
                         ),
@@ -199,7 +196,7 @@ class _CollapsibleSection extends StatelessWidget {
                       item: items[index],
                     ),
                     if (index < items.length - 1)
-                      Divider(height: 1, color: const Color(0xFFF0F0F0)),
+                      const Divider(height: 1, color: Color(0xFFF0F0F0)),
                   ],
                 );
               }),
@@ -208,7 +205,7 @@ class _CollapsibleSection extends StatelessWidget {
             crossFadeState: expanded ? CrossFadeState.showFirst : CrossFadeState.showSecond,
             duration: const Duration(milliseconds: 250),
           ),
-          Divider(height: 1, color: const Color(0xFFEEEEEE)),
+          const Divider(height: 1, color: Color(0xFFEEEEEE)),
         ],
       );
     });
@@ -243,9 +240,7 @@ class _EquipmentCheckRow extends StatelessWidget {
               Expanded(
                 child: CommonText(
                   text: item.name,
-                  fontSize: 14,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.black,
                   textAlign: TextAlign.start,
                 ),
               ),
@@ -283,11 +278,11 @@ class _ErrorRetry extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          CommonText(text: message, fontSize: 13, color: const Color(0xFF888888), maxLines: 3, textAlign: TextAlign.center),
+          CommonText(text: message, fontSize: 13, color: const Color(0xFF888888), maxLines: 3),
           SizedBox(height: 12.h),
           GestureDetector(
             onTap: onRetry,
-            child: CommonText(text: 'Tap to retry', fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.black),
+            child: const CommonText(text: 'Tap to retry', fontSize: 13, fontWeight: FontWeight.w600),
           ),
         ],
       ),

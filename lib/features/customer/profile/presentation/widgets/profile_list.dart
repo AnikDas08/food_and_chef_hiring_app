@@ -39,7 +39,7 @@ class ProfileList extends StatelessWidget {
       child: PopupMenuButton<String>(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.r),
-          side: BorderSide(color: Color(0xffF1F1F1)),
+          side: const BorderSide(color: Color(0xffF1F1F1)),
         ),
         offset: const Offset(1, 1),
         padding: EdgeInsets.zero,
@@ -56,21 +56,20 @@ class ProfileList extends StatelessWidget {
                         onTap(index);
                       },
                       child: Container(
-                        decoration: BoxDecoration(color: Colors.white),
+                        decoration: const BoxDecoration(color: Colors.white),
                         padding: const EdgeInsets.all(12.0),
                         width: Get.width - 100,
                         child: Row(
-                          mainAxisSize: MainAxisSize.max,
                           children: [
                             CommonImage(imageSrc: item['image'], size: 30),
                             CommonText(
                               text: item['name'].toString(),
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xff272727),
+                              color: const Color(0xff272727),
                               left: 8,
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Container(
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
@@ -79,11 +78,11 @@ class ProfileList extends StatelessWidget {
                                   color:
                                       selectedItem == item
                                           ? Colors.transparent
-                                          : Color(0xffF1F1F1),
+                                          : const Color(0xffF1F1F1),
                                 ),
                                 color:
                                     selectedItem == item
-                                        ? Color(0xffFD713F)
+                                        ? const Color(0xffFD713F)
                                         : unselectedColor,
                                 shape: BoxShape.circle,
                               ),

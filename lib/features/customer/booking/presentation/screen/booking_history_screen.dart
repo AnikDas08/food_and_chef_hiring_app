@@ -30,7 +30,7 @@ class BookingHistoryScreen extends StatelessWidget {
               backgroundColor: Colors.transparent,
               centerTitle: false,
               flexibleSpace: appBarOpacity(),
-              title: CommonText(
+              title: const CommonText(
                 text: AppString.upcomingBookings,
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
@@ -48,7 +48,7 @@ class BookingHistoryScreen extends StatelessWidget {
                       itemCount: controller.bookingHistoryList.length,
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       itemBuilder: (context, index) {
-                        String value = controller.bookingHistoryList[index];
+                        final String value = controller.bookingHistoryList[index];
                         return Padding(
                           padding: EdgeInsets.only(right: 8.w),
                           child:
@@ -78,7 +78,7 @@ class BookingHistoryScreen extends StatelessWidget {
                                         color:
                                             controller.selectedBookingHistory ==
                                                     value
-                                                ? Color(0xff272727)
+                                                ? const Color(0xff272727)
                                                 : Colors.transparent,
                                         borderRadius: BorderRadius.circular(
                                           30.sp,
@@ -87,12 +87,11 @@ class BookingHistoryScreen extends StatelessWidget {
                                       child: CommonText(
                                         text: value,
                                         fontSize: 12,
-                                        fontWeight: FontWeight.w500,
                                         color:
                                             controller.selectedBookingHistory ==
                                                     value
                                                 ? Colors.white
-                                                : Color(0xff272727),
+                                                : const Color(0xff272727),
                                       ),
                                     ),
                                   ),
@@ -120,7 +119,7 @@ class BookingHistoryScreen extends StatelessWidget {
         itemCount: controller.bookingHistoryList.length,
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         itemBuilder: (context, index) {
-          String value = controller.bookingHistoryList[index];
+          final String value = controller.bookingHistoryList[index];
           final isSelected = controller.selectedBookingHistory == value;
           return Padding(
             padding: EdgeInsets.only(right: 8.w),
@@ -145,8 +144,6 @@ class BookingHistoryScreen extends StatelessWidget {
                     child: CommonText(
                       text: value,
                       fontSize: 12.sp,
-                      textAlign: TextAlign.center,
-                      fontWeight: FontWeight.w500,
                       color:
                           isSelected ? Colors.white : const Color(0xff272727),
                     ),
@@ -169,8 +166,8 @@ class BookingHistoryScreen extends StatelessWidget {
       displacement: 130.h,
       child:
           controller.orders.isEmpty
-              ? CommonText(
-                text: "No bookings",
+              ? const CommonText(
+                text: 'No bookings',
                 fontSize: 12,
                 color: Color(0xff777777),
                 fontWeight: FontWeight.w400,

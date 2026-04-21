@@ -38,7 +38,7 @@ class _CafeEnableAutoAcceptScreenState
                 color: Color(0xffF6F6F6),
                 shape: BoxShape.circle,
               ),
-              child: CommonImage(
+              child: const CommonImage(
                 imageSrc: AppIcons.backIcon,
                 size: 24,
               ),
@@ -60,7 +60,7 @@ class _CafeEnableAutoAcceptScreenState
 
                     // Title
                     Text(
-                      "Enable Auto-Accept Orders",
+                      'Enable Auto-Accept Orders',
                       style: TextStyle(
                         fontSize: 26.sp,
                         fontWeight: FontWeight.w700,
@@ -73,7 +73,7 @@ class _CafeEnableAutoAcceptScreenState
 
                     // Subtitle
                     Text(
-                      "Do you want to automatically accept orders from customers from times that are in your availability? Or would you rather have the option to approve or decline orders?",
+                      'Do you want to automatically accept orders from customers from times that are in your availability? Or would you rather have the option to approve or decline orders?',
                       style: TextStyle(
                         fontSize: 13.sp,
                         color: const Color(0xFF777777),
@@ -93,7 +93,7 @@ class _CafeEnableAutoAcceptScreenState
                       child: Row(
                         children: [
                           Text(
-                            "Enable Auto-Accept",
+                            'Enable Auto-Accept',
                             style: TextStyle(
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w600,
@@ -120,7 +120,7 @@ class _CafeEnableAutoAcceptScreenState
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: "Chefs with auto-accept enabled earn on average ",
+                            text: 'Chefs with auto-accept enabled earn on average ',
                             style: TextStyle(
                               fontSize: 13.sp,
                               color: const Color(0xFF777777),
@@ -128,7 +128,7 @@ class _CafeEnableAutoAcceptScreenState
                             ),
                           ),
                           TextSpan(
-                            text: "1.6x",
+                            text: '1.6x',
                             style: TextStyle(
                               fontSize: 13.sp,
                               fontWeight: FontWeight.w700,
@@ -136,7 +136,7 @@ class _CafeEnableAutoAcceptScreenState
                             ),
                           ),
                           TextSpan(
-                            text: " more.",
+                            text: ' more.',
                             style: TextStyle(
                               fontSize: 13.sp,
                               color: const Color(0xFF777777),
@@ -190,7 +190,7 @@ class _CafeEnableAutoAcceptScreenState
                       ),
                       10.horizontalSpace,
                       Text(
-                        "Loading...",
+                        'Loading...',
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
@@ -199,7 +199,7 @@ class _CafeEnableAutoAcceptScreenState
                     ],
                   )
                       : Text(
-                    "Continue",
+                    'Continue',
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,

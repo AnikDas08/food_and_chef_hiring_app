@@ -134,7 +134,7 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
                       ],
                     ),
                     SizedBox(height: 28.h),
-                    _SectionLabel(text: 'PERSONAL DETAILS'),
+                    const _SectionLabel(text: 'PERSONAL DETAILS'),
                     SizedBox(height: 16.h),
                     ChefProfileAllFiled(controller: controller),
                     SizedBox(height: 8.h),

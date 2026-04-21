@@ -93,7 +93,6 @@ class CommonTextField extends StatelessWidget {
         onTap: onTap,
         validator: validator,
         maxLines: isPassword ? 1 : maxLines,
-        textAlign: TextAlign.start,
         textAlignVertical: TextAlignVertical.center,
 
         cursorColor:
@@ -103,11 +102,11 @@ class CommonTextField extends StatelessWidget {
 
           isDense: isDense,
           filled: true,
-          prefixIconConstraints: BoxConstraints(maxWidth: 40, maxHeight: 30),
+          prefixIconConstraints: const BoxConstraints(maxWidth: 40, maxHeight: 30),
           prefixIcon: prefixIcon,
           fillColor: fillColor,
 
-          counterText: "",
+          counterText: '',
           contentPadding: EdgeInsets.symmetric(
             horizontal: paddingHorizontal.w,
             vertical: paddingVertical.h,
@@ -164,7 +163,7 @@ class CommonTextField extends StatelessWidget {
                 ? Icons.visibility_off_outlined
                 : Icons.visibility_outlined,
             size: 20.sp,
-            color: Color(0xff777777),
+            color: const Color(0xff777777),
           ),
         ),
       ),

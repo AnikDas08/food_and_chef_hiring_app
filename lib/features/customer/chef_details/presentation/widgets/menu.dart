@@ -29,11 +29,10 @@ class MenuPage extends StatelessWidget {
         }
 
         if (sections.isEmpty) {
-          return Center(
+          return const Center(
             child: CommonText(
-              text: "No menu sections available",
-              fontSize: 14,
-              color: const Color(0xff777777),
+              text: 'No menu sections available',
+              color: Color(0xff777777),
               fontWeight: FontWeight.w400,
             ),
           );
@@ -74,8 +73,7 @@ class _SearchResultsList extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             CommonText(
-              text: "No results for \"$query\"",
-              fontSize: 14,
+              text: 'No results for "$query"',
               color: const Color(0xff777777),
               fontWeight: FontWeight.w400,
             ),
@@ -160,11 +158,10 @@ class _MenuListState extends State<_MenuList>
             controller.menuCache[widget.section] ?? [];
 
         if (items.isEmpty) {
-          return Center(
+          return const Center(
             child: CommonText(
-              text: "No items in this section",
-              fontSize: 14,
-              color: const Color(0xff777777),
+              text: 'No items in this section',
+              color: Color(0xff777777),
               fontWeight: FontWeight.w400,
             ),
           );
@@ -189,13 +186,12 @@ class _MenuListState extends State<_MenuList>
                 );
               }
               if (!hasMore && items.length > 10) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
                   child: Center(
                     child: CommonText(
-                      text: "No more items",
-                      fontSize: 14,
-                      color: const Color(0xff777777),
+                      text: 'No more items',
+                      color: Color(0xff777777),
                       fontWeight: FontWeight.w400,
                     ),
                   ),

@@ -33,10 +33,10 @@ class WithdrawController extends GetxController {
       if (response.statusCode == 200 && response.data['success'] == true) {
         balance.value = (response.data['data']?['balance'] ?? 0) as int;
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Failed to load wallet");
+        Utils.errorSnackBar('Error', response.data['message'] ?? 'Failed to load wallet');
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoading.value = false;
     }
@@ -46,18 +46,18 @@ class WithdrawController extends GetxController {
     final text = amountController.text.trim();
 
     if (text.isEmpty) {
-      Utils.errorSnackBar("Warning", "Please enter withdraw amount");
+      Utils.errorSnackBar('Warning', 'Please enter withdraw amount');
       return;
     }
 
     final amount = int.tryParse(text);
     if (amount == null || amount <= 0) {
-      Utils.errorSnackBar("Warning", "Please enter a valid amount");
+      Utils.errorSnackBar('Warning', 'Please enter a valid amount');
       return;
     }
 
     if (amount > balance.value) {
-      Utils.errorSnackBar("Warning", "Insufficient balance");
+      Utils.errorSnackBar('Warning', 'Insufficient balance');
       return;
     }
 
@@ -66,7 +66,7 @@ class WithdrawController extends GetxController {
 
       final response = await ApiService.post(
         ApiEndPoint.withdrawWallet,
-        body: {"amount": amount},
+        body: {'amount': amount},
       );
 
       if (response.statusCode == 200 && response.data['success'] == true) {
@@ -81,10 +81,10 @@ class WithdrawController extends GetxController {
         amountController.clear();
 
       } else {
-        Utils.errorSnackBar("Message", response.data['message'] ?? "Withdraw failed");
+        Utils.errorSnackBar('Message', response.data['message'] ?? 'Withdraw failed');
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoading.value = false;
     }

@@ -14,7 +14,7 @@ class AddressRepository {
     int limit = 10,
   }) async {
     final response = await ApiService.get(
-      "${ApiEndPoint.address}?page=$page&limit=$limit",
+      '${ApiEndPoint.address}?page=$page&limit=$limit',
     );
     if (response.statusCode == 200) {
       return AddressListResponse.fromJson(response.data);
@@ -31,7 +31,7 @@ class AddressRepository {
   }
 
   static Future<AddressModel?> getAddressById(String id) async {
-    final response = await ApiService.get("${ApiEndPoint.address}/$id");
+    final response = await ApiService.get('${ApiEndPoint.address}/$id');
     if (response.statusCode == 200) {
       return AddressModel.fromJson(response.data['data']);
     }
@@ -42,7 +42,7 @@ class AddressRepository {
   static Future<AddressModel?> updateAddress(
       String id, Map<String, dynamic> body) async {
     final response =
-    await ApiService.patch("${ApiEndPoint.address}/$id", body: body);
+    await ApiService.patch('${ApiEndPoint.address}/$id', body: body);
     if (response.statusCode == 200) {
       return AddressModel.fromJson(response.data['data']);
     }
@@ -50,7 +50,7 @@ class AddressRepository {
   }
 
   static Future<bool> deleteAddress(String id) async {
-    final response = await ApiService.delete("${ApiEndPoint.address}/$id");
+    final response = await ApiService.delete('${ApiEndPoint.address}/$id');
     return response.statusCode == 200;
   }
 
@@ -61,9 +61,9 @@ class AddressRepository {
   static Future<List<Map<String, dynamic>>> getPlaceSuggestions(
       String query) async {
     final url =
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json"
-        "?input=${Uri.encodeComponent(query)}"
-        "&key=${ApiEndPoint.googleMapsApiKey}";
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json'
+        '?input=${Uri.encodeComponent(query)}'
+        '&key=${ApiEndPoint.googleMapsApiKey}';
 
     final response = await ApiService.get(url);
     if (response.statusCode == 200) {
@@ -84,10 +84,10 @@ class AddressRepository {
   /// Returns lat, lng, and a formatted details string from a place_id
   static Future<Map<String, dynamic>?> getPlaceDetail(String placeId) async {
     final url =
-        "https://maps.googleapis.com/maps/api/place/details/json"
-        "?place_id=$placeId"
-        "&fields=geometry,address_components,formatted_address"
-        "&key=${ApiEndPoint.googleMapsApiKey}";
+        'https://maps.googleapis.com/maps/api/place/details/json'
+        '?place_id=$placeId'
+        '&fields=geometry,address_components,formatted_address'
+        '&key=${ApiEndPoint.googleMapsApiKey}';
 
     final response = await ApiService.get(url);
     if (response.statusCode == 200) {
@@ -98,7 +98,7 @@ class AddressRepository {
       final components = result['address_components'] as List? ?? [];
 
       // Build a details string: road + sublocality + city + country
-      String details = _buildDetailsFromComponents(components);
+      final String details = _buildDetailsFromComponents(components);
 
       return {
         'lat': (loc?['lat'] ?? 0).toDouble(),

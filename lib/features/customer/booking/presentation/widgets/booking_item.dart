@@ -20,7 +20,7 @@ Widget bookingItem(BookingHistoryModel order) {
     },
     child: Container(
       padding: EdgeInsets.all(12.sp).copyWith(right: 0),
-      margin: EdgeInsets.only(top: 16),
+      margin: const EdgeInsets.only(top: 16),
       decoration: BoxDecoration(
         color: const Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(12.sp),
@@ -58,7 +58,6 @@ Widget bookingItem(BookingHistoryModel order) {
               12.width,
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonText(
@@ -103,16 +102,16 @@ Widget bookingItem(BookingHistoryModel order) {
                     Get.dialog(
                       AlertDialog(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-                        title: const CommonText(text: "Cancel Booking", fontWeight: FontWeight.bold),
+                        title: const CommonText(text: 'Cancel Booking', fontWeight: FontWeight.bold),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const CommonText(text: "Please provide a reason for cancelling this booking:",maxLines:  4, fontSize: 13,textAlign: TextAlign.start, bottom: 12),
+                            const CommonText(text: 'Please provide a reason for cancelling this booking:',maxLines:  4, fontSize: 13,textAlign: TextAlign.start, bottom: 12),
                             TextField(
                               controller: reasonController,
                               maxLines: 3,
                               decoration: InputDecoration(
-                                hintText: "Enter reason here...",
+                                hintText: 'Enter reason here...',
                                 hintStyle: const TextStyle(fontSize: 12),
                                 fillColor: const Color(0xffF5F5F5),
                                 filled: true,
@@ -122,18 +121,18 @@ Widget bookingItem(BookingHistoryModel order) {
                           ],
                         ),
                         actions: [
-                          TextButton(onPressed: () => Navigator.pop(Get.context!), child: const Text("Cancel")),
+                          TextButton(onPressed: () => Navigator.pop(Get.context!), child: const Text('Cancel')),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(backgroundColor: Colors.red, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r))),
                             onPressed: () {
                               if (reasonController.text.trim().isEmpty) {
-                                Get.snackbar("Reason Required", "Please enter a reason before cancelling.");
+                                Get.snackbar('Reason Required', 'Please enter a reason before cancelling.');
                               } else {
                                 Navigator.pop(Get.context!); // Close dialog
                                 Get.find<BookingHistoryController>().cancelBooking(order.id, reasonController.text.trim());
                               }
                             },
-                            child: const Text("Confirm Cancel", style: TextStyle(color: Colors.white)),
+                            child: const Text('Confirm Cancel', style: TextStyle(color: Colors.white)),
                           ),
                         ],
                       ),
@@ -153,34 +152,32 @@ Widget bookingItem(BookingHistoryModel order) {
                   }
 
                   // 2. Define the Cancel Item (Shared by Awaiting and Confirm)
-                  final cancelItem = PopupMenuItem(
+                  final cancelItem = const PopupMenuItem(
                     value: 2,
                     child: Row(
-                      children: const [
+                      children: [
                         Icon(CupertinoIcons.clear, size: 20, color: Colors.red),
                         SizedBox(width: 10),
                         CommonText(
-                          text: "Cancel Booking",
-                          fontSize: 14,
+                          text: 'Cancel Booking',
                           color: Colors.red,
-                          fontWeight: FontWeight.w500,
                         ),
                       ],
                     ),
                   );
 
                   // 3. Define the Request Change Item
-                  final requestChangeItem = PopupMenuItem(
+                  final requestChangeItem = const PopupMenuItem(
                     value: 1,
                     child: Row(
-                      children: const [
+                      children: [
                         Icon(
                           CupertinoIcons.pencil,
                           size: 20,
                           color: Colors.black,
                         ),
                         SizedBox(width: 10),
-                        CommonText(text: "Request a Change", fontSize: 14),
+                        CommonText(text: 'Request a Change'),
                       ],
                     ),
                   );
@@ -205,9 +202,8 @@ Widget bookingItem(BookingHistoryModel order) {
 
           // Date & time
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CommonImage(imageSrc: AppIcons.date, width: 16, height: 16),
+              const CommonImage(imageSrc: AppIcons.date, width: 16, height: 16),
               Flexible(
                 child: CommonText(
                   text: _formatDate(order.formattedDate),
@@ -224,9 +220,8 @@ Widget bookingItem(BookingHistoryModel order) {
 
           // Menu items
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CommonImage(
+              const CommonImage(
                 imageSrc: AppIcons.ingredients,
                 width: 16,
                 height: 16,
@@ -248,9 +243,8 @@ Widget bookingItem(BookingHistoryModel order) {
 
           // Address
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CommonImage(imageSrc: AppIcons.location, width: 16, height: 16),
+              const CommonImage(imageSrc: AppIcons.location, width: 16, height: 16),
               Flexible(
                 child: CommonText(
                   text: order.formattedAddress,
@@ -284,7 +278,7 @@ Widget bookingItem(BookingHistoryModel order) {
                   Flexible(
                     child: CommonText(
                       text:
-                          "Rescheduled to ${_formatDate(order.changeSchedule!)}",
+                          'Rescheduled to ${_formatDate(order.changeSchedule!)}',
                       fontSize: 12,
                       left: 4,
                       textAlign: TextAlign.left,
@@ -316,7 +310,7 @@ Widget bookingItem(BookingHistoryModel order) {
                   ),
                   Flexible(
                     child: CommonText(
-                      text: "Cancelled: ${order.cancelReason}",
+                      text: 'Cancelled: ${order.cancelReason}',
                       fontSize: 12,
                       left: 4,
                       fontWeight: FontWeight.w400,
@@ -331,14 +325,14 @@ Widget bookingItem(BookingHistoryModel order) {
 
           20.height,
 
-          CommonText(
-            text: "Total",
+          const CommonText(
+            text: 'Total',
             fontSize: 12,
             fontWeight: FontWeight.w400,
-            color: const Color(0xff777777),
+            color: Color(0xff777777),
           ),
           CommonText(
-            text: "\$${order.userPaid.toStringAsFixed(2)}",
+            text: '\$${order.userPaid.toStringAsFixed(2)}',
             fontWeight: FontWeight.w600,
             color: const Color(0xff272727),
             top: 2,
@@ -371,7 +365,7 @@ String _formatDate(String isoDate) {
     final hour = dt.hour > 12 ? dt.hour - 12 : (dt.hour == 0 ? 12 : dt.hour);
     final period = dt.hour >= 12 ? 'PM' : 'AM';
     final min = dt.minute.toString().padLeft(2, '0');
-    return "${dt.day} ${months[dt.month - 1]}, ${dt.year} at $hour:$min $period";
+    return '${dt.day} ${months[dt.month - 1]}, ${dt.year} at $hour:$min $period';
   } catch (_) {
     return isoDate;
   }
@@ -404,7 +398,6 @@ class _StatusBadge extends StatelessWidget {
       child: CommonText(
         text: config['label'] as String,
         fontSize: 10,
-        fontWeight: FontWeight.w500,
         color: config['text'] as Color,
       ),
     );

@@ -44,7 +44,6 @@ class _VerifyScreenState extends State<VerifyScreen> {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -92,7 +91,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                             ? const ResendOtp()
                             : CommonText(
                               text:
-                                  "${AppString.resendCodeIn} ${controller.time} ${AppString.minute}",
+                                  '${AppString.resendCodeIn} ${controller.time} ${AppString.minute}',
                             ),
                   ),
 
@@ -102,7 +101,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
             ),
           ),
           bottomNavigationBar: Padding(
-            padding: EdgeInsets.only(bottom: 40, left: 20, right: 20),
+            padding: const EdgeInsets.only(bottom: 40, left: 20, right: 20),
             child: SafeArea(
               child: CommonButton(
                 titleText: AppString.continueString,

@@ -44,8 +44,8 @@ class _DietaryScreenState extends State<DietaryScreen> {
               children: [
                 SizedBox(height: 8.h),
 
-                CommonText(
-                  text: "Dietary Restrictions & Allergies",
+                const CommonText(
+                  text: 'Dietary Restrictions & Allergies',
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
                   color: Color(0xff272727),
@@ -60,9 +60,9 @@ class _DietaryScreenState extends State<DietaryScreen> {
                     color: Color(0xff777777),
                   ),
                 ),*/
-                CommonText(
+                const CommonText(
                   text:
-                      "Vegetarian? Kosher? Halal? Food allergies? Enter the details below.",
+                      'Vegetarian? Kosher? Halal? Food allergies? Enter the details below.',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff777777),
@@ -81,12 +81,12 @@ class _DietaryScreenState extends State<DietaryScreen> {
                     final grouped = controller.groupedSavedItems;
 
                     if (grouped.isEmpty) {
-                      return Center(
+                      return const Center(
                         child: CommonText(
                           text:
                               'No dietary preferences saved yet.\nTap Edit to add some.',
                           fontSize: 13,
-                          color: const Color(0xff777777),
+                          color: Color(0xff777777),
                         ),
                       );
                     }
@@ -143,9 +143,8 @@ class _CategorySection extends StatelessWidget {
         ),*/
         CommonText(
           text: title,
-          fontSize: 14,
           fontWeight: FontWeight.w600,
-          color: Color(0xff1F1F1F),
+          color: const Color(0xff1F1F1F),
           maxLines: 2,
           textAlign: TextAlign.start,
         ),
@@ -186,8 +185,7 @@ class _Chip extends StatelessWidget {
       ),*/ CommonText(
         text: label,
         fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: Color(0xffFFFFFF),
+        color: const Color(0xffFFFFFF),
       ),
     );
   }

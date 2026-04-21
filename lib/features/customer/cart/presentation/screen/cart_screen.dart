@@ -37,7 +37,7 @@ class CartScreen extends StatelessWidget {
             // ── Liquid Glass Header ──────────────────────────────────────────
             flexibleSpace: LiquidGlassLayer(
               child: LiquidGlass(
-                shape: LiquidRoundedSuperellipse(borderRadius: 0),
+                shape: const LiquidRoundedSuperellipse(borderRadius: 0),
                 child: Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -107,9 +107,8 @@ class CartScreen extends StatelessWidget {
           ),
           16.height,
           CommonText(
-            text: "Your cart is empty",
+            text: 'Your cart is empty',
             fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
             color: const Color(0xff777777),
           ),
         ],
@@ -124,7 +123,7 @@ class CartScreen extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(16.w, 110.h, 16.w, 120.h),
       physics: const BouncingScrollPhysics(), // Better feel for glass scrolling
       children: [
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         ...controller.chefGroups.map((group) {
           final menus = group.menus ?? [];
           final chefId = group.chef?.id ?? '';
@@ -167,13 +166,13 @@ class CartScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CommonText(
-              text: "Subtotals",
+              text: 'Subtotals',
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),
             ),
             CommonText(
-              text: "\$${subtotal.toStringAsFixed(2)}",
+              text: '\$${subtotal.toStringAsFixed(2)}',
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),
@@ -199,7 +198,7 @@ class CartScreen extends StatelessWidget {
                 8.width,
                 Flexible(
                   child: CommonText(
-                    text: "Estimated time: ${controller.estimatedTime}",
+                    text: 'Estimated time: ${controller.estimatedTime}',
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xff777777),

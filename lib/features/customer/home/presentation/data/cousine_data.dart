@@ -15,22 +15,22 @@ class CuisineModel {
 
   factory CuisineModel.fromJson(Map<dynamic, dynamic> json) {
     return CuisineModel(
-      success: json["success"],
-      statusCode: json["statusCode"],
-      message: json["message"],
-      data: json["data"] == null
+      success: json['success'],
+      statusCode: json['statusCode'],
+      message: json['message'],
+      data: json['data'] == null
           ? []
           : List<CuisineData>.from(
-        json["data"].map((x) => CuisineData.fromJson(x)),
+        json['data'].map((x) => CuisineData.fromJson(x)),
       ),
     );
   }
 
   Map<String, dynamic> toJson() => {
-    "success": success,
-    "statusCode": statusCode,
-    "message": message,
-    "data": data?.map((x) => x.toJson()).toList(),
+    'success': success,
+    'statusCode': statusCode,
+    'message': message,
+    'data': data?.map((x) => x.toJson()).toList(),
   };
 }
 
@@ -47,15 +47,15 @@ class CuisineData {
 
   factory CuisineData.fromJson(Map<String, dynamic> json) {
     return CuisineData(
-      id: json["_id"],
-      name: json["name"],
-      image: json["image"]??AppImages.noImage,
+      id: json['_id'],
+      name: json['name'],
+      image: json['image']??AppImages.noImage,
     );
   }
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "name": name,
-    "image": image,
+    '_id': id,
+    'name': name,
+    'image': image,
   };
 }

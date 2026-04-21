@@ -44,7 +44,7 @@ class ChefHomeController extends GetxController {
         return response.data['data'] as Map<String, dynamic>;
       }
     } catch (e) {
-      debugPrint("❌ Single order fetch error: $e");
+      debugPrint('❌ Single order fetch error: $e');
     }
     return null;
   }
@@ -56,7 +56,7 @@ class ChefHomeController extends GetxController {
     return await ApiService.patch(
       url,
       body: {
-        "status": "Confirm",
+        'status': 'Confirm',
       },
     );
   }
@@ -68,8 +68,8 @@ class ChefHomeController extends GetxController {
     return await ApiService.patch(
       url,
       body: {
-        "status": "Decline",
-        "decline_reason": reason,
+        'status': 'Decline',
+        'decline_reason': reason,
       },
     );
   }
@@ -82,8 +82,8 @@ class ChefHomeController extends GetxController {
     return await ApiService.patch(
       url,
       body: {
-        "status": "Canceled",
-        "cancel_reason": reason,
+        'status': 'Canceled',
+        'cancel_reason': reason,
       },
     );
   }
@@ -96,7 +96,7 @@ class ChefHomeController extends GetxController {
         walletBalance.value = (response.data['data']['balance'] ?? 0).toDouble();
       }
     } catch (e) {
-      debugPrint("Wallet fetch error: $e");
+      debugPrint('Wallet fetch error: $e');
     }
   }
 
@@ -108,7 +108,7 @@ class ChefHomeController extends GetxController {
         chefProfile.value = ChefProfileModel.fromJson(response.data['data']);
       }
     } catch (e) {
-      debugPrint("Profile fetch error: $e");
+      debugPrint('Profile fetch error: $e');
     } finally {
       isLoadingProfile.value = false;
     }
@@ -118,7 +118,7 @@ class ChefHomeController extends GetxController {
     isLoadingBookings.value = true;
 
     try {
-      final status = Uri.encodeQueryComponent("Awaiting Confirmation");
+      final status = Uri.encodeQueryComponent('Awaiting Confirmation');
 
       final response = await ApiService.get(
         '${ApiEndPoint.order}?status=$status&limit=5',
@@ -132,7 +132,7 @@ class ChefHomeController extends GetxController {
         requestedBookings.clear();
       }
     } catch (e) {
-      debugPrint("❌ Bookings fetch error: $e");
+      debugPrint('❌ Bookings fetch error: $e');
     } finally {
       isLoadingBookings.value = false;
     }
@@ -154,7 +154,7 @@ class ChefHomeController extends GetxController {
         upcomingBookings.clear();
       }
     } catch (e) {
-      debugPrint("❌ Upcoming fetch error: $e");
+      debugPrint('❌ Upcoming fetch error: $e');
     } finally {
       isLoadingUpcoming.value = false;
     }

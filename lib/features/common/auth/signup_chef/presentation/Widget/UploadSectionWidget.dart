@@ -226,7 +226,7 @@ class BaseDocPage extends StatelessWidget {
                         color: Color(0xffF6F6F6),
                         shape: BoxShape.circle,
                       ),
-                      child: CommonImage(
+                      child: const CommonImage(
                         imageSrc: AppIcons.backIcon,
                         size: 24,
                       ),
@@ -282,7 +282,7 @@ class BaseDocPage extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     // security notice
-                    Row(children: const [
+                    const Row(children: [
                       Icon(Icons.shield_outlined,
                           size: 14, color: _securityGreen),
                       SizedBox(width: 6),
@@ -331,10 +331,9 @@ class BaseDocPage extends StatelessWidget {
 
 
                     CommonButton(
-                      titleText: "Skip for Now",
+                      titleText: 'Skip for Now',
                       onTap: onSkip,
                       buttonColor: Colors.transparent,
-                      borderColor: Colors.transparent,
                       titleColor: Colors.black,
                       titleSize: 10.sp,
                     )

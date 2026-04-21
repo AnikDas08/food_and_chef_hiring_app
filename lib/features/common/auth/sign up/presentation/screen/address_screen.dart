@@ -37,7 +37,7 @@ class AddressScreen extends StatelessWidget {
                 color: Color(0xffF6F6F6),
                 shape: BoxShape.circle,
               ),
-              child: CommonImage(
+              child: const CommonImage(
                 imageSrc: AppIcons.backIcon,
                 size: 24,
               ),
@@ -53,7 +53,6 @@ class AddressScreen extends StatelessWidget {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -79,23 +78,22 @@ class AddressScreen extends StatelessWidget {
                     controller: controller.addressController,
                     hintText: AppString.enterYourAddress,
                     validator: OtherHelper.validator,
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.only(left: 10),
+                    prefixIcon: const Padding(
+                      padding: EdgeInsets.only(left: 10),
                       child: Icon(CupertinoIcons.search),
                     ),
                     paddingHorizontal: 10,
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.all(12),
+                    suffixIcon: const Padding(
+                      padding: EdgeInsets.all(12),
                       child: CommonImage(imageSrc: AppIcons.map, size: 24),
                     ),
                   ),
                   20.height,
 
-                  CommonText(
+                  const CommonText(
                     text: AppString.suggestedAddress,
                     color: Color(0xff777777),
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
                     bottom: 6,
                   ),
 
@@ -104,27 +102,25 @@ class AddressScreen extends StatelessWidget {
                       itemCount: 10,
                       itemBuilder: (context, index) {
                         return Container(
-                          margin: EdgeInsets.only(top: 12),
+                          margin: const EdgeInsets.only(top: 12),
                           child: Row(
                             children: [
-                              CommonImage(imageSrc: AppIcons.address),
+                              const CommonImage(imageSrc: AppIcons.address),
                               12.width,
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                              const Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CommonText(
-                                    text: "New Mexico",
+                                    text: 'New Mexico',
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
                                     color: Color(0xff272727),
                                   ),
                                   CommonText(
                                     text:
-                                        "4140 Parker Rd. Allentown, New Mexico 31134",
+                                        '4140 Parker Rd. Allentown, New Mexico 31134',
                                     fontSize: 12,
                                     top: 2,
-                                    fontWeight: FontWeight.w500,
                                     color: Color(0xff777777),
                                   ),
                                 ],

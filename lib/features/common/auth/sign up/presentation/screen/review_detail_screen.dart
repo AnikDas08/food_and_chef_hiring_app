@@ -38,7 +38,6 @@ class ReviewDetailScreen extends StatelessWidget {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -68,7 +67,7 @@ class ReviewDetailScreen extends StatelessWidget {
                   CommonText(
                     text: AppString.personalDetails.toUpperCase(),
                     fontSize: 12,
-                    color: Color(0xff777777),
+                    color: const Color(0xff777777),
                     bottom: 12,
                     top: 28,
                   ),
@@ -132,7 +131,7 @@ class ReviewDetailScreen extends StatelessWidget {
                     },
                   ),
 
-                  CommonText(
+                  const CommonText(
                     text: AppString.detailedAddress,
                     fontSize: 12,
                     color: Color(0xff777777),
@@ -142,7 +141,7 @@ class ReviewDetailScreen extends StatelessWidget {
                   CommonText(
                     text: AppString.address.toUpperCase(),
                     bottom: 8,
-                    color: Color(0xff272727),
+                    color: const Color(0xff272727),
                     fontWeight: FontWeight.w600,
                   ),
 
@@ -155,10 +154,10 @@ class ReviewDetailScreen extends StatelessWidget {
                       hoverColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       onTap: () {
-                        controller.addressController.text = "";
+                        controller.addressController.text = '';
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
+                      child: const Padding(
+                        padding: EdgeInsets.all(12),
                         child: CommonImage(
                           imageSrc: AppIcons.location,
                           imageColor: Color(0xffFD713F),
@@ -195,7 +194,7 @@ class ReviewDetailScreen extends StatelessWidget {
                           ? const Padding(
                         padding: EdgeInsets.all(12),
                         child: Text(
-                          "No results found",
+                          'No results found',
                           style:
                           TextStyle(color: Color(0xff777777)),
                         ),
@@ -245,7 +244,7 @@ class ReviewDetailScreen extends StatelessWidget {
                   CommonText(
                     text: AppString.allergicPreferences.toUpperCase(),
                     fontSize: 12,
-                    color: Color(0xff777777),
+                    color: const Color(0xff777777),
                     bottom: 12,
                     top: 28,
                   ),
@@ -282,7 +281,7 @@ class ReviewDetailScreen extends StatelessWidget {
               if (_formKey.currentState!.validate()) {
                 controller.completeProfile();
               } else {
-                Utils.errorSnackBar("Error", "Please, Full fill all Field");
+                Utils.errorSnackBar('Error', 'Please, Full fill all Field');
               }
             },
           ),

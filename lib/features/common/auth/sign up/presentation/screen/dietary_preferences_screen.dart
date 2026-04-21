@@ -35,7 +35,6 @@ class DietaryPreferencesScreen extends StatelessWidget {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -59,8 +58,8 @@ class DietaryPreferencesScreen extends StatelessWidget {
 
                   CommonTextField(
                     hintText: AppString.search,
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.only(left: 14),
+                    prefixIcon: const Padding(
+                      padding: EdgeInsets.only(left: 14),
                       child: Icon(CupertinoIcons.search),
                     ),
                     paddingHorizontal: 10,
@@ -83,14 +82,14 @@ class DietaryPreferencesScreen extends StatelessWidget {
                       child: ListView.builder(
                         itemCount: controller.filteredDietaryOption.length,
                         itemBuilder: (context, index) {
-                          String value =
+                          final String value =
                           controller.filteredDietaryOption[index];
                           return InkWell(
                             onTap: () {
                               controller.onChangeDietary(value);
                             },
                             child: Container(
-                              margin: EdgeInsets.symmetric(vertical: 14),
+                              margin: const EdgeInsets.symmetric(vertical: 14),
                               child: Row(
                                 children: [
                                   Container(
@@ -99,14 +98,14 @@ class DietaryPreferencesScreen extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       color: controller.selectDietary
                                           .contains(value)
-                                          ? Color(0xff272727)
-                                          : Color(0xffF1F1F1),
+                                          ? const Color(0xff272727)
+                                          : const Color(0xffF1F1F1),
                                       shape: BoxShape.circle,
                                     ),
                                     child: !controller.selectDietary
                                         .contains(value)
                                         ? null
-                                        : Icon(
+                                        : const Icon(
                                       Icons.check,
                                       color: Colors.white,
                                       size: 10,
@@ -117,7 +116,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                                     fontSize: 12,
                                     left: 8,
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xff272727),
+                                    color: const Color(0xff272727),
                                   ),
                                 ],
                               ),
@@ -181,12 +180,11 @@ class DietaryPreferencesScreen extends StatelessWidget {
                 ),
               ),*/
               CommonButton(
-                titleText: "Skip for Now",
+                titleText: 'Skip for Now',
                 onTap: () {
                   Get.toNamed(AppRoutes.reviewDetail);
                 },
                 buttonColor: Colors.transparent,
-                borderColor: Colors.transparent,
                 titleColor: Colors.black,
                 titleSize: 10.sp,
               )

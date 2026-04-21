@@ -143,7 +143,6 @@ class _BookingBannerWidgetState extends State<_BookingBannerWidget>
                     vertical: 14.h,
                   ),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // ── Image / Icon ──
                       Container(

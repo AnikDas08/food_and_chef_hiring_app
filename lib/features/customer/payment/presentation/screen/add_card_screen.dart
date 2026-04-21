@@ -24,8 +24,8 @@ class AddCardScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
-                    text: "Add a Card",
+                  const CommonText(
+                    text: 'Add a Card',
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
@@ -33,30 +33,28 @@ class AddCardScreen extends StatelessWidget {
                     top: 12,
                   ),
 
-                  CommonText(
-                    text: "Card Number",
-                    fontSize: 14,
+                  const CommonText(
+                    text: 'Card Number',
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                     bottom: 8,
                   ),
                   CommonTextField(
-                    hintText: "Card Number",
-                    suffixIcon: Padding(
+                    hintText: 'Card Number',
+                    suffixIcon: const Padding(
                       padding: EdgeInsets.all(8),
                       child: CommonImage(imageSrc: AppIcons.master, size: 24),
                     ),
                   ),
 
-                  CommonText(
-                    text: "Cardholder Name",
-                    fontSize: 14,
+                  const CommonText(
+                    text: 'Cardholder Name',
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                     bottom: 8,
                     top: 16,
                   ),
-                  CommonTextField(hintText: "Cardholder Name"),
+                  CommonTextField(hintText: 'Cardholder Name'),
                   16.height,
                   Row(
                     children: [
@@ -64,31 +62,28 @@ class AddCardScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CommonText(
-                              text: "Expiry Date",
-                              fontSize: 14,
+                            const CommonText(
+                              text: 'Expiry Date',
                               fontWeight: FontWeight.w600,
                               color: Color(0xff272727),
                               bottom: 8,
                             ),
-                            CommonTextField(hintText: "Expiry Date"),
+                            CommonTextField(hintText: 'Expiry Date'),
                           ],
                         ),
                       ),
                       16.width,
                       Expanded(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CommonText(
-                              text: "CVC",
-                              fontSize: 14,
+                            const CommonText(
+                              text: 'CVC',
                               fontWeight: FontWeight.w600,
                               color: Color(0xff272727),
                               bottom: 8,
                             ),
-                            CommonTextField(hintText: "CVC"),
+                            CommonTextField(hintText: 'CVC'),
                           ],
                         ),
                       ),
@@ -101,7 +96,7 @@ class AddCardScreen extends StatelessWidget {
         },
       ),
       persistentFooterButtons: [
-        SafeArea(child: CommonButton(titleText: "Add Card", onTap: Get.back)),
+        SafeArea(child: CommonButton(titleText: 'Add Card', onTap: Get.back)),
       ],
     );
   }

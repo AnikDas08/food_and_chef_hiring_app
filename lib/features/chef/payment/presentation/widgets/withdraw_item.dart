@@ -3,24 +3,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 
 Widget withdrawItem({required Map item}) {
-  bool isDeduct = item['isDeduct'] ?? false;
-  String status = item['status'] ?? "";
+  final bool isDeduct = item['isDeduct'] ?? false;
+  final String status = item['status'] ?? '';
 
   // ✅ Status color
   Color statusColor;
-  if (status == "Success" || status == "Completed") {
+  if (status == 'Success' || status == 'Completed') {
     statusColor = const Color(0xff22C55E); // green
-  } else if (status == "Pending") {
+  } else if (status == 'Pending') {
     statusColor = const Color(0xffF59E0B); // orange
-  } else if (status == "Failed") {
+  } else if (status == 'Failed') {
     statusColor = const Color(0xffEF4444); // red
   } else {
     statusColor = Colors.grey;
   }
 
-  Color amountColor =
+  final Color amountColor =
   isDeduct ? const Color(0xff272727) : const Color(0xff22C55E);
-  String amountPrefix = isDeduct ? "- " : "+ ";
+  final String amountPrefix = isDeduct ? '- ' : '+ ';
 
   return Container(
     margin: EdgeInsets.only(bottom: 16.h),
@@ -51,9 +51,8 @@ Widget withdrawItem({required Map item}) {
               Row(
                 children: [
                   CommonText(
-                    text: item['title'] ?? "",
+                    text: item['title'] ?? '',
                     fontSize: 13.sp,
-                    fontWeight: FontWeight.w500,
                     color: const Color(0xff272727),
                   ),
                   SizedBox(width: 8.w),
@@ -68,7 +67,7 @@ Widget withdrawItem({required Map item}) {
               ),
               SizedBox(height: 4.h),
               CommonText(
-                text: item['subTitle'] ?? "",
+                text: item['subTitle'] ?? '',
                 fontSize: 11.sp,
                 fontWeight: FontWeight.w400,
                 color: const Color(0xff9CA3AF),
@@ -90,7 +89,7 @@ Widget withdrawItem({required Map item}) {
             ),
             SizedBox(height: 4.h),
             CommonText(
-              text: item['date'] ?? "",
+              text: item['date'] ?? '',
               fontSize: 11.sp,
               fontWeight: FontWeight.w400,
               color: const Color(0xff9CA3AF),

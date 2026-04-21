@@ -18,13 +18,13 @@ class CafeSetYourPriceScreen extends StatefulWidget {
 
 class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
   final TextEditingController _baseRateController =
-  TextEditingController(text: "");
+  TextEditingController(text: '');
   final TextEditingController _discountRateController =
-  TextEditingController(text: "");
+  TextEditingController(text: '');
   final TextEditingController _weekendRateController =
-  TextEditingController(text: "");
+  TextEditingController(text: '');
   final TextEditingController _minDurationController =
-  TextEditingController(text: "");
+  TextEditingController(text: '');
 
   bool _offerDiscount = true;
   bool _weekendRate = false;
@@ -59,8 +59,8 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
   String? _validateDuration(String value) {
     if (value.trim().isEmpty) return null;
     final parsed = int.tryParse(value.trim());
-    if (parsed == null) return "Please enter a valid number";
-    if (parsed < 1) return "Minimum booking duration is 1 hour";
+    if (parsed == null) return 'Please enter a valid number';
+    if (parsed < 1) return 'Minimum booking duration is 1 hour';
     return null;
   }
 
@@ -92,7 +92,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                 color: Color(0xffF6F6F6),
                 shape: BoxShape.circle,
               ),
-              child: CommonImage(
+              child: const CommonImage(
                 imageSrc: AppIcons.backIcon,
                 size: 24,
               ),
@@ -110,40 +110,38 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonText(
-                      text: "Set Your Price",
+                    const CommonText(
+                      text: 'Set Your Price',
                       fontSize: 26,
                       fontWeight: FontWeight.w700,
-                      color: const Color(0xFF272727),
+                      color: Color(0xFF272727),
                       textAlign: TextAlign.left,
                     ),
                     8.verticalSpace,
 
-                    CommonText(
+                    const CommonText(
                       text:
-                      "Set your hourly rate that customers will pay you to cook for them! No pressure though--you can change this any time.",
+                      'Set your hourly rate that customers will pay you to cook for them! No pressure though--you can change this any time.',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
-                      color: const Color(0xFF777777),
+                      color: Color(0xFF777777),
                       textAlign: TextAlign.left,
                       maxLines: 4,
                     ),
                     24.verticalSpace,
 
-                    CommonText(
-                      text: "PRICING",
+                    const CommonText(
+                      text: 'PRICING',
                       fontSize: 11,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF777777),
+                      color: Color(0xFF777777),
                       textAlign: TextAlign.left,
                     ),
                     12.verticalSpace,
 
-                    CommonText(
-                      text: "Set Amount",
-                      fontSize: 14,
+                    const CommonText(
+                      text: 'Set Amount',
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF272727),
+                      color: Color(0xFF272727),
                       textAlign: TextAlign.left,
                     ),
                     8.verticalSpace,
@@ -153,7 +151,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     // ── Weekday Discount Toggle ──
                     _buildToggleCard(
                       title:
-                      "Offer discounted rate during specific\nhours on weekdays",
+                      'Offer discounted rate during specific\nhours on weekdays',
                       value: _offerDiscount,
                       onChanged: (val) =>
                           setState(() => _offerDiscount = val),
@@ -165,7 +163,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                             children: [
                               Expanded(
                                 child: _buildTimeField(
-                                  label: "From",
+                                  label: 'From',
                                   time: _fromTime,
                                   onTap: () => _pickTime(true),
                                 ),
@@ -173,7 +171,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                               12.horizontalSpace,
                               Expanded(
                                 child: _buildTimeField(
-                                  label: "To",
+                                  label: 'To',
                                   time: _toTime,
                                   onTap: () => _pickTime(false),
                                 ),
@@ -190,7 +188,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
 
                     // ── Weekend Rate Toggle Card ──
                     _buildToggleCard(
-                      title: "Ask for higher rate on weekends",
+                      title: 'Ask for higher rate on weekends',
                       value: _weekendRate,
                       onChanged: (val) =>
                           setState(() => _weekendRate = val),
@@ -205,20 +203,18 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     24.verticalSpace,
 
                     // ── MINIMUM BOOKING DURATION ──
-                    CommonText(
-                      text: "MINIMUM BOOKING DURATION",
+                    const CommonText(
+                      text: 'MINIMUM BOOKING DURATION',
                       fontSize: 11,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xFF777777),
+                      color: Color(0xFF777777),
                       textAlign: TextAlign.left,
                     ),
                     12.verticalSpace,
 
-                    CommonText(
-                      text: "Set shortest session length you accept",
-                      fontSize: 14,
+                    const CommonText(
+                      text: 'Set shortest session length you accept',
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF272727),
+                      color: Color(0xFF272727),
                       textAlign: TextAlign.left,
                     ),
                     8.verticalSpace,
@@ -251,7 +247,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                                 color: const Color(0xFF272727),
                               ),
                               decoration: InputDecoration(
-                                hintText: "Enter hours",
+                                hintText: 'Enter hours',
                                 hintStyle: TextStyle(
                                   color: const Color(0xFFAAAAAA),
                                   fontSize: 13.sp,
@@ -265,11 +261,11 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                               },
                             ),
                           ),
-                          CommonText(
-                            text: "/h",
+                          const CommonText(
+                            text: '/h',
                             fontSize: 13,
                             fontWeight: FontWeight.w400,
-                            color: const Color(0xFF777777),
+                            color: Color(0xFF777777),
                           ),
                         ],
                       ),
@@ -299,11 +295,11 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                         ],
                       )
                     else
-                      CommonText(
-                        text: "Use whole hours only — for example: 1h 2h 3h.",
+                      const CommonText(
+                        text: 'Use whole hours only — for example: 1h 2h 3h.',
                         fontSize: 11,
                         fontWeight: FontWeight.w400,
-                        color: const Color(0xFF999999),
+                        color: Color(0xFF999999),
                         textAlign: TextAlign.left,
                       ),
 
@@ -326,7 +322,7 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                     if (_baseRateController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text("Please enter base rate")),
+                            content: Text('Please enter base rate')),
                       );
                       return;
                     }
@@ -345,9 +341,9 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                       final Map<String, dynamic> weekDaysDiscount =
                       _offerDiscount
                           ? {
-                        "from": _formatTime(_fromTime),
-                        "to": _formatTime(_toTime),
-                        "amount": _discountRateController.text
+                        'from': _formatTime(_fromTime),
+                        'to': _formatTime(_toTime),
+                        'amount': _discountRateController.text
                             .trim(),
                       }
                           : {};
@@ -359,16 +355,17 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                         weekendDiscountHas: _weekendRate,
                         weekendDiscountAmount:
                         _weekendRateController.text.trim().isEmpty
-                            ? "0"
+                            ? '0'
                             : _weekendRateController.text.trim(),
                         minimumShortOrderHours:
                         _minDurationController.text.trim().isEmpty
-                            ? "1"
+                            ? '1'
                             : _minDurationController.text.trim(),
                       );
                     } finally {
-                      if (mounted)
+                      if (mounted) {
                         setState(() => _isSubmitting = false);
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -392,16 +389,16 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                         ),
                       ),
                       10.horizontalSpace,
-                      CommonText(
-                        text: "Loading...",
+                      const CommonText(
+                        text: 'Loading...',
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
                     ],
                   )
-                      : CommonText(
-                    text: "Continue",
+                      : const CommonText(
+                    text: 'Continue',
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
@@ -424,11 +421,9 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
       child: Row(
         children: [
-          CommonText(
-            text: "\$",
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: const Color(0xFF272727),
+          const CommonText(
+            text: '\$',
+            color: Color(0xFF272727),
           ),
           12.horizontalSpace,
           Expanded(
@@ -444,16 +439,16 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
                 color: const Color(0xFF272727),
               ),
               decoration: const InputDecoration(
-                hintText: "Enter Your Amount",
+                hintText: 'Enter Your Amount',
                 border: InputBorder.none,
               ),
             ),
           ),
-          CommonText(
-            text: "/h",
+          const CommonText(
+            text: '/h',
             fontSize: 13,
             fontWeight: FontWeight.w400,
-            color: const Color(0xFF777777),
+            color: Color(0xFF777777),
           ),
         ],
       ),
@@ -480,7 +475,6 @@ class _CafeSetYourPriceScreenState extends State<CafeSetYourPriceScreen> {
               Expanded(
                 child: CommonText(
                   text: title,
-                  fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xFF272727),
                   textAlign: TextAlign.left,

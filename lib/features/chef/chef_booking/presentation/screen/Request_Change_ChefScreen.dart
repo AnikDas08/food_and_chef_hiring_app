@@ -16,26 +16,26 @@ class RequestChangeChefScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map order = (Get.arguments as Map?) ?? {};
 
-    debugPrint("🔑 order keys = ${order.keys.toList()}");
+    debugPrint('🔑 order keys = ${order.keys.toList()}');
     debugPrint("🔑 orderId = ${order['_id']}");
 
     final ctrl = Get.put(RequestChangeChefController());
 
     final user = (order['user'] as Map?) ?? {};
     final chef = (order['chef'] as Map?) ?? {};
-    final String chefName = (chef['name'] ?? "Chef").toString();
-    final String chefImageRaw = (chef['image'] ?? "").toString();
+    final String chefName = (chef['name'] ?? 'Chef').toString();
+    final String chefImageRaw = (chef['image'] ?? '').toString();
     final String chefImage = chefImageRaw.startsWith('http')
         ? chefImageRaw
-        : "http://10.10.7.9:5014$chefImageRaw";
-    final String address = (order['formatted_address'] ?? "No address").toString();
-    final String strTime = (order['strTime'] ?? "").toString();
+        : 'http://10.10.7.9:5014$chefImageRaw';
+    final String address = (order['formatted_address'] ?? 'No address').toString();
+    final String strTime = (order['strTime'] ?? '').toString();
     final String formattedDate = _formatDate(order['formatted_date']?.toString());
     final List staticItems = (order['static_items'] as List?) ?? [];
     final double total = _toDouble(order['user_paid']);
     final double orderTotal = _toDouble(order['total_price']);
-    final String orderId = (order['_id'] ?? "").toString();
-    final String addressId = (order['address_id'] ?? "").toString();
+    final String orderId = (order['_id'] ?? '').toString();
+    final String addressId = (order['address_id'] ?? '').toString();
 
     return Scaffold(
       backgroundColor: const Color(0xffFAFAFA),
@@ -49,7 +49,7 @@ class RequestChangeChefScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          "Request a Change",
+          'Request a Change',
           style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -61,7 +61,7 @@ class RequestChangeChefScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Reservation Details",
+            const Text('Reservation Details',
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -71,7 +71,7 @@ class RequestChangeChefScreen extends StatelessWidget {
             CommonTextField(
               controller: ctrl.dateController,
               keyboardType: TextInputType.none,
-              hintText: "$formattedDate at $strTime",
+              hintText: '$formattedDate at $strTime',
               onTap: () => OtherHelper.openDatePickerDialog(ctrl.dateController),
               suffixIcon: InkWell(
                 onTap: () => OtherHelper.openDatePickerDialog(ctrl.dateController),
@@ -84,7 +84,7 @@ class RequestChangeChefScreen extends StatelessWidget {
             CommonTextField(
               controller: ctrl.timeController,
               keyboardType: TextInputType.none,
-              hintText: "Select time",
+              hintText: 'Select time',
               onTap: () => OtherHelper.openTimePickerDialog(ctrl.timeController),
               suffixIcon: InkWell(
                 onTap: () => OtherHelper.openTimePickerDialog(ctrl.timeController),
@@ -103,9 +103,9 @@ class RequestChangeChefScreen extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  CommonImage(
+                  const CommonImage(
                     imageSrc: AppIcons.location,
-                    imageColor: const Color(0xffFD713F),
+                    imageColor: Color(0xffFD713F),
                     size: 24,
                   ),
                   8.width,
@@ -114,7 +114,7 @@ class RequestChangeChefScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text((user['name'] ?? "Customer").toString(),
+                        Text((user['name'] ?? 'Customer').toString(),
                             style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -138,7 +138,7 @@ class RequestChangeChefScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Order Details",
+                const Text('Order Details',
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -173,7 +173,7 @@ class RequestChangeChefScreen extends StatelessWidget {
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: Color(0xff272727))),
-                      Text("\$${orderTotal.toStringAsFixed(0)} total",
+                      Text('\$${orderTotal.toStringAsFixed(0)} total',
                           style: const TextStyle(
                               fontSize: 12, color: Color(0xff777777))),
                     ],
@@ -185,11 +185,11 @@ class RequestChangeChefScreen extends StatelessWidget {
             24.height,
 
             if (staticItems.isEmpty)
-              const Text("No items",
+              const Text('No items',
                   style: TextStyle(color: Color(0xff999999)))
             else
               ...staticItems.map((item) {
-                final name = (item['menu']?['name'] ?? "").toString();
+                final name = (item['menu']?['name'] ?? '').toString();
                 final qty = (item['quantity'] ?? 1);
                 final price = _toDouble(item['unit_price']);
                 final List customs = (item['customizations'] as List?) ?? [];
@@ -216,7 +216,7 @@ class RequestChangeChefScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Text("\$${price.toStringAsFixed(2)}",
+                      Text('\$${price.toStringAsFixed(2)}',
                           style: const TextStyle(
                               fontSize: 14, color: Color(0xff272727))),
                     ],
@@ -233,12 +233,12 @@ class RequestChangeChefScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("This will update your order total",
+                  const Text('This will update your order total',
                       style: TextStyle(
                           fontSize: 12,
                           color: Color(0xffFD713F),
                           fontWeight: FontWeight.w500)),
-                  Text("\$${total.toStringAsFixed(2)}",
+                  Text('\$${total.toStringAsFixed(2)}',
                       style: const TextStyle(
                           fontSize: 13,
                           color: Color(0xffFD713F),
@@ -249,7 +249,7 @@ class RequestChangeChefScreen extends StatelessWidget {
 
             28.height,
 
-            const Text("Notes to the Chef",
+            const Text('Notes to the Chef',
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -257,7 +257,7 @@ class RequestChangeChefScreen extends StatelessWidget {
             8.height,
             CommonTextField(
               controller: ctrl.noteController,
-              hintText: "Enter here",
+              hintText: 'Enter here',
             ),
 
             20.height,
@@ -269,8 +269,8 @@ class RequestChangeChefScreen extends StatelessWidget {
         child: SafeArea(
           child: Obx(() => CommonButton(
             titleText: ctrl.isLoading.value
-                ? "Requesting..."
-                : "Request and Checkout",
+                ? 'Requesting...'
+                : 'Request and Checkout',
             onTap: ctrl.isLoading.value
                 ? null
                 : () => ctrl.submitRequest(
@@ -291,12 +291,12 @@ class RequestChangeChefScreen extends StatelessWidget {
   );
 
   String _formatDate(String? iso) {
-    if (iso == null || iso.isEmpty) return "N/A";
+    if (iso == null || iso.isEmpty) return 'N/A';
     try {
       final dt = DateTime.parse(iso);
       const m = ['', 'January', 'February', 'March', 'April', 'May',
         'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      return "${dt.day} ${m[dt.month]}, ${dt.year}";
+      return '${dt.day} ${m[dt.month]}, ${dt.year}';
     } catch (_) {
       return iso;
     }

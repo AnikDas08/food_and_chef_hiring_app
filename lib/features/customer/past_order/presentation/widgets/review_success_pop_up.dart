@@ -10,7 +10,7 @@ import '../../../../../component/button/common_button.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../utils/constants/app_string.dart';
 
-reviewSuccessPopUp() {
+void reviewSuccessPopUp() {
   showDialog(
     context: Get.context!,
     builder: (context) {
@@ -24,27 +24,27 @@ reviewSuccessPopUp() {
             return FadeTransition(
               opacity: ModalRoute.of(context)!.animation!,
               child: Dialog(
-                insetPadding: EdgeInsets.symmetric(horizontal: 16),
+                insetPadding: const EdgeInsets.symmetric(horizontal: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.r),
                 ),
-                backgroundColor: Color(0xffFFFFFF),
+                backgroundColor: const Color(0xffFFFFFF),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CommonImage(imageSrc: AppImages.reviewSuccess, size: 88),
-                      CommonText(
-                        text: "Review Submitted",
+                      const CommonImage(imageSrc: AppImages.reviewSuccess, size: 88),
+                      const CommonText(
+                        text: 'Review Submitted',
                         fontSize: 16,
                         top: 16,
                         bottom: 8,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff272727),
                       ),
-                      CommonText(
-                        text: "Your review submitted Successfully!",
+                      const CommonText(
+                        text: 'Your review submitted Successfully!',
                         fontSize: 12,
                         bottom: 32,
                         fontWeight: FontWeight.w400,
@@ -55,7 +55,6 @@ reviewSuccessPopUp() {
                         titleText: AppString.done,
                         buttonHeight: 48,
                         buttonRadius: 16,
-                        titleColor: Color(0xffFFFFFF),
                         onTap: () async {
                           await AnimationPopUpState.closeDialog();
                           Navigator.pop(Get.context!);

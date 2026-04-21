@@ -19,9 +19,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState(){
     Future.delayed(const Duration(seconds: 3), () async{
-      print("My userId👌👌👌👌👌: ${LocalStorage.userId}");
+      print('My userId👌👌👌👌👌: ${LocalStorage.userId}');
 
-        if (LocalStorage.isLogIn&&LocalStorage.token!="") {
+        if (LocalStorage.isLogIn&&LocalStorage.token!='') {
           if (LocalStorage.myRole == 'CUSTOMER') {
             Get.offAllNamed(AppRoutes.customerHomeScreen);
           } else {
@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body:
-          CommonImage(
+          const CommonImage(
             imageSrc: AppImages.splash,
             fill: BoxFit.fill,
             height: double.infinity,

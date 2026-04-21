@@ -220,7 +220,6 @@ class KitchenSetupController extends GetxController {
                 .map((item) => EquipmentItemModel(
               id: item.id,
               name: item.name,
-              isSelected: false,
             ))
                 .toList();
             expanded[cat.category] = true;

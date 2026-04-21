@@ -6,12 +6,12 @@ import 'package:new_untitled/utils/constants/app_icons.dart';
 Widget dish(String title) {
   return Row(
     children: [
-      CommonImage(imageSrc: AppIcons.dish),
+      const CommonImage(imageSrc: AppIcons.dish),
       CommonText(
         text: title,
         fontSize: 12,
         fontWeight: FontWeight.w400,
-        color: Color(0xff272727),
+        color: const Color(0xff272727),
         left: 8,
       ),
     ],

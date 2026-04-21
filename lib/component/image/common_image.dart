@@ -29,13 +29,13 @@ class CommonImage extends StatelessWidget {
     super.key,
   });
 
-  checkImageType() {}
+  void checkImageType() {}
 
   @override
   Widget build(BuildContext context) {
-    if (imageSrc.contains("assets/icons")) {
+    if (imageSrc.contains('assets/icons')) {
       return _buildSvgImage();
-    } else if (imageSrc.contains("assets/images")) {
+    } else if (imageSrc.contains('assets/images')) {
       return _buildPngImage();
     } else {
       return _buildNetworkImage();
@@ -53,9 +53,9 @@ class CommonImage extends StatelessWidget {
         height: size?.sp ?? height?.h,
         width: size?.sp ?? width?.w,
         imageUrl:
-            imageSrc.startsWith("http")
+            imageSrc.startsWith('http')
                 ? imageSrc
-                : "${ApiEndPoint.imageUrl}$imageSrc",
+                : '${ApiEndPoint.imageUrl}$imageSrc',
         fit: fill,
         imageBuilder:
             (context, imageProvider) => Container(
@@ -68,7 +68,7 @@ class CommonImage extends StatelessWidget {
             (context, url, downloadProgress) =>
                 CircularProgressIndicator(value: downloadProgress.progress,),
         errorWidget: (context, url, error) {
-          errorLog(error, source: "Common Image");
+          errorLog(error, source: 'Common Image');
 
           return _buildErrorWidget();
         },
@@ -97,7 +97,7 @@ class CommonImage extends StatelessWidget {
         width: size?.sp ?? width?.w,
         fit: fill,
         errorBuilder: (context, error, stackTrace) {
-          errorLog(error, source: "Common Image");
+          errorLog(error, source: 'Common Image');
           return _buildErrorWidget();
         },
       ),

@@ -3,12 +3,12 @@ import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
 
 class HistoryController extends GetxController {
-  List<String> bookingHistoryList = ["Withdrawal", "Payment received"];
-  String selectedBookingHistory = "Withdrawal";
+  List<String> bookingHistoryList = ['Withdrawal', 'Payment received'];
+  String selectedBookingHistory = 'Withdrawal';
   List<Map> history = [];
   bool isLoading = true;
 
-  String searchText = "";
+  String searchText = '';
 
   @override
   void onInit() {
@@ -16,7 +16,7 @@ class HistoryController extends GetxController {
     fetchHistory();
   }
 
-  onChangeBookingHistory(String value) {
+  void onChangeBookingHistory(String value) {
     if (selectedBookingHistory == value) return;
     isLoading = true;
     selectedBookingHistory = value;
@@ -24,52 +24,52 @@ class HistoryController extends GetxController {
     fetchHistory();
   }
 
-  onSearch(String value) {
+  void onSearch(String value) {
     searchText = value;
     fetchHistory();
   }
 
-  fetchHistory() async {
+  Future<void> fetchHistory() async {
     isLoading = true;
     update();
 
     try {
       // type: "Withdraw" or "Booking"
-      String type =
-      selectedBookingHistory == "Withdrawal" ? "Withdraw" : "Booking";
+      final String type =
+      selectedBookingHistory == 'Withdrawal' ? 'Withdraw' : 'Booking';
 
-      String url = "${ApiEndPoint.transaction}?type=$type";
+      String url = '${ApiEndPoint.transaction}?type=$type';
 
       // search থাকলে add করো
       if (searchText.isNotEmpty) {
-        url += "&searchTerm=$searchText";
+        url += '&searchTerm=$searchText';
       }
 
       final response = await ApiService.get(url);
 
       if (response.statusCode == 200) {
-        List data = response.data['data'] ?? [];
+        final List data = response.data['data'] ?? [];
 
         history = data.map<Map>((item) {
 
-          bool isDeduct = item['payment_type'] == 'deduct';
+          final bool isDeduct = item['payment_type'] == 'deduct';
 
           return {
-            "title": item['type'] ?? "",
-            "date": _formatDate(item['createdAt']),
-            "amount": item['total'].toString(),
-            "status": item['status'] ?? "Pending",
-            "subTitle": item['user'] != null
+            'title': item['type'] ?? '',
+            'date': _formatDate(item['createdAt']),
+            'amount': item['total'].toString(),
+            'status': item['status'] ?? 'Pending',
+            'subTitle': item['user'] != null
                 ? "From ${item['user']['name']}"
-                : "To your PayPal account",
-            "isDeduct": isDeduct, // true = "-", false = "+"
+                : 'To your PayPal account',
+            'isDeduct': isDeduct, // true = "-", false = "+"
           };
         }).toList();
       } else {
         history = [];
       }
     } catch (e) {
-      print("HistoryController Error: $e");
+      print('HistoryController Error: $e');
       history = [];
     }
 
@@ -78,9 +78,9 @@ class HistoryController extends GetxController {
   }
 
   String _formatDate(String? isoDate) {
-    if (isoDate == null) return "";
+    if (isoDate == null) return '';
     try {
-      DateTime dt = DateTime.parse(isoDate);
+      final DateTime dt = DateTime.parse(isoDate);
       const months = [
         '',
         'January',
@@ -96,7 +96,7 @@ class HistoryController extends GetxController {
         'November',
         'December'
       ];
-      return "${dt.day} ${months[dt.month]} ${dt.year}";
+      return '${dt.day} ${months[dt.month]} ${dt.year}';
     } catch (_) {
       return isoDate;
     }

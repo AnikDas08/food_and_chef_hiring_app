@@ -47,22 +47,22 @@ class _ChefHomeState extends State<ChefHome>
   int selectedTabIndex = 0;
 
   final List<TabData> tabs = [
-    TabData(title: "Home", icon: "house", selectedIcon: "house.fill"),
+    TabData(title: 'Home', icon: 'house', selectedIcon: 'house.fill'),
     TabData(
-      title: "Analytics",
-      icon: "chart.xyaxis.line",
-      selectedIcon: "chart.xyaxis.line",
+      title: 'Analytics',
+      icon: 'chart.xyaxis.line',
+      selectedIcon: 'chart.xyaxis.line',
     ),
-    TabData(title: "Booking", icon: "basket", selectedIcon: "basket.fill"),
+    TabData(title: 'Booking', icon: 'basket', selectedIcon: 'basket.fill'),
     TabData(
-      title: "Chats",
-      icon: "ellipsis.message",
-      selectedIcon: "ellipsis.message.fill",
+      title: 'Chats',
+      icon: 'ellipsis.message',
+      selectedIcon: 'ellipsis.message.fill',
     ),
     TabData(
-      title: "Profile",
-      icon: "person.crop.circle",
-      selectedIcon: "person.circle.fill",
+      title: 'Profile',
+      icon: 'person.crop.circle',
+      selectedIcon: 'person.circle.fill',
     ),
   ];
 
@@ -77,7 +77,7 @@ class _ChefHomeState extends State<ChefHome>
   @override
   void initState() {
     super.initState();
-    selectedTabIndex = Get.arguments?["index"] ?? 0;
+    selectedTabIndex = Get.arguments?['index'] ?? 0;
     tabController = TabController(
       length: pages.length,
       vsync: this,
@@ -112,7 +112,7 @@ class _ChefHomeState extends State<ChefHome>
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        bool exit = await showExitDialog();
+        final bool exit = await showExitDialog();
         return exit;
       },
       child: Scaffold(
@@ -128,7 +128,6 @@ class _ChefHomeState extends State<ChefHome>
 
   Widget _buildBottomBar() {
     return SafeArea(
-      bottom: true,
       child: Container(
         height: 68.h,
         margin: EdgeInsets.symmetric(horizontal: 16.w).copyWith(bottom: 12.h),
@@ -147,7 +146,7 @@ class _ChefHomeState extends State<ChefHome>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(_list.length, (index) {
-            bool isSelected = index == selectedTabIndex;
+            final bool isSelected = index == selectedTabIndex;
             return Expanded(
               child: InkWell(
                 onTap: () => onTabTap(index),

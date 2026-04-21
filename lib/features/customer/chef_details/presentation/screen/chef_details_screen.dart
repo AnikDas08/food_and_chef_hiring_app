@@ -160,7 +160,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                     ShareParams(text: 'https://example.com'),
                                   );
                                 },
-                                child: CommonImage(imageSrc: AppIcons.share),
+                                child: const CommonImage(imageSrc: AppIcons.share),
                               ),
                               const SizedBox(width: 12),
                             ],
@@ -182,7 +182,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                         fill: BoxFit.cover,
                                       ),
                             ),
-                            Positioned(
+                            const Positioned(
                               bottom: 20,
                               left: 20,
                               child: CommonImage(
@@ -220,7 +220,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       CommonText(
-                                        text: chef?.name ?? "N/A",
+                                        text: chef?.name ?? 'N/A',
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
                                         color: const Color(0xff272727),
@@ -238,7 +238,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                               ),
                                             ),
                                             const TextSpan(
-                                              text: " /hr",
+                                              text: ' /hr',
                                               style: TextStyle(
                                                 color: Color(0xff777777),
                                                 fontSize: 12,
@@ -251,13 +251,12 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                   ),
                                   const SizedBox(height: 8),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      CommonImage(imageSrc: AppIcons.location),
+                                      const CommonImage(imageSrc: AppIcons.location),
                                       CommonText(
                                         text:
                                             controller.chefArg?.distance ??
-                                            "N/A",
+                                            'N/A',
                                         fontSize: 12,
                                         textAlign: TextAlign.start,
                                         left: 4,
@@ -271,10 +270,10 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                         ),
                                         color: const Color(0xffF1F1F1),
                                       ),
-                                      CommonImage(imageSrc: AppIcons.briefcase),
+                                      const CommonImage(imageSrc: AppIcons.briefcase),
                                       CommonText(
                                         text:
-                                            "${chef?.experience ?? 0} years Experience",
+                                            '${chef?.experience ?? 0} years Experience',
                                         fontSize: 12,
                                         left: 4,
                                         color: const Color(0xff777777),
@@ -282,7 +281,6 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                     ],
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       const Flexible(
                                         child: Icon(
@@ -294,7 +292,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                       Flexible(
                                         child: CommonText(
                                           text:
-                                              "${(chef?.avgRating ?? 0).toStringAsFixed(2)} (${chef?.totalRating ?? 0} Reviews)",
+                                              '${(chef?.avgRating ?? 0).toStringAsFixed(2)} (${chef?.totalRating ?? 0} Reviews)',
                                           fontSize: 12,
                                           left: 4,
                                           color: const Color(0xff777777),
@@ -304,17 +302,16 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                     ],
                                   ),
                                   ExtendText(
-                                    text: chef?.about ?? "",
+                                    text: chef?.about ?? '',
                                     isExpanded: controller.isExpanded,
                                     onTap: controller.onChangeExpand,
                                   ),
                                   const SizedBox(height: 16),
                                   CommonButton(
                                     titleText: AppString.checkAvailability,
-                                    titleColor: Colors.white,
                                     onTap: () {
                                       print(
-                                        "chef id: 🤣🤣🤣🤣${controller.chefId}",
+                                        'chef id: 🤣🤣🤣🤣${controller.chefId}',
                                       );
                                       availabilityPopup(
                                         context,
@@ -377,13 +374,12 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                 ),
                                 child:
                                     CommonText(
-                                      text: "${controller.cartItems.length}",
-                                      fontSize: 14,
+                                      text: '${controller.cartItems.length}',
                                       fontWeight: FontWeight.w600,
                                       color: const Color(0xff272727),
                                     ).center,
                               ),
-                              CommonText(
+                              const CommonText(
                                 text: AppString.viewCart,
                                 color: Colors.white,
                                 fontSize: 16,
@@ -396,7 +392,6 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                     "\$${pricePerChef.toStringAsFixed(2)}  •  ${chef?.estCookingTime ?? ''}",
                                 color: Colors.white,
                                 fontSize: 16,
-                                fontWeight: FontWeight.w500,
                               ),
                             ],
                           ),
@@ -451,7 +446,7 @@ class _SearchAppBarTitle extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
               decoration: const InputDecoration(
-                hintText: "Search menu items...",
+                hintText: 'Search menu items...',
                 hintStyle: TextStyle(
                   fontSize: 14,
                   color: Color(0xff999999),
@@ -549,7 +544,7 @@ class _CollapsedAppBarTitle extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 CommonText(
-                  text: chef?.name ?? "N/A",
+                  text: chef?.name ?? 'N/A',
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xff272727),
@@ -582,7 +577,6 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                             text:
                                 "\$${chef?.pricing?.toStringAsFixed(2) ?? '0.00'}/hr",
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
                             color: const Color(0xff555555),
                           ),
                         ],
@@ -594,7 +588,6 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                     CommonText(
                       text: (chef?.avgRating ?? 0).toStringAsFixed(1),
                       fontSize: 12,
-                      fontWeight: FontWeight.w500,
                       color: const Color(0xff272727),
                     ),
                   ],
@@ -654,12 +647,12 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-          CommonText(
+          const CommonText(
             text: AppString.menu,
             fontSize: 16,
             left: 16,
             fontWeight: FontWeight.w600,
-            color: const Color(0xff272727),
+            color: Color(0xff272727),
           ),
           const SizedBox(height: 8),
           SizedBox(
@@ -676,8 +669,8 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
               dividerColor: Colors.transparent,
               indicatorColor: Colors.transparent,
               labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-              labelColor: Color(0xffFD713F),
-              unselectedLabelColor: Color(0xff777777),
+              labelColor: const Color(0xffFD713F),
+              unselectedLabelColor: const Color(0xff777777),
               labelStyle: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,

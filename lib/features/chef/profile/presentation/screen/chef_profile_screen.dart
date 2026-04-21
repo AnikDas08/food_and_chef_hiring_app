@@ -55,8 +55,8 @@ class ChefProfileScreen extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(12.sp),
                   decoration: BoxDecoration(
-                    color: Color(0xffF2F2F2),
-                    border: Border.all(color: Color(0xffF1F1F1)),
+                    color: const Color(0xffF2F2F2),
+                    border: Border.all(color: const Color(0xffF1F1F1)),
                     borderRadius: BorderRadius.circular(20.sp),
                   ),
                   child: Column(
@@ -85,13 +85,13 @@ class ChefProfileScreen extends StatelessWidget {
                                     text: profile?.originalName ?? 'Unknown',
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
-                                    color: Color(0xff272727),
+                                    color: const Color(0xff272727),
                                   ),
                                   CommonText(
                                     text: profile?.email ?? '',
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xff777777),
+                                    color: const Color(0xff777777),
                                   ),
                                 ],
                               ),
@@ -127,9 +127,9 @@ class ChefProfileScreen extends StatelessWidget {
 
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 12.sp),
-                  margin: EdgeInsets.only(top: 32),
+                  margin: const EdgeInsets.only(top: 32),
                   decoration: BoxDecoration(
-                    color: Color(0xffF2F2F2),
+                    color: const Color(0xffF2F2F2),
                     borderRadius: BorderRadius.circular(10.sp),
                   ),
                   child: Column(
@@ -140,7 +140,7 @@ class ChefProfileScreen extends StatelessWidget {
                         title: AppString.seePublicProfile,
                         onTap:
                             () => {
-                              print("id: 😊😊😊😊😊😊😊${LocalStorage.userId}"),
+                              print('id: 😊😊😊😊😊😊😊${LocalStorage.userId}'),
                               Get.toNamed(
                                 AppRoutes.chefDetails,
                                 arguments: LocalStorage.userId,
@@ -152,9 +152,8 @@ class ChefProfileScreen extends StatelessWidget {
                 ),
 
                 /// Edit Profile item here
-                CommonText(
+                const CommonText(
                   text: AppString.account,
-                  fontWeight: FontWeight.w500,
                   fontSize: 12,
                   color: Color(0xff777777),
                   top: 28,
@@ -164,7 +163,7 @@ class ChefProfileScreen extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(12.sp),
                   decoration: BoxDecoration(
-                    color: Color(0xffF2F2F2),
+                    color: const Color(0xffF2F2F2),
                     borderRadius: BorderRadius.circular(20.sp),
                   ),
                   child: Column(
@@ -231,7 +230,7 @@ class ChefProfileScreen extends StatelessWidget {
                         image: AppIcons.addressIcon,
                         title: AppString.updateChefLocation,
                         onTap: () {
-                          Get.to(ChefUpdateLocationScreen());
+                          Get.to(const ChefUpdateLocationScreen());
                         },
                       ),
 
@@ -239,14 +238,14 @@ class ChefProfileScreen extends StatelessWidget {
                       Obx(
                         () => Row(
                           children: [
-                            Icon(CupertinoIcons.bell),
-                            CommonText(
+                            const Icon(CupertinoIcons.bell),
+                            const CommonText(
                               text: AppString.notifications,
                               left: 12,
                               fontWeight: FontWeight.w600,
                               color: Color(0xff272727),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             switchButton(
                               value: controller.isNotification.value,
                               onTap: () => controller.notification(),
@@ -258,9 +257,8 @@ class ChefProfileScreen extends StatelessWidget {
                   ),
                 ),
 
-                CommonText(
+                const CommonText(
                   text: AppString.other,
-                  fontWeight: FontWeight.w500,
                   fontSize: 12,
                   color: Color(0xff777777),
                   top: 28,
@@ -270,7 +268,7 @@ class ChefProfileScreen extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(12.sp),
                   decoration: BoxDecoration(
-                    color: Color(0xffF2F2F2),
+                    color: const Color(0xffF2F2F2),
                     borderRadius: BorderRadius.circular(20.sp),
                   ),
                   child: Column(
@@ -280,7 +278,7 @@ class ChefProfileScreen extends StatelessWidget {
                           icon: CupertinoIcons.question_circle,
                           title: AppString.contactSupport,
                           onTap: () {
-                            Get.to(HelpSupportScreen());
+                            Get.to(const HelpSupportScreen());
                           },
                         ),
                       ),
@@ -289,14 +287,14 @@ class ChefProfileScreen extends StatelessWidget {
                         icon: CupertinoIcons.info,
                         title: AppString.appVersion,
                         onTap: () {
-                          Get.to(AppInformationScreen());
+                          Get.to(const AppInformationScreen());
                         },
                       ),
                     ],
                   ),
                 ),
 
-                Item(
+                const Item(
                   image: AppIcons.logout,
                   color: Color(0xffFF0000),
                   imgColor: Color(0xffFF0000),

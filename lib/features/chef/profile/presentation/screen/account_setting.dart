@@ -48,16 +48,15 @@ class _AccountSettingState extends State<AccountSetting> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommonText(
+                    const CommonText(
                       text: AppString.accountSettings,
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
                       color: Color(0xff272727),
                       bottom: 28,
                     ),
-                    CommonText(
-                      text: "ACCOUNT DETAILS",
-                      fontWeight: FontWeight.w500,
+                    const CommonText(
+                      text: 'ACCOUNT DETAILS',
                       fontSize: 12,
                       color: Color(0xff777777),
                       bottom: 8,
@@ -67,14 +66,14 @@ class _AccountSettingState extends State<AccountSetting> {
                       children: [
                         // ── Email ──
                         const CommonText(
-                          text: "Email",
+                          text: 'Email',
                           fontWeight: FontWeight.w600,
                           top: 20,
                           bottom: 8,
                         ),
                         CommonTextField(
                           controller: controller.emailController,
-                          hintText: "Enter email",
+                          hintText: 'Enter email',
                           keyboardType: TextInputType.emailAddress,
                         ),
 
@@ -89,7 +88,7 @@ class _AccountSettingState extends State<AccountSetting> {
                           controller: controller.phoneController,
                           initialCountryCode: 'US',
                           decoration: InputDecoration(
-                            hintText: "Enter phone number",
+                            hintText: 'Enter phone number',
                             filled: true,
                             fillColor: const Color(0xFFF7F7F7),
                             border: OutlineInputBorder(
@@ -119,9 +118,8 @@ class _AccountSettingState extends State<AccountSetting> {
                         ),
 
                         // ── Account Action ──
-                        CommonText(
-                          text: "ACCOUNT ACTION",
-                          fontWeight: FontWeight.w500,
+                        const CommonText(
+                          text: 'ACCOUNT ACTION',
                           fontSize: 12,
                           color: Color(0xff777777),
                           top: 28,
@@ -130,21 +128,21 @@ class _AccountSettingState extends State<AccountSetting> {
                         InkWell(
                           onTap: deletePopUp,
                           child: Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 16,
                             ),
                             decoration: BoxDecoration(
-                              color: Color(0xffF2F2F2),
+                              color: const Color(0xffF2F2F2),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   CupertinoIcons.delete,
                                   color: Color(0xff343330),
                                 ),
-                                CommonText(
+                                const CommonText(
                                   text: AppString.deleteAccount,
                                   color: Color(0xff343330),
                                   fontWeight: FontWeight.w600,

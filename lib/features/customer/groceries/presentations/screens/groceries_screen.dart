@@ -47,7 +47,7 @@ class GroceryScreen extends StatelessWidget {
                           color: Color(0xffF6F6F6),
                           shape: BoxShape.circle,
                         ),
-                        child: Center(
+                        child: const Center(
                           child: CommonImage(
                             imageSrc: AppIcons.backIcon,
                             size: 24,
@@ -58,8 +58,8 @@ class GroceryScreen extends StatelessWidget {
                   ),
                 )
                 : null,
-        title: CommonText(
-          text: "My groceries",
+        title: const CommonText(
+          text: 'My groceries',
           fontSize: 24,
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
@@ -72,7 +72,7 @@ class GroceryScreen extends StatelessWidget {
           );
         }
 
-        bool hasInitialId =
+        final bool hasInitialId =
             controller.initialOrderId != null &&
             controller.initialOrderId!.isNotEmpty;
 
@@ -86,14 +86,14 @@ class GroceryScreen extends StatelessWidget {
               // --- 1. BOOKING LIST (SINGLE vs ALL) ---
               if (hasInitialId) ...[
                 const CommonText(
-                  text: "Ordering for this booking",
+                  text: 'Ordering for this booking',
                   color: Colors.grey,
                 ),
                 SizedBox(height: 16.h),
                 _buildSingleOrderView(controller),
               ] else ...[
-                CommonText(
-                  text: "Select bookings for grocery delivery",
+                const CommonText(
+                  text: 'Select bookings for grocery delivery',
                   color: Color(0xff272727),
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -104,8 +104,8 @@ class GroceryScreen extends StatelessWidget {
                     ? Center(
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 20.h),
-                        child: CommonText(
-                          text: "No pending bookings available",
+                        child: const CommonText(
+                          text: 'No pending bookings available',
                           color: Color(0xff777777),
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -118,15 +118,15 @@ class GroceryScreen extends StatelessWidget {
               SizedBox(height: 24.h),
 
               // --- 2. PARTNER SELECTION (RESTORED LOGIC) ---
-              CommonText(
-                text: "Choose your grocery delivery partner",
+              const CommonText(
+                text: 'Choose your grocery delivery partner',
                 color: Color(0xff272727),
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
               SizedBox(height: 6.h),
-              CommonText(
-                text: "Order groceries for your booking",
+              const CommonText(
+                text: 'Order groceries for your booking',
                 color: Color(0xff777777),
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
@@ -137,22 +137,22 @@ class GroceryScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     _partnerIcon(
-                      label: "Instacart",
-                      iconPath: "assets/images/intacart.png",
+                      label: 'Instacart',
+                      iconPath: 'assets/images/intacart.png',
                       isSelected:
-                          controller.selectedPartner.value == "Instacart",
+                          controller.selectedPartner.value == 'Instacart',
                       onTap: () {
-                        controller.selectedPartner.value = "Instacart";
+                        controller.selectedPartner.value = 'Instacart';
                         controller
                             .createInstacartLink(); // CALLS API IMMEDIATELY
                       },
                     ),
                     SizedBox(width: 20.w),
                     _partnerIcon(
-                      label: "Get your own\ngroceries",
+                      label: 'Get your own\ngroceries',
                       icon: Icons.directions_walk,
-                      isSelected: controller.selectedPartner.value == "Self",
-                      onTap: () => controller.selectedPartner.value = "Self",
+                      isSelected: controller.selectedPartner.value == 'Self',
+                      onTap: () => controller.selectedPartner.value = 'Self',
                     ),
                   ],
                 ),
@@ -162,8 +162,8 @@ class GroceryScreen extends StatelessWidget {
 
               // --- 3. GROCERY BASKET ---
               if (controller.basketItems.isNotEmpty)
-                CommonText(
-                  text: "Edit your grocery basket",
+                const CommonText(
+                  text: 'Edit your grocery basket',
                   fontWeight: FontWeight.w600,
                   color: Color(0xff272727),
                   fontSize: 16,
@@ -195,7 +195,7 @@ class GroceryScreen extends StatelessWidget {
                 )
               else if (controller.basketItems.isNotEmpty)
                 CommonButton(
-                  titleText: "Add to Cart",
+                  titleText: 'Add to Cart',
                   onTap: () {
                     // We send the list of selected IDs to the next screen
                     if (controller.selectedOrderIds.isNotEmpty) {
@@ -212,8 +212,8 @@ class GroceryScreen extends StatelessWidget {
                       );
                     } else {
                       Get.snackbar(
-                        "Selection Required",
-                        "Please select at least one booking.",
+                        'Selection Required',
+                        'Please select at least one booking.',
                       );
                     }
                   },
@@ -262,7 +262,7 @@ class GroceryScreen extends StatelessWidget {
     final List staticItems = order['static_items'] as List? ?? [];
 
     // 1. Extract the first image from each menu item in static_items
-    List<String> recipeImages = [];
+    final List<String> recipeImages = [];
     for (var item in staticItems) {
       final menu = item['menu'] ?? {};
       final List images = menu['images'] as List? ?? [];
@@ -294,7 +294,7 @@ class GroceryScreen extends StatelessWidget {
             SizedBox(width: 8.w),
             CircleAvatar(
               radius: 20.r,
-              backgroundImage: NetworkImage(chef['image'] ?? ""),
+              backgroundImage: NetworkImage(chef['image'] ?? ''),
             ),
             SizedBox(width: 10.w),
             Expanded(
@@ -302,9 +302,8 @@ class GroceryScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CommonText(
-                    text: chef['name'] ?? "Unknown Chef",
+                    text: chef['name'] ?? 'Unknown Chef',
                     fontWeight: FontWeight.bold,
-                    fontSize: 14,
                   ),
                   CommonText(
                     text:
@@ -355,9 +354,8 @@ class GroceryScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child: CommonText(
-                          text: "${staticItems.length - 2} more\nitems",
+                          text: '${staticItems.length - 2} more\nitems',
                           fontSize: 8,
-                          textAlign: TextAlign.center,
                           color: Colors.grey,
                         ),
                       ),
@@ -412,7 +410,6 @@ class GroceryScreen extends StatelessWidget {
           CommonText(
             text: label,
             fontSize: 11,
-            textAlign: TextAlign.center,
             color: isSelected ? Colors.black : Colors.grey,
           ),
         ],

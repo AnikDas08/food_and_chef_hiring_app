@@ -336,7 +336,6 @@ class CustomizeKitchenController extends GetxController {
         // backend expects actual array so we pass the raw list
         response = await ApiService.multipartImage(
           'equipment/kitchen/$patchId',
-          method: 'PATCH',
           body: {'items': items}, // ApiService must NOT double-encode this
           files: [
             {'name': 'image', 'image': imagePath}
@@ -346,7 +345,6 @@ class CustomizeKitchenController extends GetxController {
         // Plain PATCH — send items as actual array, not jsonEncoded string
         response = await ApiService.multipartImage(
           'equipment/kitchen/$patchId',
-          method: 'PATCH',
           body: {'items': items}, // ApiService must NOT double-encode this
         );
       }

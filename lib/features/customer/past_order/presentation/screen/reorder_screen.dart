@@ -23,9 +23,8 @@ class ReorderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: CommonText(
-          text: "Book Chef Again",
-          fontSize: 14,
+        title: const CommonText(
+          text: 'Book Chef Again',
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
         ),
@@ -35,7 +34,7 @@ class ReorderScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CommonText(
+            const CommonText(
               text: AppString.reservationDetails,
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -45,11 +44,11 @@ class ReorderScreen extends StatelessWidget {
             CommonTextField(
               controller: dateController,
               keyboardType: TextInputType.none,
-              hintText: "1 January 2026, 5:20PM",
+              hintText: '1 January 2026, 5:20PM',
               onTap: () => OtherHelper.openDatePickerDialog(dateController),
               suffixIcon: InkWell(
                 onTap: () => OtherHelper.openDatePickerDialog(dateController),
-                child: Icon(Icons.calendar_today, color: Color(0xffFD713F)),
+                child: const Icon(Icons.calendar_today, color: Color(0xffFD713F)),
               ),
             ),
 
@@ -58,30 +57,30 @@ class ReorderScreen extends StatelessWidget {
               height: 60.h,
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                color: Color(0xffF0F0F0),
+                color: const Color(0xffF0F0F0),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
                 children: [
-                  CommonImage(
+                  const CommonImage(
                     imageSrc: AppIcons.location,
                     imageColor: Color(0xffFD713F),
                     size: 24,
                   ),
                   8.width,
-                  Expanded(
+                  const Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CommonText(
-                          text: "Darren Monarch",
+                          text: 'Darren Monarch',
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: Color(0xff272727),
                         ),
                         CommonText(
-                          text: "4140 Parker Rd. Allentown, New Mexico 31134",
+                          text: '4140 Parker Rd. Allentown, New Mexico 31134',
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           color: Color(0xff777777),
@@ -89,14 +88,14 @@ class ReorderScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_rounded),
+                  const Icon(Icons.arrow_forward_ios_rounded),
                 ],
               ),
             ),
 
             24.height,
 
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CommonText(
@@ -106,7 +105,7 @@ class ReorderScreen extends StatelessWidget {
                   color: Color(0xff272727),
                 ),
                 CommonText(
-                  text: "2 items",
+                  text: '2 items',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff777777),
@@ -118,12 +117,12 @@ class ReorderScreen extends StatelessWidget {
               height: 64.h,
               padding: EdgeInsets.all(12.sp),
               decoration: BoxDecoration(
-                color: Color(0xffF2F2F2),
+                color: const Color(0xffF2F2F2),
                 borderRadius: BorderRadius.circular(20.sp),
               ),
               child: Row(
                 children: [
-                  CommonImage(
+                  const CommonImage(
                     imageSrc: AppImages.image3,
                     size: 40,
                     borderRadius: 50,
@@ -131,13 +130,12 @@ class ReorderScreen extends StatelessWidget {
                   ),
 
                   12.width,
-                  Expanded(
+                  const Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         CommonText(
-                          text: "Javier A.",
+                          text: 'Javier A.',
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: Color(0xff272727),
@@ -152,7 +150,7 @@ class ReorderScreen extends StatelessWidget {
                               color: Color(0xffFD713F),
                             ),
                             CommonText(
-                              text: "4.5  (482 Reviews)",
+                              text: '4.5  (482 Reviews)',
                               fontSize: 12,
                               left: 2,
                               fontWeight: FontWeight.w400,
@@ -169,20 +167,19 @@ class ReorderScreen extends StatelessWidget {
 
             32.height,
 
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonText(
-                      text: "Chopped Burrito",
-                      fontSize: 14,
+                      text: 'Chopped Burrito',
                       fontWeight: FontWeight.w600,
                       color: Color(0xff4E4E4E),
                     ),
                     CommonText(
-                      text: "2 Items + Without Onions",
+                      text: '2 Items + Without Onions',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Color(0xff777777),
@@ -190,28 +187,26 @@ class ReorderScreen extends StatelessWidget {
                   ],
                 ),
                 CommonText(
-                  text: "\$45.00",
-                  fontSize: 14,
+                  text: '\$45.00',
                   fontWeight: FontWeight.w400,
                   color: Color(0xff272727),
                 ),
               ],
             ),
             12.height,
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonText(
-                      text: "Chopped Burrito",
-                      fontSize: 14,
+                      text: 'Chopped Burrito',
                       fontWeight: FontWeight.w600,
                       color: Color(0xff4E4E4E),
                     ),
                     CommonText(
-                      text: "2 Items + Without Onions",
+                      text: '2 Items + Without Onions',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Color(0xff777777),
@@ -219,8 +214,7 @@ class ReorderScreen extends StatelessWidget {
                   ],
                 ),
                 CommonText(
-                  text: "\$45.00",
-                  fontSize: 14,
+                  text: '\$45.00',
                   fontWeight: FontWeight.w400,
                   color: Color(0xff272727),
                 ),
@@ -230,7 +224,7 @@ class ReorderScreen extends StatelessWidget {
             orderSummary(),
             28.height,
 
-            CommonText(
+            const CommonText(
               text: AppString.paymentMethod,
               bottom: 8,
               fontSize: 16,
@@ -242,28 +236,27 @@ class ReorderScreen extends StatelessWidget {
               height: 60.h,
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
-                color: Color(0xffF2F2F2),
+                color: const Color(0xffF2F2F2),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 children: [
-                  CommonImage(imageSrc: AppIcons.master, size: 24),
+                  const CommonImage(imageSrc: AppIcons.master, size: 24),
                   8.width,
-                  CommonText(
-                    text: "Mastercard",
+                  const CommonText(
+                    text: 'Mastercard',
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
                     color: Color(0xff272727),
                   ),
-                  CommonText(
-                    text: "**** 4356",
+                  const CommonText(
+                    text: '**** 4356',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
                     left: 8,
                   ),
-                  Spacer(),
-                  Icon(
+                  const Spacer(),
+                  const Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 16,
                     color: Color(0xff777777),
@@ -273,7 +266,7 @@ class ReorderScreen extends StatelessWidget {
             ),
 
             32.height,
-            Terms(),
+            const Terms(),
           ],
         ),
       ),

@@ -23,15 +23,15 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   late final TabController tabController;
   int selectedTabIndex = 0;
   final List<TabData> tabs = [
-    TabData(title: "Home", icon: "house"),
-    TabData(title: "Bookings", icon: "stove"),
+    TabData(title: 'Home', icon: 'house'),
+    TabData(title: 'Bookings', icon: 'stove'),
     // TabData(
     //   title: "Analytics",
     //   icon: "gauge.chart.leftthird.topthird.rightthird",
     // ),
-    TabData(title: "Groceries", icon: "basket"),
-    TabData(title: "Chats", icon: "bubble.left.and.bubble.right"),
-    TabData(title: "Profile", icon: "person"),
+    TabData(title: 'Groceries', icon: 'basket'),
+    TabData(title: 'Chats', icon: 'bubble.left.and.bubble.right'),
+    TabData(title: 'Profile', icon: 'person'),
   ];
   @override
   void initState() {
@@ -120,7 +120,7 @@ class ImageTabPage extends StatelessWidget {
               color: Colors.white,
               child: Text(
                 label,
-                style: TextStyle(fontSize: 18, color: Colors.white),
+                style: const TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
           ),

@@ -35,7 +35,7 @@ class HelpSupportScreen extends StatelessWidget {
                 color: Color(0xffF6F6F6),
                 shape: BoxShape.circle,
               ),
-              child: CommonImage(
+              child: const CommonImage(
                 imageSrc: AppIcons.backIcon,
                 size: 24,
               ),
@@ -49,28 +49,25 @@ class HelpSupportScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CommonText(
-              text: "Issue Title",
-              fontSize: 14,
+              text: 'Issue Title',
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),
             10.height,
             _buildTextField(
               controller: ctrl.titleController,
-              hintText: "Enter Your Issue Title Here",
-              maxLines: 1,
+              hintText: 'Enter Your Issue Title Here',
             ),
             20.height,
             const CommonText(
-              text: "Description",
-              fontSize: 14,
+              text: 'Description',
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),
             10.height,
             _buildTextField(
               controller: ctrl.descriptionController,
-              hintText: "Enter Your Description Here..",
+              hintText: 'Enter Your Description Here..',
               maxLines: 6,
             ),
             20.height,
@@ -93,7 +90,7 @@ class HelpSupportScreen extends StatelessWidget {
                         size: 18.r, color: AppColors.primaryColor),
                     6.width,
                     const CommonText(
-                      text: "Attach File",
+                      text: 'Attach File',
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: AppColors.primaryColor,
@@ -178,7 +175,7 @@ class HelpSupportScreen extends StatelessWidget {
                     child: c.isLoading
                         ? const CircularProgressIndicator(color: Colors.white)
                         : const CommonText(
-                      text: "Submit",
+                      text: 'Submit',
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -208,10 +205,9 @@ class HelpSupportScreen extends StatelessWidget {
           children: [
             12.height,
             ListTile(
-              leading: Icon(Icons.photo_library, color: AppColors.primaryColor),
+              leading: const Icon(Icons.photo_library, color: AppColors.primaryColor),
               title: const CommonText(
-                text: "Pick from Gallery",
-                fontSize: 14,
+                text: 'Pick from Gallery',
                 fontWeight: FontWeight.w400,
                 color: Colors.black87,
                 textAlign: TextAlign.start,

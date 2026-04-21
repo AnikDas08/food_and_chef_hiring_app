@@ -103,11 +103,10 @@ class ProfileScreen extends StatelessWidget {
             ),
 
             // ── Account Info ──────────────────────────────────────────────
-            CommonText(
+            const CommonText(
               text: AppString.accountInfo,
-              fontWeight: FontWeight.w500,
               fontSize: 12,
-              color: const Color(0xff777777),
+              color: Color(0xff777777),
               top: 28,
               bottom: 12,
             ).start,
@@ -131,7 +130,7 @@ class ProfileScreen extends StatelessWidget {
                     onTap:
                         () => Get.toNamed(
                           AppRoutes.addressScreen,
-                          arguments: {"isLoading": false},
+                          arguments: {'isLoading': false},
                         ),
                   ),
                   Item(
@@ -144,11 +143,10 @@ class ProfileScreen extends StatelessWidget {
             ),
 
             // ── Management ────────────────────────────────────────────────
-            CommonText(
+            const CommonText(
               text: AppString.management,
-              fontWeight: FontWeight.w500,
               fontSize: 12,
-              color: const Color(0xff777777),
+              color: Color(0xff777777),
               top: 28,
               bottom: 16,
             ).start,
@@ -183,11 +181,10 @@ class ProfileScreen extends StatelessWidget {
             ),
 
             // ── Other ─────────────────────────────────────────────────────
-            CommonText(
+            const CommonText(
               text: AppString.other,
-              fontWeight: FontWeight.w500,
               fontSize: 12,
-              color: const Color(0xff777777),
+              color: Color(0xff777777),
               top: 28,
               bottom: 12,
             ).start,
@@ -204,14 +201,14 @@ class ProfileScreen extends StatelessWidget {
                     icon: CupertinoIcons.question_circle,
                     title: AppString.contactSupport,
                     onTap: () {
-                      Get.to(HelpSupportScreen());
+                      Get.to(const HelpSupportScreen());
                     },
                   ),
                   Item(
                     icon: CupertinoIcons.info,
                     title: AppString.appVersion,
                     onTap: () {
-                      Get.to(AppInformationScreen());
+                      Get.to(const AppInformationScreen());
                     },
                   ),
                 ],
@@ -219,10 +216,10 @@ class ProfileScreen extends StatelessWidget {
             ),
 
             // ── Sign Out ──────────────────────────────────────────────────
-            Item(
+            const Item(
               image: AppIcons.logout,
-              color: const Color(0xffFF0000),
-              imgColor: const Color(0xffFF0000),
+              color: Color(0xffFF0000),
+              imgColor: Color(0xffFF0000),
               title: AppString.signOut,
               onTap: logOutPopUp,
               disableDivider: true,

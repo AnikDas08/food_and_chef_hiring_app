@@ -34,7 +34,7 @@ class CafeCookingExpertiseController extends GetxController {
   final RxBool dropdownOpen = false.obs;
 
   // SignUpChefController এর মতো dynamic endpoint
-  String get _onboardingEndpoint => "user/onboarding/${LocalStorage.userId}";
+  String get _onboardingEndpoint => 'user/onboarding/${LocalStorage.userId}';
 
   @override
   void onInit() {
@@ -53,13 +53,13 @@ class CafeCookingExpertiseController extends GetxController {
           allCuisines.value =
               list.map((e) => CuisineModel.fromJson(e)).toList();
         } else {
-          Get.snackbar("Message", data['message'] ?? "Failed to load cuisines");
+          Get.snackbar('Message', data['message'] ?? 'Failed to load cuisines');
         }
       } else {
-        Get.snackbar("Message", "Something went wrong. Please try again.");
+        Get.snackbar('Message', 'Something went wrong. Please try again.');
       }
     } catch (e) {
-      Get.snackbar("Message", e.toString());
+      Get.snackbar('Message', e.toString());
     } finally {
       isLoading.value = false;
     }
@@ -83,7 +83,7 @@ class CafeCookingExpertiseController extends GetxController {
 
   Future<void> onContinue() async {
     if (selectedIds.isEmpty) {
-      Get.snackbar("Warning", "Please select at least one cuisine");
+      Get.snackbar('Warning', 'Please select at least one cuisine');
       return;
     }
 
@@ -94,12 +94,11 @@ class CafeCookingExpertiseController extends GetxController {
       final Map<String, dynamic> body = {};
 
       for (int i = 0; i < selectedIds.length; i++) {
-        body["cousines_expertise[$i]"] = selectedIds[i];
+        body['cousines_expertise[$i]'] = selectedIds[i];
       }
 
       final response = await ApiService.multipartImage(
         _onboardingEndpoint,
-        method: "PATCH",
         body: body,
         files: [],
       );
@@ -109,18 +108,18 @@ class CafeCookingExpertiseController extends GetxController {
         LocalStorage.token = response.data['data']['accessToken'];
         await LocalStorage.setString(LocalStorageKeys.token, response.data['data']['accessToken']);
         Get.snackbar(
-          "Success",
-          response.data['message'] ?? "Cuisine expertise saved!",
+          'Success',
+          response.data['message'] ?? 'Cuisine expertise saved!',
 
         );
         showAccountCreatedPopup();
 
       } else {
         Get.snackbar(
-            "Error", response.data['message'] ?? "Something went wrong");
+            'Error', response.data['message'] ?? 'Something went wrong');
       }
     } catch (e) {
-      Get.snackbar("Error", e.toString());
+      Get.snackbar('Error', e.toString());
     } finally {
       isLoading.value = false;
     }
@@ -175,7 +174,7 @@ void showAccountCreatedPopup() {
             ),
             20.verticalSpace,
             Text(
-              "Account Created",
+              'Account Created',
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w700,
@@ -212,7 +211,7 @@ void showAccountCreatedPopup() {
                   elevation: 0,
                 ),
                 child: Text(
-                  "Go to Home",
+                  'Go to Home',
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,

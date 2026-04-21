@@ -22,7 +22,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
   }
 
   List<FlSpot> get spots {
-    List<FlSpot> list = [];
+    final List<FlSpot> list = [];
     for (int i = 0; i < widget.chartData.length; i++) {
       list.add(FlSpot(i.toDouble(), _normalizeValue(widget.chartData[i].value)));
     }
@@ -35,7 +35,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    int index = value.toInt();
+    final int index = value.toInt();
     if (index < 0 || index >= widget.chartData.length) return const SizedBox();
 
     if (index % 2 != 0) return const SizedBox();
@@ -54,7 +54,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
-    String text = switch (value.toInt()) {
+    final String text = switch (value.toInt()) {
       1 => '0',
       2 => '50',
       3 => '100',
@@ -77,15 +77,14 @@ class _LineChartSample2State extends State<LineChartSample2> {
   LineChartData mainData() {
     return LineChartData(
       lineTouchData: LineTouchData(
-        enabled: true,
         touchTooltipData: LineTouchTooltipData(
           getTooltipItems: (touchedSpots) {
             return touchedSpots.map((spot) {
-              int index = spot.x.toInt();
-              String month = index >= 0 && index < widget.chartData.length
+              final int index = spot.x.toInt();
+              final String month = index >= 0 && index < widget.chartData.length
                   ? widget.chartData[index].text
                   : '';
-              double realValue = index >= 0 && index < widget.chartData.length
+              final double realValue = index >= 0 && index < widget.chartData.length
                   ? widget.chartData[index].value
                   : 0;
               return LineTooltipItem(
@@ -101,16 +100,14 @@ class _LineChartSample2State extends State<LineChartSample2> {
         ),
       ),
       gridData: FlGridData(
-        show: true,
         drawVerticalLine: false,
         horizontalInterval: 1,
         getDrawingHorizontalLine: (_) =>
         const FlLine(color: Color(0xffE0E0E0), strokeWidth: 1),
       ),
       titlesData: FlTitlesData(
-        show: true,
-        rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        rightTitles: const AxisTitles(),
+        topTitles: const AxisTitles(),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
@@ -136,12 +133,9 @@ class _LineChartSample2State extends State<LineChartSample2> {
       lineBarsData: [
         LineChartBarData(
           spots: spots,
-          isCurved: false,
-          barWidth: 2,
           color: const Color(0xffFD713F),
           isStrokeCapRound: true,
           dotData: FlDotData(
-            show: true,
             getDotPainter: (spot, percent, barData, index) =>
                 FlDotCirclePainter(
                   radius: 3,

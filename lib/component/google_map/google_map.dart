@@ -35,7 +35,6 @@ class ShowGoogleMap extends StatelessWidget {
       init: ShowGoogleMapController(),
       builder: (controller) {
         return GoogleMap(
-          mapType: MapType.normal,
           initialCameraPosition: (latitude != 0 && longitude != 0)
               ? CameraPosition(
               target: LatLng(latitude, longitude), zoom: 14)
@@ -44,8 +43,6 @@ class ShowGoogleMap extends StatelessWidget {
                   target: LatLng(37.42796133580664, -122.085749655962),
                   zoom: 14),
           myLocationEnabled: true,
-          myLocationButtonEnabled: true,
-          cameraTargetBounds: CameraTargetBounds.unbounded,
           onTap: (LatLng latLng) {
             onTapLatLong(latLng);
             controller.setMarker(latLng);
@@ -87,7 +84,7 @@ class ShowGoogleMapController extends GetxController {
     marker
       ..clear()
       ..add(Marker(
-        markerId: const MarkerId("selected"),
+        markerId: const MarkerId('selected'),
         position: LatLng(latLng.latitude, latLng.longitude),
       ));
     update();
@@ -125,9 +122,9 @@ class ShowGoogleMapController extends GetxController {
   Future<void> _reverseGeocode(double lat, double lng) async {
     try {
       final url =
-          "https://maps.googleapis.com/maps/api/geocode/json"
-          "?latlng=$lat,$lng"
-          "&key=${ApiEndPoint.googleMapsApiKey}";
+          'https://maps.googleapis.com/maps/api/geocode/json'
+          '?latlng=$lat,$lng'
+          '&key=${ApiEndPoint.googleMapsApiKey}';
 
       final response = await ApiService.get(url);
       if (response.statusCode != 200) return;
@@ -151,8 +148,8 @@ class ShowGoogleMapController extends GetxController {
 
       if (status == 'OVER_QUERY_LIMIT') {
         Get.snackbar(
-          "Maps Error",
-          "API quota exceeded. Please try again later.",
+          'Maps Error',
+          'API quota exceeded. Please try again later.',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.orange.shade100,
           colorText: Colors.orange.shade900,

@@ -20,7 +20,7 @@ class WithdrawScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: const CommonText(
-          text: "Withdraw",
+          text: 'Withdraw',
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
@@ -33,8 +33,7 @@ class WithdrawScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CommonText(
-              text: "Withdraw amount",
-              fontSize: 14,
+              text: 'Withdraw amount',
               fontWeight: FontWeight.w600,
               color: Color(0xff272727),
             ),
@@ -50,7 +49,7 @@ class WithdrawScreen extends StatelessWidget {
               child: Row(
                 children: [
                   const CommonText(
-                    text: "\$",
+                    text: '\$',
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,
@@ -61,7 +60,7 @@ class WithdrawScreen extends StatelessWidget {
                       controller: controller.amountController,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
-                        hintText: "Enter amount",
+                        hintText: 'Enter amount',
                         border: InputBorder.none,
                         isCollapsed: true,
                       ),
@@ -77,14 +76,13 @@ class WithdrawScreen extends StatelessWidget {
                   () => Row(
                 children: [
                   const CommonText(
-                    text: "Total balance :",
+                    text: 'Total balance :',
                     fontSize: 13,
-                    fontWeight: FontWeight.w500,
                     color: Colors.black54,
                   ),
                   const Spacer(),
                   CommonText(
-                    text: "\$ ${controller.balance.value}",
+                    text: '\$ ${controller.balance.value}',
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: const Color(0xffFF4D2D),
@@ -119,7 +117,7 @@ class WithdrawScreen extends StatelessWidget {
                 child: CircularProgressIndicator(strokeWidth: 2),
               )
                   : const CommonText(
-                text: "Withdraw Now",
+                text: 'Withdraw Now',
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: Colors.white,

@@ -41,7 +41,7 @@ class PopUpMenu extends StatelessWidget {
     return SizedBox(
       height: height.h,
       child: PopupMenuButton<String>(
-        color: Color(0xffF2F2F2),
+        color: const Color(0xffF2F2F2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.r),
           side: BorderSide(color: selectedColor),
@@ -64,7 +64,7 @@ class PopUpMenu extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(items[index].toString(), style: style),
-                            Spacer(),
+                            const Spacer(),
                             Container(
                               height: 15,
                               width: 15,
@@ -106,7 +106,7 @@ class PopUpMenu extends StatelessWidget {
   }
 }
 
-logOutPopUp() {
+void logOutPopUp() {
   showDialog(
     context: Get.context!,
     builder: (context) {
@@ -150,8 +150,8 @@ logOutPopUp() {
                         buttonHeight: 48,
 
                         buttonRadius: 16,
-                        borderColor: Color(0xffF2F2F2),
-                        buttonColor: Color(0xffF2F2F2),
+                        borderColor: const Color(0xffF2F2F2),
+                        buttonColor: const Color(0xffF2F2F2),
                         titleColor: AppColors.primaryColor,
                         onTap: () => Navigator.pop(context),
                       ),
@@ -167,7 +167,7 @@ logOutPopUp() {
   );
 }
 
-deletePopUp({
+void deletePopUp({
   required TextEditingController controller,
   required VoidCallback onTap,
   bool isLoading = false,
@@ -192,16 +192,12 @@ deletePopUp({
                     text: AppString.areYouSure,
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.black,
-                    maxLines: 1,
                     bottom: 24.h,
                   ),
                 ),
                 CommonText(
                   text: AppString.deleteDetails,
                   fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.black,
                   maxLines: 2,
                   bottom: 20.h,
                 ),
@@ -231,7 +227,6 @@ deletePopUp({
                 Expanded(
                   child: CommonButton(
                     titleText: AppString.done,
-                    titleColor: AppColors.white,
                     buttonRadius: 4.r,
                     buttonHeight: 48.h,
                     onTap: () async {
@@ -251,7 +246,7 @@ deletePopUp({
   );
 }
 
-logOutPopUps() {
+void logOutPopUps() {
   showDialog(
     context: Get.context!,
     builder: (context) {

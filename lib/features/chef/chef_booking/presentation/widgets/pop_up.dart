@@ -35,7 +35,7 @@ class PopupController {
     double? right,
     double? left,
     double? bottom,
-    String selectItem = "",
+    String selectItem = '',
     required List<String> list,
     Function(String)? onTap,
   }) {
@@ -89,7 +89,7 @@ class _PopupMenu extends StatelessWidget {
     required this.onClose,
     required this.list,
     this.onTap,
-    this.selectItem = "",
+    this.selectItem = '',
   });
 
   @override
@@ -101,7 +101,7 @@ class _PopupMenu extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Color(0xffF1F1F1), width: 1),
+          border: Border.all(color: const Color(0xffF1F1F1)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.08),
@@ -128,11 +128,11 @@ class _PopupMenu extends StatelessWidget {
                     children: [
                       Container(
                         width: 60,
-                        margin: EdgeInsets.only(right: 4, bottom: 4),
+                        margin: const EdgeInsets.only(right: 4, bottom: 4),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Color(0xffF1F1F1)),
+                          border: Border.all(color: const Color(0xffF1F1F1)),
                         ),
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -140,12 +140,11 @@ class _PopupMenu extends StatelessWidget {
                         ),
                         child: Expanded(
                           child: TextFormField(
-                            decoration: InputDecoration(
-                              hintText: "30",
+                            decoration: const InputDecoration(
+                              hintText: '30',
                               isDense: true,
                               contentPadding: EdgeInsets.symmetric(
-                                horizontal: 0,
-                                vertical: 0,
+                                
                               ),
                               border: InputBorder.none,
                             ),
@@ -154,11 +153,11 @@ class _PopupMenu extends StatelessWidget {
                       ),
                       Expanded(
                         child: Container(
-                          margin: EdgeInsets.only(bottom: 4),
+                          margin: const EdgeInsets.only(bottom: 4),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Color(0xffF1F1F1)),
+                            border: Border.all(color: const Color(0xffF1F1F1)),
                           ),
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
@@ -175,7 +174,7 @@ class _PopupMenu extends StatelessWidget {
                                   fontSize: 14,
                                 ),
                               ),
-                              Icon(Icons.keyboard_arrow_down_sharp),
+                              const Icon(Icons.keyboard_arrow_down_sharp),
                             ],
                           ),
                         ),
@@ -184,7 +183,7 @@ class _PopupMenu extends StatelessWidget {
                   ),
                 );
               }
-              String value = list[index - 1];
+              final String value = list[index - 1];
               return InkWell(
                 onTap: () {
                   onTap?.call(value);
@@ -221,14 +220,14 @@ class _PopupMenu extends StatelessWidget {
                         decoration: BoxDecoration(
                           color:
                               selectItem == value
-                                  ? Color(0xff272727)
-                                  : Color(0xffF1F1F1),
+                                  ? const Color(0xff272727)
+                                  : const Color(0xffF1F1F1),
                           shape: BoxShape.circle,
                         ),
                         child:
                             selectItem != value
                                 ? null
-                                : Icon(
+                                : const Icon(
                                   Icons.check,
                                   color: Colors.white,
                                   size: 10,

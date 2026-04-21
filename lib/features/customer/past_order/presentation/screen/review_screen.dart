@@ -23,11 +23,10 @@ class ReviewScreen extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           appBar: AppBar(
-            title: CommonText(
-              text: "Leave Chef Rating",
-              fontSize: 14,
+            title: const CommonText(
+              text: 'Leave Chef Rating',
               fontWeight: FontWeight.w600,
-              color: const Color(0xff272727),
+              color: Color(0xff272727),
             ),
           ),
 
@@ -45,7 +44,7 @@ class ReviewScreen extends StatelessWidget {
                     12.width,
                     CommonImage(
                       imageSrc:
-                      "${ApiEndPoint.imageUrl}${controller.order.chef.image}",
+                      '${ApiEndPoint.imageUrl}${controller.order.chef.image}',
                       size: 40,
                       borderRadius: 50,
                       fill: BoxFit.cover,
@@ -81,7 +80,6 @@ class ReviewScreen extends StatelessWidget {
                       child: CommonText(
                         text: controller.order.status,
                         fontSize: 10,
-                        fontWeight: FontWeight.w500,
                         color: const Color(0xff2F8328),
                       ),
                     ),
@@ -96,11 +94,11 @@ class ReviewScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CommonText(
+                      const CommonText(
                         text: AppString.orderDetails,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: const Color(0xff272727),
+                        color: Color(0xff272727),
                       ),
                       Icon(
                         controller.isExpanded
@@ -128,7 +126,6 @@ class ReviewScreen extends StatelessWidget {
                               children: [
                                 CommonText(
                                   text: item.menuName,
-                                  fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                   color: const Color(0xff4E4E4E),
                                 ),
@@ -143,8 +140,7 @@ class ReviewScreen extends StatelessWidget {
                             ),
                           ),
                           CommonText(
-                            text: "\$${item.totalPrice.toStringAsFixed(2)}",
-                            fontSize: 14,
+                            text: '\$${item.totalPrice.toStringAsFixed(2)}',
                             fontWeight: FontWeight.w400,
                             color: const Color(0xff272727),
                           ),
@@ -153,59 +149,59 @@ class ReviewScreen extends StatelessWidget {
                     ),
                   ),
                   const Divider(),
-                  _PriceRow(label: "Subtotal",    value: controller.order.priceBreakdown.subtotal),
-                  _PriceRow(label: "Tax",         value: controller.order.priceBreakdown.taxs),
-                  _PriceRow(label: "Service Fee", value: controller.order.priceBreakdown.serviceFee),
+                  _PriceRow(label: 'Subtotal',    value: controller.order.priceBreakdown.subtotal),
+                  _PriceRow(label: 'Tax',         value: controller.order.priceBreakdown.taxs),
+                  _PriceRow(label: 'Service Fee', value: controller.order.priceBreakdown.serviceFee),
                   const Divider(),
-                  _PriceRow(label: "Total",       value: controller.order.priceBreakdown.total, isBold: true),
+                  _PriceRow(label: 'Total',       value: controller.order.priceBreakdown.total, isBold: true),
                 ],
 
                 28.height,
 
                 // ── Review Text ────────────────────────
-                CommonText(
-                  text: "Review",
+                const CommonText(
+                  text: 'Review',
                   bottom: 12,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xff272727),
+                  color: Color(0xff272727),
                 ),
                 CommonTextField(
                   maxLines: 4,
                   keyboardType: TextInputType.multiline,
-                  hintText: "Write your review here...",
+                  hintText: 'Write your review here...',
                   onChanged: controller.onReviewChanged,
                 ),
 
                 24.height,
 
                 // ── All 5 Rating Fields — always empty ─
-                CommonText(
-                  text: "Ratings",
+                const CommonText(
+                  text: 'Ratings',
                   bottom: 12,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xff272727),
+                  color: Color(0xff272727),
                 ),
 
                 _RatingItem(
-                  title: "Quality and Taste",
+                  title: 'Quality and Taste',
                   onRatingUpdate: controller.onQualityChanged,
                 ),
                 _RatingItem(
-                  title: "Cleanliness",
+                  title: 'Cleanliness',
                   onRatingUpdate: controller.onCleanlinessChanged,
                 ),
                 _RatingItem(
-                  title: "Timeliness",
+                  title: 'Timeliness',
                   onRatingUpdate: controller.onTimelinessChanged,
                 ),
                 _RatingItem(
-                  title: "Friendliness",
+                  title: 'Friendliness',
                   onRatingUpdate: controller.onFriendlinessChanged,
                 ),
                 _RatingItem(
-                  title: "Communication",
+                  title: 'Communication',
                   onRatingUpdate: controller.onCommunicationChanged,
                 ),
 
@@ -223,19 +219,16 @@ class ReviewScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CommonText(
-                        text: "Average Rating",
-                        fontSize: 14,
+                      const CommonText(
+                        text: 'Average Rating',
                         fontWeight: FontWeight.w600,
-                        color: const Color(0xff272727),
+                        color: Color(0xff272727),
                       ),
                       const Spacer(),
                       RatingBar.builder(
                         initialRating: controller.averageRating,
                         minRating: 1,
-                        direction: Axis.horizontal,
                         allowHalfRating: true,
-                        itemCount: 5,
                         itemSize: 20,
                         ignoreGestures: true, // read-only
                         itemBuilder: (context, _) => const Icon(
@@ -247,8 +240,8 @@ class ReviewScreen extends StatelessWidget {
                       8.width,
                       CommonText(
                         text: controller.averageRating > 0
-                            ? "${controller.averageRating}"
-                            : "-",
+                            ? '${controller.averageRating}'
+                            : '-',
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: const Color(0xff272727),
@@ -306,19 +299,12 @@ class _RatingItem extends StatelessWidget {
         children: [
           CommonText(
             text: title,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
             color: const Color(0xff272727),
             bottom: 8,
           ),
           Center(
             child: RatingBar.builder(
-              initialRating: 0,        // ✅ always empty
-              minRating: 0,
-              direction: Axis.horizontal,
               allowHalfRating: true,
-              itemCount: 5,
-              itemSize: 40,
               itemPadding: const EdgeInsets.symmetric(horizontal: 10),
               itemBuilder: (context, _) => const Icon(
                 Icons.star_rounded,
@@ -359,7 +345,7 @@ class _PriceRow extends StatelessWidget {
             color: isBold ? const Color(0xff272727) : const Color(0xff777777),
           ),
           CommonText(
-            text: "\$${value.toStringAsFixed(2)}",
+            text: '\$${value.toStringAsFixed(2)}',
             fontSize: 13,
             fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
             color: const Color(0xff272727),

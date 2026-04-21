@@ -29,7 +29,7 @@ class AppInformationScreen extends StatelessWidget {
                 color: Color(0xffF6F6F6),
                 shape: BoxShape.circle,
               ),
-              child: CommonImage(
+              child: const CommonImage(
                 imageSrc: AppIcons.backIcon,
                 size: 24,
               ),
@@ -63,7 +63,7 @@ class AppInformationScreen extends StatelessWidget {
 
             SizedBox(height: 20.h),
 
-            CommonText(text: "Version 1.01.01",
+            CommonText(text: 'Version 1.01.01',
             fontSize: 14.sp,
             color: Colors.grey,
             ),

@@ -11,7 +11,7 @@ Widget SearchChef({
   bool isSearch = false,
   required ChefData chef,
 }) {
-  bool isVerified = (chef.totalRating ?? 0) >= 5;
+  final bool isVerified = (chef.totalRating ?? 0) >= 5;
 
   return InkWell(
     onTap: () => Get.toNamed(AppRoutes.chefDetails, arguments: chef),
@@ -40,13 +40,12 @@ Widget SearchChef({
                   child: CommonImage(
                     imageSrc: chef.image ?? '',
                     height: height.toDouble(),
-                    borderRadius: 0,
                     fill: BoxFit.cover,
                   ),
                 ),
               ),
               if (isVerified)
-                Positioned(
+                const Positioned(
                   bottom: 10,
                   left: 10,
                   child: CommonImage(imageSrc: AppIcons.chef),
@@ -67,7 +66,7 @@ Widget SearchChef({
                   children: [
                     Expanded(
                       child: Text(
-                        chef.name ?? "N/A",
+                        chef.name ?? 'N/A',
                         style: const TextStyle(
                           fontSize: 12,
                           color: Color(0xff272727),
@@ -105,16 +104,16 @@ Widget SearchChef({
                 // Distance + Experience — each in its own Flexible
                 Row(
                   children: [
-                    CommonImage(
+                    const CommonImage(
                       imageSrc: AppIcons.location,
-                      imageColor: const Color(0xff777777),
+                      imageColor: Color(0xff777777),
                       height: 12,
                       width: 12,
                     ),
                     const SizedBox(width: 2),
                     Flexible(
                       child: Text(
-                        chef.distance ?? "N/A",
+                        chef.distance ?? 'N/A',
                         style: const TextStyle(
                           fontSize: 10,
                           color: Color(0xff777777),
@@ -124,7 +123,7 @@ Widget SearchChef({
                       ),
                     ),
                     const SizedBox(width: 4),
-                    CommonImage(
+                    const CommonImage(
                       imageSrc: AppIcons.briefcase,
                       height: 12,
                       width: 12,
@@ -132,7 +131,7 @@ Widget SearchChef({
                     const SizedBox(width: 2),
                     Flexible(
                       child: Text(
-                        "${chef.experience ?? 0} yrs",
+                        '${chef.experience ?? 0} yrs',
                         style: const TextStyle(
                           fontSize: 10,
                           color: Color(0xff777777),
@@ -160,7 +159,7 @@ Widget SearchChef({
                         ),
                       ),
                       const TextSpan(
-                        text: " /hr",
+                        text: ' /hr',
                         style: TextStyle(
                           color: Color(0xff777777),
                           fontSize: 11,

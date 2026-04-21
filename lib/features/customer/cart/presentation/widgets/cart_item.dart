@@ -58,7 +58,6 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
                         child: CommonText(
                           text: name,
                           maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                           fontSize: 15.sp,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xff272727),
@@ -156,7 +155,7 @@ Widget _buildCookingTimeBadge(String time) {
         SizedBox(width: 4.w),
         Flexible(
           child: CommonText(
-            text: "Cooking Time: $time",
+            text: 'Cooking Time: $time',
             fontSize: 11.sp,
             color: const Color(0xff777777),
             fontWeight: FontWeight.w400,
@@ -187,7 +186,6 @@ Widget _buildStepper(BuildContext context, CartController controller, String id,
           width: 32.w,
           child: CommonText(
             text: qty.toString(),
-            textAlign: TextAlign.center,
             fontSize: 14.sp, fontWeight: FontWeight.w600
           ),
         ),
@@ -220,26 +218,26 @@ void _confirmDelete(BuildContext context, CartController controller, String cart
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       title: CommonText(
-        text: "Remove Item",
+        text: 'Remove Item',
         fontSize: 16.sp, fontWeight: FontWeight.w600
       ),
 
       content: CommonText(
-        text: "Are you sure you want to remove this item from your cart?",
+        text: 'Are you sure you want to remove this item from your cart?',
         fontSize: 13.sp, color: const Color(0xff777777),
         maxLines: 2,
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: CommonText(text: "Cancel", color: const Color(0xff777777), fontSize: 13.sp),
+          child: CommonText(text: 'Cancel', color: const Color(0xff777777), fontSize: 13.sp),
         ),
         TextButton(
           onPressed: () {
             Navigator.pop(Get.context!);
             controller.deleteCartItem(cartItemId: cartItemId, chefId: chefId);
           },
-          child: CommonText(text: "Remove", color: const Color(0xffE53935), fontWeight: FontWeight.w600, fontSize: 13.sp),
+          child: CommonText(text: 'Remove', color: const Color(0xffE53935), fontWeight: FontWeight.w600, fontSize: 13.sp),
         ),
       ],
     ),

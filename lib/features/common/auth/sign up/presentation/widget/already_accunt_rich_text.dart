@@ -16,7 +16,7 @@ class AlreadyAccountRichText extends StatelessWidget {
       TextSpan(
         children: [
           /// Already Have Account
-          TextSpan(
+          const TextSpan(
             text: AppString.alreadyHaveAccount,
             style: TextStyle(
               color: AppColors.black,
@@ -33,7 +33,7 @@ class AlreadyAccountRichText extends StatelessWidget {
                   ..onTap = () {
                     Get.toNamed(AppRoutes.signIn);
                   },
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColors.primaryColor,
               fontSize: 16,
               fontWeight: FontWeight.w600,

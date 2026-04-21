@@ -33,8 +33,8 @@ class HelpSupportController extends GetxController {
 
     if (title.isEmpty) {
       Get.snackbar(
-        "Validation",
-        "Please enter an issue title",
+        'Validation',
+        'Please enter an issue title',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.orange,
         colorText: Colors.white,
@@ -44,8 +44,8 @@ class HelpSupportController extends GetxController {
     }
     if (description.isEmpty) {
       Get.snackbar(
-        "Validation",
-        "Please enter a description",
+        'Validation',
+        'Please enter a description',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.orange,
         colorText: Colors.white,
@@ -59,15 +59,15 @@ class HelpSupportController extends GetxController {
 
     try {
       final List<Map<String, String>> files = selectedFiles
-          .map((f) => {"name": "image", "image": f.path})
+          .map((f) => {'name': 'image', 'image': f.path})
           .toList();
 
       final response = await ApiService.multipartImage(
         ApiEndPoint.baseUrl + ApiEndPoint.support.replaceFirst('/', ''),
-        method: "POST",
+        method: 'POST',
         body: {
-          "reason": title,
-          "description": description,
+          'reason': title,
+          'description': description,
         },
         files: files,
       );
@@ -75,22 +75,21 @@ class HelpSupportController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         _clearForm();
         Navigator.pop(Get.context!);
-        Get.snackbar("Message", "Support submitted successfully",backgroundColor: Colors.green,colorText: Colors.white);
+        Get.snackbar('Message', 'Support submitted successfully',backgroundColor: Colors.green,colorText: Colors.white);
 
       } else {
-        Get.snackbar("Message", "$e");
+        Get.snackbar('Message', '$e');
 
 
       }
     } catch (e) {
       Get.snackbar(
-        "❌ Error",
-        "Unexpected error: $e",
+        '❌ Error',
+        'Unexpected error: $e',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
         icon: const Icon(Icons.error_outline, color: Colors.white),
-        duration: const Duration(seconds: 3),
       );
     } finally {
       isLoading = false;

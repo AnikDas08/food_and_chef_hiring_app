@@ -23,13 +23,13 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
   Map<String, int> menuTotalPages = {};
   Map<String, bool> menuLoadingMore = {};
   bool isLoadingMenu = false;
-  String selectedMenuSection = "Stater";
+  String selectedMenuSection = 'Stater';
   static const int _pageLimit = 10;
-  String chefId = "";
+  String chefId = '';
   TabController? tabController;
 
   // ── Search state ─────────────────────────────────────────────────────────────
-  String searchQuery = "";
+  String searchQuery = '';
   List<MenuData> searchResults = [];
   bool isSearching = false;
 
@@ -42,20 +42,20 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
     }
     if (Get.arguments != null && Get.arguments is ChefData) {
       chefArg = Get.arguments as ChefData;
-      chefId = chefArg!.id ?? ""; // ✅ FIX: Always set chefId from chefArg
+      chefId = chefArg!.id ?? ''; // ✅ FIX: Always set chefId from chefArg
       fetchChefDetails(chefArg!.id!);
     } else if (Get.arguments != null && Get.arguments is String) {
       chefId = Get.arguments;
-      print("id: 😍😍😍😍😍😍😍$chefId");
+      print('id: 😍😍😍😍😍😍😍$chefId');
       fetchChefDetails(chefId);
     }
     ever(innerBoxIsScrolled, (bool value) {
-      appLog(value, source: "ChefDetailsController");
+      appLog(value, source: 'ChefDetailsController');
     });
   }
 
   DateTime selectedDate = DateTime.now();
-  String selectedTime = "";
+  String selectedTime = '';
   List<String> timeSlots = []; // Start empty, fill from API
   bool isSlotLoading = false;
 
@@ -65,32 +65,32 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
     update();
 
     try {
-      String formattedDate =
+      final String formattedDate =
           "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}";
 
       final response = await ApiService.post(
-        "user/check-chef-availability/$chefId",
-        body: {"date": formattedDate},
+        'user/check-chef-availability/$chefId',
+        body: {'date': formattedDate},
       );
 
       if (response.statusCode == 200) {
         timeSlots = List<String>.from(response.data['data']);
       } else {
         timeSlots = [];
-        Get.snackbar("Error", "Could not fetch slots");
+        Get.snackbar('Error', 'Could not fetch slots');
       }
     } catch (e) {
       timeSlots = [];
-      debugPrint("Slot Fetch Error: $e");
+      debugPrint('Slot Fetch Error: $e');
     } finally {
       isSlotLoading = false;
       update();
     }
   }
 
-  void selectDate(DateTime date, String passedChefId) async {
+  Future<void> selectDate(DateTime date, String passedChefId) async {
     selectedDate = date;
-    selectedTime = ""; // Reset time when date changes
+    selectedTime = ''; // Reset time when date changes
 
     chefId = passedChefId;
     await fetchChefDetails(passedChefId);
@@ -111,7 +111,7 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
     isLoadingDetail = true;
     update();
     try {
-      final response = await ApiService.get("user/chef-details/$chefId");
+      final response = await ApiService.get('user/chef-details/$chefId');
       if (response.statusCode == 200) {
         chefDetailModel = ChefDetailModel.fromJson(response.data);
         chefDetail = chefDetailModel?.data;
@@ -181,7 +181,7 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
 
     try {
       final response = await ApiService.get(
-        "menu/chef/$id?menu_section=$section&page=$page&limit=$_pageLimit",
+        'menu/chef/$id?menu_section=$section&page=$page&limit=$_pageLimit',
       );
       if (response.statusCode == 200) {
         final model = MenuModel.fromJson(response.data);
@@ -233,10 +233,10 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
     menuCache.values.expand((items) => items).toList();
 
     searchResults = allItems.where((item) {
-      final name = (item.name ?? "").toLowerCase();
+      final name = (item.name ?? '').toLowerCase();
       final ingredients = (item.ingredients ?? [])
-          .map((e) => e.name ?? "")
-          .join(" ")
+          .map((e) => e.name ?? '')
+          .join(' ')
           .toLowerCase();
       return name.contains(lowerQuery) || ingredients.contains(lowerQuery);
     }).toList();
@@ -246,7 +246,7 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
       final sections = chefDetail?.menuSections ?? [];
       final firstResultSection = searchResults.first.menuSection;
       if (firstResultSection != null) {
-        int index = sections.indexOf(firstResultSection);
+        final int index = sections.indexOf(firstResultSection);
         if (index != -1 && tabController != null) {
           if (tabController!.index != index) {
             tabController!.animateTo(index);
@@ -261,7 +261,7 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
 
   /// Clear search state and return to normal tab view.
   void clearSearch() {
-    searchQuery = "";
+    searchQuery = '';
     searchResults = [];
     isSearching = false;
     update();
@@ -289,7 +289,6 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
     await CartController.instance.postCartAndNavigate(
       menuId: menuId,
       chefId: chefId,
-      quantity: 1,
       customizations: customizations,
     );
   }
@@ -303,8 +302,8 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
 
     try {
       final response = await ApiService.post(
-        "favourite",
-        body: {"chef": chefId},
+        'favourite',
+        body: {'chef': chefId},
       );
       if (response.statusCode == 200) {
         //Utils.successSnackBar("Successful", response.message);
@@ -336,31 +335,31 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
   RxBool innerBoxIsScrolled = false.obs;
 
   List dish = [
-    {"name": "Without onions", "isSelected": false},
-    {"name": "Without iceberg lettuce", "isSelected": false},
-    {"name": "Without cheese", "isSelected": false},
-    {"name": "Without cucumber slices", "isSelected": false},
-    {"name": "Without Tomato", "isSelected": false},
-    {"name": "Without Bacon", "isSelected": false},
+    {'name': 'Without onions', 'isSelected': false},
+    {'name': 'Without iceberg lettuce', 'isSelected': false},
+    {'name': 'Without cheese', 'isSelected': false},
+    {'name': 'Without cucumber slices', 'isSelected': false},
+    {'name': 'Without Tomato', 'isSelected': false},
+    {'name': 'Without Bacon', 'isSelected': false},
   ];
 
-  onChangeInnerBoxIsScrolled(bool value) {
+  void onChangeInnerBoxIsScrolled(bool value) {
     if (innerBoxIsScrolled.value == value) return;
     innerBoxIsScrolled(value);
   }
 
-  onChange() {
+  void onChange() {
     isFavorite = !isFavorite;
     update();
   }
 
-  onChangeExpand() {
+  void onChangeExpand() {
     isExpanded = !isExpanded;
     update();
   }
 
-  onChangeDish(int index) {
-    dish[index]["isSelected"] = !dish[index]["isSelected"];
+  void onChangeDish(int index) {
+    dish[index]['isSelected'] = !dish[index]['isSelected'];
     update();
   }
 

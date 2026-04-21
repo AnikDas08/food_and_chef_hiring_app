@@ -30,7 +30,7 @@ void itemDetails(
 
   // Kitchen status
   final bool kitchenReady =
-      item.kitchenStatus?.toLowerCase() == "ready" ||
+      item.kitchenStatus?.toLowerCase() == 'ready' ||
           item.kitchenStatus == null;
 
   // Special equipment names joined
@@ -46,7 +46,7 @@ void itemDetails(
   // Local selection state built from item.customizations
   final List<Map<String, dynamic>> dishOptions =
   (item.customizations ?? [])
-      .map((c) => <String, dynamic>{"name": c, "isSelected": false})
+      .map((c) => <String, dynamic>{'name': c, 'isSelected': false})
       .toList();
 
   showModalBottomSheet(
@@ -68,7 +68,6 @@ void itemDetails(
                   expand: false,
                   minChildSize: 0.5,
                   initialChildSize: 1,
-                  maxChildSize: 1,
                   builder: (_, scrollController) {
                     return Column(
                       children: [
@@ -129,18 +128,18 @@ void itemDetails(
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          CommonImage(
+                                          const CommonImage(
                                             imageSrc: AppIcons.time,
                                             size: 16,
                                             imageColor:
-                                            const Color(0xff777777),
+                                            Color(0xff777777),
                                           ),
                                           4.width,
                                           Text.rich(
                                             TextSpan(
                                               children: [
                                                 const TextSpan(
-                                                  text: "Cooking Time: ",
+                                                  text: 'Cooking Time: ',
                                                   style: TextStyle(
                                                     color: Color(0xff777777),
                                                     fontSize: 12,
@@ -203,17 +202,17 @@ void itemDetails(
                                   8.height,
                                   Row(
                                     children: [
-                                      CommonImage(
+                                      const CommonImage(
                                         imageSrc: AppIcons.time,
                                         size: 16,
-                                        imageColor: const Color(0xff777777),
+                                        imageColor: Color(0xff777777),
                                       ),
                                       4.width,
                                       Text.rich(
                                         TextSpan(
                                           children: [
                                             const TextSpan(
-                                              text: "Prep Time: ",
+                                              text: 'Prep Time: ',
                                               style: TextStyle(
                                                 color: Color(0xff777777),
                                                 fontSize: 12,
@@ -311,21 +310,20 @@ void itemDetails(
 
                                 // ── Customize the Dish ───────────────────
                                 if (dishOptions.isNotEmpty) ...[
-                                  CommonText(
-                                    text: "Customize the Dish",
-                                    fontSize: 14,
+                                  const CommonText(
+                                    text: 'Customize the Dish',
                                     fontWeight: FontWeight.w600,
-                                    color: const Color(0xff272727),
+                                    color: Color(0xff272727),
                                   ),
                                   ...List.generate(dishOptions.length,
                                           (index) {
                                         final bool isSelected =
-                                        dishOptions[index]["isSelected"]
+                                        dishOptions[index]['isSelected']
                                         as bool;
                                         return InkWell(
                                           onTap: () {
                                             setSheetState(() {
-                                              dishOptions[index]["isSelected"] =
+                                              dishOptions[index]['isSelected'] =
                                               !isSelected;
                                             });
                                           },
@@ -351,7 +349,7 @@ void itemDetails(
                                                 ),
                                                 CommonText(
                                                   text: dishOptions[index]
-                                                  ["name"] as String,
+                                                  ['name'] as String,
                                                   color: const Color(0xff272727),
                                                   fontSize: 12,
                                                   left: 8,
@@ -368,11 +366,10 @@ void itemDetails(
                                 ],
 
                                 // ── List of Ingredients ──────────────────
-                                CommonText(
-                                  text: "List of Ingredients",
-                                  fontSize: 14,
+                                const CommonText(
+                                  text: 'List of Ingredients',
                                   fontWeight: FontWeight.w600,
-                                  color: const Color(0xff272727),
+                                  color: Color(0xff272727),
                                   bottom: 8,
                                 ),
                                 if (item.ingredients != null &&
@@ -434,11 +431,10 @@ void itemDetails(
                                   ),
 
                                 // ── Special Equipment ────────────────────
-                                CommonText(
-                                  text: "Special Equipment",
-                                  fontSize: 14,
+                                const CommonText(
+                                  text: 'Special Equipment',
                                   fontWeight: FontWeight.w600,
-                                  color: const Color(0xff272727),
+                                  color: Color(0xff272727),
                                   top: 16,
                                   bottom: 8,
                                 ),
@@ -492,22 +488,22 @@ void itemDetails(
                             children: [
                               const Divider(),
                               4.height,
-                              if(LocalStorage.myRole=="CUSTOMER")
+                              if(LocalStorage.myRole=='CUSTOMER')
                               CommonButton(
                                 titleText: AppString.addToOrder,
                                 onTap: () {
                                   ctrl.addToCart({
-                                    "id": item.id ?? '',
-                                    "name": item.name ?? 'Item',
-                                    "image": (item.images != null &&
+                                    'id': item.id ?? '',
+                                    'name': item.name ?? 'Item',
+                                    'image': (item.images != null &&
                                         item.images!.isNotEmpty)
                                         ? item.images!.first
                                         : null,
-                                    "cookingTime": item.estCookingTime,
-                                    "customizations": dishOptions
+                                    'cookingTime': item.estCookingTime,
+                                    'customizations': dishOptions
                                         .where((d) =>
-                                    d["isSelected"] == true)
-                                        .map((d) => d["name"])
+                                    d['isSelected'] == true)
+                                        .map((d) => d['name'])
                                         .toList(),
                                   });
                                 },

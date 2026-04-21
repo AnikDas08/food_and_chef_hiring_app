@@ -21,25 +21,24 @@ class PaymentMethodScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CommonText(
-                text: "Payment",
+              const CommonText(
+                text: 'Payment',
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
               ),
-              CommonText(
-                text: "DEFAULT PAYMENT",
+              const CommonText(
+                text: 'DEFAULT PAYMENT',
                 fontSize: 12,
-                fontWeight: FontWeight.w500,
                 color: Color(0xff777777),
                 top: 24,
                 bottom: 12,
               ),
               Container(
                 height: 72.h,
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Color(0xffF2F2F2),
+                  color: const Color(0xffF2F2F2),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
@@ -47,29 +46,28 @@ class PaymentMethodScreen extends StatelessWidget {
                     Container(
                       height: 48.sp,
                       width: 48.sp,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
                       child:
-                          CommonImage(
+                          const CommonImage(
                             imageSrc: AppIcons.master,
                             size: 24,
                           ).center,
                     ),
                     12.width,
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CommonText(
-                          text: "Mastercard",
+                          text: 'Mastercard',
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
                           color: Color(0xff272727),
                         ),
                         CommonText(
-                          text: "**** **** ****  4356",
+                          text: '**** **** ****  4356',
                           fontSize: 12,
                           top: 4,
                           fontWeight: FontWeight.w400,
@@ -77,13 +75,13 @@ class PaymentMethodScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     InkWell(
                       onTap: () {
                         Get.toNamed(AppRoutes.editCard);
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                           vertical: 8,
                         ),
@@ -91,8 +89,8 @@ class PaymentMethodScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
                         ),
-                        child: CommonText(
-                          text: "Edit",
+                        child: const CommonText(
+                          text: 'Edit',
                           color: Color(0xff272727),
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -103,19 +101,18 @@ class PaymentMethodScreen extends StatelessWidget {
                 ),
               ),
 
-              CommonText(
-                text: "OTHER PAYMENT METHOD",
+              const CommonText(
+                text: 'OTHER PAYMENT METHOD',
                 fontSize: 12,
-                fontWeight: FontWeight.w500,
                 color: Color(0xff777777),
                 top: 24,
                 bottom: 12,
               ),
               Container(
                 height: 72.h,
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Color(0xffF2F2F2),
+                  color: const Color(0xffF2F2F2),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
@@ -123,29 +120,28 @@ class PaymentMethodScreen extends StatelessWidget {
                     Container(
                       height: 48.sp,
                       width: 48.sp,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
                       child:
-                          CommonImage(
+                          const CommonImage(
                             imageSrc: AppIcons.paypal,
                             size: 24,
                           ).center,
                     ),
                     12.width,
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CommonText(
-                          text: "Paypall",
+                          text: 'Paypall',
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
                           color: Color(0xff272727),
                         ),
                         CommonText(
-                          text: "Not connected",
+                          text: 'Not connected',
                           fontSize: 12,
                           top: 4,
                           fontWeight: FontWeight.w400,
@@ -153,13 +149,13 @@ class PaymentMethodScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     InkWell(
                       onTap: () {
                         Get.toNamed(AppRoutes.addCard);
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                           vertical: 8,
                         ),
@@ -167,8 +163,8 @@ class PaymentMethodScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
                         ),
-                        child: CommonText(
-                          text: "Add",
+                        child: const CommonText(
+                          text: 'Add',
                           color: Color(0xff272727),
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -181,9 +177,9 @@ class PaymentMethodScreen extends StatelessWidget {
               16.height,
               Container(
                 height: 72.h,
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Color(0xffF2F2F2),
+                  color: const Color(0xffF2F2F2),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
@@ -191,29 +187,28 @@ class PaymentMethodScreen extends StatelessWidget {
                     Container(
                       height: 48.sp,
                       width: 48.sp,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
                       child:
-                          CommonImage(
+                          const CommonImage(
                             imageSrc: AppIcons.shopPay,
                             size: 24,
                           ).center,
                     ),
                     12.width,
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CommonText(
-                          text: "Shop Pay",
+                          text: 'Shop Pay',
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
                           color: Color(0xff272727),
                         ),
                         CommonText(
-                          text: "Not connected",
+                          text: 'Not connected',
                           fontSize: 12,
                           top: 4,
                           fontWeight: FontWeight.w400,
@@ -221,13 +216,13 @@ class PaymentMethodScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     InkWell(
                       onTap: () {
                         Get.toNamed(AppRoutes.addCard);
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                           vertical: 8,
                         ),
@@ -235,8 +230,8 @@ class PaymentMethodScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
                         ),
-                        child: CommonText(
-                          text: "Add",
+                        child: const CommonText(
+                          text: 'Add',
                           color: Color(0xff272727),
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -249,9 +244,9 @@ class PaymentMethodScreen extends StatelessWidget {
               16.height,
               Container(
                 height: 72.h,
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Color(0xffF2F2F2),
+                  color: const Color(0xffF2F2F2),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
@@ -259,26 +254,25 @@ class PaymentMethodScreen extends StatelessWidget {
                     Container(
                       height: 48.sp,
                       width: 48.sp,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
                       child:
-                          CommonImage(imageSrc: AppIcons.gpay, size: 24).center,
+                          const CommonImage(imageSrc: AppIcons.gpay, size: 24).center,
                     ),
                     12.width,
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CommonText(
-                          text: "Google Pay",
+                          text: 'Google Pay',
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
                           color: Color(0xff272727),
                         ),
                         CommonText(
-                          text: "Not connected",
+                          text: 'Not connected',
                           fontSize: 12,
                           top: 4,
                           fontWeight: FontWeight.w400,
@@ -286,13 +280,13 @@ class PaymentMethodScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     InkWell(
                       onTap: () {
                         Get.toNamed(AppRoutes.addCard);
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                           vertical: 8,
                         ),
@@ -300,8 +294,8 @@ class PaymentMethodScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
                         ),
-                        child: CommonText(
-                          text: "Add",
+                        child: const CommonText(
+                          text: 'Add',
                           color: Color(0xff272727),
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -314,9 +308,9 @@ class PaymentMethodScreen extends StatelessWidget {
               16.height,
               Container(
                 height: 72.h,
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Color(0xffF2F2F2),
+                  color: const Color(0xffF2F2F2),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
@@ -324,29 +318,28 @@ class PaymentMethodScreen extends StatelessWidget {
                     Container(
                       height: 48.sp,
                       width: 48.sp,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
                       child:
-                          CommonImage(
+                          const CommonImage(
                             imageSrc: AppIcons.creditCard,
                             size: 24,
                           ).center,
                     ),
                     12.width,
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CommonText(
-                          text: "Add Credit or Debit Card",
+                          text: 'Add Credit or Debit Card',
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
                           color: Color(0xff272727),
                         ),
                         CommonText(
-                          text: "Not connected",
+                          text: 'Not connected',
                           fontSize: 12,
                           top: 4,
                           fontWeight: FontWeight.w400,
@@ -354,13 +347,13 @@ class PaymentMethodScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     InkWell(
                       onTap: () {
                         Get.toNamed(AppRoutes.addCard);
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                           vertical: 8,
                         ),
@@ -368,8 +361,8 @@ class PaymentMethodScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
                         ),
-                        child: CommonText(
-                          text: "Add",
+                        child: const CommonText(
+                          text: 'Add',
                           color: Color(0xff272727),
                           fontSize: 12,
                           fontWeight: FontWeight.w600,

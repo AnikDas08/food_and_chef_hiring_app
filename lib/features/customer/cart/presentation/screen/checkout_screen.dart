@@ -35,15 +35,14 @@ class CheckoutScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
 
-        title: CommonText(
+        title: const CommonText(
           text: AppString.checkout,
-          fontSize: 14,
           fontWeight: FontWeight.w600,
-          color: const Color(0xff272727),
+          color: Color(0xff272727),
         ),
         flexibleSpace: LiquidGlassLayer(
           child: LiquidGlass(
-            shape: LiquidRoundedSuperellipse(borderRadius: 0),
+            shape: const LiquidRoundedSuperellipse(borderRadius: 0),
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -78,20 +77,19 @@ class CheckoutScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // ── Booking Details ────────────────────────────────────
-                CommonText(
+                const CommonText(
                   text: AppString.bookingDetails,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xff272727),
+                  color: Color(0xff272727),
                   bottom: 8,
                 ),
                 CommonTextField(
                   controller: controller.dateController,
                   keyboardType: TextInputType.none,
-                  borderRadius: 20,
                   fontSize: 12,
                   hintTextSize: 12,
-                  hintText: "1 January 2026, 5:20PM",
+                  hintText: '1 January 2026, 5:20PM',
                   onTap:
                       () => bookingDateTimePopup(
                         id:
@@ -142,9 +140,9 @@ class CheckoutScreen extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        CommonImage(
+                        const CommonImage(
                           imageSrc: AppIcons.mapIcon,
-                          imageColor: const Color(0xffFD713F),
+                          imageColor: Color(0xffFD713F),
                           size: 24,
                         ),
                         8.width,
@@ -184,11 +182,11 @@ class CheckoutScreen extends StatelessWidget {
                                       ),
                                     ],
                                   )
-                                  : CommonText(
-                                    text: "Select delivery address",
+                                  : const CommonText(
+                                    text: 'Select delivery address',
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
-                                    color: const Color(0xff777777),
+                                    color: Color(0xff777777),
                                   ),
                         ),
                         const Icon(
@@ -226,7 +224,6 @@ class CheckoutScreen extends StatelessWidget {
                               text:
                                   "${menus.length} Item${menus.length != 1 ? 's' : ''}",
                               fontSize: 13,
-                              fontWeight: FontWeight.w500,
                               color: const Color(0xff777777),
                             ),
                             Icon(
@@ -270,11 +267,9 @@ class CheckoutScreen extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CommonText(
-                            text: "Add promo code",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: const Color(0xff272727),
+                          const CommonText(
+                            text: 'Add promo code',
+                            color: Color(0xff272727),
                           ),
                           if (controller.promoCode != null)
                             CommonText(
@@ -310,31 +305,28 @@ class CheckoutScreen extends StatelessWidget {
                 _buildTaxSection(controller),
 
                 // ── Terms ──────────────────────────────────────────────
-                Row(
+                const Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonText(
-                      text: "Terms: ",
-                      fontSize: 14,
+                      text: 'Terms: ',
                       fontWeight: FontWeight.w400,
-                      color: const Color(0xff222222),
+                      color: Color(0xff222222),
                       top: 36,
                     ),
                     CommonText(
-                      text: "All prices excl. VAT. For your order the",
-                      fontSize: 14,
+                      text: 'All prices excl. VAT. For your order the',
                       fontWeight: FontWeight.w400,
-                      color: const Color(0xff636363),
+                      color: Color(0xff636363),
                       top: 36,
                     ),
                   ],
                 ),
-                CommonText(
-                  text: "Privae Chef Terms & Conditions apply",
-                  fontSize: 14,
+                const CommonText(
+                  text: 'Privae Chef Terms & Conditions apply',
                   left: 2,
                   fontWeight: FontWeight.w400,
-                  color: const Color(0xffFD713F),
+                  color: Color(0xffFD713F),
                 ),
               ],
             ),
@@ -349,7 +341,7 @@ class CheckoutScreen extends StatelessWidget {
                 (controller) => CommonButton(
                   titleText:
                       controller.isCheckingOut
-                          ? "Placing Order..."
+                          ? 'Placing Order...'
                           : AppString.checkoutNow,
                   onTap:
                       controller.isCheckingOut ? () {} : confirmCheckingPopup,
@@ -365,7 +357,7 @@ class CheckoutScreen extends StatelessWidget {
     final TaxController? taxCtrl =
         Get.isRegistered<TaxController>() ? Get.find<TaxController>() : null;
 
-    String taxLabel = "Add tax details";
+    String taxLabel = 'Add tax details';
     if (controller.selectedTaxId != null && taxCtrl != null) {
       if (taxCtrl.businessTax?.id == controller.selectedTaxId) {
         taxLabel = taxCtrl.businessTax!.name;
@@ -377,7 +369,6 @@ class CheckoutScreen extends StatelessWidget {
     return InkWell(
       onTap: taxPopup,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
             height: 15.sp,
@@ -400,17 +391,14 @@ class CheckoutScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CommonText(
-                  text: "Request an invoice",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xff272727),
+                const CommonText(
+                  text: 'Request an invoice',
+                  color: Color(0xff272727),
                 ),
                 CommonText(
                   text: taxLabel,
                   fontSize: 12,
                   top: 4,
-                  fontWeight: FontWeight.w500,
                   color:
                       controller.selectedTaxId != null
                           ? const Color(0xffFD713F)
@@ -462,14 +450,13 @@ class CheckoutScreen extends StatelessWidget {
             children: [
               CommonText(
                 text: chef?.name ?? 'Chef',
-                fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xff272727),
               ),
               CommonText(
                 text:
                     chef?.pricing != null
-                        ? "\$${chef!.pricing!.toStringAsFixed(0)} per hour"
+                        ? '\$${chef!.pricing!.toStringAsFixed(0)} per hour'
                         : '',
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
@@ -490,7 +477,7 @@ class CheckoutScreen extends StatelessWidget {
     final String customizations =
         item.customizations != null && item.customizations!.isNotEmpty
             ? "${item.quantity ?? 1} Items + ${item.customizations!.join(', ')}"
-            : "${item.quantity ?? 1} Items";
+            : '${item.quantity ?? 1} Items';
     final double price = item.totalPrice ?? 0;
 
     return Padding(
@@ -504,7 +491,6 @@ class CheckoutScreen extends StatelessWidget {
               children: [
                 CommonText(
                   text: name,
-                  fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xff272727),
                   bottom: 10,
@@ -559,17 +545,17 @@ class CheckoutScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CommonText(
-            text: "Order Summary",
+            text: 'Order Summary',
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
             color: const Color(0xff272727),
             bottom: 12,
           ),
-          _summaryRow("Subtotal", priceSubtotal),
+          _summaryRow('Subtotal', priceSubtotal),
           8.height,
-          _summaryRow("Fees", fee),
+          _summaryRow('Fees', fee),
           8.height,
-          _summaryRow("Estimated Taxes", tax),
+          _summaryRow('Estimated Taxes', tax),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 12.h),
             child: const Divider(height: 1, color: Color(0xffE0E0E0)),
@@ -578,13 +564,13 @@ class CheckoutScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CommonText(
-                text: "Totals",
+                text: 'Totals',
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xff272727),
               ),
               CommonText(
-                text: "\$${total.toStringAsFixed(2)}",
+                text: '\$${total.toStringAsFixed(2)}',
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xff272727),
@@ -602,7 +588,7 @@ class CheckoutScreen extends StatelessWidget {
                 ),
                 6.width,
                 CommonText(
-                  text: "Estimated time: ${controller.estimatedTime}",
+                  text: 'Estimated time: ${controller.estimatedTime}',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: const Color(0xff777777),
@@ -621,13 +607,11 @@ class CheckoutScreen extends StatelessWidget {
       children: [
         CommonText(
           text: label,
-          fontSize: 14,
           fontWeight: FontWeight.w400,
           color: const Color(0xff777777),
         ),
         CommonText(
-          text: "\$${amount.toStringAsFixed(2)}",
-          fontSize: 14,
+          text: '\$${amount.toStringAsFixed(2)}',
           fontWeight: FontWeight.w400,
           color: const Color(0xff272727),
         ),

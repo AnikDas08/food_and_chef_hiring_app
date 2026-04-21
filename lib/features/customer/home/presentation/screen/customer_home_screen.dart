@@ -28,22 +28,22 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
   int selectedTabIndex = 0;
 
   final List<TabData> tabs = [
-    TabData(title: "Home", icon: "house", selectedIcon: "house.fill"),
+    TabData(title: 'Home', icon: 'house', selectedIcon: 'house.fill'),
     TabData(
-      title: "Bookings",
-      icon: "calendar.badge.clock",
-      selectedIcon: "calendar.badge.clock",
+      title: 'Bookings',
+      icon: 'calendar.badge.clock',
+      selectedIcon: 'calendar.badge.clock',
     ),
-    TabData(title: "Groceries", icon: "basket", selectedIcon: "basket.fill"),
+    TabData(title: 'Groceries', icon: 'basket', selectedIcon: 'basket.fill'),
     TabData(
-      title: "Chats",
-      icon: "ellipsis.message",
-      selectedIcon: "ellipsis.message.fill",
+      title: 'Chats',
+      icon: 'ellipsis.message',
+      selectedIcon: 'ellipsis.message.fill',
     ),
     TabData(
-      title: "Profile",
-      icon: "person.crop.circle",
-      selectedIcon: "person.circle.fill",
+      title: 'Profile',
+      icon: 'person.crop.circle',
+      selectedIcon: 'person.circle.fill',
     ),
   ];
 
@@ -59,7 +59,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
   void initState() {
     super.initState();
     // Get initial index from arguments safely
-    selectedTabIndex = Get.arguments?["index"] ?? 0;
+    selectedTabIndex = Get.arguments?['index'] ?? 0;
     tabController = TabController(
       length: tabs.length,
       vsync: this,
@@ -153,7 +153,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(tabs.length, (index) {
-            bool isSelected = selectedTabIndex == index;
+            final bool isSelected = selectedTabIndex == index;
             return Expanded(
               child: InkWell(
                 onTap: () => onTabTap(index),

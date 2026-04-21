@@ -37,7 +37,6 @@ class AvailabilityItem extends StatelessWidget {
               children: [
                 CommonText(
                   text: day.name,
-                  fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xff272727),
                 ),
@@ -57,11 +56,11 @@ class AvailabilityItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (i > 0)
-                      CommonText(
-                        text: "And",
+                      const CommonText(
+                        text: 'And',
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                        color: const Color(0xff777777),
+                        color: Color(0xff777777),
                         bottom: 8,
                       ),
                     Row(
@@ -69,8 +68,8 @@ class AvailabilityItem extends StatelessWidget {
                         Expanded(
                           child: CommonTextField(
                             fillColor: Colors.white,
-                            prefixText: "From: ",
-                            hintText: "From",
+                            prefixText: 'From: ',
+                            hintText: 'From',
                             controller: slot.from,
                             paddingHorizontal: 4,
                             paddingVertical: 14,
@@ -85,8 +84,8 @@ class AvailabilityItem extends StatelessWidget {
                         Expanded(
                           child: CommonTextField(
                             fillColor: Colors.white,
-                            prefixText: "To: ",
-                            hintText: "To",
+                            prefixText: 'To: ',
+                            hintText: 'To',
                             paddingHorizontal: 10,
                             fontSize: 12,
                             paddingVertical: 14,
@@ -119,14 +118,13 @@ class AvailabilityItem extends StatelessWidget {
               // ── Add Additional Time ──
               GestureDetector(
                 onTap: () => controller.addSlot(day),
-                child: Row(
+                child: const Row(
                   children: [
-                    const Icon(CupertinoIcons.add, size: 16),
+                    Icon(CupertinoIcons.add, size: 16),
                     CommonText(
                       text: AppString.addAdditionalTime,
                       fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xff272727),
+                      color: Color(0xff272727),
                       left: 4,
                     ),
                   ],

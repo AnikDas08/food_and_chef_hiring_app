@@ -38,11 +38,10 @@ class CustomerHome extends StatelessWidget {
             keyboardType: TextInputType.none,
             onTap: () => Get.toNamed(AppRoutes.homeSearch),
             borderRadius: 30,
-            fillColor: Color(0xffF2F2F2),
             suffixIcon: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(width: 1, height: 22.h, color: Color(0xffE0E0E0)),
+                Container(width: 1, height: 22.h, color: const Color(0xffE0E0E0)),
                 SizedBox(width: 12.w),
                 InkWell(
                   onTap: () {
@@ -53,7 +52,7 @@ class CustomerHome extends StatelessWidget {
                   },
                   child: Padding(
                     padding: EdgeInsets.only(right: 20.w),
-                    child: CommonImage(
+                    child: const CommonImage(
                       imageSrc: AppIcons.fliter,
                       imageColor: Color(0xff636363),
                     ),
@@ -61,8 +60,8 @@ class CustomerHome extends StatelessWidget {
                 ),
               ],
             ),
-            prefixIcon: Padding(
-              padding: const EdgeInsets.only(left: 16),
+            prefixIcon: const Padding(
+              padding: EdgeInsets.only(left: 16),
               child: Icon(CupertinoIcons.search, color: Color(0xff636363)),
             ),
           ),
@@ -71,7 +70,7 @@ class CustomerHome extends StatelessWidget {
           SizedBox(height: 90.h, child: category()),
 
           20.height,
-          CommonText(
+          const CommonText(
             text: AppString.recommendedPrivaeChefsNearby,
             fontSize: 16,
             color: Color(0xff272727),
@@ -84,7 +83,7 @@ class CustomerHome extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CommonText(
+              const CommonText(
                 text: AppString.orderAgain,
                 fontSize: 16,
                 color: Color(0xff272727),

@@ -49,11 +49,11 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
           SizedBox(height: 10.h),
           RichText(
             text: TextSpan(
-              text: "Your kitchen can handle ",
+              text: 'Your kitchen can handle ',
               style: TextStyle(color: const Color(0xff777777), fontSize: 12.sp),
               children: [
                 TextSpan(
-                  text: "100%",
+                  text: '100%',
                   style: TextStyle(
                     color: const Color(0xffFD713F),
                     fontSize: 12.sp,
@@ -61,7 +61,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
                   ),
                 ),
                 TextSpan(
-                  text: " of recipes on the platform",
+                  text: ' of recipes on the platform',
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
@@ -122,13 +122,13 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
                     'Cooking Equipment',
                     style: TextStyle(
                       fontSize: 16.sp,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.keyboard_arrow_up),
+                    icon: const Icon(Icons.keyboard_arrow_up),
                   ),
                 ],
               ),
@@ -153,13 +153,13 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
                     'Banking Equipment',
                     style: TextStyle(
                       fontSize: 16.sp,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.keyboard_arrow_up),
+                    icon: const Icon(Icons.keyboard_arrow_up),
                   ),
                 ],
               ),
@@ -179,7 +179,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
               ///==============================add button
               InkWell(
                 onTap: () {
-                  Get.to(AddItemScreen());
+                  Get.to(const AddItemScreen());
                 },
                 child: Container(
                   height: 45.h,
@@ -227,7 +227,7 @@ class EquipmentGrid extends StatelessWidget {
     return GridView.builder(
       itemCount: items.length,
       padding: EdgeInsets.zero,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       // scroll off
       shrinkWrap: shrinkWrap,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -249,7 +249,7 @@ class EquipmentGrid extends StatelessWidget {
                 child: Container(
                   width: 109.w,
                   decoration: BoxDecoration(
-                    color: Color(0xFFF2F2F2),
+                    color: const Color(0xFFF2F2F2),
                     borderRadius: BorderRadius.circular(16.r),
                     border: Border.all(
                       color:
@@ -258,7 +258,7 @@ class EquipmentGrid extends StatelessWidget {
                     ),
                   ),
                   child:
-                      CommonImage(imageSrc: AppImages.large, size: 60).center,
+                      const CommonImage(imageSrc: AppImages.large, size: 60).center,
                 ),
               ),
 

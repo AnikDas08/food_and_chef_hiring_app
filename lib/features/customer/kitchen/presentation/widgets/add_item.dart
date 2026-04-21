@@ -20,7 +20,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
           onPressed: () {
             Navigator.pop(Get.context!);
           },
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
         ),
         elevation: 0,
       ),
@@ -39,7 +39,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   style: TextStyle(
                     fontSize: 24.sp,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF272727),
+                    color: const Color(0xFF272727),
                   ),
                 ),
         
@@ -49,7 +49,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xff777777),
+                    color: const Color(0xff777777),
                   ),
                 ),
         
@@ -60,7 +60,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF272727),
+                    color: const Color(0xFF272727),
                   ),
                 ),
         
@@ -71,10 +71,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   width: 107.w,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.r),
-                    color: Color(0xFFF2F2F2),
+                    color: const Color(0xFFF2F2F2),
                   ),
                   child: Center(
-                    child: IconButton(onPressed: () {}, icon: Icon(Icons.add)),
+                    child: IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
                   ),
                 ),
         
@@ -84,7 +84,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF272727),
+                    color: const Color(0xFF272727),
                   ),
                 ),
         
@@ -94,11 +94,11 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.r),
-                    color: Color(0xFFF2F2F2),
+                    color: const Color(0xFFF2F2F2),
                   ),
                   child: Text(
                     'Maple Wood Reversible Cutting Board',
-                    style: TextStyle(fontSize: 12.sp, color: Color(0xFF272727)),
+                    style: TextStyle(fontSize: 12.sp, color: const Color(0xFF272727)),
                   ),
                 ),
         
@@ -129,16 +129,16 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   },
                 ),
         
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
         
                 Container(
                   height: 60,
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.r),
-                    color: Color(0xFF272727),
+                    color: const Color(0xFF272727),
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Add item',
                       style: TextStyle(
@@ -184,7 +184,7 @@ class DropdownField extends StatelessWidget {
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF272727),
+            color: const Color(0xFF272727),
           ),
         ),
         SizedBox(height: 8.h),
@@ -196,7 +196,7 @@ class DropdownField extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.r),
-              color: Color(0xFFF2F2F2),
+              color: const Color(0xFFF2F2F2),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -39,8 +39,8 @@ class DietarySaveScreen extends StatelessWidget {
                     color: Color(0xff272727),
                   ),
                 ),*/
-                CommonText(
-                  text: "Dietary Restrictions & Allergies",
+                const CommonText(
+                  text: 'Dietary Restrictions & Allergies',
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
                   color: Color(0xff272727),
@@ -55,8 +55,8 @@ class DietarySaveScreen extends StatelessWidget {
                     color: Color(0xff777777),
                   ),
                 ),*/
-                CommonText(
-                  text: "Vegetarian? Kosher? Halal? Food allergies? Enter the details below.",
+                const CommonText(
+                  text: 'Vegetarian? Kosher? Halal? Food allergies? Enter the details below.',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff777777),

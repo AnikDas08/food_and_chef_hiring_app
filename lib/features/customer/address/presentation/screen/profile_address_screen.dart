@@ -47,17 +47,17 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
+                  const CommonText(
                     text: AppString.address,
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                   ),
-                  CommonText(
-                    text: "ACTIVE ADDRESS",
+                  const CommonText(
+                    text: 'ACTIVE ADDRESS',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     top: 24,
                     bottom: 12,
                   ),
@@ -69,21 +69,20 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
                             ? const Center(child: CircularProgressIndicator())
                             // ── Empty State ────────────────────────────
                             : controller.addressList.isEmpty
-                            ? Center(
+                            ? const Center(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.location_off_outlined,
                                     size: 64,
                                     color: Color(0xff777777),
                                   ),
-                                  const SizedBox(height: 12),
+                                  SizedBox(height: 12),
                                   CommonText(
-                                    text: "No addresses found",
-                                    fontSize: 14,
+                                    text: 'No addresses found',
                                     fontWeight: FontWeight.w400,
-                                    color: const Color(0xff272727),
+                                    color: Color(0xff272727),
                                   ),
                                 ],
                               ),
@@ -131,7 +130,6 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
                                     child: addressItem(
                                       address,
                                       controller,
-                                      fromCheckout: false,
                                       // Pass the default ID so the radio button shows checked/unchecked correctly
                                       selectedAddressId:
                                           controller.defaultAddressid,

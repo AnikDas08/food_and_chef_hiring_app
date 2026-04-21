@@ -29,13 +29,12 @@ Widget chefInfo(CartChefInfo? chef) {
           children: [
             CommonText(
               text: chef?.name ?? 'Chef',
-              fontSize: 14,
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),
             ),
             CommonText(
               text: chef?.pricing != null
-                  ? "\$${chef!.pricing!.toStringAsFixed(0)} per hour"
+                  ? '\$${chef!.pricing!.toStringAsFixed(0)} per hour'
                   : '',
               fontSize: 12,
               fontWeight: FontWeight.w400,

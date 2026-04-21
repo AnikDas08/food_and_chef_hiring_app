@@ -44,17 +44,17 @@ class _BarChart extends StatelessWidget {
       tooltipPadding: EdgeInsets.zero,
       tooltipMargin: 8,
       getTooltipItem: (group, groupIndex, rod, rodIndex) {
-        return BarTooltipItem("", TextStyle(color: Colors.transparent));
+        return BarTooltipItem('', const TextStyle(color: Colors.transparent));
       },
     ),
   );
 
   Widget getTitles(double value, TitleMeta meta) {
-    int index = value.toInt();
+    final int index = value.toInt();
     if (index < 0 || index >= chartData.length) return const SizedBox();
-    bool isMax = index == maxIndex;
-    TextStyle style = TextStyle(
-      color: isMax ? Color(0xff272727) : Color(0xff777777),
+    final bool isMax = index == maxIndex;
+    final TextStyle style = TextStyle(
+      color: isMax ? const Color(0xff272727) : const Color(0xff777777),
       fontWeight: FontWeight.w500,
       fontSize: 12,
     );
@@ -67,7 +67,6 @@ class _BarChart extends StatelessWidget {
   }
 
   FlTitlesData get titlesData => FlTitlesData(
-    show: true,
     bottomTitles: AxisTitles(
       sideTitles: SideTitles(
         showTitles: true,
@@ -76,21 +75,21 @@ class _BarChart extends StatelessWidget {
         getTitlesWidget: getTitles,
       ),
     ),
-    leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+    leftTitles: const AxisTitles(),
+    topTitles: const AxisTitles(),
+    rightTitles: const AxisTitles(),
   );
 
   FlBorderData get borderData => FlBorderData(show: false);
 
   LinearGradient _barsGradient(int index) {
-    bool isMax = index == maxIndex;
+    final bool isMax = index == maxIndex;
     return LinearGradient(
       colors: isMax
-          ? [Color(0xffFD713F), Color(0xffFD713F)]
+          ? [const Color(0xffFD713F), const Color(0xffFD713F)]
           : [
-        Color(0xffFD713F).withValues(alpha: 0.24),
-        Color(0xffFD713F).withValues(alpha: 0.24),
+        const Color(0xffFD713F).withValues(alpha: 0.24),
+        const Color(0xffFD713F).withValues(alpha: 0.24),
       ],
       begin: Alignment.bottomCenter,
       end: Alignment.topCenter,

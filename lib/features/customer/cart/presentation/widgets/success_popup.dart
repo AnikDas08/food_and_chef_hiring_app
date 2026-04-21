@@ -10,7 +10,7 @@ import '../../../../../component/button/common_button.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../utils/constants/app_string.dart';
 
-successPopup() {
+void successPopup() {
   showDialog(
     context: Get.context!,
     builder: (context) {
@@ -25,18 +25,18 @@ successPopup() {
             return FadeTransition(
               opacity: ModalRoute.of(context)!.animation!,
               child: Dialog(
-                insetPadding: EdgeInsets.symmetric(horizontal: 16),
+                insetPadding: const EdgeInsets.symmetric(horizontal: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.r),
                 ),
-                backgroundColor: Color(0xffFFFFFF),
+                backgroundColor: const Color(0xffFFFFFF),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CommonImage(imageSrc: AppImages.reviewSuccess, size: 88),
-                      CommonText(
+                      const CommonImage(imageSrc: AppImages.reviewSuccess, size: 88),
+                      const CommonText(
                         text: AppString.checkoutSuccessful,
                         fontSize: 16,
                         top: 16,
@@ -44,7 +44,7 @@ successPopup() {
                         fontWeight: FontWeight.w600,
                         color: Color(0xff272727),
                       ),
-                      CommonText(
+                      const CommonText(
                         text: AppString.yourChefWillConfirmYouOrderShortly,
                         fontSize: 12,
                         bottom: 32,
@@ -56,7 +56,6 @@ successPopup() {
                         titleText: AppString.seeOrderDetails,
                         buttonHeight: 48,
                         buttonRadius: 16,
-                        titleColor: Color(0xffFFFFFF),
                         onTap: () async {
                           await AnimationPopUpState.closeDialog();
                         },

@@ -42,11 +42,10 @@ class CustomizeKitchenScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20.h),
-                      CommonText(
+                      const CommonText(
                         text: 'Your Kitchen Equipment',
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.black,
                         textAlign: TextAlign.start,
                       ),
                       SizedBox(height: 14.h),
@@ -80,7 +79,7 @@ class CustomizeKitchenScreen extends StatelessWidget {
                 // ── Preset cards + Custom Setup ──
                 _PresetCards(controller: controller),
 
-                Divider(height: 1, color: const Color(0xFFEEEEEE)),
+                const Divider(height: 1, color: Color(0xFFEEEEEE)),
                 SizedBox(height: 4.h),
 
                 // ── Equipment sections (qty or read-only) ──
@@ -101,7 +100,6 @@ class CustomizeKitchenScreen extends StatelessWidget {
           buttonColor: controller.isSaving.value
               ? const Color(0xFFAAAAAA)
               : AppColors.black,
-          titleColor: AppColors.white,
           onTap: controller.isSaving.value ? null : controller.save,
         )),
       ),
@@ -182,7 +180,7 @@ class _KitchenHeroImage extends StatelessWidget {
   Widget _placeholder() => Container(
     height: 160,
     color: const Color(0xFF3A3A3A),
-    child: Center(
+    child: const Center(
         child: Icon(Icons.kitchen_outlined, size: 48, color: Colors.white24)),
   );
 
@@ -286,8 +284,6 @@ class _PresetCard extends StatelessWidget {
                             ? const Color(0xFFCCCCCC)
                             : const Color(0xFF888888),
                         textAlign: TextAlign.start,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ],
@@ -396,7 +392,6 @@ class _EquipmentBody extends StatelessWidget {
               text: controller.equipmentListError.value,
               fontSize: 13,
               color: const Color(0xFF888888),
-              textAlign: TextAlign.center,
             ),
           ),
         );
@@ -484,7 +479,6 @@ class _QuantitySection extends StatelessWidget {
                           child: CommonText(
                             text: '$count selected',
                             fontSize: 11,
-                            fontWeight: FontWeight.w500,
                             color: const Color(0xFF555555),
                           ),
                         ),
@@ -508,10 +502,10 @@ class _QuantitySection extends StatelessWidget {
             firstChild: items.isEmpty
                 ? Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 12.h),
-              child: CommonText(
+              child: const CommonText(
                 text: 'No items',
                 fontSize: 13,
-                color: const Color(0xFFAAAAAA),
+                color: Color(0xFFAAAAAA),
                 textAlign: TextAlign.start,
               ),
             )
@@ -533,9 +527,9 @@ class _QuantitySection extends StatelessWidget {
                       Padding(
                         padding:
                         EdgeInsets.symmetric(horizontal: 20.w),
-                        child: Divider(
+                        child: const Divider(
                             height: 1,
-                            color: const Color(0xFFF0F0F0)),
+                            color: Color(0xFFF0F0F0)),
                       ),
                   ],
                 );
@@ -548,7 +542,7 @@ class _QuantitySection extends StatelessWidget {
             duration: const Duration(milliseconds: 250),
           ),
 
-          Divider(height: 1, color: const Color(0xFFEEEEEE)),
+          const Divider(height: 1, color: Color(0xFFEEEEEE)),
         ],
       );
     });
@@ -587,9 +581,7 @@ class _QuantityRow extends StatelessWidget {
             Expanded(
               child: CommonText(
                 text: item.name,
-                fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color: AppColors.black,
                 textAlign: TextAlign.start,
               ),
             ),
@@ -600,8 +592,8 @@ class _QuantityRow extends StatelessWidget {
               child: Container(
                 width: 28.w,
                 height: 28.w,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF2F2F2),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFF2F2F2),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(Icons.remove_rounded,
@@ -616,9 +608,7 @@ class _QuantityRow extends StatelessWidget {
               width: 20.w,
               child: CommonText(
                 text: '$qty',
-                fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: AppColors.black,
               ),
             ),
             SizedBox(width: 12.w),
@@ -629,8 +619,8 @@ class _QuantityRow extends StatelessWidget {
               child: Container(
                 width: 28.w,
                 height: 28.w,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF2F2F2),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFF2F2F2),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(Icons.add_rounded,
@@ -671,16 +661,16 @@ class _ReadyForCookingCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: const Color(0xFFFFF8F0),
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: const Color(0xFFFFE0B2), width: 1),
+          border: Border.all(color: const Color(0xFFFFE0B2)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CommonText(
+            const CommonText(
               text: "You're Ready for Cooking",
               fontSize: 13,
               fontWeight: FontWeight.w600,
-              color: const Color(0xFFE65100),
+              color: Color(0xFFE65100),
               textAlign: TextAlign.start,
             ),
             SizedBox(height: 8.h),

@@ -19,8 +19,8 @@ class BookingHistoryController extends GetxController {
   String errorMessage = '';
 
   // --- Filter / Tab States ---
-  List<String> bookingHistoryList = ["All", "Awaiting Confirmation", "Confirmed"];
-  String selectedBookingHistory = "All";
+  List<String> bookingHistoryList = ['All', 'Awaiting Confirmation', 'Confirmed'];
+  String selectedBookingHistory = 'All';
 
   // --- Data Storage ---
   List<BookingHistoryModel> orders = [];
@@ -39,10 +39,10 @@ class BookingHistoryController extends GetxController {
   /// Maps tab selection to API status string
   String? get _statusParam {
     switch (selectedBookingHistory) {
-      case "Awaiting Confirmation":
-        return "Awaiting Confirmation";
-      case "Confirmed":
-        return "Confirm";
+      case 'Awaiting Confirmation':
+        return 'Awaiting Confirmation';
+      case 'Confirmed':
+        return 'Confirm';
       default:
         return null;
     }
@@ -61,9 +61,9 @@ class BookingHistoryController extends GetxController {
     update();
 
     try {
-      String url = "order?page=$currentPage&limit=10";
+      String url = 'order?page=$currentPage&limit=10';
       if (_statusParam != null) {
-        url += "&status=${Uri.encodeComponent(_statusParam!)}";
+        url += '&status=${Uri.encodeComponent(_statusParam!)}';
       }
 
       final response = await ApiService.get(url);
@@ -79,7 +79,7 @@ class BookingHistoryController extends GetxController {
       }
     } catch (e) {
       errorMessage = 'Connection error. Please try again.';
-      debugPrint("List Fetch Error: $e");
+      debugPrint('List Fetch Error: $e');
     } finally {
       isLoading = false;
       isPaginationLoading = false;
@@ -89,20 +89,20 @@ class BookingHistoryController extends GetxController {
 
   Future<void> createChat(String id,String name, String image) async {
     try {
-      final response = await ApiService.post("chat/$id");
+      final response = await ApiService.post('chat/$id');
       if (response.statusCode == 200) {
         final data=response.data;
-        String chatId=data["data"]["_id"];
+        final String chatId=data['data']['_id'];
         Get.toNamed(AppRoutes.message,parameters: {
-          "chatId":chatId,
-          "name": name,
-          "image": image,
+          'chatId':chatId,
+          'name': name,
+          'image': image,
         },);
 
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", "Could not fetch details.");
-      debugPrint("Detail Fetch Error: $e");
+      Utils.errorSnackBar('Error', 'Could not fetch details.');
+      debugPrint('Detail Fetch Error: $e');
     } finally {
       isDetailLoading = false;
       update();
@@ -116,15 +116,15 @@ class BookingHistoryController extends GetxController {
     update();
 
     try {
-      final response = await ApiService.get("order/$id");
+      final response = await ApiService.get('order/$id');
       if (response.statusCode == 200) {
         // Map using the detailed OrderResponse model
         final result = OrderResponse.fromJson(response.data);
         selectedOrderDetail = result.data;
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", "Could not fetch details.");
-      debugPrint("Detail Fetch Error: $e");
+      Utils.errorSnackBar('Error', 'Could not fetch details.');
+      debugPrint('Detail Fetch Error: $e');
     } finally {
       isDetailLoading = false;
       update();
@@ -137,15 +137,15 @@ class BookingHistoryController extends GetxController {
     update();
 
     try {
-      final response = await ApiService.get("order/$id");
+      final response = await ApiService.get('order/$id');
       if (response.statusCode == 200) {
         // Map using the detailed OrderResponse model
         final result = OrderResponse.fromJson(response.data);
         selectedOrderDetail = result.data;
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", "Could not fetch details.");
-      debugPrint("Detail Fetch Error: $e");
+      Utils.errorSnackBar('Error', 'Could not fetch details.');
+      debugPrint('Detail Fetch Error: $e');
     } finally {
       isDetailLoading = false;
       update();
@@ -171,10 +171,10 @@ class BookingHistoryController extends GetxController {
         type = entry['type'];
       }
 
-      if (type == "Booking Ordered") maxIndex = maxIndex < 0 ? 0 : maxIndex;
-      if (type == "Chef Confirmed") maxIndex = 1;
-      if (type == "Groceries Ordered") maxIndex = 2;
-      if (type == "Booking Completed") maxIndex = 3;
+      if (type == 'Booking Ordered') maxIndex = maxIndex < 0 ? 0 : maxIndex;
+      if (type == 'Chef Confirmed') maxIndex = 1;
+      if (type == 'Groceries Ordered') maxIndex = 2;
+      if (type == 'Booking Completed') maxIndex = 3;
     }
 
     return maxIndex;
@@ -184,7 +184,7 @@ class BookingHistoryController extends GetxController {
 
   Future<void> cancelBooking(String id, String reason) async {
     if (reason.isEmpty) {
-      Utils.errorSnackBar("Required", "Please provide a reason for cancellation");
+      Utils.errorSnackBar('Required', 'Please provide a reason for cancellation');
       return;
     }
 
@@ -193,24 +193,24 @@ class BookingHistoryController extends GetxController {
       Get.dialog(const Center(child: CircularProgressIndicator(color: Color(0xffFD713F))), barrierDismissible: false);
 
       final response = await ApiService.patch(
-        "order/change-status/$id",
+        'order/change-status/$id',
         body: {
-          "status": "Canceled",
-          "cancel_reason": reason // Sending the reason here
+          'status': 'Canceled',
+          'cancel_reason': reason // Sending the reason here
         },
       );
 
       Navigator.pop(Get.context!); // Close loading indicator
 
       if (response.statusCode == 200) {
-        Utils.successSnackBar("Success", "Booking cancelled");
+        Utils.successSnackBar('Success', 'Booking cancelled');
         await fetchOrders(isRefresh: true);
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Failed to cancel");
+        Utils.errorSnackBar('Error', response.data['message'] ?? 'Failed to cancel');
       }
     } catch (e) {
       Navigator.pop(Get.context!); // Close loading
-      debugPrint("Cancel Error: $e");
+      debugPrint('Cancel Error: $e');
     }
   }
 
@@ -243,7 +243,7 @@ class BookingHistoryController extends GetxController {
     required String note,
   }) async {
     if (date.isEmpty || time.isEmpty || addressId.isEmpty) {
-      Utils.errorSnackBar("Error", "Please select both date/time and address");
+      Utils.errorSnackBar('Error', 'Please select both date/time and address');
       return;
     }
 
@@ -252,29 +252,29 @@ class BookingHistoryController extends GetxController {
       //Get.dialog(const Center(child: CircularProgressIndicator(color: Color(0xffFD713F))), barrierDismissible: false);
 
       final Map<String, dynamic> body = {
-        "requested_date": date,
-        "requested_time": time,
-        "address_id": addressId,
-        "note": note,
+        'requested_date': date,
+        'requested_time': time,
+        'address_id': addressId,
+        'note': note,
       };
 
       // End URL: order/change-status/{id}
-      final response = await ApiService.post("order/change-schedule/$orderId", body: body);
+      final response = await ApiService.post('order/change-schedule/$orderId', body: body);
 
       //Navigator.pop(Get.context!); // Close loading
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        Utils.successSnackBar("Success", "Request change sent successfully");
+        Utils.successSnackBar('Success', 'Request change sent successfully');
 
         // Navigate back to Booking History or Home
         //Get.offAllNamed(AppRoutes.customerHomeScreen);
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Failed to send request");
+        Utils.errorSnackBar('Error', response.data['message'] ?? 'Failed to send request');
       }
     } catch (e) {
       Navigator.pop(Get.context!);
-      debugPrint("Request Change Error: $e");
-      Utils.errorSnackBar("Error", "Somthing error");
+      debugPrint('Request Change Error: $e');
+      Utils.errorSnackBar('Error', 'Somthing error');
     }
   }
 }

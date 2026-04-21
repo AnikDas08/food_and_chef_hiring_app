@@ -15,37 +15,36 @@ Widget orderSummarychef({required Map order}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      CommonText(
-        text: "Order Summary",
+      const CommonText(
+        text: 'Order Summary',
         fontSize: 16,
         fontWeight: FontWeight.w600,
         color: Color(0xff272727),
         bottom: 19,
       ),
-      _item("Subtotal", "\$${subtotal.toStringAsFixed(2)}"),
+      _item('Subtotal', '\$${subtotal.toStringAsFixed(2)}'),
       11.height,
-      _item("Service Fee", "\$${serviceFee.toStringAsFixed(2)}"),
+      _item('Service Fee', '\$${serviceFee.toStringAsFixed(2)}'),
       11.height,
-      _item("Estimated Taxes", "\$${tax.toStringAsFixed(2)}"),
+      _item('Estimated Taxes', '\$${tax.toStringAsFixed(2)}'),
       if (hasDiscount) ...[
         11.height,
-        _item("Discount", "-\$${discountAmount.toStringAsFixed(2)}", isDiscount: true),
+        _item('Discount', '-\$${discountAmount.toStringAsFixed(2)}', isDiscount: true),
       ],
       11.height,
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CommonText(
-            text: "Total",
-            fontSize: 14,
+          const CommonText(
+            text: 'Total',
             fontWeight: FontWeight.w600,
             color: Color(0xff272727),
           ),
           CommonText(
-            text: "\$${total.toStringAsFixed(2)}",
+            text: '\$${total.toStringAsFixed(2)}',
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: Color(0xff272727),
+            color: const Color(0xff272727),
           ),
         ],
       ),
@@ -59,15 +58,13 @@ Widget _item(String title, String value, {bool isDiscount = false}) {
     children: [
       CommonText(
         text: title,
-        fontSize: 14,
         fontWeight: FontWeight.w400,
-        color: Color(0xff777777),
+        color: const Color(0xff777777),
       ),
       CommonText(
         text: value,
-        fontSize: 14,
         fontWeight: FontWeight.w400,
-        color: isDiscount ? Color(0xff2F8328) : Color(0xff272727),
+        color: isDiscount ? const Color(0xff2F8328) : const Color(0xff272727),
       ),
     ],
   );

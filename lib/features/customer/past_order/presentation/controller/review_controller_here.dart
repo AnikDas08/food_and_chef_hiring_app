@@ -46,7 +46,7 @@ class ReviewController extends GetxController {
     update();
     try {
       final response = await ApiService.get(
-        "order/${order.id}",
+        'order/${order.id}',
       );
       if (response.statusCode == 200) {
         final data = response.data['data'];
@@ -57,7 +57,7 @@ class ReviewController extends GetxController {
         }
       }
     } catch (_) {
-      Get.snackbar("Error", "Failed to load order details",
+      Get.snackbar('Error', 'Failed to load order details',
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading = false;
@@ -67,13 +67,13 @@ class ReviewController extends GetxController {
 
   Future<void> submitReview() async {
     if (reviewText.trim().isEmpty) {
-      Get.snackbar("Error", "Please write a review",
+      Get.snackbar('Error', 'Please write a review',
           snackPosition: SnackPosition.BOTTOM);
       return;
     }
     if (qualityAndTaste == 0 || cleanliness == 0 ||
         timeliness == 0 || friendliness == 0 || communication == 0) {
-      Get.snackbar("Error", "Please rate all categories",
+      Get.snackbar('Error', 'Please rate all categories',
           snackPosition: SnackPosition.BOTTOM);
       return;
     }
@@ -83,25 +83,25 @@ class ReviewController extends GetxController {
 
     try {
       final response = await ApiService.post(
-        "review/extra-review",
+        'review/extra-review',
         body: {
-          "review": reviewText.trim(),
-          "quality_and_taste": qualityAndTaste,
-          "cleanliness": cleanliness,
-          "timpleness": timeliness,
-          "friendliness": friendliness,
-          "communication": communication,
-          "order_id": order.id,
+          'review': reviewText.trim(),
+          'quality_and_taste': qualityAndTaste,
+          'cleanliness': cleanliness,
+          'timpleness': timeliness,
+          'friendliness': friendliness,
+          'communication': communication,
+          'order_id': order.id,
         },
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         reviewSuccessPopUp();
       } else {
-        Get.snackbar("Error", "Failed to submit review",
+        Get.snackbar('Error', 'Failed to submit review',
             snackPosition: SnackPosition.BOTTOM);
       }
     } catch (_) {
-      Get.snackbar("Error", "Something went wrong",
+      Get.snackbar('Error', 'Something went wrong',
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isSubmitting = false;

@@ -13,14 +13,14 @@ class ConfirmedGroceryController extends GetxController {
       : [];
 
   var isBookingConfirmed = true.obs;
-  var selectedPartner = "Instacart".obs;
+  var selectedPartner = 'Instacart'.obs;
   var isLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     // Debug to verify you received the IDs
-    debugPrint("Received Order IDs on Confirmation Screen: $receivedOrderIds");
+    debugPrint('Received Order IDs on Confirmation Screen: $receivedOrderIds');
   }
 
   Future<void> confirmGroceries() async {
@@ -39,8 +39,8 @@ class ConfirmedGroceryController extends GetxController {
         try {
           final response = await ApiService.patch(
             // Ensure the path matches your API requirements
-            "order/change-status/$id",
-            body: {"status": "Groceries Ordered"},
+            'order/change-status/$id',
+            body: {'status': 'Groceries Ordered'},
           );
 
           // Check if response was actually successful based on your API's structure
@@ -48,7 +48,7 @@ class ConfirmedGroceryController extends GetxController {
             successCount++;
           }
         } catch (e) {
-          debugPrint("Failed to update Order ID $id: $e");
+          debugPrint('Failed to update Order ID $id: $e');
           // We don't 'throw' here so the loop continues to the next ID
         }
       }
@@ -56,12 +56,12 @@ class ConfirmedGroceryController extends GetxController {
       Navigator.pop(Get.context!); // Close loading indicator
 
       if (successCount == receivedOrderIds.length) {
-        Utils.successSnackBar("Success", "All groceries confirmed!");
+        Utils.successSnackBar('Success', 'All groceries confirmed!');
         Get.offAllNamed(AppRoutes.customerHomeScreen);
       } else if (successCount > 0) {
-        Utils.successSnackBar("Partial Success", "$successCount orders updated, some failed.");
+        Utils.successSnackBar('Partial Success', '$successCount orders updated, some failed.');
       } else {
-        Utils.errorSnackBar("Error", "Could not update orders. Please try again.");
+        Utils.errorSnackBar('Error', 'Could not update orders. Please try again.');
       }
 
     } finally {
@@ -72,12 +72,11 @@ class ConfirmedGroceryController extends GetxController {
   void showConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
-      barrierDismissible: true,
       builder: (context) => const GroceryConfirmationPopup(),
     );
   }
 
   final List<Map<String, String>> partners = [
-    {"name": "Instacart", "image": "assets/images/instacart_logo.png"},
+    {'name': 'Instacart', 'image': 'assets/images/instacart_logo.png'},
   ];
 }

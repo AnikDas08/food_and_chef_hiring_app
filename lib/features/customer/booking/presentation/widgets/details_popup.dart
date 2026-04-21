@@ -42,7 +42,7 @@ void bookingDetails(BuildContext context, String orderId) {
           if (order == null) {
             return SizedBox(
               height: 200.h,
-              child: const Center(child: CommonText(text: "Order details not found")),
+              child: const Center(child: CommonText(text: 'Order details not found')),
             );
           }
 
@@ -60,7 +60,7 @@ void bookingDetails(BuildContext context, String orderId) {
                   // --- Location ---
                   _buildIconRow(
                     iconData: CupertinoIcons.location,
-                    title: "Location",
+                    title: 'Location',
                     subTitle: order.formattedAddress,
                   ),
                   16.height,
@@ -69,13 +69,12 @@ void bookingDetails(BuildContext context, String orderId) {
                   _buildIconRow(
                     iconPath: AppIcons.calendar,
                     title: _formatSimpleDate(order.formattedDate),
-                    subTitle: "at ${order.strTime}",
+                    subTitle: 'at ${order.strTime}',
                   ),
 
                   // --- Status Timeline ---
-                  CommonText(
+                  const CommonText(
                     text: AppString.orderStatus,
-                    fontSize: 14,
                     top: 32,
                     bottom: 16,
                     fontWeight: FontWeight.w600,
@@ -83,12 +82,12 @@ void bookingDetails(BuildContext context, String orderId) {
                   _buildOrderStatusTimeline(order.history),
 
                   // Status helper message
-                  if (order.status == "Awaiting Confirmation")
-                    CommonText(
-                      text: "The chef is reviewing your order and should confirm soon.",
+                  if (order.status == 'Awaiting Confirmation')
+                    const CommonText(
+                      text: 'The chef is reviewing your order and should confirm soon.',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
-                      color: const Color(0xffFD713F),
+                      color: Color(0xffFD713F),
                       top: 16,
                     ),
 
@@ -121,44 +120,44 @@ Widget _buildOrderStatusTimeline(List<dynamic> history) {
   final List<Map<String, dynamic>> steps = [
     {
       'title': 'Booking\nOrdered',
-      'icon': "assets/icons/booking_order.svg",
+      'icon': 'assets/icons/booking_order.svg',
       'type': 'Booking Ordered',
       'color': const Color(0xff4CAF50), // Green
     },
     {
       'title': 'Chef\nConfirmed',
-      'icon': "assets/icons/chef_confirmed.svg",
+      'icon': 'assets/icons/chef_confirmed.svg',
       'type': 'Chef Confirmed',
       'color': const Color(0xff2196F3), // Blue
     },
     {
       'title': 'Groceries\nOrdered',
-      'icon': "assets/icons/groceries_ordered.svg",
+      'icon': 'assets/icons/groceries_ordered.svg',
       'type': 'Groceries Ordered',
       'color': const Color(0xffFF9800), // Orange
     },
     {
       'title': 'Booking\nComplete',
-      'icon': "assets/icons/booking_complete.svg",
+      'icon': 'assets/icons/booking_complete.svg',
       'type': 'Booking Completed',
       'color': const Color(0xff9C27B0), // Purple
     },
   ];
 
-  int activeIndex = Get.find<BookingHistoryController>().getStatusIndex(history.cast());
+  final int activeIndex = Get.find<BookingHistoryController>().getStatusIndex(history.cast());
 
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: List.generate(steps.length, (index) {
-      bool isReached = index <= activeIndex;
-      bool isActive = index == activeIndex;
+      final bool isReached = index <= activeIndex;
+      final bool isActive = index == activeIndex;
 
       // Logic: If reached, use its specific color. If not reached, use Grey.
-      Color stepColor = isReached ? steps[index]['color'] : const Color(0xffA7A7A7);
+      final Color stepColor = isReached ? steps[index]['color'] : const Color(0xffA7A7A7);
 
       // Lighten the background color for the circle
-      Color bgColor = isReached
+      final Color bgColor = isReached
           ? (steps[index]['color'] as Color).withOpacity(0.1)
           : const Color(0xffF5F5F5);
 
@@ -215,7 +214,6 @@ Widget _buildOrderStatusTimeline(List<dynamic> history) {
               // Make text bold only if it is the current active status
               fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
               color: stepColor,
-              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -257,7 +255,7 @@ Widget _buildOrderDetailsAccordion(BookingHistoryController controller, dynamic 
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CommonText(text: AppString.orderDetails, fontSize: 16, fontWeight: FontWeight.w600),
+            const CommonText(text: AppString.orderDetails, fontSize: 16, fontWeight: FontWeight.w600),
             Icon(
               controller.isOrderDetailsPopup ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_right,
               color: const Color(0xff777777),
@@ -275,23 +273,23 @@ Widget _buildOrderDetailsAccordion(BookingHistoryController controller, dynamic 
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(text: item.menuName, fontSize: 14, fontWeight: FontWeight.w600),
+                  CommonText(text: item.menuName, fontWeight: FontWeight.w600),
                   CommonText(
                     text: "${item.quantity} Items + ${item.customizations.join(', ').replaceAll('_', ' ')}",
                     fontSize: 12, color: const Color(0xff777777),
                   ),
                 ],
               ),
-              CommonText(text: "\$${item.totalPrice.toStringAsFixed(2)}", fontSize: 14),
+              CommonText(text: '\$${item.totalPrice.toStringAsFixed(2)}'),
             ],
           ),
         )).toList(),
         const Divider(),
-        _buildPriceRow("Subtotal", order.priceBreakdown.subtotal),
-        _buildPriceRow("Tax", order.priceBreakdown.taxs),
-        _buildPriceRow("Service Fee", order.priceBreakdown.serviceFee),
+        _buildPriceRow('Subtotal', order.priceBreakdown.subtotal),
+        _buildPriceRow('Tax', order.priceBreakdown.taxs),
+        _buildPriceRow('Service Fee', order.priceBreakdown.serviceFee),
         const Divider(),
-        _buildPriceRow("Total", order.priceBreakdown.total, isBold: true),
+        _buildPriceRow('Total', order.priceBreakdown.total, isBold: true),
       ],
     ],
   );
@@ -306,7 +304,7 @@ Widget _buildBottomActions(BuildContext context, dynamic order,BookingHistoryCon
     // We iterate through the list of OrderHistory objects
     for (var entry in order.history) {
       // Use the dot operator because entry is an Instance of OrderHistory
-      if (entry.type == "Groceries Ordered") {
+      if (entry.type == 'Groceries Ordered') {
         alreadyOrderedGroceries = true;
         break;
       }
@@ -314,8 +312,8 @@ Widget _buildBottomActions(BuildContext context, dynamic order,BookingHistoryCon
   }
 
   // 2. The Condition: Show only if status is "Confirm" AND groceries haven't been ordered yet
-  bool showGroceryButton = (order.status == "Confirm") && !alreadyOrderedGroceries;
-  bool showEditButton = (status == "Awaiting Confirmation" || status == "Confirm");
+  final bool showGroceryButton = (order.status == 'Confirm') && !alreadyOrderedGroceries;
+  final bool showEditButton = (status == 'Awaiting Confirmation' || status == 'Confirm');
 
   return Row(
     children: [
@@ -381,7 +379,7 @@ Widget _buildPriceRow(String label, double val, {bool isBold = false}) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CommonText(text: label, fontSize: isBold ? 16 : 14, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
-        CommonText(text: "\$${val.toStringAsFixed(2)}", fontSize: isBold ? 16 : 14, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+        CommonText(text: '\$${val.toStringAsFixed(2)}', fontSize: isBold ? 16 : 14, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
       ],
     ),
   );
@@ -391,7 +389,7 @@ Widget _buildStatusBadge(String status) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
     decoration: BoxDecoration(color: const Color(0xffF2E3C7), borderRadius: BorderRadius.circular(8)),
-    child: CommonText(text: status, fontSize: 10, color: const Color(0xffE39400), fontWeight: FontWeight.w500),
+    child: CommonText(text: status, fontSize: 10, color: const Color(0xffE39400)),
   );
 }
 
@@ -409,9 +407,9 @@ Widget _circularIconButton(String icon, VoidCallback onTap) {
 
 String _formatSimpleDate(String isoDate) {
   try {
-    DateTime dt = DateTime.parse(isoDate);
+    final DateTime dt = DateTime.parse(isoDate);
     final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return "${dt.day} ${months[dt.month - 1]}, ${dt.year}";
+    return '${dt.day} ${months[dt.month - 1]}, ${dt.year}';
   } catch (e) {
     return isoDate;
   }

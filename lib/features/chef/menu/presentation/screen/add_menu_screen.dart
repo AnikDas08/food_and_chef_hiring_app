@@ -18,7 +18,7 @@ class AddMenuScreen extends StatelessWidget {
 
       builder:
           (_) => AlertDialog(
-            title: Text("Add $title"),
+            title: Text('Add $title'),
 
             content: TextField(
               controller: ctrl,
@@ -31,7 +31,7 @@ class AddMenuScreen extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text("Cancel"),
+                child: const Text('Cancel'),
               ),
 
               TextButton(
@@ -41,7 +41,7 @@ class AddMenuScreen extends StatelessWidget {
                   Navigator.pop(Get.context!);
                 },
 
-                child: const Text("Add"),
+                child: const Text('Add'),
               ),
             ],
           ),
@@ -56,7 +56,7 @@ class AddMenuScreen extends StatelessWidget {
 
     final qtyCtrl = TextEditingController();
 
-    String localUnit = c.unitsList.isNotEmpty ? c.unitsList.first : "kg";
+    String localUnit = c.unitsList.isNotEmpty ? c.unitsList.first : 'kg';
 
     showDialog(
       context: context,
@@ -72,7 +72,7 @@ class AddMenuScreen extends StatelessWidget {
                   ),
 
                   title: Text(
-                    "Add Ingredient",
+                    'Add Ingredient',
 
                     style: TextStyle(
                       fontSize: 16.sp,
@@ -86,14 +86,14 @@ class AddMenuScreen extends StatelessWidget {
                     children: [
                       _dialogField(
                         nameCtrl,
-                        "Enter Ingredient name",
+                        'Enter Ingredient name',
 
                         autofocus: true,
                       ),
 
                       10.verticalSpace,
 
-                      _dialogField(qtyCtrl, "Enter Quantity", isNumber: true),
+                      _dialogField(qtyCtrl, 'Enter Quantity', isNumber: true),
 
                       10.verticalSpace,
 
@@ -105,7 +105,7 @@ class AddMenuScreen extends StatelessWidget {
                         }
                         final units =
                             c.unitsList.isEmpty
-                                ? ["kg", "g", "ml", "l"]
+                                ? ['kg', 'g', 'ml', 'l']
                                 : c.unitsList;
                         if (!units.contains(localUnit)) localUnit = units.first;
                         return Container(
@@ -150,14 +150,14 @@ class AddMenuScreen extends StatelessWidget {
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: Text("Cancel"),
+                      child: const Text('Cancel'),
                     ),
                     TextButton(
                       onPressed: () {
                         c.addIngredient(nameCtrl.text, qtyCtrl.text, localUnit);
                         Navigator.of(context).pop();
                       },
-                      child: Text("Add"),
+                      child: const Text('Add'),
                     ),
                   ],
                 ),
@@ -241,7 +241,7 @@ class AddMenuScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Add Item",
+                      'Add Item',
                       style: TextStyle(
                         fontSize: 26.sp,
                         fontWeight: FontWeight.w700,
@@ -251,7 +251,7 @@ class AddMenuScreen extends StatelessWidget {
                     ),
                     8.verticalSpace,
                     Text(
-                      "Add your menu and items to showcase what you can cook for customers.",
+                      'Add your menu and items to showcase what you can cook for customers.',
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: const Color(0xFF777777),
@@ -261,7 +261,7 @@ class AddMenuScreen extends StatelessWidget {
                     20.verticalSpace,
 
                     // ── Preview Image ──
-                    _label("Previews"),
+                    _label('Previews'),
                     8.verticalSpace,
                     Obx(
                       () => GestureDetector(
@@ -295,7 +295,7 @@ class AddMenuScreen extends StatelessWidget {
                     20.verticalSpace,
 
                     // ── Menu Category ──
-                    _label("Menu Category"),
+                    _label('Menu Category'),
                     8.verticalSpace,
                     Obx(() {
                       if (c.isLoadingCategory.value) {
@@ -324,7 +324,7 @@ class AddMenuScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: Text(
-                            "No category found. Add a menu section first.",
+                            'No category found. Add a menu section first.',
                             style: TextStyle(
                               fontSize: 13.sp,
                               color: const Color(0xFFBBBBBB),
@@ -374,13 +374,13 @@ class AddMenuScreen extends StatelessWidget {
                     16.verticalSpace,
 
                     // ── Item Name ──
-                    _label("Item Name"),
+                    _label('Item Name'),
                     8.verticalSpace,
-                    _textField(c.nameController, "Enter Item Name"),
+                    _textField(c.nameController, 'Enter Item Name'),
                     16.verticalSpace,
 
                     // ── Description ──
-                    _label("Description"),
+                    _label('Description'),
                     8.verticalSpace,
                     Container(
                       decoration: BoxDecoration(
@@ -397,7 +397,7 @@ class AddMenuScreen extends StatelessWidget {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.all(14.w),
-                          hintText: "Describe your dish...",
+                          hintText: 'Describe your dish...',
                           hintStyle: TextStyle(
                             fontSize: 13.sp,
                             color: const Color(0xFFBBBBBB),
@@ -408,7 +408,7 @@ class AddMenuScreen extends StatelessWidget {
                     16.verticalSpace,
 
                     // ── Diet Types ──
-                    _label("Diet Types"),
+                    _label('Diet Types'),
                     8.verticalSpace,
                     Obx(
                       () => _dropdownContainer(
@@ -420,7 +420,7 @@ class AddMenuScreen extends StatelessWidget {
                     16.verticalSpace,
 
                     // ── Allergens ──
-                    _label("Allergens"),
+                    _label('Allergens'),
                     8.verticalSpace,
                     Obx(
                       () => _dropdownContainer(
@@ -432,7 +432,7 @@ class AddMenuScreen extends StatelessWidget {
                     16.verticalSpace,
 
                     // ── Prep Time ──
-                    _label("Est. Preparation Time"),
+                    _label('Est. Preparation Time'),
 
                     8.verticalSpace,
 
@@ -448,7 +448,7 @@ class AddMenuScreen extends StatelessWidget {
                     16.verticalSpace,
 
                     // ── Cook Time ──
-                    _label("Est. Cooking Time"),
+                    _label('Est. Cooking Time'),
 
                     8.verticalSpace,
 
@@ -465,12 +465,12 @@ class AddMenuScreen extends StatelessWidget {
 
                     Obx(
                       () => _SectionHeader(
-                        title: "Customize the Dish",
+                        title: 'Customize the Dish',
                         expanded: c.customizeExpanded.value,
                         onAddTap:
                             () => _showAddDialog(
                               context,
-                              "Customize Option",
+                              'Customize Option',
                               c.addCustomizeOption,
                             ),
                         onToggle: c.toggleCustomize,
@@ -501,7 +501,7 @@ class AddMenuScreen extends StatelessWidget {
 
                     Obx(
                       () => _SectionHeader(
-                        title: "Ingredients",
+                        title: 'Ingredients',
 
                         expanded: c.ingredientsExpanded.value,
 
@@ -525,7 +525,7 @@ class AddMenuScreen extends StatelessWidget {
                                         ),
 
                                         child: Text(
-                                          "No ingredients added yet.",
+                                          'No ingredients added yet.',
 
                                           style: TextStyle(
                                             fontSize: 12.sp,
@@ -556,7 +556,7 @@ class AddMenuScreen extends StatelessWidget {
                     16.verticalSpace,
 
                     // ── Special Equipment ──
-                    _label("Special Equipment"),
+                    _label('Special Equipment'),
 
                     8.verticalSpace,
 
@@ -584,8 +584,8 @@ class AddMenuScreen extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   c.selectedEquipmentIds.isEmpty
-                                      ? "Select equipment..."
-                                      : c.selectedEquipmentNames.join(", "),
+                                      ? 'Select equipment...'
+                                      : c.selectedEquipmentNames.join(', '),
 
                                   style: TextStyle(
                                     fontSize: 13.sp,
@@ -651,7 +651,7 @@ class AddMenuScreen extends StatelessWidget {
                                       ),
                                     ),
                                     child: Text(
-                                      "No equipment found",
+                                      'No equipment found',
                                       style: TextStyle(
                                         fontSize: 13.sp,
                                         color: const Color(0xFF999999),
@@ -791,7 +791,7 @@ class AddMenuScreen extends StatelessWidget {
                               strokeWidth: 2,
                             )
                             : Text(
-                              c.isEditMode.value ? "Update Item" : "Add Item",
+                              c.isEditMode.value ? 'Update Item' : 'Add Item',
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w600,
@@ -915,7 +915,7 @@ class _IngredientRow extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Text(
-                "$quantity $unit",
+                '$quantity $unit',
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: const Color(0xFF777777),
@@ -972,7 +972,7 @@ class _TimeInputRow extends StatelessWidget {
                   horizontal: 14.w,
                   vertical: 14.h,
                 ),
-                hintText: "e.g. 30",
+                hintText: 'e.g. 30',
                 hintStyle: TextStyle(
                   fontSize: 13.sp,
                   color: const Color(0xFFBBBBBB),
@@ -1052,7 +1052,7 @@ class _SectionHeader extends StatelessWidget {
               Icon(Icons.add, size: 14.sp, color: const Color(0xFF272727)),
               4.horizontalSpace,
               Text(
-                "Add",
+                'Add',
                 style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w500,

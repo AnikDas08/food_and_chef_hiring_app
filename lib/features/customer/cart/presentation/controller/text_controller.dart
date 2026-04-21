@@ -31,14 +31,16 @@ class TaxController extends GetxController {
     isLoading = true;
     update();
     try {
-      final response = await ApiService.get("tax-details");
+      final response = await ApiService.get('tax-details');
       if (response.statusCode == 200) {
         final List data = response.data['data'] ?? [];
         final list = data.map((e) => TaxModel.fromJson(e)).toList();
         businessTax = list.firstWhereOrNull(
-                (e) => e.organization.toLowerCase() == 'business');
+          (e) => e.organization.toLowerCase() == 'business',
+        );
         personalTax = list.firstWhereOrNull(
-                (e) => e.organization.toLowerCase() == 'personal');
+          (e) => e.organization.toLowerCase() == 'personal',
+        );
       }
     } catch (e) {
       Utils.errorSnackBar('Error', e.toString());
@@ -89,7 +91,7 @@ class TaxController extends GetxController {
         'tax_id': taxIdController.text.trim(),
         'is_default': isDefault,
       };
-      final response = await ApiService.post("tax-details", body: body);
+      final response = await ApiService.post('tax-details', body: body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         await fetchTaxDetails();
         Navigator.pop(Get.context!);
@@ -119,11 +121,10 @@ class TaxController extends GetxController {
         'tax_id': taxIdController.text.trim(),
         'is_default': isDefault,
       };
-      final response =
-      await ApiService.patch("tax-details/$id", body: body);
+      final response = await ApiService.patch('tax-details/$id', body: body);
       if (response.statusCode == 200) {
         await fetchTaxDetails();
-        await Utils.successSnackBar('Success', 'Tax details updated successfully');
+        Utils.successSnackBar('Success', 'Tax details updated successfully');
         //Navigator.pop(Get.context!);
       } else {
         Utils.errorSnackBar('Error', response.data['message'] ?? 'Failed');

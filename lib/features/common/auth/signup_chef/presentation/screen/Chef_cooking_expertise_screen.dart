@@ -29,7 +29,7 @@ class CafeCookingExpertiseScreen extends StatelessWidget {
                 color: Color(0xffF6F6F6),
                 shape: BoxShape.circle,
               ),
-              child: CommonImage(
+              child: const CommonImage(
                 imageSrc: AppIcons.backIcon,
                 size: 24,
               ),
@@ -53,7 +53,7 @@ class CafeCookingExpertiseScreen extends StatelessWidget {
                     children: [
                       8.verticalSpace,
                       Text(
-                        "Cooking Expertise",
+                        'Cooking Expertise',
                         style: TextStyle(
                           fontSize: 26.sp,
                           fontWeight: FontWeight.w700,
@@ -63,7 +63,7 @@ class CafeCookingExpertiseScreen extends StatelessWidget {
                       ),
                       8.verticalSpace,
                       Text(
-                        "Define your speciality cuisine.",
+                        'Define your speciality cuisine.',
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: const Color(0xFF777777),
@@ -71,7 +71,7 @@ class CafeCookingExpertiseScreen extends StatelessWidget {
                       ),
                       24.verticalSpace,
                       Text(
-                        "Cuisines",
+                        'Cuisines',
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
@@ -101,7 +101,7 @@ class CafeCookingExpertiseScreen extends StatelessWidget {
                                     Expanded(
                                       child: controller.selectedCuisines.isEmpty
                                           ? Text(
-                                        "Select cuisines",
+                                        'Select cuisines',
                                         style: TextStyle(
                                           fontSize: 13.sp,
                                           color: const Color(0xFFBBBBBB),
@@ -210,7 +210,7 @@ class CafeCookingExpertiseScreen extends StatelessWidget {
                     elevation: 0,
                   ),
                   child: Text(
-                    "Continue",
+                    'Continue',
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,

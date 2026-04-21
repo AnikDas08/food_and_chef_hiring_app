@@ -16,8 +16,8 @@ class HomeController extends GetxController {
   RangeValues values = const RangeValues(20, 100);
 
   bool saved = false;
-  String address = "";
-  RxString defaultAddress = "".obs;
+  String address = '';
+  RxString defaultAddress = ''.obs;
   bool isLoadingChefs = false;
   bool isLoadingLocation = false;
   bool isLoadingOrderAgain = false;
@@ -27,14 +27,14 @@ class HomeController extends GetxController {
   double? currentLng;
 
   List<String> cuisineOption = [
-    "Health food",
-    "Vegan",
-    "Chinese",
-    "American",
-    "Italian",
-    "Mexican",
-    "Japanese",
-    "Indian",
+    'Health food',
+    'Vegan',
+    'Chinese',
+    'American',
+    'Italian',
+    'Mexican',
+    'Japanese',
+    'Indian',
   ];
 
   CuisineModel? cuisineModel;
@@ -48,19 +48,19 @@ class HomeController extends GetxController {
   OrderAgainModel? orderAgainModel;
   List<OrderAgainData> orderAgainList = [];
 
-  List<String> timeOption = ["Today", "Tomorrow", "This week", "Next week"];
+  List<String> timeOption = ['Today', 'Tomorrow', 'This week', 'Next week'];
   List<String> levelOption = [
-    "No restaurant experience",
-    "Restaurant experience",
-    "Fine dining experience",
+    'No restaurant experience',
+    'Restaurant experience',
+    'Fine dining experience',
   ];
 
   List<String> dietaryOption = [
-    "Vegan",
-    "Vegetarian",
-    "Pescetarian",
-    "Halal",
-    "Kosher",
+    'Vegan',
+    'Vegetarian',
+    'Pescetarian',
+    'Halal',
+    'Kosher',
   ];
 
   List<String> selectTime = [];
@@ -68,7 +68,7 @@ class HomeController extends GetxController {
   List<String> selectCuisine = [];
   List<String> selectDietary = [];
 
-  onChangeTime(String value) {
+  void onChangeTime(String value) {
     if (selectTime.contains(value)) {
       selectTime.remove(value);
       update();
@@ -94,7 +94,7 @@ class HomeController extends GetxController {
 
     try {
       // Check if location services are enabled
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         Get.dialog(
           AlertDialog(
@@ -198,7 +198,7 @@ class HomeController extends GetxController {
       }
 
       // Permission granted — get current position
-      Position position = await Geolocator.getCurrentPosition(
+      final Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
 
@@ -207,16 +207,16 @@ class HomeController extends GetxController {
 
       // Reverse geocode to get human-readable address
       try {
-        List<Placemark> placemarks = await placemarkFromCoordinates(
+        final List<Placemark> placemarks = await placemarkFromCoordinates(
           position.latitude,
           position.longitude,
         );
 
         if (placemarks.isNotEmpty) {
-          Placemark place = placemarks.first;
+          final Placemark place = placemarks.first;
 
           // Build address from available fields
-          List<String> addressParts = [
+          final List<String> addressParts = [
             place.street ?? '',
             place.subLocality ?? '',
             place.locality ?? '',
@@ -258,7 +258,7 @@ class HomeController extends GetxController {
     try {
       final response = await ApiService.get(
         //"user/nearby-chefs?lat=$currentLat&lng=$currentLng",
-        "user/nearby-chefs?lat=$currentLat&lng=$currentLng",
+        'user/nearby-chefs?lat=$currentLat&lng=$currentLng',
         // I said"user/nearby-chefs",
       );
 
@@ -285,7 +285,7 @@ class HomeController extends GetxController {
     update();
 
     try {
-      final response = await ApiService.get("order/order-again-orders");
+      final response = await ApiService.get('order/order-again-orders');
 
       if (response.statusCode == 200) {
         orderAgainModel = OrderAgainModel.fromJson(response.data);
@@ -309,23 +309,23 @@ class HomeController extends GetxController {
     await getCurrentLocationAndFetchChefs();
   }
 
-  void getProfileData() async {
+  Future<void> getProfileData() async {
     try {
-      final response = await ApiService.get("user/profile");
+      final response = await ApiService.get('user/profile');
       if (response.statusCode == 200) {
         final data = response.data;
-        final profileAddress = response.data["data"]["address"] ?? "";
+        final profileAddress = response.data['data']['address'] ?? '';
 
         // ✅ Only set address from profile if location address isn't set yet
         if (defaultAddress.value.isEmpty) {
           defaultAddress.value = profileAddress;
         }
         if (address.isEmpty) {
-          address = response.data["data"]["address"] ?? "";
-          defaultAddress.value = response.data["data"]["address"] ?? "";
+          address = response.data['data']['address'] ?? '';
+          defaultAddress.value = response.data['data']['address'] ?? '';
         }
 
-        LocalStorage.userId = data["data"]?.id ?? "";
+        LocalStorage.userId = data['data']?.id ?? '';
         await LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
         update();
       }
@@ -336,7 +336,7 @@ class HomeController extends GetxController {
 
   Future<void> getCusine() async {
     try {
-      final response = await ApiService.get("cusine");
+      final response = await ApiService.get('cusine');
       if (response.statusCode == 200) {
         cuisineModel = CuisineModel.fromJson(response.data);
         cuisineList = cuisineModel?.data ?? [];
@@ -344,7 +344,7 @@ class HomeController extends GetxController {
     } catch (e) {}
   }
 
-  onChangeCuisine(String value) {
+  void onChangeCuisine(String value) {
     if (selectCuisine.contains(value)) {
       selectCuisine.remove(value);
       update();
@@ -355,7 +355,7 @@ class HomeController extends GetxController {
     update();
   }
 
-  onChangeLevel(String value) {
+  void onChangeLevel(String value) {
     if (selectLevel.contains(value)) {
       selectLevel.remove(value);
       update();
@@ -365,7 +365,7 @@ class HomeController extends GetxController {
     update();
   }
 
-  onChangeDietary(String value) {
+  void onChangeDietary(String value) {
     if (selectDietary.contains(value)) {
       selectDietary.remove(value);
       update();
@@ -376,12 +376,12 @@ class HomeController extends GetxController {
     update();
   }
 
-  onChangeSaved() {
+  void onChangeSaved() {
     saved = !saved;
     update();
   }
 
-  onChangeValue(newValue) {
+  void onChangeValue(newValue) {
     values = newValue;
     update();
   }

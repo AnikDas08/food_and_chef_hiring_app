@@ -15,7 +15,7 @@ import '../../../../../utils/constants/app_images.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/chef_booking_controller.dart';
 
-upcomingPopUp({Map<String, dynamic>? orderData}) {
+void upcomingPopUp({Map<String, dynamic>? orderData}) {
   showModalBottomSheet(
     context: Get.context!,
     isScrollControlled: true,
@@ -91,10 +91,9 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                             color: const Color(0xffF5EDDD),
                             borderRadius: BorderRadius.circular(10.sp),
                           ),
-                          child: CommonText(
-                            text: "Upcoming",                            fontSize: 10,
-                            fontWeight: FontWeight.w500,
-                            color: const Color(0xffE39400),
+                          child: const CommonText(
+                            text: 'Upcoming',                            fontSize: 10,
+                            color: Color(0xffE39400),
                           ),
                         ),
                       ],
@@ -111,9 +110,9 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                           color: Color(0xffF2F2F2),
                           shape: BoxShape.circle,
                         ),
-                        child: CommonImage(
+                        child: const CommonImage(
                           imageSrc: AppIcons.location,
-                          imageColor: const Color(0xffFD713F),
+                          imageColor: Color(0xffFD713F),
                           size: 20,
                         ),
                       ),
@@ -150,9 +149,9 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                           color: Color(0xffF2F2F2),
                           shape: BoxShape.circle,
                         ),
-                        child: CommonImage(
+                        child: const CommonImage(
                           imageSrc: AppIcons.date,
-                          imageColor: const Color(0xffFD713F),
+                          imageColor: Color(0xffFD713F),
                           size: 20,
                         ),
                       ),
@@ -180,11 +179,11 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                   ),
 
 
-                  CommonText(
+                  const CommonText(
                     text: AppString.orderDetails,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     top: 20,
                     bottom: 16,
                   ),
@@ -194,7 +193,7 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 8.h),
                       child: Text(
-                        "No items found",
+                        'No items found',
                         style: TextStyle(fontSize: 13.sp, color: Colors.grey),
                       ),
                     )
@@ -219,7 +218,6 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                                 children: [
                                   CommonText(
                                     text: menuName,
-                                    fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: const Color(0xff4E4E4E),
                                   ),
@@ -236,7 +234,6 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                             ),
                             CommonText(
                               text: '\$${price.toStringAsFixed(2)}',
-                              fontSize: 14,
                               fontWeight: FontWeight.w400,
                               color: const Color(0xff272727),
                             ),
@@ -248,11 +245,11 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                   const Divider(height: 24),
 
 
-                  CommonText(
-                    text: "Order Summary",
+                  const CommonText(
+                    text: 'Order Summary',
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 12,
                   ),
 
@@ -262,7 +259,7 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          "Estimated cooking time:",
+                          'Estimated cooking time:',
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -282,7 +279,7 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                     Padding(
                       padding: EdgeInsets.only(top: 2.h, bottom: 10.h),
                       child: const Text(
-                        "For scheduling only: Billing reflects time worked.",
+                        'For scheduling only: Billing reflects time worked.',
                         style: TextStyle(
                           fontSize: 11,
                           fontStyle: FontStyle.italic,
@@ -295,20 +292,20 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                   // Price rows from breakdown
                   if (breakdown != null) ...[
                     _summaryRow(
-                      "Subtotal",
+                      'Subtotal',
                       (breakdown['subtotal'] ?? 0).toDouble(),
                     ),
                     _summaryRow(
-                      "Estimated taxes",
+                      'Estimated taxes',
                       (breakdown['taxs'] ?? 0).toDouble(),
                     ),
                     _summaryRow(
-                      "Service fee",
+                      'Service fee',
                       (breakdown['service_fee'] ?? 0).toDouble(),
                     ),
                     const Divider(height: 20),
                     _summaryRow(
-                      "Total",
+                      'Total',
                       (breakdown['total'] ?? 0).toDouble(),
                       isBold: true,
                       fontSize: 15,
@@ -323,7 +320,6 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                         child: CommonButton(
                           titleText: AppString.requestChange,
                           buttonColor: const Color(0xffF2F2F2),
-                          borderColor: Colors.transparent,
                           titleColor: const Color(0xff272727),
                           buttonHeight: 48,
                           buttonRadius: 16,
@@ -344,25 +340,25 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                           onTap: () async {
                             try {
 
-                              final userId = orderData?['user']?['_id']?.toString() ?? "";
+                              final userId = orderData?['user']?['_id']?.toString() ?? '';
                               if (userId.isEmpty) return;
 
-                              final response = await ApiService.post("chat/$userId", body: {});
+                              final response = await ApiService.post('chat/$userId', body: {});
 
                               if (response.statusCode == 200 || response.statusCode == 201) {
                                 final chatData = response.data['data'];
-                                final chatId = chatData['_id']?.toString() ?? "";
+                                final chatId = chatData['_id']?.toString() ?? '';
 
                                 Navigator.pop(Get.context!);Get.toNamed(AppRoutes.message, parameters: {
                                   'chatId': chatId,
-                                  'name': orderData?['user']?['name'] ?? "User",
-                                  'image': orderData?['user']?['image'] ?? "",
+                                  'name': orderData?['user']?['name'] ?? 'User',
+                                  'image': orderData?['user']?['image'] ?? '',
                                 });
                               } else {
-                                Utils.errorSnackBar("Error", "Failed to open chat");
+                                Utils.errorSnackBar('Error', 'Failed to open chat');
                               }
                             } catch (e) {
-                              Utils.errorSnackBar("Error", e.toString());
+                              Utils.errorSnackBar('Error', e.toString());
                             }
                           },
                         ),

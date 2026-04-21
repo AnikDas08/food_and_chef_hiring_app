@@ -21,22 +21,20 @@ void bookingDetailsPopup(
       required String selectedTab,
     }) {
 
-  String userName = order['user']?['name'] ?? "Unknown";
-  String userImageRaw = order['user']?['image'] ?? "";
-  String userImage = userImageRaw.startsWith('http')
+  final String userName = order['user']?['name'] ?? 'Unknown';
+  final String userImageRaw = order['user']?['image'] ?? '';
+  final String userImage = userImageRaw.startsWith('http')
       ? userImageRaw
-      : "http://10.10.7.9:5014$userImageRaw";  String orderId = order['order_id'] ?? "";
-  String address = order['formatted_address'] ?? "No address";
-  String strTime = order['strTime'] ?? "";
-  String formattedDate = _formatDatePopup(order['formatted_date']);
-  List staticItems = order['static_items'] ?? [];
+      : 'http://10.10.7.9:5014$userImageRaw';  final String orderId = order['order_id'] ?? '';
+  final String address = order['formatted_address'] ?? 'No address';
+  final String strTime = order['strTime'] ?? '';
+  final String formattedDate = _formatDatePopup(order['formatted_date']);
+  final List staticItems = order['static_items'] ?? [];
 
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.white,
-    enableDrag: true,
-    isDismissible: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
@@ -50,7 +48,7 @@ void bookingDetailsPopup(
               Container(
                 padding: EdgeInsets.all(12.sp),
                 decoration: BoxDecoration(
-                  color: Color(0xffF2F2F2),
+                  color: const Color(0xffF2F2F2),
                   borderRadius: BorderRadius.circular(12.sp),
                 ),
                 child: Row(
@@ -70,13 +68,13 @@ void bookingDetailsPopup(
                             text: userName,
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xff272727),
+                            color: const Color(0xff272727),
                           ),
                           CommonText(
                             text: orderId,
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff777777),
+                            color: const Color(0xff777777),
                           ),
                         ],
                       ),
@@ -93,11 +91,11 @@ void bookingDetailsPopup(
                 children: [
                   Container(
                     padding: EdgeInsets.all(10.sp),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xffF2F2F2),
                       shape: BoxShape.circle,
                     ),
-                    child: CommonImage(
+                    child: const CommonImage(
                       imageSrc: AppIcons.location,
                       imageColor: Color(0xffFD713F),
                       size: 20,
@@ -112,13 +110,13 @@ void bookingDetailsPopup(
                           text: userName,
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xff272727),
+                          color: const Color(0xff272727),
                         ),
                         CommonText(
                           text: address,
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xff777777),
+                          color: const Color(0xff777777),
                         ),
                       ],
                     ),
@@ -132,11 +130,11 @@ void bookingDetailsPopup(
                 children: [
                   Container(
                     padding: EdgeInsets.all(10.sp),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xffF2F2F2),
                       shape: BoxShape.circle,
                     ),
-                    child: CommonImage(
+                    child: const CommonImage(
                       imageSrc: AppIcons.date,
                       imageColor: Color(0xffFD713F),
                       size: 20,
@@ -151,13 +149,13 @@ void bookingDetailsPopup(
                           text: formattedDate,
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xff272727),
+                          color: const Color(0xff272727),
                         ),
                         CommonText(
-                          text: "at $strTime",
+                          text: 'at $strTime',
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xff777777),
+                          color: const Color(0xff777777),
                         ),
                       ],
                     ),
@@ -165,7 +163,7 @@ void bookingDetailsPopup(
                 ],
               ),
 
-              CommonText(
+              const CommonText(
                 text: AppString.orderDetails,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -176,20 +174,20 @@ void bookingDetailsPopup(
 
 
               if (staticItems.isEmpty)
-                CommonText(
-                  text: "No items found",
+                const CommonText(
+                  text: 'No items found',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff777777),
                 )
               else
                 ...staticItems.map((item) {
-                  String name = item['menu']?['name'] ?? "";
-                  int qty = item['quantity'] ?? 1;
-                  double price = (item['menu']?['price'] ?? 0).toDouble();
-                  String note = item['note'] ?? "";
+                  final String name = item['menu']?['name'] ?? '';
+                  final int qty = item['quantity'] ?? 1;
+                  final double price = (item['menu']?['price'] ?? 0).toDouble();
+                  final String note = item['note'] ?? '';
                   return Padding(
-                    padding: EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.only(bottom: 12),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -198,23 +196,21 @@ void bookingDetailsPopup(
                           children: [
                             CommonText(
                               text: name,
-                              fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xff4E4E4E),
+                              color: const Color(0xff4E4E4E),
                             ),
                             CommonText(
                               text: "$qty item${qty > 1 ? 's' : ''}${note.isNotEmpty ? ' + $note' : ''}",
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
-                              color: Color(0xff777777),
+                              color: const Color(0xff777777),
                             ),
                           ],
                         ),
                         CommonText(
-                          text: "\$${price.toStringAsFixed(2)}",
-                          fontSize: 14,
+                          text: '\$${price.toStringAsFixed(2)}',
                           fontWeight: FontWeight.w400,
-                          color: Color(0xff272727),
+                          color: const Color(0xff272727),
                         ),
                       ],
                     ),
@@ -223,23 +219,22 @@ void bookingDetailsPopup(
 
               16.height,
               orderSummarychef(order: order),
-              Divider(),
+              const Divider(),
 
-              if (selectedTab == "Unconfirmed")
+              if (selectedTab == 'Unconfirmed')
                 Row(
                   children: [
                     Expanded(
                       child: CommonButton(
                         titleText: AppString.decline,
-                        buttonColor: Color(0xffF2F2F2),
-                        borderColor: Colors.transparent,
-                        titleColor: Color(0xffFF3C3C),
+                        buttonColor: const Color(0xffF2F2F2),
+                        titleColor: const Color(0xffFF3C3C),
                         buttonHeight: 48,
                         buttonRadius: 16,
                         onTap: () {
                           Navigator.pop(Get.context!);
                           declineBookingPopUp(
-                            orderId: order['_id'] ?? "",
+                            orderId: order['_id'] ?? '',
                             onSuccess: () {
                               Get.find<ChefBookingController>().fetchOrders();
                             },
@@ -254,76 +249,76 @@ void bookingDetailsPopup(
                         buttonHeight: 48,
                         buttonRadius: 16,
                         onTap: () {
-                          confirmBookingPopUp(orderMongoId: order['_id']?.toString() ?? "");                        },
+                          confirmBookingPopUp(orderMongoId: order['_id']?.toString() ?? '');                        },
                       ),
                     ),
                     GestureDetector(
                       onTap: () async {
                         try {
-                          final userId = order['user']?['_id']?.toString() ?? "";
+                          final userId = order['user']?['_id']?.toString() ?? '';
                           if (userId.isEmpty) return;
 
-                          final response = await ApiService.post("chat/$userId", body: {});
+                          final response = await ApiService.post('chat/$userId', body: {});
 
                           if (response.statusCode == 200 || response.statusCode == 201) {
                             final chatData = response.data['data'];
-                            final chatId = chatData['_id']?.toString() ?? "";
+                            final chatId = chatData['_id']?.toString() ?? '';
 
                             Navigator.pop(Get.context!);
 
                             Get.toNamed(AppRoutes.message, parameters: {
                               'chatId': chatId,
-                              'name': order['user']?['name'] ?? "User",
-                              'image': order['user']?['image'] ?? "",
+                              'name': order['user']?['name'] ?? 'User',
+                              'image': order['user']?['image'] ?? '',
                             });
 
                           } else {
-                            Get.snackbar("Error", "Failed to open chat");
+                            Get.snackbar('Error', 'Failed to open chat');
                           }
                         } catch (e) {
-                          Get.snackbar("Error", e.toString());
+                          Get.snackbar('Error', e.toString());
                         }
                       },
                       child: Container(
                         height: 48,
                         width: 48,
-                        margin: EdgeInsets.only(left: 12),
+                        margin: const EdgeInsets.only(left: 12),
                         decoration: BoxDecoration(
-                          color: Color(0xffF2F2F2),
+                          color: const Color(0xffF2F2F2),
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: CommonImage(imageSrc: AppIcons.chat).center,
+                        child: const CommonImage(imageSrc: AppIcons.chat).center,
                       ),
                     ),
                   ],
                 ),
-              if (selectedTab == "Upcoming")
+              if (selectedTab == 'Upcoming')
                 CommonButton(
                   titleText: AppString.chatWithCustomer,
                   buttonHeight: 48,
                   buttonRadius: 16,
                   onTap: () async {
                     try {
-                      final userId = order['user']?['_id']?.toString() ?? "";
+                      final userId = order['user']?['_id']?.toString() ?? '';
                       if (userId.isEmpty) return;
 
-                      final response = await ApiService.post("chat/$userId", body: {});
+                      final response = await ApiService.post('chat/$userId', body: {});
 
                       if (response.statusCode == 200 || response.statusCode == 201) {
                         final chatData = response.data['data'];
-                        final chatId = chatData['_id']?.toString() ?? "";
+                        final chatId = chatData['_id']?.toString() ?? '';
 
                         Navigator.pop(Get.context!); // popup বন্ধ
                         Get.toNamed(AppRoutes.message, parameters: {
                           'chatId': chatId,
-                          'name': order['user']?['name'] ?? "User",
-                          'image': order['user']?['image'] ?? "",
+                          'name': order['user']?['name'] ?? 'User',
+                          'image': order['user']?['image'] ?? '',
                         });
                       } else {
-                        Get.snackbar("Error", "Failed to open chat");
+                        Get.snackbar('Error', 'Failed to open chat');
                       }
                     } catch (e) {
-                      Get.snackbar("Error", e.toString());
+                      Get.snackbar('Error', e.toString());
                     }
                   },
                 ),
@@ -338,45 +333,42 @@ void bookingDetailsPopup(
 
 Widget _statusBadgePopup(String selectedTab) {
   switch (selectedTab) {
-    case "Unconfirmed":
+    case 'Unconfirmed':
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
         decoration: BoxDecoration(
-          color: Color(0xffF5EDDD),
+          color: const Color(0xffF5EDDD),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: CommonText(
-          text: "Requested",
+        child: const CommonText(
+          text: 'Requested',
           fontSize: 10,
-          fontWeight: FontWeight.w500,
           color: Color(0xffE39400),
         ),
       );
-    case "Upcoming":
+    case 'Upcoming':
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
         decoration: BoxDecoration(
-          color: Color(0xffE3ECFD),
+          color: const Color(0xffE3ECFD),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: CommonText(
-          text: "Upcoming",
+        child: const CommonText(
+          text: 'Upcoming',
           fontSize: 10,
-          fontWeight: FontWeight.w500,
           color: Color(0xff4285F4),
         ),
       );
     default:
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
         decoration: BoxDecoration(
-          color: Color(0xffDFF5E0),
+          color: const Color(0xffDFF5E0),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: CommonText(
-          text: "Completed",
+        child: const CommonText(
+          text: 'Completed',
           fontSize: 10,
-          fontWeight: FontWeight.w500,
           color: Color(0xff2F8328),
         ),
       );
@@ -384,14 +376,14 @@ Widget _statusBadgePopup(String selectedTab) {
 }
 
 String _formatDatePopup(String? isoDate) {
-  if (isoDate == null) return "N/A";
+  if (isoDate == null) return 'N/A';
   try {
-    DateTime dt = DateTime.parse(isoDate);
+    final DateTime dt = DateTime.parse(isoDate);
     const months = [
       '', 'January', 'February', 'March', 'April', 'May',
       'June', 'July', 'August', 'September', 'October', 'November', 'December'
     ];
-    return "${dt.day} ${months[dt.month]}, ${dt.year}";
+    return '${dt.day} ${months[dt.month]}, ${dt.year}';
   } catch (_) {
     return isoDate;
   }

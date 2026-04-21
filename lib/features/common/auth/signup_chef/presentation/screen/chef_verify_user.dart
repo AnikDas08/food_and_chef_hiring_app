@@ -47,7 +47,6 @@ class _VerifyUserState extends State<ChefVerifyUser> {
             child: Form(
               key: formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -76,7 +75,6 @@ class _VerifyUserState extends State<ChefVerifyUser> {
                   const CommonText(
                     text: AppString.enterCode,
                     bottom: 8,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                   ),
@@ -102,13 +100,12 @@ class _VerifyUserState extends State<ChefVerifyUser> {
 
                     child:
                         controller.time == '00:00'
-                            ? ResendOtp()
+                            ? const ResendOtp()
                             : CommonText(
                               text:
-                                  "${AppString.resendCodeIn} ${controller.time} ${AppString.minute}",
+                                  '${AppString.resendCodeIn} ${controller.time} ${AppString.minute}',
                               fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff272727),
+                              color: const Color(0xff272727),
                             ),
                   ),
 

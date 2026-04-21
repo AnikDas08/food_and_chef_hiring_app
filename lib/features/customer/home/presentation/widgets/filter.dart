@@ -8,7 +8,7 @@ import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/search_controller.dart';
 
-filterPanel() {
+Future<dynamic> filterPanel() {
   return showModalBottomSheet(
     backgroundColor: Colors.white,
     context: Get.context!,
@@ -43,22 +43,20 @@ class Filter extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CommonText(
+                      const CommonText(
                         text: AppString.filters,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: const Color(0xff272727),
+                        color: Color(0xff272727),
                       ),
                       InkWell(
                         onTap: () {
                           controller.clearAllFilters();
                           Navigator.pop(context);
                         },
-                        child: CommonText(
+                        child: const CommonText(
                           text: AppString.clearFilters,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xffFD713F),
+                          color: Color(0xffFD713F),
                         ),
                       ),
                     ],
@@ -70,16 +68,16 @@ class Filter extends StatelessWidget {
                   ),
 
                   // ── PRICE RANGE ────────────────────────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.price,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff1F1F1F),
+                    color: Color(0xff1F1F1F),
                   ),
-                  CommonText(
+                  const CommonText(
                     text: AppString.selectARangeOfValues,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: const Color(0xff777777),
+                    color: Color(0xff777777),
                     top: 12,
                   ),
                   Obx(
@@ -88,13 +86,12 @@ class Filter extends StatelessWidget {
                         controller.minPrice.value,
                         controller.maxPrice.value,
                       ),
-                      min: 0,
                       max: 100,
                       activeColor: const Color(0xff272727),
                       inactiveColor: const Color(0xffEFEFEF),
                       labels: RangeLabels(
-                        "\$${controller.minPrice.value.toInt()}",
-                        "\$${controller.maxPrice.value.toInt()}",
+                        '\$${controller.minPrice.value.toInt()}',
+                        '\$${controller.maxPrice.value.toInt()}',
                       ),
                       onChanged: (RangeValues newValues) {
                         controller.minPrice.value = newValues.start;
@@ -102,20 +99,18 @@ class Filter extends StatelessWidget {
                       },
                     ),
                   ),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CommonText(
-                        text: "\$0/hr",
+                        text: '\$0/hr',
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xff777777),
+                        color: Color(0xff777777),
                       ),
                       CommonText(
-                        text: "\$100/hr",
+                        text: '\$100/hr',
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xff777777),
+                        color: Color(0xff777777),
                       ),
                     ],
                   ),
@@ -126,10 +121,10 @@ class Filter extends StatelessWidget {
                   ),
 
                   // ── TIME AVAILABILITY ─────────────────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.timeAvailability,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff1F1F1F),
+                    color: Color(0xff1F1F1F),
                     bottom: 12,
                   ),
 
@@ -141,10 +136,10 @@ class Filter extends StatelessWidget {
                   ),
 
                   // ── PROFESSIONAL LEVEL ────────────────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.chefProfessionalLevel,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff1F1F1F),
+                    color: Color(0xff1F1F1F),
                     bottom: 12,
                   ),
 
@@ -160,7 +155,7 @@ class Filter extends StatelessWidget {
                         () => Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CommonText(text: AppString.savedChefsOnly),
+                        const CommonText(text: AppString.savedChefsOnly),
                         switchButton(
                           value: controller.savedChefsOnly.value,
                           onTap: () {
@@ -179,10 +174,10 @@ class Filter extends StatelessWidget {
                   ),
 
                   // ── CUISINE (FROM API) ─────────────────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.cuisine,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff1F1F1F),
+                    color: Color(0xff1F1F1F),
                     bottom: 12,
                   ),
 
@@ -194,10 +189,10 @@ class Filter extends StatelessWidget {
                   ),
 
                   // ── DIETARY PREFERENCES ────────────────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.dietaryPreferences,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff1F1F1F),
+                    color: Color(0xff1F1F1F),
                     bottom: 12,
                   ),
 
@@ -229,10 +224,10 @@ class TimeAvailabilitySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timeOptions = [
-      "Today",
-      "This Week",
-      "Next Week",
-      "Next Month"
+      'Today',
+      'This Week',
+      'Next Week',
+      'Next Month'
     ];
 
     return GetBuilder<SearchController>(
@@ -243,7 +238,7 @@ class TimeAvailabilitySection extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: timeOptions.length,
             itemBuilder: (context, index) {
-              String value = timeOptions[index];
+              final String value = timeOptions[index];
               return Obx(
                     () => InkWell(
                   onTap: () {
@@ -258,7 +253,7 @@ class TimeAvailabilitySection extends StatelessWidget {
                       color: _mapTimeToParam(value) ==
                           (controller.selectedAvailability.isNotEmpty
                               ? controller.selectedAvailability.first
-                              : "")
+                              : '')
                           ? const Color(0xff272727)
                           : const Color(0xffEFEFEF),
                     ),
@@ -270,11 +265,10 @@ class TimeAvailabilitySection extends StatelessWidget {
                       child: CommonText(
                         text: value,
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
                         color: _mapTimeToParam(value) ==
                             (controller.selectedAvailability.isNotEmpty
                                 ? controller.selectedAvailability.first
-                                : "")
+                                : '')
                             ? Colors.white
                             : const Color(0xff272727),
                       ),
@@ -291,16 +285,16 @@ class TimeAvailabilitySection extends StatelessWidget {
 
   String _mapTimeToParam(String timeOption) {
     switch (timeOption) {
-      case "Today":
-        return "today";
-      case "This Week":
-        return "this_week";
-      case "Next Week":
-        return "next_week";
-      case "Next Month":
-        return "next_month";
+      case 'Today':
+        return 'today';
+      case 'This Week':
+        return 'this_week';
+      case 'Next Week':
+        return 'next_week';
+      case 'Next Month':
+        return 'next_month';
       default:
-        return "";
+        return '';
     }
   }
 }
@@ -312,10 +306,10 @@ class ProfessionalLevelSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final levelOptions = [
-      "Home Cook",
-      "Professional Cook",
-      "Restaurant Experience",
-      "Michelin Star",
+      'Home Cook',
+      'Professional Cook',
+      'Restaurant Experience',
+      'Michelin Star',
     ];
 
     return GetBuilder<SearchController>(
@@ -350,7 +344,6 @@ class ProfessionalLevelSection extends StatelessWidget {
                     child: CommonText(
                       text: value,
                       fontSize: 12,
-                      fontWeight: FontWeight.w500,
                       color: controller.selectedProfessionalLevels
                           .contains(value)
                           ? Colors.white
@@ -387,7 +380,7 @@ class CuisineSection extends StatelessWidget {
 
       if (controller.cuisineList.isEmpty) {
         return const Center(
-          child: CommonText(text: "No cuisines available", fontSize: 12),
+          child: CommonText(text: 'No cuisines available', fontSize: 12),
         );
       }
 
@@ -424,7 +417,6 @@ class CuisineSection extends StatelessWidget {
                   child: CommonText(
                     text: cuisineName,
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
                     color: isSelected ? Colors.white : const Color(0xff272727),
                   ),
                 ),
@@ -444,11 +436,11 @@ class DietaryPreferenceSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dietaryOptions = [
-      "Vegetarian",
-      "Non-Vegetarian",
-      "Vegan",
-      "Gluten Free",
-      "Dairy Free",
+      'Vegetarian',
+      'Non-Vegetarian',
+      'Vegan',
+      'Gluten Free',
+      'Dairy Free',
     ];
 
     return GetBuilder<SearchController>(
@@ -482,7 +474,6 @@ class DietaryPreferenceSection extends StatelessWidget {
                     child: CommonText(
                       text: value,
                       fontSize: 12,
-                      fontWeight: FontWeight.w500,
                       color: controller.selectedDietaryPrefs.contains(value)
                           ? Colors.white
                           : const Color(0xff272727),

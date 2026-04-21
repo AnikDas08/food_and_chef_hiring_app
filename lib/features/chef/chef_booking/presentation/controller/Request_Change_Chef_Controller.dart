@@ -17,13 +17,13 @@ class RequestChangeChefController extends GetxController {
     required String addressId,
   }) async {
     if (dateController.text.trim().isEmpty || timeController.text.trim().isEmpty) {
-      Get.snackbar("Warning", "Please select date and time",
+      Get.snackbar('Warning', 'Please select date and time',
           backgroundColor: Colors.orange, colorText: Colors.white);
       return;
     }
 
     if (orderId.isEmpty) {
-      Utils.errorSnackBar("Error", "Order ID not found");
+      Utils.errorSnackBar('Error', 'Order ID not found');
       return;
     }
 
@@ -32,10 +32,10 @@ class RequestChangeChefController extends GetxController {
       final response = await ApiService.post(
         '${ApiEndPoint.requestChangeSchedule}$orderId',
         body: {
-          "requested_date": _formatToISO(dateController.text.trim()),
-          "requested_time": timeController.text.trim(),
-          "address_id": addressId,
-          "note": noteController.text.trim(),
+          'requested_date': _formatToISO(dateController.text.trim()),
+          'requested_time': timeController.text.trim(),
+          'address_id': addressId,
+          'note': noteController.text.trim(),
         },
       );
 
@@ -46,15 +46,15 @@ class RequestChangeChefController extends GetxController {
         await home?.fetchUpcomingBookings();
 
         Navigator.pop(Get.context!);
-        Utils.successSnackBar("Success", "Change request submitted successfully");
+        Utils.successSnackBar('Success', 'Change request submitted successfully');
       } else {
         Utils.errorSnackBar(
-          "Error",
-          response.data['message']?.toString() ?? "Something went wrong",
+          'Error',
+          response.data['message']?.toString() ?? 'Something went wrong',
         );
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoading.value = false;
     }
@@ -75,7 +75,7 @@ class RequestChangeChefController extends GetxController {
       if (monthIndex == -1) return displayDate;
       final month = monthIndex.toString().padLeft(2, '0');
       final year = parts[2];
-      return "$year-$month-$day";
+      return '$year-$month-$day';
     } catch (_) {
       return displayDate;
     }

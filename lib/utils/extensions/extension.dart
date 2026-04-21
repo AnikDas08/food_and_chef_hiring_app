@@ -16,7 +16,7 @@ extension Alignments on Widget {
 
   Widget get end => Align(alignment: Alignment.centerRight, child: this);
 
-  Widget get center => Align(alignment: Alignment.center, child: this);
+  Widget get center => Align(child: this);
 }
 
 // All Alignments Time Formatter Extensions
@@ -29,30 +29,30 @@ extension TimeFormater on DateTime {
   String get dayName => DateFormat('E').format(this);
 
   String get checkTime {
-    DateTime currentDateTime = DateTime.now();
+    final DateTime currentDateTime = DateTime.now();
 
-    Duration difference = currentDateTime.difference(this);
+    final Duration difference = currentDateTime.difference(this);
     if (difference.inDays == 0) {
       if (difference.inHours == 0) {
-        return ("${difference.inMinutes} minutes ago");
+        return ('${difference.inMinutes} minutes ago');
       } else {
-        return ("${difference.inHours} hours ago");
+        return ('${difference.inHours} hours ago');
       }
     } else {
-      var createdAtTime = toIso8601String().split(".")[0];
-      var date = createdAtTime.split("T")[0];
-      var time = createdAtTime.split("T")[1];
-      return "$date at $time";
+      final createdAtTime = toIso8601String().split('.')[0];
+      final date = createdAtTime.split('T')[0];
+      final time = createdAtTime.split('T')[1];
+      return '$date at $time';
     }
   }
 }
 
 extension AsyncTryCatch on Function() {
-    tryCatch() async {
+    Future<void> tryCatch() async {
     try {
       await this();
     } catch (e, stackTrace) {
-      errorLog(stackTrace.toString(), source: "Global Try Catch");
+      errorLog(stackTrace.toString(), source: 'Global Try Catch');
     }
   }
 }

@@ -28,7 +28,7 @@ class ChefBookingScreen extends StatelessWidget {
               centerTitle: false,
               backgroundColor: Colors.transparent,
               flexibleSpace: appBarOpacity(),
-              title: CommonText(
+              title: const CommonText(
                 text: AppString.upcomingBookings,
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
@@ -43,10 +43,10 @@ class ChefBookingScreen extends StatelessWidget {
                     alignment: AlignmentGeometry.topCenter,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       itemCount: controller.bookingHistoryList.length,
                       itemBuilder: (context, index) {
-                        String value = controller.bookingHistoryList[index];
+                        final String value = controller.bookingHistoryList[index];
                         return Padding(
                           padding: EdgeInsets.only(right: 8.w),
                           child:
@@ -76,7 +76,7 @@ class ChefBookingScreen extends StatelessWidget {
                                         color:
                                             controller.selectedBookingHistory ==
                                                     value
-                                                ? Color(0xff272727)
+                                                ? const Color(0xff272727)
                                                 : Colors.transparent,
                                         borderRadius: BorderRadius.circular(
                                           30.sp,
@@ -85,12 +85,11 @@ class ChefBookingScreen extends StatelessWidget {
                                       child: CommonText(
                                         text: value,
                                         fontSize: 12.sp,
-                                        fontWeight: FontWeight.w500,
                                         color:
                                             controller.selectedBookingHistory ==
                                                     value
                                                 ? Colors.white
-                                                : Color(0xff272727),
+                                                : const Color(0xff272727),
                                       ),
                                     ),
                                   ),
@@ -107,12 +106,11 @@ class ChefBookingScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16).copyWith(bottom: 0),
               child:
                   controller.isLoading
-                      ? CommonLoader()
+                      ? const CommonLoader()
                       : controller.orders.isEmpty
-                      ? Center(
+                      ? const Center(
                         child: CommonText(
-                          text: "No bookings found",
-                          fontSize: 14,
+                          text: 'No bookings found',
                           fontWeight: FontWeight.w400,
                           color: Color(0xff9CA3AF),
                         ),
@@ -122,7 +120,7 @@ class ChefBookingScreen extends StatelessWidget {
 
                         itemCount: controller.orders.length,
                         itemBuilder: (context, index) {
-                          Map order = controller.orders[index];
+                          final Map order = controller.orders[index];
                           return chefBookingItem(order: order);
                         },
                       ),

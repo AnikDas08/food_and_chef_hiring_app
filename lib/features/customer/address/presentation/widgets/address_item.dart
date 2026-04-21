@@ -17,7 +17,7 @@ Widget addressItem(
       String? selectedAddressId, // Pass controller.defaultAddressid here
       bool isLoading = false,
     }) {
-  final bool isActive = address.status.toLowerCase() == "active";
+  final bool isActive = address.status.toLowerCase() == 'active';
 
   // Logic: Check if this specific address ID matches the user's default ID
   final bool isDefaultSelected = selectedAddressId == address.id;
@@ -32,7 +32,6 @@ Widget addressItem(
     child: Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Icon based on label (Home, Office, Work)
@@ -43,10 +42,10 @@ Widget addressItem(
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                address.label.toLowerCase() == "home"
+                address.label.toLowerCase() == 'home'
                     ? CupertinoIcons.house
-                    : address.label.toLowerCase() == "office" ||
-                    address.label.toLowerCase() == "work"
+                    : address.label.toLowerCase() == 'office' ||
+                    address.label.toLowerCase() == 'work'
                     ? CupertinoIcons.building_2_fill
                     : CupertinoIcons.location,
                 color: Colors.red,
@@ -67,7 +66,7 @@ Widget addressItem(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonText(
-                              text: "${address.label} - ${address.ownerName}",
+                              text: '${address.label} - ${address.ownerName}',
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: const Color(0xff272727),
@@ -120,7 +119,7 @@ Widget addressItem(
 
                   // Full Address Details
                   CommonText(
-                    text: "${address.address} - ${address.detailsAddress}, ${address.additionalDetails}",
+                    text: '${address.address} - ${address.detailsAddress}, ${address.additionalDetails}',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xff272727),
@@ -152,11 +151,11 @@ Widget addressItem(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: CommonText(
+                            child: const CommonText(
                               text: AppString.editAddress,
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: const Color(0xff272727),
+                              color: Color(0xff272727),
                             ),
                           ),
                         ),
@@ -174,11 +173,11 @@ Widget addressItem(
                               color: const Color(0xffFF3C3C).withOpacity(0.20),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: CommonText(
+                            child: const CommonText(
                               text: AppString.delete,
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: const Color(0xffFF3C3C),
+                              color: Color(0xffFF3C3C),
                             ),
                           ),
                         ),
@@ -212,19 +211,19 @@ Widget addressItem(
 void _showDeleteDialog(AddressModel address, AddressController controller) {
   Get.dialog(
     AlertDialog(
-      title: const Text("Delete Address"),
-      content: const Text("Are you sure you want to delete this address?"),
+      title: const Text('Delete Address'),
+      content: const Text('Are you sure you want to delete this address?'),
       actions: [
         TextButton(
           onPressed: () => Get.back(),
-          child: const Text("Cancel"),
+          child: const Text('Cancel'),
         ),
         TextButton(
           onPressed: () {
             Get.back();
             controller.deleteAddress(address.id);
           },
-          child: const Text("Delete", style: TextStyle(color: Colors.red)),
+          child: const Text('Delete', style: TextStyle(color: Colors.red)),
         ),
       ],
     ),

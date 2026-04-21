@@ -45,21 +45,18 @@ void availabilityPopup(BuildContext context, String chefId) {
                         color: Colors.grey.shade300, // optional: today color
                         shape: BoxShape.circle,
                       ),
-                      defaultDecoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
                     ),
                   ),
 
                   20.height,
-                  const CommonText(text: "Select start time", fontSize: 14, fontWeight: FontWeight.w600),
+                  const CommonText(text: 'Select start time', fontWeight: FontWeight.w600),
                   12.height,
 
                   // Show loader or slots
                   if (controller.isSlotLoading)
                     const Center(child: CircularProgressIndicator())
                   else if (controller.timeSlots.isEmpty)
-                    const Center(child: CommonText(text: "No slots available for this date", fontSize: 12))
+                    const Center(child: CommonText(text: 'No slots available for this date', fontSize: 12))
                   else
                     Wrap(
                       spacing: 10,
@@ -86,7 +83,6 @@ void availabilityPopup(BuildContext context, String chefId) {
                             child: CommonText(
                               text: time,
                               color: isSelected ? Colors.white : Colors.black,
-                              fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),
                           ),
@@ -96,7 +92,7 @@ void availabilityPopup(BuildContext context, String chefId) {
 
                   24.height,
                   CommonButton(
-                      titleText: "Done",
+                      titleText: 'Done',
                       onTap: () {
                         // You can return the data back to the screen
                         Navigator.pop(context, {

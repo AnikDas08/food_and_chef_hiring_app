@@ -5,17 +5,16 @@ import 'package:new_untitled/features/customer/chef_details/presentation/control
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../../component/text/common_text.dart';
 
-bookingDateTimePopup({String? id}) {
+void bookingDateTimePopup({String? id}) {
 
 
   // You can now handle the case where ID is null
   final effectiveId = id;
-  print("id : 🤣🤣🤣🤣$id");
-  print("effectiveId: 🤣🤣🤣🤣$effectiveId");
+  print('id : 🤣🤣🤣🤣$id');
+  print('effectiveId: 🤣🤣🤣🤣$effectiveId');
 
   showDialog(
     context: Get.context!,
-    barrierDismissible: true,
     builder: (context) {
       return Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -41,7 +40,6 @@ bookingDateTimePopup({String? id}) {
                           focusedDay: controller.selectedDate,
                           headerStyle: const HeaderStyle(
                             formatButtonVisible: false,
-                            titleCentered: false,
                           ),
                           selectedDayPredicate:
                               (day) => isSameDay(day, controller.selectedDate),
@@ -78,8 +76,7 @@ bookingDateTimePopup({String? id}) {
                     
                         /// Time Slots
                         const CommonText(
-                          text: "Select start time",
-                          fontSize: 14,
+                          text: 'Select start time',
                           fontWeight: FontWeight.w600,
                           color: Color(0xff272727),
                         ),
@@ -92,7 +89,7 @@ bookingDateTimePopup({String? id}) {
                         else if (chefCtrl.timeSlots.isEmpty)
                           const Center(
                             child: CommonText(
-                              text: "No slots available for this date",
+                              text: 'No slots available for this date',
                               fontSize: 12,
                             ),
                           )
@@ -122,7 +119,6 @@ bookingDateTimePopup({String? id}) {
                                     text: time,
                                     color:
                                     isSelected ? Colors.white : Colors.black,
-                                    fontWeight: FontWeight.w500,
                                     fontSize: 12,
                                   ),
                                 ),

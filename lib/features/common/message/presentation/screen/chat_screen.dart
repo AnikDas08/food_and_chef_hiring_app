@@ -39,7 +39,7 @@ class ChatListScreen extends StatelessWidget {
           fontSize: 24,
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(60),
+          preferredSize: const Size.fromHeight(60),
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: LiquidGlassLayer(
@@ -47,14 +47,13 @@ class ChatListScreen extends StatelessWidget {
                 shape: LiquidRoundedSuperellipse(borderRadius: 30.r),
                 child: CommonTextField(
                   hintText: AppString.search,
-                  keyboardType: TextInputType.text,
                   borderRadius: 30,
-                  fillColor: Color(0xffFAFAFA).withValues(alpha: 0.7),
+                  fillColor: const Color(0xffFAFAFA).withValues(alpha: 0.7),
                   borderColor: Colors.grey.withValues(alpha: 0.3),
 
                   prefixIcon: Padding(
                     padding: EdgeInsets.only(left: 16.w),
-                    child: Icon(CupertinoIcons.search),
+                    child: const Icon(CupertinoIcons.search),
                   ),
                 ),
               ),
@@ -95,15 +94,15 @@ class ChatListScreen extends StatelessWidget {
                             itemCount: controller.filteredChats.length,
                             padding: EdgeInsets.zero,
                             itemBuilder: (context, index) {
-                              ChatModel item = controller.filteredChats[index];
+                              final ChatModel item = controller.filteredChats[index];
                               return InkWell(
                                 onTap:
                                     () => Get.toNamed(
                                       AppRoutes.message,
                                       parameters: {
-                                        "chatId": item.id,
-                                        "name": item.participant.fullName,
-                                        "image": item.participant.image,
+                                        'chatId': item.id,
+                                        'name': item.participant.fullName,
+                                        'image': item.participant.image,
                                       },
                                     ),
                                 child: chatListItem(item: item),
@@ -130,16 +129,16 @@ class ChatListScreen extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
 
-          CommonText(
-            text: "No chats yet",
+          const CommonText(
+            text: 'No chats yet',
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Color(0xff777777),
           ),
           SizedBox(height: 8.h),
-          CommonText(
+          const CommonText(
             text:
-                "Book a chef to chat about the final details\n for your cooking session.",
+                'Book a chef to chat about the final details\n for your cooking session.',
             fontSize: 12,
             color: Color(0xff777777),
             fontWeight: FontWeight.w400,

@@ -18,7 +18,7 @@ class MenuTopItem extends StatefulWidget {
 class _MenuTopItemState extends State<MenuTopItem> {
   bool isExpanded = true;
 
-  onChange() {
+  void onChange() {
     isExpanded = !isExpanded;
     setState(() {});
   }
@@ -29,9 +29,8 @@ class _MenuTopItemState extends State<MenuTopItem> {
     final String imageUrl = item.images.isNotEmpty ? item.images.first : '';
 
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
@@ -39,13 +38,12 @@ class _MenuTopItemState extends State<MenuTopItem> {
             width: 24,
             decoration: BoxDecoration(
               color: Colors.white,
-              border: Border.all(color: Color(0xffF1F1F1)),
+              border: Border.all(color: const Color(0xffF1F1F1)),
               shape: BoxShape.circle,
             ),
             child: CommonText(
-              text: "${widget.value}",
+              text: '${widget.value}',
               fontSize: 12,
-              fontWeight: FontWeight.w500,
             ).center,
           ),
           12.width,
@@ -60,25 +58,24 @@ class _MenuTopItemState extends State<MenuTopItem> {
                       width: 32,
                       height: 32,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => CommonImage(
+                      errorBuilder: (_, __, ___) => const CommonImage(
                         imageSrc: AppImages.image6,
                         size: 32,
                         borderRadius: 4,
                       ),
                     )
-                        : CommonImage(
+                        : const CommonImage(
                       imageSrc: AppImages.image6,
                       size: 32,
                       borderRadius: 4,
                     ),
                     CommonText(
                       text: item.name,
-                      fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                       left: 12,
                     ),
-                    Spacer(),
+                    const Spacer(),
                     InkWell(
                       highlightColor: Colors.transparent,
                       splashColor: Colors.transparent,
@@ -87,17 +84,17 @@ class _MenuTopItemState extends State<MenuTopItem> {
                         !isExpanded
                             ? Icons.keyboard_arrow_right
                             : Icons.keyboard_arrow_down_outlined,
-                        color: Color(0xff777777),
+                        color: const Color(0xff777777),
                       ),
                     ),
                   ],
                 ),
                 if (isExpanded)
                   Container(
-                    margin: EdgeInsets.only(top: 8),
-                    padding: EdgeInsets.all(12),
+                    margin: const EdgeInsets.only(top: 8),
+                    padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Color(0xffF2F2F2),
+                      color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
@@ -105,17 +102,15 @@ class _MenuTopItemState extends State<MenuTopItem> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CommonText(
-                              text: "Number of Orders",
+                            const CommonText(
+                              text: 'Number of Orders',
                               fontSize: 12,
-                              fontWeight: FontWeight.w500,
                               color: Color(0xff777777),
                             ),
                             CommonText(
-                              text: "${item.totalBooking} times",
+                              text: '${item.totalBooking} times',
                               fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff272727),
+                              color: const Color(0xff272727),
                             ),
                           ],
                         ),
@@ -123,21 +118,19 @@ class _MenuTopItemState extends State<MenuTopItem> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CommonText(
-                              text: "Item Ratings",
+                            const CommonText(
+                              text: 'Item Ratings',
                               fontSize: 12,
-                              fontWeight: FontWeight.w500,
                               color: Color(0xff777777),
                             ),
                             Row(
                               children: [
-                                Icon(Icons.star_rate_rounded,
+                                const Icon(Icons.star_rate_rounded,
                                     color: Color(0xffFD713F)),
                                 CommonText(
                                   text: item.avgRating.toStringAsFixed(1),
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xff272727),
+                                  color: const Color(0xff272727),
                                 ),
                               ],
                             ),

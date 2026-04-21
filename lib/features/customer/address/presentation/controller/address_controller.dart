@@ -13,18 +13,18 @@ import '../../repsozitory/address_repository.dart';
 
 class AddressController extends GetxController {
   // ── Address Type ──────────────────────────────────────────
-  List<String> addressTypeList = ["Office", "Home", "Work", "Other"];
+  List<String> addressTypeList = ['Office', 'Home', 'Work', 'Other'];
   bool isDefault = false;
   bool _isSettingAddressText = false;
   bool _isSettingAdditionalText = false;
 
   AddressModel? editingAddress;      // currently loaded address for edit
   bool isLoadingEdit = false;        // loading single address
-  String defaultAddressid = "";        // loading single address
+  String defaultAddressid = '';        // loading single address
 
   // ── Form Controllers ──────────────────────────────────────
   TextEditingController addressLabelController =
-  TextEditingController(text: "Home");
+  TextEditingController(text: 'Home');
   TextEditingController addressController = TextEditingController();
   TextEditingController detailsAddressController = TextEditingController();
   TextEditingController additionalAddressController = TextEditingController();
@@ -110,7 +110,7 @@ class AddressController extends GetxController {
         _totalPage = result.pagination.totalPage;
       }
     } catch (_) {
-      _showError("Failed to load addresses");
+      _showError('Failed to load addresses');
     } finally {
       isLoading = false;
       update();
@@ -119,14 +119,14 @@ class AddressController extends GetxController {
 
   Future<void> getProfileData() async {
     try {
-      final response = await ApiService.get("user/profile");
+      final response = await ApiService.get('user/profile');
       if (response.statusCode == 200) {
         final data = response.data;
-        defaultAddressid = data["data"]["default_address"];
+        defaultAddressid = data['data']['default_address'];
         update();
       }
     } catch (e) {
-      debugPrint("Error fetching profile: $e");
+      debugPrint('Error fetching profile: $e');
     }
   }
 
@@ -144,7 +144,7 @@ class AddressController extends GetxController {
       }
     } catch (_) {
       _currentPage--;
-      _showError("Failed to load more addresses");
+      _showError('Failed to load more addresses');
     } finally {
       isFetchingMore = false;
       update();
@@ -167,7 +167,7 @@ class AddressController extends GetxController {
       permission = await Geolocator.requestPermission();
 
       if (permission == LocationPermission.denied) {
-        _showError("Location permission denied");
+        _showError('Location permission denied');
         return;
       }
     }
@@ -208,7 +208,7 @@ class AddressController extends GetxController {
         update(); // ← FIX: rebuild GetBuilder so text fields refresh in UI
       }
     } catch (e) {
-      _showError("Failed to get current location: ${e.toString()}");
+      _showError('Failed to get current location: ${e.toString()}');
     } finally {
       isLoadingCurrentLocation = false;
       update();
@@ -236,22 +236,22 @@ class AddressController extends GetxController {
   void _showLocationSettingsDialog() {
     Get.dialog(
       AlertDialog(
-        title: const Text("Location Permission Required"),
+        title: const Text('Location Permission Required'),
         content: const Text(
-          "Location access is permanently disabled. "
-              "Please enable it in your device settings.",
+          'Location access is permanently disabled. '
+              'Please enable it in your device settings.',
         ),
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: const Text("Cancel"),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
               Geolocator.openLocationSettings();
               Get.back();
             },
-            child: const Text("Open Settings"),
+            child: const Text('Open Settings'),
           ),
         ],
       ),
@@ -300,7 +300,7 @@ class AddressController extends GetxController {
       selectedLongitude = data.longitude;
 
     } catch (_) {
-      _showError("Failed to load address details");
+      _showError('Failed to load address details');
     } finally {
       isLoadingEdit = false;
       update();
@@ -312,11 +312,11 @@ class AddressController extends GetxController {
     if (editingAddress == null) return;
 
     if (addressController.text.trim().isEmpty) {
-      _showError("Please enter an address");
+      _showError('Please enter an address');
       return;
     }
     if (selectedLatitude == null || selectedLongitude == null) {
-      _showError("Please select a location on the map");
+      _showError('Please select a location on the map');
       return;
     }
 
@@ -325,24 +325,24 @@ class AddressController extends GetxController {
 
     try {
       final body = <String, dynamic>{
-        "label": addressLabelController.text.trim(),
-        "address": addressController.text.trim(),
-        "details_address": detailsAddressController.text.trim(),
-        "status": "active",
-        "is_default": isDefault,
-        "latitude": selectedLatitude,
-        "longitude": selectedLongitude,
+        'label': addressLabelController.text.trim(),
+        'address': addressController.text.trim(),
+        'details_address': detailsAddressController.text.trim(),
+        'status': 'active',
+        'is_default': isDefault,
+        'latitude': selectedLatitude,
+        'longitude': selectedLongitude,
       };
 
       // Optional fields — only send if not empty
       final additional = additionalAddressController.text.trim();
-      if (additional.isNotEmpty) body["additional_details"] = additional;
+      if (additional.isNotEmpty) body['additional_details'] = additional;
 
       final owner = ownerNameController.text.trim();
-      if (owner.isNotEmpty) body["owner_name"] = owner;
+      if (owner.isNotEmpty) body['owner_name'] = owner;
 
       final phone = phoneNumberController.text.trim();
-      if (phone.isNotEmpty) body["phone_number"] = phone;
+      if (phone.isNotEmpty) body['phone_number'] = phone;
 
       final result = await AddressRepository.updateAddress(
           editingAddress!.id, body);
@@ -353,12 +353,12 @@ class AddressController extends GetxController {
         if (idx != -1) addressList[idx] = result;
         //_clearForm();
         Navigator.pop(Get.context!);
-        Utils.successSnackBar("Successful", "Successfully update your location");
+        Utils.successSnackBar('Successful', 'Successfully update your location');
       } else {
-        _showError("Failed to update address");
+        _showError('Failed to update address');
       }
     } catch (_) {
-      _showError("Something went wrong");
+      _showError('Something went wrong');
     } finally {
       isSubmitting = false;
       update();
@@ -366,7 +366,7 @@ class AddressController extends GetxController {
   }
 
   void _clearForm() {
-    addressLabelController.text = "Home";
+    addressLabelController.text = 'Home';
     addressController.clear();
     detailsAddressController.clear();
     additionalAddressController.clear();
@@ -491,7 +491,7 @@ class AddressController extends GetxController {
     // Split secondary by comma to get more granular parts
     final parts = secondary.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty).toList();
 
-    List<String> result = [];
+    final List<String> result = [];
     if (main.isNotEmpty) result.add(main);
     for (final p in parts) {
       if (result.length >= 3) break;
@@ -518,11 +518,11 @@ class AddressController extends GetxController {
 
   Future<void> submitAddress() async {
     if (addressController.text.trim().isEmpty) {
-      _showError("Please enter an address");
+      _showError('Please enter an address');
       return;
     }
     if (selectedLatitude == null || selectedLongitude == null) {
-      _showError("Please select a location on the map");
+      _showError('Please select a location on the map');
       return;
     }
 
@@ -531,40 +531,40 @@ class AddressController extends GetxController {
 
     try {
       final body = <String, dynamic>{
-        "label": addressLabelController.text.trim(),
-        "address": addressController.text.trim(),
-        "details_address": detailsAddressController.text.trim(),
-        "status": "active",
-        "is_default": isDefault,
-        "latitude": selectedLatitude,
-        "longitude": selectedLongitude,
+        'label': addressLabelController.text.trim(),
+        'address': addressController.text.trim(),
+        'details_address': detailsAddressController.text.trim(),
+        'status': 'active',
+        'is_default': isDefault,
+        'latitude': selectedLatitude,
+        'longitude': selectedLongitude,
       };
 
       // Only send additional_details if not empty
       final additional = additionalAddressController.text.trim();
       if (additional.isNotEmpty) {
-        body["additional_details"] = additional;
+        body['additional_details'] = additional;
       }
 
       // Only send owner_name if not empty
       final owner = ownerNameController.text.trim();
-      if (owner.isNotEmpty) body["owner_name"] = owner;
+      if (owner.isNotEmpty) body['owner_name'] = owner;
 
       // Only send phone_number if not empty
       final phone = phoneNumberController.text.trim();
-      if (phone.isNotEmpty) body["phone_number"] = phone;
+      if (phone.isNotEmpty) body['phone_number'] = phone;
 
       final result = await AddressRepository.createAddress(body);
       if (result != null) {
         _resetForm();
         fetchAddresses();
         Navigator.pop(Get.context!);
-        Utils.successSnackBar("Success", "Address added successfully");
+        Utils.successSnackBar('Success', 'Address added successfully');
       } else {
-        _showError("Failed to add address");
+        _showError('Failed to add address');
       }
     } catch (_) {
-      _showError("Something went wrong");
+      _showError('Something went wrong');
     } finally {
       isSubmitting = false;
       update();
@@ -572,7 +572,7 @@ class AddressController extends GetxController {
   }
 
   void _resetForm() {
-    addressLabelController.text = "Home";
+    addressLabelController.text = 'Home';
     addressController.clear();
     detailsAddressController.clear();
     additionalAddressController.clear();
@@ -594,12 +594,12 @@ class AddressController extends GetxController {
       final success = await AddressRepository.deleteAddress(id);
       if (success) {
         addressList.removeWhere((e) => e.id == id);
-        Utils.successSnackBar("Success", "Address deleted successfully");
+        Utils.successSnackBar('Success', 'Address deleted successfully');
       } else {
-        _showError("Failed to delete address");
+        _showError('Failed to delete address');
       }
     } catch (_) {
-      _showError("Something went wrong");
+      _showError('Something went wrong');
     } finally {
       isDeleting = false;
       update();
@@ -613,8 +613,8 @@ class AddressController extends GetxController {
     update(); // Show loader
     try {
       final response = await ApiService.patch(
-          "user/profile",
-          body: {"default_address": id}
+          'user/profile',
+          body: {'default_address': id}
       );
 
       if (response.statusCode == 200) {
@@ -631,10 +631,10 @@ class AddressController extends GetxController {
         homeCtrl.getNearbyChefs();
 
         Navigator.pop(Get.context!);
-        Utils.successSnackBar("Location Updated", "Current Location changed.");
+        Utils.successSnackBar('Location Updated', 'Current Location changed.');
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isDeleting = false;
       update(); // Rebuild UI to show selected radio
@@ -646,6 +646,6 @@ class AddressController extends GetxController {
   // ══════════════════════════════════════════════════════════
 
   void _showError(String msg) {
-    Utils.errorSnackBar("Error", msg.toString());
+    Utils.errorSnackBar('Error', msg.toString());
   }
 }

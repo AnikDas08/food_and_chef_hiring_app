@@ -13,18 +13,17 @@ class Screen3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF1F1F1),
+      backgroundColor: const Color(0xffF1F1F1),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     28.height,
-                    CommonImage(imageSrc: AppImages.logo),
+                    const CommonImage(imageSrc: AppImages.logo),
                     28.height,
                     CommonImage(
                       imageSrc: AppImages.onboarding_3,
@@ -37,8 +36,8 @@ class Screen3 extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
-              decoration: BoxDecoration(color: Colors.white),
-              child: Column(
+              decoration: const BoxDecoration(color: Colors.white),
+              child: const Column(
                 children: [
                   CommonText(
                     text: AppString.bookAnytimeAnywhere,

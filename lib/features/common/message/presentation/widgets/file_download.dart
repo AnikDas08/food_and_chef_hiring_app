@@ -10,7 +10,7 @@ class FileDownloadHelper {
     try {
       // Show loading snackbar
       Get.snackbar(
-        "Downloading",
+        'Downloading',
         fileName,
         showProgressIndicator: true,
         progressIndicatorBackgroundColor: Colors.transparent,
@@ -46,8 +46,8 @@ class FileDownloadHelper {
       // Dismiss loading
       Get.closeAllSnackbars();
       Get.snackbar(
-        "Downloaded",
-        "Opening $fileName...",
+        'Downloaded',
+        'Opening $fileName...',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: const Color(0xff4CAF50),
         colorText: Colors.white,
@@ -58,8 +58,8 @@ class FileDownloadHelper {
       final result = await OpenFilex.open(savePath);
       if (result.type != ResultType.done) {
         Get.snackbar(
-          "Error",
-          "Cannot open file: ${result.message}",
+          'Error',
+          'Cannot open file: ${result.message}',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.red,
           colorText: Colors.white,
@@ -68,8 +68,8 @@ class FileDownloadHelper {
     } catch (e) {
       Get.closeAllSnackbars();
       Get.snackbar(
-        "Error",
-        "Failed to download file",
+        'Error',
+        'Failed to download file',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,

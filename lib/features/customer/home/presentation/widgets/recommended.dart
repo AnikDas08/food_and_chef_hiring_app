@@ -53,7 +53,7 @@ class _ShimmerBoxState extends State<_ShimmerBox>
             width: widget.width,
             height: widget.height,
             decoration: BoxDecoration(
-              color: Color(0xffE0E0E0).withOpacity(_animation.value),
+              color: const Color(0xffE0E0E0).withOpacity(_animation.value),
               borderRadius: BorderRadius.circular(widget.borderRadius),
             ),
           ),
@@ -69,14 +69,14 @@ Widget _chefShimmerCard() {
       color: const Color(0xffF2F2F2),
       borderRadius: BorderRadius.circular(10),
     ),
-    child: Column(
+    child: const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Image placeholder
         _ShimmerBox(width: 240, height: 200, borderRadius: 10),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -87,9 +87,9 @@ Widget _chefShimmerCard() {
                   _ShimmerBox(width: 40, height: 12),
                 ],
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               _ShimmerBox(width: 160, height: 12),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               _ShimmerBox(width: 80, height: 14),
             ],
           ),
@@ -128,8 +128,8 @@ Widget recommended() {
                   fontWeight: FontWeight.w500,
                 ),
               ),*/
-              CommonText(
-                text: "No nearby chefs found",
+              const CommonText(
+                text: 'No nearby chefs found',
                 fontSize: 12,
                 color: Color(0xff777777),
                 fontWeight: FontWeight.w400,
@@ -143,11 +143,10 @@ Widget recommended() {
                     color: Color(0xffFD713F),
                     fontWeight: FontWeight.w600,
                   ),
-                ),*/ CommonText(
-                  text: "Retry",
+                ),*/ const CommonText(
+                  text: 'Retry',
                   fontSize: 12,
                   color: Color(0xff272727),
-                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],

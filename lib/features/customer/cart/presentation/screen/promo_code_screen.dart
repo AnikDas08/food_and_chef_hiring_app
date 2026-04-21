@@ -24,13 +24,13 @@ class PromoCodeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CommonText(
-                text: "Promotions",
+                text: 'Promotions',
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
               ),
               const CommonText(
-                text: "Claim your discount by entering the promo code.",
+                text: 'Claim your discount by entering the promo code.',
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
                 top: 8,
@@ -38,7 +38,7 @@ class PromoCodeScreen extends StatelessWidget {
                 color: Color(0xff777777),
               ),
               CommonTextField(
-                hintText: "Enter promo code",
+                hintText: 'Enter promo code',
                 controller: _promoController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -58,7 +58,7 @@ class PromoCodeScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(bottom: 20, left: 16, right: 16),
           child: CommonButton(
-            titleText: "Submit",
+            titleText: 'Submit',
             onTap: () {
               if (_formKey.currentState!.validate()) {
                 // Return promo code back to caller

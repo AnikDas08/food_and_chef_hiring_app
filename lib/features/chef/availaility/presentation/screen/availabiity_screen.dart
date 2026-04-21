@@ -23,19 +23,19 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
   bool _isLoadingData = true;
 
   final List<DaySchedule> _days = [
-    DaySchedule(name: "Monday"),
-    DaySchedule(name: "Tuesday"),
-    DaySchedule(name: "Wednesday"),
-    DaySchedule(name: "Thursday"),
-    DaySchedule(name: "Friday"),
-    DaySchedule(name: "Saturday"),
-    DaySchedule(name: "Sunday"),
+    DaySchedule(name: 'Monday'),
+    DaySchedule(name: 'Tuesday'),
+    DaySchedule(name: 'Wednesday'),
+    DaySchedule(name: 'Thursday'),
+    DaySchedule(name: 'Friday'),
+    DaySchedule(name: 'Saturday'),
+    DaySchedule(name: 'Sunday'),
   ];
 
   int _minHours = 12;
-  String _minUnit = "Hours";
+  String _minUnit = 'Hours';
   int _maxDays = 14;
-  String _maxUnit = "Days";
+  String _maxUnit = 'Days';
   bool _isSubmitting = false;
   bool _editingMin = false;
   bool _editingMax = false;
@@ -94,7 +94,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
         });
       }
     } catch (e) {
-      debugPrint("Error loading availability: $e");
+      debugPrint('Error loading availability: $e');
     } finally {
       if (mounted) setState(() => _isLoadingData = false);
     }
@@ -172,7 +172,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(14.r),
-                  border: Border.all(color: const Color(0xFFF1F1F1), width: 1),
+                  border: Border.all(color: const Color(0xFFF1F1F1)),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.08),
@@ -183,7 +183,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: ["Hours", "Days"].map((unit) {
+                  children: ['Hours', 'Days'].map((unit) {
                     final isSelected = unit == selected;
                     return InkWell(
                       borderRadius: BorderRadius.circular(14.r),
@@ -199,8 +199,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                           children: [
                             CommonText(
                               text: unit,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
                               color: const Color(0xFF272727),
                               textAlign: TextAlign.start,
                             ),
@@ -287,10 +285,9 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: Colors.white.withOpacity(0.6),
-                  width: 1,
                 ),
               ),
-              child: CommonImage(
+              child: const CommonImage(
                 imageSrc: AppIcons.backIcon,
                 size: 24,
               ),
@@ -318,7 +315,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const CommonText(
-                        text: "Set Availability",
+                        text: 'Set Availability',
                         fontSize: 26,
                         fontWeight: FontWeight.w700,
                         color: Color(0xFF272727),
@@ -342,7 +339,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
 
                       // Booking Preferences
                       const CommonText(
-                        text: "Booking Preferences",
+                        text: 'Booking Preferences',
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF272727),
@@ -360,25 +357,25 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                           ),
                           children: [
                             const TextSpan(
-                                text: "Customers can place orders at least "),
+                                text: 'Customers can place orders at least '),
                             TextSpan(
-                              text: "$_minHours $_minUnit",
+                              text: '$_minHours $_minUnit',
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: const Color(0xFF272727),
                                 fontSize: 13.sp,
                               ),
                             ),
-                            const TextSpan(text: " in advance and a maximum of "),
+                            const TextSpan(text: ' in advance and a maximum of '),
                             TextSpan(
-                              text: "$_maxDays $_maxUnit",
+                              text: '$_maxDays $_maxUnit',
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: const Color(0xFF272727),
                                 fontSize: 13.sp,
                               ),
                             ),
-                            const TextSpan(text: " in advance"),
+                            const TextSpan(text: ' in advance'),
                           ],
                         ),
                       ),
@@ -396,8 +393,9 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                         onEditDone: () {
                           final val = int.tryParse(_minController.text);
                           setState(() {
-                            if (val != null && val >= 1 && val <= 24)
+                            if (val != null && val >= 1 && val <= 24) {
                               _minHours = val;
+                            }
                             _editingMin = false;
                           });
                         },
@@ -422,8 +420,9 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                         onEditDone: () {
                           final val = int.tryParse(_maxController.text);
                           setState(() {
-                            if (val != null && val >= 1 && val <= 30)
+                            if (val != null && val >= 1 && val <= 30) {
                               _maxDays = val;
+                            }
                             _editingMax = false;
                           });
                         },
@@ -455,8 +454,9 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       final controller = SignUpChefController.instance;
                       await controller.setupChefAvailability2(days: _days);
                     } finally {
-                      if (mounted)
+                      if (mounted) {
                         setState(() => _isSubmitting = false);
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -481,7 +481,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       ),
                       10.horizontalSpace,
                       const CommonText(
-                        text: "Loading...",
+                        text: 'Loading...',
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
@@ -489,7 +489,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                     ],
                   )
                       : const CommonText(
-                    text: "Save Changes",
+                    text: 'Save Changes',
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
@@ -511,7 +511,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
           children: [
             CommonText(
               text: day.name,
-              fontSize: 14,
               fontWeight: FontWeight.w600,
               color: const Color(0xFF272727),
               textAlign: TextAlign.start,
@@ -546,7 +545,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   Padding(
                     padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
                     child: const CommonText(
-                      text: "And",
+                      text: 'And',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Color(0xFF777777),
@@ -563,7 +562,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   child: Row(
                     children: [
                       const CommonText(
-                        text: "From",
+                        text: 'From',
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFF777777),
@@ -582,7 +581,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       ),
                       const Spacer(),
                       const CommonText(
-                        text: "To",
+                        text: 'To',
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFF777777),
@@ -625,9 +624,8 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   Icon(Icons.add, size: 16.sp, color: const Color(0xFF272727)),
                   6.horizontalSpace,
                   const CommonText(
-                    text: "Add Additional Time",
+                    text: 'Add Additional Time',
                     fontSize: 13,
-                    fontWeight: FontWeight.w500,
                     color: Color(0xFF272727),
                     textAlign: TextAlign.start,
                   ),
@@ -653,7 +651,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
     final boxDecoration = BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(8.r),
-      border: Border.all(color: const Color(0xFFF1F1F1), width: 1),
+      border: Border.all(color: const Color(0xFFF1F1F1)),
       boxShadow: [
         BoxShadow(
           color: Colors.black.withOpacity(0.08),
@@ -710,7 +708,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                 CommonText(
                   text: unit,
                   fontSize: 15,
-                  fontWeight: FontWeight.w500,
                   color: const Color(0xFF272727),
                   textAlign: TextAlign.start,
                 ),

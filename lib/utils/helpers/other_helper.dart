@@ -76,7 +76,7 @@ class OtherHelper {
       controller.text = formattedDate;
       return picked.toIso8601String();
     }
-    return "";
+    return '';
   }
 
   static Future<String?> openGallery() async {

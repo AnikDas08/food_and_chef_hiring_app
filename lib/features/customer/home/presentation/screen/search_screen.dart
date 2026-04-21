@@ -115,7 +115,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       },
                       style: TextStyle(fontSize: 14.sp),
                       decoration: InputDecoration(
-                        hintText: "Search chefs...",
+                        hintText: 'Search chefs...',
                         hintStyle: TextStyle(
                           fontSize: 14.sp,
                           color: const Color(0xff777777),
@@ -135,7 +135,7 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
         flexibleSpace: LiquidGlassLayer(
           child: LiquidGlass(
-            shape: LiquidRoundedSuperellipse(borderRadius: 0),
+            shape: const LiquidRoundedSuperellipse(borderRadius: 0),
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -229,8 +229,8 @@ class _SearchScreenState extends State<SearchScreen> {
                               children: [
                                 const Icon(Icons.close, color: Colors.white, size: 16),
                                 6.width,
-                                CommonText(
-                                  text: "Clear Filters",
+                                const CommonText(
+                                  text: 'Clear Filters',
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,
@@ -273,20 +273,19 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 16,
                             height: 16,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color: const Color(0xffFD713F),
+                              color: Color(0xffFD713F),
                             ),
                           ),
                           8.width,
-                          CommonText(
-                            text: "Loading more chefs...",
+                          const CommonText(
+                            text: 'Loading more chefs...',
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: const Color(0xff636363),
+                            color: Color(0xff636363),
                           ),
                         ],
                       ),
@@ -307,7 +306,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Center(
                     child: CommonText(
                       text:
-                      "Showing all ${_controller.nearbyChefsList.length} chefs",
+                      'Showing all ${_controller.nearbyChefsList.length} chefs',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: const Color(0xff777777),
@@ -349,9 +348,9 @@ class _SearchScreenState extends State<SearchScreen> {
             _focusNode.unfocus();
             filterPanel();
           },
-          icon: CommonImage(
+          icon: const CommonImage(
             imageSrc: AppIcons.fliter,
-            imageColor: const Color(0xff636363),
+            imageColor: Color(0xff636363),
           ),
         ),
         SizedBox(width: 8.w),

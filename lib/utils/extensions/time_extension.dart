@@ -2,13 +2,13 @@ import 'package:intl/intl.dart';
 
 extension StringExtension on String? {
   String get checkTime {
-    if (this == null || this!.isEmpty) return "";
+    if (this == null || this!.isEmpty) return '';
 
     try {
       // Parse the ISO 8601 string to DateTime
-      DateTime dateTime = DateTime.parse(this!).toLocal();
-      DateTime now = DateTime.now();
-      Duration difference = now.difference(dateTime);
+      final DateTime dateTime = DateTime.parse(this!).toLocal();
+      final DateTime now = DateTime.now();
+      final Duration difference = now.difference(dateTime);
 
       if (difference.inSeconds < 60) {
         return 'Just now';
@@ -23,7 +23,7 @@ extension StringExtension on String? {
         return DateFormat('dd MMM yyyy').format(dateTime);
       }
     } catch (e) {
-      return "";
+      return '';
     }
   }
 }

@@ -10,10 +10,10 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../controller/search_controller.dart';
 
 const List<String> _sortList = [
-  "Recommended",
-  "Rating",
-  "Price",
-  "Next Available",
+  'Recommended',
+  'Rating',
+  'Price',
+  'Next Available',
 ];
 
 class SearchItem extends StatelessWidget {
@@ -33,12 +33,11 @@ class SearchItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ── Sort by label ────────────────────────────────────────────
-            CommonText(
+            const CommonText(
               text: AppString.sortBy,
-              top: 0,
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: const Color(0xff272727),
+              color: Color(0xff272727),
               bottom: 8,
             ).start,
 
@@ -71,7 +70,6 @@ class SearchItem extends StatelessWidget {
                         child: CommonText(
                           text: label,
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
                           color: isSelected
                               ? Colors.white
                               : const Color(0xff272727),
@@ -84,20 +82,19 @@ class SearchItem extends StatelessWidget {
             ),
 
             // ── Related results label ────────────────────────────────────
-            CommonText(
+            const CommonText(
               text: AppString.relatedResult,
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: const Color(0xff272727),
+              color: Color(0xff272727),
               top: 12,
             ).start,
             Obx(
                   () => CommonText(
-                text: "Showing ${chefs.length} related results",
+                text: 'Showing ${chefs.length} related results',
                 fontSize: 12,
                 color: const Color(0xff777777),
                 fontWeight: FontWeight.w400,
-                top: 0,
                 bottom: 8,
               ).start,
             ),
@@ -106,11 +103,10 @@ class SearchItem extends StatelessWidget {
             if (isLoading)
               const CommonLoader()
             else if (chefs.isEmpty)
-              Center(
+              const Center(
                 child: CommonText(
-                  text: "No chefs found nearby",
-                  fontSize: 14,
-                  color: const Color(0xff777777),
+                  text: 'No chefs found nearby',
+                  color: Color(0xff777777),
                   fontWeight: FontWeight.w400,
                 ),
               )

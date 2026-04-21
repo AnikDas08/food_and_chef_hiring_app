@@ -36,7 +36,7 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
   bool _isSelecting = false;
   List<Map<String, String>> _suggestions = [];
 
-  static const String _apiKey = "AIzaSyCVoe2GBYsk1jU6E9RFIxhVfsyBCSkMX_w";
+  static const String _apiKey = 'AIzaSyCVoe2GBYsk1jU6E9RFIxhVfsyBCSkMX_w';
 
   @override
   void initState() {
@@ -74,9 +74,9 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
 
     try {
       final uri = Uri.parse(
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json"
-            "?input=${Uri.encodeComponent(query)}"
-            "&key=$_apiKey",
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json'
+            '?input=${Uri.encodeComponent(query)}'
+            '&key=$_apiKey',
       );
 
       final res = await http.get(uri).timeout(const Duration(seconds: 8));
@@ -126,10 +126,10 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
 
     try {
       final uri = Uri.parse(
-        "https://maps.googleapis.com/maps/api/place/details/json"
+        'https://maps.googleapis.com/maps/api/place/details/json'
             "?place_id=${item['placeId']}"
-            "&fields=geometry"
-            "&key=$_apiKey",
+            '&fields=geometry'
+            '&key=$_apiKey',
       );
 
       final res = await http.get(uri).timeout(const Duration(seconds: 8));
@@ -153,12 +153,12 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
           CameraUpdate.newLatLngZoom(latlng, _getZoomLevel(_distanceKm)),
         );
       } else {
-        _showError("Location not found. Please try again.");
+        _showError('Location not found. Please try again.');
       }
     } on TimeoutException {
-      _showError("Request timed out. Check internet.");
+      _showError('Request timed out. Check internet.');
     } catch (_) {
-      _showError("Something went wrong. Try again.");
+      _showError('Something went wrong. Try again.');
     } finally {
       if (mounted) {
         setState(() => _isLoadingLocation = false);
@@ -236,20 +236,20 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Title
-                    CommonText(
-                      text: "Set Your Cooking Area",
+                    const CommonText(
+                      text: 'Set Your Cooking Area',
                       fontSize: 26,
                       fontWeight: FontWeight.w700,
-                      color: const Color(0xFF272727),
+                      color: Color(0xFF272727),
                       textAlign: TextAlign.start,
                       maxLines: 2,
                     ),
                     8.verticalSpace,
-                    CommonText(
-                      text: "Where can you travel to for chef visits to customers? Set your cooking area so that we can help your future customers find you best!",
+                    const CommonText(
+                      text: 'Where can you travel to for chef visits to customers? Set your cooking area so that we can help your future customers find you best!',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
-                      color: const Color(0xFF777777),
+                      color: Color(0xFF777777),
                       textAlign: TextAlign.start,
                       maxLines: 5,
                       overflow: TextOverflow.visible,
@@ -269,7 +269,7 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                           color: const Color(0xFF272727),
                         ),
                         decoration: InputDecoration(
-                          hintText: "Search address...",
+                          hintText: 'Search address...',
                           hintStyle: TextStyle(
                             fontSize: 14.sp,
                             color: const Color(0xFFBBBBBB),
@@ -315,11 +315,10 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
 
                     // Suggestions
                     if (_suggestions.isNotEmpty) ...[
-                      CommonText(
-                        text: "SUGGESTED ADDRESS",
+                      const CommonText(
+                        text: 'SUGGESTED ADDRESS',
                         fontSize: 11,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xFF777777),
+                        color: Color(0xFF777777),
                         textAlign: TextAlign.start,
                       ),
                       12.verticalSpace,
@@ -343,11 +342,10 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                       ),
 
                     if (_showMap && _selectedLatLng != null) ...[
-                      CommonText(
-                        text: "Order Area Distance",
-                        fontSize: 14,
+                      const CommonText(
+                        text: 'Order Area Distance',
                         fontWeight: FontWeight.w600,
-                        color: const Color(0xFF272727),
+                        color: Color(0xFF272727),
                         textAlign: TextAlign.start,
                       ),
                       12.verticalSpace,
@@ -362,18 +360,17 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                         child: Row(
                           children: [
                             CommonText(
-                              text: "${_distanceKm.toInt()}",
-                              fontSize: 14,
+                              text: '${_distanceKm.toInt()}',
                               fontWeight: FontWeight.w600,
                               color: const Color(0xFF272727),
                               textAlign: TextAlign.start,
                             ),
                             const Spacer(),
-                            CommonText(
-                              text: "Distance",
+                            const CommonText(
+                              text: 'Distance',
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
-                              color: const Color(0xFF777777),
+                              color: Color(0xFF777777),
                               textAlign: TextAlign.start,
                             ),
                           ],
@@ -438,7 +435,7 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
               child: CommonButton(
-                titleText: "Update Location",
+                titleText: 'Update Location',
                 isLoading: _isSubmitting,
                 buttonColor: const Color(0xFF1C1C1C),
                 buttonRadius: 14,
@@ -446,8 +443,8 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                 onTap: () async {
                   if (_selectedAddress == null || _selectedLatLng == null) {
                     Get.snackbar(
-                      "Message",
-                      "Please select an address first.",
+                      'Message',
+                      'Please select an address first.',
                       backgroundColor: Colors.red,
                       colorText: Colors.white,
                     );

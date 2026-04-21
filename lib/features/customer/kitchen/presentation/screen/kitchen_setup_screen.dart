@@ -27,26 +27,25 @@ class KitchenSetupScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 12.h),
-              _ProgressBar(totalSteps: 5, currentStep: 1),
+              const _ProgressBar(totalSteps: 5, currentStep: 1),
               SizedBox(height: 20.h),
               GestureDetector(
                 onTap: () => Navigator.pop(context),
                 child: Icon(Icons.arrow_back_ios, size: 20.sp, color: AppColors.black),
               ),
               SizedBox(height: 24.h),
-              CommonText(
+              const CommonText(
                 text: 'Your Kitchen Setup',
                 fontSize: 22,
                 fontWeight: FontWeight.w700,
-                color: AppColors.black,
                 textAlign: TextAlign.start,
               ),
               SizedBox(height: 8.h),
-              CommonText(
+              const CommonText(
                 text: 'This helps us to find dishes that matches your kitchen, so the chef can prepare a perfect dish, every time.',
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
-                color: const Color(0xFF888888),
+                color: Color(0xFF888888),
                 maxLines: 3,
                 textAlign: TextAlign.start,
               ),
@@ -80,16 +79,14 @@ class KitchenSetupScreen extends StatelessWidget {
                             fontSize: 13,
                             color: const Color(0xFF888888),
                             maxLines: 3,
-                            textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 12.h),
                           GestureDetector(
                             onTap: controller.fetchKitchenPresets,
-                            child: CommonText(
+                            child: const CommonText(
                               text: 'Tap to retry',
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
-                              color: AppColors.black,
                             ),
                           ),
                         ],
@@ -115,11 +112,11 @@ class KitchenSetupScreen extends StatelessWidget {
                 }),
               ),
 
-              CommonText(
+              const CommonText(
                 text: 'You can update your setup anytime before a booking',
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
-                color: const Color(0xFF888888),
+                color: Color(0xFF888888),
                 textAlign: TextAlign.start,
               ),
               SizedBox(height: 16.h),
@@ -134,7 +131,6 @@ class KitchenSetupScreen extends StatelessWidget {
                 return CommonButton(
                   titleText: busy ? 'Please wait...' : 'Continue',
                   buttonColor: selected ? AppColors.black : const Color(0xFFAAAAAA),
-                  titleColor: AppColors.white,
                   onTap: (!selected || busy)
                       ? null
                       : () async {
@@ -199,7 +195,6 @@ class _PresetCard extends StatelessWidget {
                   children: [
                     CommonText(
                       text: preset.name,
-                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: isSelected ? AppColors.white : AppColors.black,
                       textAlign: TextAlign.start,
@@ -213,7 +208,6 @@ class _PresetCard extends StatelessWidget {
                         color: isSelected ? const Color(0xFFCCCCCC) : const Color(0xFF888888),
                         textAlign: TextAlign.start,
                         maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ],
@@ -291,7 +285,6 @@ class _CustomSetupCard extends StatelessWidget {
               Expanded(
                 child: CommonText(
                   text: 'Custom Setup',
-                  fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: isSelected ? AppColors.white : AppColors.black,
                   textAlign: TextAlign.start,

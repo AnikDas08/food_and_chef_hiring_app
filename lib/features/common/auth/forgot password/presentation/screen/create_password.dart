@@ -30,7 +30,6 @@ class CreatePassword extends StatelessWidget {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -86,7 +85,7 @@ class CreatePassword extends StatelessWidget {
             ),
           ),
           bottomNavigationBar: Padding(
-            padding: EdgeInsets.only(bottom: 40, left: 20, right: 20),
+            padding: const EdgeInsets.only(bottom: 40, left: 20, right: 20),
             child: SafeArea(
               child: CommonButton(
                 titleText: AppString.confirm,

@@ -7,12 +7,12 @@ Widget indicator({required int currentIndex}) {
     children: List.generate(
       3,
       (index) => Container(
-        margin: EdgeInsets.symmetric(horizontal: 4),
+        margin: const EdgeInsets.symmetric(horizontal: 4),
         height: 8.sp,
         width: 8.sp,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: index == currentIndex ? Color(0xff272727) : Color(0xffF1F1F1),
+          color: index == currentIndex ? const Color(0xff272727) : const Color(0xffF1F1F1),
         ),
       ),
     ),

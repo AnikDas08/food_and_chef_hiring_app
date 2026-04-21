@@ -8,9 +8,9 @@ class SuccessPopup extends StatelessWidget {
 
   const SuccessPopup({
     super.key,
-    this.title = "Your withdraw has been requested",
-    this.subtitle = "You should receive your payment shortly",
-    this.buttonText = "Close",
+    this.title = 'Your withdraw has been requested',
+    this.subtitle = 'You should receive your payment shortly',
+    this.buttonText = 'Close',
     this.onClose,
   });
 

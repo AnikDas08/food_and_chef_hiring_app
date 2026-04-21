@@ -18,7 +18,7 @@ class ChefHomeScreen extends StatelessWidget {
       extendBodyBehindAppBar: true,
       extendBody: true,
       backgroundColor: Colors.white,
-      appBar: ChefHomeAppBar(),
+      appBar: const ChefHomeAppBar(),
       body: RefreshIndicator(
         onRefresh: () async {
           final c = Get.find<ChefHomeController>();
@@ -76,14 +76,13 @@ class ChefHomeScreen extends StatelessWidget {
                               horizontal: 20.w, vertical: 18.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Column(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const CommonText(
-                                    text: "Current Balance",
+                                    text: 'Current Balance',
                                     fontSize: 13,
                                     fontWeight: FontWeight.w400,
                                     color: Colors.white60,
@@ -91,7 +90,7 @@ class ChefHomeScreen extends StatelessWidget {
                                   ),
                                   SizedBox(height: 4.h),
                                   CommonText(
-                                    text: "\$${c.walletBalance.value.toStringAsFixed(0)}",
+                                    text: '\$${c.walletBalance.value.toStringAsFixed(0)}',
                                     fontSize: 34,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
@@ -109,7 +108,7 @@ class ChefHomeScreen extends StatelessWidget {
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: "0.48%",
+                                              text: '0.48%',
                                               style: TextStyle(
                                                 color: const Color(0xff4CAF50),
                                                 fontSize: 12.sp,
@@ -117,7 +116,7 @@ class ChefHomeScreen extends StatelessWidget {
                                               ),
                                             ),
                                             TextSpan(
-                                              text: " higher than last month",
+                                              text: ' higher than last month',
                                               style: TextStyle(
                                                 color: Colors.white60,
                                                 fontSize: 12.sp,
@@ -153,10 +152,9 @@ class ChefHomeScreen extends StatelessWidget {
                                       ),
                                       SizedBox(width: 6.w),
                                       const CommonText(
-                                        text: "Cash Out",
+                                        text: 'Cash Out',
                                         fontSize: 13,
                                         fontWeight: FontWeight.w600,
-                                        color: Colors.black,
                                         textAlign: TextAlign.start,
                                       ),
                                     ],
@@ -177,22 +175,20 @@ class ChefHomeScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CommonText(
+                  const CommonText(
                     text: AppString.requestedBookings,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                   ),
                   InkWell(
                     onTap: () {
                       Get.offAndToNamed(AppRoutes.chefHomeScreen,
-                          arguments: {"index": 2});
+                          arguments: {'index': 2});
                     },
-                    child: CommonText(
+                    child: const CommonText(
                       text: AppString.seeAll,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xffFD713F),
+                      color: Color(0xffFD713F),
                     ),
                   ),
                 ],
@@ -208,8 +204,7 @@ class ChefHomeScreen extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 32.h),
                       child: const CommonText(
-                        text: "No requested bookings",
-                        fontSize: 14,
+                        text: 'No requested bookings',
                         fontWeight: FontWeight.w400,
                         color: Colors.grey,
                       ),
@@ -233,7 +228,7 @@ class ChefHomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const CommonText(
-                    text: "Upcoming Bookings",
+                    text: 'Upcoming Bookings',
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
@@ -241,13 +236,11 @@ class ChefHomeScreen extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       Get.offAndToNamed(AppRoutes.chefHomeScreen,
-                          arguments: {"index": 2});
+                          arguments: {'index': 2});
                     },
-                    child: CommonText(
+                    child: const CommonText(
                       text: AppString.seeAll,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xffFD713F),
+                      color: Color(0xffFD713F),
                     ),
                   ),
                 ],
@@ -263,8 +256,7 @@ class ChefHomeScreen extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 32.h),
                       child: const CommonText(
-                        text: "No upcoming bookings",
-                        fontSize: 14,
+                        text: 'No upcoming bookings',
                         fontWeight: FontWeight.w400,
                         color: Colors.grey,
                       ),

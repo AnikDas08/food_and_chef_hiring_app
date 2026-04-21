@@ -23,7 +23,7 @@ class AnalyticsScreen extends StatelessWidget {
         centerTitle: false,
         backgroundColor: Colors.transparent,
         flexibleSpace: appBarOpacity(),
-        title: CommonText(
+        title: const CommonText(
           text: AppString.analytics,
           fontSize: 24,
           fontWeight: FontWeight.w600,
@@ -33,7 +33,7 @@ class AnalyticsScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ListView(
-          children: [earning(), BookTime(), bookInfo(), topItem()],
+          children: [earning(), const BookTime(), bookInfo(), topItem()],
         ),
       ),
     );

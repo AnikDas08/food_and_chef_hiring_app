@@ -6,9 +6,9 @@ Widget buildSearchSection() {
   return CommonTextField(
     hintText: 'Search....',
     borderRadius: 12,
-    borderColor: Color(0xffF2F2F2),
-    prefixIcon: Padding(
-      padding: const EdgeInsets.only(left: 16),
+    borderColor: const Color(0xffF2F2F2),
+    prefixIcon: const Padding(
+      padding: EdgeInsets.only(left: 16),
       child: Icon(Icons.search),
     ),
     paddingHorizontal: 20.w,

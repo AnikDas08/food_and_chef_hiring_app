@@ -60,13 +60,13 @@ class NotificationsController extends GetxController {
 
     try {
       // Fetching from page 1
-      final response = await ApiService.get("notification?page=$page&limit=10");
+      final response = await ApiService.get('notification?page=$page&limit=10');
 
       if (response.statusCode == 200) {
-        var responseData = response.data['data'];
+        final responseData = response.data['data'];
         unreadCount.value = responseData['unreadCount'] ?? 0;
 
-        List rawList = responseData['data'];
+        final List rawList = responseData['data'];
         notifications = rawList.map((e) => NotificationModel.fromJson(e)).toList();
 
         if (notifications.isEmpty) {
@@ -74,7 +74,7 @@ class NotificationsController extends GetxController {
         }
       }
     } catch (e) {
-      debugPrint("Error fetching notifications: $e");
+      debugPrint('Error fetching notifications: $e');
     }
 
     isLoading = false;
@@ -91,13 +91,13 @@ class NotificationsController extends GetxController {
     try {
       page++;
       // Call repository or API directly
-      final response = await ApiService.get("notification?page=$page&limit=10");
+      final response = await ApiService.get('notification?page=$page&limit=10');
 
       if (response.statusCode == 200) {
-        var responseData = response.data['data'];
-        List rawList = responseData['data'];
+        final responseData = response.data['data'];
+        final List rawList = responseData['data'];
 
-        List<NotificationModel> newItems = rawList.map((e) => NotificationModel.fromJson(e)).toList();
+        final List<NotificationModel> newItems = rawList.map((e) => NotificationModel.fromJson(e)).toList();
 
         if (newItems.isEmpty) {
           hasNoData = true;
@@ -107,7 +107,7 @@ class NotificationsController extends GetxController {
       }
     } catch (e) {
       page--; // Rollback page on error
-      debugPrint("Error loading more: $e");
+      debugPrint('Error loading more: $e');
     }
 
     isLoadingMore = false;
@@ -116,7 +116,7 @@ class NotificationsController extends GetxController {
 
   /// Mark single notification as read
   Future<void> markAsRead(String notificationId) async {
-    int index = notifications.indexWhere((element) => element.id == notificationId);
+    final int index = notifications.indexWhere((element) => element.id == notificationId);
 
     if (index != -1 && notifications[index].isRead == false) {
       // Optimistic Update
@@ -127,7 +127,7 @@ class NotificationsController extends GetxController {
       update();
 
       try {
-        final response = await ApiService.patch("notification/$notificationId");
+        final response = await ApiService.patch('notification/$notificationId');
         if (response.statusCode != 200) {
           // Rollback on failure
           notifications[index].isRead = false;

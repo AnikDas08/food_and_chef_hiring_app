@@ -27,7 +27,7 @@ class NotificationScreen extends StatelessWidget {
         leadingWidth: 60,
         flexibleSpace: LiquidGlassLayer(
           child: LiquidGlass(
-            shape: LiquidRoundedSuperellipse(borderRadius: 0),
+            shape: const LiquidRoundedSuperellipse(borderRadius: 0),
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -49,7 +49,7 @@ class NotificationScreen extends StatelessWidget {
           ),
         ),
         title: const CommonText(
-          text: "Notifications",
+          text: 'Notifications',
           fontWeight: FontWeight.w600,
           fontSize: 24,
           color: Color(0xff272727),

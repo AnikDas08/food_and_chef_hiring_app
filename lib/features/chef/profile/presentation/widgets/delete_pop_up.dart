@@ -13,7 +13,7 @@ import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/constants/app_string.dart';
 
-deletePopUp() {
+void deletePopUp() {
   final passwordController = TextEditingController();
   final RxBool isObscure = true.obs;
 
@@ -50,23 +50,23 @@ deletePopUp() {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        CommonImage(imageSrc: AppImages.delete, size: 88),
-                        CommonText(
+                        const CommonImage(imageSrc: AppImages.delete, size: 88),
+                        const CommonText(
                           text: AppString.deleteAccount,
                           fontSize: 16,
                           top: 16,
                           bottom: 8,
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xff272727),
+                          color: Color(0xff272727),
                         ),
-                        CommonText(
+                        const CommonText(
                           text: AppString.areYouSureYouWantToDeleteYourAccount,
                           fontSize: 12,
                           bottom: 16,
                           left: 30,
                           right: 30,
                           fontWeight: FontWeight.w400,
-                          color: const Color(0xff777777),
+                          color: Color(0xff777777),
                           maxLines: 5,
                         ),
 
@@ -75,7 +75,7 @@ deletePopUp() {
                           controller: passwordController,
                           obscureText: isObscure.value,
                           decoration: InputDecoration(
-                            hintText: "Enter your password",
+                            hintText: 'Enter your password',
                             hintStyle: const TextStyle(
                               fontSize: 13,
                               color: Color(0xff999999),
@@ -109,7 +109,6 @@ deletePopUp() {
                           titleText: AppString.no,
                           buttonHeight: 48,
                           buttonRadius: 16,
-                          titleColor: const Color(0xffFFFFFF),
                           onTap: () async {
                             await AnimationPopUpState.closeDialog();
                           },
@@ -120,13 +119,12 @@ deletePopUp() {
                           buttonHeight: 48,
                           buttonRadius: 16,
                           buttonColor: const Color(0xffF2F2F2),
-                          borderColor: Colors.transparent,
                           titleColor: const Color(0xff777777),
                           onTap: () async {
                             final password = passwordController.text.trim();
 
                             if (password.isEmpty) {
-                              Utils.errorSnackBar("Warning", "Please enter your password");
+                              Utils.errorSnackBar('Warning', 'Please enter your password');
                               return;
                             }
 
@@ -140,7 +138,7 @@ deletePopUp() {
                             try {
                               final res = await ApiService.delete(
                                 ApiEndPoint.deleteAccount,
-                                body: {"password": password},
+                                body: {'password': password},
                               );
 
                               Navigator.pop(Get.context!);
@@ -148,20 +146,20 @@ deletePopUp() {
                               if (res.statusCode == 200 &&
                                   res.data['success'] == true) {
                                 Utils.successSnackBar(
-                                  "Success",
-                                  "Account deleted successfully",
+                                  'Success',
+                                  'Account deleted successfully',
                                 );
                                 Get.offAllNamed('/login');
                               } else {
                                 Utils.errorSnackBar(
-                                  "Message",
+                                  'Message',
                                   res.data['message']?.toString() ??
-                                      "Something went wrong",
+                                      'Something went wrong',
                                 );
                               }
                             } catch (e) {
                               Navigator.pop(Get.context!);
-                              Utils.errorSnackBar("Message", "Something went wrong");
+                              Utils.errorSnackBar('Message', 'Something went wrong');
                             }
                           },
                         ),

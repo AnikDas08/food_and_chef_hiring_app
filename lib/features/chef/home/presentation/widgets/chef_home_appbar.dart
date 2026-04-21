@@ -29,23 +29,22 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Obx(() {
                   final name = c.chefProfile.value?.originalName ?? '';
                   return CommonText(
-                    text: "Hello, $name 👋",
+                    text: 'Hello, $name 👋',
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xff272727),
                   );
                 }),
-                CommonText(
+                const CommonText(
                   text: "Let's get cooking!",
                   fontSize: 15,
                   fontWeight: FontWeight.w400,
-                  color: const Color(0xff777777),
+                  color: Color(0xff777777),
                   left: 4,
                 ),
               ],
@@ -61,7 +60,7 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               LiquidGlassLayer(
                 child: LiquidGlass(
-                  shape: LiquidRoundedSuperellipse(borderRadius: 30),
+                  shape: const LiquidRoundedSuperellipse(borderRadius: 30),
                   child: Container(
                     padding: EdgeInsets.all(8.sp),
                     decoration: BoxDecoration(
@@ -71,7 +70,7 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                         color: Colors.black.withValues(alpha: 0.07),
                       ),
                     ),
-                    child: Icon(CupertinoIcons.bell, color: Color(0xff272727)),
+                    child: const Icon(CupertinoIcons.bell, color: Color(0xff272727)),
                   ),
                 ),
               ),
@@ -123,15 +122,14 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 AppBar chefHomeAppBar() {
   return AppBar(
-    title: Row(
+    title: const Row(
       children: [
         Expanded(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CommonText(
-                text: "Hello, Javier 👋",
+                text: 'Hello, Javier 👋',
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
@@ -153,7 +151,7 @@ AppBar chefHomeAppBar() {
         onTap: () => Get.toNamed(AppRoutes.notifications),
         child: LiquidGlassLayer(
           child: LiquidGlass(
-            shape: LiquidRoundedSuperellipse(borderRadius: 30),
+            shape: const LiquidRoundedSuperellipse(borderRadius: 30),
             child: Container(
               padding: EdgeInsets.all(8.sp),
               decoration: BoxDecoration(
@@ -161,7 +159,7 @@ AppBar chefHomeAppBar() {
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
               ),
-              child: Icon(CupertinoIcons.bell, color: Color(0xff272727)),
+              child: const Icon(CupertinoIcons.bell, color: Color(0xff272727)),
             ),
           ),
         ),

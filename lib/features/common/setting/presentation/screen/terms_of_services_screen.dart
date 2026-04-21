@@ -34,8 +34,7 @@ class TermsOfServicesScreen extends StatelessWidget {
 
               /// Error Handle here
               Status.error => ErrorScreen(
-                onTap:
-                    TermsOfServicesController.instance.geTermsOfServicesRepo(),
+                onTap: TermsOfServicesController.instance.geTermsOfServicesRepo,
               ),
 
               /// Show main data here
