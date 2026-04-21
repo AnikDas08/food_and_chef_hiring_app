@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -37,10 +38,16 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.white.withOpacity(0.7),
             elevation: 0,
             scrolledUnderElevation: 0,
             centerTitle: true,
+            flexibleSpace: ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                child: Container(color: Colors.transparent),
+              ),
+            ),
             title: const Text(
               'Edit Profile',
               style: TextStyle(
@@ -57,9 +64,13 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
                 onTap: () => Navigator.pop(context),
                 child: Container(
                   alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: Color(0xffF6F6F6),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.5),
                     shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.6),
+                      width: 1,
+                    ),
                   ),
                   child: CommonImage(
                     imageSrc: AppIcons.backIcon,

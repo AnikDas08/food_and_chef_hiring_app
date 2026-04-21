@@ -6,8 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:new_untitled/component/button/common_button.dart';
 
 import '../../../../../component/image/common_image.dart';
+import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../common/auth/signup_chef/presentation/controller/sign_up_chef_controller.dart';
 
@@ -245,36 +247,35 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
       body: SafeArea(
         child: Column(
           children: [
-
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
-                keyboardDismissBehavior:
-                ScrollViewKeyboardDismissBehavior.onDrag,
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Title
-                    Text(
-                      "Set Your Cooking Area",
-                      style: TextStyle(
-                        fontSize: 26.sp,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF272727),
-                        letterSpacing: -0.5,
-                      ),
+                    CommonText(
+                      text: "Set Your Cooking Area",
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF272727),
+                      textAlign: TextAlign.start,
+                      maxLines: 2,
                     ),
                     8.verticalSpace,
-                    Text(
-                      "Where can you travel to for chef visits to customers? Set your cooking area so that we can help your future customers find you best!",
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: const Color(0xFF777777),
-                        height: 1.5,
-                      ),
+                    CommonText(
+                      text: "Where can you travel to for chef visits to customers? Set your cooking area so that we can help your future customers find you best!",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xFF777777),
+                      textAlign: TextAlign.start,
+                      maxLines: 5,
+                      overflow: TextOverflow.visible,
                     ),
                     20.verticalSpace,
 
+                    // Search Field (TextField এ CommonText use হয় না)
                     Container(
                       decoration: BoxDecoration(
                         color: const Color(0xFFF7F7F7),
@@ -323,26 +324,22 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                             },
                           )
                               : Icon(Icons.map_outlined,
-                              color: const Color(0xFF777777),
-                              size: 20.sp),
+                              color: const Color(0xFF777777), size: 20.sp),
                           border: InputBorder.none,
-                          contentPadding:
-                          EdgeInsets.symmetric(vertical: 14.h),
+                          contentPadding: EdgeInsets.symmetric(vertical: 14.h),
                         ),
                       ),
                     ),
                     12.verticalSpace,
 
-                    // ── Suggestions List ──
+                    // Suggestions
                     if (_suggestions.isNotEmpty) ...[
-                      Text(
-                        "SUGGESTED ADDRESS",
-                        style: TextStyle(
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xFF777777),
-                          letterSpacing: 1.2,
-                        ),
+                      CommonText(
+                        text: "SUGGESTED ADDRESS",
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF777777),
+                        textAlign: TextAlign.start,
                       ),
                       12.verticalSpace,
                       ..._suggestions.map(
@@ -365,13 +362,12 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                       ),
 
                     if (_showMap && _selectedLatLng != null) ...[
-                      Text(
-                        "Order Area Distance",
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF272727),
-                        ),
+                      CommonText(
+                        text: "Order Area Distance",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF272727),
+                        textAlign: TextAlign.start,
                       ),
                       12.verticalSpace,
 
@@ -381,32 +377,30 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                           color: const Color(0xFFF7F7F7),
                           borderRadius: BorderRadius.circular(12.r),
                         ),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 14.h),
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
                         child: Row(
                           children: [
-                            Text(
-                              "${_distanceKm.toInt()}",
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xFF272727),
-                              ),
+                            CommonText(
+                              text: "${_distanceKm.toInt()}",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF272727),
+                              textAlign: TextAlign.start,
                             ),
                             const Spacer(),
-                            Text(
-                              "Distance",
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                color: const Color(0xFF777777),
-                              ),
+                            CommonText(
+                              text: "Distance",
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xFF777777),
+                              textAlign: TextAlign.start,
                             ),
                           ],
                         ),
                       ),
                       4.verticalSpace,
 
-                      // Slider
+                      // Slider same থাকবে
                       SliderTheme(
                         data: SliderTheme.of(context).copyWith(
                           activeTrackColor: const Color(0xFF1C1C1C),
@@ -432,7 +426,7 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                       ),
                       12.verticalSpace,
 
-                      // Google Map
+                      // Google Map same থাকবে
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16.r),
                         child: SizedBox(
@@ -458,72 +452,39 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                 ),
               ),
             ),
+
+
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
-              child: SizedBox(
-                width: double.infinity,
-                height: 54.h,
-                child: ElevatedButton(
-                  onPressed: _isSubmitting
-                      ? null
-                      : () async {
-                    if (_selectedAddress == null || _selectedLatLng == null) {
-                      Get.snackbar("Message", "Please select an address first.",backgroundColor: Colors.red,colorText: Colors.red);
-                      return;
-                    }
-                    setState(() => _isSubmitting = true);
-                    try {
-                      final controller = SignUpChefController.instance;
-                      await controller.ChefProfileLocationUpdate(
-                        cookingAreaDistance: _distanceKm.toInt().toString(),
-                        address: _selectedAddress!,
-                        lat: _selectedLatLng!.latitude.toString(),
-                        lng: _selectedLatLng!.longitude.toString(),
-                      );
-                    } finally {
-                      if (mounted) setState(() => _isSubmitting = false);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1C1C1C),
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor: const Color(0xFF1C1C1C),
-                    disabledForegroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14.r),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: _isSubmitting
-                      ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 18.w,
-                        height: 18.w,
-                        child: const CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2.5,
-                        ),
-                      ),
-                      10.horizontalSpace,
-                      Text(
-                        "Loading...",
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  )
-                      : Text(
-                    "Update Location",
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
+              child: CommonButton(
+                titleText: "Update Location",
+                isLoading: _isSubmitting,
+                buttonColor: const Color(0xFF1C1C1C),
+                buttonRadius: 14,
+                buttonHeight: 54,
+                onTap: () async {
+                  if (_selectedAddress == null || _selectedLatLng == null) {
+                    Get.snackbar(
+                      "Message",
+                      "Please select an address first.",
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                    );
+                    return;
+                  }
+                  setState(() => _isSubmitting = true);
+                  try {
+                    final controller = SignUpChefController.instance;
+                    await controller.ChefProfileLocationUpdate(
+                      cookingAreaDistance: _distanceKm.toInt().toString(),
+                      address: _selectedAddress!,
+                      lat: _selectedLatLng!.latitude.toString(),
+                      lng: _selectedLatLng!.longitude.toString(),
+                    );
+                  } finally {
+                    if (mounted) setState(() => _isSubmitting = false);
+                  }
+                },
               ),
             ),
           ],

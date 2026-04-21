@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
@@ -254,19 +257,39 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white.withOpacity(0.7),
         elevation: 0,
         automaticallyImplyLeading: false,
         leadingWidth: 60,
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.1),
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.black.withOpacity(0.05),
+                    width: 0.5,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         leading: Padding(
           padding: const EdgeInsets.only(left: 16),
           child: GestureDetector(
             onTap: () => Navigator.pop(context),
             child: Container(
               alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.5),
                 shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.6),
+                  width: 1,
+                ),
               ),
               child: CommonImage(
                 imageSrc: AppIcons.backIcon,
@@ -276,6 +299,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
           ),
         ),
       ),
+
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(

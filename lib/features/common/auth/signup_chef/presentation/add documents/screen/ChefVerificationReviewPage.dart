@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../../../../component/image/common_image.dart';
+import '../../../../../../../utils/constants/app_icons.dart';
 import '../Model/UploadedFileModel.dart';
 
 class ChefVerificationReviewPage extends StatefulWidget {
@@ -136,15 +138,27 @@ class _ChefVerificationReviewPageState
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
             child: Row(children: [
-              IconButton(
-                onPressed: _isLoading
-                    ? null
-                    : (widget.onBack ??
-                        () => Navigator.of(context).maybePop()),
-                icon: Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  size: 18,
-                  color: _isLoading ? _textMuted : _textPrimary,
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: GestureDetector(
+                  onTap: _isLoading
+                      ? null
+                      : (widget.onBack ?? () => Navigator.of(context).maybePop()),
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: _isLoading
+                          ? const Color(0xffE0E0E0)
+                          : const Color(0xffF6F6F6),
+                      shape: BoxShape.circle,
+                    ),
+                    child: CommonImage(
+                      imageSrc: AppIcons.backIcon,
+                      size: 24,
+                    ),
+                  ),
                 ),
               ),
               const Expanded(
@@ -265,7 +279,7 @@ class _ChefVerificationReviewPageState
                 const SizedBox(width: 8),
                 Text(
                   maxLines: 5,
-                  showError ? 'This file is required.\n If you do not select it,\n you cannot create the menu.' : 'This file is required.\n If you do not select it,\n you cannot create the menu.',
+                  showError ? 'If you don’t submit all the required documents,\nYour profile will not be visible to customers.' : 'If you don’t submit all the required documents,\nYour profile will not be visible to customers.',
                   style: TextStyle(
                     fontSize: 13,
                     color: showError ? _red : const Color(0xFFEF9A9A),
