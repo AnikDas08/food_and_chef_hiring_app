@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../utils/constants/app_colors.dart';
 import '../controller/home_controller.dart';
 import 'chef_item.dart';
 
@@ -120,18 +121,11 @@ Widget recommended() {
             children: [
               const Icon(Icons.location_off, size: 48, color: Colors.grey),
               const SizedBox(height: 16),
-              /*Text(
-                'No nearby chefs found',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),*/
+
               const CommonText(
                 text: 'No nearby chefs found',
                 fontSize: 12,
-                color: Color(0xff777777),
+                color: AppColors.grey,
                 fontWeight: FontWeight.w400,
               ),
               const SizedBox(height: 8),
@@ -146,7 +140,7 @@ Widget recommended() {
                 ),*/ const CommonText(
                   text: 'Retry',
                   fontSize: 12,
-                  color: Color(0xff272727),
+                  color: AppColors.grey,
                 ),
               ),
             ],

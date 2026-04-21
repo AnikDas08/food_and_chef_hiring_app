@@ -48,7 +48,8 @@ class BookingHistoryScreen extends StatelessWidget {
                       itemCount: controller.bookingHistoryList.length,
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       itemBuilder: (context, index) {
-                        final String value = controller.bookingHistoryList[index];
+                        final String value =
+                            controller.bookingHistoryList[index];
                         return Padding(
                           padding: EdgeInsets.only(right: 8.w),
                           child:
@@ -169,7 +170,7 @@ class BookingHistoryScreen extends StatelessWidget {
               ? const CommonText(
                 text: 'No bookings',
                 fontSize: 12,
-                color: Color(0xff777777),
+                color: Colors.grey,
                 fontWeight: FontWeight.w400,
               ).center
               : ListView.builder(

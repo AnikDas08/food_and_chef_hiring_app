@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'constants/app_colors.dart';
@@ -8,9 +10,7 @@ class Utils {
     Get.snackbar(
       title,
       message,
-      colorText: AppColors.white,
-      backgroundColor: AppColors.black,
-      snackPosition: SnackPosition.TOP,
+      margin: EdgeInsets.symmetric(horizontal: 16.w),
     );
   }
 

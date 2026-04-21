@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/my_groceries_screen.dart';
 import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/utils/constants/app_colors.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/other_widgets/app_bar_opacity.dart';
@@ -106,7 +107,7 @@ class GroceryScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: 20.h),
                         child: const CommonText(
                           text: 'No pending bookings available',
-                          color: Color(0xff777777),
+                          color: AppColors.grey,
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                         ),

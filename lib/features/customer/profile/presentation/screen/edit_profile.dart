@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import '../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../component/button/common_button.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/profile_controller.dart';
 import '../../../../../../utils/constants/app_images.dart';
@@ -20,8 +22,14 @@ class EditProfile extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
-        centerTitle: true,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: appBarOpacity(),
+        title: const CommonText(
+          text: AppString.editProfile,
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
@@ -31,14 +39,6 @@ class EditProfile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CommonText(
-                  text: AppString.editProfile,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff272727),
-                  bottom: 28,
-                ),
-
                 // ── Profile Image — reactive Obx ──────────────────────────
                 Center(
                   child: Obx(() {
@@ -53,25 +53,28 @@ class EditProfile extends StatelessWidget {
                             color: Color(0xffF1F1F1),
                           ),
                           child: ClipOval(
-                            child: controller.imagePath.value.isNotEmpty
-                                ? Image.file(
-                              File(controller.imagePath.value),
-                              fit: BoxFit.cover,
-                            )
-                                : (controller.profileImage.value.isNotEmpty
-                                ? (controller.profileImage.value.startsWith('http')
-                                ? Image.network(
-                              controller.profileImage.value,
-                              fit: BoxFit.cover,
-                            )
-                                : Image.network(
-                              ApiEndPoint.imageUrl + controller.profileImage.value,
-                              fit: BoxFit.cover,
-                            ))
-                                : Image.asset(
-                              AppImages.image3,
-                              fit: BoxFit.cover,
-                            )),
+                            child:
+                                controller.imagePath.value.isNotEmpty
+                                    ? Image.file(
+                                      File(controller.imagePath.value),
+                                      fit: BoxFit.cover,
+                                    )
+                                    : (controller.profileImage.value.isNotEmpty
+                                        ? (controller.profileImage.value
+                                                .startsWith('http')
+                                            ? Image.network(
+                                              controller.profileImage.value,
+                                              fit: BoxFit.cover,
+                                            )
+                                            : Image.network(
+                                              ApiEndPoint.imageUrl +
+                                                  controller.profileImage.value,
+                                              fit: BoxFit.cover,
+                                            ))
+                                        : Image.asset(
+                                          AppImages.image3,
+                                          fit: BoxFit.cover,
+                                        )),
                           ),
                         ),
 
@@ -115,11 +118,13 @@ class EditProfile extends StatelessWidget {
                 EditProfileAllFiled(controller: controller),
                 30.height,
 
-                Obx(() => CommonButton(
-                  titleText: AppString.saveChanges,
-                  isLoading: controller.isLoading.value,
-                  onTap: () => controller.editProfileRepo(),
-                )),
+                Obx(
+                  () => CommonButton(
+                    titleText: AppString.saveChanges,
+                    isLoading: controller.isLoading.value,
+                    onTap: () => controller.editProfileRepo(),
+                  ),
+                ),
               ],
             ),
           ),

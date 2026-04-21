@@ -14,6 +14,7 @@ import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/other_widgets/item.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../chef/profile/presentation/screen/help_and_Support_Screen.dart';
 import '../controller/profile_controller.dart';
@@ -40,7 +41,6 @@ class ProfileScreen extends StatelessWidget {
           text: AppString.myProfile,
           fontWeight: FontWeight.w600,
           fontSize: 24,
-          color: Color(0xff272727),
         ),
       ),
       body: Padding(
@@ -122,7 +122,12 @@ class ProfileScreen extends StatelessWidget {
                   Item(
                     icon: CupertinoIcons.person,
                     title: AppString.editProfile,
-                    onTap: () => Get.toNamed(AppRoutes.editProfile),
+                    // onTap: () => Get.toNamed(AppRoutes.editProfile),
+                    onTap:
+                        () => Utils.successSnackBar(
+                          'Not implemented',
+                          'This feature is not implemented yet',
+                        ),
                   ),
                   Item(
                     icon: CupertinoIcons.location,
@@ -135,7 +140,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   Item(
                     icon: CupertinoIcons.arrow_counterclockwise,
-                    title: AppString.pastOrders,
+                    title: 'Booking History',
                     onTap: () => Get.toNamed(AppRoutes.pastOrder),
                   ),
                 ],

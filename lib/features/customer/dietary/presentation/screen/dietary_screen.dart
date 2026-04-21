@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/utils/constants/app_colors.dart';
 import '../controller/dietary_controller.dart';
 import 'dietary_save_screen.dart';
 
@@ -36,7 +37,15 @@ class _DietaryScreenState extends State<DietaryScreen> {
       builder: (controller) {
         return Scaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(elevation: 0, backgroundColor: Colors.white),
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            title: const CommonText(
+              text: 'Dietary Restrictions',
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
@@ -44,22 +53,8 @@ class _DietaryScreenState extends State<DietaryScreen> {
               children: [
                 SizedBox(height: 8.h),
 
-                const CommonText(
-                  text: 'Dietary Restrictions & Allergies',
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff272727),
-                  maxLines: 2,
-                  textAlign: TextAlign.start,
-                ),
                 SizedBox(height: 6.h),
-                /*const Text(
-                  'Vegetarian? Kosher? Halal? Food allergies? Enter the details below.',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Color(0xff777777),
-                  ),
-                ),*/
+
                 const CommonText(
                   text:
                       'Vegetarian? Kosher? Halal? Food allergies? Enter the details below.',
@@ -85,8 +80,8 @@ class _DietaryScreenState extends State<DietaryScreen> {
                         child: CommonText(
                           text:
                               'No dietary preferences saved yet.\nTap Edit to add some.',
-                          fontSize: 13,
-                          color: Color(0xff777777),
+                          fontSize: 12,
+                          color: AppColors.grey,
                         ),
                       );
                     }
@@ -133,18 +128,11 @@ class _CategorySection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        /*Text(
-          title,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Color(0xff272727),
-          ),
-        ),*/
         CommonText(
           text: title,
           fontWeight: FontWeight.w600,
           color: const Color(0xff1F1F1F),
+          fontSize: 16,
           maxLines: 2,
           textAlign: TextAlign.start,
         ),
@@ -175,13 +163,7 @@ class _Chip extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: /*Text(
-        label,
-        style: const TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
-          // Changed to white text
-          color: Colors.white,
-        ),
+
       ),*/ CommonText(
         text: label,
         fontSize: 12,

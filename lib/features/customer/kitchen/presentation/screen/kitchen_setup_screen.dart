@@ -20,6 +20,14 @@ class KitchenSetupScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.white,
+      appBar: AppBar(
+        title: const CommonText(
+          text: 'Your Kitchen Setup',
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          textAlign: TextAlign.start,
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -29,20 +37,11 @@ class KitchenSetupScreen extends StatelessWidget {
               SizedBox(height: 12.h),
               const _ProgressBar(totalSteps: 5, currentStep: 1),
               SizedBox(height: 20.h),
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Icon(Icons.arrow_back_ios, size: 20.sp, color: AppColors.black),
-              ),
-              SizedBox(height: 24.h),
-              const CommonText(
-                text: 'Your Kitchen Setup',
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-                textAlign: TextAlign.start,
-              ),
+
               SizedBox(height: 8.h),
               const CommonText(
-                text: 'This helps us to find dishes that matches your kitchen, so the chef can prepare a perfect dish, every time.',
+                text:
+                    'This helps us to find dishes that matches your kitchen, so the chef can prepare a perfect dish, every time.',
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
                 color: Color(0xFF888888),
@@ -51,23 +50,35 @@ class KitchenSetupScreen extends StatelessWidget {
               ),
               SizedBox(height: 24.h),
               RichText(
-                text: TextSpan(children: [
-                  TextSpan(
-                    text: 'Which kitchen best describes yours? ',
-                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: AppColors.black),
-                  ),
-                  TextSpan(
-                    text: '*',
-                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.red),
-                  ),
-                ]),
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Which kitchen best describes yours? ',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: '*',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 12.h),
 
               Expanded(
                 child: Obx(() {
                   if (controller.isLoadingPresets.value) {
-                    return const Center(child: CircularProgressIndicator(color: Colors.black));
+                    return const Center(
+                      child: CircularProgressIndicator(color: Colors.black),
+                    );
                   }
                   if (controller.presetsError.value.isNotEmpty) {
                     return Center(
@@ -125,30 +136,36 @@ class KitchenSetupScreen extends StatelessWidget {
                 final selected = controller.isAnythingSelected;
                 final submitting = controller.isSubmittingPreset.value;
                 final loadingEquipment = controller.isLoadingEquipment.value;
-                final loadingPresetItems = controller.isLoadingPresetItems.value;
-                final busy = submitting || loadingEquipment || loadingPresetItems;
+                final loadingPresetItems =
+                    controller.isLoadingPresetItems.value;
+                final busy =
+                    submitting || loadingEquipment || loadingPresetItems;
 
                 return CommonButton(
                   titleText: busy ? 'Please wait...' : 'Continue',
-                  buttonColor: selected ? AppColors.black : const Color(0xFFAAAAAA),
-                  onTap: (!selected || busy)
-                      ? null
-                      : () async {
-                    if (controller.isCustomSetup) {
-                      // Custom Setup: fetch equipment (all unselected), go to next screen
-                      await controller.fetchEquipmentList();
-                      Get.to(() => const CookingAppliancesScreen());
-                    } else {
-                      // Preset: fetch preset items first (to know which to pre-select),
-                      // then fetch full equipment list (applyPresetSelections is called
-                      // inside fetchEquipmentList after build), then navigate
-                      final preset = controller
-                          .kitchenPresets[controller.selectedKitchenIndex.value];
-                      await controller.fetchPresetItems(preset.kitchen);
-                      await controller.fetchEquipmentList();
-                      Get.to(() => const CookingAppliancesScreen());
-                    }
-                  },
+                  buttonColor:
+                      selected ? AppColors.black : const Color(0xFFAAAAAA),
+                  onTap:
+                      (!selected || busy)
+                          ? null
+                          : () async {
+                            if (controller.isCustomSetup) {
+                              // Custom Setup: fetch equipment (all unselected), go to next screen
+                              await controller.fetchEquipmentList();
+                              Get.to(() => const CookingAppliancesScreen());
+                            } else {
+                              // Preset: fetch preset items first (to know which to pre-select),
+                              // then fetch full equipment list (applyPresetSelections is called
+                              // inside fetchEquipmentList after build), then navigate
+                              final preset =
+                                  controller.kitchenPresets[controller
+                                      .selectedKitchenIndex
+                                      .value];
+                              await controller.fetchPresetItems(preset.kitchen);
+                              await controller.fetchEquipmentList();
+                              Get.to(() => const CookingAppliancesScreen());
+                            }
+                          },
                 );
               }),
               SizedBox(height: 20.h),
@@ -205,7 +222,10 @@ class _PresetCard extends StatelessWidget {
                         text: preset.items,
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                        color: isSelected ? const Color(0xFFCCCCCC) : const Color(0xFF888888),
+                        color:
+                            isSelected
+                                ? const Color(0xFFCCCCCC)
+                                : const Color(0xFF888888),
                         textAlign: TextAlign.start,
                         maxLines: 2,
                       ),
@@ -224,7 +244,9 @@ class _PresetCard extends StatelessWidget {
 class _PresetImage extends StatelessWidget {
   final String? imageUrl;
   final bool isSelected;
+
   const _PresetImage({this.imageUrl, required this.isSelected});
+
   bool get _hasImage => imageUrl != null && imageUrl!.isNotEmpty;
 
   @override
@@ -234,7 +256,9 @@ class _PresetImage extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.r),
         child: CachedNetworkImage(
           imageUrl: ApiEndPoint.imageUrl + imageUrl!,
-          width: 44.w, height: 44.w, fit: BoxFit.cover,
+          width: 44.w,
+          height: 44.w,
+          fit: BoxFit.cover,
           placeholder: (_, __) => _defaultBox(),
           errorWidget: (_, __, ___) => _defaultBox(),
         ),
@@ -244,18 +268,24 @@ class _PresetImage extends StatelessWidget {
   }
 
   Widget _defaultBox() => Container(
-    width: 44.w, height: 44.w,
+    width: 44.w,
+    height: 44.w,
     decoration: BoxDecoration(
-      color: isSelected ? Colors.white.withOpacity(0.15) : const Color(0xFFEEEEEE),
+      color:
+          isSelected ? Colors.white.withOpacity(0.15) : const Color(0xFFEEEEEE),
       borderRadius: BorderRadius.circular(8.r),
     ),
-    child: Icon(Icons.kitchen_outlined, size: 24.sp,
-        color: isSelected ? Colors.white70 : const Color(0xFF888888)),
+    child: Icon(
+      Icons.kitchen_outlined,
+      size: 24.sp,
+      color: isSelected ? Colors.white70 : const Color(0xFF888888),
+    ),
   );
 }
 
 class _CustomSetupCard extends StatelessWidget {
   final KitchenSetupController controller;
+
   const _CustomSetupCard({required this.controller});
 
   @override
@@ -274,12 +304,18 @@ class _CustomSetupCard extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 44.w, height: 44.w,
+                width: 44.w,
+                height: 44.w,
                 decoration: BoxDecoration(
-                  color: isSelected ? Colors.white.withOpacity(0.15) : const Color(0xFFEEEEEE),
+                  color:
+                      isSelected
+                          ? Colors.white.withOpacity(0.15)
+                          : const Color(0xFFEEEEEE),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
-                child: Center(child: Text('🔨', style: TextStyle(fontSize: 22.sp))),
+                child: Center(
+                  child: Text('🔨', style: TextStyle(fontSize: 22.sp)),
+                ),
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -301,6 +337,7 @@ class _CustomSetupCard extends StatelessWidget {
 class _ProgressBar extends StatelessWidget {
   final int totalSteps;
   final int currentStep;
+
   const _ProgressBar({required this.totalSteps, required this.currentStep});
 
   @override
@@ -312,7 +349,10 @@ class _ProgressBar extends StatelessWidget {
             margin: EdgeInsets.only(right: index < totalSteps - 1 ? 4.w : 0),
             height: 3.h,
             decoration: BoxDecoration(
-              color: index < currentStep ? AppColors.black : const Color(0xFFE0E0E0),
+              color:
+                  index < currentStep
+                      ? AppColors.black
+                      : const Color(0xFFE0E0E0),
               borderRadius: BorderRadius.circular(2),
             ),
           ),

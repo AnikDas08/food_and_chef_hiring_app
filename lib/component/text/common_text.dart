@@ -49,13 +49,11 @@ class CommonText extends StatelessWidget {
         text,
         maxLines: maxLines,
         overflow: overflow,
-
         style: TextStyle(
           height: height ?? getLetterHeight(fontSize, fontWeight),
           fontSize: fontSize.sp,
           fontWeight: fontWeight,
           color: color,
-
           letterSpacing: getLetterSpacing(fontSize, fontWeight),
         ),
       ),
@@ -68,65 +66,65 @@ double getLetterSpacing(double fontSize, FontWeight fontWeight) {
     case 24:
       switch (fontWeight) {
         case FontWeight.w600:
-          return -0.60.sp;
+          return -0.60;
         case FontWeight.w500:
-          return -0.45.sp;
+          return -0.45;
         case FontWeight.w400:
-          return -0.30.sp;
+          return -0.30;
         default:
-          return -0.30.sp;
+          return -0.30;
       }
 
     case 16:
       switch (fontWeight) {
         case FontWeight.w600:
-          return -0.35.sp;
+          return -0.35;
         case FontWeight.w500:
-          return -0.25.sp;
+          return -0.25;
         case FontWeight.w400:
-          return -0.15.sp;
+          return -0.15;
         default:
-          return -0.15.sp;
+          return -0.15;
       }
 
     case 14:
       switch (fontWeight) {
         case FontWeight.w600:
-          return -0.28.sp;
+          return -0.28;
         case FontWeight.w500:
-          return -0.20.sp;
+          return -0.20;
         case FontWeight.w400:
-          return -0.10.sp;
+          return -0.10;
         default:
-          return -0.10.sp;
+          return -0.10;
       }
 
     case 12:
       switch (fontWeight) {
         case FontWeight.w600:
-          return -0.20.sp;
+          return -0.20;
         case FontWeight.w500:
-          return -0.12.sp;
+          return -0.12;
         case FontWeight.w400:
-          return -0.05.sp;
+          return -0.05;
         default:
-          return -0.05.sp;
+          return -0.05;
       }
 
     case 10:
       switch (fontWeight) {
         case FontWeight.w600:
-          return -0.15.sp;
+          return -0.15;
         case FontWeight.w500:
-          return -0.08.sp;
+          return -0.08;
         case FontWeight.w400:
-          return -0.02.sp;
+          return -0.02;
         default:
-          return -0.02.sp;
+          return -0.02;
       }
 
     default:
-      return 0.sp;
+      return 0;
   }
 }
 

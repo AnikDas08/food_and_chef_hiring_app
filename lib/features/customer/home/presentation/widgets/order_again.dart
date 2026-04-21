@@ -7,6 +7,7 @@ import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/text/common_text.dart';
+import '../../../../../utils/constants/app_colors.dart';
 import '../controller/home_controller.dart';
 import '../data/order_model.dart';
 
@@ -22,7 +23,7 @@ Widget orderAgain() {
           child: CommonText(
             text: 'No orders to show',
             fontSize: 12,
-            color: Color(0xff777777),
+            color: AppColors.grey,
             fontWeight: FontWeight.w400,
           ),
         );
@@ -184,7 +185,11 @@ Widget _moreItemsTile(int count) {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(CupertinoIcons.collections, size: 22, color: Color(0xff9E9E9E)),
+        const Icon(
+          CupertinoIcons.collections,
+          size: 22,
+          color: Color(0xff9E9E9E),
+        ),
         4.height,
         Text(
           '$count more\nitems',

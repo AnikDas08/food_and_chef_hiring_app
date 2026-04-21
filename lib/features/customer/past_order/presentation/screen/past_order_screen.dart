@@ -1,9 +1,12 @@
 // lib/features/orders/view/past_order_screen.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
+import '../../../../../utils/constants/app_colors.dart';
 import '../controller/past_order_controller.dart';
 import '../widgets/past_item.dart';
 
@@ -13,31 +16,29 @@ class PastOrderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: appBarOpacity(),
+        title: const CommonText(
+          text: 'Booking History',
+          fontWeight: FontWeight.w600,
+          fontSize: 24,
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CommonText(
-                text: AppString.pastBookings,
-                fontWeight: FontWeight.w600,
-                fontSize: 24,
-                color: Color(0xff272727),
-                bottom: 8,
-              ),
-
               Expanded(
                 child: GetBuilder<PastOrderController>(
                   init: PastOrderController(),
                   builder: (controller) {
-
                     // ── Loading ────────────────────────────
                     if (controller.isLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return const Center(child: CircularProgressIndicator());
                     }
 
                     // ── Empty ──────────────────────────────
@@ -49,12 +50,14 @@ class PastOrderScreen extends StatelessWidget {
                             Icon(
                               Icons.receipt_long_outlined,
                               size: 64,
-                              color: Color(0xff777777),
+                              color: AppColors.grey,
                             ),
                             SizedBox(height: 12),
                             CommonText(
-                              text: 'No past orders found',
-                              color: Color(0xff777777),
+                              text: 'No bookings',
+                              color: AppColors.grey,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
                             ),
                           ],
                         ),
@@ -80,7 +83,7 @@ class PastOrderScreen extends StatelessWidget {
                                 ),
                               );
                             }
-                           /* if (!controller.hasMorePages) {
+                            /* if (!controller.hasMorePages) {
                               return const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 16),
                                 child: Center(
@@ -97,10 +100,7 @@ class PastOrderScreen extends StatelessWidget {
                             return const SizedBox.shrink();
                           }
 
-                          return pastItem(
-                            context,
-                            controller.orderList[index],
-                          );
+                          return pastItem(context, controller.orderList[index]);
                         },
                       ),
                     );

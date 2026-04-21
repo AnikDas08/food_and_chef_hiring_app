@@ -20,6 +20,14 @@ class SpecialEquipmentScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.white,
+      appBar: AppBar(
+        title: const CommonText(
+          text: 'Special Equipment',
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          textAlign: TextAlign.start,
+        ),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,26 +40,18 @@ class SpecialEquipmentScreen extends StatelessWidget {
                   SizedBox(height: 12.h),
                   const _ProgressBar(totalSteps: 5, currentStep: 4),
                   SizedBox(height: 20.h),
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Icon(Icons.arrow_back_ios, size: 20.sp, color: AppColors.black),
-                  ),
-                  SizedBox(height: 24.h),
-                  const CommonText(
-                    text: 'Special Equipment',
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    textAlign: TextAlign.start,
-                  ),
+
                   SizedBox(height: 8.h),
                   const CommonText(
-                    text: 'Do you have any special equipment? These unlock more advanced recipes.',
+                    text:
+                        'Do you have any special equipment? These unlock more advanced recipes.',
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
                     color: Color(0xFF888888),
                     textAlign: TextAlign.start,
+                    maxLines: 10,
                   ),
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 10.h),
                 ],
               ),
             ),
@@ -59,7 +59,9 @@ class SpecialEquipmentScreen extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 if (controller.isLoadingEquipment.value) {
-                  return const Center(child: CircularProgressIndicator(color: Colors.black));
+                  return const Center(
+                    child: CircularProgressIndicator(color: Colors.black),
+                  );
                 }
                 if (controller.equipmentError.value.isNotEmpty) {
                   return _ErrorRetry(
@@ -71,7 +73,11 @@ class SpecialEquipmentScreen extends StatelessWidget {
                 final items = controller.itemsFor(_category);
                 if (items.isEmpty) {
                   return const Center(
-                    child: CommonText(text: 'No special equipment found.', fontSize: 13, color: Color(0xFF888888)),
+                    child: CommonText(
+                      text: 'No special equipment found.',
+                      fontSize: 12,
+                      color: AppColors.grey,
+                    ),
                   );
                 }
 
@@ -144,22 +150,35 @@ class _CollapsibleSection extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   RichText(
-                    text: TextSpan(children: [
-                      TextSpan(
-                        text: title,
-                        style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w700, color: AppColors.black),
-                      ),
-                      TextSpan(
-                        text: ' (optional)',
-                        style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w400, color: const Color(0xFF888888)),
-                      ),
-                    ]),
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: title,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: ' (optional)',
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xFF888888),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Row(
                     children: [
                       if (!expanded && count > 0) ...[
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 2.h,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.black,
                             borderRadius: BorderRadius.circular(20.r),
@@ -175,7 +194,11 @@ class _CollapsibleSection extends StatelessWidget {
                       AnimatedRotation(
                         turns: expanded ? 0 : 0.5,
                         duration: const Duration(milliseconds: 250),
-                        child: Icon(Icons.keyboard_arrow_up_rounded, size: 22.sp, color: AppColors.black),
+                        child: Icon(
+                          Icons.keyboard_arrow_up_rounded,
+                          size: 22.sp,
+                          color: AppColors.black,
+                        ),
                       ),
                     ],
                   ),
@@ -202,7 +225,8 @@ class _CollapsibleSection extends StatelessWidget {
               }),
             ),
             secondChild: const SizedBox.shrink(),
-            crossFadeState: expanded ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+            crossFadeState:
+                expanded ? CrossFadeState.showFirst : CrossFadeState.showSecond,
             duration: const Duration(milliseconds: 250),
           ),
           const Divider(height: 1, color: Color(0xFFEEEEEE)),
@@ -246,18 +270,25 @@ class _EquipmentCheckRow extends StatelessWidget {
               ),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
-                width: 22.w, height: 22.w,
+                width: 22.w,
+                height: 22.w,
                 decoration: BoxDecoration(
                   color: isChecked ? AppColors.black : Colors.transparent,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: isChecked ? AppColors.black : const Color(0xFFCCCCCC),
+                    color:
+                        isChecked ? AppColors.black : const Color(0xFFCCCCCC),
                     width: 1.5,
                   ),
                 ),
-                child: isChecked
-                    ? Icon(Icons.check_rounded, size: 14.sp, color: AppColors.white)
-                    : null,
+                child:
+                    isChecked
+                        ? Icon(
+                          Icons.check_rounded,
+                          size: 14.sp,
+                          color: AppColors.white,
+                        )
+                        : null,
               ),
             ],
           ),
@@ -270,6 +301,7 @@ class _EquipmentCheckRow extends StatelessWidget {
 class _ErrorRetry extends StatelessWidget {
   final String message;
   final VoidCallback onRetry;
+
   const _ErrorRetry({required this.message, required this.onRetry});
 
   @override
@@ -278,11 +310,20 @@ class _ErrorRetry extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          CommonText(text: message, fontSize: 13, color: const Color(0xFF888888), maxLines: 3),
+          CommonText(
+            text: message,
+            fontSize: 13,
+            color: const Color(0xFF888888),
+            maxLines: 3,
+          ),
           SizedBox(height: 12.h),
           GestureDetector(
             onTap: onRetry,
-            child: const CommonText(text: 'Tap to retry', fontSize: 13, fontWeight: FontWeight.w600),
+            child: const CommonText(
+              text: 'Tap to retry',
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),
@@ -293,6 +334,7 @@ class _ErrorRetry extends StatelessWidget {
 class _ProgressBar extends StatelessWidget {
   final int totalSteps;
   final int currentStep;
+
   const _ProgressBar({required this.totalSteps, required this.currentStep});
 
   @override
@@ -304,7 +346,10 @@ class _ProgressBar extends StatelessWidget {
             margin: EdgeInsets.only(right: index < totalSteps - 1 ? 4.w : 0),
             height: 3.h,
             decoration: BoxDecoration(
-              color: index < currentStep ? AppColors.black : const Color(0xFFE0E0E0),
+              color:
+                  index < currentStep
+                      ? AppColors.black
+                      : const Color(0xFFE0E0E0),
               borderRadius: BorderRadius.circular(2),
             ),
           ),

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../controller/address_controller.dart';
 import '../widgets/address_item.dart';
@@ -35,8 +36,13 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        title: const CommonText(
+          text: AppString.address,
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+        ),
         elevation: 0,
-        automaticallyImplyLeading: false,
+        flexibleSpace: appBarOpacity(),
         leadingWidth: 60,
       ),
       body: SafeArea(
@@ -47,21 +53,6 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CommonText(
-                    text: AppString.address,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
-                  ),
-                  const CommonText(
-                    text: 'ACTIVE ADDRESS',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff272727),
-                    top: 24,
-                    bottom: 12,
-                  ),
-
                   Expanded(
                     child:
                         controller.isLoading

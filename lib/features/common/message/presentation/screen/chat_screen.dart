@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
+import 'package:new_untitled/utils/constants/app_colors.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
@@ -94,7 +95,8 @@ class ChatListScreen extends StatelessWidget {
                             itemCount: controller.filteredChats.length,
                             padding: EdgeInsets.zero,
                             itemBuilder: (context, index) {
-                              final ChatModel item = controller.filteredChats[index];
+                              final ChatModel item =
+                                  controller.filteredChats[index];
                               return InkWell(
                                 onTap:
                                     () => Get.toNamed(
@@ -133,14 +135,14 @@ class ChatListScreen extends StatelessWidget {
             text: 'No chats yet',
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: Color(0xff777777),
+            color: AppColors.grey,
           ),
           SizedBox(height: 8.h),
           const CommonText(
             text:
                 'Book a chef to chat about the final details\n for your cooking session.',
             fontSize: 12,
-            color: Color(0xff777777),
+            color: AppColors.grey,
             fontWeight: FontWeight.w400,
             maxLines: 2,
           ),

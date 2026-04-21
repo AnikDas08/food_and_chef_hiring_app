@@ -17,7 +17,9 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
 
   // ── Bottom sheet: Camera or Gallery ──
   void _showImageSourceSheet(
-      BuildContext context, KitchenSetupController controller) {
+    BuildContext context,
+    KitchenSetupController controller,
+  ) {
     showModalBottomSheet(
       context: context,
       backgroundColor: AppColors.white,
@@ -93,6 +95,14 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.white,
+      appBar: AppBar(
+        title: const CommonText(
+          text: 'Upload a Photo',
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          textAlign: TextAlign.start,
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -102,27 +112,12 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
               SizedBox(height: 12.h),
               const _ProgressBar(totalSteps: 5, currentStep: 5),
               SizedBox(height: 20.h),
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Icon(
-                  Icons.arrow_back_ios,
-                  size: 20.sp,
-                  color: AppColors.black,
-                ),
-              ),
-              SizedBox(height: 24.h),
-              const CommonText(
-                text: 'Upload a photo of your kitchen',
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-                maxLines: 3,
-                textAlign: TextAlign.start,
-              ),
+
               SizedBox(height: 8.h),
               const CommonText(
                 text:
-                'Provide us with a photo of your kitchen to help the chef prepare for your order.',
-                fontSize: 13,
+                    'Provide us with a photo of your kitchen to help the chef prepare for your order.',
+                fontSize: 12,
                 fontWeight: FontWeight.w400,
                 color: Color(0xFF888888),
                 maxLines: 3,
@@ -143,92 +138,96 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
                       color: const Color(0xFFF7F7F7),
                       borderRadius: BorderRadius.circular(14.r),
                       border: Border.all(
-                        color: image != null
-                            ? AppColors.black
-                            : const Color(0xFFE0E0E0),
+                        color:
+                            image != null
+                                ? AppColors.black
+                                : const Color(0xFFE0E0E0),
                         width: 1.5,
                       ),
                     ),
-                    child: image == null
-                    // ── Empty state ──
-                        ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.cloud_upload_outlined,
-                          size: 38.sp,
-                          color: const Color(0xFF888888),
-                        ),
-                        SizedBox(height: 10.h),
-                        const CommonText(
-                          text: 'Select a picture',
-                          fontSize: 13,
-                          color: Color(0xFF888888),
-                        ),
-                        SizedBox(height: 4.h),
-                        const CommonText(
-                          text: 'Tap to open camera or gallery',
-                          fontSize: 11,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFFBBBBBB),
-                        ),
-                      ],
-                    )
-                    // ── Selected image ──
-                        : Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(13.r),
-                          child: Image.file(
-                            File(image.path),
-                            width: double.infinity,
-                            height: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        // Remove button
-                        Positioned(
-                          top: 8.h,
-                          right: 8.w,
-                          child: GestureDetector(
-                            onTap: controller.removeImage,
-                            child: Container(
-                              width: 30.w,
-                              height: 30.w,
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.6),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.close_rounded,
-                                color: AppColors.white,
-                                size: 18.sp,
-                              ),
+                    child:
+                        image == null
+                            // ── Empty state ──
+                            ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.cloud_upload_outlined,
+                                  size: 38.sp,
+                                  color: const Color(0xFF888888),
+                                ),
+                                SizedBox(height: 10.h),
+                                const CommonText(
+                                  text: 'Select a picture',
+                                  fontSize: 13,
+                                  color: Color(0xFF888888),
+                                ),
+                                SizedBox(height: 4.h),
+                                const CommonText(
+                                  text: 'Tap to open camera or gallery',
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xFFBBBBBB),
+                                ),
+                              ],
+                            )
+                            // ── Selected image ──
+                            : Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(13.r),
+                                  child: Image.file(
+                                    File(image.path),
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                // Remove button
+                                Positioned(
+                                  top: 8.h,
+                                  right: 8.w,
+                                  child: GestureDetector(
+                                    onTap: controller.removeImage,
+                                    child: Container(
+                                      width: 30.w,
+                                      height: 30.w,
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.6),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        Icons.close_rounded,
+                                        color: AppColors.white,
+                                        size: 18.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                // Change photo label at bottom
+                                Positioned(
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 8.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.45),
+                                      borderRadius: BorderRadius.vertical(
+                                        bottom: Radius.circular(13.r),
+                                      ),
+                                    ),
+                                    child: const CommonText(
+                                      text: 'Tap to change photo',
+                                      fontSize: 12,
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
-                        // Change photo label at bottom
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 8.h),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.45),
-                              borderRadius: BorderRadius.vertical(
-                                bottom: Radius.circular(13.r),
-                              ),
-                            ),
-                            child: const CommonText(
-                              text: 'Tap to change photo',
-                              fontSize: 12,
-                              color: AppColors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 );
               }),
@@ -244,7 +243,8 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
                   SizedBox(width: 6.w),
                   const Expanded(
                     child: CommonText(
-                      text: 'We only show your photo to the chef after booking.',
+                      text:
+                          'We only show your photo to the chef after booking.',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Color(0xFF27AE60),
@@ -258,27 +258,28 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
               const Spacer(),
 
               SizedBox(height: 10.h),
-              Obx(
-                    () {
-                  final submitting = controller.isSubmittingCustom.value;
-                  return CommonButton(
-                    titleText: submitting ? 'Please wait...' : 'Continue',
-                    buttonColor: submitting
-                        ? const Color(0xFFAAAAAA)
-                        : AppColors.black,
-                    onTap: submitting
-                        ? null
-                        : () async {
-                      final success =
-                      await controller.submitCustomKitchen();
-                      if (success) {
-                        Get.offAll(()=>const CustomerHomeScreen());
-                        Utils.successSnackBar('Successful', 'Successfully create kitchen');
-                      }
-                    },
-                  );
-                },
-              ),
+              Obx(() {
+                final submitting = controller.isSubmittingCustom.value;
+                return CommonButton(
+                  titleText: submitting ? 'Please wait...' : 'Continue',
+                  buttonColor:
+                      submitting ? const Color(0xFFAAAAAA) : AppColors.black,
+                  onTap:
+                      submitting
+                          ? null
+                          : () async {
+                            final success =
+                                await controller.submitCustomKitchen();
+                            if (success) {
+                              Get.offAll(() => const CustomerHomeScreen());
+                              Utils.successSnackBar(
+                                'Successful',
+                                'Successfully create kitchen',
+                              );
+                            }
+                          },
+                );
+              }),
               SizedBox(height: 20.h),
 
               CommonButton(
@@ -288,7 +289,7 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
                 },
                 buttonColor: Colors.transparent,
                 titleColor: Colors.black,
-              )
+              ),
             ],
           ),
         ),
@@ -330,11 +331,7 @@ class _SourceTile extends StatelessWidget {
               child: Icon(icon, size: 22.sp, color: AppColors.black),
             ),
             SizedBox(width: 14.w),
-            CommonText(
-              text: label,
-              fontSize: 15,
-              textAlign: TextAlign.start,
-            ),
+            CommonText(text: label, fontSize: 15, textAlign: TextAlign.start),
           ],
         ),
       ),
@@ -360,9 +357,10 @@ class _ProgressBar extends StatelessWidget {
             margin: EdgeInsets.only(right: index < totalSteps - 1 ? 4.w : 0),
             height: 3.h,
             decoration: BoxDecoration(
-              color: index < currentStep
-                  ? AppColors.black
-                  : const Color(0xFFE0E0E0),
+              color:
+                  index < currentStep
+                      ? AppColors.black
+                      : const Color(0xFFE0E0E0),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
