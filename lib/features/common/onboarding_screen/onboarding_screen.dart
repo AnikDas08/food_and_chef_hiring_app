@@ -74,7 +74,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           buttonColor: Color(0xffF2F2F2),
                           borderColor: Colors.transparent,
                           titleColor: Colors.black,
-                          titleSize: 16,
                           onTap: () => Get.toNamed(AppRoutes.signUp),
                         ),
                         20.height,

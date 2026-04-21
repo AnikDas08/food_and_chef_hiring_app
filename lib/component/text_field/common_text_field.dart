@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../utils/constants/app_colors.dart';
+import '../text/common_text.dart';
 
 // ignore: must_be_immutable
 class CommonTextField extends StatelessWidget {
@@ -27,8 +28,8 @@ class CommonTextField extends StatelessWidget {
     this.hintTextSize = 14,
     this.inputFormatters,
     this.fillColor = const Color(0xffF2F2F2),
-    this.hintTextColor = AppColors.textFiledColor,
-    this.labelTextColor = AppColors.textFiledColor,
+    this.hintTextColor = const Color(0xff777777),
+    this.labelTextColor = const Color(0xff777777),
     this.textColor = AppColors.black,
     this.borderColor = AppColors.transparent,
     this.onSubmitted,
@@ -119,14 +120,18 @@ class CommonTextField extends StatelessWidget {
           hintText: hintText,
           labelText: labelText,
           hintStyle: TextStyle(
-            fontSize: hintTextSize,
-            color: hintTextColor,
+            height: getLetterHeight(hintTextSize, FontWeight.w400),
+            fontSize: fontSize.sp,
             fontWeight: FontWeight.w400,
+            color: hintTextColor,
+            letterSpacing: getLetterSpacing(fontSize, FontWeight.w400),
           ),
           labelStyle: TextStyle(
-            fontSize: fontSize,
-            color: labelTextColor,
+            height: getLetterHeight(hintTextSize, FontWeight.w400),
+            fontSize: fontSize.sp,
             fontWeight: FontWeight.w400,
+            color: hintTextColor,
+            letterSpacing: getLetterSpacing(fontSize, FontWeight.w400),
           ),
           prefixText: prefixText,
           prefixStyle: TextStyle(

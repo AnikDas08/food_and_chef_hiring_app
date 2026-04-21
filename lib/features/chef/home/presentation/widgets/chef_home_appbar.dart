@@ -6,11 +6,11 @@ import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../common/notifications/presentation/controller/notifications_controller.dart';
 import '../controller/chef_home_controller.dart';
-
 
 class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ChefHomeAppBar({super.key});
@@ -24,29 +24,7 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       centerTitle: false,
-      flexibleSpace: LiquidGlassLayer(
-        child: LiquidGlass(
-          shape: LiquidRoundedSuperellipse(borderRadius: 0),
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.white.withOpacity(0.2),
-                  Colors.white.withOpacity(0.05),
-                ],
-              ),
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.black.withOpacity(0.05),
-                  width: 0.5,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      flexibleSpace: appBarOpacity(),
       title: Row(
         children: [
           Expanded(
@@ -93,10 +71,7 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                         color: Colors.black.withValues(alpha: 0.07),
                       ),
                     ),
-                    child: const Icon(
-                      CupertinoIcons.bell,
-                      color: Color(0xff272727),
-                    ),
+                    child: Icon(CupertinoIcons.bell, color: Color(0xff272727)),
                   ),
                 ),
               ),
@@ -105,7 +80,8 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                 if (!Get.isRegistered<NotificationsController>()) {
                   return const SizedBox.shrink();
                 }
-                final count = Get.find<NotificationsController>().unreadCount.value;
+                final count =
+                    Get.find<NotificationsController>().unreadCount.value;
                 if (count == 0) return const SizedBox.shrink();
                 return Positioned(
                   top: -4,
@@ -116,7 +92,10 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                       color: Color(0xffFF3B30),
                       shape: BoxShape.circle,
                     ),
-                    constraints: BoxConstraints(minWidth: 18.w, minHeight: 18.w),
+                    constraints: BoxConstraints(
+                      minWidth: 18.w,
+                      minHeight: 18.w,
+                    ),
                     child: Text(
                       count > 99 ? '99+' : count.toString(),
                       style: TextStyle(
@@ -132,6 +111,7 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             ],
           ),
         ),
+
         12.width,
       ],
     );
@@ -139,4 +119,54 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+AppBar chefHomeAppBar() {
+  return AppBar(
+    title: Row(
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CommonText(
+                text: "Hello, Javier 👋",
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff272727),
+              ),
+              CommonText(
+                text: "Let's get cooking!",
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: Color(0xff777777),
+                left: 4,
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+    actions: [
+      InkWell(
+        onTap: () => Get.toNamed(AppRoutes.notifications),
+        child: LiquidGlassLayer(
+          child: LiquidGlass(
+            shape: LiquidRoundedSuperellipse(borderRadius: 30),
+            child: Container(
+              padding: EdgeInsets.all(8.sp),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
+              ),
+              child: Icon(CupertinoIcons.bell, color: Color(0xff272727)),
+            ),
+          ),
+        ),
+      ),
+      12.width,
+    ],
+  );
 }

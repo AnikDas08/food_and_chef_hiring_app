@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
-
 import '../other_widgets/common_loader.dart';
 import '../text/common_text.dart';
 
@@ -24,7 +22,7 @@ class CommonButton extends StatefulWidget {
     required this.titleText,
     this.titleColor = AppColors.white,
     this.buttonColor = AppColors.primaryColor,
-    this.titleSize = 16,
+    this.titleSize = 14,
     this.buttonRadius = 20,
     this.titleWeight = FontWeight.w500,
     this.buttonHeight = 60,
@@ -59,8 +57,8 @@ class _CommonButtonState extends State<CommonButton>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: widget.buttonHeight.h,
-      width: widget.buttonWidth.w,
+      height: widget.buttonHeight,
+      width: widget.buttonWidth,
       child: _buildElevatedButton(),
     );
   }
@@ -93,7 +91,7 @@ class _CommonButtonState extends State<CommonButton>
       padding: WidgetStateProperty.all(EdgeInsets.zero),
       shape: WidgetStateProperty.all(
         RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(widget.buttonRadius.r),
+          borderRadius: BorderRadius.circular(widget.buttonRadius),
           side: BorderSide(
             color: widget.borderColor ?? Colors.transparent,
             width: widget.borderWidth,

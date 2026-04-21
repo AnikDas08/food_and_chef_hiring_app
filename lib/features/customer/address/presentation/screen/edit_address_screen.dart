@@ -10,6 +10,7 @@ import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
+import '../../../../../component/button/back_button.dart';
 import '../../../../../component/google_map/google_map.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../data/address_model.dart';
@@ -32,12 +33,9 @@ class EditAddressScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Edit Address"),
-      ),
+      appBar: AppBar(title: const Text("Edit Address"), leading: backButton()),
       body: GetBuilder<AddressController>(
         builder: (controller) {
-
           // ── Full screen loader while fetching ────────────
           if (controller.isLoadingEdit) {
             return const Center(child: CircularProgressIndicator());
@@ -80,24 +78,29 @@ class EditAddressScreen extends StatelessWidget {
                           right: 0,
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                left: 16, right: 16, bottom: 16),
+                              left: 16,
+                              right: 16,
+                              bottom: 16,
+                            ),
                             child: GetBuilder<AddressController>(
                               builder: (ctrl) {
                                 return CommonButton(
                                   buttonHeight: 48,
                                   buttonRadius: 20,
-                                  titleText: ctrl.isLoadingCurrentLocation
-                                      ? "Getting Location..."
-                                      : AppString.useCurrentLocation,
+                                  titleText:
+                                      ctrl.isLoadingCurrentLocation
+                                          ? "Getting Location..."
+                                          : AppString.useCurrentLocation,
                                   isLoading: ctrl.isLoadingCurrentLocation,
-                                  onTap: ctrl.isLoadingCurrentLocation
-                                      ? null
-                                      : () {
-                                    // Same method as AddAddressScreen —
-                                    // gets GPS, reverse geocodes, and
-                                    // fills address + details fields
-                                    ctrl.getCurrentLocationAndFillAddress();
-                                  },
+                                  onTap:
+                                      ctrl.isLoadingCurrentLocation
+                                          ? null
+                                          : () {
+                                            // Same method as AddAddressScreen —
+                                            // gets GPS, reverse geocodes, and
+                                            // fills address + details fields
+                                            ctrl.getCurrentLocationAndFillAddress();
+                                          },
                                 );
                               },
                             ),
@@ -258,17 +261,18 @@ class EditAddressScreen extends StatelessWidget {
       persistentFooterButtons: [
         SafeArea(
           child: GetBuilder<AddressController>(
-            builder: (controller) => Column(
-              children: [
-                10.height,
-                controller.isSubmitting
-                    ? const Center(child: CircularProgressIndicator())
-                    : CommonButton(
-                  titleText: AppString.editAddress,
-                  onTap: controller.updateAddress,
+            builder:
+                (controller) => Column(
+                  children: [
+                    10.height,
+                    controller.isSubmitting
+                        ? const Center(child: CircularProgressIndicator())
+                        : CommonButton(
+                          titleText: AppString.editAddress,
+                          onTap: controller.updateAddress,
+                        ),
+                  ],
                 ),
-              ],
-            ),
           ),
         ),
       ],
@@ -303,54 +307,55 @@ class _SuggestionList extends StatelessWidget {
           ),
         ],
       ),
-      child: isLoading
-          ? const Padding(
-        padding: EdgeInsets.all(12),
-        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
-      )
-          : suggestions.isEmpty
-          ? const Padding(
-        padding: EdgeInsets.all(12),
-        child: Text(
-          "No results found",
-          style: TextStyle(color: Color(0xff777777)),
-        ),
-      )
-          : ListView.separated(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: suggestions.length,
-        separatorBuilder: (_, __) => const Divider(height: 1),
-        itemBuilder: (context, i) {
-          final s = suggestions[i];
-          return ListTile(
-            dense: true,
-            leading: const Icon(
-              Icons.location_on_outlined,
-              color: Color(0xffFD713F),
-              size: 18,
-            ),
-            title: Text(
-              s['main_text'] ?? '',
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff272727),
+      child:
+          isLoading
+              ? const Padding(
+                padding: EdgeInsets.all(12),
+                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+              )
+              : suggestions.isEmpty
+              ? const Padding(
+                padding: EdgeInsets.all(12),
+                child: Text(
+                  "No results found",
+                  style: TextStyle(color: Color(0xff777777)),
+                ),
+              )
+              : ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: suggestions.length,
+                separatorBuilder: (_, __) => const Divider(height: 1),
+                itemBuilder: (context, i) {
+                  final s = suggestions[i];
+                  return ListTile(
+                    dense: true,
+                    leading: const Icon(
+                      Icons.location_on_outlined,
+                      color: Color(0xffFD713F),
+                      size: 18,
+                    ),
+                    title: Text(
+                      s['main_text'] ?? '',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff272727),
+                      ),
+                    ),
+                    subtitle: Text(
+                      s['secondary_text'] ?? '',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Color(0xff777777),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: () => onTap(s),
+                  );
+                },
               ),
-            ),
-            subtitle: Text(
-              s['secondary_text'] ?? '',
-              style: const TextStyle(
-                fontSize: 11,
-                color: Color(0xff777777),
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            onTap: () => onTap(s),
-          );
-        },
-      ),
     );
   }
 }

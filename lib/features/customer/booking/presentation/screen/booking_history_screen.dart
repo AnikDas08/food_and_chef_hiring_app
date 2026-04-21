@@ -52,50 +52,52 @@ class BookingHistoryScreen extends StatelessWidget {
                         return Padding(
                           padding: EdgeInsets.only(right: 8.w),
                           child:
-                          InkWell(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () {
-                              controller.onChangeBookingHistory(value);
-                            },
-                            child: LiquidGlassLayer(
-                              child: LiquidGlass(
-                                shape: LiquidRoundedSuperellipse(
-                                  borderRadius: 30.r,
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 16.w,
-                                    vertical: 8.h,
-                                  ),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () {
+                                  controller.onChangeBookingHistory(value);
+                                },
+                                child: LiquidGlassLayer(
+                                  child: LiquidGlass(
+                                    shape: LiquidRoundedSuperellipse(
+                                      borderRadius: 30.r,
+                                    ),
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 16.w,
+                                        vertical: 8.h,
+                                      ),
 
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey.withValues(alpha: 0.2),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.grey.withValues(
+                                            alpha: 0.2,
+                                          ),
+                                        ),
+                                        color:
+                                            controller.selectedBookingHistory ==
+                                                    value
+                                                ? Color(0xff272727)
+                                                : Colors.transparent,
+                                        borderRadius: BorderRadius.circular(
+                                          30.sp,
+                                        ),
+                                      ),
+                                      child: CommonText(
+                                        text: value,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color:
+                                            controller.selectedBookingHistory ==
+                                                    value
+                                                ? Colors.white
+                                                : Color(0xff272727),
+                                      ),
                                     ),
-                                    color:
-                                    controller.selectedBookingHistory ==
-                                        value
-                                        ? Color(0xff272727)
-                                        : Colors.transparent,
-                                    borderRadius: BorderRadius.circular(
-                                      30.sp,
-                                    ),
-                                  ),
-                                  child: CommonText(
-                                    text: value,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color:
-                                    controller.selectedBookingHistory ==
-                                        value
-                                        ? Colors.white
-                                        : Color(0xff272727),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ).center,
+                              ).center,
                         );
                       },
                     ),
@@ -134,9 +136,10 @@ class BookingHistoryScreen extends StatelessWidget {
                     ),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: isSelected
-                          ? const Color(0xff272727)
-                          : const Color(0xffF2F2F2).withOpacity(0.6),
+                      color:
+                          isSelected
+                              ? const Color(0xff272727)
+                              : const Color(0xffF2F2F2).withOpacity(0.6),
                       borderRadius: BorderRadius.circular(30.r),
                     ),
                     child: CommonText(
@@ -164,18 +167,28 @@ class BookingHistoryScreen extends StatelessWidget {
       onRefresh: () => controller.fetchOrders(isRefresh: true),
       // Displacement pushes the spinner down so it's not hidden by the AppBar
       displacement: 130.h,
-      child: ListView.builder(
-        // Padding top must be enough to clear the AppBar height (80h toolbar + 50h tabs + status bar)
-        padding: EdgeInsets.fromLTRB(16.w, 140.h, 16.w, 100.h),
-        itemCount:
-            controller.orders.length + (controller.isPaginationLoading ? 1 : 0),
-        itemBuilder: (context, index) {
-          if (index == controller.orders.length) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return bookingItem(controller.orders[index]);
-        },
-      ),
+      child:
+          controller.orders.isEmpty
+              ? CommonText(
+                text: "No bookings",
+                fontSize: 12,
+                color: Color(0xff777777),
+                fontWeight: FontWeight.w400,
+              ).center
+              : ListView.builder(
+                // Padding top must be enough to clear the AppBar height (80h toolbar + 50h tabs + status bar)
+                padding: EdgeInsets.fromLTRB(16.w, 140.h, 16.w, 100.h),
+                itemCount:
+                    controller.orders.length +
+                    (controller.isPaginationLoading ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index == controller.orders.length) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  return bookingItem(controller.orders[index]);
+                },
+              ),
     );
   }
 }

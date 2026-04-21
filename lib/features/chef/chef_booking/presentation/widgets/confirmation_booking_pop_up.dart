@@ -44,7 +44,6 @@ confirmBookingPopUp({required String orderMongoId}) {
                 CommonButton(
                   titleText: AppString.accept,
                   buttonHeight: 48,
-                  titleSize: 16,
                   buttonRadius: 16,
                   titleColor: const Color(0xffFFFFFF),
                   onTap: () async {
@@ -89,7 +88,6 @@ confirmBookingPopUp({required String orderMongoId}) {
                 CommonButton(
                   titleText: AppString.decline,
                   buttonHeight: 48,
-                  titleSize: 16,
                   buttonRadius: 16,
                   buttonColor: const Color(0xffF2F2F2),
                   borderColor: Colors.transparent,

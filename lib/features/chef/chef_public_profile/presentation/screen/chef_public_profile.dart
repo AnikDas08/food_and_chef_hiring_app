@@ -188,7 +188,6 @@ class ChefPublicProfile extends StatelessWidget {
                         CommonButton(
                           titleText: AppString.checkAvailability,
                           titleColor: Colors.white,
-                          titleSize: 14,
                         ),
 
                         CommonText(

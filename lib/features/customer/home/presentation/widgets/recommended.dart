@@ -10,7 +10,12 @@ class _ShimmerBox extends StatefulWidget {
   final double width;
   final double height;
   final double borderRadius;
-  const _ShimmerBox({required this.width, required this.height, this.borderRadius = 8});
+
+  const _ShimmerBox({
+    required this.width,
+    required this.height,
+    this.borderRadius = 8,
+  });
 
   @override
   State<_ShimmerBox> createState() => _ShimmerBoxState();
@@ -28,9 +33,10 @@ class _ShimmerBoxState extends State<_ShimmerBox>
       vsync: this,
       duration: const Duration(milliseconds: 1200),
     )..repeat(reverse: true);
-    _animation = Tween<double>(begin: 0.3, end: 0.9).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _animation = Tween<double>(
+      begin: 0.3,
+      end: 0.9,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -43,14 +49,15 @@ class _ShimmerBoxState extends State<_ShimmerBox>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _animation,
-      builder: (_, __) => Container(
-        width: widget.width,
-        height: widget.height,
-        decoration: BoxDecoration(
-          color: Color(0xffE0E0E0).withOpacity(_animation.value),
-          borderRadius: BorderRadius.circular(widget.borderRadius),
-        ),
-      ),
+      builder:
+          (_, __) => Container(
+            width: widget.width,
+            height: widget.height,
+            decoration: BoxDecoration(
+              color: Color(0xffE0E0E0).withOpacity(_animation.value),
+              borderRadius: BorderRadius.circular(widget.borderRadius),
+            ),
+          ),
     );
   }
 }
@@ -124,7 +131,7 @@ Widget recommended() {
               ),*/
               CommonText(
                 text: "No nearby chefs found",
-                fontSize: 12.sp,
+                fontSize: 12,
                 color: Color(0xff777777),
                 fontWeight: FontWeight.w400,
               ),
@@ -137,10 +144,9 @@ Widget recommended() {
                     color: Color(0xffFD713F),
                     fontWeight: FontWeight.w600,
                   ),
-                ),*/
-                CommonText(
+                ),*/ CommonText(
                   text: "Retry",
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   color: Color(0xff272727),
                   fontWeight: FontWeight.w500,
                 ),
@@ -159,13 +165,14 @@ Widget recommended() {
             tween: Tween(begin: 0.0, end: 1.0),
             duration: Duration(milliseconds: 300 + (index * 80)),
             curve: Curves.easeOut,
-            builder: (_, value, child) => Opacity(
-              opacity: value,
-              child: Transform.translate(
-                offset: Offset(20 * (1 - value), 0),
-                child: child,
-              ),
-            ),
+            builder:
+                (_, value, child) => Opacity(
+                  opacity: value,
+                  child: Transform.translate(
+                    offset: Offset(20 * (1 - value), 0),
+                    child: child,
+                  ),
+                ),
             child: chefItem(chef: controller.nearbyChefsList[index]),
           );
         },

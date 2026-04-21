@@ -1,4 +1,3 @@
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
@@ -38,10 +37,7 @@ class SignUpScreen extends StatelessWidget {
                 color: Color(0xffF6F6F6),
                 shape: BoxShape.circle,
               ),
-              child: CommonImage(
-                imageSrc: AppIcons.backIcon,
-                size: 24,
-              ),
+              child: CommonImage(imageSrc: AppIcons.backIcon, size: 24),
             ),
           ),
         ),
@@ -120,7 +116,7 @@ class SignUpScreen extends StatelessWidget {
 
                   28.height,
                   Container(
-                    height: 60.h,
+                    height: 60,
                     decoration: BoxDecoration(
                       color: Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(20.r),
@@ -140,7 +136,7 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   12.height,
                   Container(
-                    height: 60.h,
+                    height: 60,
                     decoration: BoxDecoration(
                       color: Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(20.r),
@@ -159,38 +155,40 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
 
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 32),
-                  child: RichText(
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
-                    text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff777777),
-                      ),
-                      children: [
-                        TextSpan(text: "Sign up to Privae as a "),
-                        TextSpan(
-                          text: "Chef",
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 32),
+                      child: RichText(
+                        textAlign: TextAlign.start,
+                        maxLines: 2,
+                        text: TextSpan(
                           style: TextStyle(
-                            fontWeight: FontWeight.w600, // different style
-                            color: Color(0xff000000),     // change color যদি চাও
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff777777),
                           ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Get.offNamed(AppRoutes.signUpChef);
-                            },
+                          children: [
+                            TextSpan(text: "Sign up to Privae as a "),
+                            TextSpan(
+                              text: "Chef",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600, // different style
+                                color: Color(
+                                  0xff000000,
+                                ), // change color যদি চাও
+                              ),
+                              recognizer:
+                                  TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Get.offNamed(AppRoutes.signUpChef);
+                                    },
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              )
-
-              ],
+                ],
               ),
             ),
           );

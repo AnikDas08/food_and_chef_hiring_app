@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,91 +28,98 @@ class ChatListScreen extends StatelessWidget {
       extendBody: true,
       backgroundColor: Colors.white,
 
-        appBar: AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
 
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.transparent,
-          centerTitle: false,
-          flexibleSpace: appBarOpacity(),
-          title: const CommonText(
-            text: AppString.chat,
-            fontWeight: FontWeight.w600,
-            fontSize: 24,
-          ),
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(60),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: LiquidGlassLayer(
-                child: LiquidGlass(
-                  shape: LiquidRoundedSuperellipse(borderRadius: 30.r),
-                  child: CommonTextField(
-                    hintText: AppString.search,
-                    keyboardType: TextInputType.text,
-                    borderRadius: 30,
-                    fillColor: Color(0xffFAFAFA).withValues(alpha: 0.7),
-                    borderColor: Colors.grey.withValues(alpha: 0.3),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        centerTitle: false,
+        flexibleSpace: appBarOpacity(),
+        title: const CommonText(
+          text: AppString.chat,
+          fontWeight: FontWeight.w600,
+          fontSize: 24,
+        ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(60),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: LiquidGlassLayer(
+              child: LiquidGlass(
+                shape: LiquidRoundedSuperellipse(borderRadius: 30.r),
+                child: CommonTextField(
+                  hintText: AppString.search,
+                  keyboardType: TextInputType.text,
+                  borderRadius: 30,
+                  fillColor: Color(0xffFAFAFA).withValues(alpha: 0.7),
+                  borderColor: Colors.grey.withValues(alpha: 0.3),
 
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.only(left: 16.w),
-                      child: Icon(CupertinoIcons.search),
-                    ),
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.only(left: 16.w),
+                    child: Icon(CupertinoIcons.search),
                   ),
                 ),
               ),
             ),
           ),
         ),
-
+      ),
 
       /// Body Section
       body: GetBuilder<ChatController>(
-        builder: (controller) => switch (controller.status) {
-        /// Loading
-          Status.loading => const CommonLoader(),
+        builder:
+            (controller) => switch (controller.status) {
+              /// Loading
+              Status.loading => const CommonLoader(),
 
-        /// Error
-          Status.error => ErrorScreen(
-            onTap: ChatController.instance.getChatRepo,
-          ),
+              /// Error
+              Status.error => ErrorScreen(
+                onTap: ChatController.instance.getChatRepo,
+              ),
 
-        /// Data
-          Status.completed => (controller.filteredChats.isEmpty || controller.filteredChats.isEmpty)
-              ? _buildEmptyState(): Padding(
-            padding:
-            EdgeInsets.symmetric(horizontal: 16.w,vertical: 20.h),
-            child: ListView(
-              padding: EdgeInsets.fromLTRB(0, 150.h, 0, 100.h),
-              controller: controller.scrollController,
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: controller.filteredChats.length,
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (context, index) {
-                    ChatModel item = controller.filteredChats[index];
-                    return InkWell(
-                      onTap: () => Get.toNamed(
-                        AppRoutes.message,
-                        parameters: {
-                          "chatId": item.id,
-                          "name": item.participant.fullName,
-                          "image": item.participant.image,
-                        },
+              /// Data
+              Status.completed =>
+                (controller.filteredChats.isEmpty ||
+                        controller.filteredChats.isEmpty)
+                    ? _buildEmptyState()
+                    : Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 20.h,
                       ),
-                      child: chatListItem(item: item),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        },
+                      child: ListView(
+                        padding: EdgeInsets.fromLTRB(0, 150.h, 0, 100.h),
+                        controller: controller.scrollController,
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: controller.filteredChats.length,
+                            padding: EdgeInsets.zero,
+                            itemBuilder: (context, index) {
+                              ChatModel item = controller.filteredChats[index];
+                              return InkWell(
+                                onTap:
+                                    () => Get.toNamed(
+                                      AppRoutes.message,
+                                      parameters: {
+                                        "chatId": item.id,
+                                        "name": item.participant.fullName,
+                                        "image": item.participant.image,
+                                      },
+                                    ),
+                                child: chatListItem(item: item),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+            },
       ),
     );
   }
+
   Widget _buildEmptyState() {
     return Center(
       child: Column(
@@ -125,17 +131,21 @@ class ChatListScreen extends StatelessWidget {
             color: Colors.grey.withValues(alpha: 0.5),
           ),
           SizedBox(height: 16.h),
+
           CommonText(
-            text: "No chats found",
-            fontSize: 16.sp,
+            text: "No chats yet",
+            fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: Color(0xff272727),
+            color: Color(0xff777777),
           ),
           SizedBox(height: 8.h),
           CommonText(
-            text: "Start a conversation to see them here.",
-            fontSize: 14.sp,
-            color: Colors.grey,
+            text:
+                "Book a chef to chat about the final details\n for your cooking session.",
+            fontSize: 12,
+            color: Color(0xff777777),
+            fontWeight: FontWeight.w400,
+            maxLines: 2,
           ),
         ],
       ),

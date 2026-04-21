@@ -32,77 +32,77 @@ class CustomerHome extends StatelessWidget {
             width: 343.w,
             fill: BoxFit.fitWidth,
           ),
-            20.height,
-            CommonTextField(
-              hintText: AppString.searchForFoodChefEtc,
-              keyboardType: TextInputType.none,
-              onTap: () => Get.toNamed(AppRoutes.homeSearch),
-              borderRadius: 30,
-              fillColor: Color(0xffF2F2F2),
-              suffixIcon: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(width: 1, height: 22.h, color: Color(0xffE0E0E0)),
-                  SizedBox(width: 12.w),
-                  InkWell(
-                    onTap: () {
-                      Get.toNamed(
-                        AppRoutes.homeSearch,
-                        arguments: {'openFilter': true},
-                      );
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 20.w),
-                      child: CommonImage(
-                        imageSrc: AppIcons.fliter,
-                        imageColor: Color(0xff636363),
-                      ),
+          20.height,
+          CommonTextField(
+            hintText: AppString.searchForFoodChefEtc,
+            keyboardType: TextInputType.none,
+            onTap: () => Get.toNamed(AppRoutes.homeSearch),
+            borderRadius: 30,
+            fillColor: Color(0xffF2F2F2),
+            suffixIcon: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(width: 1, height: 22.h, color: Color(0xffE0E0E0)),
+                SizedBox(width: 12.w),
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(
+                      AppRoutes.homeSearch,
+                      arguments: {'openFilter': true},
+                    );
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 20.w),
+                    child: CommonImage(
+                      imageSrc: AppIcons.fliter,
+                      imageColor: Color(0xff636363),
                     ),
                   ),
-                ],
-              ),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Icon(CupertinoIcons.search, color: Color(0xff636363)),
-              ),
+                ),
+              ],
             ),
+            prefixIcon: Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Icon(CupertinoIcons.search, color: Color(0xff636363)),
+            ),
+          ),
 
-            20.height,
-            SizedBox(height: 90.h, child: category()),
+          20.height,
+          SizedBox(height: 90.h, child: category()),
 
-            20.height,
-            CommonText(
-              text: AppString.recommendedPrivaeChefsNearby,
-              fontSize: 16.sp,
-              color: Color(0xff272727),
-              fontWeight: FontWeight.w600,
-              bottom: 16,
-            ).start,
+          20.height,
+          CommonText(
+            text: AppString.recommendedPrivaeChefsNearby,
+            fontSize: 16,
+            color: Color(0xff272727),
+            fontWeight: FontWeight.w600,
+            bottom: 16,
+          ).start,
 
-            SizedBox(height: 300.h, child: recommended()),
-            20.height,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CommonText(
-                  text: AppString.orderAgain,
-                  fontSize: 16.sp,
-                  color: Color(0xff272727),
-                  fontWeight: FontWeight.w600,
-                ).start,
-                /*CommonText(
+          SizedBox(height: 300.h, child: recommended()),
+          20.height,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CommonText(
+                text: AppString.orderAgain,
+                fontSize: 16,
+                color: Color(0xff272727),
+                fontWeight: FontWeight.w600,
+              ).start,
+              /*CommonText(
                   text: AppString.seeAll,
                   color: Color(0xffFD713F),
                   fontWeight: FontWeight.w500,
                 ),*/
-              ],
-            ),
+            ],
+          ),
 
-            16.height,
-            SizedBox(height: 160.h, child: orderAgain()),
-            10.height,
-          ],
-        ),
+          16.height,
+          SizedBox(height: 160.h, child: orderAgain()),
+          10.height,
+        ],
+      ),
     );
   }
 }

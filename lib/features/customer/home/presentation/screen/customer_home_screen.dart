@@ -30,35 +30,22 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
   int selectedTabIndex = 0;
 
   final List<TabData> tabs = [
-    TabData(
-      title: "Home",
-      icon: "house",
-      selectedIcon: "house.fill",
-      asset: AppIcons.home,
-    ),
+    TabData(title: "Home", icon: "house", selectedIcon: "house.fill"),
     TabData(
       title: "Bookings",
-      icon: "calendar",
-      selectedIcon: "calendar",
-      asset: AppIcons.booking,
+      icon: "calendar.badge.clock",
+      selectedIcon: "calendar.badge.clock",
     ),
-    TabData(
-      title: "Groceries",
-      icon: "basket",
-      selectedIcon: "basket.fill",
-      asset: AppIcons.groceries,
-    ),
+    TabData(title: "Groceries", icon: "basket", selectedIcon: "basket.fill"),
     TabData(
       title: "Chats",
-      icon: "message",
-      selectedIcon: "message.fill",
-      asset: AppIcons.chats,
+      icon: "ellipsis.message",
+      selectedIcon: "ellipsis.message.fill",
     ),
     TabData(
       title: "Profile",
-      icon: "person",
-      selectedIcon: "person.fill",
-      asset: AppIcons.profile,
+      icon: "person.crop.circle",
+      selectedIcon: "person.circle.fill",
     ),
   ];
 
@@ -176,30 +163,16 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CommonImage(
-                      imageSrc: tabs[index].asset,
-                      size: 22.sp, // Scale icon with screen density
-                      imageColor:
-                          isSelected ? Colors.black : const Color(0xff777777),
-                    ),
-                    /*Text(
-                      tabs[index].title,
-                      style: TextStyle(
-                        fontSize: 10.sp, // Scale text
-                        fontWeight:
-                            isSelected ? FontWeight.w600 : FontWeight.w400,
-                        color:
-                            isSelected
-                                ? const Color(0xff272727)
-                                : const Color(0xff777777),
-                      ),
-                    ),*/
                     CommonText(
-                        text: tabs[index].title,
+                      text: tabs[index].title,
                       fontSize: 10.sp, // Scale text
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                      color: isSelected ? const Color(0xff272727) : const Color(0xff777777),
-                    )
+                      fontWeight:
+                          isSelected ? FontWeight.w600 : FontWeight.w400,
+                      color:
+                          isSelected
+                              ? const Color(0xff272727)
+                              : const Color(0xff777777),
+                    ),
                   ],
                 ),
               ),
@@ -215,12 +188,10 @@ class TabData {
   final String title;
   final String icon;
   final String selectedIcon;
-  final String asset;
 
   TabData({
     required this.title,
     required this.icon,
     required this.selectedIcon,
-    required this.asset,
   });
 }

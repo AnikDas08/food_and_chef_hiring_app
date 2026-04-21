@@ -27,67 +27,6 @@ class GroceryScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
 
-      // appBar: AppBar(
-      //   systemOverlayStyle: SystemUiOverlayStyle.dark,
-      //   automaticallyImplyLeading: false,
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   centerTitle: false,
-      //   leadingWidth: 60,
-      //   leading: controller.isBack == false
-      //       ? Padding(
-      //           padding: const EdgeInsets.only(left: 16),
-      //           child: Center(
-      //             child: GestureDetector(
-      //               onTap: () => Navigator.pop(context),
-      //               child: Container(
-      //                 height: 40,
-      //                 width: 40,
-      //                 decoration: const BoxDecoration(
-      //                   color: Color(0xffF6F6F6),
-      //                   shape: BoxShape.circle,
-      //                 ),
-      //                 child: Center(
-      //                   child: CommonImage(
-      //                     imageSrc: AppIcons.backIcon,
-      //                     size: 24,
-      //                   ),
-      //                 ),
-      //               ),
-      //             ),
-      //           ),
-      //         )
-      //       : null,
-      //   flexibleSpace: LiquidGlassLayer(
-      //     child: LiquidGlass(
-      //       shape: LiquidRoundedSuperellipse(borderRadius: 0),
-      //       child: Container(
-      //         decoration: BoxDecoration(
-      //           gradient: LinearGradient(
-      //             begin: Alignment.topCenter,
-      //             end: Alignment.bottomCenter,
-      //             colors: [
-      //               Colors.white.withOpacity(0.2),
-      //               Colors.white.withOpacity(0.05),
-      //             ],
-      //           ),
-      //           border: Border(
-      //             bottom: BorderSide(
-      //               color: Colors.black.withOpacity(0.05),
-      //               width: 0.5,
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      //   title: const CommonText(
-      //     text: "My groceries",
-      //     fontSize: 24,
-      //     fontWeight: FontWeight.w600,
-      //     color: Color(0xff272727),
-      //   ),
-      // ),
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
 
@@ -157,7 +96,7 @@ class GroceryScreen extends StatelessWidget {
                 CommonText(
                   text: "Select bookings for grocery delivery",
                   color: Color(0xff272727),
-                  fontSize: 16.sp,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
                 SizedBox(height: 12.h),
@@ -169,7 +108,7 @@ class GroceryScreen extends StatelessWidget {
                         child: CommonText(
                           text: "No pending bookings available",
                           color: Color(0xff777777),
-                          fontSize: 12.sp,
+                          fontSize: 12,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -183,14 +122,14 @@ class GroceryScreen extends StatelessWidget {
               CommonText(
                 text: "Choose your grocery delivery partner",
                 color: Color(0xff272727),
-                fontSize: 16.sp,
+                fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
               SizedBox(height: 6.h),
               CommonText(
                 text: "Order groceries for your booking",
                 color: Color(0xff777777),
-                fontSize: 12.sp,
+                fontSize: 12,
                 fontWeight: FontWeight.w400,
               ),
 
@@ -223,12 +162,13 @@ class GroceryScreen extends StatelessWidget {
               SizedBox(height: 24.h),
 
               // --- 3. GROCERY BASKET ---
-              CommonText(
-                text: "Edit your grocery basket",
-                fontWeight: FontWeight.w600,
-                color: Color(0xff272727),
-                fontSize: 16.sp,
-              ),
+              if (controller.basketItems.isNotEmpty)
+                CommonText(
+                  text: "Edit your grocery basket",
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff272727),
+                  fontSize: 16,
+                ),
               SizedBox(height: 12.h),
 
               if (controller.isIngredientsLoading.value)
@@ -254,7 +194,7 @@ class GroceryScreen extends StatelessWidget {
                 const Center(
                   child: CircularProgressIndicator(color: Color(0xffFD713F)),
                 )
-              else
+              else if (controller.basketItems.isNotEmpty)
                 CommonButton(
                   titleText: "Add to Cart",
                   onTap: () {

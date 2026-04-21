@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/switch_button.dart';
@@ -10,6 +11,7 @@ import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../component/image/common_image.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/other_widgets/item.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../component/text/common_text.dart';
@@ -28,6 +30,20 @@ class ChefProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        automaticallyImplyLeading: false,
+        centerTitle: false,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: appBarOpacity(),
+        title: const CommonText(
+          text: AppString.myProfile,
+          fontWeight: FontWeight.w600,
+          fontSize: 24,
+          color: Color(0xff272727),
+        ),
+      ),
+
       /// Body Section Starts here
       body: GetBuilder<ChefProfileController>(
         builder: (controller) {
@@ -46,13 +62,15 @@ class ChefProfileScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Obx(() {
-                        final profile = Get.find<ChefHomeController>().chefProfile.value;
+                        final profile =
+                            Get.find<ChefHomeController>().chefProfile.value;
                         return Row(
                           children: [
                             CommonImage(
-                              imageSrc: (profile?.image.isNotEmpty ?? false)
-                                  ? profile!.image
-                                  : AppImages.image3,
+                              imageSrc:
+                                  (profile?.image.isNotEmpty ?? false)
+                                      ? profile!.image
+                                      : AppImages.image3,
                               height: 52,
                               width: 52,
                               fill: BoxFit.cover,
@@ -120,10 +138,14 @@ class ChefProfileScreen extends StatelessWidget {
                         image: AppIcons.customers,
                         imageSize: 23,
                         title: AppString.seePublicProfile,
-                        onTap: () => {
-                          print("id: 😊😊😊😊😊😊😊${LocalStorage.userId}"),
-                          Get.toNamed(AppRoutes.chefDetails, arguments: LocalStorage.userId)
-                        },
+                        onTap:
+                            () => {
+                              print("id: 😊😊😊😊😊😊😊${LocalStorage.userId}"),
+                              Get.toNamed(
+                                AppRoutes.chefDetails,
+                                arguments: LocalStorage.userId,
+                              ),
+                            },
                       ),
                     ],
                   ),
@@ -173,7 +195,8 @@ class ChefProfileScreen extends StatelessWidget {
                         icon: CupertinoIcons.arrow_swap,
                         title: AppString.bankManagement,
                         onTap: () {
-                          final profile = Get.find<ChefHomeController>().chefProfile.value;
+                          final profile =
+                              Get.find<ChefHomeController>().chefProfile.value;
                           final stripeUrl = profile?.stripeLoginLink;
 
                           if (stripeUrl != null && stripeUrl.isNotEmpty) {
@@ -183,7 +206,6 @@ class ChefProfileScreen extends StatelessWidget {
                           }
                         },
                       ),
-
 
                       Item(
                         image: AppIcons.kitchen,
@@ -200,30 +222,22 @@ class ChefProfileScreen extends StatelessWidget {
                       Item(
                         image: AppIcons.about,
                         title: AppString.uploadyourrequireddocuments,
-                        onTap: (){
-
+                        onTap: () {
                           Get.to(() => const ChefDocFlow());
-
-
                         },
-
                       ),
-
 
                       Item(
                         image: AppIcons.addressIcon,
                         title: AppString.updateChefLocation,
-                        onTap: (){
-
+                        onTap: () {
                           Get.to(ChefUpdateLocationScreen());
-
                         },
-
                       ),
 
                       14.height,
                       Obx(
-                            () => Row(
+                        () => Row(
                           children: [
                             Icon(CupertinoIcons.bell),
                             CommonText(
@@ -265,10 +279,8 @@ class ChefProfileScreen extends StatelessWidget {
                         child: Item(
                           icon: CupertinoIcons.question_circle,
                           title: AppString.contactSupport,
-                          onTap: (){
-
+                          onTap: () {
                             Get.to(HelpSupportScreen());
-
                           },
                         ),
                       ),
@@ -276,10 +288,8 @@ class ChefProfileScreen extends StatelessWidget {
                       Item(
                         icon: CupertinoIcons.info,
                         title: AppString.appVersion,
-                        onTap: (){
-
+                        onTap: () {
                           Get.to(AppInformationScreen());
-
                         },
                       ),
                     ],

@@ -54,7 +54,6 @@ reviewSuccessPopUp() {
                       CommonButton(
                         titleText: AppString.done,
                         buttonHeight: 48,
-                        titleSize: 16,
                         buttonRadius: 16,
                         titleColor: Color(0xffFFFFFF),
                         onTap: () async {

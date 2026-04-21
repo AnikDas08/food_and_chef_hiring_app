@@ -114,7 +114,6 @@ declineBookingPopUp({
                           CommonButton(
                             titleText: AppString.submit,
                             buttonHeight: 48,
-                            titleSize: 16,
                             buttonRadius: 16,
                             titleColor: Colors.white,
                             onTap: () async {

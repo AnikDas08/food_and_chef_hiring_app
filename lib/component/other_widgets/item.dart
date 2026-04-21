@@ -54,8 +54,7 @@ class Item extends StatelessWidget {
                 CommonText(
                   text: title,
                   color: color,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
                   left: 16,
                 ),
                 const Spacer(),

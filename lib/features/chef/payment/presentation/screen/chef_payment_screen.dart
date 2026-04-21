@@ -105,7 +105,6 @@ class ChefPaymentScreen extends StatelessWidget {
 
                   CommonButton(
                     titleText: "Add New Account",
-                    titleSize: 14,
 
                     onTap: () => Get.toNamed(AppRoutes.addPaymentMethod),
                   ),

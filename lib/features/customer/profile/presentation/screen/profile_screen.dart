@@ -49,7 +49,6 @@ class ProfileScreen extends StatelessWidget {
         child: ListView(
           physics: const BouncingScrollPhysics(),
           children: [
-
             // ── Profile Header Card ───────────────────────────────────────
             Container(
               padding: EdgeInsets.all(12.sp),
@@ -62,9 +61,11 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   // Reactive profile image
                   Obx(() {
-                    final src = controller.profileImage.value.startsWith('http')
-                        ? controller.profileImage.value
-                        : ApiEndPoint.imageUrl + controller.profileImage.value;
+                    final src =
+                        controller.profileImage.value.startsWith('http')
+                            ? controller.profileImage.value
+                            : ApiEndPoint.imageUrl +
+                                controller.profileImage.value;
                     return CommonImage(
                       imageSrc: src,
                       size: 52,
@@ -78,19 +79,23 @@ class ProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Reactive name
-                        Obx(() => CommonText(
-                          text: controller.name.value,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xff272727),
-                        )),
+                        Obx(
+                          () => CommonText(
+                            text: controller.name.value,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xff272727),
+                          ),
+                        ),
                         // Reactive email
-                        Obx(() => CommonText(
-                          text: controller.email.value,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xff777777),
-                        )),
+                        Obx(
+                          () => CommonText(
+                            text: controller.email.value,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xff777777),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -124,9 +129,11 @@ class ProfileScreen extends StatelessWidget {
                   Item(
                     icon: CupertinoIcons.location,
                     title: AppString.address,
-                    onTap: () => Get.toNamed(AppRoutes.addressScreen,arguments: {
-                      "isLoading":false
-                    }),
+                    onTap:
+                        () => Get.toNamed(
+                          AppRoutes.addressScreen,
+                          arguments: {"isLoading": false},
+                        ),
                   ),
                   Item(
                     icon: CupertinoIcons.arrow_counterclockwise,
@@ -171,7 +178,7 @@ class ProfileScreen extends StatelessWidget {
                         Get.to(() => const KitchenSetupScreen());
                       }
                     },
-                  )
+                  ),
                 ],
               ),
             ),
@@ -197,14 +204,14 @@ class ProfileScreen extends StatelessWidget {
                   Item(
                     icon: CupertinoIcons.question_circle,
                     title: AppString.contactSupport,
-                    onTap: (){
+                    onTap: () {
                       Get.to(HelpSupportScreen());
                     },
                   ),
                   Item(
                     icon: CupertinoIcons.info,
                     title: AppString.appVersion,
-                    onTap: (){
+                    onTap: () {
                       Get.to(AppInformationScreen());
                     },
                   ),

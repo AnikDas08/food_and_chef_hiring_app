@@ -55,7 +55,6 @@ failledPopup() {
                       CommonButton(
                         titleText: AppString.tryAgain,
                         buttonHeight: 48,
-                        titleSize: 16,
                         buttonRadius: 16,
                         titleColor: Color(0xffFFFFFF),
                         onTap: () async {
@@ -71,7 +70,6 @@ failledPopup() {
                       CommonButton(
                         titleText: AppString.cancel,
                         buttonHeight: 48,
-                        titleSize: 16,
                         buttonRadius: 16,
                         buttonColor: Color(0xffF2F2F2),
                         borderColor: Colors.transparent,

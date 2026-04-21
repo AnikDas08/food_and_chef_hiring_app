@@ -325,7 +325,6 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                           buttonColor: const Color(0xffF2F2F2),
                           borderColor: Colors.transparent,
                           titleColor: const Color(0xff272727),
-                          titleSize: 14,
                           buttonHeight: 48,
                           buttonRadius: 16,
                           onTap: () async {
@@ -342,7 +341,6 @@ upcomingPopUp({Map<String, dynamic>? orderData}) {
                           titleText: AppString.chatWithCustomers,
                           buttonHeight: 48,
                           buttonRadius: 16,
-                          titleSize: 14,
                           onTap: () async {
                             try {
 

@@ -185,8 +185,7 @@ class AppString {
       "Create a unique password for your account";
   static const String yourLocation = "Your location";
   static const String searchForFoodChefEtc = "Search for food, chef, etc.";
-  static const String recommendedPrivaeChefsNearby =
-      "Recommended Privae Chefs Nearby";
+  static const String recommendedPrivaeChefsNearby = "Recommended Chefs Nearby";
   static const String orderAgain = "Order Again";
   static const String home = "Home";
   static const String bookings = "Bookings";
@@ -343,6 +342,7 @@ class AppString {
   static const String totalEarning = "Total Earning";
   static const String mostBookedTimes = "Most Booked Times";
   static const String avgBookingsPerWeek = "Avg Bookings per Week";
+
   static String get avgEarningsPerBooking => "Avg Earnings per Booking";
   static const String avgBookingLength = "Avg Booking Length";
   static const String avgDishesPerBooking = "Avg Dishes per Booking";

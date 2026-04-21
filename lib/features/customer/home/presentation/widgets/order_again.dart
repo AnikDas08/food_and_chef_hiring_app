@@ -21,8 +21,8 @@ Widget orderAgain() {
       if (controller.orderAgainList.isEmpty) {
         return Center(
           child: CommonText(
-            text: "No previous orders",
-            fontSize: 12.sp,
+            text: "No orders to show",
+            fontSize: 12,
             color: Color(0xff777777),
             fontWeight: FontWeight.w400,
           ),
@@ -55,10 +55,11 @@ Widget orderAgain() {
                 Row(
                   children: [
                     CommonImage(
-                      imageSrc: (order.chef?.image != null &&
-                          order.chef!.image!.isNotEmpty)
-                          ? ApiEndPoint.imageUrl + order.chef!.image!
-                          : AppImages.image4,
+                      imageSrc:
+                          (order.chef?.image != null &&
+                                  order.chef!.image!.isNotEmpty)
+                              ? ApiEndPoint.imageUrl + order.chef!.image!
+                              : AppImages.image4,
                       size: 40,
                     ),
                     12.width,
@@ -97,12 +98,14 @@ Widget orderAgain() {
 
                       return Padding(
                         padding: EdgeInsets.only(
-                          right: (i < visibleCount - 1 || moreCount > 0) ? 6 : 0,
+                          right:
+                              (i < visibleCount - 1 || moreCount > 0) ? 6 : 0,
                         ),
                         child: _foodImageWithName(
-                          imageSrc: hasImage
-                              ? ApiEndPoint.imageUrl + menuImages[0]
-                              : AppImages.noImage,
+                          imageSrc:
+                              hasImage
+                                  ? ApiEndPoint.imageUrl + menuImages[0]
+                                  : AppImages.noImage,
                           name: menuName,
                         ),
                       );
@@ -122,10 +125,7 @@ Widget orderAgain() {
 }
 
 /// Food image card with name label overlaid at the bottom
-Widget _foodImageWithName({
-  required String imageSrc,
-  required String name,
-}) {
+Widget _foodImageWithName({required String imageSrc, required String name}) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(10),
     child: Stack(
@@ -147,10 +147,7 @@ Widget _foodImageWithName({
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Colors.transparent,
-                  Colors.black.withOpacity(0.65),
-                ],
+                colors: [Colors.transparent, Colors.black.withOpacity(0.65)],
               ),
             ),
           ),
@@ -188,11 +185,7 @@ Widget _moreItemsTile(int count) {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          CupertinoIcons.collections,
-          size: 22,
-          color: Color(0xff9E9E9E),
-        ),
+        Icon(CupertinoIcons.collections, size: 22, color: Color(0xff9E9E9E)),
         4.height,
         Text(
           "$count more\nitems",
