@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../../utils/constants/app_images.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_profile_controller.dart';
 import '../widgets/chef_profile_all_filed.dart';
@@ -40,12 +41,7 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
             elevation: 0,
             scrolledUnderElevation: 0,
             centerTitle: true,
-            flexibleSpace: ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                child: Container(color: Colors.transparent),
-              ),
-            ),
+            flexibleSpace: appBarOpacity(),
             title: const Text(
               'Edit Profile',
               style: TextStyle(

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
@@ -132,29 +133,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
         ),
-        flexibleSpace: LiquidGlassLayer(
-          child: LiquidGlass(
-            shape: const LiquidRoundedSuperellipse(borderRadius: 0),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.white.withOpacity(0.2),
-                    Colors.white.withOpacity(0.05),
-                  ],
-                ),
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.black.withOpacity(0.05),
-                    width: 0.5,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
+        flexibleSpace: appBarOpacity(),
       ),
       body: Obx(() {
         if (_controller.isLoading.value) {

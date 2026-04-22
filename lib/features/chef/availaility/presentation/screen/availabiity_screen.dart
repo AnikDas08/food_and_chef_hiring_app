@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
@@ -258,22 +259,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
         elevation: 0,
         automaticallyImplyLeading: false,
         leadingWidth: 60,
-        flexibleSpace: ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.black.withOpacity(0.05),
-                    width: 0.5,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
+        flexibleSpace: appBarOpacity(),
         leading: Padding(
           padding: const EdgeInsets.only(left: 16),
           child: GestureDetector(

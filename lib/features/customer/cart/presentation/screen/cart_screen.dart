@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/button/common_button.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
@@ -35,29 +36,7 @@ class CartScreen extends StatelessWidget {
             elevation: 0,
 
             // ── Liquid Glass Header ──────────────────────────────────────────
-            flexibleSpace: LiquidGlassLayer(
-              child: LiquidGlass(
-                shape: const LiquidRoundedSuperellipse(borderRadius: 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.white.withOpacity(0.2),
-                        Colors.white.withOpacity(0.05),
-                      ],
-                    ),
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.black.withOpacity(0.05),
-                        width: 0.5,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            flexibleSpace: appBarOpacity(),
 
             title: CommonText(
               text: AppString.cart,
