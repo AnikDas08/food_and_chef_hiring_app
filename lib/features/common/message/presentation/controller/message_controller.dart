@@ -63,7 +63,9 @@ class MessageController extends GetxController {
         final bool isMe = LocalStorage.userId == senderId;
 
         if (kDebugMode) {
-          print('MyId: ${LocalStorage.userId} | SenderId: $senderId | isMe: $isMe');
+          print(
+            'MyId: ${LocalStorage.userId} | SenderId: $senderId | isMe: $isMe',
+          );
         }
 
         messages.add(
@@ -74,12 +76,14 @@ class MessageController extends GetxController {
             avatarImage: isMe ? (LocalStorage.myImage ?? '') : '',
             isMe: isMe,
             isNotice: item['type'] == 'notice',
-            images: (item['image'] as List<dynamic>? ?? [])
-                .whereType<String>()
-                .toList(),
-            docs: (item['docs'] as List<dynamic>? ?? [])
-                .whereType<String>()
-                .toList(),
+            images:
+                (item['image'] as List<dynamic>? ?? [])
+                    .whereType<String>()
+                    .toList(),
+            docs:
+                (item['docs'] as List<dynamic>? ?? [])
+                    .whereType<String>()
+                    .toList(),
             type: item['type'] ?? 'text',
             seen: item['seen'] ?? false,
           ),
@@ -186,10 +190,7 @@ class MessageController extends GetxController {
       isSendingImage = true;
       update();
 
-      final Map<String, String> body = {
-        'chatId': chatId,
-        'type': 'image',
-      };
+      final Map<String, String> body = {'chatId': chatId, 'type': 'image'};
 
       if (messageController.text.trim().isNotEmpty) {
         body['text'] = messageController.text.trim();
@@ -197,10 +198,7 @@ class MessageController extends GetxController {
       }
 
       final List<Map<String, String>> files = [
-        {
-          'name': 'image',
-          'image': selectedImage!.path,
-        }
+        {'name': 'image', 'image': selectedImage!.path},
       ];
 
       final response = await ApiService.multipartImage(
@@ -214,7 +212,10 @@ class MessageController extends GetxController {
         /// ✅ No optimistic insert — socket will push the message back
         selectedImage = null;
       } else {
-        Utils.errorSnackBar('Error', response.message ?? 'Failed to send image');
+        Utils.errorSnackBar(
+          'Error',
+          response.message ?? 'Failed to send image',
+        );
       }
     } catch (e) {
       Utils.errorSnackBar('Error', 'Failed to send image: ${e.toString()}');
@@ -256,10 +257,7 @@ class MessageController extends GetxController {
       isSendingImage = true;
       update();
 
-      final Map<String, String> body = {
-        'chatId': chatId,
-        'type': 'document',
-      };
+      final Map<String, String> body = {'chatId': chatId, 'type': 'document'};
 
       if (messageController.text.trim().isNotEmpty) {
         body['text'] = messageController.text.trim();
@@ -267,10 +265,7 @@ class MessageController extends GetxController {
       }
 
       final List<Map<String, String>> files = [
-        {
-          'name': 'doc',
-          'image': selectedDoc!.path,
-        }
+        {'name': 'doc', 'image': selectedDoc!.path},
       ];
 
       final response = await ApiService.multipartImage(
@@ -285,7 +280,10 @@ class MessageController extends GetxController {
         selectedDoc = null;
         selectedDocName = null;
       } else {
-        Utils.errorSnackBar('Error', response.message ?? 'Failed to send document');
+        Utils.errorSnackBar(
+          'Error',
+          response.message ?? 'Failed to send document',
+        );
       }
     } catch (e) {
       Utils.errorSnackBar('Error', 'Failed to send document: ${e.toString()}');
@@ -314,10 +312,7 @@ class MessageController extends GetxController {
       isSending = true;
       update();
 
-      final response = await ApiService.post(
-        ApiEndPoint.messages,
-        body: body,
-      );
+      final response = await ApiService.post(ApiEndPoint.messages, body: body);
 
       if (response.statusCode != 200 && response.statusCode != 201) {
         /// restore text on failure
@@ -351,7 +346,9 @@ class MessageController extends GetxController {
       final bool isMe = LocalStorage.userId == senderId;
 
       if (kDebugMode) {
-        print('Socket => MyId: ${LocalStorage.userId} | SenderId: $senderId | isMe: $isMe');
+        print(
+          'Socket => MyId: ${LocalStorage.userId} | SenderId: $senderId | isMe: $isMe',
+        );
       }
 
       messages.insert(
@@ -364,12 +361,14 @@ class MessageController extends GetxController {
           avatarImage: isMe ? (LocalStorage.myImage ?? '') : '',
           isMe: isMe,
           type: data['type'] ?? 'text',
-          images: (data['image'] as List<dynamic>? ?? [])
-              .whereType<String>()
-              .toList(),
-          docs: (data['docs'] as List<dynamic>? ?? [])
-              .whereType<String>()
-              .toList(),
+          images:
+              (data['image'] as List<dynamic>? ?? [])
+                  .whereType<String>()
+                  .toList(),
+          docs:
+              (data['docs'] as List<dynamic>? ?? [])
+                  .whereType<String>()
+                  .toList(),
         ),
       );
       update();
@@ -393,7 +392,7 @@ class MessageController extends GetxController {
 
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
-          scrollController.position.maxScrollExtent &&
+              scrollController.position.maxScrollExtent &&
           !isMoreLoading &&
           !isLoading &&
           page <= totalPage) {

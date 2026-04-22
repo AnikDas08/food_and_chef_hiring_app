@@ -60,7 +60,7 @@ class GroceryScreen extends StatelessWidget {
                 )
                 : null,
         title: const CommonText(
-          text: 'My groceries',
+          text: 'Groceries',
           fontSize: 24,
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),

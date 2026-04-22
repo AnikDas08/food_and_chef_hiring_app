@@ -18,6 +18,7 @@ import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/constants/app_images.dart';
 import '../../../../../../utils/constants/app_string.dart';
+import '../../../../../utils/log/app_log.dart';
 import '../../../../common/auth/signup_chef/presentation/Widget/ChefDocFlowState.dart';
 import '../../../../common/auth/signup_chef/presentation/screen/BankManagementPage.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
@@ -140,7 +141,7 @@ class ChefProfileScreen extends StatelessWidget {
                         title: AppString.seePublicProfile,
                         onTap:
                             () => {
-                              print('id: 😊😊😊😊😊😊😊${LocalStorage.userId}'),
+                              appLog('id: 😊😊😊😊😊😊😊${LocalStorage.userId}'),
                               Get.toNamed(
                                 AppRoutes.chefDetails,
                                 arguments: LocalStorage.userId,

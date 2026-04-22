@@ -14,6 +14,7 @@ import '../../../../../../services/api/api_service.dart';
 import '../../../../../../services/storage/storage_keys.dart';
 import '../../../../../../services/storage/storage_services.dart';
 import '../../../../../../utils/app_utils.dart';
+import '../../../../../../utils/log/app_log.dart';
 import '../screen/Cafe_Enable_AutoAccept_Screen.dart';
 import '../screen/Cafe_Setup_Profile_Screen.dart';
 import '../screen/Cafe_set_your_price_screen.dart';
@@ -165,12 +166,12 @@ class SignUpChefController extends GetxController {
 
       if (token.toString().isNotEmpty) {
         await LocalStorage.setString(LocalStorageKeys.token, token.toString());
-        print('✅ token saved: $token');
+        appLog('✅ token saved: $token');
       } else {
-        print('⚠️ token পাওয়া যায়নি! response: $data');
+        appLog('⚠️ token পাওয়া যায়নি! response: $data');
       }
 
-      print('✅ userId: $userId');
+      appLog('✅ userId: $userId');
 
       Get.toNamed(AppRoutes.create_password_chef_screen);
     } else {
@@ -202,7 +203,7 @@ class SignUpChefController extends GetxController {
             data['token'] ?? '';
         if (token.toString().isNotEmpty) {
           await LocalStorage.setString(LocalStorageKeys.token, token.toString());
-          print('✅ token saved: $token');
+          appLog('✅ token saved: $token');
         }
 
         if (data['success'] == true) {

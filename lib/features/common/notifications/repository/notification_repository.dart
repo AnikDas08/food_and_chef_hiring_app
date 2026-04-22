@@ -1,4 +1,5 @@
 import '../../../../services/api/api_service.dart';
+import '../../../../utils/log/app_log.dart';
 import '../data/model/notification_model.dart';
 
 Future<List<NotificationModel>> notificationRepository(int page) async {
@@ -13,7 +14,7 @@ Future<List<NotificationModel>> notificationRepository(int page) async {
     }
     return [];
   } catch (e) {
-    print('Repository Error: $e');
+    appLog('Repository Error: $e');
     return [];
   }
 }

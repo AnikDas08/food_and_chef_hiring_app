@@ -7,6 +7,7 @@ import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../config/route/app_routes.dart';
+import '../../../../../utils/constants/app_colors.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../data/booking_model.dart';
 import '../controller/booking_history_controller.dart';
@@ -95,18 +96,30 @@ Widget bookingItem(BookingHistoryModel order) {
                     Get.toNamed(AppRoutes.requestChange, arguments: order.id);
                   }
                   // Inside onSelected in bookingItem
-
                   else if (value == 2) {
-                    final TextEditingController reasonController = TextEditingController();
+                    final TextEditingController reasonController =
+                        TextEditingController();
 
                     Get.dialog(
                       AlertDialog(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-                        title: const CommonText(text: 'Cancel Booking', fontWeight: FontWeight.bold),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                        ),
+                        title: const CommonText(
+                          text: 'Cancel Booking',
+                          fontWeight: FontWeight.bold,
+                        ),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const CommonText(text: 'Please provide a reason for cancelling this booking:',maxLines:  4, fontSize: 13,textAlign: TextAlign.start, bottom: 12),
+                            const CommonText(
+                              text:
+                                  'Please provide a reason for cancelling this booking:',
+                              maxLines: 4,
+                              fontSize: 13,
+                              textAlign: TextAlign.start,
+                              bottom: 12,
+                            ),
                             TextField(
                               controller: reasonController,
                               maxLines: 3,
@@ -115,24 +128,45 @@ Widget bookingItem(BookingHistoryModel order) {
                                 hintStyle: const TextStyle(fontSize: 12),
                                 fillColor: const Color(0xffF5F5F5),
                                 filled: true,
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.r), borderSide: BorderSide.none),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  borderSide: BorderSide.none,
+                                ),
                               ),
                             ),
                           ],
                         ),
                         actions: [
-                          TextButton(onPressed: () => Navigator.pop(Get.context!), child: const Text('Cancel')),
+                          TextButton(
+                            onPressed: () => Navigator.pop(Get.context!),
+                            child: const Text('Cancel'),
+                          ),
                           ElevatedButton(
-                            style: ElevatedButton.styleFrom(backgroundColor: Colors.red, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r))),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
                             onPressed: () {
                               if (reasonController.text.trim().isEmpty) {
-                                Get.snackbar('Reason Required', 'Please enter a reason before cancelling.');
+                                Get.snackbar(
+                                  'Reason Required',
+                                  'Please enter a reason before cancelling.',
+                                );
                               } else {
                                 Navigator.pop(Get.context!); // Close dialog
-                                Get.find<BookingHistoryController>().cancelBooking(order.id, reasonController.text.trim());
+                                Get.find<BookingHistoryController>()
+                                    .cancelBooking(
+                                      order.id,
+                                      reasonController.text.trim(),
+                                    );
                               }
                             },
-                            child: const Text('Confirm Cancel', style: TextStyle(color: Colors.white)),
+                            child: const Text(
+                              'Confirm Cancel',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ],
                       ),
@@ -158,10 +192,7 @@ Widget bookingItem(BookingHistoryModel order) {
                       children: [
                         Icon(CupertinoIcons.clear, size: 20, color: Colors.red),
                         SizedBox(width: 10),
-                        CommonText(
-                          text: 'Cancel Booking',
-                          color: Colors.red,
-                        ),
+                        CommonText(text: 'Cancel Booking', color: Colors.red),
                       ],
                     ),
                   );
@@ -203,7 +234,12 @@ Widget bookingItem(BookingHistoryModel order) {
           // Date & time
           Row(
             children: [
-              const CommonImage(imageSrc: AppIcons.date, width: 16, height: 16),
+              const CommonImage(
+                imageSrc: AppIcons.date,
+                width: 16,
+                height: 16,
+                imageColor: AppColors.secondaryTextColor,
+              ),
               Flexible(
                 child: CommonText(
                   text: _formatDate(order.formattedDate),
@@ -225,6 +261,7 @@ Widget bookingItem(BookingHistoryModel order) {
                 imageSrc: AppIcons.ingredients,
                 width: 16,
                 height: 16,
+                imageColor: AppColors.secondaryTextColor,
               ),
               Flexible(
                 child: CommonText(
@@ -244,7 +281,11 @@ Widget bookingItem(BookingHistoryModel order) {
           // Address
           Row(
             children: [
-              const CommonImage(imageSrc: AppIcons.location, width: 16, height: 16),
+              const CommonImage(
+                imageSrc: AppIcons.location,
+                width: 16,
+                height: 16,
+              ),
               Flexible(
                 child: CommonText(
                   text: order.formattedAddress,

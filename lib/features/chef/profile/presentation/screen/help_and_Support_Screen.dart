@@ -6,9 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../../../utils/constants/app_colors.dart';
 import '../../../../../../utils/extensions/extension.dart';
-import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
-import '../../../../../utils/constants/app_icons.dart';
 import '../controller/help_and_Support_controller.dart';
 
 class HelpSupportScreen extends StatelessWidget {
@@ -23,24 +21,11 @@ class HelpSupportScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
         leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
-                shape: BoxShape.circle,
-              ),
-              child: const CommonImage(
-                imageSrc: AppIcons.backIcon,
-                size: 24,
-              ),
-            ),
-          ),
+        title: const CommonText(
+          text: 'Contact & Support',
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
         ),
       ),
       body: SingleChildScrollView(
@@ -86,8 +71,11 @@ class HelpSupportScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.attach_file_rounded,
-                        size: 18.r, color: AppColors.primaryColor),
+                    Icon(
+                      Icons.attach_file_rounded,
+                      size: 18.r,
+                      color: AppColors.primaryColor,
+                    ),
                     6.width,
                     const CommonText(
                       text: 'Attach File',
@@ -117,8 +105,11 @@ class HelpSupportScreen extends StatelessWidget {
                           return Stack(
                             children: [
                               GestureDetector(
-                                onTap: () =>
-                                    _showFullImage(context, c.selectedFiles[index]),
+                                onTap:
+                                    () => _showFullImage(
+                                      context,
+                                      c.selectedFiles[index],
+                                    ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.r),
                                   child: Image.file(
@@ -140,8 +131,11 @@ class HelpSupportScreen extends StatelessWidget {
                                       color: Colors.red,
                                       shape: BoxShape.circle,
                                     ),
-                                    child: Icon(Icons.close,
-                                        size: 12.r, color: Colors.white),
+                                    child: Icon(
+                                      Icons.close,
+                                      size: 12.r,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -172,14 +166,17 @@ class HelpSupportScreen extends StatelessWidget {
                       ),
                       elevation: 0,
                     ),
-                    child: c.isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const CommonText(
-                      text: 'Submit',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
+                    child:
+                        c.isLoading
+                            ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                            : const CommonText(
+                              text: 'Submit',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
                   ),
                 );
               },
@@ -193,68 +190,75 @@ class HelpSupportScreen extends StatelessWidget {
   }
 
   void _showPickerBottomSheet(
-      BuildContext context, HelpSupportController ctrl) {
+    BuildContext context,
+    HelpSupportController ctrl,
+  ) {
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
       ),
-      builder: (context) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            12.height,
-            ListTile(
-              leading: const Icon(Icons.photo_library, color: AppColors.primaryColor),
-              title: const CommonText(
-                text: 'Pick from Gallery',
-                fontWeight: FontWeight.w400,
-                color: Colors.black87,
-                textAlign: TextAlign.start,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                ctrl.pickImage(ImageSource.gallery);
-              },
+      builder:
+          (context) => SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                12.height,
+                ListTile(
+                  leading: const Icon(
+                    Icons.photo_library,
+                    color: AppColors.primaryColor,
+                  ),
+                  title: const CommonText(
+                    text: 'Pick from Gallery',
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black87,
+                    textAlign: TextAlign.start,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    ctrl.pickImage(ImageSource.gallery);
+                  },
+                ),
+                12.height,
+              ],
             ),
-            12.height,
-          ],
-        ),
-      ),
+          ),
     );
   }
 
   void _showFullImage(BuildContext context, File file) {
     showDialog(
       context: context,
-      builder: (_) => Dialog(
-        backgroundColor: Colors.black,
-        insetPadding: EdgeInsets.zero,
-        child: Stack(
-          children: [
-            Center(
-              child: InteractiveViewer(
-                child: Image.file(file, fit: BoxFit.contain),
-              ),
-            ),
-            Positioned(
-              top: 40,
-              right: 16,
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  padding: EdgeInsets.all(6.r),
-                  decoration: const BoxDecoration(
-                    color: Colors.white24,
-                    shape: BoxShape.circle,
+      builder:
+          (_) => Dialog(
+            backgroundColor: Colors.black,
+            insetPadding: EdgeInsets.zero,
+            child: Stack(
+              children: [
+                Center(
+                  child: InteractiveViewer(
+                    child: Image.file(file, fit: BoxFit.contain),
                   ),
-                  child: Icon(Icons.close, color: Colors.white, size: 20.r),
                 ),
-              ),
+                Positioned(
+                  top: 40,
+                  right: 16,
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: EdgeInsets.all(6.r),
+                      decoration: const BoxDecoration(
+                        color: Colors.white24,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(Icons.close, color: Colors.white, size: 20.r),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
     );
   }
 
@@ -277,8 +281,10 @@ class HelpSupportScreen extends StatelessWidget {
           hintText: hintText,
           hintStyle: TextStyle(fontSize: 13.sp, color: Colors.black38),
           border: InputBorder.none,
-          contentPadding:
-          EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 14.w,
+            vertical: 12.h,
+          ),
         ),
       ),
     );

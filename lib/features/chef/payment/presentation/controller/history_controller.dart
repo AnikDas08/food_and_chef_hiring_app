@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
+import '../../../../../utils/log/app_log.dart';
 
 class HistoryController extends GetxController {
   List<String> bookingHistoryList = ['Withdrawal', 'Payment received'];
@@ -69,7 +70,7 @@ class HistoryController extends GetxController {
         history = [];
       }
     } catch (e) {
-      print('HistoryController Error: $e');
+      appLog('HistoryController Error: $e');
       history = [];
     }
 

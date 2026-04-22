@@ -99,6 +99,7 @@ class SearchItem extends StatelessWidget {
               ).start,
             ),
 
+
             // ── Grid ─────────────────────────────────────────────────────
             if (isLoading)
               const CommonLoader()
@@ -108,6 +109,7 @@ class SearchItem extends StatelessWidget {
                   text: 'No chefs found nearby',
                   color: Color(0xff777777),
                   fontWeight: FontWeight.w400,
+                  top: 200,
                 ),
               )
             else

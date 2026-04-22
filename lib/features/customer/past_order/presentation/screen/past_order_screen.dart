@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/text/common_text.dart';
-import 'package:new_untitled/utils/constants/app_string.dart';
 import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../utils/constants/app_colors.dart';
 import '../controller/past_order_controller.dart';

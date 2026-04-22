@@ -60,9 +60,10 @@ class _SearchScreenState extends State<SearchScreen> {
         !_isScrollLoadingLocked) {
       _isScrollLoadingLocked = true;
 
-      final term = _controller.isSubmitted.value
-          ? _controller.searchController.text.trim()
-          : null;
+      final term =
+          _controller.isSubmitted.value
+              ? _controller.searchController.text.trim()
+              : null;
 
       _controller.loadMoreChefs(searchTerm: term).then((_) {
         _isScrollLoadingLocked = false;
@@ -121,9 +122,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           color: const Color(0xff777777),
                         ),
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 12.h,
-                        ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 12.h),
                       ),
                     ),
                   ),
@@ -169,9 +168,7 @@ class _SearchScreenState extends State<SearchScreen> {
         if (isTyping && !isSubmitted) {
           return ListView(
             padding: EdgeInsets.fromLTRB(16.w, 150.h, 16.w, 10.h),
-            children: [
-              searchResult(_controller.searchResults),
-            ],
+            children: [searchResult(_controller.searchResults)],
           );
         }
 
@@ -186,60 +183,28 @@ class _SearchScreenState extends State<SearchScreen> {
               Obx(() {
                 final hasActiveFilters =
                     _controller.minPrice.value > 0 ||
-                        _controller.maxPrice.value < 100 ||
-                        _controller.selectedAvailability.isNotEmpty ||
-                        _controller.selectedProfessionalLevels.isNotEmpty ||
-                        _controller.selectedDietaryPrefs.isNotEmpty ||
-                        _controller.selectedCuisines.isNotEmpty ||
-                        _controller.savedChefsOnly.value;
+                    _controller.maxPrice.value < 100 ||
+                    _controller.selectedAvailability.isNotEmpty ||
+                    _controller.selectedProfessionalLevels.isNotEmpty ||
+                    _controller.selectedDietaryPrefs.isNotEmpty ||
+                    _controller.selectedCuisines.isNotEmpty ||
+                    _controller.savedChefsOnly.value;
 
                 if (!hasActiveFilters) return const SizedBox.shrink();
 
                 return Align(
                   alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: 16.h),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xffFD713F),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            _controller.clearAllFilters();
-                            _controller.getNearbyChefs();
-                          },
-                          borderRadius: BorderRadius.circular(20),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                              vertical: 10.h,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(Icons.close, color: Colors.white, size: 16),
-                                6.width,
-                                const CommonText(
-                                  text: 'Clear Filters',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                  child: InkWell(
+                    onTap: () {
+                      _controller.clearAllFilters();
+                      _controller.getNearbyChefs();
+                    },
+                    borderRadius: BorderRadius.circular(20),
+                    child: const CommonText(
+                      text: 'Clear Filters',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xffFD713F),
                     ),
                   ),
                 );
@@ -258,7 +223,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Center(
                     child: Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: 20.w, vertical: 10.h),
+                        horizontal: 20.w,
+                        vertical: 10.h,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
@@ -306,7 +273,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Center(
                     child: CommonText(
                       text:
-                      'Showing all ${_controller.nearbyChefsList.length} chefs',
+                          'Showing all ${_controller.nearbyChefsList.length} chefs',
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: const Color(0xff777777),
@@ -324,37 +291,34 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildSuffixIcon() {
-    return Obx(() => Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (_controller.searchText.value.isNotEmpty)
+    return Obx(
+      () => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (_controller.searchText.value.isNotEmpty)
+            IconButton(
+              visualDensity: VisualDensity.compact,
+              icon: const Icon(Icons.clear, size: 20, color: Color(0xff636363)),
+              onPressed: () {
+                _controller.clearSearch();
+                _focusNode.requestFocus();
+              },
+            ),
+          Container(width: 1, height: 22.h, color: const Color(0xffE0E0E0)),
           IconButton(
             visualDensity: VisualDensity.compact,
-            icon: const Icon(Icons.clear,
-                size: 20, color: Color(0xff636363)),
             onPressed: () {
-              _controller.clearSearch();
-              _focusNode.requestFocus();
+              _focusNode.unfocus();
+              filterPanel();
             },
+            icon: const CommonImage(
+              imageSrc: AppIcons.fliter,
+              imageColor: Color(0xff636363),
+            ),
           ),
-        Container(
-          width: 1,
-          height: 22.h,
-          color: const Color(0xffE0E0E0),
-        ),
-        IconButton(
-          visualDensity: VisualDensity.compact,
-          onPressed: () {
-            _focusNode.unfocus();
-            filterPanel();
-          },
-          icon: const CommonImage(
-            imageSrc: AppIcons.fliter,
-            imageColor: Color(0xff636363),
-          ),
-        ),
-        SizedBox(width: 8.w),
-      ],
-    ));
+          SizedBox(width: 8.w),
+        ],
+      ),
+    );
   }
 }

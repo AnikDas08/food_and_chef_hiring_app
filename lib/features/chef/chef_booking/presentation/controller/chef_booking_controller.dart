@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../../../../../../../services/api/api_service.dart';
 import '../../../../../../../config/api/api_end_point.dart';
+import '../../../../../utils/log/app_log.dart';
 
 class ChefBookingController extends GetxController {
 
@@ -120,7 +121,7 @@ class ChefBookingController extends GetxController {
         orders = [];
       }
     } catch (e) {
-      print('ChefBookingController Error: $e');
+      appLog('ChefBookingController Error: $e');
       orders = [];
     }
 

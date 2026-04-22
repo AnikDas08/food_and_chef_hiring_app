@@ -6,6 +6,7 @@ import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/availability_pop_up.dart';
+import 'package:new_untitled/utils/constants/app_colors.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -160,7 +161,9 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                     ShareParams(text: 'https://example.com'),
                                   );
                                 },
-                                child: const CommonImage(imageSrc: AppIcons.share),
+                                child: const CommonImage(
+                                  imageSrc: AppIcons.share,
+                                ),
                               ),
                               const SizedBox(width: 12),
                             ],
@@ -252,7 +255,9 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                   const SizedBox(height: 8),
                                   Row(
                                     children: [
-                                      const CommonImage(imageSrc: AppIcons.location),
+                                      const CommonImage(
+                                        imageSrc: AppIcons.location,
+                                      ),
                                       CommonText(
                                         text:
                                             controller.chefArg?.distance ??
@@ -270,7 +275,9 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                         ),
                                         color: const Color(0xffF1F1F1),
                                       ),
-                                      const CommonImage(imageSrc: AppIcons.briefcase),
+                                      const CommonImage(
+                                        imageSrc: AppIcons.briefcase,
+                                      ),
                                       CommonText(
                                         text:
                                             '${chef?.experience ?? 0} years Experience',
@@ -301,6 +308,24 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                       SizedBox(width: 4.w),
                                     ],
                                   ),
+
+                                  const CommonText(
+                                    text: 'Minimum booking length: 1 hour ',
+                                    color: AppColors.primaryTextColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    textAlign: TextAlign.start,
+                                    top: 8,
+                                  ).start,
+                                  Text(
+                                    'Labour-only private chef: groceries provided by you.',
+                                    style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.secondaryTextColor,
+                                      fontSize: 12.sp,
+                                    ),
+                                  ).start,
                                   ExtendText(
                                     text: chef?.about ?? '',
                                     isExpanded: controller.isExpanded,
@@ -357,9 +382,9 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(16),
                           height: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.9),
-                            borderRadius: const BorderRadius.all(
+                          decoration: const BoxDecoration(
+                            color: AppColors.primaryColor,
+                            borderRadius: BorderRadius.all(
                               Radius.circular(20),
                             ),
                           ),
@@ -376,7 +401,6 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                     CommonText(
                                       text: '${controller.cartItems.length}',
                                       fontWeight: FontWeight.w600,
-                                      color: const Color(0xff272727),
                                     ).center,
                               ),
                               const CommonText(

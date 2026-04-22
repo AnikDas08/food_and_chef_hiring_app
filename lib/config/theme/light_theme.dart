@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import '../../component/text/common_text.dart';
 import '../../utils/constants/app_colors.dart';
 
 ThemeData themeData = ThemeData(
