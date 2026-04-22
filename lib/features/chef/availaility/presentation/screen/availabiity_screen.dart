@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -255,7 +254,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white.withOpacity(0.7),
+        backgroundColor: Colors.white.withValues(alpha: 0.7),
         elevation: 0,
         automaticallyImplyLeading: false,
         leadingWidth: 60,
@@ -267,10 +266,10 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
             child: Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.5),
+                color: Colors.white.withValues(alpha: 0.5),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.6),
+                  color: Colors.white.withValues(alpha: 0.6),
                 ),
               ),
               child: const CommonImage(
@@ -640,7 +639,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
       border: Border.all(color: const Color(0xFFF1F1F1)),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.08),
+          color: Colors.black.withValues(alpha: 0.08),
           blurRadius: 20,
           offset: const Offset(0, 8),
         ),

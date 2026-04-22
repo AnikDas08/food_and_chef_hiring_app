@@ -212,10 +212,7 @@ class MessageController extends GetxController {
         /// ✅ No optimistic insert — socket will push the message back
         selectedImage = null;
       } else {
-        Utils.errorSnackBar(
-          'Error',
-          response.message ?? 'Failed to send image',
-        );
+        Utils.errorSnackBar('Error', response.message);
       }
     } catch (e) {
       Utils.errorSnackBar('Error', 'Failed to send image: ${e.toString()}');

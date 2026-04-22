@@ -345,7 +345,7 @@ Widget _buildOrderDetailsAccordion(
                   CommonText(text: '1-1.5 hours', fontWeight: FontWeight.w600),
                 ],
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 'For scheduling only: Billing reflects time worked.',
                 style: TextStyle(

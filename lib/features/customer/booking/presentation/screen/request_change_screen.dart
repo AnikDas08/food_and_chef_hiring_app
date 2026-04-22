@@ -50,8 +50,9 @@ class RequestChangeScreen extends StatelessWidget {
           }
 
           final order = historyCtrl.selectedOrderDetail;
-          if (order == null)
+          if (order == null) {
             return const Center(child: Text('Order not found'));
+          }
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -79,7 +80,6 @@ class RequestChangeScreen extends StatelessWidget {
                     return CommonTextField(
                       controller: dateController,
                       keyboardType: TextInputType.none,
-                      hintTextSize: 12,
                       paddingVertical: 13,
                       borderRadius: 14,
                       hintText: 'Select Date & Time',

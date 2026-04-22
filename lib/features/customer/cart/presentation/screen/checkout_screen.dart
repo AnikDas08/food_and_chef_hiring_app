@@ -88,7 +88,6 @@ class CheckoutScreen extends StatelessWidget {
                   controller: controller.dateController,
                   keyboardType: TextInputType.none,
                   fontSize: 12,
-                  hintTextSize: 12,
                   hintText: '1 January 2026, 5:20PM',
                   onTap:
                       () => bookingDateTimePopup(
