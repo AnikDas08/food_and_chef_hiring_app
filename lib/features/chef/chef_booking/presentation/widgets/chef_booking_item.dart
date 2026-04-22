@@ -126,8 +126,9 @@ Widget chefBookingItem({required Map order}) {
                           order['_id'] ?? '',
                         );
 
-                        if (Get.isDialogOpen == true)
+                        if (Get.isDialogOpen == true) {
                           Navigator.pop(Get.context!);
+                        }
 
                         if (orderData != null) {
                           upcomingPopUp(orderData: orderData);
@@ -135,8 +136,9 @@ Widget chefBookingItem({required Map order}) {
                           Get.snackbar('Error', 'Could not load order details');
                         }
                       } catch (e) {
-                        if (Get.isDialogOpen == true)
+                        if (Get.isDialogOpen == true) {
                           Navigator.pop(Get.context!);
+                        }
                         Get.snackbar('Error', 'Something went wrong');
                       }
                     }

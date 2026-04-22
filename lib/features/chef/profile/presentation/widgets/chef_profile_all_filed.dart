@@ -313,13 +313,11 @@ class _DropdownStyleField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final TextInputType keyboardType;
-  final Widget? suffix;
 
   const _DropdownStyleField({
     required this.controller,
     required this.hintText,
     required this.keyboardType,
-    this.suffix,
   });
 
   @override
@@ -355,7 +353,6 @@ class _DropdownStyleField extends StatelessWidget {
               ),
             ),
           ),
-          if (suffix != null) suffix!,
           // const Padding(
           //   padding: EdgeInsets.only(right: 12),
           //   child: Icon(
