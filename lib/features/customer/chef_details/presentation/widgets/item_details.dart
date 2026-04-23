@@ -26,7 +26,7 @@ void itemDetails(
   final String imageUrl =
   (item.images != null && item.images!.isNotEmpty)
       ? _buildImageUrl(item.images!.first)
-      : AppImages.image6;
+      : AppImages.noImage;
 
   // Kitchen status
   final bool kitchenReady =
@@ -42,6 +42,16 @@ void itemDetails(
       .where((n) => n.isNotEmpty)
       .join(', ')
       : 'None required';
+
+  // Ingredients names joined
+  final bool hasIngredients =
+      item.ingredients != null && item.ingredients!.isNotEmpty;
+  final String ingredientNames = hasIngredients
+      ? item.ingredients!
+      .map((i) => i.name ?? '')
+      .where((n) => n.isNotEmpty)
+      .join(', ')
+      : 'N/A';
 
   // Local selection state built from item.customizations
   final List<Map<String, dynamic>> dishOptions =
@@ -172,23 +182,17 @@ void itemDetails(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 6.w, vertical: 4),
                                         decoration: BoxDecoration(
-                                          color: kitchenReady
-                                              ? const Color(0xffDBEBD9)
-                                              : const Color(0xffDBEBD9),
+                                          color: const Color(0xffFFF0E0),
                                           borderRadius:
                                           BorderRadius.circular(8),
                                           border: Border.all(
-                                            color: kitchenReady
-                                                ? const Color(0xffC2E2BE)
-                                                : const Color(0xffFDBEBD9),
+                                            color: const Color(0xffFFD4A0),
                                           ),
                                         ),
                                         child: CommonText(
                                           text: item.kitchenStatus ??
                                               'Kitchen Ready',
-                                          color: kitchenReady
-                                              ? const Color(0xff2F8328)
-                                              : const Color(0xff2F8328),
+                                          color: const Color(0xffC17A00),
                                           fontSize: 10,
                                           fontWeight: FontWeight.w400,
                                         ),
@@ -202,29 +206,46 @@ void itemDetails(
                                   8.height,
                                   Row(
                                     children: [
-                                      const CommonImage(
-                                        imageSrc: AppIcons.time,
-                                        size: 16,
-                                        imageColor: Color(0xff777777),
-                                      ),
-                                      4.width,
-                                      Text.rich(
-                                        TextSpan(
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 6.w, vertical: 4),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xffF2F2F2),
+                                          border: Border.all(
+                                            color: const Color(0xffF2F2F2),
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            const TextSpan(
-                                              text: 'Prep Time: ',
-                                              style: TextStyle(
-                                                color: Color(0xff777777),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
-                                              ),
+                                            const CommonImage(
+                                              imageSrc: AppIcons.time,
+                                              size: 16,
+                                              imageColor: Color(0xff777777),
                                             ),
-                                            TextSpan(
-                                              text: item.estPrepTime!,
-                                              style: const TextStyle(
-                                                color: Color(0xff272727),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
+                                            4.width,
+                                            Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  const TextSpan(
+                                                    text: 'Prep Time: ',
+                                                    style: TextStyle(
+                                                      color: Color(0xff777777),
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text: item.estPrepTime!,
+                                                    style: const TextStyle(
+                                                      color: Color(0xff272727),
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],
@@ -304,9 +325,8 @@ void itemDetails(
                                   ),
                                 ],
 
-                                8.height,
-                                const Divider(),
-                                12.height,
+                                SizedBox(height: 12,),
+
 
                                 // ── Customize the Dish ───────────────────
                                 if (dishOptions.isNotEmpty) ...[
@@ -372,63 +392,12 @@ void itemDetails(
                                   color: Color(0xff272727),
                                   bottom: 8,
                                 ),
-                                if (item.ingredients != null &&
-                                    item.ingredients!.isNotEmpty)
-                                  ...item.ingredients!.map((ingredient) {
-                                    return Padding(
-                                      padding:
-                                      const EdgeInsets.only(bottom: 4),
-                                      child: Row(
-                                        children: [
-                                          const Icon(Icons.circle,
-                                              size: 6,
-                                              color: Color(0xff777777)),
-                                          8.width,
-                                          Expanded(
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text:
-                                                    ingredient.name ?? '',
-                                                    style: const TextStyle(
-                                                      color:
-                                                      Color(0xff272727),
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                      FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                  /*if (ingredient.quantity !=
-                                                      null ||
-                                                      ingredient.unit != null)
-                                                    TextSpan(
-                                                      text:
-                                                      ' — ${ingredient.quantity ?? ''} ${ingredient.unit ?? ''}'
-                                                          .trim(),
-                                                      style: const TextStyle(
-                                                        color:
-                                                        Color(0xff777777),
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                        FontWeight.w400,
-                                                      ),
-                                                    ),*/
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  })
-                                else
-                                  const CommonText(
-                                    text: 'N/A',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xff272727),
-                                  ),
+                                CommonText(
+                                  text: ingredientNames,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: const Color(0xff272727),
+                                ),
 
                                 // ── Special Equipment ────────────────────
                                 const CommonText(
@@ -437,12 +406,14 @@ void itemDetails(
                                   color: Color(0xff272727),
                                   top: 16,
                                   bottom: 8,
+                                  maxLines: 6,
                                 ),
                                 CommonText(
                                   text: equipmentNames,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
                                   color: const Color(0xff272727),
+                                  maxLines: 5,
                                 ),
 
                                 // ── Rating & Bookings ────────────────────

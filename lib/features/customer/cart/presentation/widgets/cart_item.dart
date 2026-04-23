@@ -18,7 +18,7 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
       ? (menuDetail.images!.first.startsWith('http')
       ? menuDetail.images!.first
       : ApiEndPoint.imageUrl + menuDetail.images!.first)
-      : AppImages.image6;
+      : AppImages.noImage;
 
   final String name = menuDetail?.name ?? 'N/A';
   final String cartItemId = item.id ?? '';

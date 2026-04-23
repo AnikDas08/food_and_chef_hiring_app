@@ -35,6 +35,7 @@ class BookingHistoryScreen extends StatelessWidget {
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
+                top: 10,
               ),
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(38.h),

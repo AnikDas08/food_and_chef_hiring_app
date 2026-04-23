@@ -96,204 +96,231 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
-        title: const CommonText(
-          text: 'Upload a Photo',
-          fontSize: 24,
-          fontWeight: FontWeight.w600,
-          textAlign: TextAlign.start,
+        title: const Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: CommonText(
+            text: 'Upload a Photo',
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            textAlign: TextAlign.start,
+          ),
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 12.h),
-              const _ProgressBar(totalSteps: 5, currentStep: 5),
-              SizedBox(height: 20.h),
-
-              SizedBox(height: 8.h),
-              const CommonText(
-                text:
-                    'Provide us with a photo of your kitchen to help the chef prepare for your order.',
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                color: Color(0xFF888888),
-                maxLines: 3,
-                textAlign: TextAlign.start,
-              ),
-              SizedBox(height: 24.h),
-
-              // ── Image picker box ──
-              Obx(() {
-                final image = controller.selectedImage.value;
-
-                return GestureDetector(
-                  onTap: () => _showImageSourceSheet(context, controller),
-                  child: Container(
-                    height: 200.h,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF7F7F7),
-                      borderRadius: BorderRadius.circular(14.r),
-                      border: Border.all(
-                        color:
-                            image != null
-                                ? AppColors.black
-                                : const Color(0xFFE0E0E0),
-                        width: 1.5,
-                      ),
-                    ),
-                    child:
-                        image == null
-                            // ── Empty state ──
-                            ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.cloud_upload_outlined,
-                                  size: 38.sp,
-                                  color: const Color(0xFF888888),
-                                ),
-                                SizedBox(height: 10.h),
-                                const CommonText(
-                                  text: 'Select a picture',
-                                  fontSize: 13,
-                                  color: Color(0xFF888888),
-                                ),
-                                SizedBox(height: 4.h),
-                                const CommonText(
-                                  text: 'Tap to open camera or gallery',
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xFFBBBBBB),
-                                ),
-                              ],
-                            )
-                            // ── Selected image ──
-                            : Stack(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(13.r),
-                                  child: Image.file(
-                                    File(image.path),
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                // Remove button
-                                Positioned(
-                                  top: 8.h,
-                                  right: 8.w,
-                                  child: GestureDetector(
-                                    onTap: controller.removeImage,
-                                    child: Container(
-                                      width: 30.w,
-                                      height: 30.w,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.6),
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Icon(
-                                        Icons.close_rounded,
-                                        color: AppColors.white,
-                                        size: 18.sp,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                // Change photo label at bottom
-                                Positioned(
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 8.h,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.45),
-                                      borderRadius: BorderRadius.vertical(
-                                        bottom: Radius.circular(13.r),
-                                      ),
-                                    ),
-                                    child: const CommonText(
-                                      text: 'Tap to change photo',
-                                      fontSize: 12,
-                                      color: AppColors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                  ),
-                );
-              }),
-
-              SizedBox(height: 14.h),
-              Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 children: [
-                  Icon(
-                    Icons.shield_outlined,
-                    size: 16.sp,
-                    color: const Color(0xFF27AE60),
+                  SizedBox(height: 12.h),
+                  const _ProgressBar(totalSteps: 5, currentStep: 5),
+                  SizedBox(height: 20.h),
+
+                  SizedBox(height: 8.h),
+                  const CommonText(
+                    text:
+                        'Provide us with a photo of your kitchen to help the chef prepare for your order.',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF888888),
+                    maxLines: 3,
+                    textAlign: TextAlign.start,
                   ),
-                  SizedBox(width: 6.w),
-                  const Expanded(
-                    child: CommonText(
-                      text:
-                          'We only show your photo to the chef after booking.',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF27AE60),
-                      textAlign: TextAlign.start,
-                      maxLines: 2,
+                  SizedBox(height: 24.h),
+
+                  // ── Image picker box ──
+                  Obx(() {
+                    final image = controller.selectedImage.value;
+
+                    return GestureDetector(
+                      onTap: () => _showImageSourceSheet(context, controller),
+                      child: Container(
+                        height: 200.h,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF7F7F7),
+                          borderRadius: BorderRadius.circular(14.r),
+                          border: Border.all(
+                            color:
+                                image != null
+                                    ? AppColors.black
+                                    : const Color(0xFFE0E0E0),
+                            width: 1.5,
+                          ),
+                        ),
+                        child:
+                            image == null
+                                // ── Empty state ──
+                                ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.cloud_upload_outlined,
+                                      size: 38.sp,
+                                      color: const Color(0xFF888888),
+                                    ),
+                                    SizedBox(height: 10.h),
+                                    const CommonText(
+                                      text: 'Select a picture',
+                                      fontSize: 13,
+                                      color: Color(0xFF888888),
+                                    ),
+                                    SizedBox(height: 4.h),
+                                    const CommonText(
+                                      text: 'Tap to open camera or gallery',
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFFBBBBBB),
+                                    ),
+                                  ],
+                                )
+                                // ── Selected image ──
+                                : Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                        13.r,
+                                      ),
+                                      child: Image.file(
+                                        File(image.path),
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    // Remove button
+                                    Positioned(
+                                      top: 8.h,
+                                      right: 8.w,
+                                      child: GestureDetector(
+                                        onTap: controller.removeImage,
+                                        child: Container(
+                                          width: 30.w,
+                                          height: 30.w,
+                                          decoration: BoxDecoration(
+                                            color: Colors.black.withOpacity(
+                                              0.6,
+                                            ),
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Icon(
+                                            Icons.close_rounded,
+                                            color: AppColors.white,
+                                            size: 18.sp,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    // Change photo label at bottom
+                                    Positioned(
+                                      bottom: 0,
+                                      left: 0,
+                                      right: 0,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 8.h,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(
+                                            0.45,
+                                          ),
+                                          borderRadius: BorderRadius.vertical(
+                                            bottom: Radius.circular(13.r),
+                                          ),
+                                        ),
+                                        child: const CommonText(
+                                          text: 'Tap to change photo',
+                                          fontSize: 12,
+                                          color: AppColors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                      ),
+                    );
+                  }),
+
+                  SizedBox(height: 14.h),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.shield_outlined,
+                        size: 16.sp,
+                        color: const Color(0xFF27AE60),
+                      ),
+                      SizedBox(width: 6.w),
+                      const Expanded(
+                        child: CommonText(
+                          text:
+                              'We only show your photo to the chef after booking.',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF27AE60),
+                          textAlign: TextAlign.start,
+                          maxLines: 2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 20.h),
+              child: Stack(
+                clipBehavior: Clip.none,
+                alignment: Alignment.center,
+                children: [
+                  Obx(() {
+                    final submitting = controller.isSubmittingCustom.value;
+                    return CommonButton(
+                      titleText: submitting ? 'Please wait...' : 'Continue',
+                      buttonColor:
+                          submitting ? const Color(0xFFAAAAAA) : AppColors.black,
+                      onTap:
+                          submitting
+                              ? null
+                              : () async {
+                                final success =
+                                    await controller.submitCustomKitchen();
+                                if (success) {
+                                  Get.offAll(() => const CustomerHomeScreen());
+                                  Utils.successSnackBar(
+                                    'Successful',
+                                    'Successfully create kitchen',
+                                  );
+                                }
+                              },
+                    );
+                  }),
+                  Positioned(
+                    bottom: -22.h,
+                    child: GestureDetector(
+                      onTap: () async {
+                        final success = await controller.submitCustomKitchen();
+                        if (success) {
+                          Get.offAll(() => const CustomerHomeScreen());
+                        }
+                      },
+                      child: const CommonText(
+                        text: 'Skip for Now',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF777777),
+                      ),
                     ),
                   ),
                 ],
               ),
-
-              const Spacer(),
-
-              SizedBox(height: 10.h),
-              Obx(() {
-                final submitting = controller.isSubmittingCustom.value;
-                return CommonButton(
-                  titleText: submitting ? 'Please wait...' : 'Continue',
-                  buttonColor:
-                      submitting ? const Color(0xFFAAAAAA) : AppColors.black,
-                  onTap:
-                      submitting
-                          ? null
-                          : () async {
-                            final success =
-                                await controller.submitCustomKitchen();
-                            if (success) {
-                              Get.offAll(() => const CustomerHomeScreen());
-                              Utils.successSnackBar(
-                                'Successful',
-                                'Successfully create kitchen',
-                              );
-                            }
-                          },
-                );
-              }),
-              SizedBox(height: 20.h),
-
-              CommonButton(
-                titleText: 'Skip for Now',
-                onTap: () {
-                  controller.submitCustomKitchen();
-                },
-                buttonColor: Colors.transparent,
-                titleColor: Colors.black,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+
     );
   }
 }

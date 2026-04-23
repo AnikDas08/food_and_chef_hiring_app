@@ -167,9 +167,9 @@ class _FoodItemState extends State<FoodItem>
 
                 // ── Food image ────────────────────────────────────────────
                 CommonImage(
-                  imageSrc: firstImage != null
+                  imageSrc: (firstImage != null && firstImage.isNotEmpty)
                       ? _buildImageUrl(firstImage)
-                      : AppImages.image6,
+                      : AppImages.noImage,
                   size: 120,
                   borderRadius: 8,
                   fill: BoxFit.cover,

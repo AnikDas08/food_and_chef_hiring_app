@@ -29,7 +29,7 @@ class CartScreen extends StatelessWidget {
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             systemOverlayStyle: SystemUiOverlayStyle.dark,
-            automaticallyImplyLeading: false,
+            //automaticallyImplyLeading: false,
             centerTitle: true,
             backgroundColor: Colors.transparent,
             elevation: 0,

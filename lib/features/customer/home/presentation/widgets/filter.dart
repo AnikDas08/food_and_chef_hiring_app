@@ -225,9 +225,14 @@ class TimeAvailabilitySection extends StatelessWidget {
               return Obx(
                 () => InkWell(
                   onTap: () {
-                    // Single select: clear and add new
-                    controller.selectedAvailability.clear();
-                    controller.selectedAvailability.add(_mapTimeToParam(value));
+                    final String mappedValue = _mapTimeToParam(value);
+                    if (controller.selectedAvailability.contains(mappedValue)) {
+                      controller.selectedAvailability.clear();
+                    } else {
+                      // Single select: clear and add new
+                      controller.selectedAvailability.clear();
+                      controller.selectedAvailability.add(mappedValue);
+                    }
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 6),

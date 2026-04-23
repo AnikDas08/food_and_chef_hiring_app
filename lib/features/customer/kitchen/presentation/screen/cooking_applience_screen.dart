@@ -27,88 +27,92 @@ class CookingAppliancesScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
-        title: const CommonText(
-          text: 'Cooking Appliances',
-          fontSize: 24,
-          fontWeight: FontWeight.w600,
-          textAlign: TextAlign.start,
+        title: const Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: CommonText(
+            text: 'Cooking Appliances',
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            textAlign: TextAlign.start,
+          ),
         ),
       ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
                 children: [
-                  SizedBox(height: 12.h),
-                  const _ProgressBar(totalSteps: 5, currentStep: 2),
-                  SizedBox(height: 20.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 12.h),
+                        const _ProgressBar(totalSteps: 5, currentStep: 2),
+                        SizedBox(height: 20.h),
 
-                  SizedBox(height: 8.h),
-                  const CommonText(
-                    text: 'Select the appliances available in your kitchen.',
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF888888),
-                    textAlign: TextAlign.start,
+                        SizedBox(height: 8.h),
+                        const CommonText(
+                          text:
+                              'Select the appliances available in your kitchen.',
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF888888),
+                          textAlign: TextAlign.start,
+                        ),
+                        SizedBox(height: 20.h),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 20.h),
+                  Obx(() {
+                    if (controller.isLoadingEquipment.value) {
+                      return SizedBox(
+                        height: 200.h,
+                        child: const Center(
+                          child: CircularProgressIndicator(color: Colors.black),
+                        ),
+                      );
+                    }
+                    if (controller.equipmentError.value.isNotEmpty) {
+                      return _ErrorRetry(
+                        message: controller.equipmentError.value,
+                        onRetry: controller.fetchEquipmentList,
+                      );
+                    }
+
+                    final items = controller.itemsFor(_category);
+                    if (items.isEmpty) {
+                      return SizedBox(
+                        height: 100.h,
+                        child: const Center(
+                          child: CommonText(
+                            text: 'No appliances found.',
+                            fontSize: 12,
+                            color: AppColors.grey,
+                          ),
+                        ),
+                      );
+                    }
+
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: _CollapsibleSection(
+                        controller: controller,
+                        category: _category,
+                        title: 'Cooking Appliances',
+                      ),
+                    );
+                  }),
                 ],
               ),
             ),
-
-            Expanded(
-              child: Obx(() {
-                if (controller.isLoadingEquipment.value) {
-                  return const Center(
-                    child: CircularProgressIndicator(color: Colors.black),
-                  );
-                }
-                if (controller.equipmentError.value.isNotEmpty) {
-                  return _ErrorRetry(
-                    message: controller.equipmentError.value,
-                    onRetry: controller.fetchEquipmentList,
-                  );
-                }
-
-                final items = controller.itemsFor(_category);
-                if (items.isEmpty) {
-                  return const Center(
-                    child: CommonText(
-                      text: 'No appliances found.',
-                      fontSize: 12,
-                      color: AppColors.grey,
-                    ),
-                  );
-                }
-
-                return ListView(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  children: [
-                    _CollapsibleSection(
-                      controller: controller,
-                      category: _category,
-                      title: 'Cooking Appliances',
-                    ),
-                  ],
-                );
-              }),
-            ),
-
             Padding(
-              padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 28.h),
+              padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 20.h),
               child: Column(
                 children: [
-                  /*CommonButton(
-                    titleText: 'Skip For Now',
-                    buttonColor: const Color(0xFFF2F2F2),
-                    titleColor: AppColors.black,
-                    onTap: () => Get.to(() => const CookwareToolsScreen()),
-                  ),*/
-                  SizedBox(height: 10.h),
                   CommonButton(
                     titleText: 'Continue',
                     buttonColor: AppColors.black,

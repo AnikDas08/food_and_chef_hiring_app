@@ -215,40 +215,44 @@ AppBar homeAppbar() {
 
     title: GetBuilder<HomeController>(
       builder: (controller) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CommonText(
-              text: AppString.yourLocation,
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              bottom: 2,
-            ),
-            Row(
-              children: [
-                const Icon(
-                  Icons.location_on_rounded,
-                  color: Color(0xff272727),
-                  size: 20,
-                ),
+        return GestureDetector(
+          onTap: () => Get.toNamed(AppRoutes.addressScreen,arguments: {"isLoading":true,
+          }),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CommonText(
+                text: AppString.yourLocation,
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                bottom: 2,
+              ),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.location_on_rounded,
+                    color: Color(0xff272727),
+                    size: 20,
+                  ),
 
-                Flexible(
-                  child: Obx(
-                    () => CommonText(
-                      text:
-                          controller.defaultAddress.value.isEmpty
-                              ? 'Fetching location...'
-                              : controller.defaultAddress.value,
-                      color: const Color(0xff272727),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.sp,
-                      left: 4,
+                  Flexible(
+                    child: Obx(
+                      () => CommonText(
+                        text:
+                            controller.defaultAddress.value.isEmpty
+                                ? 'Fetching location...'
+                                : controller.defaultAddress.value,
+                        color: const Color(0xff272727),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14.sp,
+                        left: 4,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         );
       },
     ),
@@ -286,19 +290,22 @@ AppBar homeAppbar() {
       LiquidGlassLayer(
         child: LiquidGlass(
           shape: const LiquidRoundedSuperellipse(borderRadius: 30),
-          child: Container(
-            width: 40.sp,
-            height: 40.sp,
-            padding: EdgeInsets.all(8.sp),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
+          child: GestureDetector(
+            onTap: () => Get.toNamed(AppRoutes.cart, arguments: "cart"),
+            child: Container(
+              width: 40.sp,
+              height: 40.sp,
+              padding: EdgeInsets.all(8.sp),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
+              ),
+              child:
+                  const CommonImage(
+                    imageSrc: AppIcons.basketSvg,
+                    imageColor: Colors.black,
+                  ).center,
             ),
-            child:
-                const CommonImage(
-                  imageSrc: AppIcons.basketSvg,
-                  imageColor: Colors.black,
-                ).center,
           ),
         ),
       ),

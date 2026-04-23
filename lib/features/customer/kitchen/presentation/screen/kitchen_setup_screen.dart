@@ -21,11 +21,14 @@ class KitchenSetupScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
-        title: const CommonText(
-          text: 'Your Kitchen Setup',
-          fontSize: 24,
-          fontWeight: FontWeight.w600,
-          textAlign: TextAlign.start,
+        title: const Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: CommonText(
+            text: 'Your Kitchen Setup',
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            textAlign: TextAlign.start,
+          ),
         ),
       ),
       body: SafeArea(
@@ -130,8 +133,7 @@ class KitchenSetupScreen extends StatelessWidget {
                 color: Color(0xFF888888),
                 textAlign: TextAlign.start,
               ),
-              SizedBox(height: 16.h),
-              SizedBox(height: 10.h),
+              SizedBox(height: 12.h),
               Obx(() {
                 final selected = controller.isAnythingSelected;
                 final submitting = controller.isSubmittingPreset.value;

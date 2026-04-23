@@ -40,6 +40,7 @@ class ProfileScreen extends StatelessWidget {
           text: AppString.myProfile,
           fontWeight: FontWeight.w600,
           fontSize: 24,
+          top: 10,
         ),
       ),
       body: ListView(
@@ -120,12 +121,7 @@ class ProfileScreen extends StatelessWidget {
                 Item(
                   icon: CupertinoIcons.person,
                   title: AppString.editProfile,
-                  // onTap: () => Get.toNamed(AppRoutes.editProfile),
-                  onTap:
-                      () => Utils.successSnackBar(
-                        'Not implemented',
-                        'This feature is not implemented yet',
-                      ),
+                  onTap: () => Get.toNamed(AppRoutes.editProfile),
                 ),
                 Item(
                   icon: CupertinoIcons.location,

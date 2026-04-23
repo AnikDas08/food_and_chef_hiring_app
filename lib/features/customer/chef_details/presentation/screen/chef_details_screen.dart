@@ -107,6 +107,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                   SliverAppBar(
                     pinned: true,
                     expandedHeight: _expandedHeight.h,
+                    toolbarHeight: 90.h,
                     backgroundColor: Colors.white,
                     elevation: _isCollapsed ? 1 : 0,
                     titleSpacing: 0,
@@ -406,16 +407,16 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                               const CommonText(
                                 text: AppString.viewCart,
                                 color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
                                 left: 8,
                               ),
                               const Spacer(),
                               CommonText(
                                 text:
-                                    "\$${pricePerChef.toStringAsFixed(2)}  •  ${chef?.estCookingTime ?? ''}",
+                                    "\$${pricePerChef.toStringAsFixed(2)}",
                                 color: Colors.white,
-                                fontSize: 16,
+                                fontSize: 14,
                               ),
                             ],
                           ),
@@ -448,7 +449,7 @@ class _SearchAppBarTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: const Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(20),
@@ -533,7 +534,7 @@ class _CollapsedAppBarTitle extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: const Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(20),
@@ -684,11 +685,12 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
             child: TabBar(
               controller: controller.tabController,
               isScrollable: isScrollable,
+              indicatorSize: TabBarIndicatorSize.label,
               tabAlignment:
                   isScrollable ? TabAlignment.start : TabAlignment.fill,
               indicator: const UnderlineTabIndicator(
                 borderSide: BorderSide(width: 2.5, color: Color(0xffFD713F)),
-                insets: EdgeInsets.symmetric(horizontal: 10),
+                insets: EdgeInsets.only(bottom: 0),
               ),
               dividerColor: Colors.transparent,
               indicatorColor: Colors.transparent,
@@ -698,10 +700,12 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
               labelStyle: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
+                letterSpacing: 0,
               ),
               unselectedLabelStyle: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
+                letterSpacing: 0,
               ),
               tabs:
                   sections

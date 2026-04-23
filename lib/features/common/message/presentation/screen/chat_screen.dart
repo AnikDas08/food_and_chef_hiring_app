@@ -38,6 +38,7 @@ class ChatListScreen extends StatelessWidget {
           text: AppString.chat,
           fontWeight: FontWeight.w600,
           fontSize: 24,
+          top: 10,
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60),

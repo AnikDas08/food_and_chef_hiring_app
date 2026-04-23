@@ -59,13 +59,13 @@ class _MenuTopItemState extends State<MenuTopItem> {
                       height: 32,
                       fit: BoxFit.cover,
                       errorBuilder: (_, __, ___) => const CommonImage(
-                        imageSrc: AppImages.image6,
+                        imageSrc: AppImages.noImage,
                         size: 32,
                         borderRadius: 4,
                       ),
                     )
                         : const CommonImage(
-                      imageSrc: AppImages.image6,
+                      imageSrc: AppImages.noImage,
                       size: 32,
                       borderRadius: 4,
                     ),
