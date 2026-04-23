@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
+import 'package:new_untitled/component/text_field/common_text_field.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/extensions/extension.dart';
 import '../controller/search_controller.dart';
@@ -86,12 +88,12 @@ class _SearchScreenState extends State<SearchScreen> {
         titleSpacing: 16.w,
         title: LiquidGlassLayer(
           child: LiquidGlass(
-            shape: LiquidRoundedSuperellipse(borderRadius: 20.r),
+            shape: LiquidRoundedSuperellipse(borderRadius: 30.r),
             child: Container(
               height: 60.h,
               decoration: BoxDecoration(
                 color: const Color(0xffF2F2F2).withOpacity(0.8),
-                borderRadius: BorderRadius.circular(20.r),
+                borderRadius: BorderRadius.circular(30.r),
               ),
               child: Row(
                 children: [
@@ -101,30 +103,26 @@ class _SearchScreenState extends State<SearchScreen> {
                       onPressed: () => Get.back(),
                       icon: Icon(
                         Icons.arrow_back_ios_new,
-                        size: 18.sp,
-                        color: const Color(0xff272727),
+                        size: 24.sp,
+                        color: const Color(0xff777777),
                       ),
                     ),
                   ),
                   Expanded(
-                    child: TextField(
+                    child: CommonTextField(
                       controller: _controller.searchController,
                       focusNode: _focusNode,
                       onChanged: _controller.onSearchChanged,
+                      borderRadius: 30,
                       onSubmitted: (value) {
                         _controller.onSearchSubmitted(value);
                         _focusNode.unfocus();
                       },
-                      style: TextStyle(fontSize: 14.sp),
-                      decoration: InputDecoration(
-                        hintText: 'Search chefs...',
-                        hintStyle: TextStyle(
-                          fontSize: 14.sp,
-                          color: const Color(0xff777777),
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(vertical: 12.h),
-                      ),
+                      hintText: 'Search chefs...',
+                      fillColor: Colors.transparent,
+                      borderColor: Colors.transparent,
+                      paddingVertical: 12.h,
+                      paddingHorizontal: 12.w,
                     ),
                   ),
                   _buildSuffixIcon(),

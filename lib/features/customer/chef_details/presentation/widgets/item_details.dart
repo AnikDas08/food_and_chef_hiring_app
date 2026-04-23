@@ -182,17 +182,18 @@ void itemDetails(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 6.w, vertical: 4),
                                         decoration: BoxDecoration(
-                                          color: const Color(0xffFFF0E0),
+                                          color: item.kitchenStatus == 'Missing Equipment'
+                                              ? const Color(0xffFFF0E0)
+                                              : const Color(0xffDBEBD9),
                                           borderRadius:
                                           BorderRadius.circular(8),
-                                          border: Border.all(
-                                            color: const Color(0xffFFD4A0),
-                                          ),
                                         ),
                                         child: CommonText(
                                           text: item.kitchenStatus ??
                                               'Kitchen Ready',
-                                          color: const Color(0xffC17A00),
+                                          color: item.kitchenStatus == 'Missing Equipment'
+                                              ? const Color(0xffC17A00)
+                                              : const Color(0xff2F8328),
                                           fontSize: 10,
                                           fontWeight: FontWeight.w400,
                                         ),

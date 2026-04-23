@@ -18,20 +18,21 @@ class BusinessTaxDetailsScreen extends StatelessWidget {
     final bool isEdit = args?['isEdit'] == true;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const CommonText(
+          text: AppString.businessTaxDetails,
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          color: Color(0xff272727),
+        ),
+        centerTitle: true,
+      ),
       body: GetBuilder<TaxController>(
         builder: (controller) => SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CommonText(
-                text: AppString.businessTaxDetails,
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff272727),
-              ),
-
               const CommonText(
                 text: AppString.name,
                 top: 16,
@@ -114,7 +115,7 @@ class BusinessTaxDetailsScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const Divider(),
+              //const Divider(),
             ],
           ),
         ),

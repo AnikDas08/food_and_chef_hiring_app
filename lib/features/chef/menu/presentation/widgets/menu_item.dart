@@ -124,11 +124,11 @@ Widget menuItem() {
             ),
           ),
 
-          const CommonImage(
+          /*const CommonImage(
             imageSrc: (item.images != null && item.images!.isNotEmpty) ? _buildImageUrl(item.images!.first) : AppImages.noImage,
             size: 120,
             borderRadius: 8,
-          ),
+          ),*/
         ],
       ),
     ),

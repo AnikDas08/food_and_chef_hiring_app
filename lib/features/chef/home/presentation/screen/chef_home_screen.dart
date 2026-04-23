@@ -20,6 +20,8 @@ class ChefHomeScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: const ChefHomeAppBar(),
       body: RefreshIndicator(
+        backgroundColor: Colors.white,
+        color: Colors.black,
         onRefresh: () async {
           final c = Get.find<ChefHomeController>();
           await Future.wait([

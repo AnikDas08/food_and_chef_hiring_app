@@ -280,7 +280,7 @@ class UploadKitchenPhotoScreen extends StatelessWidget {
                     return CommonButton(
                       titleText: submitting ? 'Please wait...' : 'Continue',
                       buttonColor:
-                          submitting ? const Color(0xFFAAAAAA) : AppColors.black,
+                          submitting ? const Color(0xFFAAAAAA) : AppColors.primaryColor,
                       onTap:
                           submitting
                               ? null

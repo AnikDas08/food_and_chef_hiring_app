@@ -146,7 +146,7 @@ class KitchenSetupScreen extends StatelessWidget {
                 return CommonButton(
                   titleText: busy ? 'Please wait...' : 'Continue',
                   buttonColor:
-                      selected ? AppColors.black : const Color(0xFFAAAAAA),
+                      selected ? AppColors.primaryColor : const Color(0xFFAAAAAA),
                   onTap:
                       (!selected || busy)
                           ? null

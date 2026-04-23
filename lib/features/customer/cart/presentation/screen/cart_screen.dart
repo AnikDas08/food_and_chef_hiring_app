@@ -37,9 +37,9 @@ class CartScreen extends StatelessWidget {
             // ── Liquid Glass Header ──────────────────────────────────────────
             flexibleSpace: appBarOpacity(),
 
-            title: CommonText(
+            title: const CommonText(
               text: AppString.cart,
-              fontSize: 24.sp,
+              fontSize: 24,
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),
             ),

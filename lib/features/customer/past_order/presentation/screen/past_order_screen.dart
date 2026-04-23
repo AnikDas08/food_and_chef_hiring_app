@@ -65,6 +65,8 @@ class PastOrderScreen extends StatelessWidget {
 
                     // ── List ───────────────────────────────
                     return RefreshIndicator(
+                      backgroundColor: Colors.white,
+                      color: Colors.black,
                       onRefresh: controller.fetchOrders,
                       child: ListView.builder(
                         controller: controller.scrollController,

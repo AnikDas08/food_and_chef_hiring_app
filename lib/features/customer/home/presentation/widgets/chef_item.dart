@@ -127,7 +127,7 @@ Widget chefItem({
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: "\$${chef.priceWithFee?.toStringAsFixed(2) ?? '0.00'}",
+                        text: "\$${chef.pricing?.toStringAsFixed(2) ?? '0.00'}",
                         style: const TextStyle(
                           color: Color(0xff272727),
                           fontSize: 14,

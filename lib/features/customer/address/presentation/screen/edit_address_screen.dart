@@ -32,7 +32,7 @@ class EditAddressScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Address'), ),
+      appBar: AppBar(),
       body: GetBuilder<AddressController>(
         builder: (controller) {
           // ── Full screen loader while fetching ────────────

@@ -163,6 +163,8 @@ class BookingHistoryScreen extends StatelessWidget {
     if (controller.isLoading) return const CommonLoader();
 
     return RefreshIndicator(
+      backgroundColor: Colors.white,
+      color: Colors.black,
       onRefresh: () => controller.fetchOrders(isRefresh: true),
       // Displacement pushes the spinner down so it's not hidden by the AppBar
       displacement: 130.h,

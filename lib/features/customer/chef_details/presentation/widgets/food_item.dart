@@ -146,19 +146,19 @@ class _FoodItemState extends State<FoodItem>
                               ? const Color(0xffDBEBD9)
                               : const Color(0xffFFF0E0),
                           borderRadius: BorderRadius.circular(30),
-                          border: Border.all(
+                          /*border: Border.all(
                             color: kitchenReady
                                 ? const Color(0xffC2E2BE)
                                 : const Color(0xffFFD4A0),
-                          ),
+                          ),*/
                         ),
                         child: CommonText(
                           text: item.kitchenStatus ?? 'Your Kitchen is Ready',
                           color: kitchenReady
                               ? const Color(0xff2F8328)
-                              : const Color(0xffC17A00),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
+                              : const Color(0xffE39400),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 10,
                         ),
                       ),
                     ],

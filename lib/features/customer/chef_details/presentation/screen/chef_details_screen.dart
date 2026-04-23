@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
@@ -111,7 +112,21 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                     backgroundColor: Colors.white,
                     elevation: _isCollapsed ? 1 : 0,
                     titleSpacing: 0,
-                    automaticallyImplyLeading: !_isCollapsed,
+                    automaticallyImplyLeading: false,
+                    leading:
+                        _isCollapsed
+                            ? null
+                            : Padding(
+                              padding: EdgeInsets.only(left: 16.w),
+                              child: Center(
+                                child: InkWell(
+                                  onTap: () => Get.back(),
+                                  child: const CommonImage(
+                                    imageSrc: 'assets/icons/back.svg',
+                                  ),
+                                ),
+                              ),
+                            ),
 
                     title:
                         _isCollapsed
@@ -132,38 +147,60 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                         _isCollapsed
                             ? []
                             : [
-                              InkWell(
-                                onTap: controller.toggleFavourite,
-                                child: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.50),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Center(
-                                    child: Icon(
-                                      controller.isFavorite
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
-                                      color:
-                                          controller.isFavorite
-                                              ? Colors.red
-                                              : Colors.white,
-                                      size: 24,
+                              Center(
+                                child: InkWell(
+                                  onTap: controller.toggleFavourite,
+                                  child: LiquidGlassLayer(
+                                    settings: const LiquidGlassSettings(
+                                      blur: 10,
+                                      thickness: 40,
+                                    ),
+                                    child: LiquidGlass(
+                                      shape: const LiquidRoundedSuperellipse(
+                                        borderRadius: 30,
+                                      ),
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xff777777)
+                                              .withOpacity(0.5),
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          border: Border.all(
+                                            color: const Color(0xff777777)
+                                                .withOpacity(0.5),
+                                            width: 0.5,
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            controller.isFavorite
+                                                ? Icons.favorite
+                                                : Icons.favorite_border,
+                                            color:
+                                                controller.isFavorite
+                                                    ? Colors.red
+                                                    : Colors.white,
+                                            size: 24,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                               const SizedBox(width: 12),
-                              InkWell(
-                                onTap: () {
-                                  SharePlus.instance.share(
-                                    ShareParams(text: 'https://example.com'),
-                                  );
-                                },
-                                child: const CommonImage(
-                                  imageSrc: AppIcons.share,
+                              Center(
+                                child: InkWell(
+                                  onTap: () {
+                                    SharePlus.instance.share(
+                                      ShareParams(text: 'https://example.com'),
+                                    );
+                                  },
+                                  child: const CommonImage(
+                                    imageSrc: AppIcons.share,
+                                  ),
                                 ),
                               ),
                               const SizedBox(width: 12),
@@ -237,7 +274,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                                   "\$${chef?.pricing?.toStringAsFixed(2) ?? '0.00'}",
                                               style: const TextStyle(
                                                 color: Color(0xff272727),
-                                                fontSize: 14,
+                                                fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
@@ -245,7 +282,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                               text: ' /hr',
                                               style: TextStyle(
                                                 color: Color(0xff777777),
-                                                fontSize: 12,
+                                                fontSize: 14,
                                               ),
                                             ),
                                           ],
@@ -560,7 +597,6 @@ class _CollapsedAppBarTitle extends StatelessWidget {
             ),
           ),
           SizedBox(width: 12.w),
-
           // ── Chef name + price + rating ───────────────────────────
           Expanded(
             child: Column(
@@ -697,15 +733,15 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
               labelPadding: const EdgeInsets.symmetric(horizontal: 16),
               labelColor: const Color(0xffFD713F),
               unselectedLabelColor: const Color(0xff777777),
-              labelStyle: const TextStyle(
+              labelStyle: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                letterSpacing: 0,
+                letterSpacing: getLetterSpacing(14, FontWeight.w500),
               ),
-              unselectedLabelStyle: const TextStyle(
+              unselectedLabelStyle: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                letterSpacing: 0,
+                letterSpacing: getLetterSpacing(14, FontWeight.w400),
               ),
               tabs:
                   sections
@@ -717,6 +753,7 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
                             maxLines: 1,
                             textAlign: TextAlign.center,
                           ),
+
                         ),
                       )
                       .toList(),

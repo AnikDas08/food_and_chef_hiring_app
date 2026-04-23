@@ -5,7 +5,7 @@ class AppString {
   static const String back = 'Back';
   static const String name = 'Name';
   static const String businessTaxDetails = 'Business tax details';
-  static const String detailedAddress = 'DETAILED ADDRESS';
+  static const String detailedAddress = 'Detailed Address';
   static const String youSureWantToLogout = 'Are you want you want to log out?';
   static const String no = 'No';
   static const String contactSupport = 'Contact & Support';

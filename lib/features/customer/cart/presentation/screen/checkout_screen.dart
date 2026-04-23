@@ -37,8 +37,9 @@ class CheckoutScreen extends StatelessWidget {
 
         title: const CommonText(
           text: AppString.checkout,
+          fontSize: 24,
           fontWeight: FontWeight.w600,
-          color: Color(0xff272727),
+          color: const Color(0xff272727),
         ),
         flexibleSpace: LiquidGlassLayer(
           child: LiquidGlass(
@@ -139,12 +140,6 @@ class CheckoutScreen extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        const CommonImage(
-                          imageSrc: AppIcons.mapIcon,
-                          imageColor: Color(0xffFD713F),
-                          size: 24,
-                        ),
-                        8.width,
                         Expanded(
                           child:
                               controller.selectedAddress != null
@@ -182,16 +177,18 @@ class CheckoutScreen extends StatelessWidget {
                                     ],
                                   )
                                   : const CommonText(
-                                    text: 'Select delivery address',
+                                    text: ' Select delivery address',
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xff777777),
+                                    textAlign: TextAlign.left,
                                   ),
                         ),
-                        const Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 16,
-                          color: Color(0xff777777),
+                        8.width,
+                        const CommonImage(
+                          imageSrc: AppIcons.mapIcon,
+                          imageColor: Color(0xffFD713F),
+                          size: 24,
                         ),
                       ],
                     ),
@@ -209,32 +206,7 @@ class CheckoutScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Chef Info Row
-                      _buildChefInfo(chef),
-
-                      16.height,
-
-                      // Expandable toggle row
-                      InkWell(
-                        onTap: controller.onChangeExpanded,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CommonText(
-                              text:
-                                  "${menus.length} Item${menus.length != 1 ? 's' : ''}",
-                              fontSize: 13,
-                              color: const Color(0xff777777),
-                            ),
-                            Icon(
-                              controller.isExpanded
-                                  ? Icons.keyboard_arrow_up
-                                  : Icons.keyboard_arrow_down_outlined,
-                              size: 24,
-                              color: const Color(0xff777777),
-                            ),
-                          ],
-                        ),
-                      ),
+                      _buildChefInfo(chef, menus.length, controller),
 
                       // Expanded item list
                       if (controller.isExpanded) ...[
@@ -312,12 +284,14 @@ class CheckoutScreen extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       color: Color(0xff222222),
                       top: 36,
+                      fontSize: 10,
                     ),
                     CommonText(
                       text: 'All prices excl. VAT. For your order the',
                       fontWeight: FontWeight.w400,
                       color: Color(0xff636363),
                       top: 36,
+                      fontSize: 10,
                     ),
                   ],
                 ),
@@ -326,6 +300,7 @@ class CheckoutScreen extends StatelessWidget {
                   left: 2,
                   fontWeight: FontWeight.w400,
                   color: Color(0xffFD713F),
+                  fontSize: 10,
                 ),
               ],
             ),
@@ -426,7 +401,7 @@ class CheckoutScreen extends StatelessWidget {
   }
 
   // ── Chef Info Widget ───────────────────────────────────────────────────────
-  Widget _buildChefInfo(CartChefInfo? chef) {
+  Widget _buildChefInfo(CartChefInfo? chef, int itemCount, CartController controller) {
     final String imageUrl =
         (chef?.image != null && chef!.image!.isNotEmpty)
             ? (chef.image!.startsWith('http')
@@ -434,37 +409,44 @@ class CheckoutScreen extends StatelessWidget {
                 : ApiEndPoint.imageUrl + chef.image!)
             : AppImages.image3;
 
-    return Row(
-      children: [
-        CommonImage(
-          imageSrc: imageUrl,
-          size: 44,
-          borderRadius: 50,
-          fill: BoxFit.cover,
-        ),
-        12.width,
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CommonText(
-                text: chef?.name ?? 'Chef',
-                fontWeight: FontWeight.w600,
-                color: const Color(0xff272727),
-              ),
-              CommonText(
-                text:
-                    chef?.pricing != null
-                        ? '\$${chef!.pricing!.toStringAsFixed(0)} per hour'
-                        : '',
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                color: const Color(0xff777777),
-              ),
-            ],
+    return InkWell(
+      onTap: controller.onChangeExpanded,
+      child: Row(
+        children: [
+          CommonImage(
+            imageSrc: imageUrl,
+            size: 44,
+            borderRadius: 50,
+            fill: BoxFit.cover,
           ),
-        ),
-      ],
+          12.width,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CommonText(
+                  text: chef?.name ?? 'Chef',
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xff272727),
+                ),
+                CommonText(
+                  text: "$itemCount Item${itemCount != 1 ? 's' : ''}",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xff777777),
+                ),
+              ],
+            ),
+          ),
+          Icon(
+            controller.isExpanded
+                ? Icons.keyboard_arrow_up
+                : Icons.keyboard_arrow_down_outlined,
+            size: 24,
+            color: const Color(0xff777777),
+          ),
+        ],
+      ),
     );
   }
 
@@ -493,6 +475,7 @@ class CheckoutScreen extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   color: const Color(0xff272727),
                   bottom: 10,
+                  maxLines: 2,
                 ),
                 CommonText(
                   text: customizations,
@@ -535,11 +518,6 @@ class CheckoutScreen extends StatelessWidget {
     final double total = controller.priceBreakdown?.total ?? 0;
 
     return Container(
-      padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: const Color(0xffF8F8F8),
-        borderRadius: BorderRadius.circular(12.r),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -550,6 +528,25 @@ class CheckoutScreen extends StatelessWidget {
             color: const Color(0xff272727),
             bottom: 12,
           ),
+          if (controller.estimatedTime != null) ...[
+            Row(
+              children: [
+                const Icon(
+                  Icons.timer_outlined,
+                  size: 14,
+                  color: Color(0xff777777),
+                ),
+                6.width,
+                CommonText(
+                  text: 'Estimated time: ${controller.estimatedTime}',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xff777777),
+                ),
+              ],
+            ),
+          ],
+          SizedBox(height: 12,),
           _summaryRow('Subtotal', priceSubtotal),
           8.height,
           _summaryRow('Fees', fee),
@@ -576,25 +573,6 @@ class CheckoutScreen extends StatelessWidget {
               ),
             ],
           ),
-          if (controller.estimatedTime != null) ...[
-            12.height,
-            Row(
-              children: [
-                const Icon(
-                  Icons.timer_outlined,
-                  size: 14,
-                  color: Color(0xff777777),
-                ),
-                6.width,
-                CommonText(
-                  text: 'Estimated time: ${controller.estimatedTime}',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xff777777),
-                ),
-              ],
-            ),
-          ],
         ],
       ),
     );

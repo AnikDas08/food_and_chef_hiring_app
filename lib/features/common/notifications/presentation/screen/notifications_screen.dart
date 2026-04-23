@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
+import 'package:new_untitled/component/image/common_image.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/notifications_controller.dart';
@@ -20,7 +21,7 @@ class NotificationScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: false,
@@ -68,7 +69,8 @@ class NotificationScreen extends StatelessWidget {
           final grouped = ctrl.groupedNotifications;
 
           return RefreshIndicator(
-            color: const Color(0xff5B5FEF),
+            backgroundColor: Colors.white,
+            color: Colors.black,
             onRefresh: () => ctrl.getNotificationsRepo(),
             child: ListView.builder(
               controller: ctrl.scrollController,

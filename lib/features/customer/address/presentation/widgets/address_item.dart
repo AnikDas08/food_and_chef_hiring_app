@@ -211,19 +211,39 @@ Widget addressItem(
 void _showDeleteDialog(AddressModel address, AddressController controller) {
   Get.dialog(
     AlertDialog(
-      title: const Text('Delete Address'),
-      content: const Text('Are you sure you want to delete this address?'),
+      backgroundColor: Colors.white,
+      title: const CommonText(
+          text: "Delete Address",
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color:  Color(0xff272727),
+          textAlign: TextAlign.start,
+      ),
+      content:  CommonText(
+          text: "Do you want to delete this address?",
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: Color(0xff272727).withOpacity(0.80),
+        textAlign: TextAlign.start,
+        maxLines: 2,
+      ),
       actions: [
         TextButton(
           onPressed: () => Get.back(),
-          child: const Text('Cancel'),
+          child: const CommonText(
+              text: "Cancel",
+            color: Colors.grey
+          )
         ),
         TextButton(
           onPressed: () {
             Get.back();
             controller.deleteAddress(address.id);
           },
-          child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          child: const CommonText(
+              text: "Delete",
+            color: Colors.red
+          )
         ),
       ],
     ),

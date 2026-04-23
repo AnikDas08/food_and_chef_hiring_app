@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/food_item.dart';
 import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../utils/constants/app_colors.dart';
 import '../../data/mamu_model.dart';
 import '../controller/chef_detail_controller.dart';
 
@@ -32,7 +33,8 @@ class MenuPage extends StatelessWidget {
           return const Center(
             child: CommonText(
               text: 'No menu sections available',
-              color: Color(0xff777777),
+              color: AppColors.grey,
+              fontSize: 12,
               fontWeight: FontWeight.w400,
             ),
           );

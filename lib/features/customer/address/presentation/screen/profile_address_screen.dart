@@ -53,83 +53,91 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  CommonText(
+                    text: "ACTIVE ADDRESS",
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xff272727),
+                    top: 24,
+                    bottom: 12,
+                  ),
                   Expanded(
                     child:
-                        controller.isLoading
-                            // ── Loading State ──────────────────────────
-                            ? const Center(child: CircularProgressIndicator())
-                            // ── Empty State ────────────────────────────
-                            : controller.addressList.isEmpty
-                            ? const Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.location_off_outlined,
-                                    size: 64,
-                                    color: Color(0xff777777),
-                                  ),
-                                  SizedBox(height: 12),
-                                  CommonText(
-                                    text: 'No addresses found',
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xff272727),
-                                  ),
-                                ],
+                    controller.isLoading
+                    // ── Loading State ──────────────────────────
+                        ? const Center(child: CircularProgressIndicator())
+                    // ── Empty State ────────────────────────────
+                        : controller.addressList.isEmpty
+                        ? const Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.location_off_outlined,
+                            size: 64,
+                            color: Color(0xff777777),
+                          ),
+                          SizedBox(height: 12),
+                          CommonText(
+                            text: 'No addresses found',
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff272727),
+                          ),
+                        ],
+                      ),
+                    )
+                    // ── Address List ───────────────────────────
+                        : RefreshIndicator(
+                      onRefresh: controller.fetchAddresses,
+                      child: ListView.builder(
+                        controller: controller.scrollController,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        // +1 for the footer loader item
+                        itemCount: controller.addressList.length + 1,
+                        // In the ListView.builder, replace the existing itemBuilder logic:
+                        itemBuilder: (context, index) {
+                          if (index == controller.addressList.length) {
+                            return _PaginationFooter(
+                              isFetchingMore: controller.isFetchingMore,
+                              hasMorePages: controller.hasMorePages,
+                            );
+                          }
+
+                          final address = controller.addressList[index];
+
+                          if (fromCheckout) {
+                            return GestureDetector(
+                              onTap:
+                                  () => Navigator.pop(context, address),
+                              child: addressItem(
+                                address,
+                                controller,
+                                fromCheckout: true,
+                                selectedAddressId:
+                                Get.arguments?['selectedAddressId'],
                               ),
+                            );
+                          }
+
+                          return GestureDetector(
+                            onTap:
+                            isLoadingArg
+                                ? () => controller.updateLocation(
+                              address.id,
                             )
-                            // ── Address List ───────────────────────────
-                            : RefreshIndicator(
-                              onRefresh: controller.fetchAddresses,
-                              child: ListView.builder(
-                                controller: controller.scrollController,
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                // +1 for the footer loader item
-                                itemCount: controller.addressList.length + 1,
-                                // In the ListView.builder, replace the existing itemBuilder logic:
-                                itemBuilder: (context, index) {
-                                  if (index == controller.addressList.length) {
-                                    return _PaginationFooter(
-                                      isFetchingMore: controller.isFetchingMore,
-                                      hasMorePages: controller.hasMorePages,
-                                    );
-                                  }
-
-                                  final address = controller.addressList[index];
-
-                                  if (fromCheckout) {
-                                    return GestureDetector(
-                                      onTap:
-                                          () => Navigator.pop(context, address),
-                                      child: addressItem(
-                                        address,
-                                        controller,
-                                        fromCheckout: true,
-                                        selectedAddressId:
-                                            Get.arguments?['selectedAddressId'],
-                                      ),
-                                    );
-                                  }
-
-                                  return GestureDetector(
-                                    onTap:
-                                        isLoadingArg
-                                            ? () => controller.updateLocation(
-                                              address.id,
-                                            )
-                                            : null,
-                                    child: addressItem(
-                                      address,
-                                      controller,
-                                      // Pass the default ID so the radio button shows checked/unchecked correctly
-                                      selectedAddressId:
-                                          controller.defaultAddressid,
-                                      isLoading: isLoadingArg,
-                                    ),
-                                  );
-                                },
-                              ),
+                                : null,
+                            child: addressItem(
+                              address,
+                              controller,
+                              // Pass the default ID so the radio button shows checked/unchecked correctly
+                              selectedAddressId:
+                              controller.defaultAddressid,
+                              isLoading: isLoadingArg,
                             ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),
