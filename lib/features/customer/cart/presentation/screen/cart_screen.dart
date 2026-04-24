@@ -62,7 +62,8 @@ class CartScreen extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
                     child: SafeArea(
                       child: CommonButton(
-                        titleText: AppString.continueToCheckout,
+                        titleText:
+                            "Continue for \$${controller.priceBreakdown?.subtotal?.toStringAsFixed(2) ?? '0.00'}",
                         onTap: () => Get.toNamed(AppRoutes.checkout),
                       ),
                     ),
@@ -140,7 +141,7 @@ class CartScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+        /*Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CommonText(
@@ -156,34 +157,25 @@ class CartScreen extends StatelessWidget {
               color: const Color(0xff272727),
             ),
           ],
-        ),
+        ),*/
         if (controller.estimatedTime != null) ...[
           12.height,
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-            decoration: BoxDecoration(
-              color: const Color(0xffF2F2F2),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.timer_outlined,
-                  size: 16.r,
-                  color: const Color(0xff777777),
-                ),
-                8.width,
-                Flexible(
-                  child: CommonText(
-                    text: 'Estimated time: ${controller.estimatedTime}',
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    color: const Color(0xff777777),
-                  ),
-                ),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const CommonText(
+                text: 'Estimated cooking time',
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff272727),
+              ),
+              CommonText(
+                text: '${controller.estimatedTime} hours',
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xff272727),
+              ),
+            ],
           ),
         ],
       ],

@@ -94,7 +94,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
 
         final double totalCartPrice =
             (controller.cartItems.length) * (chef?.priceWithFee ?? 0);
-        final double pricePerChef = chef?.pricing ?? 0.0;
+        final double pricePerChef = chef?.priceWithFee ?? 0.0;
 
         final List<String> sections = controller.chefDetail?.menuSections ?? [];
 
@@ -271,7 +271,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                           children: [
                                             TextSpan(
                                               text:
-                                                  "\$${chef?.pricing?.toStringAsFixed(2) ?? '0.00'}",
+                                                  "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}",
                                               style: const TextStyle(
                                                 color: Color(0xff272727),
                                                 fontSize: 16,
@@ -636,7 +636,7 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                           const SizedBox(width: 4),
                           CommonText(
                             text:
-                                "\$${chef?.pricing?.toStringAsFixed(2) ?? '0.00'}/hr",
+                                "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}/hr",
                             fontSize: 12,
                             color: const Color(0xff555555),
                           ),

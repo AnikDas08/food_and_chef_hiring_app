@@ -57,8 +57,8 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
                       Flexible(
                         child: CommonText(
                           text: name,
-                          maxLines: 2,
-                          fontSize: 15.sp,
+                          maxLines: 5,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xff272727),
                         ),
@@ -79,14 +79,14 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
                     10.height,
                   ],
 
+                  // Quantity Stepper
+                  _buildStepper(context, controller, cartItemId, chefId, liveQty),
+                  12.height,
                   // Cooking Time Badge
                   if (item.unitTimeStr != null) ...[
                     _buildCookingTimeBadge(item.unitTimeStr!),
                     12.height,
                   ],
-
-                  // Quantity Stepper
-                  _buildStepper(context, controller, cartItemId, chefId, liveQty),
                 ],
               ),
             ),
@@ -153,13 +153,21 @@ Widget _buildCookingTimeBadge(String time) {
       children: [
         Icon(Icons.timer_outlined, size: 14.r, color: const Color(0xff777777)),
         SizedBox(width: 4.w),
-        Flexible(
-          child: CommonText(
-            text: 'Cooking Time: $time',
-            fontSize: 11.sp,
-            color: const Color(0xff777777),
-            fontWeight: FontWeight.w400,
-          ),
+        Row(
+          children: [
+            CommonText(
+              text: 'Cooking Time: ',
+              fontSize: 11.sp,
+              color: const Color(0xff777777),
+              fontWeight: FontWeight.w400,
+            ),
+            CommonText(
+              text: time,
+              fontSize: 11.sp,
+              color: const Color(0xff272727),
+              fontWeight: FontWeight.w400,
+            ),
+          ],
         ),
       ],
     ),

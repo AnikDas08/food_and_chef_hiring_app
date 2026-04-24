@@ -475,7 +475,7 @@ class CheckoutScreen extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   color: const Color(0xff272727),
                   bottom: 10,
-                  maxLines: 2,
+                  maxLines: 5,
                 ),
                 CommonText(
                   text: customizations,
