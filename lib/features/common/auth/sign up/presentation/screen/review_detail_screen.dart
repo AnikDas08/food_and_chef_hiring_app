@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import 'package:new_untitled/component/text_field/common_phone_number_text_filed.dart';
 import 'package:new_untitled/utils/app_utils.dart';
 import '../../../../../../../utils/extensions/extension.dart';
@@ -24,29 +26,10 @@ class ReviewDetailScreen extends StatelessWidget {
     return Scaffold(
       /// App Bar Section Starts Here
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
-        leading: Navigator.canPop(context)
-            ? Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: GestureDetector(
-                  onTap: () => Get.back(),
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      color: Color(0xffF6F6F6),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const CommonImage(
-                      imageSrc: AppIcons.backIcon,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              )
-            : null,
+        flexibleSpace: appBarOpacity(),
       ),
 
       /// Body Section Starts Here

@@ -54,12 +54,6 @@ class CheckoutScreen extends StatelessWidget {
                     Colors.white.withOpacity(0.05),
                   ],
                 ),
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.black.withOpacity(0.05),
-                    width: 0.5,
-                  ),
-                ),
               ),
             ),
           ),
@@ -88,6 +82,7 @@ class CheckoutScreen extends StatelessWidget {
                 CommonTextField(
                   controller: controller.dateController,
                   keyboardType: TextInputType.none,
+                  paddingVertical: 20,
                   fontSize: 12,
                   hintText: '1 January 2026, 5:20PM',
                   onTap:
@@ -129,13 +124,13 @@ class CheckoutScreen extends StatelessWidget {
                     }
                   },
                   child: Container(
-                    constraints: BoxConstraints(minHeight: 60.h),
+                    constraints: BoxConstraints(minHeight: 60),
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.w,
                       vertical: 12.h,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xffF0F0F0),
+                      color: const Color(0xfff2f2f2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
@@ -276,31 +271,63 @@ class CheckoutScreen extends StatelessWidget {
                 _buildTaxSection(controller),
 
                 // ── Terms ──────────────────────────────────────────────
-                const Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CommonText(
-                      text: 'Terms: ',
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff222222),
-                      top: 36,
-                      fontSize: 10,
+                Padding(
+                  padding: EdgeInsets.only(top: 36.h),
+                  child: Text.rich(
+                    TextSpan(
+                      style: TextStyle(
+                        fontFamily: 'SFProDisplay',
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        height: 1.6,
+                        letterSpacing: 0,
+                      ),
+                      children: const [
+                        TextSpan(
+                          text: 'Terms: ',
+                          style: TextStyle(color: Color(0xff222222)),
+                        ),
+                         TextSpan(
+                          text:
+                              'All prices are exclusive of VAT. Your booking is subject to the applicable ',
+                          style: TextStyle(color: Color(0xff636363)),
+                        ),
+                         TextSpan(
+                          text: 'Privae Chef Terms & Conditions apply',
+                          style: TextStyle(color: Color(0xffFD713F)),
+                        ),
+                      ],
                     ),
-                    CommonText(
-                      text: 'All prices excl. VAT. For your order the',
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff636363),
-                      top: 36,
-                      fontSize: 10,
-                    ),
-                  ],
+                    textAlign: TextAlign.start,
+                  ),
                 ),
+                SizedBox(height: 12.h),
                 const CommonText(
-                  text: 'Privae Chef Terms & Conditions apply',
+                  text: 'A temporary authorization hold of \$45.08/hr may be placed on your payment method. You will only be charged once the service has been completed.',
                   left: 2,
                   fontWeight: FontWeight.w400,
-                  color: Color(0xffFD713F),
-                  fontSize: 10,
+                  color: Color(0xff636363),
+                  textAlign: TextAlign.start,
+                  maxLines: 4,
+                  fontSize: 12,
+                ),
+                SizedBox(height: 12.h,),
+                const CommonText(
+                  text: 'You will receive a final invoice after completion. You may cancel your booking at any time. Cancellations made within 24 hours of the scheduled start time may incur a cancellation fee equal to one hour at the chef’s hourly rate.',
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff636363),
+                  fontSize: 12,
+                  textAlign: TextAlign.start,
+                  maxLines: 7,
+                ),
+                SizedBox(height: 12.h,),
+                const CommonText(
+                  text: "All bookings are subject to the minimum duration set by the Privae Chef.",
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff636363),
+                  fontSize: 12,
+                  textAlign: TextAlign.start,
+                  maxLines: 7,
                 ),
               ],
             ),

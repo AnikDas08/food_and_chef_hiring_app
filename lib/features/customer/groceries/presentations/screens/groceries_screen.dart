@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/my_groceries_screen.dart';
 import 'package:new_untitled/component/image/common_image.dart';
@@ -32,31 +33,30 @@ class GroceryScreen extends StatelessWidget {
 
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: false,
-        flexibleSpace: appBarOpacity(),
+        flexibleSpace: LiquidGlassLayer(
+          child: LiquidGlass(
+            shape: const LiquidRoundedSuperellipse(borderRadius: 0),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withOpacity(0.2),
+                    Colors.white.withOpacity(0.05),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
         leading:
             controller.isBack == false
-                ? Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: const BoxDecoration(
-                          color: Color(0xffF6F6F6),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Center(
-                          child: CommonImage(
-                            imageSrc: AppIcons.backIcon,
-                            size: 24,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                ? IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const CommonImage(imageSrc: AppIcons.backIcon, size: 24),
                 )
                 : null,
         title: const CommonText(

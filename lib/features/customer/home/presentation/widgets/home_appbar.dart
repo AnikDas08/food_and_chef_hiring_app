@@ -256,12 +256,23 @@ AppBar homeAppbar() {
         );
       },
     ),
-    flexibleSpace: appBarOpacity(),
-    bottom: PreferredSize(
-      preferredSize: const Size.fromHeight(20),
-      child: Container(height: 20),
+    flexibleSpace: LiquidGlassLayer(
+      child: LiquidGlass(
+        shape: const LiquidRoundedSuperellipse(borderRadius: 0),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.white.withOpacity(0.2),
+                Colors.white.withOpacity(0.05),
+              ],
+            ),
+          ),
+        ),
+      ),
     ),
-
     actions: [
       LiquidGlassLayer(
         child: LiquidGlass(

@@ -100,10 +100,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     padding: EdgeInsets.only(left: 4.w),
                     child: IconButton(
                       onPressed: () => Get.back(),
-                      icon: Icon(
-                        Icons.arrow_back_ios_new,
-                        size: 24.sp,
-                        color: const Color(0xff777777),
+                      icon: const CommonImage(
+                        imageSrc: AppIcons.backIcon,
+                        size: 24,
                       ),
                     ),
                   ),
@@ -130,7 +129,23 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
         ),
-        flexibleSpace: appBarOpacity(),
+        flexibleSpace: LiquidGlassLayer(
+          child: LiquidGlass(
+            shape: const LiquidRoundedSuperellipse(borderRadius: 0),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withOpacity(0.2),
+                    Colors.white.withOpacity(0.05),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
       body: Obx(() {
         if (_controller.isLoading.value) {

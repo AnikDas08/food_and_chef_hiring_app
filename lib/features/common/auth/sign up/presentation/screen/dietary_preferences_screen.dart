@@ -1,8 +1,10 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../../../utils/extensions/extension.dart';
@@ -23,29 +25,10 @@ class DietaryPreferencesScreen extends StatelessWidget {
     return Scaffold(
       /// App Bar Section Starts Here
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
-        leading: Navigator.canPop(context)
-            ? Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: GestureDetector(
-                  onTap: () => Get.back(),
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      color: Color(0xffF6F6F6),
-                      shape: BoxShape.circle,
-                    ),
-                    child: CommonImage(
-                      imageSrc: AppIcons.backIcon,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              )
-            : null,
+        flexibleSpace: appBarOpacity(),
       ),
 
       /// Body Section Starts Here

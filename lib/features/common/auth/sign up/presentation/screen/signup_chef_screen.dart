@@ -1,6 +1,8 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import 'package:new_untitled/features/common/auth/signup_chef/presentation/controller/sign_up_chef_controller.dart';
 import '../../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,10 +25,10 @@ class SignupChefScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
+        flexibleSpace: appBarOpacity(),
       ),
       /// Body Section Starts Here
       body: GetBuilder<SignUpChefController>(

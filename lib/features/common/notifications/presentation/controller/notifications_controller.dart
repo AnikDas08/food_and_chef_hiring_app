@@ -32,7 +32,7 @@ class NotificationsController extends GetxController {
       final date = DateTime.tryParse(n.createdAt ?? '');
       String label;
       if (date == null) {
-        label = 'Earlier';
+        label = 'Past';
       } else {
         final diff = now.difference(date).inDays;
         if (diff == 0) {
@@ -40,7 +40,7 @@ class NotificationsController extends GetxController {
         } else if (diff == 1) {
           label = 'Yesterday';
         } else {
-          label = 'Earlier';
+          label = 'Past';
         }
       }
       map.putIfAbsent(label, () => []).add(n);

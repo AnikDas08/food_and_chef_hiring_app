@@ -43,7 +43,6 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
         ),
         elevation: 0,
         flexibleSpace: appBarOpacity(),
-        leadingWidth: 60,
       ),
       body: SafeArea(
         child: GetBuilder<AddressController>(
@@ -53,7 +52,7 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
+                  const CommonText(
                     text: "ACTIVE ADDRESS",
                     fontSize: 12,
                     fontWeight: FontWeight.w400,

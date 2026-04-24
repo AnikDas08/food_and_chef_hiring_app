@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/chef/home/presentation/screen/App_Information_Screen.dart';
 import 'package:new_untitled/features/customer/kitchen/presentation/screen/kitchen_setup_screen.dart';
@@ -35,12 +36,27 @@ class ProfileScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         centerTitle: false,
-        flexibleSpace: appBarOpacity(),
+        flexibleSpace: LiquidGlassLayer(
+          child: LiquidGlass(
+            shape: const LiquidRoundedSuperellipse(borderRadius: 0),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withOpacity(0.2),
+                    Colors.white.withOpacity(0.05),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
         title: const CommonText(
           text: AppString.myProfile,
           fontWeight: FontWeight.w600,
           fontSize: 24,
-          top: 10,
         ),
       ),
       body: ListView(

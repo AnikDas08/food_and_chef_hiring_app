@@ -32,13 +32,29 @@ class ChatListScreen extends StatelessWidget {
 
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: false,
-        flexibleSpace: appBarOpacity(),
+        flexibleSpace: LiquidGlassLayer(
+          child: LiquidGlass(
+            shape: const LiquidRoundedSuperellipse(borderRadius: 0),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withOpacity(0.2),
+                    Colors.white.withOpacity(0.05),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
         title: const CommonText(
           text: AppString.chat,
           fontWeight: FontWeight.w600,
           fontSize: 24,
-          top: 10,
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60),

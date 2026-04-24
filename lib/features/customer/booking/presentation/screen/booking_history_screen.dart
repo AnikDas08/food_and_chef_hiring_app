@@ -25,17 +25,32 @@ class BookingHistoryScreen extends StatelessWidget {
             extendBodyBehindAppBar: true,
             appBar: AppBar(
               systemOverlayStyle: SystemUiOverlayStyle.dark,
-
-              automaticallyImplyLeading: false,
+              automaticallyImplyLeading: true,
               backgroundColor: Colors.transparent,
               centerTitle: false,
-              flexibleSpace: appBarOpacity(),
+              elevation: 0,
+              flexibleSpace: LiquidGlassLayer(
+                child: LiquidGlass(
+                  shape: const LiquidRoundedSuperellipse(borderRadius: 0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.white.withOpacity(0.2),
+                          Colors.white.withOpacity(0.05),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               title: const CommonText(
                 text: AppString.upcomingBookings,
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
-                top: 10,
               ),
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(38.h),
