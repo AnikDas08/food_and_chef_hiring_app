@@ -24,7 +24,7 @@ class NotificationScreen extends StatelessWidget {
         automaticallyImplyLeading: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: false,
+        centerTitle: true,
         leadingWidth: 60,
         flexibleSpace: LiquidGlassLayer(
           child: LiquidGlass(
@@ -139,14 +139,22 @@ class _SectionLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 12.h, bottom: 8.h),
-      child: Text(
+      child: /*Text(
         label,
         style: TextStyle(
           fontSize: 13.sp,
           fontWeight: FontWeight.w600,
           color: const Color(0xff272727),
         ),
-      ),
+      ),*/
+      CommonText(
+          text: label,
+          fontSize: 14,
+          color: const Color(0xff272727),
+          fontWeight: FontWeight.w600,
+          textAlign: TextAlign.start,
+      )
+
     );
   }
 }
@@ -178,7 +186,7 @@ class _NotificationCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  /*Text(
                     item.title ?? 'Notification',
                     style: TextStyle(
                       fontSize: 13.sp,
@@ -187,9 +195,18 @@ class _NotificationCard extends StatelessWidget {
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+                  ),*/
+                  CommonText(
+                    text: item.title ?? 'Notification',
+                    fontSize: 12,
+                    color: const Color(0xff1A1A1A),
+                    height: 1.45,
+                    fontWeight: FontWeight.w600,
+                    maxLines: 4,
+                    textAlign: TextAlign.start,
                   ),
                   SizedBox(height: 4.h),
-                  Text(
+                  /*Text(
                     item.message ?? '',
                     style: TextStyle(
                       fontSize: 12.sp,
@@ -199,7 +216,16 @@ class _NotificationCard extends StatelessWidget {
                     ),
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                  ),*/
+                  CommonText(
+                    text: item.message ?? '',
+                    fontSize: 12,
+                    color: const Color(0xff6B7280),
+                    height: 1.45,
+                    fontWeight: FontWeight.w400,
+                    maxLines: 4,
+                    textAlign: TextAlign.start,
+                  )
                 ],
               ),
             ),

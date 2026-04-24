@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../../../config/route/app_routes.dart';
@@ -6,6 +7,7 @@ import '../../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../../component/button/common_button.dart';
+import '../../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../component/text_field/common_text_field.dart'
     show CommonTextField;
@@ -49,29 +51,10 @@ class _SignInScreenState extends State<SignInScreen> {
       child: Scaffold(
         /// App Bar Sections Starts here
         appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          automaticallyImplyLeading: false,
-          leadingWidth: 60,
-          leading: Navigator.canPop(context)
-              ? Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: GestureDetector(
-              onTap: () => Get.back(),
-              child: Container(
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  color: Color(0xffF6F6F6),
-                  shape: BoxShape.circle,
-                ),
-                child: const CommonImage(
-                  imageSrc: AppIcons.backIcon,
-                  size: 24,
-                ),
-              ),
-            ),
-          )
-              : null,
+          flexibleSpace: appBarOpacity(),
         ),
 
         /// Body Sections Starts here
@@ -191,7 +174,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             CommonText(
                               text: AppString.signInWithFacebook,
                               left: 14,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                             ),
                           ],
                         ),
@@ -211,7 +194,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             CommonText(
                               text: AppString.signInWithGoogle,
                               left: 14,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                             ),
                           ],
                         ),

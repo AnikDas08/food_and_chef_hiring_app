@@ -356,7 +356,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                     top: 8,
                                   ).start,
                                   Text(
-                                    'Labour-only private chef: groceries provided by you.',
+                                    'Labour-only chef: groceries provided by you.',
                                     style: TextStyle(
                                       fontStyle: FontStyle.italic,
                                       fontWeight: FontWeight.w400,

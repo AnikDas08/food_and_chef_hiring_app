@@ -63,7 +63,7 @@ class CartScreen extends StatelessWidget {
                     child: SafeArea(
                       child: CommonButton(
                         titleText:
-                            "Continue for \$${controller.priceBreakdown?.subtotal?.toStringAsFixed(2) ?? '0.00'}",
+                            "Continue for \$${controller.priceBreakdown?.subtotal?.toStringAsFixed(2) ?? '0.00'}/hr",
                         onTap: () => Get.toNamed(AppRoutes.checkout),
                       ),
                     ),
@@ -119,14 +119,14 @@ class CartScreen extends StatelessWidget {
 
         CommonText(
           text: AppString.notesToPrivaeChef,
-          fontSize: 14.sp,
+          fontSize: 14,
           fontWeight: FontWeight.w600,
           color: const Color(0xff272727),
           textAlign: TextAlign.start,
           top: 8.h,
           bottom: 8.h,
         ),
-        CommonTextField(hintText: AppString.notesToPrivaeChef),
+        CommonTextField(hintText: AppString.notesToPrivaeChefHint),
 
         24.height,
         _buildPriceSection(controller),

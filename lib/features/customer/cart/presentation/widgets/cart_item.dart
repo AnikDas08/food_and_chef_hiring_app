@@ -170,8 +170,8 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
                   _buildStepper(context, widget.controller, widget.cartItemId, widget.chefId, widget.liveQty),
                   12.height,
                   if (widget.item.unitTimeStr != null) ...[
-                    _buildCookingTimeBadge(widget.item.unitTimeStr!),
-                    12.height,
+                    //_buildCookingTimeBadge(widget.item.unitTimeStr!),
+                    //12.height,
                   ],
                 ],
               ),

@@ -106,9 +106,9 @@ class SignupChefScreen extends StatelessWidget {
                       children: [
                         CommonImage(imageSrc: AppIcons.facebook),
                         CommonText(
-                          text: AppString.signInWithFacebook,
+                          text: AppString.signUpWithFacebook,
                           left: 14,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                         ),
                       ],
                     ),
@@ -125,9 +125,9 @@ class SignupChefScreen extends StatelessWidget {
                       children: [
                         CommonImage(imageSrc: AppIcons.google),
                         CommonText(
-                          text: AppString.signInWithGoogle,
+                          text: AppString.signUpWithGoogle,
                           left: 14,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                         ),
                       ],
                     ),

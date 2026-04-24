@@ -68,7 +68,7 @@ class SignUpScreen extends StatelessWidget {
                   ),
 
                   const CommonText(
-                    text: AppString.registerAccountMessage,
+                    text: AppString.registerCustomerMessage,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
@@ -130,9 +130,9 @@ class SignUpScreen extends StatelessWidget {
                       children: [
                         CommonImage(imageSrc: AppIcons.facebook),
                         CommonText(
-                          text: AppString.signInWithFacebook,
+                          text: AppString.signUpWithFacebook,
                           left: 14,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                         ),
                       ],
                     ),
@@ -149,9 +149,9 @@ class SignUpScreen extends StatelessWidget {
                       children: [
                         CommonImage(imageSrc: AppIcons.google),
                         CommonText(
-                          text: AppString.signInWithGoogle,
+                          text: AppString.signUpWithGoogle,
                           left: 14,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                         ),
                       ],
                     ),

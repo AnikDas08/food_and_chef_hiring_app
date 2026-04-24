@@ -45,9 +45,9 @@ class KitchenEquipmentScreen extends StatelessWidget {
 
                     // Title
                     const CommonText(
-                      text: 'Your Kitchen Equipment',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
+                      text: 'Kitchen Equipment',
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
                       textAlign: TextAlign.start,
                     ),
                     SizedBox(height: 14.h),

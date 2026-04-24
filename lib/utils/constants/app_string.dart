@@ -68,10 +68,10 @@ class AppString {
   static const String verify = 'Verify';
   static const String logIntoYourAccount = 'Login to Your Account';
   static const String forgotThePassword = 'Forgot password?';
-  static const String signIn = 'Sign in';
+  static const String signIn = 'Sign In';
   static const String signInNow = 'Sign In Now';
   static const String doNotHaveAccount = 'Don’t have an account?  ';
-  static const String signUp = 'Sign up';
+  static const String signUp = 'Sign Up';
   static const String alreadyHaveAccount = 'Already have an account';
   static const String fullName = 'Full Name';
   static const String estCookingTime = 'Est. Cooking Time';
@@ -124,10 +124,12 @@ class AppString {
       "Schedule your chef at your convenience. Whether it's a special event or a cozy dinner, we've got you covered";
   static const String welcomeBack = 'Welcome Back';
   static const String signInToYourPrivaeAccount =
-      'Sign in to your Privae account to book chefs or manage your cooking gigs. Enter your details to get started!';
-  static const String orUsing = 'or using';
+      'Sign in to your Privae account to book chefs. Enter your details to get started!';
+  static const String orUsing = 'or use';
   static const String signInWithFacebook = 'Sign In with Facebook';
+  static const String signUpWithFacebook = 'Sign Up with Facebook';
   static const String signInWithGoogle = 'Sign In with Google';
+  static const String signUpWithGoogle = 'Sign Up with Google';
   static const String vegetarianKosherHalalFoodAllergies =
       'Vegetarian? Kosher? Halal? Food allergies? Enter the details below';
   static const String pleaseVerifyYourEmailAddress =
@@ -144,11 +146,13 @@ class AppString {
   static const String signInSuccessfullyMessage =
       'Sign in successful! You’re all set to explore Privae and manage your bookings or chef services. Let’s go!';
   static const String takingYouToYourHomepage = 'Taking you to your Homepage';
-  static const String registerAccount = 'Register Account';
-  static const String registerAccountchef = 'Register Account with Chef';
+  static const String registerAccount = 'Registration';
+  static const String registerAccountchef = 'Chef Registration';
   static const String register = 'Register';
   static const String registerAccountMessage =
-      'Sign up to Privae account to book chefs or manage your cooking gigs. Enter your details to get started!';
+      'Sign up to Privae and manage your cooking gigs. Enter your details to get started!';
+  static const String registerCustomerMessage =
+      'Sign up to Privae to book chefs. Enter your details to get started!';
   static const String enterYourEmailAddress = 'Enter your email address';
   static const String enterEmail = 'Enter Email';
   static const String signUpToPrivaeAsAChef = 'Sign up to Privae as a Chef';
@@ -230,7 +234,8 @@ class AppString {
   static const String bookingDetails = 'Booking Details';
   static const String chooseYourDateAndTime = 'Choose your date and time';
   static const String productDetails = 'Product Details';
-  static const String notesToPrivaeChef = 'Notes to Privae Chef';
+  static const String notesToPrivaeChef = 'Notes to Chef';
+  static const String notesToPrivaeChefHint = 'Add notes here...';
   static const String paymentMethod = 'Payment Method';
   static const String orderSummary = 'Order Summary';
   static const String totals = 'Totals';

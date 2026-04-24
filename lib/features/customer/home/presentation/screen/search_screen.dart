@@ -117,7 +117,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         _controller.onSearchSubmitted(value);
                         _focusNode.unfocus();
                       },
-                      hintText: 'Search chefs...',
+                      hintText: 'Search for chefs...',
                       fillColor: Colors.transparent,
                       borderColor: Colors.transparent,
                       paddingVertical: 18,

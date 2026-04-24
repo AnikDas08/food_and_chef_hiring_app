@@ -36,6 +36,7 @@ class RequestChangeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const CommonText(
           text: AppString.requestChange,
+          fontSize: 24,
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
         ),
@@ -119,6 +120,7 @@ class RequestChangeScreen extends StatelessWidget {
                         }
                       },
                       child: Container(
+                        constraints: BoxConstraints(minHeight: 60.h),
                         padding: EdgeInsets.symmetric(
                           horizontal: 16.w,
                           vertical: 12.h,
@@ -129,24 +131,30 @@ class RequestChangeScreen extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
-                            const CommonImage(
-                              imageSrc: AppIcons.mapIcon,
-                              imageColor: Color(0xffFD713F),
-                              size: 24,
-                            ),
-                            8.width,
                             Expanded(
                               child:
                                   cartCtrl.selectedAddress != null
                                       ? Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           CommonText(
                                             text:
-                                                cartCtrl.selectedAddress!.label,
+                                                cartCtrl
+                                                        .selectedAddress!
+                                                        .ownerName
+                                                        .isNotEmpty
+                                                    ? cartCtrl
+                                                        .selectedAddress!
+                                                        .ownerName
+                                                    : cartCtrl
+                                                        .selectedAddress!
+                                                        .label,
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600,
+                                            color: const Color(0xff272727),
                                           ),
                                           CommonText(
                                             text:
@@ -154,19 +162,25 @@ class RequestChangeScreen extends StatelessWidget {
                                                     .selectedAddress!
                                                     .detailsAddress,
                                             fontSize: 12,
+                                            top: 2,
+                                            fontWeight: FontWeight.w400,
                                             color: const Color(0xff777777),
                                           ),
                                         ],
-                                      ).start
+                                      )
                                       : const CommonText(
                                         text: 'Select delivery address',
                                         fontSize: 12,
+                                        fontWeight: FontWeight.w400,
                                         color: Color(0xff777777),
-                                      ).start,
+                                        textAlign: TextAlign.left,
+                                      ),
                             ),
-                            const Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 16,
+                            8.width,
+                            const CommonImage(
+                              imageSrc: AppIcons.mapIcon,
+                              imageColor: Color(0xffFD713F),
+                              size: 24,
                             ),
                           ],
                         ),
