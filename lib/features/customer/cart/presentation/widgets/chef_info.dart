@@ -9,7 +9,11 @@ import '../../../../../utils/constants/app_images.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../../data/cart_model.dart';
 
+import 'package:get/get.dart';
+import '../controller/cart_controller.dart';
+
 Widget chefInfo(CartChefInfo? chef) {
+  final controller = Get.find<CartController>();
   final String imageUrl = (chef?.image != null && chef!.image!.isNotEmpty)
       ? (chef.image!.startsWith('http')
       ? chef.image!
@@ -53,25 +57,32 @@ Widget chefInfo(CartChefInfo? chef) {
           ],
         ),
       ),
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-        decoration: BoxDecoration(
-          color: Color(0xffF2F2F2),
-          borderRadius: BorderRadius.circular(10),
+      Obx(() => InkWell(
+        onTap: controller.toggleEditingOrder,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+          decoration: BoxDecoration(
+            color: controller.isEditingOrder ? Colors.black : Color(0xffF2F2F2),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                Icons.mode_edit_outline_outlined,
+                size: 16,
+                color: controller.isEditingOrder ? Colors.white : Colors.black,
+              ),
+              CommonText(
+                text: controller.isEditingOrder ? "Done" : AppString.editOrder,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: controller.isEditingOrder ? Colors.white : Color(0xff272727),
+                left: 6,
+              ),
+            ],
+          ),
         ),
-        child: const Row(
-          children: [
-            Icon(Icons.mode_edit_outline_outlined, size: 16),
-            CommonText(
-              text: AppString.editOrder,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: Color(0xff272727),
-              left: 6,
-            ),
-          ],
-        ),
-      ),
+      )),
     ],
   );
 }

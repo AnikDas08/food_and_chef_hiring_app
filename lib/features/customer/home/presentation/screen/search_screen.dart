@@ -90,7 +90,6 @@ class _SearchScreenState extends State<SearchScreen> {
           child: LiquidGlass(
             shape: LiquidRoundedSuperellipse(borderRadius: 30.r),
             child: Container(
-              height: 60.h,
               decoration: BoxDecoration(
                 color: const Color(0xffF2F2F2).withOpacity(0.8),
                 borderRadius: BorderRadius.circular(30.r),
@@ -121,8 +120,8 @@ class _SearchScreenState extends State<SearchScreen> {
                       hintText: 'Search chefs...',
                       fillColor: Colors.transparent,
                       borderColor: Colors.transparent,
-                      paddingVertical: 12.h,
-                      paddingHorizontal: 12.w,
+                      paddingVertical: 18,
+                      paddingHorizontal: 12,
                     ),
                   ),
                   _buildSuffixIcon(),

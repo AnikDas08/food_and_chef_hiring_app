@@ -102,7 +102,11 @@ class _CommonButtonState extends State<CommonButton>
   }
 
   Widget _buildLoader() {
-    return CommonLoader(size: widget.buttonHeight - 12);
+    return CommonLoader(
+      size: widget.buttonHeight - 20,
+      strokeWidth: 2.5,
+      color: AppColors.white,
+    );
   }
 
   Widget _buildText() {

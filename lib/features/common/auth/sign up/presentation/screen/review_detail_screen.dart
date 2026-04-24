@@ -28,6 +28,25 @@ class ReviewDetailScreen extends StatelessWidget {
         elevation: 0,
         automaticallyImplyLeading: false,
         leadingWidth: 60,
+        leading: Navigator.canPop(context)
+            ? Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: GestureDetector(
+                  onTap: () => Get.back(),
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      color: Color(0xffF6F6F6),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const CommonImage(
+                      imageSrc: AppIcons.backIcon,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              )
+            : null,
       ),
 
       /// Body Section Starts Here
@@ -270,22 +289,27 @@ class ReviewDetailScreen extends StatelessWidget {
         },
       ),
 
+
       /// Bottom Section Starts Here
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 20, right: 16, left: 16),
-        child: SafeArea(
-          child: CommonButton(
-            titleText: AppString.createAccount,
-            onTap: () {
-              final controller = Get.find<SignUpController>();
-              if (_formKey.currentState!.validate()) {
-                controller.completeProfile();
-              } else {
-                Utils.errorSnackBar('Error', 'Please, Full fill all Field');
-              }
-            },
-          ),
-        ),
+      bottomNavigationBar: GetBuilder<SignUpController>(
+        builder: (controller) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 20, right: 16, left: 16),
+            child: SafeArea(
+              child: CommonButton(
+                isLoading: controller.isLoading,
+                titleText: AppString.createAccount,
+                onTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    controller.completeProfile();
+                  } else {
+                    Utils.errorSnackBar('Error', 'Please, Full fill all Field');
+                  }
+                },
+              ),
+            ),
+          );
+        },
       ),
     );
   }

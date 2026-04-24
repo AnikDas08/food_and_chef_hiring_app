@@ -11,6 +11,9 @@ import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_images.dart';
+import 'package:new_untitled/features/customer/cart/presentation/controller/cart_controller.dart';
+import '../../../cart/data/cart_model.dart';
+import 'package:new_untitled/services/api/api_service.dart';
 import '../../data/mamu_model.dart';
 import '../controller/chef_detail_controller.dart';
 import 'exten_text.dart';
@@ -20,8 +23,26 @@ String _buildImageUrl(String path) {
   return ApiEndPoint.imageUrl + path;
 }
 
+Widget _quantityButton({required IconData icon, required VoidCallback onTap}) {
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: const Color(0xffF1F1F1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Icon(icon, size: 20, color: const Color(0xff272727)),
+    ),
+  );
+}
+
 void itemDetails(
-    BuildContext context, AnimationController controller, MenuData item) {
+    BuildContext context, AnimationController controller, MenuData item,
+    {CartMenuItem? cartItem, String? chefId}) {
+  // If cartItem is provided, we are in "edit" mode from the cart screen.
+  final bool isEditing = cartItem != null;
+  final cartController = Get.isRegistered<CartController>() ? Get.find<CartController>() : null;
   // Resolve image
   final String imageUrl =
   (item.images != null && item.images!.isNotEmpty)
@@ -54,9 +75,17 @@ void itemDetails(
       : 'N/A';
 
   // Local selection state built from item.customizations
-  final List<Map<String, dynamic>> dishOptions =
-  (item.customizations ?? [])
-      .map((c) => <String, dynamic>{'name': c, 'isSelected': false})
+  final List<String> initialSelections = isEditing
+      ? (cartItem.customizations ?? [])
+      : [];
+
+  int quantity = isEditing ? (cartItem.quantity ?? 1) : 1;
+
+  final List<Map<String, dynamic>> dishOptions = (item.customizations ?? [])
+      .map((c) => <String, dynamic>{
+            'name': c,
+            'isSelected': initialSelections.contains(c)
+          })
       .toList();
 
   showModalBottomSheet(
@@ -387,37 +416,38 @@ void itemDetails(
                                 ],
 
                                 // ── List of Ingredients ──────────────────
-                                const CommonText(
-                                  text: 'List of Ingredients',
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff272727),
-                                  bottom: 8,
-                                ),
-                                CommonText(
-                                  text: ingredientNames,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: const Color(0xff272727),
-                                ),
+                                if (!isEditing) ...[
+                                  const CommonText(
+                                    text: 'List of Ingredients',
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff272727),
+                                    bottom: 8,
+                                  ),
+                                  CommonText(
+                                    text: ingredientNames,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: const Color(0xff272727),
+                                  ),
 
-                                // ── Special Equipment ────────────────────
-                                const CommonText(
-                                  text: 'Special Equipment',
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xff272727),
-                                  top: 16,
-                                  bottom: 8,
-                                  maxLines: 6,
-                                ),
-                                CommonText(
-                                  text: equipmentNames,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: const Color(0xff272727),
-                                  maxLines: 5,
-                                ),
+                                  // ── Special Equipment ────────────────────
+                                  const CommonText(
+                                    text: 'Special Equipment',
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff272727),
+                                    top: 16,
+                                    bottom: 8,
+                                    maxLines: 6,
+                                  ),
+                                  CommonText(
+                                    text: equipmentNames,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: const Color(0xff272727),
+                                    maxLines: 5,
+                                  ),
+                                ],
 
-                                // ── Rating & Bookings ────────────────────
                                 if ((item.avgRating ?? 0) > 0 ||
                                     (item.totalBooking ?? 0) > 0) ...[
                                   16.height,
@@ -448,6 +478,43 @@ void itemDetails(
                                     ],
                                   ),
                                 ],
+
+                                if (isEditing) ...[
+                                  24.height,
+                                  const CommonText(
+                                    text: 'Quantity',
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xff272727),
+                                  ),
+                                  16.height,
+                                  Row(
+                                    children: [
+                                      _quantityButton(
+                                        icon: Icons.remove,
+                                        onTap: () {
+                                          if (quantity > 1) {
+                                            setSheetState(() => quantity--);
+                                          }
+                                        },
+                                      ),
+                                      Container(
+                                        width: 40.w,
+                                        alignment: Alignment.center,
+                                        child: CommonText(
+                                          text: quantity.toString(),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      _quantityButton(
+                                        icon: Icons.add,
+                                        onTap: () {
+                                          setSheetState(() => quantity++);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ],
                             ),
                           ),
@@ -462,22 +529,35 @@ void itemDetails(
                               4.height,
                               if(LocalStorage.myRole=='CUSTOMER')
                               CommonButton(
-                                titleText: AppString.addToOrder,
-                                onTap: () {
-                                  ctrl.addToCart({
-                                    'id': item.id ?? '',
-                                    'name': item.name ?? 'Item',
-                                    'image': (item.images != null &&
-                                        item.images!.isNotEmpty)
-                                        ? item.images!.first
-                                        : null,
-                                    'cookingTime': item.estCookingTime,
-                                    'customizations': dishOptions
-                                        .where((d) =>
-                                    d['isSelected'] == true)
-                                        .map((d) => d['name'])
-                                        .toList(),
-                                  });
+                                titleText: isEditing ? "Update Order" : AppString.addToOrder,
+                                onTap: () async {
+                                  final selectedCustoms = dishOptions
+                                      .where((d) => d['isSelected'] == true)
+                                      .map((d) => d['name'] as String)
+                                      .toList();
+
+                                  if (isEditing) {
+                                    if (cartController != null && chefId != null) {
+                                      Navigator.pop(context);
+                                      await cartController.updateCartCustomizations(
+                                        cartItemId: cartItem.id ?? '',
+                                        customizations: selectedCustoms,
+                                        chefId: chefId,
+                                        quantity: quantity,
+                                      );
+                                    }
+                                  } else {
+                                    ctrl.addToCart({
+                                      'id': item.id ?? '',
+                                      'name': item.name ?? 'Item',
+                                      'image': (item.images != null &&
+                                              item.images!.isNotEmpty)
+                                          ? item.images!.first
+                                          : null,
+                                      'cookingTime': item.estCookingTime,
+                                      'customizations': selectedCustoms,
+                                    });
+                                  }
                                 },
                               ),
                               16.height,

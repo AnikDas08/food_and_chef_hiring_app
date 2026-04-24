@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CommonLoader extends StatelessWidget {
-  const CommonLoader({super.key, this.size = 60, this.strokeWidth = 4});
+  const CommonLoader({
+    super.key,
+    this.size = 60,
+    this.strokeWidth = 4,
+    this.color,
+  });
 
   final double size;
   final double strokeWidth;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +19,10 @@ class CommonLoader extends StatelessWidget {
       child: SizedBox(
         height: size.sp,
         width: size.sp,
-        child: CircularProgressIndicator.adaptive(strokeWidth: strokeWidth),
+        child: CircularProgressIndicator(
+          strokeWidth: strokeWidth,
+          valueColor: color != null ? AlwaysStoppedAnimation<Color>(color!) : null,
+        ),
       ),
     );
   }

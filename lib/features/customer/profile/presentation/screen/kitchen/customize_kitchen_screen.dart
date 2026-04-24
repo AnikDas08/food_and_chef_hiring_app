@@ -3,10 +3,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 
 import '../../../../../../component/button/common_button.dart';
+import '../../../../../../component/image/common_image.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../controller/customize_kitchen_controller.dart';
 import '../../controller/kitchen_equipment_controller.dart';
@@ -27,66 +29,76 @@ class CustomizeKitchenScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: Column(
+      body: Stack(
         children: [
-          // ── Hero image with edit button ──
-          _KitchenHeroImage(controller: controller),
+          ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              // ── Hero image ──
+              _KitchenHeroImage(controller: controller),
 
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20.h),
-                      const CommonText(
-                        text: 'Your Kitchen Equipment',
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        textAlign: TextAlign.start,
-                      ),
-                      SizedBox(height: 14.h),
-                      _ReadyForCookingCard(controller: controller),
-                      SizedBox(height: 20.h),
-                      RichText(
-                        text: TextSpan(children: [
-                          TextSpan(
-                            text: 'Which kitchen best describes yours? ',
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.black,
-                            ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20.h),
+                    const CommonText(
+                      text: 'Your Kitchen Equipment',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(height: 14.h),
+                    _ReadyForCookingCard(controller: controller),
+                    SizedBox(height: 20.h),
+                    RichText(
+                      text: TextSpan(children: [
+                        TextSpan(
+                          text: 'Which kitchen best describes yours? ',
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.black,
                           ),
-                          TextSpan(
-                            text: '*',
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red,
-                            ),
+                        ),
+                        TextSpan(
+                          text: '*',
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.red,
                           ),
-                        ]),
-                      ),
-                      SizedBox(height: 10.h),
-                    ],
-                  ),
+                        ),
+                      ]),
+                    ),
+                    SizedBox(height: 10.h),
+                  ],
                 ),
+              ),
 
-                // ── Preset cards + Custom Setup ──
-                _PresetCards(controller: controller),
+              // ── Preset cards + Custom Setup ──
+              _PresetCards(controller: controller),
 
-                const Divider(height: 1, color: Color(0xFFEEEEEE)),
-                SizedBox(height: 4.h),
+              const Divider(height: 1, color: Color(0xFFEEEEEE)),
+              SizedBox(height: 4.h),
 
-                // ── Equipment sections (qty or read-only) ──
-                _EquipmentBody(controller: controller),
+              // ── Equipment sections (qty or read-only) ──
+              _EquipmentBody(controller: controller),
 
-                SizedBox(height: 100.h),
-              ],
+              SizedBox(height: 100.h),
+            ],
+          ),
+
+          // ── Fixed Back Button ──
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 8.h,
+            left: 16.w,
+            child: InkWell(
+              onTap: () => Get.back(),
+              child: const CommonImage(
+                imageSrc: 'assets/icons/back.svg',
+              ),
             ),
           ),
         ],
@@ -154,22 +166,39 @@ class _KitchenHeroImage extends StatelessWidget {
               ),
             ),
           ),
-          // Back
-          Positioned(
-            top: MediaQuery.of(context).padding.top + 8.h,
-            left: 16.w,
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: _overlayBtn(Icons.arrow_back_ios_new_rounded),
-            ),
-          ),
-          // Edit
+          // ── Scrolling Edit Button ──
           Positioned(
             top: MediaQuery.of(context).padding.top + 8.h,
             right: 16.w,
             child: GestureDetector(
               onTap: controller.pickImage,
-              child: _overlayBtn(Icons.edit_outlined),
+              child: LiquidGlassLayer(
+                settings: const LiquidGlassSettings(
+                  blur: 2,
+                  thickness: 40,
+                ),
+                child: LiquidGlass(
+                  shape: const LiquidRoundedSuperellipse(
+                    borderRadius: 30,
+                  ),
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff777777).withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(
+                        color: const Color(0xff777777).withOpacity(0.2),
+                        width: 0.5,
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.edit_outlined,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ],

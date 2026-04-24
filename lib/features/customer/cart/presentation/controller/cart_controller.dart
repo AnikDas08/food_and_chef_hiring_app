@@ -41,6 +41,7 @@ class CartController extends GetxController {
     }
   }
 
+  bool isCheckingOut = false;
   String? promoCode;
 
   void onPromoCodeApplied(String code) {
@@ -62,7 +63,55 @@ class CartController extends GetxController {
     update();
   }
 
-  bool isCheckingOut = false;
+  final RxBool _isEditingOrder = false.obs;
+  bool get isEditingOrder => _isEditingOrder.value;
+
+  void toggleEditingOrder() {
+    _isEditingOrder.value = !_isEditingOrder.value;
+    update();
+  }
+
+  Future<void> updateCartCustomizations({
+    required String cartItemId,
+    required List<String> customizations,
+    required String chefId,
+    int? quantity,
+  }) async {
+    // Optimistic Update
+    for (var group in chefGroups) {
+      final item = group.menus?.firstWhereOrNull((m) => m.id == cartItemId);
+      if (item != null) {
+        if (quantity != null) item.quantity = quantity;
+        item.customizations = customizations;
+        // Recalculate total price if needed (basic logic)
+        if (item.unitPrice != null && item.quantity != null) {
+          item.totalPrice = item.unitPrice! * item.quantity!;
+        }
+        break;
+      }
+    }
+    update();
+
+    try {
+      final Map<String, dynamic> body = {'customizations': customizations};
+      if (quantity != null) body['quantity'] = quantity;
+
+      final response = await ApiService.patch(
+        'cart/update/$cartItemId',
+        body: body,
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Utils.successSnackBar('Success', 'Cart updated successfully');
+        await fetchCart(chefId);
+      } else {
+        Utils.errorSnackBar('Error', 'Failed to update cart');
+        await fetchCart(chefId); // Revert on error
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+      await fetchCart(chefId); // Revert on error
+    }
+  }
 
   Future<void> placeOrder() async {
     // ── Validations ──────────────────────────────────────────────────────────

@@ -53,6 +53,25 @@ class _SignInScreenState extends State<SignInScreen> {
           elevation: 0,
           automaticallyImplyLeading: false,
           leadingWidth: 60,
+          leading: Navigator.canPop(context)
+              ? Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: GestureDetector(
+              onTap: () => Get.back(),
+              child: Container(
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  color: Color(0xffF6F6F6),
+                  shape: BoxShape.circle,
+                ),
+                child: const CommonImage(
+                  imageSrc: AppIcons.backIcon,
+                  size: 24,
+                ),
+              ),
+            ),
+          )
+              : null,
         ),
 
         /// Body Sections Starts here

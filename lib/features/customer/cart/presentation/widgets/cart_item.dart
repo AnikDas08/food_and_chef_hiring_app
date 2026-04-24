@@ -9,7 +9,17 @@ import 'package:new_untitled/utils/constants/app_images.dart';
 import '../../data/cart_model.dart';
 import '../controller/cart_controller.dart';
 
+import 'package:new_untitled/features/customer/chef_details/data/mamu_model.dart';
+import 'package:new_untitled/features/customer/chef_details/presentation/widgets/item_details.dart';
+import 'package:new_untitled/services/api/api_service.dart';
+
 Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
+  // We need an AnimationController for itemDetails
+  // However, cartItem is a stateless-like function used in a ListView.
+  // We can use Get.find if there's a controller or just create a one-off.
+  // For the sake of consistency with food_item.dart, we'll need a TickerProvider.
+  // Since cartItem is a function, we might need to wrap it or use a different approach.
+
   final CartMenuDetail? menuDetail =
   item.menu != null && item.menu!.isNotEmpty ? item.menu!.first : null;
 
@@ -34,8 +44,91 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
       }
       final int liveQty = liveItem?.quantity ?? currentQty;
 
-      return Container(
-        padding: EdgeInsets.all(10.r), // Uniform responsive padding
+      return _CartItemInkWell(
+        controller: controller,
+        item: item,
+        menuDetail: menuDetail,
+        chefId: chefId,
+        name: name,
+        cartItemId: cartItemId,
+        liveQty: liveQty,
+        imageUrl: imageUrl,
+      );
+    },
+  );
+}
+
+class _CartItemInkWell extends StatefulWidget {
+  final CartController controller;
+  final CartMenuItem item;
+  final CartMenuDetail? menuDetail;
+  final String chefId;
+  final String name;
+  final String cartItemId;
+  final int liveQty;
+  final String imageUrl;
+
+  const _CartItemInkWell({
+    required this.controller,
+    required this.item,
+    required this.menuDetail,
+    required this.chefId,
+    required this.name,
+    required this.cartItemId,
+    required this.liveQty,
+    required this.imageUrl,
+  });
+
+  @override
+  State<_CartItemInkWell> createState() => _CartItemInkWellState();
+}
+
+class _CartItemInkWellState extends State<_CartItemInkWell>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: widget.controller.isEditingOrder
+          ? () {
+              if (widget.menuDetail == null) return;
+
+              final menuData = MenuData(
+                id: widget.menuDetail!.id,
+                name: widget.menuDetail!.name,
+                images: widget.menuDetail!.images,
+                estCookingTime: widget.item.unitTimeStr,
+                customizations: widget.menuDetail!.customizations ?? [],
+              );
+
+              itemDetails(
+                context,
+                _controller,
+                menuData,
+                cartItem: widget.item,
+                chefId: widget.chefId,
+              );
+            }
+          : null,
+      borderRadius: BorderRadius.circular(12.r),
+      child: Container(
+        padding: EdgeInsets.all(10.r),
         margin: EdgeInsets.only(top: 16.h),
         decoration: BoxDecoration(
           color: const Color(0xffF2F2F2),
@@ -44,19 +137,17 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Left Column: Text & Controls ──────────────────────────
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title and Delete Button
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(
                         child: CommonText(
-                          text: name,
+                          text: widget.name,
                           maxLines: 5,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -64,47 +155,39 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
                         ),
                       ),
                       SizedBox(width: 4.w),
-                      _buildDeleteBtn(context, controller, cartItemId, chefId),
+                      //_buildDeleteBtn(context, widget.controller, widget.cartItemId, widget.chefId),
                     ],
                   ),
                   8.height,
-
-                  // Customization Pills
-                  if (item.customizations != null && item.customizations!.isNotEmpty) ...[
+                  if (widget.item.customizations != null && widget.item.customizations!.isNotEmpty) ...[
                     Wrap(
                       spacing: 6.w,
                       runSpacing: 6.h,
-                      children: item.customizations!.map((c) => _buildPill(c)).toList(),
+                      children: widget.item.customizations!.map((c) => _buildPill(c)).toList(),
                     ),
                     10.height,
                   ],
-
-                  // Quantity Stepper
-                  _buildStepper(context, controller, cartItemId, chefId, liveQty),
+                  _buildStepper(context, widget.controller, widget.cartItemId, widget.chefId, widget.liveQty),
                   12.height,
-                  // Cooking Time Badge
-                  if (item.unitTimeStr != null) ...[
-                    _buildCookingTimeBadge(item.unitTimeStr!),
+                  if (widget.item.unitTimeStr != null) ...[
+                    _buildCookingTimeBadge(widget.item.unitTimeStr!),
                     12.height,
                   ],
                 ],
               ),
             ),
-
             SizedBox(width: 12.w),
-
-            // ── Right Side: Product Image ─────────────────────────────
             CommonImage(
-              imageSrc: imageUrl,
-              size: 95.r, // Scaled for density
+              imageSrc: widget.imageUrl,
+              size: 95.r,
               borderRadius: 8.r,
               fill: BoxFit.cover,
             ),
           ],
         ),
-      );
-    },
-  );
+      ),
+    );
+  }
 }
 
 // ── REUSABLE RESPONSIVE SUB-WIDGETS ──

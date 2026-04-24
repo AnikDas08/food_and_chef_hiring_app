@@ -65,7 +65,11 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
                     child:
                     controller.isLoading
                     // ── Loading State ──────────────────────────
-                        ? const Center(child: CircularProgressIndicator())
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                            color: Colors.black,
+                          ))
                     // ── Empty State ────────────────────────────
                         : controller.addressList.isEmpty
                         ? const Center(
@@ -88,6 +92,8 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
                     )
                     // ── Address List ───────────────────────────
                         : RefreshIndicator(
+                      backgroundColor: Colors.white,
+                      color: Colors.black,
                       onRefresh: controller.fetchAddresses,
                       child: ListView.builder(
                         controller: controller.scrollController,
@@ -173,7 +179,11 @@ class _PaginationFooter extends StatelessWidget {
     if (isFetchingMore) {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 16),
-        child: Center(child: CircularProgressIndicator()),
+        child: Center(
+            child: CircularProgressIndicator(
+          backgroundColor: Colors.white,
+          color: Colors.black,
+        )),
       );
     }
     return const SizedBox.shrink();

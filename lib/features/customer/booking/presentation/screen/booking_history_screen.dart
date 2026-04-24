@@ -40,7 +40,7 @@ class BookingHistoryScreen extends StatelessWidget {
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(38.h),
                 child: Container(
-                  height: 50.h,
+                  height: 40.h,
                   padding: EdgeInsets.only(bottom: 6.h),
                   child: Align(
                     alignment: AlignmentGeometry.topCenter,

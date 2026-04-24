@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/text/common_text.dart';
@@ -38,6 +40,25 @@ class _VerifyScreenState extends State<VerifyScreen> {
             elevation: 0,
             automaticallyImplyLeading: false,
             leadingWidth: 60,
+            leading: Navigator.canPop(context)
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: GestureDetector(
+                      onTap: () => Get.back(),
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          color: Color(0xffF6F6F6),
+                          shape: BoxShape.circle,
+                        ),
+                        child: CommonImage(
+                          imageSrc: AppIcons.backIcon,
+                          size: 24,
+                        ),
+                      ),
+                    ),
+                  )
+                : null,
           ),
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
