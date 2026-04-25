@@ -10,7 +10,6 @@ import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../component/button/common_button.dart';
-import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/grocerie_controller.dart';
 import '../widgets/groceries_item.dart';
@@ -69,7 +68,7 @@ class GroceryScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return Center(
+          return const Center(
             child: CupertinoActivityIndicator(),
           );
         }
@@ -173,7 +172,7 @@ class GroceryScreen extends StatelessWidget {
               SizedBox(height: 12.h),
 
               if (controller.isIngredientsLoading.value)
-                Center(
+                const Center(
                   child: CupertinoActivityIndicator(),
                 )
               else
@@ -192,7 +191,7 @@ class GroceryScreen extends StatelessWidget {
 
               // --- 4. BOTTOM BUTTON ---
               if (controller.isInstacartLoading.value)
-                Center(
+                const Center(
                   child: CupertinoActivityIndicator(),
                 )
               else if (controller.basketItems.isNotEmpty)

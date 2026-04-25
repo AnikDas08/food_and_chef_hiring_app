@@ -403,7 +403,6 @@ class _ToggleCard extends StatelessWidget {
     required this.onToggle,
     required this.child,
     this.subtitle,
-    this.subtitleColor = const Color(0xff999999),
   });
 
   @override

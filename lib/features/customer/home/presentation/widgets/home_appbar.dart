@@ -200,7 +200,6 @@ import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
-import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../controller/home_controller.dart';
 
@@ -216,7 +215,7 @@ AppBar homeAppbar() {
     title: GetBuilder<HomeController>(
       builder: (controller) {
         return GestureDetector(
-          onTap: () => Get.toNamed(AppRoutes.addressScreen,arguments: {"isLoading":true,
+          onTap: () => Get.toNamed(AppRoutes.addressScreen,arguments: {'isLoading':true,
           }),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -302,7 +301,7 @@ AppBar homeAppbar() {
         child: LiquidGlass(
           shape: const LiquidRoundedSuperellipse(borderRadius: 30),
           child: GestureDetector(
-            onTap: () => Get.toNamed(AppRoutes.cart, arguments: "cart"),
+            onTap: () => Get.toNamed(AppRoutes.cart, arguments: 'cart'),
             child: Container(
               width: 40.sp,
               height: 40.sp,

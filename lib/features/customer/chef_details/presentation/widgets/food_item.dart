@@ -157,7 +157,6 @@ class _FoodItemState extends State<FoodItem>
                           color: kitchenReady
                               ? const Color(0xff2F8328)
                               : const Color(0xffE39400),
-                          fontWeight: FontWeight.w500,
                           fontSize: 10,
                         ),
                       ),

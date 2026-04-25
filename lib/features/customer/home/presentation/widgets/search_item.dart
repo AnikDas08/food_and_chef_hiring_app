@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide SearchController;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/features/customer/home/presentation/widgets/search_chefitem.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';

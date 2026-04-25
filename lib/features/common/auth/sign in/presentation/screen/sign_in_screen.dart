@@ -174,7 +174,6 @@ class _SignInScreenState extends State<SignInScreen> {
                             CommonText(
                               text: AppString.signInWithFacebook,
                               left: 14,
-                              fontWeight: FontWeight.w500,
                             ),
                           ],
                         ),
@@ -194,7 +193,6 @@ class _SignInScreenState extends State<SignInScreen> {
                             CommonText(
                               text: AppString.signInWithGoogle,
                               left: 14,
-                              fontWeight: FontWeight.w500,
                             ),
                           ],
                         ),

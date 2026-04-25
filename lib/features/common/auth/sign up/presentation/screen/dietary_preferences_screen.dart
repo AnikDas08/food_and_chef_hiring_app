@@ -3,10 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../../../utils/extensions/extension.dart';
 import 'package:get/get.dart';
 import '../../../../../../component/button/common_button.dart';
@@ -192,7 +190,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                 titleColor: Colors.black,
                 titleSize: 10.sp,
               )*/
-              SizedBox(height: 12,),
+              const SizedBox(height: 12,),
               GestureDetector(
                 onTap: (){
                   Get.toNamed(AppRoutes.reviewDetail);

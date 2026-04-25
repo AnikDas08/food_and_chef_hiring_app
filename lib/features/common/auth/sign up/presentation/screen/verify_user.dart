@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/services/storage/storage_services.dart';
-import 'package:new_untitled/component/image/common_image.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../../component/button/common_button.dart';

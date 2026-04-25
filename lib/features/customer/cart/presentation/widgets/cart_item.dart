@@ -11,7 +11,6 @@ import '../controller/cart_controller.dart';
 
 import 'package:new_untitled/features/customer/chef_details/data/mamu_model.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/item_details.dart';
-import 'package:new_untitled/services/api/api_service.dart';
 
 Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
   // We need an AnimationController for itemDetails
@@ -149,7 +148,6 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
                         child: CommonText(
                           text: widget.name,
                           maxLines: 5,
-                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xff272727),
                         ),

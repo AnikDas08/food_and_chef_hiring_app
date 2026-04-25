@@ -54,10 +54,10 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
-                    text: "ACTIVE ADDRESS",
+                    text: 'ACTIVE ADDRESS',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     top: 24,
                     bottom: 12,
                   ),
@@ -65,7 +65,7 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
                     child:
                     (controller.isLoading || controller.isDeleting)
                     // ── Loading State ──────────────────────────
-                        ? Center(
+                        ? const Center(
                             child: CupertinoActivityIndicator(),
                           )
                     // ── Empty State ────────────────────────────
@@ -175,7 +175,7 @@ class _PaginationFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isFetchingMore) {
-      return Padding(
+      return const Padding(
         padding: EdgeInsets.symmetric(vertical: 16),
         child: Center(
             child: CupertinoActivityIndicator()),

@@ -234,7 +234,7 @@ class AddAddressScreen extends StatelessWidget {
               children: [
                 10.height,
                 controller.isSubmitting
-                    ? Center(
+                    ? const Center(
                         child: CupertinoActivityIndicator())
                     : CommonButton(
                   titleText: AppString.addAddress,
@@ -278,7 +278,7 @@ class _SuggestionList extends StatelessWidget {
         ],
       ),
       child: isLoading
-          ? Padding(
+          ? const Padding(
               padding: EdgeInsets.all(12),
               child: Center(
                   child: CupertinoActivityIndicator()),

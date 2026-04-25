@@ -4,11 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
-import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
-import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/extensions/extension.dart';
 import '../controller/search_controller.dart';
@@ -119,8 +117,6 @@ class _SearchScreenState extends State<SearchScreen> {
                       },
                       hintText: 'Search for chefs...',
                       fillColor: Colors.transparent,
-                      borderColor: Colors.transparent,
-                      paddingVertical: 18,
                       paddingHorizontal: 12,
                     ),
                   ),
@@ -150,7 +146,7 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
       body: Obx(() {
         if (_controller.isLoading.value) {
-          return Center(child: CupertinoActivityIndicator());
+          return const Center(child: CupertinoActivityIndicator());
         }
 
         final bool isTyping = _controller.searchText.value.isNotEmpty;
@@ -232,7 +228,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 16,
                             height: 16,
                             child: CupertinoActivityIndicator(

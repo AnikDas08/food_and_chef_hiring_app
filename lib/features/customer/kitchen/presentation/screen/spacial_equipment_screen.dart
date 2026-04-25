@@ -110,7 +110,6 @@ class SpecialEquipmentScreen extends StatelessWidget {
                 children: [
                   CommonButton(
                     titleText: 'Continue',
-                    buttonColor: AppColors.primaryColor,
                     onTap: () => Get.to(() => const UploadKitchenPhotoScreen()),
                   ),
                 ],

@@ -188,7 +188,7 @@ class _PresetCards extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       if (controller.isLoadingPresets.value) {
-        return Center(
+        return const Center(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
             child: CupertinoActivityIndicator(),
@@ -240,7 +240,7 @@ class _PresetCard extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 13.h),
           decoration: BoxDecoration(
-            color: isSelected ? Color(0xff272727) : const Color(0xFFFAFAFA),
+            color: isSelected ? const Color(0xff272727) : const Color(0xFFFAFAFA),
             borderRadius: BorderRadius.circular(20.r),
           ),
           child: Row(
@@ -277,7 +277,7 @@ class _PresetCard extends StatelessWidget {
                 SizedBox(
                   width: 16.w,
                   height: 16.w,
-                  child: CupertinoActivityIndicator(radius: 8, color: Colors.white),
+                  child: const CupertinoActivityIndicator(radius: 8, color: Colors.white),
                 ),
             ],
           ),
@@ -396,7 +396,7 @@ class _EquipmentBody extends StatelessWidget {
         if (controller.isLoadingCustomSetup.value) {
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 24.h),
-            child: Center(
+            child: const Center(
                 child: CupertinoActivityIndicator()),
           );
         }
@@ -749,7 +749,6 @@ class _ReadyForCookingCard extends StatelessWidget {
           children: [
             const CommonText(
               text: 'You\'re Ready for Cooking',
-              fontSize: 14,
               fontWeight: FontWeight.w600,
               color: Color(0xFF272727),
               textAlign: TextAlign.start,

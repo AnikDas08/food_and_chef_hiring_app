@@ -41,9 +41,9 @@ Widget chefInfo(CartChefInfo? chef) {
             Row(
               children: [
                 SvgPicture.asset(
-                  "assets/icons/price.svg",
+                  'assets/icons/price.svg',
                 ),
-                SizedBox(width: 8,),
+                const SizedBox(width: 8,),
                 CommonText(
                   text: chef?.pricing != null
                       ? '\$${chef!.pricing!.toStringAsFixed(2)} per hour'
@@ -60,9 +60,9 @@ Widget chefInfo(CartChefInfo? chef) {
       Obx(() => InkWell(
         onTap: controller.toggleEditingOrder,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
           decoration: BoxDecoration(
-            color: controller.isEditingOrder ? Colors.black : Color(0xffF2F2F2),
+            color: controller.isEditingOrder ? Colors.black : const Color(0xffF2F2F2),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
@@ -73,10 +73,10 @@ Widget chefInfo(CartChefInfo? chef) {
                 color: controller.isEditingOrder ? Colors.white : Colors.black,
               ),
               CommonText(
-                text: controller.isEditingOrder ? "Done" : AppString.editOrder,
+                text: controller.isEditingOrder ? 'Done' : AppString.editOrder,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: controller.isEditingOrder ? Colors.white : Color(0xff272727),
+                color: controller.isEditingOrder ? Colors.white : const Color(0xff272727),
                 left: 6,
               ),
             ],

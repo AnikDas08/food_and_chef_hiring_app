@@ -13,7 +13,6 @@ import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/constants/app_images.dart';
 import 'package:new_untitled/features/customer/cart/presentation/controller/cart_controller.dart';
 import '../../../cart/data/cart_model.dart';
-import 'package:new_untitled/services/api/api_service.dart';
 import '../../data/mamu_model.dart';
 import '../controller/chef_detail_controller.dart';
 import 'exten_text.dart';
@@ -355,7 +354,7 @@ void itemDetails(
                                   ),
                                 ],
 
-                                SizedBox(height: 12,),
+                                const SizedBox(height: 12,),
 
 
                                 // ── Customize the Dish ───────────────────
@@ -529,7 +528,7 @@ void itemDetails(
                               4.height,
                               if(LocalStorage.myRole=='CUSTOMER')
                               CommonButton(
-                                titleText: isEditing ? "Update Order" : AppString.addToOrder,
+                                titleText: isEditing ? 'Update Order' : AppString.addToOrder,
                                 onTap: () async {
                                   final selectedCustoms = dishOptions
                                       .where((d) => d['isSelected'] == true)

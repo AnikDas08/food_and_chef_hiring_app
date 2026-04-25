@@ -4,10 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
-import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
-import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/booking_history_controller.dart';
@@ -26,7 +24,6 @@ class BookingHistoryScreen extends StatelessWidget {
             extendBodyBehindAppBar: true,
             appBar: AppBar(
               systemOverlayStyle: SystemUiOverlayStyle.dark,
-              automaticallyImplyLeading: true,
               backgroundColor: Colors.transparent,
               centerTitle: false,
               elevation: 0,
@@ -177,7 +174,7 @@ class BookingHistoryScreen extends StatelessWidget {
 
   Widget _buildBody(BookingHistoryController controller) {
     if (controller.isLoading) {
-      return Center(child: CupertinoActivityIndicator());
+      return const Center(child: CupertinoActivityIndicator());
     }
 
     return RefreshIndicator(
@@ -202,7 +199,7 @@ class BookingHistoryScreen extends StatelessWidget {
                     (controller.isPaginationLoading ? 1 : 0),
                 itemBuilder: (context, index) {
                   if (index == controller.orders.length) {
-                    return Center(child: CupertinoActivityIndicator());
+                    return const Center(child: CupertinoActivityIndicator());
                   }
 
                   return bookingItem(controller.orders[index]);

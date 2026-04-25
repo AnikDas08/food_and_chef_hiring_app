@@ -65,7 +65,7 @@ void availabilityPopup(BuildContext context, String chefId) {
 
                   // Show loader or slots
                   if (controller.isSlotLoading)
-                    Center(child: CupertinoActivityIndicator())
+                    const Center(child: CupertinoActivityIndicator())
                   else if (controller.timeSlots.isEmpty)
                     const Center(child: CommonText(text: 'No slots available for this date', fontSize: 12))
                   else

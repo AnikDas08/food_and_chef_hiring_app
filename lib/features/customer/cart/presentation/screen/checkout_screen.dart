@@ -39,7 +39,7 @@ class CheckoutScreen extends StatelessWidget {
           text: AppString.checkout,
           fontSize: 24,
           fontWeight: FontWeight.w600,
-          color: const Color(0xff272727),
+          color: Color(0xff272727),
         ),
         flexibleSpace: LiquidGlassLayer(
           child: LiquidGlass(
@@ -124,7 +124,7 @@ class CheckoutScreen extends StatelessWidget {
                     }
                   },
                   child: Container(
-                    constraints: BoxConstraints(minHeight: 60),
+                    constraints: const BoxConstraints(minHeight: 60),
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.w,
                       vertical: 12.h,
@@ -322,7 +322,7 @@ class CheckoutScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 12.h,),
                 const CommonText(
-                  text: "All bookings are subject to the minimum duration set by the Privae Chef.",
+                  text: 'All bookings are subject to the minimum duration set by the Privae Chef.',
                   fontWeight: FontWeight.w400,
                   color: Color(0xff636363),
                   fontSize: 12,
@@ -566,14 +566,13 @@ class CheckoutScreen extends StatelessWidget {
                 6.width,
                 CommonText(
                   text: 'Estimated time: ${controller.estimatedTime}',
-                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                   color: const Color(0xff777777),
                 ),
               ],
             ),
           ],
-          SizedBox(height: 12,),
+          const SizedBox(height: 12,),
           _summaryRow('Subtotal', priceSubtotal),
           8.height,
           _summaryRow('Fees', fee),

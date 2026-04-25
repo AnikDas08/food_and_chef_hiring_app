@@ -38,7 +38,7 @@ class EditAddressScreen extends StatelessWidget {
         builder: (controller) {
           // ── Full screen loader while fetching ────────────
           if (controller.isLoadingEdit) {
-            return Center(
+            return const Center(
                 child: CupertinoActivityIndicator());
           }
 
@@ -259,7 +259,7 @@ class EditAddressScreen extends StatelessWidget {
                   children: [
                     10.height,
                     controller.isSubmitting
-                        ? Center(
+                        ? const Center(
                             child:
                                 CupertinoActivityIndicator())
                         : CommonButton(
@@ -303,7 +303,7 @@ class _SuggestionList extends StatelessWidget {
         ],
       ),
       child: isLoading
-          ? Padding(
+          ? const Padding(
               padding: EdgeInsets.all(12),
               child: Center(
                   child: CupertinoActivityIndicator()),

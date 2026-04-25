@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/text/common_text.dart';
-import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../utils/constants/app_colors.dart';
 import '../controller/past_order_controller.dart';
 import '../widgets/past_item.dart';
@@ -59,7 +58,7 @@ class PastOrderScreen extends StatelessWidget {
                   builder: (controller) {
                     // ── Loading ────────────────────────────
                     if (controller.isLoading) {
-                      return Center(child: CupertinoActivityIndicator());
+                      return const Center(child: CupertinoActivityIndicator());
                     }
 
                     // ── Empty ──────────────────────────────
@@ -99,7 +98,7 @@ class PastOrderScreen extends StatelessWidget {
                           // Pagination footer
                           if (index == controller.orderList.length) {
                             if (controller.isFetchingMore) {
-                              return Padding(
+                              return const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 16),
                                 child: Center(
                                   child: CupertinoActivityIndicator(),

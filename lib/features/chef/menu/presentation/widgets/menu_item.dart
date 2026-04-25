@@ -7,7 +7,6 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
-import '../../../../../utils/constants/app_images.dart';
 
 Widget menuItem() {
   return InkWell(

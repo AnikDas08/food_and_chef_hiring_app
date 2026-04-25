@@ -5,8 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/button/common_button.dart';
-import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
-import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
@@ -59,13 +57,13 @@ class CartScreen extends StatelessWidget {
               text: AppString.cart,
               fontSize: 24,
               fontWeight: FontWeight.w600,
-              color: const Color(0xff272727),
+              color: Color(0xff272727),
             ),
           ),
 
           body:
               controller.isLoadingCart
-                  ? Center(child: CupertinoActivityIndicator())
+                  ? const Center(child: CupertinoActivityIndicator())
                   : controller.cartResponse == null
                   ? const SizedBox.shrink()
                   : controller.chefGroups.isEmpty
@@ -137,7 +135,6 @@ class CartScreen extends StatelessWidget {
 
         CommonText(
           text: AppString.notesToPrivaeChef,
-          fontSize: 14,
           fontWeight: FontWeight.w600,
           color: const Color(0xff272727),
           textAlign: TextAlign.start,
@@ -183,13 +180,11 @@ class CartScreen extends StatelessWidget {
             children: [
               const CommonText(
                 text: 'Estimated cooking time',
-                fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
               ),
               CommonText(
                 text: '${controller.estimatedTime} hours',
-                fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xff272727),
               ),
@@ -198,7 +193,7 @@ class CartScreen extends StatelessWidget {
         ],
         SizedBox(height: 4.h,),
         const Text(
-          "For scheduling only: Billing reflects time worked.",
+          'For scheduling only: Billing reflects time worked.',
           style: TextStyle(
             fontStyle: FontStyle.italic,
             fontFamily: 'SF Pro',

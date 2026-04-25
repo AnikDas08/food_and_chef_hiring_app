@@ -213,17 +213,16 @@ void _showDeleteDialog(AddressModel address, AddressController controller) {
     AlertDialog(
       backgroundColor: Colors.white,
       title: const CommonText(
-          text: "Delete Address",
+          text: 'Delete Address',
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color:  Color(0xff272727),
           textAlign: TextAlign.start,
       ),
       content:  CommonText(
-          text: "Do you want to delete this address?",
-        fontSize: 14,
+          text: 'Do you want to delete this address?',
         fontWeight: FontWeight.w400,
-        color: Color(0xff272727).withOpacity(0.80),
+        color: const Color(0xff272727).withOpacity(0.80),
         textAlign: TextAlign.start,
         maxLines: 2,
       ),
@@ -231,7 +230,7 @@ void _showDeleteDialog(AddressModel address, AddressController controller) {
         TextButton(
           onPressed: () => Get.back(),
           child: const CommonText(
-              text: "Cancel",
+              text: 'Cancel',
             color: Colors.grey
           )
         ),
@@ -241,7 +240,7 @@ void _showDeleteDialog(AddressModel address, AddressController controller) {
             controller.deleteAddress(address.id);
           },
           child: const CommonText(
-              text: "Delete",
+              text: 'Delete',
             color: Colors.red
           )
         ),

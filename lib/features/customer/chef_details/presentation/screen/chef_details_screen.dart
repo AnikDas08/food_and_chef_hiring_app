@@ -234,7 +234,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                         controller.isLoadingDetail
                             ? SizedBox(
                               height: 180.h,
-                              child: Center(
+                              child: const Center(
                                 child: CupertinoActivityIndicator(),
                               ),
                             )
@@ -433,16 +433,13 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                               const CommonText(
                                 text: AppString.viewCart,
                                 color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
                                 left: 8,
                               ),
                               const Spacer(),
                               CommonText(
                                 text:
-                                    "\$${pricePerChef.toStringAsFixed(2)}",
+                                    '\$${pricePerChef.toStringAsFixed(2)}',
                                 color: Colors.white,
-                                fontSize: 14,
                               ),
                             ],
                           ),
@@ -715,7 +712,6 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
                   isScrollable ? TabAlignment.start : TabAlignment.fill,
               indicator: const UnderlineTabIndicator(
                 borderSide: BorderSide(width: 2.5, color: Color(0xffFD713F)),
-                insets: EdgeInsets.only(bottom: 0),
               ),
               dividerColor: Colors.transparent,
               indicatorColor: Colors.transparent,

@@ -11,11 +11,9 @@ import 'package:new_untitled/features/customer/profile/presentation/screen/kitch
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../component/image/common_image.dart';
-import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/other_widgets/item.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../component/text/common_text.dart';
-import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../chef/profile/presentation/screen/help_and_Support_Screen.dart';
 import '../controller/profile_controller.dart';

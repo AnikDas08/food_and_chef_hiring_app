@@ -71,7 +71,7 @@ class _DietaryScreenState extends State<DietaryScreen> {
                 Expanded(
                   child: Obx(() {
                     if (controller.isLoadingDietary.value) {
-                      return Center(child: CupertinoActivityIndicator());
+                      return const Center(child: CupertinoActivityIndicator());
                     }
 
                     final grouped = controller.groupedSavedItems;

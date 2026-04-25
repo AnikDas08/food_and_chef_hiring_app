@@ -110,7 +110,6 @@ class SignupChefScreen extends StatelessWidget {
                         CommonText(
                           text: AppString.signUpWithFacebook,
                           left: 14,
-                          fontWeight: FontWeight.w500,
                         ),
                       ],
                     ),
@@ -129,7 +128,6 @@ class SignupChefScreen extends StatelessWidget {
                         CommonText(
                           text: AppString.signUpWithGoogle,
                           left: 14,
-                          fontWeight: FontWeight.w500,
                         ),
                       ],
                     ),

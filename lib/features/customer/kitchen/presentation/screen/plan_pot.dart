@@ -107,7 +107,6 @@ class CookwareToolsScreen extends StatelessWidget {
                 children: [
                   CommonButton(
                     titleText: 'Continue',
-                    buttonColor: AppColors.primaryColor,
                     onTap: () => Get.to(() => const SpecialEquipmentScreen()),
                   ),
                 ],

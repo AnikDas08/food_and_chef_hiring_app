@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
-import '../other_widgets/common_loader.dart';
 import '../text/common_text.dart';
 
 class CommonButton extends StatefulWidget {

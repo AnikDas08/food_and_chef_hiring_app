@@ -4,9 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
-import 'package:new_untitled/component/image/common_image.dart';
-import '../../../../../component/other_widgets/app_bar_opacity.dart';
-import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/notifications_controller.dart';
 import '../../data/model/notification_model.dart';
@@ -23,7 +20,6 @@ class NotificationScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        automaticallyImplyLeading: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -55,7 +51,7 @@ class NotificationScreen extends StatelessWidget {
       body: GetBuilder<NotificationsController>(
         builder: (ctrl) {
           if (ctrl.isLoading) {
-            return Center(child: CupertinoActivityIndicator());
+            return const Center(child: CupertinoActivityIndicator());
           }
 
           if (ctrl.notifications.isEmpty) {
@@ -77,7 +73,7 @@ class NotificationScreen extends StatelessWidget {
                 final resolved = _resolveIndex(grouped, index);
 
                 if (resolved == null) {
-                  return Padding(
+                  return const Padding(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     child: Center(child: CupertinoActivityIndicator(radius: 14)),
                   );
@@ -145,7 +141,6 @@ class _SectionLabel extends StatelessWidget {
       ),*/
       CommonText(
           text: label,
-          fontSize: 14,
           color: const Color(0xff272727),
           fontWeight: FontWeight.w600,
           textAlign: TextAlign.start,
