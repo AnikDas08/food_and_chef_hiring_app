@@ -395,7 +395,6 @@ class _ToggleCard extends StatelessWidget {
   final VoidCallback onToggle;
   final Widget? child;
   final String? subtitle;
-  final Color subtitleColor;
 
   const _ToggleCard({
     required this.title,
@@ -445,10 +444,9 @@ class _ToggleCard extends StatelessWidget {
               padding: const EdgeInsets.only(top: 2),
               child: Text(
                 subtitle!,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
-                  color: subtitleColor,
                 ),
               ),
             ),

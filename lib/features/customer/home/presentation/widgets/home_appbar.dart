@@ -195,6 +195,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
@@ -215,8 +216,11 @@ AppBar homeAppbar() {
     title: GetBuilder<HomeController>(
       builder: (controller) {
         return GestureDetector(
-          onTap: () => Get.toNamed(AppRoutes.addressScreen,arguments: {'isLoading':true,
-          }),
+          onTap:
+              () => Get.toNamed(
+                AppRoutes.addressScreen,
+                arguments: {'isLoading': true},
+              ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -255,23 +259,7 @@ AppBar homeAppbar() {
         );
       },
     ),
-    flexibleSpace: LiquidGlassLayer(
-      child: LiquidGlass(
-        shape: const LiquidRoundedSuperellipse(borderRadius: 0),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.white.withOpacity(0.2),
-                Colors.white.withOpacity(0.05),
-              ],
-            ),
-          ),
-        ),
-      ),
-    ),
+    flexibleSpace: appBarOpacity(),
     actions: [
       LiquidGlassLayer(
         child: LiquidGlass(
