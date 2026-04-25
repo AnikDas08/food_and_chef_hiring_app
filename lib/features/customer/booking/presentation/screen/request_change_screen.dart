@@ -121,9 +121,11 @@ class RequestChangeScreen extends StatelessWidget {
                       },
                       child: Container(
                         constraints: BoxConstraints(minHeight: 60.h),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 12.h,
+                        padding: EdgeInsets.only(
+                          left: 16.w,
+                          right: 0.w,
+                          top: 12.h,
+                          bottom: 12.h,
                         ),
                         decoration: BoxDecoration(
                           color: const Color(0xfff2f2f2),
@@ -176,11 +178,13 @@ class RequestChangeScreen extends StatelessWidget {
                                         textAlign: TextAlign.left,
                                       ),
                             ),
-                            8.width,
-                            const CommonImage(
-                              imageSrc: AppIcons.mapIcon,
-                              imageColor: Color(0xffFD713F),
-                              size: 24,
+                            Padding(
+                              padding: EdgeInsets.only(left: 8.w, right: 12.w),
+                              child: const CommonImage(
+                                imageSrc: AppIcons.mapIcon,
+                                imageColor: Color(0xffFD713F),
+                                size: 24,
+                              ),
                             ),
                           ],
                         ),
@@ -208,66 +212,74 @@ class RequestChangeScreen extends StatelessWidget {
                   ],
                 ),
                 20.height,
-                Row(
-                  children: [
-                    CommonImage(
-                      imageSrc: order.chef.image,
-                      size: 40,
-                      borderRadius: 50,
-                      fill: BoxFit.fill,
-                    ),
-                    12.width,
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CommonText(
-                            text: order.chef.name,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          CommonText(
-                            text: 'Booking ID: ${order.orderId}',
-                            fontSize: 12,
-                            color: const Color(0xff777777),
-                          ),
-                        ],
+                InkWell(
+                  onTap: () => historyCtrl.onChangeOrderDetailsPopup(),
+                  child: Row(
+                    children: [
+                      CommonImage(
+                        imageSrc: order.chef.image,
+                        size: 40,
+                        borderRadius: 50,
+                        fill: BoxFit.fill,
                       ),
-                    ),
-                    const Icon(Icons.keyboard_arrow_down_rounded),
-                  ],
-                ),
-
-                32.height,
-
-                // --- Dynamic Menu Items ---
-                ...order.staticItems.map(
-                  (item) => Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
+                      12.width,
+                      Expanded(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CommonText(
-                              text: item.menuName,
+                              text: order.chef.name,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600,
                             ),
                             CommonText(
-                              text: '${item.quantity} Items',
+                              text: 'Booking ID: ${order.orderId}',
                               fontSize: 12,
                               color: const Color(0xff777777),
                             ),
                           ],
                         ),
-                        CommonText(
-                          text: '\$${item.totalPrice.toStringAsFixed(2)}',
-                        ),
-                      ],
-                    ),
+                      ),
+                      Icon(
+                        historyCtrl.isOrderDetailsPopup
+                            ? Icons.keyboard_arrow_up_rounded
+                            : Icons.keyboard_arrow_down_rounded,
+                      ),
+                    ],
                   ),
                 ),
+
+                if (historyCtrl.isOrderDetailsPopup) ...[
+                  32.height,
+                  // --- Dynamic Menu Items ---
+                  ...order.staticItems.map(
+                    (item) => Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CommonText(
+                                text: item.menuName,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              CommonText(
+                                text: '${item.quantity} Items',
+                                fontSize: 12,
+                                color: const Color(0xff777777),
+                              ),
+                            ],
+                          ),
+                          /*CommonText(
+                          text: '\$${item.totalPrice.toStringAsFixed(2)}',
+                        ),*/
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
 
                 28.height,
                 const CommonText(

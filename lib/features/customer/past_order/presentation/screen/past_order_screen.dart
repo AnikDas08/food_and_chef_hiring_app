@@ -73,12 +73,12 @@ class PastOrderScreen extends StatelessWidget {
                             Icon(
                               Icons.receipt_long_outlined,
                               size: 64,
-                              color: AppColors.grey,
+                              color: Color(0xff777777),
                             ),
                             SizedBox(height: 12),
                             CommonText(
                               text: 'No bookings',
-                              color: AppColors.grey,
+                              color: Color(0xff777777),
                               fontWeight: FontWeight.w400,
                               fontSize: 12,
                             ),

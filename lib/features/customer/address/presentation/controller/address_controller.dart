@@ -205,7 +205,8 @@ class AddressController extends GetxController {
         _isSettingAddressText = false;
 
         showAddressSuggestions = false;
-        update(); // ← FIX: rebuild GetBuilder so text fields refresh in UI
+        
+        update();
       }
     } catch (e) {
       _showError('Failed to get current location: ${e.toString()}');

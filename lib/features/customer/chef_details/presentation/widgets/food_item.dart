@@ -172,6 +172,7 @@ class _FoodItemState extends State<FoodItem>
                   size: 120,
                   borderRadius: 8,
                   fill: BoxFit.cover,
+                  defaultImage: AppImages.noImage,
                 ),
               ],
             ),

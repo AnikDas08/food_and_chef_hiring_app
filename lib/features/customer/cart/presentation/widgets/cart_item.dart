@@ -149,6 +149,7 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
                           text: widget.name,
                           maxLines: 5,
                           fontWeight: FontWeight.w600,
+                          textAlign: TextAlign.start,
                           color: const Color(0xff272727),
                         ),
                       ),
@@ -180,6 +181,7 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
               size: 95.r,
               borderRadius: 8.r,
               fill: BoxFit.cover,
+              defaultImage: AppImages.noImage,
             ),
           ],
         ),
@@ -190,6 +192,7 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
 
 // ── REUSABLE RESPONSIVE SUB-WIDGETS ──
 
+/*
 Widget _buildDeleteBtn(BuildContext context, CartController controller, String id, String chefId) {
   return InkWell(
     onTap: () => _confirmDelete(context, controller, id, chefId),
@@ -204,6 +207,7 @@ Widget _buildDeleteBtn(BuildContext context, CartController controller, String i
     ),
   );
 }
+*/
 
 Widget _buildPill(String text) {
   return Container(
@@ -267,9 +271,15 @@ Widget _buildStepper(BuildContext context, CartController controller, String id,
       children: [
         _stepperActionBtn(
           icon: Icons.remove,
-          onTap: () => qty <= 1
-              ? _confirmDelete(context, controller, id, chefId)
-              : controller.updateQuantity(cartItemId: id, increment: false, chefId: chefId),
+          onTap: () {
+            if (qty > 1) {
+              controller.updateQuantity(
+                  cartItemId: id, increment: false, chefId: chefId);
+            }
+          },
+          // onTap: () => qty <= 1
+          //     ? _confirmDelete(context, controller, id, chefId)
+          //     : controller.updateQuantity(cartItemId: id, increment: false, chefId: chefId),
         ),
         SizedBox(
           width: 32.w,
@@ -300,6 +310,7 @@ Widget _stepperActionBtn({required IconData icon, required VoidCallback onTap}) 
 
 // ── CONFIRMATION DIALOG ──
 
+/*
 void _confirmDelete(BuildContext context, CartController controller, String cartItemId, String chefId) {
   showDialog(
     context: context,
@@ -332,3 +343,4 @@ void _confirmDelete(BuildContext context, CartController controller, String cart
     ),
   );
 }
+*/

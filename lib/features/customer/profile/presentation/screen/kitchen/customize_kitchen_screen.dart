@@ -45,11 +45,12 @@ class CustomizeKitchenScreen extends StatelessWidget {
                   children: [
                     SizedBox(height: 20.h),
                     const CommonText(
-                      text: 'Your Kitchen Equipment',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
+                      text: 'Kitchen Equipment',
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
                       textAlign: TextAlign.start,
                     ),
+                    SizedBox(height: 14.h),
                     SizedBox(height: 14.h),
                     _ReadyForCookingCard(controller: controller),
                     SizedBox(height: 20.h),
@@ -139,7 +140,7 @@ class _KitchenHeroImage extends StatelessWidget {
       return Stack(
         children: [
           SizedBox(
-            height: 160.h,
+            height: 200.h,
             width: double.infinity,
             child: hasLocal
                 ? Image.file(File(localFile.path),
@@ -155,7 +156,7 @@ class _KitchenHeroImage extends StatelessWidget {
                 : _placeholder(),
           ),
           Container(
-            height: 160.h,
+            height: 200.h,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -202,7 +203,7 @@ class _KitchenHeroImage extends StatelessWidget {
   }
 
   Widget _placeholder() => Container(
-    height: 160,
+    height: 200.h,
     color: const Color(0xFF3A3A3A),
     child: const Center(
         child: Icon(Icons.kitchen_outlined, size: 48, color: Colors.white24)),
@@ -683,18 +684,16 @@ class _ReadyForCookingCard extends StatelessWidget {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
         decoration: BoxDecoration(
-          color: const Color(0xFFFFF8F0),
+          color: const Color(0xFFF1F1F1),
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: const Color(0xFFFFE0B2)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CommonText(
-              text: "You're Ready for Cooking",
-              fontSize: 13,
+              text: 'You\'re Ready for Cooking',
               fontWeight: FontWeight.w600,
-              color: Color(0xFFE65100),
+              color: Color(0xFF272727),
               textAlign: TextAlign.start,
             ),
             SizedBox(height: 8.h),
