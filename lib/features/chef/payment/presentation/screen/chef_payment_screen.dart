@@ -26,7 +26,6 @@ class ChefPaymentScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         leadingWidth: 60,
 
-        // 🔙 Back Button
         leading: Padding(
           padding: const EdgeInsets.only(left: 16),
           child: GestureDetector(
@@ -45,10 +44,8 @@ class ChefPaymentScreen extends StatelessWidget {
           ),
         ),
 
-        // 📝 Title
         title: const CommonText(text: "Payment"),
 
-        // ⚙️ Settings Button
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
