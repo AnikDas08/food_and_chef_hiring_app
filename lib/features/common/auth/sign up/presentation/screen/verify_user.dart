@@ -1,4 +1,6 @@
 
+import 'package:flutter/services.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -36,36 +38,17 @@ class _VerifyUserState extends State<VerifyUser> {
     return Scaffold(
       /// App Bar Section starts here
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
-        leading: Navigator.canPop(context)
-            ? Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: GestureDetector(
-                  onTap: () => Get.back(),
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      color: Color(0xffF6F6F6),
-                      shape: BoxShape.circle,
-                    ),
-                    child: CommonImage(
-                      imageSrc: AppIcons.backIcon,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              )
-            : null,
+        flexibleSpace: appBarOpacity(),
       ),
 
       /// Body Section starts here
       body: GetBuilder<SignUpController>(
         builder: (controller) {
           return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 20.w),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Form(
               key: formKey,
               child: Column(
@@ -78,7 +61,6 @@ class _VerifyUserState extends State<VerifyUser> {
                     top: 10,
                     maxLines: 2,
                     textAlign: TextAlign.start,
-                    right: 40,
                     fontWeight: FontWeight.w600,
                   ),
 

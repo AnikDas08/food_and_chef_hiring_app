@@ -223,7 +223,7 @@ void itemDetails(
                                           color: item.kitchenStatus == 'Missing Equipment'
                                               ? const Color(0xffC17A00)
                                               : const Color(0xff2F8328),
-                                          fontSize: 10,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),

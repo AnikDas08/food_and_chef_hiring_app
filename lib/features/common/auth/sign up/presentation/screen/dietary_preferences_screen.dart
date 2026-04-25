@@ -35,7 +35,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
       body: GetBuilder<SignUpController>(
         builder: (controller) {
           return Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Form(
               key: _formKey,
               child: Column(
@@ -78,7 +78,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                   if (controller.isLoadingDietary)
                     const Expanded(
                       child: Center(
-                        child: CircularProgressIndicator(),
+                        child: CupertinoActivityIndicator(),
                       ),
                     )
                   else
@@ -153,7 +153,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                   }
                 },
               ),
-              const SizedBox(height: 12),
+              //const SizedBox(height: 12),
               /*InkWell(
                 onTap: () => Get.find<SignUpController>().completeProfile(),
                 borderRadius: BorderRadius.circular(12),
@@ -183,7 +183,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                   ),
                 ),
               ),*/
-              CommonButton(
+              /*CommonButton(
                 titleText: 'Skip for Now',
                 onTap: () {
                   Get.toNamed(AppRoutes.reviewDetail);
@@ -191,7 +191,19 @@ class DietaryPreferencesScreen extends StatelessWidget {
                 buttonColor: Colors.transparent,
                 titleColor: Colors.black,
                 titleSize: 10.sp,
-              )
+              )*/
+              SizedBox(height: 12,),
+              GestureDetector(
+                onTap: (){
+                  Get.toNamed(AppRoutes.reviewDetail);
+                },
+                child: const CommonText(
+                  text: 'Skip for Now',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF777777),
+                ),
+              ),
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 // lib/features/address/view/edit_address_screen.dart
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -37,7 +38,8 @@ class EditAddressScreen extends StatelessWidget {
         builder: (controller) {
           // ── Full screen loader while fetching ────────────
           if (controller.isLoadingEdit) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+                child: CupertinoActivityIndicator());
           }
 
           return SafeArea(
@@ -257,7 +259,9 @@ class EditAddressScreen extends StatelessWidget {
                   children: [
                     10.height,
                     controller.isSubmitting
-                        ? const Center(child: CircularProgressIndicator())
+                        ? Center(
+                            child:
+                                CupertinoActivityIndicator())
                         : CommonButton(
                           titleText: AppString.editAddress,
                           onTap: controller.updateAddress,
@@ -298,12 +302,12 @@ class _SuggestionList extends StatelessWidget {
           ),
         ],
       ),
-      child:
-          isLoading
-              ? const Padding(
-                padding: EdgeInsets.all(12),
-                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
-              )
+      child: isLoading
+          ? Padding(
+              padding: EdgeInsets.all(12),
+              child: Center(
+                  child: CupertinoActivityIndicator()),
+            )
               : suggestions.isEmpty
               ? const Padding(
                 padding: EdgeInsets.all(12),

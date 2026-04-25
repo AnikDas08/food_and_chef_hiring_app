@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -68,8 +69,8 @@ class GroceryScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(color: Color(0xffFD713F)),
+          return Center(
+            child: CupertinoActivityIndicator(),
           );
         }
 
@@ -172,8 +173,8 @@ class GroceryScreen extends StatelessWidget {
               SizedBox(height: 12.h),
 
               if (controller.isIngredientsLoading.value)
-                const Center(
-                  child: CircularProgressIndicator(color: Color(0xffFD713F)),
+                Center(
+                  child: CupertinoActivityIndicator(),
                 )
               else
                 ListView.builder(
@@ -191,8 +192,8 @@ class GroceryScreen extends StatelessWidget {
 
               // --- 4. BOTTOM BUTTON ---
               if (controller.isInstacartLoading.value)
-                const Center(
-                  child: CircularProgressIndicator(color: Color(0xffFD713F)),
+                Center(
+                  child: CupertinoActivityIndicator(),
                 )
               else if (controller.basketItems.isNotEmpty)
                 CommonButton(

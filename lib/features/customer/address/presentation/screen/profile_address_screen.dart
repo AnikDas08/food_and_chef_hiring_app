@@ -1,5 +1,6 @@
 // lib/features/address/view/profile_address_screen.dart
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
@@ -62,13 +63,11 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
                   ),
                   Expanded(
                     child:
-                    controller.isLoading
+                    (controller.isLoading || controller.isDeleting)
                     // ── Loading State ──────────────────────────
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                            backgroundColor: Colors.white,
-                            color: Colors.black,
-                          ))
+                        ? Center(
+                            child: CupertinoActivityIndicator(),
+                          )
                     // ── Empty State ────────────────────────────
                         : controller.addressList.isEmpty
                         ? const Center(
@@ -176,13 +175,10 @@ class _PaginationFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isFetchingMore) {
-      return const Padding(
+      return Padding(
         padding: EdgeInsets.symmetric(vertical: 16),
         child: Center(
-            child: CircularProgressIndicator(
-          backgroundColor: Colors.white,
-          color: Colors.black,
-        )),
+            child: CupertinoActivityIndicator()),
       );
     }
     return const SizedBox.shrink();

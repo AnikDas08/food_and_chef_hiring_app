@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -175,7 +176,9 @@ class BookingHistoryScreen extends StatelessWidget {
   }
 
   Widget _buildBody(BookingHistoryController controller) {
-    if (controller.isLoading) return const CommonLoader();
+    if (controller.isLoading) {
+      return Center(child: CupertinoActivityIndicator());
+    }
 
     return RefreshIndicator(
       backgroundColor: Colors.white,
@@ -199,7 +202,7 @@ class BookingHistoryScreen extends StatelessWidget {
                     (controller.isPaginationLoading ? 1 : 0),
                 itemBuilder: (context, index) {
                   if (index == controller.orders.length) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(child: CupertinoActivityIndicator());
                   }
 
                   return bookingItem(controller.orders[index]);

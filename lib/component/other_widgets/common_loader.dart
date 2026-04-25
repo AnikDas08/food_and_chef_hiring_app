@@ -21,6 +21,7 @@ class CommonLoader extends StatelessWidget {
         width: size.sp,
         child: CircularProgressIndicator(
           strokeWidth: strokeWidth,
+          color: Colors.black,
           valueColor: color != null ? AlwaysStoppedAnimation<Color>(color!) : null,
         ),
       ),

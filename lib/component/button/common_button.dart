@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 import '../other_widgets/common_loader.dart';
@@ -102,10 +103,10 @@ class _CommonButtonState extends State<CommonButton>
   }
 
   Widget _buildLoader() {
-    return CommonLoader(
-      size: widget.buttonHeight - 20,
-      strokeWidth: 2.5,
-      color: AppColors.white,
+    return Center(
+      child: CupertinoActivityIndicator(
+        color: widget.titleColor,
+      ),
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -70,7 +71,7 @@ class _DietaryScreenState extends State<DietaryScreen> {
                 Expanded(
                   child: Obx(() {
                     if (controller.isLoadingDietary.value) {
-                      return const Center(child: CircularProgressIndicator());
+                      return Center(child: CupertinoActivityIndicator());
                     }
 
                     final grouped = controller.groupedSavedItems;

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide SearchController;
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -149,7 +150,7 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
       body: Obx(() {
         if (_controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: CupertinoActivityIndicator());
         }
 
         final bool isTyping = _controller.searchText.value.isNotEmpty;
@@ -231,11 +232,11 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const SizedBox(
+                          SizedBox(
                             width: 16,
                             height: 16,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
+                            child: CupertinoActivityIndicator(
+                              radius: 8,
                               color: Color(0xffFD713F),
                             ),
                           ),

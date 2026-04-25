@@ -85,7 +85,7 @@ class ChatListScreen extends StatelessWidget {
         builder:
             (controller) => switch (controller.status) {
               /// Loading
-              Status.loading => const CommonLoader(),
+              Status.loading => const Center(child: CupertinoActivityIndicator()),
 
               /// Error
               Status.error => ErrorScreen(

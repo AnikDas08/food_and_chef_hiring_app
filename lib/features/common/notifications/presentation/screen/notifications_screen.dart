@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,7 +55,7 @@ class NotificationScreen extends StatelessWidget {
       body: GetBuilder<NotificationsController>(
         builder: (ctrl) {
           if (ctrl.isLoading) {
-            return const Center(child: CommonLoader());
+            return Center(child: CupertinoActivityIndicator());
           }
 
           if (ctrl.notifications.isEmpty) {
@@ -76,9 +77,9 @@ class NotificationScreen extends StatelessWidget {
                 final resolved = _resolveIndex(grouped, index);
 
                 if (resolved == null) {
-                  return const Padding(
+                  return Padding(
                     padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Center(child: CommonLoader(size: 28)),
+                    child: Center(child: CupertinoActivityIndicator(radius: 14)),
                   );
                 }
 

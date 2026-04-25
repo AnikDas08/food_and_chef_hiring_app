@@ -1,5 +1,6 @@
 // lib/features/orders/view/past_order_screen.dart
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -58,7 +59,7 @@ class PastOrderScreen extends StatelessWidget {
                   builder: (controller) {
                     // ── Loading ────────────────────────────
                     if (controller.isLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return Center(child: CupertinoActivityIndicator());
                     }
 
                     // ── Empty ──────────────────────────────
@@ -98,10 +99,10 @@ class PastOrderScreen extends StatelessWidget {
                           // Pagination footer
                           if (index == controller.orderList.length) {
                             if (controller.isFetchingMore) {
-                              return const Padding(
+                              return Padding(
                                 padding: EdgeInsets.symmetric(vertical: 16),
                                 child: Center(
-                                  child: CircularProgressIndicator(),
+                                  child: CupertinoActivityIndicator(),
                                 ),
                               );
                             }

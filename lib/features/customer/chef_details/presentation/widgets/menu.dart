@@ -1,7 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/food_item.dart';
-import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_colors.dart';
 import '../../data/mamu_model.dart';
@@ -153,7 +153,7 @@ class _MenuListState extends State<_MenuList>
         if (isFirst ||
             (isLoading &&
                 (controller.menuCache[widget.section]?.isEmpty ?? true))) {
-          return const CommonLoader();
+          return const Center(child: CupertinoActivityIndicator());
         }
 
         final List<MenuData> items =
@@ -184,7 +184,7 @@ class _MenuListState extends State<_MenuList>
               if (loadingMore) {
                 return const Padding(
                   padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(child: CupertinoActivityIndicator()),
                 );
               }
               if (!hasMore && items.length > 10) {

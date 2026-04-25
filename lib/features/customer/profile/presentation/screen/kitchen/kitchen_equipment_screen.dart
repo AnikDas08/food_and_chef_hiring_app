@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -187,10 +188,10 @@ class _PresetCards extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       if (controller.isLoadingPresets.value) {
-        return const Center(
+        return Center(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
-            child: CircularProgressIndicator(color: Colors.black),
+            child: CupertinoActivityIndicator(),
           ),
         );
       }
@@ -276,8 +277,7 @@ class _PresetCard extends StatelessWidget {
                 SizedBox(
                   width: 16.w,
                   height: 16.w,
-                  child: const CircularProgressIndicator(
-                      strokeWidth: 2, color: Colors.white),
+                  child: CupertinoActivityIndicator(radius: 8, color: Colors.white),
                 ),
             ],
           ),
@@ -396,8 +396,8 @@ class _EquipmentBody extends StatelessWidget {
         if (controller.isLoadingCustomSetup.value) {
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 24.h),
-            child: const Center(
-                child: CircularProgressIndicator(color: Colors.black)),
+            child: Center(
+                child: CupertinoActivityIndicator()),
           );
         }
         if (controller.customSetupError.value.isNotEmpty) {

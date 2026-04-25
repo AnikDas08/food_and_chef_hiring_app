@@ -81,7 +81,7 @@ class RequestChangeScreen extends StatelessWidget {
                     return CommonTextField(
                       controller: dateController,
                       keyboardType: TextInputType.none,
-                      paddingVertical: 13,
+                      paddingVertical: 20,
                       borderRadius: 14,
                       hintText: 'Select Date & Time',
                       onTap:
@@ -126,7 +126,7 @@ class RequestChangeScreen extends StatelessWidget {
                           vertical: 12.h,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xffF0F0F0),
+                          color: const Color(0xfff2f2f2),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(

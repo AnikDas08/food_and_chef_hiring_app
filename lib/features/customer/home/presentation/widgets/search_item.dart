@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide SearchController;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -102,7 +103,7 @@ class SearchItem extends StatelessWidget {
 
             // ── Grid ─────────────────────────────────────────────────────
             if (isLoading)
-              const CommonLoader()
+              const Center(child: CupertinoActivityIndicator())
             else if (chefs.isEmpty)
               const Center(
                 child: CommonText(

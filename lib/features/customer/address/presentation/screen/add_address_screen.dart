@@ -1,5 +1,6 @@
 // lib/features/address/view/add_address_screen.dart
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -233,7 +234,8 @@ class AddAddressScreen extends StatelessWidget {
               children: [
                 10.height,
                 controller.isSubmitting
-                    ? const Center(child: CircularProgressIndicator())
+                    ? Center(
+                        child: CupertinoActivityIndicator())
                     : CommonButton(
                   titleText: AppString.addAddress,
                   onTap: controller.submitAddress,
@@ -276,10 +278,11 @@ class _SuggestionList extends StatelessWidget {
         ],
       ),
       child: isLoading
-          ? const Padding(
-        padding: EdgeInsets.all(12),
-        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
-      )
+          ? Padding(
+              padding: EdgeInsets.all(12),
+              child: Center(
+                  child: CupertinoActivityIndicator()),
+            )
           : suggestions.isEmpty
           ? const Padding(
         padding: EdgeInsets.all(12),

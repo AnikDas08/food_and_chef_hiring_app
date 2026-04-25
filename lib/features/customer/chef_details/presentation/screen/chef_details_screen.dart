@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -151,27 +152,15 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                 child: InkWell(
                                   onTap: controller.toggleFavourite,
                                   child: LiquidGlassLayer(
-                                    settings: const LiquidGlassSettings(
-                                      blur: 10,
-                                      thickness: 40,
-                                    ),
                                     child: LiquidGlass(
-                                      shape: const LiquidRoundedSuperellipse(
-                                        borderRadius: 30,
-                                      ),
+                                      shape: const LiquidRoundedSuperellipse(borderRadius: 30),
                                       child: Container(
-                                        height: 40,
-                                        width: 40,
+                                        width: 40.sp,
+                                        height: 40.sp,
+                                        padding: EdgeInsets.all(8.sp),
                                         decoration: BoxDecoration(
-                                          color: const Color(0xff777777)
-                                              .withOpacity(0.5),
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                          border: Border.all(
-                                            color: const Color(0xff777777)
-                                                .withOpacity(0.5),
-                                            width: 0.5,
-                                          ),
+                                          shape: BoxShape.circle,
+                                          border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
                                         ),
                                         child: Center(
                                           child: Icon(
@@ -179,9 +168,9 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                                 ? Icons.favorite
                                                 : Icons.favorite_border,
                                             color:
-                                                controller.isFavorite
-                                                    ? Colors.red
-                                                    : Colors.white,
+                                            controller.isFavorite
+                                                ? Colors.red
+                                                : Colors.white,
                                             size: 24,
                                           ),
                                         ),
@@ -245,8 +234,8 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                         controller.isLoadingDetail
                             ? SizedBox(
                               height: 180.h,
-                              child: const Center(
-                                child: CircularProgressIndicator(),
+                              child: Center(
+                                child: CupertinoActivityIndicator(),
                               ),
                             )
                             : Padding(
