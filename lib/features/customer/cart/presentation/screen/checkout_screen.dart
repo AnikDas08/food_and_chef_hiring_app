@@ -11,6 +11,7 @@ import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../utils/constants/app_images.dart';
@@ -41,7 +42,8 @@ class CheckoutScreen extends StatelessWidget {
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
         ),
-        flexibleSpace: LiquidGlassLayer(
+        flexibleSpace: appBarOpacity(),
+        actions: [LiquidGlassLayer(
           child: LiquidGlass(
             shape: const LiquidRoundedSuperellipse(borderRadius: 0),
             child: Container(
@@ -58,6 +60,7 @@ class CheckoutScreen extends StatelessWidget {
             ),
           ),
         ),
+        ],
       ),
       body: GetBuilder<CartController>(
         builder: (controller) {

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/notifications_controller.dart';
 import '../../data/model/notification_model.dart';
@@ -24,7 +25,8 @@ class NotificationScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         leadingWidth: 60,
-        flexibleSpace: LiquidGlassLayer(
+        flexibleSpace: appBarOpacity(),
+        actions: [LiquidGlassLayer(
           child: LiquidGlass(
             shape: const LiquidRoundedSuperellipse(borderRadius: 0),
             child: Container(
@@ -41,6 +43,7 @@ class NotificationScreen extends StatelessWidget {
             ),
           ),
         ),
+        ],
         title: const CommonText(
           text: 'Notifications',
           fontWeight: FontWeight.w600,

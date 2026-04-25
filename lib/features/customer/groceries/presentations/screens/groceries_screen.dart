@@ -10,6 +10,7 @@ import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../component/button/common_button.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/grocerie_controller.dart';
 import '../widgets/groceries_item.dart';
@@ -35,7 +36,8 @@ class GroceryScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: false,
-        flexibleSpace: LiquidGlassLayer(
+        flexibleSpace: appBarOpacity(),
+        actions: [LiquidGlassLayer(
           child: LiquidGlass(
             shape: const LiquidRoundedSuperellipse(borderRadius: 0),
             child: Container(
@@ -52,6 +54,7 @@ class GroceryScreen extends StatelessWidget {
             ),
           ),
         ),
+        ],
         leading:
             controller.isBack == false
                 ? IconButton(

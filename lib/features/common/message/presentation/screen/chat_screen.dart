@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 import '../../../../../../config/route/app_routes.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/screen/error_screen.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_text_field.dart';
@@ -27,12 +28,12 @@ class ChatListScreen extends StatelessWidget {
 
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: false,
-        flexibleSpace: LiquidGlassLayer(
+        flexibleSpace: appBarOpacity(),
+        actions: [LiquidGlassLayer(
           child: LiquidGlass(
             shape: const LiquidRoundedSuperellipse(borderRadius: 0),
             child: Container(
@@ -49,6 +50,7 @@ class ChatListScreen extends StatelessWidget {
             ),
           ),
         ),
+        ],
         title: const CommonText(
           text: AppString.chat,
           fontWeight: FontWeight.w600,

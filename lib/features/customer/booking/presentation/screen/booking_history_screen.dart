@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/booking_history_controller.dart';
@@ -27,7 +28,8 @@ class BookingHistoryScreen extends StatelessWidget {
               backgroundColor: Colors.transparent,
               centerTitle: false,
               elevation: 0,
-              flexibleSpace: LiquidGlassLayer(
+              flexibleSpace: appBarOpacity(),
+              actions: [LiquidGlassLayer(
                 child: LiquidGlass(
                   shape: const LiquidRoundedSuperellipse(borderRadius: 0),
                   child: Container(
@@ -44,6 +46,7 @@ class BookingHistoryScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              ],
               title: const CommonText(
                 text: AppString.upcomingBookings,
                 fontSize: 24,

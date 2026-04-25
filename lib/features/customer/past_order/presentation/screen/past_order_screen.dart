@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../utils/constants/app_colors.dart';
 import '../controller/past_order_controller.dart';
 import '../widgets/past_item.dart';
@@ -22,7 +23,8 @@ class PastOrderScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: false,
-        flexibleSpace: LiquidGlassLayer(
+        flexibleSpace: appBarOpacity(),
+        actions: [LiquidGlassLayer(
           child: LiquidGlass(
             shape: const LiquidRoundedSuperellipse(borderRadius: 0),
             child: Container(
@@ -39,6 +41,7 @@ class PastOrderScreen extends StatelessWidget {
             ),
           ),
         ),
+        ],
         title: const CommonText(
           text: 'Booking History',
           fontWeight: FontWeight.w600,

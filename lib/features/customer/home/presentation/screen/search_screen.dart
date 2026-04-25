@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
 import '../../../../../component/image/common_image.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../utils/extensions/extension.dart';
@@ -85,6 +86,7 @@ class _SearchScreenState extends State<SearchScreen> {
         automaticallyImplyLeading: false,
         toolbarHeight: 90.h,
         titleSpacing: 16.w,
+        flexibleSpace: appBarOpacity(),
         title: LiquidGlassLayer(
           child: LiquidGlass(
             shape: LiquidRoundedSuperellipse(borderRadius: 30.r),
@@ -126,7 +128,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
         ),
-        flexibleSpace: LiquidGlassLayer(
+        actions: [LiquidGlassLayer(
           child: LiquidGlass(
             shape: const LiquidRoundedSuperellipse(borderRadius: 0),
             child: Container(
@@ -143,6 +145,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
         ),
+        ]
       ),
       body: Obx(() {
         if (_controller.isLoading.value) {

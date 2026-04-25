@@ -10,6 +10,7 @@ import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../controller/cart_controller.dart';
 import '../widgets/cart_item.dart';
@@ -33,9 +34,8 @@ class CartScreen extends StatelessWidget {
             centerTitle: true,
             backgroundColor: Colors.transparent,
             elevation: 0,
-
-            // ── Liquid Glass Header ──────────────────────────────────────────
-            flexibleSpace: LiquidGlassLayer(
+            flexibleSpace: appBarOpacity(),
+            actions: [LiquidGlassLayer(
               child: LiquidGlass(
                 shape: const LiquidRoundedSuperellipse(borderRadius: 0),
                 child: Container(
@@ -52,6 +52,7 @@ class CartScreen extends StatelessWidget {
                 ),
               ),
             ),
+            ],
 
             title: const CommonText(
               text: AppString.cart,
