@@ -13,11 +13,11 @@ import '../../../home/presentation/controller/chef_home_controller.dart';
 class ChefProfileController extends GetxController {
 
   /// Language List
-  List languages = ["English", "French", "Arabic"];
+  List languages = ['English', 'French', 'Arabic'];
 
   List<Map<String, dynamic>> profileOptions = [
-    {"name": "Chef", "image": AppIcons.chefIcon},
-    {"name": "Customers", "image": AppIcons.customers},
+    {'name': 'Chef', 'image': AppIcons.chefIcon},
+    {'name': 'Customers', 'image': AppIcons.customers},
   ];
 
   RxBool isNotification = false.obs;
@@ -27,22 +27,22 @@ class ChefProfileController extends GetxController {
   }
 
   Future<void> notification() async {
-    bool newValue = !isNotification.value;
+    final bool newValue = !isNotification.value;
     isNotification.value = newValue;
 
-    var response = await ApiService.patch(
+    final response = await ApiService.patch(
       ApiEndPoint.chefProfile,
       body: {
-        "notification_enabled": newValue.toString(),
+        'notification_enabled': newValue.toString(),
       },
     );
 
     if (response.statusCode == 200 && response.data['success'] == true) {
-      Get.snackbar("Message", "notification setting updated",
+      Get.snackbar('Message', 'notification setting updated',
           backgroundColor: Colors.green, colorText: Colors.white);
     } else {
       isNotification.value = !newValue;
-      Utils.errorSnackBar("Error", "Failed to update notification setting");
+      Utils.errorSnackBar('Error', 'Failed to update notification setting');
     }
   }
 
@@ -71,7 +71,7 @@ class ChefProfileController extends GetxController {
   }
 
   List<String> expertiseInCooking = [
-    "Chinese", "Italian", "American", "Indian", "Japanese",
+    'Chinese', 'Italian', 'American', 'Indian', 'Japanese',
   ];
 
   TextEditingController selectExpertiseController = TextEditingController();
@@ -101,10 +101,10 @@ class ChefProfileController extends GetxController {
   bool isWeekend = false;
   bool isAutoAccept = false;
 
-  String selectedLanguage = "English";
+  String selectedLanguage = 'English';
   Map<String, dynamic> selectedProfile = {
-    "name": "Customers",
-    "image": AppIcons.customers,
+    'name': 'Customers',
+    'image': AppIcons.customers,
   };
 
   String selectedCountryCode = '+1';
@@ -159,8 +159,8 @@ class ChefProfileController extends GetxController {
 
     try {
       final Map<String, dynamic> body = {
-        "email": emailController.text.trim(),
-        "contact": "$selectedCountryCode${phoneController.text.trim()}",
+        'email': emailController.text.trim(),
+        'contact': '$selectedCountryCode${phoneController.text.trim()}',
       };
 
       final response = await ApiService.patch(
@@ -169,23 +169,23 @@ class ChefProfileController extends GetxController {
       );
 
       if (response.statusCode == 200 && response.data['success'] == true) {
-        Get.snackbar("Success", "Profile updated successfully");
+        Get.snackbar('Success', 'Profile updated successfully');
         Get.find<ChefHomeController>().fetchChefProfile();
         Get.toNamed(AppRoutes.chefProfile);
       } else {
-        Get.snackbar("Error",
-            response.data['message']?.toString() ?? "Something went wrong");
+        Get.snackbar('Error',
+            response.data['message']?.toString() ?? 'Something went wrong');
       }
     } catch (e) {
-      debugPrint("Update profile error: $e");
-      Get.snackbar("Error", "Something went wrong");
+      debugPrint('Update profile error: $e');
+      Get.snackbar('Error', 'Something went wrong');
     } finally {
       isLoadingUpdate = false;
       update();
     }
   }
 
-  static const String _placesApiKey = "AIzaSyCVoe2GBYsk1jU6E9RFIxhVfsyBCSkMX_w";
+  static const String _placesApiKey = 'AIzaSyCVoe2GBYsk1jU6E9RFIxhVfsyBCSkMX_w';
 
   Future<void> fetchAddressSuggestions(String query) async {
     if (query.trim().isEmpty) {
@@ -198,9 +198,9 @@ class ChefProfileController extends GetxController {
 
     try {
       final uri = Uri.parse(
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json"
-            "?input=${Uri.encodeComponent(query)}"
-            "&key=$_placesApiKey",
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json'
+            '?input=${Uri.encodeComponent(query)}'
+            '&key=$_placesApiKey',
       );
       final res = await GetConnect().get(uri.toString());
       if (res.statusCode == 200 && res.body['status'] == 'OK') {
@@ -236,10 +236,10 @@ class ChefProfileController extends GetxController {
 
     try {
       final uri = Uri.parse(
-        "https://maps.googleapis.com/maps/api/place/details/json"
+        'https://maps.googleapis.com/maps/api/place/details/json'
             "?place_id=${item['placeId']}"
-            "&fields=geometry"
-            "&key=$_placesApiKey",
+            '&fields=geometry'
+            '&key=$_placesApiKey',
       );
       final res = await GetConnect().get(uri.toString());
       if (res.statusCode == 200 && res.body['status'] == 'OK') {
@@ -327,13 +327,13 @@ class ChefProfileController extends GetxController {
         userId = _getUserIdFromToken(LocalStorage.token);
         if (userId.isNotEmpty) {
           LocalStorage.userId = userId;
-          await LocalStorage.setString("userId", userId);
+          await LocalStorage.setString('userId', userId);
         }
       }
 
       if (userId.isEmpty) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          Utils.errorSnackBar("Error", "User not logged in. Please login again.");
+          Utils.errorSnackBar('Error', 'User not logged in. Please login again.');
         });
         isLoading = false;
         update();
@@ -341,62 +341,61 @@ class ChefProfileController extends GetxController {
       }
 
       final String fullName =
-      "${firstNameController.text.trim()} ${lastNameController.text.trim()}".trim();
+      '${firstNameController.text.trim()} ${lastNameController.text.trim()}'.trim();
 
       final Map<String, dynamic> body = {
-        "role": "CHEF",
-        "name": fullName,
-        "phone": numberController.text.trim(),
-        if (selectedLat != null) "lat": selectedLat.toString(),
-        if (selectedLng != null) "lng": selectedLng.toString(),
-        "about": aboutController.text.trim(),
-        "experience": experienceController.text.trim().replaceAll(",", ""),
-        "pricing": pricingController.text.trim(),
-        "cooking_area_distance": distanceController.text.trim(),
-        "minimum_booking_duration": minBookingController.text.trim(),
-        "auto_accept": isAutoAccept.toString(),
-        "week_days_discount_has": isDiscount.toString(),
-        "week_days_discount_from": fromController.text.trim(),
-        "week_days_discount_to": toController.text.trim(),
-        "week_days_discount_rate": weekdayRateController.text.trim(),
-        "weekend_discount_has": isWeekend.toString(),
-        "weekend_discount_rate": weekendRateController.text.trim(),
-        "foods": selectedCuisineIds.join(','),
+        'role': 'CHEF',
+        'name': fullName,
+        'phone': numberController.text.trim(),
+        if (selectedLat != null) 'lat': selectedLat.toString(),
+        if (selectedLng != null) 'lng': selectedLng.toString(),
+        'about': aboutController.text.trim(),
+        'experience': experienceController.text.trim().replaceAll(',', ''),
+        'pricing': pricingController.text.trim(),
+        'cooking_area_distance': distanceController.text.trim(),
+        'minimum_booking_duration': minBookingController.text.trim(),
+        'auto_accept': isAutoAccept.toString(),
+        'week_days_discount_has': isDiscount.toString(),
+        'week_days_discount_from': fromController.text.trim(),
+        'week_days_discount_to': toController.text.trim(),
+        'week_days_discount_rate': weekdayRateController.text.trim(),
+        'weekend_discount_has': isWeekend.toString(),
+        'weekend_discount_rate': weekendRateController.text.trim(),
+        'foods': selectedCuisineIds.join(','),
       };
 
       final List files = [];
       if (image != null && image!.isNotEmpty) {
-        files.add({"name": "image", "image": image});
+        files.add({'name': 'image', 'image': image});
       }
 
       final response = await ApiService.multipartImage(
-        "/user/profile",
-        method: "PATCH",
+        '/user/profile',
         body: body,
         files: files,
       );
 
       if (response.statusCode == 200) {
         final data = response.data;
-        LocalStorage.userId = data['data']?["_id"] ?? "";
-        LocalStorage.myImage = data['data']?["image"] ?? "";
-        LocalStorage.myName = data['data']?["fullName"] ?? "";
-        LocalStorage.myEmail = data['data']?["email"] ?? "";
-        LocalStorage.setString("userId", LocalStorage.userId);
-        LocalStorage.setString("myImage", LocalStorage.myImage);
-        LocalStorage.setString("myName", LocalStorage.myName);
-        LocalStorage.setString("myEmail", LocalStorage.myEmail);
+        LocalStorage.userId = data['data']?['_id'] ?? '';
+        LocalStorage.myImage = data['data']?['image'] ?? '';
+        LocalStorage.myName = data['data']?['fullName'] ?? '';
+        LocalStorage.myEmail = data['data']?['email'] ?? '';
+        LocalStorage.setString('userId', LocalStorage.userId);
+        LocalStorage.setString('myImage', LocalStorage.myImage);
+        LocalStorage.setString('myName', LocalStorage.myName);
+        LocalStorage.setString('myEmail', LocalStorage.myEmail);
 
         await Get.find<ChefHomeController>().fetchChefProfile();
         update();
 
-        Get.toNamed(AppRoutes.chefHomeScreen, arguments: {"index": 4});
+        Get.toNamed(AppRoutes.chefHomeScreen, arguments: {'index': 4});
 
         Future.delayed(const Duration(milliseconds: 500), () {
           if (Get.context != null) {
             ScaffoldMessenger.of(Get.context!).showSnackBar(
               const SnackBar(
-                content: Text("Profile updated successfully"),
+                content: Text('Profile updated successfully'),
                 backgroundColor: Colors.green,
               ),
             );
@@ -404,7 +403,7 @@ class ChefProfileController extends GetxController {
         });
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoading = false;
       update();

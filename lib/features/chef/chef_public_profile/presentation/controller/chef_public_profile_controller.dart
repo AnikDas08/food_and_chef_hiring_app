@@ -7,27 +7,27 @@ class ChefPublicProfileController extends GetxController {
   List cartItems = [];
 
   List dish = [
-    {"name": "Without onions", "isSelected": false},
-    {"name": "Without iceberg lettuce", "isSelected": false},
-    {"name": "Without cheese", "isSelected": false},
-    {"name": "Without cucumber slices", "isSelected": false},
-    {"name": "Without Tomato", "isSelected": false},
-    {"name": "Without Bacon", "isSelected": false},
+    {'name': 'Without onions', 'isSelected': false},
+    {'name': 'Without iceberg lettuce', 'isSelected': false},
+    {'name': 'Without cheese', 'isSelected': false},
+    {'name': 'Without cucumber slices', 'isSelected': false},
+    {'name': 'Without Tomato', 'isSelected': false},
+    {'name': 'Without Bacon', 'isSelected': false},
   ];
 
-  onChange() {
+  void onChange() {
     isFavorite = !isFavorite;
     update();
   }
 
-  addToCart(value) {
+  void addToCart(value) {
     cartItems.add(value);
     update();
     Navigator.pop(Get.context!);
   }
 
-  onChangeDish(int index) {
-    dish[index]["isSelected"] = !dish[index]["isSelected"];
+  void onChangeDish(int index) {
+    dish[index]['isSelected'] = !dish[index]['isSelected'];
     update();
   }
 }

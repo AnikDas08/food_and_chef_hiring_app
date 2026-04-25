@@ -1,5 +1,6 @@
 
 import 'package:get/get.dart';
+import 'package:new_untitled/utils/log/app_log.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../data/Booking_Time_Model.dart';
@@ -50,12 +51,10 @@ class AnalyticsController extends GetxController {
       final response = await ApiService.get(
         '${ApiEndPoint.mostBookingTime}${selectedDay.value.toLowerCase()}',
       );
-      print('RESPONSE SUCCESS: ${response.isSuccess}');
-      print('RAW DATA: ${response.data}');
+
       if (response.isSuccess) {
         final model = BookingTimeModel.fromJson(response.data as Map<String, dynamic>);
-        print('MODEL SUCCESS: ${model.success}');
-        print('MAPPED DATA LENGTH: ${model.data.mappedData.length}');
+
         if (model.success) {
           mappedData.value = model.data.mappedData;
           avgDuration.value = model.data.avgCountOrder.avgDuration;
@@ -63,11 +62,11 @@ class AnalyticsController extends GetxController {
           avgMenus.value = model.data.avgCountOrder.avgMenus;
           totalBooking.value = model.data.avgCountOrder.totalBooking;
 
-          print('CONTROLLER MAPPED DATA: ${mappedData.length}');
+          appLog('CONTROLLER MAPPED DATA: ${mappedData.length}');
         }
       }
     } catch (e) {
-      print('ERROR: $e');
+      appLog('ERROR: $e');
     } finally {
       bookingLoading(false);
     }

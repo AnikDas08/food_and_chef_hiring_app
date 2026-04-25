@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../utils/constants/app_colors.dart';
+import '../text/common_text.dart';
 
 // ignore: must_be_immutable
 class CommonTextField extends StatelessWidget {
@@ -24,10 +25,11 @@ class CommonTextField extends StatelessWidget {
     this.paddingVertical = 18,
     this.borderRadius = 20,
     this.fontSize = 14,
+    this.hintTextSize = 12,
     this.inputFormatters,
     this.fillColor = const Color(0xffF2F2F2),
-    this.hintTextColor = AppColors.textFiledColor,
-    this.labelTextColor = AppColors.textFiledColor,
+    this.hintTextColor = const Color(0xff777777),
+    this.labelTextColor = const Color(0xff777777),
     this.textColor = AppColors.black,
     this.borderColor = AppColors.transparent,
     this.onSubmitted,
@@ -58,6 +60,7 @@ class CommonTextField extends StatelessWidget {
   final bool isPassword;
   final bool? isDense;
   final double fontSize;
+  final double hintTextSize;
   RxBool obscureText = false.obs;
   final Function(String)? onSubmitted;
   final Function(String)? onFieldSubmitted;
@@ -90,7 +93,6 @@ class CommonTextField extends StatelessWidget {
         onTap: onTap,
         validator: validator,
         maxLines: isPassword ? 1 : maxLines,
-        textAlign: TextAlign.start,
         textAlignVertical: TextAlignVertical.center,
 
         cursorColor:
@@ -100,11 +102,11 @@ class CommonTextField extends StatelessWidget {
 
           isDense: isDense,
           filled: true,
-          prefixIconConstraints: BoxConstraints(maxWidth: 40, maxHeight: 30),
+          prefixIconConstraints: const BoxConstraints(maxWidth: 40, maxHeight: 30),
           prefixIcon: prefixIcon,
           fillColor: fillColor,
 
-          counterText: "",
+          counterText: '',
           contentPadding: EdgeInsets.symmetric(
             horizontal: paddingHorizontal.w,
             vertical: paddingVertical.h,
@@ -117,14 +119,18 @@ class CommonTextField extends StatelessWidget {
           hintText: hintText,
           labelText: labelText,
           hintStyle: TextStyle(
-            fontSize: 14.sp,
-            color: hintTextColor,
+            height: getLetterHeight(hintTextSize, FontWeight.w400),
+            fontSize: hintTextSize.sp,
             fontWeight: FontWeight.w400,
+            color: hintTextColor,
+            letterSpacing: getLetterSpacing(fontSize, FontWeight.w400),
           ),
           labelStyle: TextStyle(
-            fontSize: fontSize,
-            color: labelTextColor,
+            height: getLetterHeight(hintTextSize, FontWeight.w400),
+            fontSize: hintTextSize.sp,
             fontWeight: FontWeight.w400,
+            color: hintTextColor,
+            letterSpacing: getLetterSpacing(fontSize, FontWeight.w400),
           ),
           prefixText: prefixText,
           prefixStyle: TextStyle(
@@ -157,7 +163,7 @@ class CommonTextField extends StatelessWidget {
                 ? Icons.visibility_off_outlined
                 : Icons.visibility_outlined,
             size: 20.sp,
-            color: Color(0xff777777),
+            color: const Color(0xff777777),
           ),
         ),
       ),

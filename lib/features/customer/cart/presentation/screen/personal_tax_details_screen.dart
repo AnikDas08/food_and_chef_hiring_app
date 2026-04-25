@@ -18,36 +18,35 @@ class PersonalTaxDetailsScreen extends StatelessWidget {
     final bool isEdit = args?['isEdit'] == true;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const CommonText(
+          text: AppString.personalDetails,
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          color: Color(0xff272727),
+        ),
+        centerTitle: true,
+      ),
       body: GetBuilder<TaxController>(
         builder: (controller) => SingleChildScrollView(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CommonText(
-                text: AppString.personalDetails,
-                fontSize: 24,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff272727),
-              ),
-
-              CommonText(
+              const CommonText(
                 text: AppString.fullName,
-                fontSize: 14,
                 top: 16,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
                 bottom: 8,
               ),
               CommonTextField(
-                hintText: "Company name",
+                hintText: 'Full Name',
                 controller: controller.nameController,
               ),
 
-              CommonText(
+              const CommonText(
                 text: AppString.streetAddress,
-                fontSize: 14,
                 top: 16,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
@@ -58,9 +57,8 @@ class PersonalTaxDetailsScreen extends StatelessWidget {
                 controller: controller.streetController,
               ),
 
-              CommonText(
+              const CommonText(
                 text: AppString.city,
-                fontSize: 14,
                 top: 16,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
@@ -71,9 +69,8 @@ class PersonalTaxDetailsScreen extends StatelessWidget {
                 controller: controller.cityController,
               ),
 
-              CommonText(
+              const CommonText(
                 text: AppString.postalCode,
-                fontSize: 14,
                 top: 16,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
@@ -84,9 +81,8 @@ class PersonalTaxDetailsScreen extends StatelessWidget {
                 controller: controller.postalController,
               ),
 
-              CommonText(
+              const CommonText(
                 text: AppString.taxId,
-                fontSize: 14,
                 top: 16,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
@@ -105,21 +101,21 @@ class PersonalTaxDetailsScreen extends StatelessWidget {
                     width: 24,
                     child: Checkbox(
                       value: controller.isDefault,
-                      activeColor: Color(0xffFD713F),
+                      activeColor: const Color(0xffFD713F),
                       checkColor: Colors.white,
                       onChanged: controller.onChangeDefault,
                     ),
                   ),
-                  Expanded(
+                  const Expanded(
                     child: CommonText(
-                      text: "Make Default Invoicing Address",
+                      text: 'Make Default Invoicing Address',
                       textAlign: TextAlign.start,
                       left: 8,
                     ),
                   ),
                 ],
               ),
-              Divider(),
+              //const Divider(),
             ],
           ),
         ),
@@ -128,7 +124,7 @@ class PersonalTaxDetailsScreen extends StatelessWidget {
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
         child: GetBuilder<TaxController>(
           builder: (controller) => CommonButton(
-            titleText: controller.isSubmitting ? "Saving..." : AppString.save,
+            titleText: controller.isSubmitting ? 'Saving...' : AppString.save,
             onTap: controller.isSubmitting
                 ? () {}
                 : () {

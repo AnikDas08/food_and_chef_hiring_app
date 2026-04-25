@@ -115,7 +115,6 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
       child: ListWheelScrollView.useDelegate(
         controller: controller,
         itemExtent: _itemHeight,
-        perspective: 0.003,
         diameterRatio: 2.8,
         physics: const FixedExtentScrollPhysics(),
         onSelectedItemChanged: onChanged,
@@ -238,7 +237,6 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
                       child: const CommonText(
                         text: 'to',
                         fontSize: 16,
-                        fontWeight: FontWeight.w500,
                         color: Color(0xFF3C3C43),
                       ),
                     ),
@@ -256,7 +254,7 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
           20.verticalSpace,
 
           CommonButton(
-            titleText: "Apply",
+            titleText: 'Apply',
             onTap: () {
               widget.onApply(
                 _timeSlots[_fromIndex],

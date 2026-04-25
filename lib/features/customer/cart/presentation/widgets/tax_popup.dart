@@ -8,7 +8,7 @@ import '../../../../../utils/constants/app_string.dart';
 import '../controller/cart_controller.dart';
 import '../controller/text_controller.dart';
 
-taxPopup() {
+void taxPopup() {
   if (!Get.isRegistered<TaxController>()) Get.put(TaxController());
   final TaxController taxController = Get.find<TaxController>();
   final CartController cartController = Get.find<CartController>();
@@ -20,21 +20,20 @@ taxPopup() {
 
   showDialog(
     context: Get.context!,
-    barrierDismissible: true,
     builder: (context) {
       return Dialog(
-        insetPadding: EdgeInsets.symmetric(horizontal: 16),
+        insetPadding: const EdgeInsets.symmetric(horizontal: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.r),
         ),
-        backgroundColor: Color(0xffFFFFFF),
+        backgroundColor: const Color(0xffFFFFFF),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: GetBuilder<TaxController>(
             builder: (taxCtrl) {
               if (taxCtrl.isLoading) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 40),
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 40),
                   child: Center(child: CircularProgressIndicator()),
                 );
               }
@@ -54,10 +53,9 @@ taxPopup() {
                     children: [
                       // ── Header ─────────────────────────────────
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
+                          const Expanded(
                             child: CommonText(
                               text: AppString.pleaseSelectTheTaxDetailsYouWantToUse,
                               fontSize: 16,
@@ -73,7 +71,7 @@ taxPopup() {
                             onTap: () => Navigator.pop(context),
                             child: Icon(
                               Icons.close,
-                              color: Color(0xffABABAB),
+                              color: const Color(0xffABABAB),
                               size: 24.sp,
                             ),
                           ),
@@ -89,13 +87,12 @@ taxPopup() {
                         }
                             : null,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
                               height: 15.sp,
                               width: 15.sp,
                               decoration: BoxDecoration(
-                                color: isBusinessSelected ? Colors.black : Color(0xffF2F2F2),
+                                color: isBusinessSelected ? Colors.black : const Color(0xffF2F2F2),
                                 shape: BoxShape.circle,
                               ),
                               child: isBusinessSelected
@@ -108,19 +105,19 @@ taxPopup() {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  CommonText(
-                                    text: "Business tax profile",
+                                  const CommonText(
+                                    text: 'Business tax profile',
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
                                     color: Color(0xff272727),
                                   ),
                                   CommonText(
                                     text: hasBusiness
-                                        ? "${taxCtrl.businessTax!.name} (${taxCtrl.businessTax!.city})"
-                                        : "Add tax details",
+                                        ? '${taxCtrl.businessTax!.name} (${taxCtrl.businessTax!.city})'
+                                        : 'Add tax details',
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xff777777),
+                                    color: const Color(0xff777777),
                                   ),
                                 ],
                               ),
@@ -142,12 +139,12 @@ taxPopup() {
                                 );
                               },
                               child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
                                 decoration: BoxDecoration(
-                                  color: Color(0xffF2F2F2),
+                                  color: const Color(0xffF2F2F2),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: CommonText(text: hasBusiness ? "Edit" : "Add"),
+                                child: CommonText(text: hasBusiness ? 'Edit' : 'Add'),
                               ),
                             ),
                           ],
@@ -165,13 +162,12 @@ taxPopup() {
                         }
                             : null,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
                               height: 15.sp,
                               width: 15.sp,
                               decoration: BoxDecoration(
-                                color: isPersonalSelected ? Colors.black : Color(0xffF2F2F2),
+                                color: isPersonalSelected ? Colors.black : const Color(0xffF2F2F2),
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               child: isPersonalSelected
@@ -184,19 +180,19 @@ taxPopup() {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  CommonText(
-                                    text: "Personal tax profile",
+                                  const CommonText(
+                                    text: 'Personal tax profile',
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
                                     color: Color(0xff272727),
                                   ),
                                   CommonText(
                                     text: hasPersonal
-                                        ? "${taxCtrl.personalTax!.name} (${taxCtrl.personalTax!.city})"
-                                        : "Add tax details",
+                                        ? '${taxCtrl.personalTax!.name} (${taxCtrl.personalTax!.city})'
+                                        : 'Add tax details',
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xff777777),
+                                    color: const Color(0xff777777),
                                   ),
                                 ],
                               ),
@@ -218,12 +214,12 @@ taxPopup() {
                                 );
                               },
                               child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
                                 decoration: BoxDecoration(
-                                  color: Color(0xffF2F2F2),
+                                  color: const Color(0xffF2F2F2),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: CommonText(text: hasPersonal ? "Edit" : "Add"),
+                                child: CommonText(text: hasPersonal ? 'Edit' : 'Add'),
                               ),
                             ),
                           ],

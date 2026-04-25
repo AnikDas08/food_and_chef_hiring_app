@@ -11,7 +11,7 @@ import '../../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../utils/constants/app_string.dart';
 
-accountCreatePopup() {
+void accountCreatePopup() {
   showDialog(
     context: Get.context!,
     builder: (context) {
@@ -37,8 +37,8 @@ accountCreatePopup() {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CommonImage(imageSrc: AppImages.reviewSuccess, size: 88),
-                      CommonText(
+                      const CommonImage(imageSrc: AppImages.reviewSuccess, size: 88),
+                      const CommonText(
                         text: AppString.accountCreated,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -46,7 +46,7 @@ accountCreatePopup() {
                         top: 16,
                         bottom: 8,
                       ),
-                      CommonText(
+                      const CommonText(
                         text: AppString.accountCreatedMessage,
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -57,7 +57,7 @@ accountCreatePopup() {
 
                       16.height,
                       CommonButton(
-                        titleText: "Go to Home",
+                        titleText: 'Go to Home',
                         buttonHeight: 48,
                         buttonRadius: 16,
                         onTap: () {

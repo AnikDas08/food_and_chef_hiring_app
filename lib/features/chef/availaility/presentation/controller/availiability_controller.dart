@@ -22,8 +22,8 @@ class TimeSlotModel {
   }
 
   Map<String, String> toMap(int index) => {
-    "availability_times[$index][start_time]": from.text,
-    "availability_times[$index][end_time]": to.text,
+    'availability_times[$index][start_time]': from.text,
+    'availability_times[$index][end_time]': to.text,
   };
 }
 
@@ -55,19 +55,19 @@ class DayModel {
 // ── Controller ──
 class AvailabilityController extends GetxController {
   final List<DayModel> days = [
-    DayModel(name: "Monday"),
-    DayModel(name: "Tuesday"),
-    DayModel(name: "Wednesday"),
-    DayModel(name: "Thursday"),
-    DayModel(name: "Friday"),
-    DayModel(name: "Saturday"),
-    DayModel(name: "Sunday"),
+    DayModel(name: 'Monday'),
+    DayModel(name: 'Tuesday'),
+    DayModel(name: 'Wednesday'),
+    DayModel(name: 'Thursday'),
+    DayModel(name: 'Friday'),
+    DayModel(name: 'Saturday'),
+    DayModel(name: 'Sunday'),
   ];
 
   int minHours = 12;
-  String minUnit = "Hours";
+  String minUnit = 'Hours';
   int maxDays = 14;
-  String maxUnit = "Days";
+  String maxUnit = 'Days';
   bool isLoading = false;
 
   // ── Day toggle ──
@@ -96,7 +96,7 @@ class AvailabilityController extends GetxController {
   static SignUpChefController get instance => Get.put(SignUpChefController());
 
   String get _onboardingEndpoint =>
-      "user/onboarding/${LocalStorage.userId}";
+      'user/onboarding/${LocalStorage.userId}';
 
 
   void incrementMax() {
@@ -132,15 +132,15 @@ class AvailabilityController extends GetxController {
 
       for (int i = 0; i < days.length; i++) {
         final day = days[i];
-        body["availability[$i][day]"] = day.name.toLowerCase();
-        body["availability[$i][availableity]"] = day.isEnabled.toString();
+        body['availability[$i][day]'] = day.name.toLowerCase();
+        body['availability[$i][availableity]'] = day.isEnabled.toString();
 
         if (day.isEnabled) {
           for (int j = 0; j < day.slots.length; j++) {
             final slot = day.slots[j];
-            body["availability[$i][availability_times][$j][start_time]"] =
+            body['availability[$i][availability_times][$j][start_time]'] =
                 _formatTime(slot.from);
-            body["availability[$i][availability_times][$j][end_time]"] =
+            body['availability[$i][availability_times][$j][end_time]'] =
                 _formatTime(slot.to);
           }
         }
@@ -148,20 +148,19 @@ class AvailabilityController extends GetxController {
 
       final response = await ApiService.multipartImage(
         _onboardingEndpoint,
-        method: "PATCH",
         body: body,
         files: [],
       );
 
       if (response.statusCode == 200) {
-        Get.snackbar("Success", response.data['message'] ?? "Availability setup successful",
+        Get.snackbar('Success', response.data['message'] ?? 'Availability setup successful',
             backgroundColor: Colors.black, colorText: Colors.white);
         Get.to(() => const CafeEnableAutoAcceptScreen());
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
+        Utils.errorSnackBar('Error', response.data['message'] ?? 'Something went wrong');
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoading = false;
       update();
@@ -175,22 +174,22 @@ class AvailabilityController extends GetxController {
 
       for (int i = 0; i < days.length; i++) {
         final day = days[i];
-        body["availability[$i][day]"] = day.name.toLowerCase();
-        body["availability[$i][availableity]"] = day.isEnabled.toString();
+        body['availability[$i][day]'] = day.name.toLowerCase();
+        body['availability[$i][availableity]'] = day.isEnabled.toString();
 
         if (day.isEnabled) {
           for (int j = 0; j < day.slots.length; j++) {
             final slot = day.slots[j];
-            body["availability[$i][availability_times][$j][start_time]"] =
+            body['availability[$i][availability_times][$j][start_time]'] =
                 slot.from.text;
-            body["availability[$i][availability_times][$j][end_time]"] =
+            body['availability[$i][availability_times][$j][end_time]'] =
                 slot.to.text;
           }
         }
       }
-      debugPrint("Body to send: $body");
+      debugPrint('Body to send: $body');
     } catch (e) {
-      Get.snackbar("Error", e.toString());
+      Get.snackbar('Error', e.toString());
     } finally {
       isLoading = false;
       update();

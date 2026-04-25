@@ -8,7 +8,7 @@ class Item extends StatelessWidget {
     super.key,
     this.icon,
     required this.title,
-    this.image = "",
+    this.image = '',
     this.disableDivider = false,
     this.onTap,
     this.color = const Color(0xff272727),
@@ -54,8 +54,6 @@ class Item extends StatelessWidget {
                 CommonText(
                   text: title,
                   color: color,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
                   left: 16,
                 ),
                 const Spacer(),
@@ -64,7 +62,7 @@ class Item extends StatelessWidget {
                     : Icon(
                       Icons.arrow_forward_ios_outlined,
                       size: 16.sp,
-                      color: Color(0xff777777),
+                      color: const Color(0xff777777),
                     ),
               ],
             ),

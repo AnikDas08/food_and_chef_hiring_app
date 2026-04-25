@@ -1,6 +1,8 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import 'package:new_untitled/features/common/auth/signup_chef/presentation/controller/sign_up_chef_controller.dart';
 import '../../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,27 +25,10 @@ class SignupChefScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
-                shape: BoxShape.circle,
-              ),
-              child: CommonImage(
-                imageSrc: AppIcons.backIcon,
-                size: 24,
-              ),
-            ),
-          ),
-        ),
+        flexibleSpace: appBarOpacity(),
       ),
       /// Body Section Starts Here
       body: GetBuilder<SignUpChefController>(
@@ -53,7 +38,6 @@ class SignupChefScreen extends StatelessWidget {
             child: Form(
               key: _formKeys,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -93,14 +77,14 @@ class SignupChefScreen extends StatelessWidget {
                     isLoading: controller.isLoading,
                     onTap: () {
                       if (_formKeys.currentState!.validate()) {
-                        controller.signUpUser("CHEF");
+                        controller.signUpUser('CHEF');
                       }
                     },
                   ),
                   28.height,
                   Row(
                     children: [
-                      Expanded(child: Divider()),
+                      const Expanded(child: Divider()),
                       10.width,
                       const CommonText(
                         text: AppString.orUsing,
@@ -108,7 +92,7 @@ class SignupChefScreen extends StatelessWidget {
                         color: Color(0xff777777),
                       ),
                       10.width,
-                      Expanded(child: Divider()),
+                      const Expanded(child: Divider()),
                     ],
                   ),
 
@@ -116,18 +100,16 @@ class SignupChefScreen extends StatelessWidget {
                   Container(
                     height: 60.h,
                     decoration: BoxDecoration(
-                      color: Color(0xffF2F2F2),
+                      color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(20.r),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CommonImage(imageSrc: AppIcons.facebook),
                         CommonText(
-                          text: AppString.signInWithFacebook,
+                          text: AppString.signUpWithFacebook,
                           left: 14,
-                          fontWeight: FontWeight.w600,
                         ),
                       ],
                     ),
@@ -136,18 +118,16 @@ class SignupChefScreen extends StatelessWidget {
                   Container(
                     height: 60.h,
                     decoration: BoxDecoration(
-                      color: Color(0xffF2F2F2),
+                      color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(20.r),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CommonImage(imageSrc: AppIcons.google),
                         CommonText(
-                          text: AppString.signInWithGoogle,
+                          text: AppString.signUpWithGoogle,
                           left: 14,
-                          fontWeight: FontWeight.w600,
                         ),
                       ],
                     ),
@@ -157,19 +137,18 @@ class SignupChefScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 32),
                       child: RichText(
-                        textAlign: TextAlign.start,
                         maxLines: 2,
                         text: TextSpan(
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
                             color: Color(0xff777777),
                           ),
                           children: [
-                            TextSpan(text: "Sign up to Privae as a "),
+                            const TextSpan(text: 'Sign up to Privae as a '),
                             TextSpan(
-                              text: "Customer",
-                              style: TextStyle(
+                              text: 'Customer',
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xff000000),
                               ),

@@ -32,7 +32,7 @@ class ChefBookingDetailPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          "Booking Details",
+          'Booking Details',
           style: TextStyle(
             color: Color(0xff1A1A1A),
             fontSize: 17,
@@ -46,7 +46,7 @@ class ChefBookingDetailPage extends StatelessWidget {
         }
         final order = ctrl.order.value;
         if (order == null) {
-          return const Center(child: Text("No data"));
+          return const Center(child: Text('No data'));
         }
         return _Body(order: order, ctrl: ctrl);
       }),
@@ -63,15 +63,15 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = order['user'] as Map? ?? {};
-    final String userName = user['name'] ?? "Unknown";
-    String userImageRaw = user['image'] ?? "";
+    final String userName = user['name'] ?? 'Unknown';
+    final String userImageRaw = user['image'] ?? '';
     final String userImage = userImageRaw.startsWith('http')
         ? userImageRaw
-        : "http://10.10.7.9:5014$userImageRaw";
+        : 'http://10.10.7.9:5014$userImageRaw';
 
-    final String orderId = order['order_id'] ?? "";
-    final String address = order['formatted_address'] ?? "";
-    final String strTime = order['strTime'] ?? "";
+    final String orderId = order['order_id'] ?? '';
+    final String address = order['formatted_address'] ?? '';
+    final String strTime = order['strTime'] ?? '';
     final String formattedDate = _formatDate(order['formatted_date']);
     final List staticItems = order['static_items'] ?? [];
     final Map breakdown = order['price_breakdown'] ?? {};
@@ -81,7 +81,7 @@ class _Body extends StatelessWidget {
     final double total = (order['user_paid'] ?? breakdown['total'] ?? 0).toDouble();
     final bool hasDiscount = order['has_discount'] ?? false;
     final double discountAmt = (order['discount_amount'] ?? 0).toDouble();
-    final String status = order['status'] ?? "";
+    final String status = order['status'] ?? '';
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -120,10 +120,10 @@ class _Body extends StatelessWidget {
             child: Column(
               children: [
                 _infoRow(Icons.location_on_outlined, const Color(0xffFD713F),
-                    "Delivery Address", address),
+                    'Delivery Address', address),
                 Divider(height: 20.h, color: const Color(0xffF0F0F0)),
                 _infoRow(Icons.calendar_today_outlined, const Color(0xffFD713F),
-                    formattedDate, "at $strTime"),
+                    formattedDate, 'at $strTime'),
               ],
             ),
           ),
@@ -134,7 +134,7 @@ class _Body extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("Order Status",
+                const Text('Order Status',
                     style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
@@ -244,21 +244,21 @@ class _Body extends StatelessWidget {
     Color fg;
     String label;
     switch (status) {
-      case "Awaiting Confirmation":
+      case 'Awaiting Confirmation':
         bg = const Color(0xffF5EDDD);
         fg = const Color(0xffE39400);
-        label = "Requested";
+        label = 'Requested';
         break;
-      case "Confirm":
-      case "Upcoming":
+      case 'Confirm':
+      case 'Upcoming':
         bg = const Color(0xffE3ECFD);
         fg = const Color(0xff4285F4);
-        label = "Upcoming";
+        label = 'Upcoming';
         break;
-      case "Completed":
+      case 'Completed':
         bg = const Color(0xffDFF5E0);
         fg = const Color(0xff2F8328);
-        label = "Completed";
+        label = 'Completed';
         break;
       default:
         bg = const Color(0xffF2F2F2);
@@ -278,7 +278,7 @@ class _Body extends StatelessWidget {
   }
 
   String _formatDate(String? iso) {
-    if (iso == null) return "N/A";
+    if (iso == null) return 'N/A';
     try {
       final dt = DateTime.parse(iso);
       const m = [
@@ -286,7 +286,7 @@ class _Body extends StatelessWidget {
         'January','February','March','April','May','June',
         'July','August','September','October','November','December'
       ];
-      return "${dt.day} ${m[dt.month]}, ${dt.year}";
+      return '${dt.day} ${m[dt.month]}, ${dt.year}';
     } catch (_) {
       return iso;
     }
@@ -298,10 +298,10 @@ class _OrderStatusTracker extends StatelessWidget {
   const _OrderStatusTracker({required this.currentStep});
 
   static const _steps = [
-    _Step(icon: Icons.calendar_today_outlined, label: "Booking\nOrdered"),
-    _Step(icon: Icons.restaurant_outlined, label: "Chef\nConfirmed"),
-    _Step(icon: Icons.shopping_cart_outlined, label: "Groceries\nOrdered"),
-    _Step(icon: Icons.check_circle_outline_rounded, label: "Booking\nComplete"),
+    _Step(icon: Icons.calendar_today_outlined, label: 'Booking\nOrdered'),
+    _Step(icon: Icons.restaurant_outlined, label: 'Chef\nConfirmed'),
+    _Step(icon: Icons.shopping_cart_outlined, label: 'Groceries\nOrdered'),
+    _Step(icon: Icons.check_circle_outline_rounded, label: 'Booking\nComplete'),
   ];
 
   @override
@@ -465,7 +465,7 @@ class _ExpandableOrderDetailsState extends State<_ExpandableOrderDetails> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("Order Details",
+                  const Text('Order Details',
                       style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
@@ -489,11 +489,11 @@ class _ExpandableOrderDetailsState extends State<_ExpandableOrderDetails> {
                 children: [
                   // Items
                   if (widget.staticItems.isEmpty)
-                    const Text("No items found",
+                    const Text('No items found',
                         style: TextStyle(color: Color(0xff999999)))
                   else
                     ...widget.staticItems.map((item) {
-                      final name = item['menu']?['name'] ?? "";
+                      final name = item['menu']?['name'] ?? '';
                       final qty = item['quantity'] ?? 1;
                       final price = (item['unit_price'] ?? 0).toDouble();
                       final List customs = item['customizations'] ?? [];
@@ -522,7 +522,7 @@ class _ExpandableOrderDetailsState extends State<_ExpandableOrderDetails> {
                               ),
                             ),
                             Text(
-                              "\$${price.toStringAsFixed(2)}",
+                              '\$${price.toStringAsFixed(2)}',
                               style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
@@ -539,26 +539,26 @@ class _ExpandableOrderDetailsState extends State<_ExpandableOrderDetails> {
                   // Order Summary
                   const Align(
                     alignment: Alignment.centerLeft,
-                    child: Text("Order Summary",
+                    child: Text('Order Summary',
                         style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             color: Color(0xff1A1A1A))),
                   ),
                   const SizedBox(height: 12),
-                  _summaryRow("Subtotal",
-                      "\$${widget.subtotal.toStringAsFixed(2)}"),
+                  _summaryRow('Subtotal',
+                      '\$${widget.subtotal.toStringAsFixed(2)}'),
                   const SizedBox(height: 8),
                   _summaryRow(
-                      "Service Fee", "\$${widget.serviceFee.toStringAsFixed(2)}"),
+                      'Service Fee', '\$${widget.serviceFee.toStringAsFixed(2)}'),
                   const SizedBox(height: 8),
                   _summaryRow(
-                      "Estimated Taxes", "\$${widget.tax.toStringAsFixed(2)}"),
+                      'Estimated Taxes', '\$${widget.tax.toStringAsFixed(2)}'),
                   if (widget.hasDiscount) ...[
                     const SizedBox(height: 8),
                     _summaryRow(
-                        "Discount",
-                        "-\$${widget.discountAmt.toStringAsFixed(2)}",
+                        'Discount',
+                        '-\$${widget.discountAmt.toStringAsFixed(2)}',
                         valueColor: const Color(0xff2F8328)),
                   ],
                   const SizedBox(height: 12),
@@ -567,12 +567,12 @@ class _ExpandableOrderDetailsState extends State<_ExpandableOrderDetails> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text("Total",
+                      const Text('Total',
                           style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
                               color: Color(0xff1A1A1A))),
-                      Text("\$${widget.total.toStringAsFixed(2)}",
+                      Text('\$${widget.total.toStringAsFixed(2)}',
                           style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
@@ -612,15 +612,15 @@ class _ActionButtons extends StatelessWidget {
 
   Future<void> _openChat(Map order) async {
     try {
-      final userId = order['user']?['_id']?.toString() ?? "";
-      final userName = order['user']?['name']?.toString() ?? "User";
-      final userImage = order['user']?['image']?.toString() ?? "";
+      final userId = order['user']?['_id']?.toString() ?? '';
+      final userName = order['user']?['name']?.toString() ?? 'User';
+      final userImage = order['user']?['image']?.toString() ?? '';
       if (userId.isEmpty) return;
 
-      final response = await ApiService.post("chat/$userId", body: {});
+      final response = await ApiService.post('chat/$userId', body: {});
 
       if (response.statusCode == 200) {
-        final chatId = response.data['data']['_id']?.toString() ?? "";
+        final chatId = response.data['data']['_id']?.toString() ?? '';
 
         Get.toNamed(AppRoutes.message, parameters: {
           'chatId': chatId,
@@ -628,10 +628,10 @@ class _ActionButtons extends StatelessWidget {
           'image': userImage,
         });
       } else {
-        Get.snackbar("Error", "Failed to open chat");
+        Get.snackbar('Error', 'Failed to open chat');
       }
     } catch (e) {
-      Get.snackbar("Error", e.toString());
+      Get.snackbar('Error', e.toString());
     }
   }
 
@@ -639,22 +639,22 @@ class _ActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Awaiting Confirmation
-    if (status == "Awaiting Confirmation" || status == "Unconfirmed") {
+    if (status == 'Awaiting Confirmation' || status == 'Unconfirmed') {
       return Row(
         children: [
           Expanded(
             child: _btn(
-              label: "Decline",
+              label: 'Decline',
               color: const Color(0xffF2F2F2),
               textColor: const Color(0xffFF3C3C),
               onTap: () {
                 declineBookingPopUp(
-                  orderId: order['_id']?.toString() ?? "",
+                  orderId: order['_id']?.toString() ?? '',
                   onSuccess: () {
                     final homeC = Get.find<ChefHomeController>();
                     homeC.fetchRequestedBookings();
                     Navigator.pop(Get.context!);
-                    Get.snackbar("Success", "Booking declined");
+                    Get.snackbar('Success', 'Booking declined');
                   },
                 );
               },
@@ -663,12 +663,12 @@ class _ActionButtons extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: _btn(
-              label: "Accept",
+              label: 'Accept',
               color: const Color(0xff1A1A1A),
               textColor: Colors.white,
               onTap: () {
                 confirmBookingPopUp(
-                    orderMongoId: order['_id']?.toString() ?? "");
+                    orderMongoId: order['_id']?.toString() ?? '');
               },
 
 
@@ -681,22 +681,22 @@ class _ActionButtons extends StatelessWidget {
       );
     }
 
-    if (status == "Confirm" || status == "Upcoming") {
+    if (status == 'Confirm' || status == 'Upcoming') {
       return Row(
         children: [
           Expanded(
             child: _btn(
-              label: "Cancel Booking",
+              label: 'Cancel Booking',
               color: const Color(0xffF2F2F2),
               textColor: const Color(0xffFF3C3C),
               onTap: () {
                 cancelBookingPopUp(
-                  orderId: order['_id']?.toString() ?? "",
+                  orderId: order['_id']?.toString() ?? '',
                   onSuccess: () {
                     final homeC = Get.find<ChefHomeController>();
                     homeC.fetchUpcomingBookings();
                     Navigator.pop(Get.context!);
-                    Get.snackbar("Success", "Booking cancelled successfully");
+                    Get.snackbar('Success', 'Booking cancelled successfully');
                   },
                 );
               },
@@ -705,12 +705,12 @@ class _ActionButtons extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: _btn(
-              label: "Request a Change",
+              label: 'Request a Change',
               color: const Color(0xffF2F2F2),
               textColor: const Color(0xff1A1A1A),
               onTap: () {
 
-                Get.to(() => RequestChangeChefScreen(), arguments: order);
+                Get.to(() => const RequestChangeChefScreen(), arguments: order);
 
               },
             ),
@@ -727,7 +727,7 @@ class _ActionButtons extends StatelessWidget {
 
         Expanded(
           child: _btn(
-            label: "Chat with Customer",
+            label: 'Chat with Customer',
             color: const Color(0xff1A1A1A),
             textColor: Colors.white,
             icon: Icons.chat_bubble_outline_rounded,
@@ -900,16 +900,16 @@ class _StopConfirmationDialog extends StatelessWidget {
                 try {
                   final timeString = _formatShort(totalTime);
                   final response = await ApiService.post(
-                    "order/clearence/$orderId",
-                    body: {"time": timeString},
+                    'order/clearence/$orderId',
+                    body: {'time': timeString},
                   );
                   if (response.statusCode == 200 || response.statusCode == 201) {
                     onConfirm(); // ← Get.back() না, onConfirm call করো
                   } else {
-                    Get.snackbar("Error", "Failed to submit cooking time");
+                    Get.snackbar('Error', 'Failed to submit cooking time');
                   }
                 } catch (e) {
-                  Get.snackbar("Error", e.toString());
+                  Get.snackbar('Error', e.toString());
                 }
               },
               child: Container(
@@ -1000,7 +1000,7 @@ void showChefBookingDetailPopup(BuildContext context, String orderId) {
                 children: [
                   const SizedBox(width: 40),
                   Text(
-                    "Booking Details",
+                    'Booking Details',
                     style: TextStyle(
                       color: const Color(0xff1A1A1A),
                       fontSize: 17.sp,
@@ -1021,7 +1021,7 @@ void showChefBookingDetailPopup(BuildContext context, String orderId) {
                 }
                 final order = ctrl.order.value;
                 if (order == null) {
-                  return const Center(child: Text("No data"));
+                  return const Center(child: Text('No data'));
                 }
                 return _Body(order: order, ctrl: ctrl);
               }),

@@ -9,7 +9,7 @@ class ChefPaymentController extends GetxController {
 
   bool isMainAccount = false;
 
-  onChangeMainAccount(value) {
+  void onChangeMainAccount(value) {
     isMainAccount = value;
     update();
   }
@@ -22,23 +22,23 @@ class ChefPaymentController extends GetxController {
 
 
   Future<void> autoPaymentToggle() async {
-    bool newValue = !isAutoPayment.value;
+    final bool newValue = !isAutoPayment.value;
     isAutoPayment.value = newValue;
 
-    var response = await ApiService.patch(
+    final response = await ApiService.patch(
       ApiEndPoint.chefProfile,
       body: {
-        "auto_payment_enabled": newValue.toString(),
+        'auto_payment_enabled': newValue.toString(),
       },
     );
 
     if (response.statusCode == 200 && response.data['success'] == true) {
 
-      Get.snackbar("Message", " Automatic Payment Setting updated",backgroundColor: Colors.green,colorText: Colors.white);
+      Get.snackbar('Message', ' Automatic Payment Setting updated',backgroundColor: Colors.green,colorText: Colors.white);
       // Success
     } else {
       isAutoPayment.value = !newValue; // Revert
-      Utils.errorSnackBar("Error", "Failed to update auto payment setting");
+      Utils.errorSnackBar('Error', 'Failed to update auto payment setting');
     }
   }
 

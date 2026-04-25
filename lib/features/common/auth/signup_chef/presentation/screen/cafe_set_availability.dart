@@ -36,22 +36,22 @@ class CafeSetAvailabilityScreen extends StatefulWidget {
 class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
 
   final List<DaySchedule> _days = [
-    DaySchedule(name: "Monday", isEnabled: true, slots: [TimeSlot(from: const TimeOfDay(hour: 9, minute: 0), to: const TimeOfDay(hour: 17, minute: 30))]),
-    DaySchedule(name: "Tuesday", isEnabled: true, slots: [
+    DaySchedule(name: 'Monday', isEnabled: true, slots: [TimeSlot(from: const TimeOfDay(hour: 9, minute: 0), to: const TimeOfDay(hour: 17, minute: 30))]),
+    DaySchedule(name: 'Tuesday', isEnabled: true, slots: [
       TimeSlot(from: const TimeOfDay(hour: 9, minute: 0), to: const TimeOfDay(hour: 14, minute: 30)),
       TimeSlot(from: const TimeOfDay(hour: 17, minute: 0), to: const TimeOfDay(hour: 22, minute: 30)),
     ]),
-    DaySchedule(name: "Wednesday", isEnabled: true, slots: [TimeSlot(from: const TimeOfDay(hour: 9, minute: 0), to: const TimeOfDay(hour: 17, minute: 30))]),
-    DaySchedule(name: "Thursday", isEnabled: true, slots: [TimeSlot(from: const TimeOfDay(hour: 9, minute: 0), to: const TimeOfDay(hour: 17, minute: 30))]),
-    DaySchedule(name: "Friday", isEnabled: true, slots: [TimeSlot(from: const TimeOfDay(hour: 9, minute: 0), to: const TimeOfDay(hour: 17, minute: 30))]),
-    DaySchedule(name: "Saturday"),
-    DaySchedule(name: "Sunday"),
+    DaySchedule(name: 'Wednesday', isEnabled: true, slots: [TimeSlot(from: const TimeOfDay(hour: 9, minute: 0), to: const TimeOfDay(hour: 17, minute: 30))]),
+    DaySchedule(name: 'Thursday', isEnabled: true, slots: [TimeSlot(from: const TimeOfDay(hour: 9, minute: 0), to: const TimeOfDay(hour: 17, minute: 30))]),
+    DaySchedule(name: 'Friday', isEnabled: true, slots: [TimeSlot(from: const TimeOfDay(hour: 9, minute: 0), to: const TimeOfDay(hour: 17, minute: 30))]),
+    DaySchedule(name: 'Saturday'),
+    DaySchedule(name: 'Sunday'),
   ];
 
   int _minHours = 12;
-  String _minUnit = "Hours";
+  String _minUnit = 'Hours';
   int _maxDays = 14;
-  String _maxUnit = "Days";
+  String _maxUnit = 'Days';
   bool _isSubmitting = false;
   bool _editingMin = false;
   bool _editingMax = false;
@@ -114,7 +114,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(14.r),
-                  border: Border.all(color: const Color(0xFFF1F1F1), width: 1),
+                  border: Border.all(color: const Color(0xFFF1F1F1)),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.08),
@@ -125,7 +125,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: ["Hours", "Days"].map((unit) {
+                  children: ['Hours', 'Days'].map((unit) {
                     final isSelected = unit == selected;
                     return InkWell(
                       borderRadius: BorderRadius.circular(14.r),
@@ -217,7 +217,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                 color: Color(0xffF6F6F6),
                 shape: BoxShape.circle,
               ),
-              child: CommonImage(
+              child: const CommonImage(
                 imageSrc: AppIcons.backIcon,
                 size: 24,
               ),
@@ -237,7 +237,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Set Your Availability",
+                      'Set Your Availability',
                       style: TextStyle(
                         fontSize: 26.sp,
                         fontWeight: FontWeight.w700,
@@ -261,7 +261,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
 
                     // Booking Preferences
                     Text(
-                      "Booking Preferences",
+                      'Booking Preferences',
                       style: TextStyle(
                         fontSize: 13.sp,
                         fontWeight: FontWeight.w600,
@@ -279,25 +279,25 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                           height: 1.6,
                         ),
                         children: [
-                          const TextSpan(text: "Customers can place orders at least "),
+                          const TextSpan(text: 'Customers can place orders at least '),
                           TextSpan(
-                            text: "$_minHours $_minUnit",
+                            text: '$_minHours $_minUnit',
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               color: const Color(0xFF272727),
                               fontSize: 13.sp,
                             ),
                           ),
-                          const TextSpan(text: " or maximum of "),
+                          const TextSpan(text: ' or maximum of '),
                           TextSpan(
-                            text: "$_maxDays $_maxUnit",
+                            text: '$_maxDays $_maxUnit',
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               color: const Color(0xFF272727),
                               fontSize: 13.sp,
                             ),
                           ),
-                          const TextSpan(text: " in advance"),
+                          const TextSpan(text: ' in advance'),
                         ],
                       ),
                     ),
@@ -395,13 +395,13 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                             color: Colors.white, strokeWidth: 2.5),
                       ),
                       10.horizontalSpace,
-                      Text("Loading...",
+                      Text('Loading...',
                           style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600)),
                     ],
                   )
-                      : Text("Continue",
+                      : Text('Continue',
                       style: TextStyle(
                           fontSize: 16.sp, fontWeight: FontWeight.w600)),
                 ),
@@ -426,7 +426,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
     final boxDecoration = BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(8.r),
-      border: Border.all(color: const Color(0xFFF1F1F1), width: 1),
+      border: Border.all(color: const Color(0xFFF1F1F1)),
       boxShadow: [
         BoxShadow(
           color: Colors.black.withOpacity(0.08),
@@ -536,7 +536,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                 if (i > 0)
                   Padding(
                     padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
-                    child: Text("And",
+                    child: Text('And',
                         style: TextStyle(
                             fontSize: 12.sp, color: const Color(0xFF777777))),
                   ),
@@ -549,7 +549,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                   EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
                   child: Row(
                     children: [
-                      Text("From",
+                      Text('From',
                           style: TextStyle(
                               fontSize: 12.sp,
                               color: const Color(0xFF777777))),
@@ -565,7 +565,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                         ),
                       ),
                       const Spacer(),
-                      Text("To",
+                      Text('To',
                           style: TextStyle(
                               fontSize: 12.sp,
                               color: const Color(0xFF777777))),
@@ -605,7 +605,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                       size: 16.sp, color: const Color(0xFF272727)),
                   6.horizontalSpace,
                   Text(
-                    "Add Additional Time",
+                    'Add Additional Time',
                     style: TextStyle(
                         fontSize: 13.sp,
                         fontWeight: FontWeight.w500,

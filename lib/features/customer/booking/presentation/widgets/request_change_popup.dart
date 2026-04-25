@@ -37,9 +37,8 @@ void requestChange(BuildContext context,dynamic order) {
                           buttonHeight: 48,
                           buttonRadius: 16,
                           titleSize: 12,
-                          borderColor: Colors.transparent,
-                          titleColor: Color(0xffFF3C3C),
-                          buttonColor: Color(0xffF2F2F2),
+                          titleColor: const Color(0xffFF3C3C),
+                          buttonColor: const Color(0xffF2F2F2),
                           onTap: (){
                             Navigator.pop(context);
                             final TextEditingController reasonController = TextEditingController();
@@ -47,16 +46,16 @@ void requestChange(BuildContext context,dynamic order) {
                             Get.dialog(
                               AlertDialog(
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-                                title: const CommonText(text: "Cancel Booking", fontWeight: FontWeight.bold),
+                                title: const CommonText(text: 'Cancel Booking', fontWeight: FontWeight.bold),
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const CommonText(text: "Please provide a reason for cancelling this booking:",maxLines:  4, fontSize: 13,textAlign: TextAlign.start, bottom: 12),
+                                    const CommonText(text: 'Please provide a reason for cancelling this booking:',maxLines:  4, fontSize: 13,textAlign: TextAlign.start, bottom: 12),
                                     TextField(
                                       controller: reasonController,
                                       maxLines: 3,
                                       decoration: InputDecoration(
-                                        hintText: "Enter reason here...",
+                                        hintText: 'Enter reason here...',
                                         hintStyle: const TextStyle(fontSize: 12),
                                         fillColor: const Color(0xffF5F5F5),
                                         filled: true,
@@ -66,18 +65,18 @@ void requestChange(BuildContext context,dynamic order) {
                                   ],
                                 ),
                                 actions: [
-                                  TextButton(onPressed: () => Get.back(), child: const Text("Cancel")),
+                                  TextButton(onPressed: () => Get.back(), child: const Text('Cancel')),
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(backgroundColor: Colors.red, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r))),
                                     onPressed: () {
                                       if (reasonController.text.trim().isEmpty) {
-                                        Get.snackbar("Reason Required", "Please enter a reason before cancelling.");
+                                        Get.snackbar('Reason Required', 'Please enter a reason before cancelling.');
                                       } else {
                                         Navigator.pop(Get.context!); // Close dialog
                                         Get.find<BookingHistoryController>().cancelBooking(order.id, reasonController.text.trim());
                                       }
                                     },
-                                    child: const Text("Confirm Cancel", style: TextStyle(color: Colors.white)),
+                                    child: const Text('Confirm Cancel', style: TextStyle(color: Colors.white)),
                                   ),
                                 ],
                               ),
@@ -86,7 +85,7 @@ void requestChange(BuildContext context,dynamic order) {
                         ),
                       ),
                       12.width,
-                      if (order.status == "Confirm") ...[
+                      if (order.status == 'Confirm') ...[
                         12.width,
                         Expanded(
                           child: CommonButton(
@@ -102,7 +101,7 @@ void requestChange(BuildContext context,dynamic order) {
                       ],
                     ],
                   ),
-                  Divider(),
+                  const Divider(),
                   Row(
                     children: [
                       Expanded(
@@ -119,27 +118,27 @@ void requestChange(BuildContext context,dynamic order) {
                         margin: EdgeInsets.only(left: 8.sp),
                         padding: EdgeInsets.all(14.sp),
                         decoration: BoxDecoration(
-                          color: Color(0xffF2F2F2),
+                          color: const Color(0xffF2F2F2),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: GestureDetector(
                           onTap: (){
                             controller.createChat(controller.selectedOrderDetail!.chef.id,controller.selectedOrderDetail!.chef.name,controller.selectedOrderDetail!.chef.image);
                           },
-                            child: CommonImage(imageSrc: AppIcons.chats, size: 20)),
+                            child: const CommonImage(imageSrc: AppIcons.chats, size: 20)),
                       ),
                       Container(
                         margin: EdgeInsets.only(left: 8.sp),
                         padding: EdgeInsets.all(14.sp),
                         decoration: BoxDecoration(
-                          color: Color(0xffF2F2F2),
+                          color: const Color(0xffF2F2F2),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: InkWell(
                           onTap: (){
 
                           },
-                            child: CommonImage(imageSrc: AppIcons.edit, size: 20)),
+                            child: const CommonImage(imageSrc: AppIcons.edit, size: 20)),
                       ),
                     ],
                   ),

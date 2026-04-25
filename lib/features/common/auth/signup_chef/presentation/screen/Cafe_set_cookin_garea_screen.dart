@@ -36,7 +36,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
   bool _isSelecting = false;
   List<Map<String, String>> _suggestions = [];
 
-  static const String _apiKey = "AIzaSyCVoe2GBYsk1jU6E9RFIxhVfsyBCSkMX_w";
+  static const String _apiKey = 'AIzaSyCVoe2GBYsk1jU6E9RFIxhVfsyBCSkMX_w';
 
   @override
   void initState() {
@@ -73,9 +73,9 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
 
     try {
       final uri = Uri.parse(
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json"
-            "?input=${Uri.encodeComponent(query)}"
-            "&key=$_apiKey",
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json'
+            '?input=${Uri.encodeComponent(query)}'
+            '&key=$_apiKey',
       );
 
       final res = await http.get(uri).timeout(const Duration(seconds: 8));
@@ -125,10 +125,10 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
 
     try {
       final uri = Uri.parse(
-        "https://maps.googleapis.com/maps/api/place/details/json"
+        'https://maps.googleapis.com/maps/api/place/details/json'
             "?place_id=${item['placeId']}"
-            "&fields=geometry"
-            "&key=$_apiKey",
+            '&fields=geometry'
+            '&key=$_apiKey',
       );
 
       final res = await http.get(uri).timeout(const Duration(seconds: 8));
@@ -152,12 +152,12 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
           CameraUpdate.newLatLngZoom(latlng, _getZoomLevel(_distanceKm)),
         );
       } else {
-        _showError("Location not found. Please try again.");
+        _showError('Location not found. Please try again.');
       }
     } on TimeoutException {
-      _showError("Request timed out. Check internet.");
+      _showError('Request timed out. Check internet.');
     } catch (_) {
-      _showError("Something went wrong. Try again.");
+      _showError('Something went wrong. Try again.');
     } finally {
       if (mounted) {
         setState(() => _isLoadingLocation = false);
@@ -233,7 +233,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                 color: Color(0xffF6F6F6),
                 shape: BoxShape.circle,
               ),
-              child: CommonImage(
+              child: const CommonImage(
                 imageSrc: AppIcons.backIcon,
                 size: 24,
               ),
@@ -254,7 +254,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                   children: [
                     // Title
                     Text(
-                      "Set Your Cooking Area",
+                      'Set Your Cooking Area',
                       style: TextStyle(
                         fontSize: 26.sp,
                         fontWeight: FontWeight.w700,
@@ -264,7 +264,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                     ),
                     8.verticalSpace,
                     Text(
-                      "Where can you travel to for chef visits to customers? Set your cooking area so that we can help your future customers find you best!",
+                      'Where can you travel to for chef visits to customers? Set your cooking area so that we can help your future customers find you best!',
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: const Color(0xFF777777),
@@ -286,7 +286,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                           color: const Color(0xFF272727),
                         ),
                         decoration: InputDecoration(
-                          hintText: "Search address...",
+                          hintText: 'Search address...',
                           hintStyle: TextStyle(
                             fontSize: 14.sp,
                             color: const Color(0xFFBBBBBB),
@@ -335,7 +335,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                     // ── Suggestions List ──
                     if (_suggestions.isNotEmpty) ...[
                       Text(
-                        "SUGGESTED ADDRESS",
+                        'SUGGESTED ADDRESS',
                         style: TextStyle(
                           fontSize: 11.sp,
                           fontWeight: FontWeight.w500,
@@ -367,7 +367,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                     // ── Map View ──
                     if (_showMap && _selectedLatLng != null) ...[
                       Text(
-                        "Order Area Distance",
+                        'Order Area Distance',
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
@@ -387,7 +387,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                         child: Row(
                           children: [
                             Text(
-                              "${_distanceKm.toInt()}",
+                              '${_distanceKm.toInt()}',
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w600,
@@ -396,7 +396,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                             ),
                             const Spacer(),
                             Text(
-                              "Distance",
+                              'Distance',
                               style: TextStyle(
                                 fontSize: 13.sp,
                                 color: const Color(0xFF777777),
@@ -469,7 +469,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                       ? null
                       : () async {
                     if (_selectedAddress == null || _selectedLatLng == null) {
-                      Get.snackbar("Message", "Please select an address first.",backgroundColor: Colors.red,colorText: Colors.red);
+                      Get.snackbar('Message', 'Please select an address first.',backgroundColor: Colors.red,colorText: Colors.red);
                       return;
                     }
                     setState(() => _isSubmitting = true);
@@ -512,7 +512,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                       ),
                       10.horizontalSpace,
                       Text(
-                        "Loading...",
+                        'Loading...',
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600,
@@ -521,7 +521,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                     ],
                   )
                       : Text(
-                    "Continue",
+                    'Continue',
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,

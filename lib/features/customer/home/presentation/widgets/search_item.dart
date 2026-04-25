@@ -1,19 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide SearchController;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/features/customer/home/presentation/widgets/search_chefitem.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../controller/search_controller.dart';
-import 'chef_item.dart';
 
 const List<String> _sortList = [
-  "Recommended",
-  "Rating",
-  "Price",
-  "Next Available",
+  'Recommended',
+  'Rating',
+  'Price',
+  'Next Available',
 ];
 
 class SearchItem extends StatelessWidget {
@@ -33,12 +33,11 @@ class SearchItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ── Sort by label ────────────────────────────────────────────
-            CommonText(
+            const CommonText(
               text: AppString.sortBy,
-              top: 0,
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: const Color(0xff272727),
+              color: Color(0xff272727),
               bottom: 8,
             ).start,
 
@@ -71,7 +70,6 @@ class SearchItem extends StatelessWidget {
                         child: CommonText(
                           text: label,
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
                           color: isSelected
                               ? Colors.white
                               : const Color(0xff272727),
@@ -84,34 +82,34 @@ class SearchItem extends StatelessWidget {
             ),
 
             // ── Related results label ────────────────────────────────────
-            CommonText(
+            const CommonText(
               text: AppString.relatedResult,
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: const Color(0xff272727),
+              color: Color(0xff272727),
               top: 12,
             ).start,
             Obx(
                   () => CommonText(
-                text: "Showing ${chefs.length} related results",
+                text: 'Showing ${chefs.length} related results',
                 fontSize: 12,
                 color: const Color(0xff777777),
                 fontWeight: FontWeight.w400,
-                top: 0,
                 bottom: 8,
               ).start,
             ),
 
+
             // ── Grid ─────────────────────────────────────────────────────
             if (isLoading)
-              const CommonLoader()
+              const Center(child: CupertinoActivityIndicator())
             else if (chefs.isEmpty)
-              Center(
+              const Center(
                 child: CommonText(
-                  text: "No chefs found nearby",
-                  fontSize: 14,
-                  color: const Color(0xff777777),
+                  text: 'No chefs found nearby',
+                  color: Color(0xff777777),
                   fontWeight: FontWeight.w400,
+                  top: 200,
                 ),
               )
             else
@@ -124,13 +122,16 @@ class SearchItem extends StatelessWidget {
                 itemCount: chefs.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  mainAxisExtent: 230.h,
+                  // Let the grid cell height = (screen width / 2 - spacing) * ratio
+                  // 0.68 gives enough room for image + name + distance + price on all phones
+                  childAspectRatio: (Get.width / 2 - 24) / 240,
                   mainAxisSpacing: 8.h,
                   crossAxisSpacing: 8.w,
                 ),
                 itemBuilder: (context, index) {
-                  return chefItem(
-                    height: 140.h,
+                  return SearchChef(
+                    // image height = 55% of the cell height
+                    height: ((Get.width / 2 - 24) / 0.68) * 0.55,
                     isSearch: true,
                     chef: chefs[index],
                   );

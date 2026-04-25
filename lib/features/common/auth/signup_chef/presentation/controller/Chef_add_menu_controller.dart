@@ -112,16 +112,16 @@ class CafeAddMenuItemController extends GetxController {
   String get selectedDietType => _selectedDietType.value;
   String get selectedAllergen => _selectedAllergen.value;
 
-  final dietTypes = ["Vegetarian", "Vegan", "Non-Vegetarian", "Gluten-Free"];
-  final allergens = ["peanuts", "dairy", "gluten", "eggs", "shellfish"];
+  final dietTypes = ['Vegetarian', 'Vegan', 'Non-Vegetarian', 'Gluten-Free'];
+  final allergens = ['peanuts', 'dairy', 'gluten', 'eggs', 'shellfish'];
 
-  final prepTimeController = TextEditingController(text: "30");
-  final cookTimeController = TextEditingController(text: "30");
+  final prepTimeController = TextEditingController(text: '30');
+  final cookTimeController = TextEditingController(text: '30');
   final RxString _selectedPrepUnit = 'Minutes'.obs;
   final RxString _selectedCookUnit = 'Minutes'.obs;
   String get selectedPrepUnit => _selectedPrepUnit.value;
   String get selectedCookUnit => _selectedCookUnit.value;
-  final timeUnits = ["Minutes", "Hours"];
+  final timeUnits = ['Minutes', 'Hours'];
 
   void setPrepUnit(String val) => _selectedPrepUnit.value = val;
   void setCookUnit(String val) => _selectedCookUnit.value = val;
@@ -151,12 +151,12 @@ class CafeAddMenuItemController extends GetxController {
   final RxBool ingredientsExpanded = false.obs;
 
   final RxList<String> customizeOptions = <String>[
-    "Without onions",
-    "Without iceberg lettuce",
-    "Without cheese",
-    "Without cucumber slices",
-    "Without Tomato",
-    "Without Bacon",
+    'Without onions',
+    'Without iceberg lettuce',
+    'Without cheese',
+    'Without cucumber slices',
+    'Without Tomato',
+    'Without Bacon',
   ].obs;
   final RxBool customizeExpanded = true.obs;
 
@@ -221,12 +221,12 @@ class CafeAddMenuItemController extends GetxController {
     customizeOptions.value = item.customizations.isNotEmpty
         ? List.from(item.customizations)
         : [
-      "Without onions",
-      "Without iceberg lettuce",
-      "Without cheese",
-      "Without cucumber slices",
-      "Without Tomato",
-      "Without Bacon",
+      'Without onions',
+      'Without iceberg lettuce',
+      'Without cheese',
+      'Without cucumber slices',
+      'Without Tomato',
+      'Without Bacon',
     ];
   }
 
@@ -246,12 +246,12 @@ class CafeAddMenuItemController extends GetxController {
     ingredientsList.clear();
     selectedEquipmentIds.clear();
     customizeOptions.value = [
-      "Without onions",
-      "Without iceberg lettuce",
-      "Without cheese",
-      "Without cucumber slices",
-      "Without Tomato",
-      "Without Bacon",
+      'Without onions',
+      'Without iceberg lettuce',
+      'Without cheese',
+      'Without cucumber slices',
+      'Without Tomato',
+      'Without Bacon',
     ];
   }
 
@@ -263,7 +263,7 @@ class CafeAddMenuItemController extends GetxController {
         unitsList.value = List<String>.from(response.data['data'] ?? []);
       }
     } catch (e) {
-      debugPrint("❌ Units fetch error: $e");
+      debugPrint('❌ Units fetch error: $e');
     } finally {
       isLoadingUnits.value = false;
     }
@@ -278,7 +278,7 @@ class CafeAddMenuItemController extends GetxController {
         equipmentList.value = list.map((e) => EquipmentModel.fromJson(e)).toList();
       }
     } catch (e) {
-      debugPrint("❌ Equipment fetch error: $e");
+      debugPrint('❌ Equipment fetch error: $e');
     } finally {
       isLoadingEquipment.value = false;
     }
@@ -293,7 +293,7 @@ class CafeAddMenuItemController extends GetxController {
     isLoadingCategory.value = true;
     try {
       final response =
-      await ApiService.get("${ApiEndPoint.AddMenuSection}${LocalStorage.userId}");
+      await ApiService.get('${ApiEndPoint.AddMenuSection}${LocalStorage.userId}');
       if (response.statusCode == 200 && response.data['success'] == true) {
         final List list = response.data['data'] ?? [];
         final seen = <String>{};
@@ -309,8 +309,8 @@ class CafeAddMenuItemController extends GetxController {
           if (!categoryList.contains(name)) {
             try {
               final res = await ApiService.post(
-                "${ApiEndPoint.AddMenuSection}${LocalStorage.userId}",
-                body: {"name": name},
+                '${ApiEndPoint.AddMenuSection}${LocalStorage.userId}',
+                body: {'name': name},
               );
               if (res.statusCode == 200 || res.statusCode == 201) {
                 final newId = res.data['data']['_id'] ?? '';
@@ -326,8 +326,8 @@ class CafeAddMenuItemController extends GetxController {
         }
       }
     } catch (e) {
-      debugPrint("❌ Category fetch error: $e");
-      Get.snackbar("Error", "Failed to load categories.",
+      debugPrint('❌ Category fetch error: $e');
+      Get.snackbar('Error', 'Failed to load categories.',
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoadingCategory.value = false;
@@ -338,7 +338,7 @@ class CafeAddMenuItemController extends GetxController {
     isLoadingMenu.value = true;
     try {
       final response =
-      await ApiService.get("${ApiEndPoint.addMenuItem}${LocalStorage.userId}");
+      await ApiService.get('${ApiEndPoint.addMenuItem}${LocalStorage.userId}');
       if (response.statusCode == 200 && response.data['success'] == true) {
         final List list = response.data['data'] ?? [];
         final List<MenuItemModel> items =
@@ -346,7 +346,7 @@ class CafeAddMenuItemController extends GetxController {
 
         final Map<String, List<MenuItemModel>> grouped = {};
         for (var item in items) {
-          final section = item.menuSection.isEmpty ? "Other" : item.menuSection;
+          final section = item.menuSection.isEmpty ? 'Other' : item.menuSection;
           grouped.putIfAbsent(section, () => []).add(item);
         }
 
@@ -355,7 +355,7 @@ class CafeAddMenuItemController extends GetxController {
             .toList();
       }
     } catch (e) {
-      debugPrint("Menu fetch error: $e");
+      debugPrint('Menu fetch error: $e');
     } finally {
       isLoadingMenu.value = false;
     }
@@ -364,12 +364,12 @@ class CafeAddMenuItemController extends GetxController {
   Future<void> submitMenuItem() async {
 
     if (nameController.text.trim().isEmpty) {
-      Get.snackbar("Message", "Item name is required", snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Message', 'Item name is required', snackPosition: SnackPosition.BOTTOM);
       return;
     }
 
     if (ingredientsList.isEmpty) {
-      Get.snackbar("message", "Please add at least one ingredient", snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('message', 'Please add at least one ingredient', snackPosition: SnackPosition.BOTTOM);
       return;
     }
 
@@ -380,8 +380,8 @@ class CafeAddMenuItemController extends GetxController {
         MapEntry('name', nameController.text.trim()),
         MapEntry('description', descriptionController.text.trim()),
         MapEntry('menu_section', selectedCategory),
-        MapEntry('est_prep_time', "${prepTimeController.text.trim()} $selectedPrepUnit"),
-        MapEntry('est_cooking_time', "${cookTimeController.text.trim()} $selectedCookUnit"),
+        MapEntry('est_prep_time', '${prepTimeController.text.trim()} $selectedPrepUnit'),
+        MapEntry('est_cooking_time', '${cookTimeController.text.trim()} $selectedCookUnit'),
         MapEntry('diet_types[]', selectedDietType),
         MapEntry('alergens[]', selectedAllergen),
       ]);
@@ -405,21 +405,21 @@ class CafeAddMenuItemController extends GetxController {
           'image',
           await MultipartFile.fromFile(
             file.path,
-            filename: "image.$ext",
+            filename: 'image.$ext',
             contentType: DioMediaType.parse(lookupMimeType(file.path) ?? 'image/jpeg'),
           ),
         ));
       }
 
       final response = await ApiService.post(
-        "${ApiEndPoint.addMenuItem}${LocalStorage.userId}",
+        '${ApiEndPoint.addMenuItem}${LocalStorage.userId}',
         body: formData,
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         // ✅ POST response diye directly UI-te add koro — GET call lagbe na
         final newItem = MenuItemModel.fromJson(response.data['data']);
-        final sectionName = newItem.menuSection.isEmpty ? "Other" : newItem.menuSection;
+        final sectionName = newItem.menuSection.isEmpty ? 'Other' : newItem.menuSection;
 
         final existingSection = menuSections.firstWhereOrNull(
               (s) => s.menuSection == sectionName,
@@ -433,17 +433,17 @@ class CafeAddMenuItemController extends GetxController {
         menuSections.refresh();
 
         Get.back(result: true);
-        Get.snackbar("Success", "Menu item added successfully!",
+        Get.snackbar('Success', 'Menu item added successfully!',
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white);
       } else {
-        Get.snackbar("Error", "${response.data['message'] ?? 'Failed to add menu item.'}",
+        Get.snackbar('Error', "${response.data['message'] ?? 'Failed to add menu item.'}",
             snackPosition: SnackPosition.BOTTOM);
       }
     } catch (e) {
-      debugPrint("Submit error: $e");
-      Get.snackbar("Error", "Something went wrong: $e", snackPosition: SnackPosition.BOTTOM);
+      debugPrint('Submit error: $e');
+      Get.snackbar('Error', 'Something went wrong: $e', snackPosition: SnackPosition.BOTTOM);
     } finally {
       isSubmitting.value = false;
     }
@@ -451,14 +451,14 @@ class CafeAddMenuItemController extends GetxController {
 
   Future<void> updateMenuItem() async {
     if (nameController.text.trim().isEmpty) {
-      Get.snackbar("Message", "Item name is required", snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Message', 'Item name is required', snackPosition: SnackPosition.BOTTOM);
       return;
     }
 
     if (ingredientsList.isEmpty) {
       Get.snackbar(
-        "Ingredients Required",
-        "Please add at least one ingredient to save the menu item.",
+        'Ingredients Required',
+        'Please add at least one ingredient to save the menu item.',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.cyanAccent,
       );
@@ -471,8 +471,8 @@ class CafeAddMenuItemController extends GetxController {
         MapEntry('name', nameController.text.trim()),
         MapEntry('description', descriptionController.text.trim()),
         MapEntry('menu_section', selectedCategory),
-        MapEntry('est_prep_time', "${prepTimeController.text.trim()} $selectedPrepUnit"),
-        MapEntry('est_cooking_time', "${cookTimeController.text.trim()} $selectedCookUnit"),
+        MapEntry('est_prep_time', '${prepTimeController.text.trim()} $selectedPrepUnit'),
+        MapEntry('est_cooking_time', '${cookTimeController.text.trim()} $selectedCookUnit'),
         MapEntry('diet_types[]', selectedDietType),
         MapEntry('alergens[]', selectedAllergen),
       ]);
@@ -496,14 +496,14 @@ class CafeAddMenuItemController extends GetxController {
           'image',
           await MultipartFile.fromFile(
             file.path,
-            filename: "image.$ext",
+            filename: 'image.$ext',
             contentType: DioMediaType.parse(lookupMimeType(file.path) ?? 'image/jpeg'),
           ),
         ));
       }
 
       final response = await ApiService.patch(
-        "${ApiEndPoint.baseUrl}menu/${editingItemId.value}",
+        '${ApiEndPoint.baseUrl}menu/${editingItemId.value}',
         body: formData,
       );
 
@@ -519,17 +519,17 @@ class CafeAddMenuItemController extends GetxController {
         menuSections.refresh();
 
         Get.back(result: true);
-        Get.snackbar("Success", "Menu item updated successfully!",
+        Get.snackbar('Success', 'Menu item updated successfully!',
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white);
       } else {
-        Get.snackbar("Error", "${response.data['message'] ?? 'Failed to update menu item.'}",
+        Get.snackbar('Error', "${response.data['message'] ?? 'Failed to update menu item.'}",
             snackPosition: SnackPosition.BOTTOM);
       }
     } catch (e) {
-      debugPrint("Update error: $e");
-      Get.snackbar("Error", "Something went wrong: $e", snackPosition: SnackPosition.BOTTOM);
+      debugPrint('Update error: $e');
+      Get.snackbar('Error', 'Something went wrong: $e', snackPosition: SnackPosition.BOTTOM);
     } finally {
       isSubmitting.value = false;
     }
@@ -537,8 +537,8 @@ class CafeAddMenuItemController extends GetxController {
   Future<void> addMenuSection(String sectionName) async {
     try {
       final res = await ApiService.post(
-        "${ApiEndPoint.AddMenuSection}${LocalStorage.userId}",
-        body: {"name": sectionName},
+        '${ApiEndPoint.AddMenuSection}${LocalStorage.userId}',
+        body: {'name': sectionName},
       );
 
       if (res.statusCode == 200 || res.statusCode == 201) {
@@ -556,7 +556,7 @@ class CafeAddMenuItemController extends GetxController {
         menuSections.refresh();
       }
     } catch (e) {
-      debugPrint("Add section error: $e");
+      debugPrint('Add section error: $e');
     }
   }
 
@@ -566,9 +566,9 @@ class CafeAddMenuItemController extends GetxController {
     }
     menuSections.refresh();
     try {
-      await ApiService.delete("${ApiEndPoint.baseUrl}menu/$itemId");
+      await ApiService.delete('${ApiEndPoint.baseUrl}menu/$itemId');
     } catch (e) {
-      debugPrint("Delete error: $e");
+      debugPrint('Delete error: $e');
     }
   }
 

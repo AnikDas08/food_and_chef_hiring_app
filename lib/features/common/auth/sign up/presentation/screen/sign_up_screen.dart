@@ -1,6 +1,7 @@
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
 import '../../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,27 +25,10 @@ class SignUpScreen extends StatelessWidget {
     return Scaffold(
       /// App Bar Section Starts Here
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
-                shape: BoxShape.circle,
-              ),
-              child: CommonImage(
-                imageSrc: AppIcons.backIcon,
-                size: 24,
-              ),
-            ),
-          ),
-        ),
+        flexibleSpace: appBarOpacity(),
       ),
 
       /// Body Section Starts Here
@@ -55,7 +39,6 @@ class SignUpScreen extends StatelessWidget {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -63,11 +46,12 @@ class SignUpScreen extends StatelessWidget {
                     fontSize: 24,
                     color: Color(0xff272727),
                     maxLines: 2,
+                    fontWeight: FontWeight.w600,
                     top: 10,
                   ),
 
                   const CommonText(
-                    text: AppString.registerAccountMessage,
+                    text: AppString.registerCustomerMessage,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
@@ -97,7 +81,7 @@ class SignUpScreen extends StatelessWidget {
                     isLoading: controller.isLoading,
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        controller.signUpUser("CUSTOMER");
+                        controller.signUpUser('CUSTOMER');
                       }
                     },
                   ),
@@ -105,7 +89,7 @@ class SignUpScreen extends StatelessWidget {
 
                   Row(
                     children: [
-                      Expanded(child: Divider()),
+                      const Expanded(child: Divider()),
                       10.width,
                       const CommonText(
                         text: AppString.orUsing,
@@ -113,83 +97,80 @@ class SignUpScreen extends StatelessWidget {
                         color: Color(0xff777777),
                       ),
                       10.width,
-                      Expanded(child: Divider()),
+                      const Expanded(child: Divider()),
                     ],
                   ),
 
                   28.height,
                   Container(
-                    height: 60.h,
+                    height: 60,
                     decoration: BoxDecoration(
-                      color: Color(0xffF2F2F2),
+                      color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(20.r),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CommonImage(imageSrc: AppIcons.facebook),
                         CommonText(
-                          text: AppString.signInWithFacebook,
+                          text: AppString.signUpWithFacebook,
                           left: 14,
-                          fontWeight: FontWeight.w600,
                         ),
                       ],
                     ),
                   ),
                   12.height,
                   Container(
-                    height: 60.h,
+                    height: 60,
                     decoration: BoxDecoration(
-                      color: Color(0xffF2F2F2),
+                      color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(20.r),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CommonImage(imageSrc: AppIcons.google),
                         CommonText(
-                          text: AppString.signInWithGoogle,
+                          text: AppString.signUpWithGoogle,
                           left: 14,
-                          fontWeight: FontWeight.w600,
                         ),
                       ],
                     ),
                   ),
 
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 32),
-                  child: RichText(
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
-                    text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff777777),
-                      ),
-                      children: [
-                        TextSpan(text: "Sign up to Privae as a "),
-                        TextSpan(
-                          text: "Chef",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600, // different style
-                            color: Color(0xff000000),     // change color যদি চাও
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 32),
+                      child: RichText(
+                        maxLines: 2,
+                        text: TextSpan(
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff777777),
                           ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Get.offNamed(AppRoutes.signUpChef);
-                            },
+                          children: [
+                            const TextSpan(text: 'Sign up to Privae as a '),
+                            TextSpan(
+                              text: 'Chef',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600, // different style
+                                color: Color(
+                                  0xff000000,
+                                ), // change color যদি চাও
+                              ),
+                              recognizer:
+                                  TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Get.offNamed(AppRoutes.signUpChef);
+                                    },
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              )
-
-              ],
+                ],
               ),
             ),
           );

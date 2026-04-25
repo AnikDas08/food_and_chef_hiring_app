@@ -22,34 +22,38 @@ import 'decline_pop_up.dart';
 import 'upcoming_pop_up.dart';
 
 Widget chefBookingItem({required Map order}) {
-
   final controller = Get.find<ChefBookingController>();
 
-  String orderId = order['order_id'] ?? "";
-  String userName = order['user']?['name'] ?? "";
-  String userImageRaw = order['user']?['image'] ?? "";
-  String userImage = userImageRaw.startsWith('http')
-      ? userImageRaw
-      : "http://10.10.7.9:5014$userImageRaw";  String status = order['status'] ?? "";
-  String address = order['formatted_address'] ?? "";
-  String strTime = order['strTime'] ?? "";
-  double totalPrice = (order['user_paid'] ?? 0).toDouble();
-  double rating = (order['rating'] ?? 0).toDouble();
-  String review = order['review'] ?? "";
-  String deadline = order['deadline'] ?? "";
-  String cookingTime = order['duration'] ?? "";
+  final String orderId = order['order_id'] ?? '';
+  final String userName = order['user']?['name'] ?? '';
+  final String userImageRaw = order['user']?['image'] ?? '';
+  final String userImage =
+      userImageRaw.startsWith('http')
+          ? userImageRaw
+          : 'http://10.10.7.9:5014$userImageRaw';
+  final String status = order['status'] ?? '';
+  final String address = order['formatted_address'] ?? '';
+  final String strTime = order['strTime'] ?? '';
+  final double totalPrice = (order['user_paid'] ?? 0).toDouble();
+  final double rating = (order['rating'] ?? 0).toDouble();
+  final String review = order['review'] ?? '';
+  final String deadline = order['deadline'] ?? '';
+  final String cookingTime = order['duration'] ?? '';
 
-  List staticItems = order['static_items'] ?? [];
-  String itemsText = staticItems.map((item) {
-    String name = item['menu']?['name'] ?? "";
-    int qty = item['quantity'] ?? 1;
-    return "$qty× $name";
-  }).join(", ");
-  String itemsLabel = "${staticItems.length} item${staticItems.length > 1 ? 's' : ''} ($itemsText)";
+  final List staticItems = order['static_items'] ?? [];
+  final String itemsText = staticItems
+      .map((item) {
+        final String name = item['menu']?['name'] ?? '';
+        final int qty = item['quantity'] ?? 1;
+        return '$qty× $name';
+      })
+      .join(', ');
+  final String itemsLabel =
+      "${staticItems.length} item${staticItems.length > 1 ? 's' : ''} ($itemsText)";
 
-  String formattedDate = _formatDate(order['formatted_date']);
-  String dateLabel = "$formattedDate at $strTime";
-  String timeLeft = _timeLeft(deadline);
+  final String formattedDate = _formatDate(order['formatted_date']);
+  final String dateLabel = '$formattedDate at $strTime';
+  final String timeLeft = _timeLeft(deadline);
 
   return InkWell(
     onTap: () {
@@ -61,9 +65,9 @@ Widget chefBookingItem({required Map order}) {
     },
     child: Container(
       padding: EdgeInsets.all(12.sp).copyWith(right: 0),
-      margin: EdgeInsets.only(top: 16),
+      margin: const EdgeInsets.only(top: 16),
       decoration: BoxDecoration(
-        color: Color(0xffF2F2F2),
+        color: const Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(12.sp),
       ),
       child: Column(
@@ -80,20 +84,19 @@ Widget chefBookingItem({required Map order}) {
               12.width,
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonText(
                       text: userName,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                     ),
                     CommonText(
                       text: orderId,
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xff777777),
+                      color: const Color(0xff777777),
                     ),
                   ],
                 ),
@@ -101,7 +104,7 @@ Widget chefBookingItem({required Map order}) {
 
               _statusBadge(controller.selectedBookingHistory),
 
-              if (controller.selectedBookingHistory != "Completed")
+              if (controller.selectedBookingHistory != 'Completed')
                 PopupMenuButton<int>(
                   padding: EdgeInsets.zero,
                   menuPadding: EdgeInsets.zero,
@@ -119,33 +122,40 @@ Widget chefBookingItem({required Map order}) {
 
                       try {
                         final c = Get.find<ChefBookingController>();
-                        final orderData = await c.fetchSingleOrder(order['_id'] ?? "");
+                        final orderData = await c.fetchSingleOrder(
+                          order['_id'] ?? '',
+                        );
 
-                        if (Get.isDialogOpen == true) Navigator.pop(Get.context!);
+                        if (Get.isDialogOpen == true) {
+                          Navigator.pop(Get.context!);
+                        }
 
                         if (orderData != null) {
                           upcomingPopUp(orderData: orderData);
                         } else {
-                          Get.snackbar("Error", "Could not load order details");
+                          Get.snackbar('Error', 'Could not load order details');
                         }
                       } catch (e) {
-                        if (Get.isDialogOpen == true) Navigator.pop(Get.context!);
-                        Get.snackbar("Error", "Something went wrong");
+                        if (Get.isDialogOpen == true) {
+                          Navigator.pop(Get.context!);
+                        }
+                        Get.snackbar('Error', 'Something went wrong');
                       }
                     }
 
                     if (value == 2) {
                       cancelBookingPopUp(
-                        orderId: order['_id']?.toString() ?? "",
+                        orderId: order['_id']?.toString() ?? '',
                         onSuccess: () {
                           controller.fetchOrders();
-                          Get.snackbar("Success", "Booking cancelled");
+                          Get.snackbar('Success', 'Booking cancelled');
                         },
                       );
                     }
                   },
                   itemBuilder: (context) {
-                    final isUpcoming = controller.selectedBookingHistory == "Upcoming";
+                    final isUpcoming =
+                        controller.selectedBookingHistory == 'Upcoming';
 
                     return [
                       if (isUpcoming)
@@ -155,7 +165,7 @@ Widget chefBookingItem({required Map order}) {
                             children: [
                               Icon(Icons.edit, size: 20, color: Colors.black),
                               SizedBox(width: 10),
-                              CommonText(text: "Request a Change", fontSize: 14),
+                              CommonText(text: 'Request a Change'),
                             ],
                           ),
                         ),
@@ -166,10 +176,8 @@ Widget chefBookingItem({required Map order}) {
                             Icon(Icons.close, size: 20, color: Colors.red),
                             SizedBox(width: 10),
                             CommonText(
-                              text: "Cancel Booking",
-                              fontSize: 14,
+                              text: 'Cancel Booking',
                               color: Colors.red,
-                              fontWeight: FontWeight.w500,
                             ),
                           ],
                         ),
@@ -184,7 +192,7 @@ Widget chefBookingItem({required Map order}) {
 
           Row(
             children: [
-              CommonImage(
+              const CommonImage(
                 imageSrc: AppIcons.date,
                 size: 16,
                 imageColor: Color(0xff777777),
@@ -204,7 +212,7 @@ Widget chefBookingItem({required Map order}) {
 
           Row(
             children: [
-              CommonImage(
+              const CommonImage(
                 imageSrc: AppIcons.ingredients,
                 size: 16,
                 imageColor: Color(0xff777777),
@@ -215,7 +223,6 @@ Widget chefBookingItem({required Map order}) {
                   fontSize: 12,
                   left: 4,
                   fontWeight: FontWeight.w400,
-                  maxLines: 1,
                   textAlign: TextAlign.start, // ✅ add
                 ),
               ),
@@ -223,10 +230,9 @@ Widget chefBookingItem({required Map order}) {
           ),
           8.height,
 
-
           Row(
             children: [
-              CommonImage(
+              const CommonImage(
                 imageSrc: AppIcons.location,
                 size: 16,
                 imageColor: Color(0xff777777),
@@ -237,7 +243,6 @@ Widget chefBookingItem({required Map order}) {
                   fontSize: 12,
                   left: 4,
                   fontWeight: FontWeight.w400,
-                  maxLines: 1,
                   textAlign: TextAlign.start, // ✅ add
                 ),
               ),
@@ -247,21 +252,21 @@ Widget chefBookingItem({required Map order}) {
 
           if (cookingTime.isNotEmpty)
             Padding(
-              padding: EdgeInsets.only(top: 0, bottom: 0),
+              padding: const EdgeInsets.only(),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(
+                  const Icon(
                     CupertinoIcons.time,
                     size: 16,
                     color: Color(0xff777777),
                   ),
-                  SizedBox(width: 4),
+                  const SizedBox(width: 4),
                   CommonText(
-                    text: "Estimated cooking time: $cookingTime",
+                    text: 'Estimated cooking time: $cookingTime',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xff272727),
+                    color: const Color(0xff272727),
                     maxLines: 2,
                   ),
                 ],
@@ -269,7 +274,7 @@ Widget chefBookingItem({required Map order}) {
             ),
           8.height,
 
-          if (controller.selectedBookingHistory != "Completed")
+          if (controller.selectedBookingHistory != 'Completed')
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
               margin: EdgeInsets.only(right: 12.w),
@@ -279,23 +284,29 @@ Widget chefBookingItem({required Map order}) {
               ),
               child: Row(
                 children: [
-                  Icon(CupertinoIcons.info, color: Color(0xffFD713F), size: 16),
+                  const Icon(
+                    CupertinoIcons.info,
+                    color: Color(0xffFD713F),
+                    size: 16,
+                  ),
                   CommonText(
-                    text: timeLeft.isNotEmpty
-                        ? "You have $timeLeft left to confirm the order"
-                        : "Deadline passed",
+                    text:
+                        timeLeft.isNotEmpty
+                            ? 'You have $timeLeft left to confirm the order'
+                            : 'Deadline passed',
                     fontSize: 12,
                     left: 4,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xffFD713F),
+                    color: const Color(0xffFD713F),
                   ),
                 ],
               ),
             ),
 
-          if (controller.selectedBookingHistory == "Completed" && review.isNotEmpty)
+          if (controller.selectedBookingHistory == 'Completed' &&
+              review.isNotEmpty)
             Container(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               margin: EdgeInsets.only(right: 12.w),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -304,8 +315,8 @@ Widget chefBookingItem({required Map order}) {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
-                    text: "Review",
+                  const CommonText(
+                    text: 'Review',
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
@@ -315,7 +326,7 @@ Widget chefBookingItem({required Map order}) {
                     text: review,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xff272727),
+                    color: const Color(0xff272727),
                     maxLines: 3,
                     textAlign: TextAlign.start,
                   ),
@@ -330,40 +341,43 @@ Widget chefBookingItem({required Map order}) {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
-                    text: "Hourly rate",
+                  const CommonText(
+                    text: 'Hourly rate',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
                   ),
                   CommonText(
-                    text: "\$${totalPrice.toStringAsFixed(2)}",
+                    text: '\$${totalPrice.toStringAsFixed(2)}',
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
+                    color: const Color(0xff272727),
                     top: 2,
                   ),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
 
               // ✅ Unconfirmed: Decline + Accept
-              if (controller.selectedBookingHistory == "Unconfirmed") ...[
+              if (controller.selectedBookingHistory == 'Unconfirmed') ...[
                 InkWell(
                   onTap: () {
                     declineBookingPopUp(
-                      orderId: order['_id'] ?? "",
+                      orderId: order['_id'] ?? '',
                       onSuccess: () {
                         controller.fetchOrders();
                       },
                     );
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.sp,
+                      vertical: 8.sp,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10.sp),
                     ),
-                    child: CommonText(
+                    child: const CommonText(
                       text: AppString.decline,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -373,15 +387,21 @@ Widget chefBookingItem({required Map order}) {
                 ),
                 InkWell(
                   onTap: () {
-                    confirmBookingPopUp(orderMongoId: order['_id']?.toString() ?? "");                  },
+                    confirmBookingPopUp(
+                      orderMongoId: order['_id']?.toString() ?? '',
+                    );
+                  },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.sp,
+                      vertical: 8.sp,
+                    ),
                     margin: EdgeInsets.only(left: 8.sp),
                     decoration: BoxDecoration(
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                       borderRadius: BorderRadius.circular(10.sp),
                     ),
-                    child: CommonText(
+                    child: const CommonText(
                       text: AppString.accept,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -391,40 +411,49 @@ Widget chefBookingItem({required Map order}) {
                 ),
                 12.width,
               ],
-              if (controller.selectedBookingHistory == "Upcoming") ...[
-
+              if (controller.selectedBookingHistory == 'Upcoming') ...[
                 // ✅ Chat with Customer
                 InkWell(
                   onTap: () async {
                     try {
-                      final userId = order['user']?['_id']?.toString() ?? "";
+                      final userId = order['user']?['_id']?.toString() ?? '';
                       if (userId.isEmpty) return;
 
-                      final response = await ApiService.post("chat/$userId", body: {});
+                      final response = await ApiService.post(
+                        'chat/$userId',
+                        body: {},
+                      );
 
-                      if (response.statusCode == 200 || response.statusCode == 201) {
+                      if (response.statusCode == 200 ||
+                          response.statusCode == 201) {
                         final chatData = response.data['data'];
-                        final chatId = chatData['_id']?.toString() ?? "";
-                        Get.toNamed(AppRoutes.message, parameters: {
-                          'chatId': chatId,
-                          'name': order['user']?['name'] ?? "User",
-                          'image': order['user']?['image'] ?? "",
-                        });
+                        final chatId = chatData['_id']?.toString() ?? '';
+                        Get.toNamed(
+                          AppRoutes.message,
+                          parameters: {
+                            'chatId': chatId,
+                            'name': order['user']?['name'] ?? 'User',
+                            'image': order['user']?['image'] ?? '',
+                          },
+                        );
                       } else {
-                        Get.snackbar("Error", "Failed to open chat");
+                        Get.snackbar('Error', 'Failed to open chat');
                       }
                     } catch (e) {
-                      Get.snackbar("Error", e.toString());
+                      Get.snackbar('Error', e.toString());
                     }
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: 8.w),
-                    padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.sp,
+                      vertical: 8.sp,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10.sp),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisSize: MainAxisSize.min, // ✅ এটা যোগ করুন
                       children: [
                         CommonImage(
@@ -446,9 +475,9 @@ Widget chefBookingItem({required Map order}) {
 
                 InkWell(
                   onTap: () async {
-                    final realOrderId = order['_id']?.toString() ?? "";
+                    final realOrderId = order['_id']?.toString() ?? '';
                     if (realOrderId.isEmpty) {
-                      Get.snackbar("Error", "Order ID not found");
+                      Get.snackbar('Error', 'Order ID not found');
                       return;
                     }
 
@@ -460,12 +489,15 @@ Widget chefBookingItem({required Map order}) {
                     );
 
                     try {
-                      final orderData = await homeC.fetchSingleOrder(realOrderId); // ✅ real ID দিয়ে
+                      final orderData = await homeC.fetchSingleOrder(
+                        realOrderId,
+                      ); // ✅ real ID দিয়ে
                       Navigator.pop(Get.context!);
 
                       if (orderData != null) {
                         final user = orderData['user'] ?? {};
-                        final staticItems = orderData['static_items'] as List? ?? [];
+                        final staticItems =
+                            orderData['static_items'] as List? ?? [];
                         final breakdown = orderData['price_breakdown'] ?? {};
 
                         BookingDetailsSheet.show(
@@ -479,44 +511,69 @@ Widget chefBookingItem({required Map order}) {
                             address: orderData['formatted_address'] ?? '',
                             date: _formatDate(orderData['formatted_date']),
                             time: orderData['strTime'] ?? '',
-                            orderItems: staticItems.map((item) => OrderItem(
-                              name: item['menu']?['name'] ?? '',
-                              description: '${item['quantity']} Items + ${(item['customizations'] as List?)?.join(', ') ?? ''}',
-                            )).toList(),
+                            orderItems:
+                                staticItems
+                                    .map(
+                                      (item) => OrderItem(
+                                        name: item['menu']?['name'] ?? '',
+                                        description:
+                                            '${item['quantity']} Items + ${(item['customizations'] as List?)?.join(', ') ?? ''}',
+                                      ),
+                                    )
+                                    .toList(),
                             estimatedTime: orderData['duration'] ?? '',
                             hourlyRate: (breakdown['subtotal'] ?? 0).toDouble(),
                             estimatedTaxes: (breakdown['taxs'] ?? 0).toDouble(),
                             onStartCooking: () {
                               Navigator.pop(Get.context!);
-                              Get.to(() => CookingStopwatchScreen(
-                                orderId: realOrderId, // ✅ real ID
-                                orderItems: staticItems.map((item) => CookingOrderItem(
-                                  name: '${item['menu']?['name']} (x${item['quantity']})',
-                                  description: (item['customizations'] as List?)?.join(', ') ?? '',
-                                )).toList(),
-                              ));
+                              Get.to(
+                                () => CookingStopwatchScreen(
+                                  orderId: realOrderId, // ✅ real ID
+                                  orderItems:
+                                      staticItems
+                                          .map(
+                                            (item) => CookingOrderItem(
+                                              name:
+                                                  '${item['menu']?['name']} (x${item['quantity']})',
+                                              description:
+                                                  (item['customizations']
+                                                          as List?)
+                                                      ?.join(', ') ??
+                                                  '',
+                                            ),
+                                          )
+                                          .toList(),
+                                ),
+                              );
                             },
                           ),
                         );
                       }
                     } catch (e) {
                       if (Get.isDialogOpen == true) Navigator.pop(Get.context!);
-                      Get.snackbar("Error", "Something went wrong");
+                      Get.snackbar('Error', 'Something went wrong');
                     }
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: 12.w),
-                    padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.sp,
+                      vertical: 8.sp,
+                    ),
                     decoration: BoxDecoration(
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                       borderRadius: BorderRadius.circular(10.sp),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(CupertinoIcons.flame, size: 16, color: Colors.white),
+                        Icon(
+                          CupertinoIcons.flame,
+                          size: 16,
+                          color: Colors.white,
+                        ),
                         CommonText(
-                          text: "Start Cooking",
+                          text: 'Start Cooking',
                           fontSize: 12,
                           left: 6,
                           fontWeight: FontWeight.w600,
@@ -526,34 +583,31 @@ Widget chefBookingItem({required Map order}) {
                     ),
                   ),
                 ),
-
               ],
 
-              if (controller.selectedBookingHistory == "Completed") ...[
-
-
-
-
-
+              if (controller.selectedBookingHistory == 'Completed') ...[
                 Container(
                   margin: EdgeInsets.only(right: 5.w),
-                  padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.sp,
+                    vertical: 8.sp,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5.sp),
                   ),
                   child: Row(
                     children: [
-
                       CommonText(
-                        text: "${AppString.rating} ${rating > 0 ? rating.toStringAsFixed(1) : 'N/A'}",
+                        text:
+                            "${AppString.rating} ${rating > 0 ? rating.toStringAsFixed(1) : 'N/A'}",
                         fontSize: 12,
                         right: 6,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff272727),
+                        color: const Color(0xff272727),
                       ),
                       if (rating > 0)
-                        Icon(
+                        const Icon(
                           Icons.star_rate_rounded,
                           size: 12,
                           color: Color(0xffFD713F),
@@ -562,30 +616,28 @@ Widget chefBookingItem({required Map order}) {
                   ),
                 ),
 
-
-
-
                 InkWell(
                   onTap: () {
                     reviewPopUp(
-                      orderId: order['_id']?.toString() ?? "",
+                      orderId: order['_id']?.toString() ?? '',
                       onSuccess: () => controller.fetchOrders(),
                     );
                   },
 
                   child: Container(
                     margin: EdgeInsets.only(right: 5.w),
-                    padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.sp,
+                      vertical: 8.sp,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(5.sp),
                     ),
-                    child: Row(
+                    child: const Row(
                       children: [
-
-
                         CommonText(
-                          text: "Rate Customer",
+                          text: 'Rate Customer',
                           fontSize: 12,
                           right: 6,
                           fontWeight: FontWeight.w600,
@@ -595,7 +647,6 @@ Widget chefBookingItem({required Map order}) {
                     ),
                   ),
                 ),
-
               ],
             ],
           ),
@@ -607,31 +658,29 @@ Widget chefBookingItem({required Map order}) {
 
 Widget _statusBadge(String selectedTab) {
   switch (selectedTab) {
-    case "Unconfirmed":
+    case 'Unconfirmed':
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
         decoration: BoxDecoration(
-          color: Color(0xffF5EDDD),
+          color: const Color(0xffF5EDDD),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: CommonText(
-          text: "Requested",
+        child: const CommonText(
+          text: 'Requested',
           fontSize: 10,
-          fontWeight: FontWeight.w500,
           color: Color(0xffE39400),
         ),
       );
-    case "Upcoming":
+    case 'Upcoming':
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
         decoration: BoxDecoration(
-          color: Color(0xffE3ECFD),
+          color: const Color(0xffE3ECFD),
           borderRadius: BorderRadius.circular(10.sp),
         ),
-        child: CommonText(
-          text: "Upcoming",
+        child: const CommonText(
+          text: 'Upcoming',
           fontSize: 10,
-          fontWeight: FontWeight.w500,
           color: Color(0xff4285F4),
         ),
       );
@@ -639,13 +688,12 @@ Widget _statusBadge(String selectedTab) {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 5.sp),
         decoration: BoxDecoration(
-          color: Color(0xffDFF5E0),
+          color: const Color(0xffDFF5E0),
           borderRadius: BorderRadius.circular(10.sp),
         ),
-        child: CommonText(
-          text: "Completed",
+        child: const CommonText(
+          text: 'Completed',
           fontSize: 10,
-          fontWeight: FontWeight.w500,
           color: Color(0xff2F8328),
         ),
       );
@@ -653,38 +701,46 @@ Widget _statusBadge(String selectedTab) {
 }
 
 String _formatDate(String? isoDate) {
-  if (isoDate == null) return "";
+  if (isoDate == null) return '';
   try {
-    DateTime dt = DateTime.parse(isoDate);
+    final DateTime dt = DateTime.parse(isoDate);
     const months = [
-      '', 'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      '',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
-    return "${dt.day} ${months[dt.month]}, ${dt.year}";
+    return '${dt.day} ${months[dt.month]}, ${dt.year}';
   } catch (_) {
     return isoDate;
   }
 }
 
 String _timeLeft(String? deadlineIso) {
-  if (deadlineIso == null || deadlineIso.isEmpty) return "";
+  if (deadlineIso == null || deadlineIso.isEmpty) return '';
   try {
-    DateTime deadline = DateTime.parse(deadlineIso);
-    Duration diff = deadline.difference(DateTime.now());
-    if (diff.isNegative) return "";
-    int hours = diff.inHours;
-    int minutes = diff.inMinutes % 60;
-    if (hours > 0) return "${hours}h${minutes}m";
-    return "${minutes}m";
+    final DateTime deadline = DateTime.parse(deadlineIso);
+    final Duration diff = deadline.difference(DateTime.now());
+    if (diff.isNegative) return '';
+    final int hours = diff.inHours;
+    final int minutes = diff.inMinutes % 60;
+    if (hours > 0) return '${hours}h${minutes}m';
+    return '${minutes}m';
   } catch (_) {
-    return "";
+    return '';
   }
 }
 
-void reviewPopUp({
-  required String orderId,
-  required VoidCallback onSuccess,
-}) {
+void reviewPopUp({required String orderId, required VoidCallback onSuccess}) {
   double kitchenRating = 0;
   double communicationRating = 0;
   final reviewController = TextEditingController();
@@ -704,13 +760,17 @@ void reviewPopUp({
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("Leave a Review",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                const Text(
+                  'Leave a Review',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                ),
                 const SizedBox(height: 20),
 
                 // Kitchen Readiness
-                const Text("Kitchen readiness",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                const Text(
+                  'Kitchen readiness',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
                 const SizedBox(height: 8),
                 _StarRatingRow(
                   rating: kitchenRating,
@@ -719,8 +779,10 @@ void reviewPopUp({
                 const SizedBox(height: 16),
 
                 // Communication
-                const Text("Communication",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                const Text(
+                  'Communication',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
                 const SizedBox(height: 8),
                 _StarRatingRow(
                   rating: communicationRating,
@@ -731,22 +793,34 @@ void reviewPopUp({
                 // Average
                 Row(
                   children: [
-                    const Text("Average Rating",
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                    const Text(
+                      'Average Rating',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     const Spacer(),
-                    ...List.generate(5, (i) => Icon(
-                      i < avg.floor()
-                          ? Icons.star_rounded
-                          : (i < avg && avg % 1 >= 0.5)
-                          ? Icons.star_half_rounded
-                          : Icons.star_border_rounded,
-                      color: const Color(0xffFD713F),
-                      size: 20,
-                    )),
+                    ...List.generate(
+                      5,
+                      (i) => Icon(
+                        i < avg.floor()
+                            ? Icons.star_rounded
+                            : (i < avg && avg % 1 >= 0.5)
+                            ? Icons.star_half_rounded
+                            : Icons.star_border_rounded,
+                        color: const Color(0xffFD713F),
+                        size: 20,
+                      ),
+                    ),
                     const SizedBox(width: 4),
-                    Text(avg > 0 ? avg.toStringAsFixed(1) : "0.0",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 13)),
+                    Text(
+                      avg > 0 ? avg.toStringAsFixed(1) : '0.0',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -756,7 +830,7 @@ void reviewPopUp({
                   controller: reviewController,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: "Write your review...",
+                    hintText: 'Write your review...',
                     filled: true,
                     fillColor: const Color(0xffF5F5F5),
                     border: OutlineInputBorder(
@@ -775,47 +849,59 @@ void reviewPopUp({
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xff1A1A1A),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14)),
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                     ),
-                    onPressed: kitchenRating == 0 || communicationRating == 0
-                        ? null
-                        : () async {
-                      try {
-                        final response = await ApiService.post(
-                          ApiEndPoint.ChefReview,
-                          body: {
-                            "order_id": orderId,
-                            "communication": communicationRating,
-                            "kitchen_readiness": kitchenRating,
-                            "review": reviewController.text.trim(),
-                          },
-                        );
-                        if (response.statusCode == 200 &&
-                            response.data['success'] == true) {
-                          Navigator.pop(Get.context!);
-                          onSuccess();
-                          Get.snackbar("Success", "Review submitted!",
-                              backgroundColor: Colors.green,
-                              colorText: Colors.white);
-                        } else {
-                          Get.snackbar(
-                            "Error",
-                            response.data['message'] ?? "Something went wrong",
-                            backgroundColor: Colors.red,
-                            colorText: Colors.white,
-                          );
-                        }
-                      } catch (e) {
-                        Get.snackbar("Error", e.toString(),
-                            backgroundColor: Colors.red,
-                            colorText: Colors.white);
-                      }
-                    },
-                    child: const Text("Submit",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600)),
+                    onPressed:
+                        kitchenRating == 0 || communicationRating == 0
+                            ? null
+                            : () async {
+                              try {
+                                final response = await ApiService.post(
+                                  ApiEndPoint.ChefReview,
+                                  body: {
+                                    'order_id': orderId,
+                                    'communication': communicationRating,
+                                    'kitchen_readiness': kitchenRating,
+                                    'review': reviewController.text.trim(),
+                                  },
+                                );
+                                if (response.statusCode == 200 &&
+                                    response.data['success'] == true) {
+                                  Navigator.pop(Get.context!);
+                                  onSuccess();
+                                  Get.snackbar(
+                                    'Success',
+                                    'Review submitted!',
+                                    backgroundColor: Colors.green,
+                                    colorText: Colors.white,
+                                  );
+                                } else {
+                                  Get.snackbar(
+                                    'Error',
+                                    response.data['message'] ??
+                                        'Something went wrong',
+                                    backgroundColor: Colors.red,
+                                    colorText: Colors.white,
+                                  );
+                                }
+                              } catch (e) {
+                                Get.snackbar(
+                                  'Error',
+                                  e.toString(),
+                                  backgroundColor: Colors.red,
+                                  colorText: Colors.white,
+                                );
+                              }
+                            },
+                    child: const Text(
+                      'Submit',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -832,6 +918,7 @@ void reviewPopUp({
 class _StarRatingRow extends StatelessWidget {
   final double rating;
   final ValueChanged<double> onChanged;
+
   const _StarRatingRow({required this.rating, required this.onChanged});
 
   @override

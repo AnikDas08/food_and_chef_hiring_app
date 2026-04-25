@@ -10,7 +10,7 @@ import '../../../../../component/button/common_button.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../utils/constants/app_string.dart';
 
-failledPopup() {
+void failledPopup() {
   showDialog(
     context: Get.context!,
     builder: (context) {
@@ -25,18 +25,18 @@ failledPopup() {
             return FadeTransition(
               opacity: ModalRoute.of(context)!.animation!,
               child: Dialog(
-                insetPadding: EdgeInsets.symmetric(horizontal: 16),
+                insetPadding: const EdgeInsets.symmetric(horizontal: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.r),
                 ),
-                backgroundColor: Color(0xffFFFFFF),
+                backgroundColor: const Color(0xffFFFFFF),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CommonImage(imageSrc: AppImages.error, size: 88),
-                      CommonText(
+                      const CommonImage(imageSrc: AppImages.error, size: 88),
+                      const CommonText(
                         text: AppString.checkoutFailed,
                         fontSize: 16,
                         top: 16,
@@ -44,7 +44,7 @@ failledPopup() {
                         fontWeight: FontWeight.w600,
                         color: Color(0xff272727),
                       ),
-                      CommonText(
+                      const CommonText(
                         text: AppString.checkoutFailedMessage,
                         fontSize: 12,
                         bottom: 32,
@@ -55,9 +55,7 @@ failledPopup() {
                       CommonButton(
                         titleText: AppString.tryAgain,
                         buttonHeight: 48,
-                        titleSize: 16,
                         buttonRadius: 16,
-                        titleColor: Color(0xffFFFFFF),
                         onTap: () async {
                           await AnimationPopUpState.closeDialog();
                           await Future.delayed(
@@ -71,11 +69,9 @@ failledPopup() {
                       CommonButton(
                         titleText: AppString.cancel,
                         buttonHeight: 48,
-                        titleSize: 16,
                         buttonRadius: 16,
-                        buttonColor: Color(0xffF2F2F2),
-                        borderColor: Colors.transparent,
-                        titleColor: Color(0xff777777),
+                        buttonColor: const Color(0xffF2F2F2),
+                        titleColor: const Color(0xff777777),
                         onTap: () async {
                           await AnimationPopUpState.closeDialog();
                         },

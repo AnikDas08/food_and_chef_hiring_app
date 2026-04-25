@@ -9,7 +9,16 @@ import 'package:new_untitled/utils/constants/app_images.dart';
 import '../../data/cart_model.dart';
 import '../controller/cart_controller.dart';
 
+import 'package:new_untitled/features/customer/chef_details/data/mamu_model.dart';
+import 'package:new_untitled/features/customer/chef_details/presentation/widgets/item_details.dart';
+
 Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
+  // We need an AnimationController for itemDetails
+  // However, cartItem is a stateless-like function used in a ListView.
+  // We can use Get.find if there's a controller or just create a one-off.
+  // For the sake of consistency with food_item.dart, we'll need a TickerProvider.
+  // Since cartItem is a function, we might need to wrap it or use a different approach.
+
   final CartMenuDetail? menuDetail =
   item.menu != null && item.menu!.isNotEmpty ? item.menu!.first : null;
 
@@ -18,7 +27,7 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
       ? (menuDetail.images!.first.startsWith('http')
       ? menuDetail.images!.first
       : ApiEndPoint.imageUrl + menuDetail.images!.first)
-      : AppImages.image6;
+      : AppImages.noImage;
 
   final String name = menuDetail?.name ?? 'N/A';
   final String cartItemId = item.id ?? '';
@@ -34,8 +43,91 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
       }
       final int liveQty = liveItem?.quantity ?? currentQty;
 
-      return Container(
-        padding: EdgeInsets.all(10.r), // Uniform responsive padding
+      return _CartItemInkWell(
+        controller: controller,
+        item: item,
+        menuDetail: menuDetail,
+        chefId: chefId,
+        name: name,
+        cartItemId: cartItemId,
+        liveQty: liveQty,
+        imageUrl: imageUrl,
+      );
+    },
+  );
+}
+
+class _CartItemInkWell extends StatefulWidget {
+  final CartController controller;
+  final CartMenuItem item;
+  final CartMenuDetail? menuDetail;
+  final String chefId;
+  final String name;
+  final String cartItemId;
+  final int liveQty;
+  final String imageUrl;
+
+  const _CartItemInkWell({
+    required this.controller,
+    required this.item,
+    required this.menuDetail,
+    required this.chefId,
+    required this.name,
+    required this.cartItemId,
+    required this.liveQty,
+    required this.imageUrl,
+  });
+
+  @override
+  State<_CartItemInkWell> createState() => _CartItemInkWellState();
+}
+
+class _CartItemInkWellState extends State<_CartItemInkWell>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: widget.controller.isEditingOrder
+          ? () {
+              if (widget.menuDetail == null) return;
+
+              final menuData = MenuData(
+                id: widget.menuDetail!.id,
+                name: widget.menuDetail!.name,
+                images: widget.menuDetail!.images,
+                estCookingTime: widget.item.unitTimeStr,
+                customizations: widget.menuDetail!.customizations ?? [],
+              );
+
+              itemDetails(
+                context,
+                _controller,
+                menuData,
+                cartItem: widget.item,
+                chefId: widget.chefId,
+              );
+            }
+          : null,
+      borderRadius: BorderRadius.circular(12.r),
+      child: Container(
+        padding: EdgeInsets.all(10.r),
         margin: EdgeInsets.only(top: 16.h),
         decoration: BoxDecoration(
           color: const Color(0xffF2F2F2),
@@ -44,68 +136,56 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Left Column: Text & Controls ──────────────────────────
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title and Delete Button
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(
                         child: CommonText(
-                          text: name,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 15.sp,
+                          text: widget.name,
+                          maxLines: 5,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xff272727),
                         ),
                       ),
                       SizedBox(width: 4.w),
-                      _buildDeleteBtn(context, controller, cartItemId, chefId),
+                      //_buildDeleteBtn(context, widget.controller, widget.cartItemId, widget.chefId),
                     ],
                   ),
                   8.height,
-
-                  // Customization Pills
-                  if (item.customizations != null && item.customizations!.isNotEmpty) ...[
+                  if (widget.item.customizations != null && widget.item.customizations!.isNotEmpty) ...[
                     Wrap(
                       spacing: 6.w,
                       runSpacing: 6.h,
-                      children: item.customizations!.map((c) => _buildPill(c)).toList(),
+                      children: widget.item.customizations!.map((c) => _buildPill(c)).toList(),
                     ),
                     10.height,
                   ],
-
-                  // Cooking Time Badge
-                  if (item.unitTimeStr != null) ...[
-                    _buildCookingTimeBadge(item.unitTimeStr!),
-                    12.height,
+                  _buildStepper(context, widget.controller, widget.cartItemId, widget.chefId, widget.liveQty),
+                  12.height,
+                  if (widget.item.unitTimeStr != null) ...[
+                    //_buildCookingTimeBadge(widget.item.unitTimeStr!),
+                    //12.height,
                   ],
-
-                  // Quantity Stepper
-                  _buildStepper(context, controller, cartItemId, chefId, liveQty),
                 ],
               ),
             ),
-
             SizedBox(width: 12.w),
-
-            // ── Right Side: Product Image ─────────────────────────────
             CommonImage(
-              imageSrc: imageUrl,
-              size: 95.r, // Scaled for density
+              imageSrc: widget.imageUrl,
+              size: 95.r,
               borderRadius: 8.r,
               fill: BoxFit.cover,
             ),
           ],
         ),
-      );
-    },
-  );
+      ),
+    );
+  }
 }
 
 // ── REUSABLE RESPONSIVE SUB-WIDGETS ──
@@ -154,13 +234,21 @@ Widget _buildCookingTimeBadge(String time) {
       children: [
         Icon(Icons.timer_outlined, size: 14.r, color: const Color(0xff777777)),
         SizedBox(width: 4.w),
-        Flexible(
-          child: CommonText(
-            text: "Cooking Time: $time",
-            fontSize: 11.sp,
-            color: const Color(0xff777777),
-            fontWeight: FontWeight.w400,
-          ),
+        Row(
+          children: [
+            CommonText(
+              text: 'Cooking Time: ',
+              fontSize: 11.sp,
+              color: const Color(0xff777777),
+              fontWeight: FontWeight.w400,
+            ),
+            CommonText(
+              text: time,
+              fontSize: 11.sp,
+              color: const Color(0xff272727),
+              fontWeight: FontWeight.w400,
+            ),
+          ],
         ),
       ],
     ),
@@ -187,7 +275,6 @@ Widget _buildStepper(BuildContext context, CartController controller, String id,
           width: 32.w,
           child: CommonText(
             text: qty.toString(),
-            textAlign: TextAlign.center,
             fontSize: 14.sp, fontWeight: FontWeight.w600
           ),
         ),
@@ -220,26 +307,26 @@ void _confirmDelete(BuildContext context, CartController controller, String cart
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       title: CommonText(
-        text: "Remove Item",
+        text: 'Remove Item',
         fontSize: 16.sp, fontWeight: FontWeight.w600
       ),
 
       content: CommonText(
-        text: "Are you sure you want to remove this item from your cart?",
+        text: 'Are you sure you want to remove this item from your cart?',
         fontSize: 13.sp, color: const Color(0xff777777),
         maxLines: 2,
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: CommonText(text: "Cancel", color: const Color(0xff777777), fontSize: 13.sp),
+          child: CommonText(text: 'Cancel', color: const Color(0xff777777), fontSize: 13.sp),
         ),
         TextButton(
           onPressed: () {
             Navigator.pop(Get.context!);
             controller.deleteCartItem(cartItemId: cartItemId, chefId: chefId);
           },
-          child: CommonText(text: "Remove", color: const Color(0xffE53935), fontWeight: FontWeight.w600, fontSize: 13.sp),
+          child: CommonText(text: 'Remove', color: const Color(0xffE53935), fontWeight: FontWeight.w600, fontSize: 13.sp),
         ),
       ],
     ),

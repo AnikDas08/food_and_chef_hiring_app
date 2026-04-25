@@ -26,10 +26,7 @@ class _KitchenEquipmentScreenState extends State<KitchenScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: false,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: const Color(0xFF272727), size: 20.sp),
-          onPressed: () => Navigator.pop(context),
-        ),
+       
       ),
       body: SafeArea(
         child: Padding(
@@ -102,7 +99,6 @@ class _KitchenEquipmentScreenState extends State<KitchenScreen> {
           CommonText(
             text: 'You’re Ready for Cooking',
             fontSize: 13.sp,
-            fontWeight: FontWeight.w500,
             color: const Color(0xff272727),
           ),
           SizedBox(height: 12.h),
@@ -117,11 +113,11 @@ class _KitchenEquipmentScreenState extends State<KitchenScreen> {
           SizedBox(height: 10.h),
           RichText(
             text: TextSpan(
-              text: "Your kitchen can handle ",
+              text: 'Your kitchen can handle ',
               style: TextStyle(color: const Color(0xff777777), fontSize: 12.sp),
               children: [
                 TextSpan(
-                  text: "100%",
+                  text: '100%',
                   style: TextStyle(
                     color: const Color(0xffFD713F),
                     fontSize: 12.sp,
@@ -129,7 +125,7 @@ class _KitchenEquipmentScreenState extends State<KitchenScreen> {
                   ),
                 ),
                 TextSpan(
-                  text: " of recipes on the platform",
+                  text: ' of recipes on the platform',
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,

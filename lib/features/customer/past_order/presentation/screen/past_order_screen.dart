@@ -1,9 +1,13 @@
 // lib/features/orders/view/past_order_screen.dart
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/text/common_text.dart';
-import 'package:new_untitled/utils/constants/app_string.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
+import '../../../../../utils/constants/app_colors.dart';
 import '../controller/past_order_controller.dart';
 import '../widgets/past_item.dart';
 
@@ -13,50 +17,70 @@ class PastOrderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: false,
+        flexibleSpace: appBarOpacity(),
+        actions: [LiquidGlassLayer(
+          child: LiquidGlass(
+            shape: const LiquidRoundedSuperellipse(borderRadius: 0),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withOpacity(0.2),
+                    Colors.white.withOpacity(0.05),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        ],
+        title: const CommonText(
+          text: 'Booking History',
+          fontWeight: FontWeight.w600,
+          fontSize: 24,
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CommonText(
-                text: AppString.pastBookings,
-                fontWeight: FontWeight.w600,
-                fontSize: 24,
-                color: const Color(0xff272727),
-                bottom: 8,
-              ),
-
+              const SizedBox(height: 12),
               Expanded(
                 child: GetBuilder<PastOrderController>(
                   init: PastOrderController(),
                   builder: (controller) {
-
                     // ── Loading ────────────────────────────
                     if (controller.isLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return const Center(child: CupertinoActivityIndicator());
                     }
 
                     // ── Empty ──────────────────────────────
                     if (controller.orderList.isEmpty) {
-                      return Center(
+                      return const Center(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.receipt_long_outlined,
                               size: 64,
-                              color: Color(0xff777777),
+                              color: AppColors.grey,
                             ),
-                            const SizedBox(height: 12),
+                            SizedBox(height: 12),
                             CommonText(
-                              text: "No past orders found",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xff777777),
+                              text: 'No bookings',
+                              color: AppColors.grey,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
                             ),
                           ],
                         ),
@@ -65,6 +89,8 @@ class PastOrderScreen extends StatelessWidget {
 
                     // ── List ───────────────────────────────
                     return RefreshIndicator(
+                      backgroundColor: Colors.white,
+                      color: Colors.black,
                       onRefresh: controller.fetchOrders,
                       child: ListView.builder(
                         controller: controller.scrollController,
@@ -78,11 +104,11 @@ class PastOrderScreen extends StatelessWidget {
                               return const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 16),
                                 child: Center(
-                                  child: CircularProgressIndicator(),
+                                  child: CupertinoActivityIndicator(),
                                 ),
                               );
                             }
-                           /* if (!controller.hasMorePages) {
+                            /* if (!controller.hasMorePages) {
                               return const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 16),
                                 child: Center(
@@ -99,10 +125,7 @@ class PastOrderScreen extends StatelessWidget {
                             return const SizedBox.shrink();
                           }
 
-                          return pastItem(
-                            context,
-                            controller.orderList[index],
-                          );
+                          return pastItem(context, controller.orderList[index]);
                         },
                       ),
                     );

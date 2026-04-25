@@ -1,8 +1,8 @@
 // widgets/recommended.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../utils/constants/app_colors.dart';
 import '../controller/home_controller.dart';
 import 'chef_item.dart';
 
@@ -10,7 +10,12 @@ class _ShimmerBox extends StatefulWidget {
   final double width;
   final double height;
   final double borderRadius;
-  const _ShimmerBox({required this.width, required this.height, this.borderRadius = 8});
+
+  const _ShimmerBox({
+    required this.width,
+    required this.height,
+    this.borderRadius = 8,
+  });
 
   @override
   State<_ShimmerBox> createState() => _ShimmerBoxState();
@@ -28,9 +33,10 @@ class _ShimmerBoxState extends State<_ShimmerBox>
       vsync: this,
       duration: const Duration(milliseconds: 1200),
     )..repeat(reverse: true);
-    _animation = Tween<double>(begin: 0.3, end: 0.9).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _animation = Tween<double>(
+      begin: 0.3,
+      end: 0.9,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -43,14 +49,15 @@ class _ShimmerBoxState extends State<_ShimmerBox>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _animation,
-      builder: (_, __) => Container(
-        width: widget.width,
-        height: widget.height,
-        decoration: BoxDecoration(
-          color: Color(0xffE0E0E0).withOpacity(_animation.value),
-          borderRadius: BorderRadius.circular(widget.borderRadius),
-        ),
-      ),
+      builder:
+          (_, __) => Container(
+            width: widget.width,
+            height: widget.height,
+            decoration: BoxDecoration(
+              color: const Color(0xffE0E0E0).withOpacity(_animation.value),
+              borderRadius: BorderRadius.circular(widget.borderRadius),
+            ),
+          ),
     );
   }
 }
@@ -63,14 +70,14 @@ Widget _chefShimmerCard() {
       color: const Color(0xffF2F2F2),
       borderRadius: BorderRadius.circular(10),
     ),
-    child: Column(
+    child: const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Image placeholder
         _ShimmerBox(width: 240, height: 200, borderRadius: 10),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -81,9 +88,9 @@ Widget _chefShimmerCard() {
                   _ShimmerBox(width: 40, height: 12),
                 ],
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               _ShimmerBox(width: 160, height: 12),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               _ShimmerBox(width: 80, height: 14),
             ],
           ),
@@ -114,18 +121,11 @@ Widget recommended() {
             children: [
               const Icon(Icons.location_off, size: 48, color: Colors.grey),
               const SizedBox(height: 16),
-              /*Text(
-                'No nearby chefs found',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),*/
-              CommonText(
-                text: "No nearby chefs found",
-                fontSize: 12.sp,
-                color: Color(0xff777777),
+
+              const CommonText(
+                text: 'No nearby chefs found',
+                fontSize: 12,
+                color: AppColors.grey,
                 fontWeight: FontWeight.w400,
               ),
               const SizedBox(height: 8),
@@ -137,12 +137,10 @@ Widget recommended() {
                     color: Color(0xffFD713F),
                     fontWeight: FontWeight.w600,
                   ),
-                ),*/
-                CommonText(
-                  text: "Retry",
-                  fontSize: 15.sp,
-                  color: Color(0xff272727),
-                  fontWeight: FontWeight.w600,
+                ),*/ const CommonText(
+                  text: 'Retry',
+                  fontSize: 12,
+                  color: AppColors.grey,
                 ),
               ),
             ],
@@ -159,13 +157,14 @@ Widget recommended() {
             tween: Tween(begin: 0.0, end: 1.0),
             duration: Duration(milliseconds: 300 + (index * 80)),
             curve: Curves.easeOut,
-            builder: (_, value, child) => Opacity(
-              opacity: value,
-              child: Transform.translate(
-                offset: Offset(20 * (1 - value), 0),
-                child: child,
-              ),
-            ),
+            builder:
+                (_, value, child) => Opacity(
+                  opacity: value,
+                  child: Transform.translate(
+                    offset: Offset(20 * (1 - value), 0),
+                    child: child,
+                  ),
+                ),
             child: chefItem(chef: controller.nearbyChefsList[index]),
           );
         },

@@ -1,11 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/availability_pop_up.dart';
+import 'package:new_untitled/utils/constants/app_colors.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -33,7 +36,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
   final FocusNode _searchFocusNode = FocusNode();
 
   static const double _expandedHeight = 300;
-  static const double _collapseThreshold = _expandedHeight - 56 - 10;
+  static const double _collapseThreshold = _expandedHeight - 75 - 10;
 
   @override
   void initState() {
@@ -84,18 +87,17 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
         final chef = controller.chefDetail;
 
         final String imageUrl =
-        (chef?.image != null && chef!.image!.isNotEmpty)
-            ? (chef.image!.startsWith('http')
-            ? chef.image!
-            : ApiEndPoint.imageUrl + chef.image!)
-            : AppImages.image3;
+            (chef?.image != null && chef!.image!.isNotEmpty)
+                ? (chef.image!.startsWith('http')
+                    ? chef.image!
+                    : ApiEndPoint.imageUrl + chef.image!)
+                : AppImages.image3;
 
         final double totalCartPrice =
             (controller.cartItems.length) * (chef?.priceWithFee ?? 0);
-        final double pricePerChef = chef?.pricing ?? 0.0;
+        final double pricePerChef = chef?.priceWithFee ?? 0.0;
 
-        final List<String> sections =
-            controller.chefDetail?.menuSections ?? [];
+        final List<String> sections = controller.chefDetail?.menuSections ?? [];
 
         return Scaffold(
           body: DefaultTabController(
@@ -107,87 +109,142 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                   SliverAppBar(
                     pinned: true,
                     expandedHeight: _expandedHeight.h,
+                    toolbarHeight: 90.h,
                     backgroundColor: Colors.white,
                     elevation: _isCollapsed ? 1 : 0,
                     titleSpacing: 0,
-                    automaticallyImplyLeading: !_isCollapsed,
-
-                    title: _isCollapsed
-                        ? (_isSearchMode
-                        ? _SearchAppBarTitle(
-                      controller: controller,
-                      searchTextController: _searchTextController,
-                      searchFocusNode: _searchFocusNode,
-                      onClose: _exitSearchMode,
-                    )
-                        : _CollapsedAppBarTitle(
-                      controller: controller,
-                      onSearchTap: _enterSearchMode,
-                    ))
-                        : null,
-
-                    leading: _isCollapsed
-                        ? null
-                        : InkWell(
-                      onTap: () {
-                        Navigator.pop(Get.context!);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 16.w),
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.50),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              color: Colors.white,
-                              size: 24,
+                    automaticallyImplyLeading: false,
+                    leadingWidth: 80,
+                    leading:
+                        _isCollapsed
+                            ? null
+                            : Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 28,
+                              ),
+                              child: SizedBox(
+                                width: 40.sp,
+                                height: 40.sp,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(50),
+                                  onTap: Get.back,
+                                  child: const LiquidGlassLayer(
+                                    child: LiquidGlass(
+                                      shape: LiquidRoundedSuperellipse(
+                                        borderRadius: 50,
+                                      ),
+                                      child: Center(
+                                        child: Icon(
+                                          CupertinoIcons.back,
+                                          color: Colors.white,
+                                          size: 28,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                    ),
 
-                    actions: _isCollapsed
-                        ? []
-                        : [
-                      InkWell(
-                        onTap: controller.toggleFavourite,
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.50),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            child: Icon(
-                              controller.isFavorite
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: controller.isFavorite
-                                  ? Colors.red
-                                  : Colors.white,
-                              size: 24,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      InkWell(
-                        onTap: () {
-                          SharePlus.instance.share(
-                            ShareParams(text: 'https://example.com'),
-                          );
-                        },
-                        child: CommonImage(imageSrc: AppIcons.share),
-                      ),
-                      const SizedBox(width: 12),
-                    ],
+                    title:
+                        _isCollapsed
+                            ? (_isSearchMode
+                                ? _SearchAppBarTitle(
+                                  controller: controller,
+                                  searchTextController: _searchTextController,
+                                  searchFocusNode: _searchFocusNode,
+                                  onClose: _exitSearchMode,
+                                )
+                                : _CollapsedAppBarTitle(
+                                  controller: controller,
+                                  onSearchTap: _enterSearchMode,
+                                ))
+                            : null,
+
+                    actions:
+                        _isCollapsed
+                            ? []
+                            : [
+                              Center(
+                                child: InkWell(
+                                  onTap: controller.toggleFavourite,
+                                  child: LiquidGlassLayer(
+                                    child: LiquidGlass(
+                                      shape: const LiquidRoundedSuperellipse(
+                                        borderRadius: 30,
+                                      ),
+                                      child: Container(
+                                        width: 40.sp,
+                                        height: 40.sp,
+                                        padding: EdgeInsets.all(8.sp),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.black.withValues(
+                                              alpha: 0.07,
+                                            ),
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            controller.isFavorite
+                                                ? Icons.favorite
+                                                : Icons.favorite_border,
+                                            color:
+                                                controller.isFavorite
+                                                    ? Colors.red
+                                                    : Colors.white,
+                                            size: 28,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Center(
+                                child: InkWell(
+                                  onTap: () {
+                                    SharePlus.instance.share(
+                                      ShareParams(text: 'https://example.com'),
+                                    );
+                                  },
+                                  child: LiquidGlassLayer(
+                                    child: LiquidGlass(
+                                      shape: const LiquidRoundedSuperellipse(
+                                        borderRadius: 30,
+                                      ),
+                                      child: Container(
+                                        width: 40.sp,
+                                        height: 40.sp,
+                                        padding: EdgeInsets.all(8.sp),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.black.withValues(
+                                              alpha: 0.07,
+                                            ),
+                                          ),
+                                        ),
+                                        child: const Center(
+                                          child: Icon(
+                                            CupertinoIcons.share,
+                                            color: Colors.white,
+                                            size: 24,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                            ],
 
                     flexibleSpace: FlexibleSpaceBar(
                       collapseMode: CollapseMode.pin,
@@ -196,14 +253,17 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                         child: Stack(
                           children: [
                             Positioned.fill(
-                              child: controller.isLoadingDetail
-                                  ? Container(color: const Color(0xffF2F2F2))
-                                  : CommonImage(
-                                imageSrc: imageUrl,
-                                fill: BoxFit.cover,
-                              ),
+                              child:
+                                  controller.isLoadingDetail
+                                      ? Container(
+                                        color: const Color(0xffF2F2F2),
+                                      )
+                                      : CommonImage(
+                                        imageSrc: imageUrl,
+                                        fill: BoxFit.cover,
+                                      ),
                             ),
-                            Positioned(
+                            const Positioned(
                               bottom: 20,
                               left: 20,
                               child: CommonImage(
@@ -221,130 +281,151 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
 
                   // ── Chef info section ───────────────────────────────
                   SliverToBoxAdapter(
-                    child: controller.isLoadingDetail
-                        ? SizedBox(
-                      height: 180.h,
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    )
-                        : Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 12),
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              CommonText(
-                                text: chef?.name ?? "N/A",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xff272727),
+                    child:
+                        controller.isLoadingDetail
+                            ? SizedBox(
+                              height: 180.h,
+                              child: const Center(
+                                child: CupertinoActivityIndicator(),
                               ),
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                      "\$${chef?.pricing?.toStringAsFixed(2) ?? '0.00'}",
-                                      style: const TextStyle(
-                                        color: Color(0xff272727),
-                                        fontSize: 14,
+                            )
+                            : Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                              ),
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 12),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      CommonText(
+                                        text: chef?.name ?? 'N/A',
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w600,
+                                        color: const Color(0xff272727),
                                       ),
-                                    ),
-                                    const TextSpan(
-                                      text: " /hr",
-                                      style: TextStyle(
-                                        color: Color(0xff777777),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                                  "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}",
+                                              style: const TextStyle(
+                                                color: Color(0xff272727),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            const TextSpan(
+                                              text: ' /hr',
+                                              style: TextStyle(
+                                                color: Color(0xff777777),
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      const CommonImage(
+                                        imageSrc: AppIcons.location,
+                                      ),
+                                      CommonText(
+                                        text:
+                                            controller.chefArg?.distance ??
+                                            'N/A',
                                         fontSize: 12,
+                                        textAlign: TextAlign.start,
+                                        left: 4,
+                                        color: const Color(0xff777777),
                                       ),
+                                      Container(
+                                        height: 8,
+                                        width: 1,
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                        ),
+                                        color: const Color(0xffF1F1F1),
+                                      ),
+                                      const CommonImage(
+                                        imageSrc: AppIcons.briefcase,
+                                      ),
+                                      CommonText(
+                                        text:
+                                            '${chef?.experience ?? 0} years Experience',
+                                        fontSize: 12,
+                                        left: 4,
+                                        color: const Color(0xff777777),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Flexible(
+                                        child: Icon(
+                                          Icons.star,
+                                          color: Color(0xffFD713F),
+                                          size: 20,
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: CommonText(
+                                          text:
+                                              '${(chef?.avgRating ?? 0).toStringAsFixed(2)} (${chef?.totalRating ?? 0} Reviews)',
+                                          fontSize: 12,
+                                          left: 4,
+                                          color: const Color(0xff777777),
+                                        ),
+                                      ),
+                                      SizedBox(width: 4.w),
+                                    ],
+                                  ),
+
+                                  const CommonText(
+                                    text: 'Minimum booking length: 1 hour ',
+                                    color: AppColors.primaryTextColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    textAlign: TextAlign.start,
+                                    top: 8,
+                                  ).start,
+                                  Text(
+                                    'Labour-only chef: groceries provided by you.',
+                                    style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.secondaryTextColor,
+                                      fontSize: 12.sp,
                                     ),
-                                  ],
-                                ),
+                                  ).start,
+                                  ExtendText(
+                                    text: chef?.about ?? '',
+                                    isExpanded: controller.isExpanded,
+                                    onTap: controller.onChangeExpand,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  CommonButton(
+                                    titleText: AppString.checkAvailability,
+                                    onTap: () {
+                                      print(
+                                        'chef id: 🤣🤣🤣🤣${controller.chefId}',
+                                      );
+                                      availabilityPopup(
+                                        context,
+                                        controller.chefId,
+                                      );
+                                    },
+                                  ),
+                                  const SizedBox(height: 16),
+                                ],
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.start,
-                            children: [
-                              CommonImage(
-                                  imageSrc: AppIcons.location),
-                              CommonText(
-                                text:
-                                controller.chefArg?.distance ??
-                                    "N/A",
-                                fontSize: 12,
-                                textAlign: TextAlign.start,
-                                left: 4,
-                                color: const Color(0xff777777),
-                              ),
-                              Container(
-                                height: 8,
-                                width: 1,
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 8),
-                                color: const Color(0xffF1F1F1),
-                              ),
-                              CommonImage(
-                                  imageSrc: AppIcons.briefcase),
-                              CommonText(
-                                text:
-                                "${chef?.experience ?? 0} years Experience",
-                                fontSize: 12,
-                                left: 4,
-                                color: const Color(0xff777777),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.start,
-                            children: [
-                              const Flexible(
-                                child: Icon(
-                                  Icons.star,
-                                  color: Color(0xffFD713F),
-                                  size: 20,
-                                ),
-                              ),
-                              Flexible(
-                                child: CommonText(
-                                  text:
-                                  "${(chef?.avgRating ?? 0).toStringAsFixed(2)} (${chef?.totalRating ?? 0} Reviews)",
-                                  fontSize: 12,
-                                  left: 4,
-                                  color: const Color(0xff777777),
-                                ),
-                              ),
-                              SizedBox(width: 4.w),
-                            ],
-                          ),
-                          ExtendText(
-                            text: chef?.about ?? "",
-                            isExpanded: controller.isExpanded,
-                            onTap: controller.onChangeExpand,
-                          ),
-                          const SizedBox(height: 16),
-                          CommonButton(
-                            titleText: AppString.checkAvailability,
-                            titleColor: Colors.white,
-                            onTap: () {
-                              print(
-                                  "chef id: 🤣🤣🤣🤣${controller.chefId}");
-                              availabilityPopup(
-                                  context, controller.chefId);
-                            },
-                          ),
-                          const SizedBox(height: 16),
-                        ],
-                      ),
-                    ),
+                            ),
                   ),
 
                   // ── Pinned Menu Title + Tab Bar ─────────────────────
@@ -363,64 +444,57 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
           ),
 
           // ── Cart bottom bar ─────────────────────────────────────────
-          bottomNavigationBar: controller.cartItems.isEmpty
-              ? null
-              : SafeArea(
-            top: false,
-            child: InkWell(
-              onTap: () => Get.toNamed(AppRoutes.cart),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  right: 16,
-                  bottom: 20,
-                ),
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.9),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(20),
+          bottomNavigationBar:
+              controller.cartItems.isEmpty
+                  ? null
+                  : SafeArea(
+                    top: false,
+                    child: InkWell(
+                      onTap: () => Get.toNamed(AppRoutes.cart),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          bottom: 20,
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          height: 60,
+                          decoration: const BoxDecoration(
+                            color: AppColors.primaryColor,
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 20,
+                                width: 20,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child:
+                                    CommonText(
+                                      text: '${controller.cartItems.length}',
+                                      fontWeight: FontWeight.w600,
+                                    ).center,
+                              ),
+                              const CommonText(
+                                text: AppString.viewCart,
+                                color: Colors.white,
+                                left: 8,
+                              ),
+                              const Spacer(),
+                              CommonText(
+                                text: '\$${pricePerChef.toStringAsFixed(2)}',
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 20,
-                        width: 20,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: CommonText(
-                          text: "${controller.cartItems.length}",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xff272727),
-                        ).center,
-                      ),
-                      CommonText(
-                        text: AppString.viewCart,
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        left: 8,
-                      ),
-                      const Spacer(),
-                      CommonText(
-                        text:
-                        "\$${pricePerChef.toStringAsFixed(2)}  •  ${chef?.estCookingTime ?? ''}",
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
         );
       },
     );
@@ -446,19 +520,15 @@ class _SearchAppBarTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: const Color(0xffF2F2F2),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         children: [
           // ── Search icon (left) ───────────────────────────────────
-          const Icon(
-            Icons.search,
-            color: Color(0xff777777),
-            size: 20,
-          ),
+          const Icon(Icons.search, color: Color(0xff777777), size: 20),
           SizedBox(width: 8.w),
 
           // ── Text field ──────────────────────────────────────────
@@ -472,7 +542,7 @@ class _SearchAppBarTitle extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
               decoration: const InputDecoration(
-                hintText: "Search menu items...",
+                hintText: 'Search menu items...',
                 hintStyle: TextStyle(
                   fontSize: 14,
                   color: Color(0xff999999),
@@ -535,7 +605,7 @@ class _CollapsedAppBarTitle extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: const Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(20),
@@ -561,7 +631,6 @@ class _CollapsedAppBarTitle extends StatelessWidget {
             ),
           ),
           SizedBox(width: 12.w),
-
           // ── Chef name + price + rating ───────────────────────────
           Expanded(
             child: Column(
@@ -570,8 +639,8 @@ class _CollapsedAppBarTitle extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 CommonText(
-                  text: chef?.name ?? "N/A",
-                  fontSize: 14.sp,
+                  text: chef?.name ?? 'N/A',
+                  fontSize: 12.sp,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xff272727),
                 ),
@@ -580,9 +649,10 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 2),
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Row(
@@ -590,8 +660,8 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                         children: [
                           SvgPicture.asset(
                             'assets/icons/price.svg',
-                            height: 12,
-                            width: 12,
+                            height: 16,
+                            width: 16,
                             colorFilter: const ColorFilter.mode(
                               Color(0xff777777),
                               BlendMode.srcIn,
@@ -600,22 +670,19 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                           const SizedBox(width: 4),
                           CommonText(
                             text:
-                            "\$${chef?.pricing?.toStringAsFixed(2) ?? '0.00'}/hr",
-                            fontSize: 11,
-                            fontWeight: FontWeight.w500,
+                                "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}/hr",
+                            fontSize: 12,
                             color: const Color(0xff555555),
-                          )
+                          ),
                         ],
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const Icon(Icons.star,
-                        size: 14, color: Color(0xffFD713F)),
+                    const Icon(Icons.star, size: 14, color: Color(0xffFD713F)),
                     const SizedBox(width: 3),
                     CommonText(
                       text: (chef?.avgRating ?? 0).toStringAsFixed(1),
                       fontSize: 12,
-                      fontWeight: FontWeight.w500,
                       color: const Color(0xff272727),
                     ),
                   ],
@@ -653,10 +720,7 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
   final List<String> sections;
   final ChefDetailsController controller;
 
-  const _MenuTabBarDelegate({
-    required this.sections,
-    required this.controller,
-  });
+  const _MenuTabBarDelegate({required this.sections, required this.controller});
 
   @override
   double get minExtent => 80;
@@ -666,7 +730,10 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     final bool isScrollable = sections.length > 2;
 
     return Container(
@@ -675,12 +742,12 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-          CommonText(
+          const CommonText(
             text: AppString.menu,
             fontSize: 16,
             left: 16,
             fontWeight: FontWeight.w600,
-            color: const Color(0xff272727),
+            color: Color(0xff272727),
           ),
           const SizedBox(height: 8),
           SizedBox(
@@ -688,41 +755,40 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
             child: TabBar(
               controller: controller.tabController,
               isScrollable: isScrollable,
-              tabAlignment: isScrollable
-                  ? TabAlignment.start
-                  : TabAlignment.fill,
+              indicatorSize: TabBarIndicatorSize.label,
+              tabAlignment:
+                  isScrollable ? TabAlignment.start : TabAlignment.fill,
               indicator: const UnderlineTabIndicator(
-                borderSide: BorderSide(
-                  width: 2.5,
-                  color: Color(0xffFD713F),
-                ),
-                insets: EdgeInsets.symmetric(horizontal: 10),
+                borderSide: BorderSide(width: 2.5, color: Color(0xffFD713F)),
               ),
               dividerColor: Colors.transparent,
               indicatorColor: Colors.transparent,
               labelPadding: const EdgeInsets.symmetric(horizontal: 16),
-              labelColor: Color(0xffFD713F),
-              unselectedLabelColor: Color(0xff777777),
-              labelStyle: const TextStyle(
+              labelColor: const Color(0xffFD713F),
+              unselectedLabelColor: const Color(0xff777777),
+              labelStyle: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
+                letterSpacing: getLetterSpacing(14, FontWeight.w500),
               ),
-              unselectedLabelStyle: const TextStyle(
+              unselectedLabelStyle: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
+                letterSpacing: getLetterSpacing(14, FontWeight.w400),
               ),
-              tabs: sections
-                  .map(
-                    (s) => Tab(
-                  child: Text(
-                    s,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              )
-                  .toList(),
+              tabs:
+                  sections
+                      .map(
+                        (s) => Tab(
+                          child: Text(
+                            s,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
+                      .toList(),
             ),
           ),
         ],

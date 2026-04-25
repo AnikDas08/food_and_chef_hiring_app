@@ -26,16 +26,16 @@ class EditMenu extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
-                    text: "Edit Item",
+                  const CommonText(
+                    text: 'Edit Item',
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     top: 24,
                     color: Color(0xff272727),
                   ),
-                  CommonText(
+                  const CommonText(
                     text:
-                    "Add your menu and items to showcase what you can cook for customers.",
+                    'Add your menu and items to showcase what you can cook for customers.',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
@@ -43,9 +43,8 @@ class EditMenu extends StatelessWidget {
                     textAlign: TextAlign.start,
                     top: 8,
                   ),
-                  CommonText(
-                    text: "Previews",
-                    fontSize: 14,
+                  const CommonText(
+                    text: 'Previews',
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                     top: 20,
@@ -56,10 +55,10 @@ class EditMenu extends StatelessWidget {
                     height: 110,
                     width: 110,
                     decoration: BoxDecoration(
-                      color: Color(0xffF2F2F2),
+                      color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(Icons.add),
+                    child: const Icon(Icons.add),
                   ),
                   const CommonText(
                     text: AppString.menuSection,
@@ -90,7 +89,6 @@ class EditMenu extends StatelessWidget {
                   CommonTextField(
                     validator: OtherHelper.validator,
                     hintText: AppString.itemName,
-                    keyboardType: TextInputType.text,
                   ),
 
                   const CommonText(
@@ -158,123 +156,117 @@ class EditMenu extends StatelessWidget {
                     keyboardType: TextInputType.number,
                   ),
 
-                  Divider(color: Color(0xffF1F1F1)),
+                  const Divider(color: Color(0xffF1F1F1)),
                   Row(
                     children: [
-                      CommonText(
+                      const CommonText(
                         text: AppString.customizeTheDish,
-                        fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff272727),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: Color(0xffF2F2F2),
+                          color: const Color(0xffF2F2F2),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Row(
+                        child: const Row(
                           children: [
                             Icon(Icons.add, size: 16),
                             CommonText(
-                              text: "Add",
+                              text: 'Add',
                               fontSize: 12,
-                              fontWeight: FontWeight.w500,
                             ),
                           ],
                         ),
                       ),
                       16.width,
-                      Icon(Icons.keyboard_arrow_up_rounded),
+                      const Icon(Icons.keyboard_arrow_up_rounded),
                     ],
                   ),
-                  Divider(color: Color(0xffF1F1F1)),
+                  const Divider(color: Color(0xffF1F1F1)),
                   12.height,
-                  dish("Without onions"),
+                  dish('Without onions'),
                   24.height,
 
-                  dish("Without iceberg lettuce"),
+                  dish('Without iceberg lettuce'),
                   24.height,
 
-                  dish("Without cheese"),
+                  dish('Without cheese'),
                   24.height,
 
-                  dish("Without Tomato"),
+                  dish('Without Tomato'),
                   24.height,
 
-                  dish("Without Bacon"),
+                  dish('Without Bacon'),
                   24.height,
 
                   Row(
                     children: [
-                      CommonText(
-                        text: "Ingredients",
-                        fontSize: 14,
+                      const CommonText(
+                        text: 'Ingredients',
                         fontWeight: FontWeight.w600,
                         color: Color(0xff272727),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: Color(0xffF2F2F2),
+                          color: const Color(0xffF2F2F2),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Row(
+                        child: const Row(
                           children: [
                             Icon(Icons.add, size: 16),
                             CommonText(
-                              text: "Add",
+                              text: 'Add',
                               fontSize: 12,
-                              fontWeight: FontWeight.w500,
                             ),
                           ],
                         ),
                       ),
                       16.width,
-                      Icon(Icons.keyboard_arrow_up_rounded),
+                      const Icon(Icons.keyboard_arrow_up_rounded),
                     ],
                   ),
-                  Divider(color: Color(0xffF1F1F1), height: 30),
+                  const Divider(color: Color(0xffF1F1F1), height: 30),
 
                   Row(
                     children: [
-                      CommonText(
-                        text: "Special Equipment",
-                        fontSize: 14,
+                      const CommonText(
+                        text: 'Special Equipment',
                         fontWeight: FontWeight.w600,
                         color: Color(0xff272727),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: Color(0xffF2F2F2),
+                          color: const Color(0xffF2F2F2),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Row(
+                        child: const Row(
                           children: [
                             Icon(Icons.add, size: 16),
                             CommonText(
-                              text: "Add",
+                              text: 'Add',
                               fontSize: 12,
-                              fontWeight: FontWeight.w500,
                             ),
                           ],
                         ),
                       ),
                       16.width,
-                      Icon(Icons.keyboard_arrow_up_rounded),
+                      const Icon(Icons.keyboard_arrow_up_rounded),
                     ],
                   ),
                   16.height,

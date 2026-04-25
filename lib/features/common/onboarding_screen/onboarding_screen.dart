@@ -50,7 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         statusBarBrightness: Brightness.light,
       ),
       child: Container(
-        color: Color(0xffF1F1F1),
+        color: const Color(0xffF1F1F1),
         child: SafeArea(
           bottom: false,
           child: Scaffold(
@@ -58,7 +58,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             body: SafeArea(
               child: Column(
                 children: [
-                  Expanded(child: OnboardingItem()),
+                  const Expanded(child: OnboardingItem()),
                   28.height,
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -70,11 +70,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                         12.height,
                         CommonButton(
-                          titleText: "I’m New, Sign Me Up",
-                          buttonColor: Color(0xffF2F2F2),
-                          borderColor: Colors.transparent,
+                          titleText: 'I’m New, Sign Me Up',
+                          buttonColor: const Color(0xffF2F2F2),
                           titleColor: Colors.black,
-                          titleSize: 16,
                           onTap: () => Get.toNamed(AppRoutes.signUp),
                         ),
                         20.height,

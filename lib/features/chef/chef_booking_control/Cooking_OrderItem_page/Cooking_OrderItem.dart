@@ -305,7 +305,7 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
                                       },
                                       loadingBuilder: (context, child, progress) {
                                         if (progress == null) return child;
-                                        return Center(
+                                        return const Center(
                                           child: CircularProgressIndicator(
                                             strokeWidth: 2,
                                             color: Color(0xFFF07B3F),
@@ -488,17 +488,17 @@ class _StopConfirmationDialog extends StatelessWidget {
                 try {
                   final timeString = _formatShort(totalTime);
                   final response = await ApiService.post(
-                    "order/clearence/$orderId",
-                    body: {"time": timeString},
+                    'order/clearence/$orderId',
+                    body: {'time': timeString},
                   );
                   if (response.statusCode == 200 || response.statusCode == 201) {
                     onConfirm();
-                    Get.snackbar("Message", "Successfully submitted cooking time",backgroundColor: Colors.green);
+                    Get.snackbar('Message', 'Successfully submitted cooking time',backgroundColor: Colors.green);
                   } else {
-                    Get.snackbar("Error", "Failed to submit cooking time");
+                    Get.snackbar('Error', 'Failed to submit cooking time');
                   }
                 } catch (e) {
-                  Get.snackbar("Error", e.toString());
+                  Get.snackbar('Error', e.toString());
                 }
               },
               child: Container(

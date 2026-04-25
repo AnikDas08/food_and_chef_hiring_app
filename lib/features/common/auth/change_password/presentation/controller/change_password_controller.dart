@@ -22,11 +22,11 @@ class ChangePasswordController extends GetxController {
     isLoading = true;
     update();
 
-    Map<String, String> body = {
-      "oldPassword": currentPasswordController.text,
-      "newPassword": newPasswordController.text,
+    final Map<String, String> body = {
+      'oldPassword': currentPasswordController.text,
+      'newPassword': newPasswordController.text,
     };
-    var response = await ApiService.patch(
+    final response = await ApiService.patch(
       ApiEndPoint.changePassword,
       body: body,
     );
@@ -40,7 +40,7 @@ class ChangePasswordController extends GetxController {
 
       Navigator.pop(Get.context!);
     } else {
-      Get.snackbar(response.statusCode.toString(), response.message);
+      Utils.errorSnackBar(response.statusCode.toString(), response.message);
     }
     isLoading = false;
     update();

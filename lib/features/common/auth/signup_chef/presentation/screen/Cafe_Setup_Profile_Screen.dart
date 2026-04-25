@@ -65,7 +65,7 @@ class _CafeSetupProfileScreenState extends State<CafeSetupProfileScreen> {
                 color: Color(0xffF6F6F6),
                 shape: BoxShape.circle,
               ),
-              child: CommonImage(
+              child: const CommonImage(
                 imageSrc: AppIcons.backIcon,
                 size: 24,
               ),
@@ -87,7 +87,7 @@ class _CafeSetupProfileScreenState extends State<CafeSetupProfileScreen> {
                     children: [
                       // Title
                       Text(
-                        "Setup Profile",
+                        'Setup Profile',
                         style: TextStyle(
                           fontSize: 26.sp,
                           fontWeight: FontWeight.w700,
@@ -99,7 +99,7 @@ class _CafeSetupProfileScreenState extends State<CafeSetupProfileScreen> {
 
                       // Subtitle
                       Text(
-                        "Set up your profile by adding your name, experience, and about yourself. This helps us personalize your experience!",
+                        'Set up your profile by adding your name, experience, and about yourself. This helps us personalize your experience!',
                         style: TextStyle(
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w400,
@@ -160,7 +160,7 @@ class _CafeSetupProfileScreenState extends State<CafeSetupProfileScreen> {
                       28.verticalSpace,
 
                       Text(
-                        "PERSONAL DETAILS",
+                        'PERSONAL DETAILS',
                         style: TextStyle(
                           fontSize: 11.sp,
                           fontWeight: FontWeight.w500,
@@ -182,26 +182,26 @@ class _CafeSetupProfileScreenState extends State<CafeSetupProfileScreen> {
                       //   val == null || val.isEmpty ? "Required" : null,
                       // ),
                       20.verticalSpace,
-                      _buildLabel("Experience"),
+                      _buildLabel('Experience'),
                       8.verticalSpace,
                       _buildTextField(
                         controller: _experienceController,
-                        hint: "Years",
+                        hint: 'Years',
                         keyboardType: TextInputType.number,
                         validator: (val) =>
-                        val == null || val.isEmpty ? "Required" : null,
+                        val == null || val.isEmpty ? 'Required' : null,
                       ),
                       20.verticalSpace,
 
                       // About
-                      _buildLabel("About"),
+                      _buildLabel('About'),
                       8.verticalSpace,
                       _buildTextField(
                         controller: _aboutController,
-                        hint: "Write something about yourself...",
+                        hint: 'Write something about yourself...',
                         maxLines: 5,
                         validator: (val) =>
-                        val == null || val.isEmpty ? "Required" : null,
+                        val == null || val.isEmpty ? 'Required' : null,
                       ),
                       32.verticalSpace,
                     ],
@@ -235,7 +235,7 @@ class _CafeSetupProfileScreenState extends State<CafeSetupProfileScreen> {
                     elevation: 0,
                   ),
                   child: Text(
-                    "Continue",
+                    'Continue',
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
@@ -309,7 +309,7 @@ class _CafeSetupProfileScreenState extends State<CafeSetupProfileScreen> {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: const BorderSide(color: Colors.red, width: 1),
+          borderSide: const BorderSide(color: Colors.red),
         ),
       ),
     );

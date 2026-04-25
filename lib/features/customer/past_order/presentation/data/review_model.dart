@@ -39,12 +39,12 @@ class ReviewModel {
   }
 
   Map<String, dynamic> toJson(String orderId) => {
-    "review": review,
-    "quality_and_taste": qualityAndTaste,
-    "cleanliness": cleanliness,
-    "timpleness": timeliness,       // keep API spelling
-    "friendliness": friendliness,
-    "communication": communication,
-    "order_id": orderId,
+    'review': review,
+    'quality_and_taste': qualityAndTaste,
+    'cleanliness': cleanliness,
+    'timpleness': timeliness,       // keep API spelling
+    'friendliness': friendliness,
+    'communication': communication,
+    'order_id': orderId,
   };
 }

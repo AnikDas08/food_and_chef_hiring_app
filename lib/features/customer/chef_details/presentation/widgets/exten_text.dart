@@ -43,7 +43,6 @@ class ExtendText extends StatelessWidget {
                 text: text,
                 fontSize: 12,
                 maxLines: isExpanded ? 100 : 2,
-                overflow: TextOverflow.ellipsis,
                 fontWeight: FontWeight.w400,
                 color: const Color(0xff272727),
                 textAlign: TextAlign.start, // টেক্সট নিজের ভেতর বামে থাকবে
@@ -59,10 +58,9 @@ class ExtendText extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 4.0),
                       child: CommonText(
-                        text: isExpanded ? "Read less" : "Read more",
+                        text: isExpanded ? 'Read less' : 'Read more',
                         color: const Color(0xffFD713F),
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),

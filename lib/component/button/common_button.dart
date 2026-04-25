@@ -1,8 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
-
-import '../other_widgets/common_loader.dart';
 import '../text/common_text.dart';
 
 class CommonButton extends StatefulWidget {
@@ -24,7 +22,7 @@ class CommonButton extends StatefulWidget {
     required this.titleText,
     this.titleColor = AppColors.white,
     this.buttonColor = AppColors.primaryColor,
-    this.titleSize = 16,
+    this.titleSize = 14,
     this.buttonRadius = 20,
     this.titleWeight = FontWeight.w500,
     this.buttonHeight = 60,
@@ -47,8 +45,7 @@ class _CommonButtonState extends State<CommonButton>
   void initState() {
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 100),
-      lowerBound: 0.0,
+      duration: const Duration(milliseconds: 100),
       upperBound: 0.15,
     )..addListener(() {
       setState(() {});
@@ -59,8 +56,8 @@ class _CommonButtonState extends State<CommonButton>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: widget.buttonHeight.h,
-      width: widget.buttonWidth.w,
+      height: widget.buttonHeight,
+      width: widget.buttonWidth,
       child: _buildElevatedButton(),
     );
   }
@@ -93,7 +90,7 @@ class _CommonButtonState extends State<CommonButton>
       padding: WidgetStateProperty.all(EdgeInsets.zero),
       shape: WidgetStateProperty.all(
         RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(widget.buttonRadius.r),
+          borderRadius: BorderRadius.circular(widget.buttonRadius),
           side: BorderSide(
             color: widget.borderColor ?? Colors.transparent,
             width: widget.borderWidth,
@@ -105,33 +102,34 @@ class _CommonButtonState extends State<CommonButton>
   }
 
   Widget _buildLoader() {
-    return CommonLoader(size: widget.buttonHeight - 12);
+    return Center(
+      child: CupertinoActivityIndicator(
+        color: widget.titleColor,
+      ),
+    );
   }
 
   Widget _buildText() {
     return CommonText(
       text: widget.titleText,
-      maxLines: 1,
       height: 1.3,
-      overflow: TextOverflow.ellipsis,
-      textAlign: TextAlign.center,
       fontSize: widget.titleSize,
       color: widget.titleColor,
       fontWeight: widget.titleWeight,
     );
   }
 
-  _onTapDown(TapDownDetails details) {
+  void _onTapDown(TapDownDetails details) {
     if (widget.onTap == null) return;
     _animationController.forward();
   }
 
-  _onTapUp(TapUpDetails details) {
+  void _onTapUp(TapUpDetails details) {
     if (widget.onTap == null) return;
     _animationController.reverse();
   }
 
-  _onTapCancel() {
+  void _onTapCancel() {
     if (widget.onTap == null) return;
     _animationController.reverse();
   }

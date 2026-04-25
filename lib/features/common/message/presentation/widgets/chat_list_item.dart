@@ -8,7 +8,7 @@ import '../../../../../utils/extensions/extension.dart';
 Widget chatListItem({required ChatModel item}) {
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
-    margin: EdgeInsets.only(bottom: 10),
+    margin: const EdgeInsets.only(bottom: 10),
     decoration: const BoxDecoration(
       color: Color(0xffF2F2F2),
       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -35,8 +35,7 @@ Widget chatListItem({required ChatModel item}) {
               CommonText(
                 text: item.participant.fullName,
                 fontWeight: FontWeight.w600,
-                fontSize: 14,
-                color: Color(0xff272727),
+                color: const Color(0xff272727),
               ),
 
               /// participant Last Message here
@@ -44,7 +43,7 @@ Widget chatListItem({required ChatModel item}) {
                 text: item.latestMessage.displayMessage,  // ← was .message
                 fontWeight: FontWeight.w400,
                 fontSize: 12,
-                color: Color(0xff777777),
+                color: const Color(0xff777777),
               ),
             ],
           ),
@@ -57,13 +56,13 @@ Widget chatListItem({required ChatModel item}) {
               text: item.latestMessage.createdAt.time,
               fontSize: 12,
               fontWeight: FontWeight.w400,
-              color: Color(0xff272727),
+              color: const Color(0xff272727),
               bottom: 8,
             ),
             Container(
               width: 8.sp,
               height: 8.sp,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xffFD713F),
                 shape: BoxShape.circle,
               ),

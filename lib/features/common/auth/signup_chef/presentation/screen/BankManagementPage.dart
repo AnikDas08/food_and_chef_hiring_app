@@ -15,7 +15,7 @@ class BankManagementController extends GetxController {
         body: {},
       ).timeout(
         const Duration(seconds: 15),
-        onTimeout: () => throw Exception("Request timed out. Please try again."),
+        onTimeout: () => throw Exception('Request timed out. Please try again.'),
       );
 
       if (response.statusCode == 200 && response.data['success'] == true) {
@@ -31,21 +31,21 @@ class BankManagementController extends GetxController {
         if (stripeUrl != null && stripeUrl.isNotEmpty) {
           Get.to(() => StripeWebViewPage(url: stripeUrl!));
         } else {
-          Get.snackbar("Error", "Invalid URL",
+          Get.snackbar('Error', 'Invalid URL',
               backgroundColor: Colors.red, colorText: Colors.white);
         }
       } else {
         Get.snackbar(
-          "Error",
-          response.data['message']?.toString() ?? "Something went wrong",
+          'Error',
+          response.data['message']?.toString() ?? 'Something went wrong',
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
       }
     } catch (e) {
       Get.snackbar(
-        "Error",
-        e.toString().replaceAll("Exception: ", ""),
+        'Error',
+        e.toString().replaceAll('Exception: ', ''),
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
@@ -114,7 +114,7 @@ class _StripeWebViewPageState extends State<StripeWebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Connect Bank Account"),
+        title: const Text('Connect Bank Account'),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
@@ -133,7 +133,7 @@ class _StripeWebViewPageState extends State<StripeWebViewPage> {
                     CircularProgressIndicator(color: Color(0xff1A1A1A)),
                     SizedBox(height: 16),
                     Text(
-                      "Connecting to Stripe...",
+                      'Connecting to Stripe...',
                       style: TextStyle(
                         fontSize: 14,
                         color: Color(0xffAAAAAA),
@@ -153,7 +153,7 @@ class _StripeWebViewPageState extends State<StripeWebViewPage> {
                     const Icon(Icons.wifi_off_rounded, size: 52, color: Color(0xffCCCCCC)),
                     const SizedBox(height: 16),
                     const Text(
-                      "Connection failed",
+                      'Connection failed',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -162,7 +162,7 @@ class _StripeWebViewPageState extends State<StripeWebViewPage> {
                     ),
                     const SizedBox(height: 6),
                     const Text(
-                      "Please check your internet\nand try again.",
+                      'Please check your internet\nand try again.',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 13, color: Color(0xffAAAAAA)),
                     ),
@@ -181,7 +181,7 @@ class _StripeWebViewPageState extends State<StripeWebViewPage> {
                             horizontal: 32, vertical: 14),
                       ),
                       child: const Text(
-                        "Try Again",
+                        'Try Again',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -234,7 +234,7 @@ class BankManagementPage extends StatelessWidget {
 
         // 📝 Title
         title: const Text(
-          "Bank Management",
+          'Bank Management',
           style: TextStyle(
             color: Color(0xff1A1A1A),
             fontSize: 18,
@@ -253,7 +253,7 @@ class BankManagementPage extends StatelessWidget {
 
               // ── Subtitle ──
               const Text(
-                "Connect your bank account\nto receive payments.",
+                'Connect your bank account\nto receive payments.',
                 style: TextStyle(
                   fontSize: 14,
                   color: Color(0xff888888),
@@ -300,7 +300,7 @@ class BankManagementPage extends StatelessWidget {
                     const SizedBox(height: 16),
 
                     const Text(
-                      "Link Your Bank",
+                      'Link Your Bank',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
@@ -312,7 +312,7 @@ class BankManagementPage extends StatelessWidget {
                     const SizedBox(height: 6),
 
                     const Text(
-                      "Securely connect via Stripe to\nstart receiving payments.",
+                      'Securely connect via Stripe to\nstart receiving payments.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 13,
@@ -327,14 +327,14 @@ class BankManagementPage extends StatelessWidget {
                     const SizedBox(height: 12),
                     _featureTile(
                       icon: Icons.bolt_rounded,
-                      title: "Instant Payouts",
-                      subtitle: "Get paid within minutes",
+                      title: 'Instant Payouts',
+                      subtitle: 'Get paid within minutes',
                     ),
                     const SizedBox(height: 12),
                     _featureTile(
                       icon: Icons.tune_rounded,
-                      title: "Easy Management",
-                      subtitle: "Full control over transfers",
+                      title: 'Easy Management',
+                      subtitle: 'Full control over transfers',
                     ),
                   ],
                 ),
@@ -365,7 +365,7 @@ class BankManagementPage extends StatelessWidget {
                         color: Colors.white, strokeWidth: 2.5),
                   )
                       : const Text(
-                    "Connect Bank Account",
+                    'Connect Bank Account',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
@@ -380,7 +380,7 @@ class BankManagementPage extends StatelessWidget {
                   ? const Padding(
                 padding: EdgeInsets.only(top: 12),
                 child: Text(
-                  "Setting up your account...",
+                  'Setting up your account...',
                   style: TextStyle(fontSize: 12, color: Color(0xffAAAAAA)),
                 ),
               )
@@ -389,14 +389,14 @@ class BankManagementPage extends StatelessWidget {
               const SizedBox(height: 14),
 
               // ── Stripe badge ──
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.verified_outlined,
+                  Icon(Icons.verified_outlined,
                       size: 14, color: Color(0xffBBBBBB)),
-                  const SizedBox(width: 5),
-                  const Text(
-                    "Secured by Stripe",
+                  SizedBox(width: 5),
+                  Text(
+                    'Secured by Stripe',
                     style: TextStyle(
                       fontSize: 12,
                       color: Color(0xffBBBBBB),

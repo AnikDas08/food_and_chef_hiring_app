@@ -34,7 +34,7 @@ class MenuScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Menu",
+                    'Menu',
                     style: TextStyle(
                       fontSize: 18.sp,
                       fontWeight: FontWeight.w700,
@@ -58,7 +58,7 @@ class MenuScreen extends StatelessWidget {
                       child: Row(children: [
                         Icon(Icons.add, size: 14.sp, color: const Color(0xFF272727)),
                         4.horizontalSpace,
-                        Text("Add Item",
+                        Text('Add Item',
                             style: TextStyle(
                                 fontSize: 13.sp,
                                 fontWeight: FontWeight.w600,
@@ -70,7 +70,7 @@ class MenuScreen extends StatelessWidget {
               ),
             ),
 
-            Divider(color: const Color(0xFFF1F1F1), height: 1),
+            const Divider(color: Color(0xFFF1F1F1), height: 1),
 
             Expanded(
               child: c.isLoadingMenu.value
@@ -85,7 +85,7 @@ class MenuScreen extends StatelessWidget {
                       Icon(Icons.restaurant_menu, size: 48.sp, color: const Color(0xFFCCCCCC)),
                       16.verticalSpace,
                       Text(
-                        "No menu items yet.\nAdd your first item!",
+                        'No menu items yet.\nAdd your first item!',
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 14.sp, color: const Color(0xFF999999), height: 1.6),
                       ),
@@ -130,18 +130,18 @@ class MenuScreen extends StatelessWidget {
                     context: context,
                     builder: (_) => AlertDialog(
                       backgroundColor: Colors.white,
-                      title: Text("Add Menu Section",
+                      title: Text('Add Menu Section',
                           style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
                       content: TextField(
                         controller: ctrl,
                         autofocus: true,
                         decoration: InputDecoration(
-                          hintText: "Enter Starters Desserts",
+                          hintText: 'Enter Starters Desserts',
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
                         ),
                       ),
                       actions: [
-                        TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
+                        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
                         TextButton(
                           onPressed: () async {
                             Navigator.of(context).pop();
@@ -149,7 +149,7 @@ class MenuScreen extends StatelessWidget {
                               await c.addMenuSection(ctrl.text.trim());
                             }
                           },
-                          child: const Text("Add", style: TextStyle(color: Color(0xFF1C1C1C))),
+                          child: const Text('Add', style: TextStyle(color: Color(0xFF1C1C1C))),
                         ),
                       ],
                     ),
@@ -160,15 +160,15 @@ class MenuScreen extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(vertical: 14.h),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF0F0F0),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFF0F0F0),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.add, size: 16.sp, color: const Color(0xFF272727)),
                         6.horizontalSpace,
-                        Text("Add Menu Section",
+                        Text('Add Menu Section',
                             style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w600,
@@ -213,14 +213,14 @@ class _MenuCard extends StatelessWidget {
                   Row(children: [
                     Icon(Icons.restaurant_menu, size: 13.sp, color: const Color(0xFF777777)),
                     4.horizontalSpace,
-                    Text("Ingredients: ${item.ingredients.length} items",
+                    Text('Ingredients: ${item.ingredients.length} items',
                         style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777))),
                   ]),
                   4.verticalSpace,
                   Row(children: [
                     Icon(Icons.access_time, size: 13.sp, color: const Color(0xFF777777)),
                     4.horizontalSpace,
-                    Text("Cooking: ${item.estCookingTime}",
+                    Text('Cooking: ${item.estCookingTime}',
                         style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777))),
                   ]),
                   12.verticalSpace,
@@ -244,7 +244,7 @@ class _MenuCard extends StatelessWidget {
                           child: Row(children: [
                             Icon(Icons.edit_outlined, size: 13.sp, color: const Color(0xFF272727)),
                             4.horizontalSpace,
-                            Text("Edit Item",
+                            Text('Edit Item',
                                 style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500, color: const Color(0xFF272727))),
                           ]),
                         ),
@@ -277,7 +277,7 @@ class _MenuCard extends StatelessWidget {
                 ? Image.network(
               item.images.first.startsWith('http')
                   ? item.images.first
-                  : "${ApiEndPoint.imageUrl}${item.images.first}",
+                  : '${ApiEndPoint.imageUrl}${item.images.first}',
               width: 110.w, height: 130.h, fit: BoxFit.cover,
               loadingBuilder: (_, child, loadingProgress) {
                 if (loadingProgress == null) return child;

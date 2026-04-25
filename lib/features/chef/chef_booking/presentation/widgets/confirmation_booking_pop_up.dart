@@ -10,7 +10,7 @@ import '../../../../../component/button/common_button.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
-confirmBookingPopUp({required String orderMongoId}) {
+void confirmBookingPopUp({required String orderMongoId}) {
   showDialog(
     context: Get.context!,
     builder: (_) {
@@ -23,30 +23,28 @@ confirmBookingPopUp({required String orderMongoId}) {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CommonImage(imageSrc: AppImages.warning, size: 88),
-                CommonText(
+                const CommonImage(imageSrc: AppImages.warning, size: 88),
+                const CommonText(
                   text: AppString.customersAreBusyToo,
                   fontSize: 16,
                   top: 16,
                   bottom: 8,
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xff272727),
+                  color: Color(0xff272727),
                 ),
-                CommonText(
+                const CommonText(
                   text: AppString.pleaseAcceptOrDeclineTheOrder,
                   fontSize: 12,
                   bottom: 32,
                   fontWeight: FontWeight.w400,
-                  color: const Color(0xff777777),
+                  color: Color(0xff777777),
                   maxLines: 5,
                 ),
 
                 CommonButton(
                   titleText: AppString.accept,
                   buttonHeight: 48,
-                  titleSize: 16,
                   buttonRadius: 16,
-                  titleColor: const Color(0xffFFFFFF),
                   onTap: () async {
 
                     if (Get.isDialogOpen == true) Navigator.pop(Get.context!);
@@ -73,13 +71,13 @@ confirmBookingPopUp({required String orderMongoId}) {
                         successBookingPopUp();
                       } else {
                         Get.snackbar(
-                          "Error",
-                          res.data['message']?.toString() ?? "Something went wrong",
+                          'Error',
+                          res.data['message']?.toString() ?? 'Something went wrong',
                         );
                       }
                     } catch (e) {
                       if (Get.isDialogOpen == true) Navigator.pop(Get.context!);
-                      Get.snackbar("Error", "Something went wrong");
+                      Get.snackbar('Error', 'Something went wrong');
                     }
                   },
                 ),
@@ -89,10 +87,8 @@ confirmBookingPopUp({required String orderMongoId}) {
                 CommonButton(
                   titleText: AppString.decline,
                   buttonHeight: 48,
-                  titleSize: 16,
                   buttonRadius: 16,
                   buttonColor: const Color(0xffF2F2F2),
-                  borderColor: Colors.transparent,
                   titleColor: const Color(0xff777777),
                   onTap: () async {
 

@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:new_untitled/component/image/common_image.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../component/text_field/common_text_field.dart';
@@ -22,34 +22,16 @@ class CreatePassword extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           appBar: AppBar(
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
             backgroundColor: Colors.transparent,
             elevation: 0,
-            automaticallyImplyLeading: false,
-            leadingWidth: 60,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: Color(0xffF6F6F6),
-                    shape: BoxShape.circle,
-                  ),
-                  child: CommonImage(
-                    imageSrc: AppIcons.backIcon,
-                    size: 24,
-                  ),
-                ),
-              ),
-            ),
+            flexibleSpace: appBarOpacity(),
           ),
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -105,7 +87,7 @@ class CreatePassword extends StatelessWidget {
             ),
           ),
           bottomNavigationBar: Padding(
-            padding: EdgeInsets.only(bottom: 40, left: 20, right: 20),
+            padding: const EdgeInsets.only(bottom: 40, left: 20, right: 20),
             child: SafeArea(
               child: CommonButton(
                 titleText: AppString.confirm,

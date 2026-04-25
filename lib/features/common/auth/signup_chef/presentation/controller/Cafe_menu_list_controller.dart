@@ -28,16 +28,16 @@ class CafeMenuListController extends GetxController {
 
   final sections = <CafeMenuSection>[
     CafeMenuSection(
-      title: "STARTERS",
+      title: 'STARTERS',
       items: [
-        CafeMenuItem(name: "Quesadilla", ingredients: 10, cookingMinutes: 40),
+        CafeMenuItem(name: 'Quesadilla', ingredients: 10, cookingMinutes: 40),
       ],
     ),
     CafeMenuSection(
-      title: "MAIN COURSE",
+      title: 'MAIN COURSE',
       items: [
-        CafeMenuItem(name: "Salisbury Ground Beef", ingredients: 12, cookingMinutes: 30),
-        CafeMenuItem(name: "Lemon Chicken", ingredients: 10, cookingMinutes: 20),
+        CafeMenuItem(name: 'Salisbury Ground Beef', ingredients: 12, cookingMinutes: 30),
+        CafeMenuItem(name: 'Lemon Chicken', ingredients: 10, cookingMinutes: 20),
       ],
     ),
   ].obs;

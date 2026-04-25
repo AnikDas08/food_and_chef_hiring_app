@@ -18,7 +18,7 @@ class DoNotHaveAccount extends StatelessWidget {
           TextSpan(
             text: AppString.doNotHaveAccount,
             style: TextStyle(
-              color: Color(0xff818181),
+              color: const Color(0xff818181),
               fontSize: 12.sp,
               fontWeight: FontWeight.w400,
             ),
@@ -33,7 +33,7 @@ class DoNotHaveAccount extends StatelessWidget {
                     Get.toNamed(AppRoutes.signUp);
                   },
             style: TextStyle(
-              color: Color(0xff272727),
+              color: const Color(0xff272727),
               fontSize: 12.sp,
               fontWeight: FontWeight.w400,
             ),

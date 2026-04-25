@@ -13,7 +13,7 @@ class ResendOtp extends StatelessWidget {
       TextSpan(
         children: [
           /// Already Have Account
-          TextSpan(
+          const TextSpan(
             text: AppString.didNotReceiveTheCode,
             style: TextStyle(
               color: Color(0xff818181),
@@ -30,7 +30,7 @@ class ResendOtp extends StatelessWidget {
                   ..onTap = () {
                     // Get.toNamed(AppRoutes.signIn);
                   },
-            style: TextStyle(
+            style: const TextStyle(
               color: Color(0xff272727),
               fontWeight: FontWeight.w500,
               fontSize: 12

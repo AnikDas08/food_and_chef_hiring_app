@@ -26,26 +26,12 @@ class ChefPaymentScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         leadingWidth: 60,
 
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
-                shape: BoxShape.circle,
-              ),
-              child: CommonImage(
-                imageSrc: AppIcons.backIcon,
-                size: 24,
-              ),
-            ),
-          ),
-        ),
 
-        title: const CommonText(text: "Payment"),
 
+        // 📝 Title
+        title: const CommonText(text: 'Payment'),
+
+        // ⚙️ Settings Button
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
@@ -76,7 +62,7 @@ class ChefPaymentScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: [
-                  CommonImage(
+                  const CommonImage(
                     imageSrc: AppImages.paymentCard,
                     height: 180,
                     fill: BoxFit.fill,
@@ -85,14 +71,13 @@ class ChefPaymentScreen extends StatelessWidget {
                   Row(
                     children: [
                       Checkbox(
-                        activeColor: Color(0xffFD713F),
+                        activeColor: const Color(0xffFD713F),
                         value: controller.isMainAccount,
                         onChanged: controller.onChangeMainAccount,
                       ),
-                      CommonText(
-                        text: "Make it the main account",
+                      const CommonText(
+                        text: 'Make it the main account',
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
                         color: Color(0xff272727),
                       ),
                     ],
@@ -101,8 +86,7 @@ class ChefPaymentScreen extends StatelessWidget {
                   28.height,
 
                   CommonButton(
-                    titleText: "Add New Account",
-                    titleSize: 14,
+                    titleText: 'Add New Account',
 
                     onTap: () => Get.toNamed(AppRoutes.addPaymentMethod),
                   ),
@@ -115,13 +99,12 @@ class ChefPaymentScreen extends StatelessWidget {
                         child: InkWell(
                           onTap: () => Get.toNamed(AppRoutes.withdraw),
                           child: Container(
-                            padding: EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Color(0xffF2F2F2),
+                              color: const Color(0xffF2F2F2),
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 CommonImage(
@@ -130,7 +113,7 @@ class ChefPaymentScreen extends StatelessWidget {
                                   width: 20,
                                 ),
                                 CommonText(
-                                  text: "Withdraw",
+                                  text: 'Withdraw',
                                   left: 8,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xff272727),
@@ -145,13 +128,12 @@ class ChefPaymentScreen extends StatelessWidget {
                         child: InkWell(
                           onTap: () => Get.toNamed(AppRoutes.history),
                           child: Container(
-                            padding: EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Color(0xffF2F2F2),
+                              color: const Color(0xffF2F2F2),
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 CommonImage(
@@ -160,7 +142,7 @@ class ChefPaymentScreen extends StatelessWidget {
                                   width: 20,
                                 ),
                                 CommonText(
-                                  text: "History",
+                                  text: 'History',
                                   left: 8,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xff272727),
@@ -180,8 +162,8 @@ class ChefPaymentScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CommonText(
-                        text: "Enable automatic payments",
+                      const CommonText(
+                        text: 'Enable automatic payments',
                         fontWeight: FontWeight.w600,
                         color: Color(0xff272727),
                       ),
@@ -190,7 +172,7 @@ class ChefPaymentScreen extends StatelessWidget {
                             () => switchButton(
                           value: controller.isAutoPayment.value,
                           onTap: () => controller.autoPaymentToggle(),
-                          color: Color(0xffFD713F),
+                          color: const Color(0xffFD713F),
                         ),
                       ),
                     ],
@@ -199,18 +181,18 @@ class ChefPaymentScreen extends StatelessWidget {
                   24.height,
 
                   Container(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Color(0xffF2F2F2),
+                      color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: Row(
+                    child: const Row(
                       children: [
                         Icon(Icons.info_outline, color: Color(0xffFD713F)),
                         Expanded(
                           child: CommonText(
                             text:
-                                "The process will be done automatically once the amount reaches \$100.",
+                                'The process will be done automatically once the amount reaches \$100.',
                             fontWeight: FontWeight.w600,
                             color: Color(0xffFD713F),
                             fontSize: 12,

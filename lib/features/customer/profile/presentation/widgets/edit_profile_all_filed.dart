@@ -31,7 +31,6 @@ class EditProfileAllFiled extends StatelessWidget {
           controller: controller.nameController,
           validator: OtherHelper.validator,
           hintText: AppString.fullName,
-          keyboardType: TextInputType.text,
         ),
 
         // ── Phone Number ──────────────────────────────────────────────────
@@ -136,8 +135,7 @@ class EditProfileAllFiled extends StatelessWidget {
 
         // ── Account Action ────────────────────────────────────────────────
         const CommonText(
-          text: "ACCOUNT ACTION",
-          fontWeight: FontWeight.w500,
+          text: 'ACCOUNT ACTION',
           fontSize: 12,
           color: Color(0xff777777),
           top: 28,

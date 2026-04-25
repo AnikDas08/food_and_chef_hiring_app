@@ -43,10 +43,9 @@ Widget category() {
 
                   /// Name
                   CommonText(
-                    text: item.name ?? "",
+                    text: item.name ?? '',
                     fontSize: 12,
                     color: const Color(0xff222222),
-                    fontWeight: FontWeight.w500,
                     top: 8,
                   ),
                 ],

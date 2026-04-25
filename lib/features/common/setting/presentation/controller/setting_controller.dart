@@ -14,13 +14,13 @@ class SettingController extends GetxController {
   bool isLoading = false;
 
   /// account delete api call here
-  deleteAccountRepo() async {
+  Future<void> deleteAccountRepo() async {
     isLoading = true;
     update();
 
-    var body = {"password": passwordController.text};
+    final body = {'password': passwordController.text};
 
-    var response = await ApiService.delete(ApiEndPoint.user, body: body);
+    final response = await ApiService.delete(ApiEndPoint.user, body: body);
 
     if (response.statusCode == 200) {
       Get.offAllNamed(AppRoutes.signIn);

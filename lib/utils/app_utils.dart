@@ -1,22 +1,22 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'constants/app_colors.dart';
 
 class Utils {
-  static successSnackBar(String title, String message) {
+  static void successSnackBar(String title, String message) {
     Get.snackbar(
       title,
       message,
-      colorText: AppColors.white,
-      backgroundColor: AppColors.black,
-      snackPosition: SnackPosition.BOTTOM,
+      margin: EdgeInsets.symmetric(horizontal: 16.w),
     );
   }
 
-  static errorSnackBar(dynamic title, String message) {
+  static void errorSnackBar(dynamic title, String message) {
     Get.snackbar(
-      kDebugMode ? title.toString() : "Oops",
+      kDebugMode ? title.toString() : 'Oops',
       message,
       colorText: AppColors.white,
       backgroundColor: AppColors.red,

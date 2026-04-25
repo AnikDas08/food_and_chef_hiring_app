@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/utils/constants/app_colors.dart';
 import '../controller/dietary_controller.dart';
 import 'dietary_save_screen.dart';
 
@@ -38,11 +40,11 @@ class _DietaryScreenState extends State<DietaryScreen> {
           backgroundColor: Colors.white,
           appBar: AppBar(
             elevation: 0,
-            backgroundColor: Colors.white,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.black, size: 20),
-              onPressed: () => Navigator.pop(context),
+            backgroundColor: Colors.transparent,
+            title: const CommonText(
+              text: 'Dietary Restrictions',
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
             ),
           ),
           body: Padding(
@@ -52,17 +54,11 @@ class _DietaryScreenState extends State<DietaryScreen> {
               children: [
                 SizedBox(height: 8.h),
 
-                CommonText(text: "Dietary Restrictions & Allergies",fontSize: 24,fontWeight: FontWeight.w600,color: Color(0xff272727),maxLines: 2,textAlign: TextAlign.start,),
                 SizedBox(height: 6.h),
-                /*const Text(
-                  'Vegetarian? Kosher? Halal? Food allergies? Enter the details below.',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Color(0xff777777),
-                  ),
-                ),*/
-                CommonText(
-                  text: "Vegetarian? Kosher? Halal? Food allergies? Enter the details below.",
+
+                const CommonText(
+                  text:
+                      'Vegetarian? Kosher? Halal? Food allergies? Enter the details below.',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff777777),
@@ -75,28 +71,30 @@ class _DietaryScreenState extends State<DietaryScreen> {
                 Expanded(
                   child: Obx(() {
                     if (controller.isLoadingDietary.value) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(child: CupertinoActivityIndicator());
                     }
 
                     final grouped = controller.groupedSavedItems;
 
                     if (grouped.isEmpty) {
-                      return Center(
+                      return const Center(
                         child: CommonText(
-                          text: 'No dietary preferences saved yet.\nTap Edit to add some.',
-                          fontSize: 13,
-                          color: const Color(0xff777777),
+                          text:
+                              'No dietary preferences saved yet.\nTap Edit to add some.',
+                          fontSize: 12,
+                          color: AppColors.grey,
                         ),
                       );
                     }
 
                     return ListView(
-                      children: grouped.entries.map((entry) {
-                        return _CategorySection(
-                          title: entry.key,
-                          items: entry.value,
-                        );
-                      }).toList(),
+                      children:
+                          grouped.entries.map((entry) {
+                            return _CategorySection(
+                              title: entry.key,
+                              items: entry.value,
+                            );
+                          }).toList(),
                     );
                   }),
                 ),
@@ -131,19 +129,11 @@ class _CategorySection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        /*Text(
-          title,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Color(0xff272727),
-          ),
-        ),*/
         CommonText(
           text: title,
-          fontSize: 14,
           fontWeight: FontWeight.w600,
-          color: Color(0xff1F1F1F),
+          color: const Color(0xff1F1F1F),
+          fontSize: 16,
           maxLines: 2,
           textAlign: TextAlign.start,
         ),
@@ -174,21 +164,12 @@ class _Chip extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: /*Text(
-        label,
-        style: const TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
-          // Changed to white text
-          color: Colors.white,
-        ),
-      ),*/
-      CommonText(
-          text: label,
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: Color(0xffFFFFFF),
 
-      )
+      ),*/ CommonText(
+        text: label,
+        fontSize: 12,
+        color: const Color(0xffFFFFFF),
+      ),
     );
   }
 }

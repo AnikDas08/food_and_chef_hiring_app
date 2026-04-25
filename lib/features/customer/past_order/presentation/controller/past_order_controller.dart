@@ -64,7 +64,7 @@ class PastOrderController extends GetxController {
         _totalPage = result.pagination.totalPage;
       }
     } catch (_) {
-      Get.snackbar("Error", "Failed to load orders",
+      Get.snackbar('Error', 'Failed to load orders',
           snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading = false;
@@ -115,13 +115,13 @@ class PastOrderController extends GetxController {
       } else {
         isLoadingDetail = false;
         update();
-        Get.snackbar("Error", "Failed to load order details",
+        Get.snackbar('Error', 'Failed to load order details',
             snackPosition: SnackPosition.BOTTOM);
       }
     } catch (_) {
       isLoadingDetail = false;
       update();
-      Get.snackbar("Error", "Something went wrong",
+      Get.snackbar('Error', 'Something went wrong',
           snackPosition: SnackPosition.BOTTOM);
     }
   }

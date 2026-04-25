@@ -13,7 +13,7 @@ class GroceryController extends GetxController {
   var availableOrders = <Map<String, dynamic>>[].obs;
   var basketItems = <Map<String, dynamic>>[].obs;
   var selectedOrderIds = <String>[].obs;
-  var selectedPartner = "".obs;
+  var selectedPartner = ''.obs;
   var isBack=false;
 
   @override
@@ -38,20 +38,20 @@ class GroceryController extends GetxController {
   Future<void> fetchAllOrders() async {
     try {
       // 1. Fetch data from API
-      final response = await ApiService.get("order?limit=50");
+      final response = await ApiService.get('order?limit=50');
       if (response.statusCode == 200) {
-        List allData = response.data['data'] ?? [];
+        final List allData = response.data['data'] ?? [];
 
         // 2. Apply BOTH filters at once
         final filteredList = allData.where((order) {
           // A. Check Status first
           final status = order['status']?.toString();
-          bool isCorrectStatus = (status == "Confirm" || status == "Completed");
+          final bool isCorrectStatus = (status == 'Confirm' || status == 'Completed');
 
           // B. Check History for "Groceries Ordered"
           final List history = order['history'] as List? ?? [];
-          bool alreadyOrderedGroceries = history.any((entry) =>
-          entry['type'] == "Groceries Ordered"
+          final bool alreadyOrderedGroceries = history.any((entry) =>
+          entry['type'] == 'Groceries Ordered'
           );
 
           // Return true ONLY if it has the right status AND hasn't been ordered yet
@@ -62,7 +62,7 @@ class GroceryController extends GetxController {
         availableOrders.value = filteredList.cast<Map<String, dynamic>>();
       }
     } catch (e) {
-      debugPrint("Orders Fetch Error: $e");
+      debugPrint('Orders Fetch Error: $e');
     }
   }
 
@@ -74,8 +74,8 @@ class GroceryController extends GetxController {
       final List history = order['history'] as List? ?? [];
 
       // We check if "Groceries Ordered" exists in the history
-      bool hasGroceriesOrdered = history.any((entry) =>
-      entry['type'] == "Groceries Ordered"
+      final bool hasGroceriesOrdered = history.any((entry) =>
+      entry['type'] == 'Groceries Ordered'
       );
 
       // Return true ONLY if it DOES NOT have "Groceries Ordered"
@@ -92,10 +92,10 @@ class GroceryController extends GetxController {
     }
     isIngredientsLoading.value = true;
     try {
-      String queryString = selectedOrderIds.map((id) => "orderId[]=$id").join("&");
-      final response = await ApiService.get("cart/ingradients?$queryString");
+      final String queryString = selectedOrderIds.map((id) => 'orderId[]=$id').join('&');
+      final response = await ApiService.get('cart/ingradients?$queryString');
       if (response.statusCode == 200) {
-        List rawIngs = response.data['data'] ?? [];
+        final List rawIngs = response.data['data'] ?? [];
         basketItems.value = rawIngs.map((e) => {
           'id': e['_id'],
           'name': e['name'],
@@ -105,7 +105,7 @@ class GroceryController extends GetxController {
         }).toList();
       }
     } catch (e) {
-      debugPrint("Ingredients API Error: $e");
+      debugPrint('Ingredients API Error: $e');
     } finally {
       isIngredientsLoading.value = false;
     }
@@ -127,31 +127,31 @@ class GroceryController extends GetxController {
 
   // YOUR ORIGINAL LOGIC: Triggered when icon is clicked
   Future<void> createInstacartLink() async {
-    List selectedPayload = basketItems
+    final List selectedPayload = basketItems
         .where((item) => item['isSelected'] == true)
         .map((item) => {
-      "name": item['name'],
-      "quantity": item['items'].toString(),
-      "unit": item['unit'],
-      "_id": item['id'],
+      'name': item['name'],
+      'quantity': item['items'].toString(),
+      'unit': item['unit'],
+      '_id': item['id'],
     }).toList();
 
     if (selectedPayload.isEmpty) {
-      Get.snackbar("Basket Empty", "Please select ingredients first.");
+      Get.snackbar('Basket Empty', 'Please select ingredients first.');
       return;
     }
 
     isInstacartLoading.value = true;
     try {
-      final response = await ApiService.post("cart/instacart-link",
-          body: {"items": selectedPayload});
+      final response = await ApiService.post('cart/instacart-link',
+          body: {'items': selectedPayload});
 
       if (response.statusCode == 200 && response.data['success']) {
-        String url = response.data['data']['products_link_url'];
+        final String url = response.data['data']['products_link_url'];
         await _launchBrowser(url);
       }
     } catch (e) {
-      debugPrint("Instacart Link Error: $e");
+      debugPrint('Instacart Link Error: $e');
     } finally {
       isInstacartLoading.value = false;
     }
@@ -160,7 +160,7 @@ class GroceryController extends GetxController {
   Future<void> _launchBrowser(String urlString) async {
     final Uri url = Uri.parse(urlString);
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-      Get.snackbar("Browser Error", "Could not open the link.");
+      Get.snackbar('Browser Error', 'Could not open the link.');
     }
   }
 }

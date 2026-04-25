@@ -20,14 +20,14 @@ class CartController extends GetxController {
 
   bool isLoadingCart = false;
   bool isPostingCart = false;
-  String menuId="";
+  String menuId='';
 
   // ── Other state ─────────────────────────────────────────────────────────────
   bool isDefaultAddress = false;
   bool isExpanded = false;
   final TextEditingController dateController = TextEditingController();
   DateTime selectedDate = DateTime.now();
-  String selectedTime = "";
+  String selectedTime = '';
   /*final List<String> timeSlots = [
     "10:00 AM", "11:00 AM", "12:00 PM",
     "02:00 PM", "04:00 PM", "06:00 PM",
@@ -41,6 +41,7 @@ class CartController extends GetxController {
     }
   }
 
+  bool isCheckingOut = false;
   String? promoCode;
 
   void onPromoCodeApplied(String code) {
@@ -62,7 +63,55 @@ class CartController extends GetxController {
     update();
   }
 
-  bool isCheckingOut = false;
+  final RxBool _isEditingOrder = false.obs;
+  bool get isEditingOrder => _isEditingOrder.value;
+
+  void toggleEditingOrder() {
+    _isEditingOrder.value = !_isEditingOrder.value;
+    update();
+  }
+
+  Future<void> updateCartCustomizations({
+    required String cartItemId,
+    required List<String> customizations,
+    required String chefId,
+    int? quantity,
+  }) async {
+    // Optimistic Update
+    for (var group in chefGroups) {
+      final item = group.menus?.firstWhereOrNull((m) => m.id == cartItemId);
+      if (item != null) {
+        if (quantity != null) item.quantity = quantity;
+        item.customizations = customizations;
+        // Recalculate total price if needed (basic logic)
+        if (item.unitPrice != null && item.quantity != null) {
+          item.totalPrice = item.unitPrice! * item.quantity!;
+        }
+        break;
+      }
+    }
+    update();
+
+    try {
+      final Map<String, dynamic> body = {'customizations': customizations};
+      if (quantity != null) body['quantity'] = quantity;
+
+      final response = await ApiService.patch(
+        'cart/update/$cartItemId',
+        body: body,
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Utils.successSnackBar('Success', 'Cart updated successfully');
+        await fetchCart(chefId);
+      } else {
+        Utils.errorSnackBar('Error', 'Failed to update cart');
+        await fetchCart(chefId); // Revert on error
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', e.toString());
+      await fetchCart(chefId); // Revert on error
+    }
+  }
 
   Future<void> placeOrder() async {
     // ── Validations ──────────────────────────────────────────────────────────
@@ -89,25 +138,25 @@ class CartController extends GetxController {
 
       // ── Build body ───────────────────────────────────────────────────────
       final Map<String, dynamic> body = {
-        "chef": chefGroups.first.chef?.id ?? '',
-        "address_id": selectedAddress!.id,
-        "date": bookingDate.toUtc().toIso8601String(),
+        'chef': chefGroups.first.chef?.id ?? '',
+        'address_id': selectedAddress!.id,
+        'date': bookingDate.toUtc().toIso8601String(),
       };
 
       if (promoCode != null && promoCode!.isNotEmpty) {
-        body["promo_code"] = promoCode;
+        body['promo_code'] = promoCode;
       }
 
       if (selectedTaxId != null && selectedTaxId!.isNotEmpty) {
-        body["tax_id"] = selectedTaxId;
+        body['tax_id'] = selectedTaxId;
       }
 
-      final response = await ApiService.post("order", body: body);
+      final response = await ApiService.post('order', body: body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         // Clear cart state after successful order
         String? checkoutUrl;
-        checkoutUrl=response.data["data"];
+        checkoutUrl=response.data['data'];
         cartResponse = null;
         selectedAddress = null;
         promoCode = null;
@@ -123,7 +172,7 @@ class CartController extends GetxController {
         }
         else{
           Utils.errorSnackBar(
-              'Error', "Failed to provide payment url");
+              'Error', 'Failed to provide payment url');
         }
 
         //Get.offAllNamed(AppRoutes.orderSuccess); // or your success route
@@ -181,11 +230,11 @@ class CartController extends GetxController {
 
     try {
       final response = await ApiService.post(
-        "cart",
+        'cart',
         body: {
-          "menu": menuId,
-          "quantity": quantity,
-          "customizations": customizations,
+          'menu': menuId,
+          'quantity': quantity,
+          'customizations': customizations,
         },
       );
 
@@ -211,7 +260,7 @@ class CartController extends GetxController {
     update();
 
     try {
-      final response = await ApiService.get("cart?chefId=$chefId");
+      final response = await ApiService.get('cart?chefId=$chefId');
       if (response.statusCode == 200) {
         cartResponse = CartResponseModel.fromJson(response.data);
       } else {
@@ -230,7 +279,7 @@ class CartController extends GetxController {
     update();
 
     try {
-      final response = await ApiService.get("cart");
+      final response = await ApiService.get('cart');
       if (response.statusCode == 200) {
         cartResponse = CartResponseModel.fromJson(response.data);
       } else {
@@ -266,8 +315,8 @@ class CartController extends GetxController {
     // Sync with server
     try {
       final response = await ApiService.patch(
-        "cart/$cartItemId",
-        body: {"quantity": increment ? 1 : -1},
+        'cart/$cartItemId',
+        body: {'quantity': increment ? 1 : -1},
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         await fetchCart(chefId); // refresh with real server values
@@ -288,10 +337,10 @@ class CartController extends GetxController {
     required String chefId,
   }) async {
     try {
-      final response = await ApiService.delete("cart/$cartItemId");
+      final response = await ApiService.delete('cart/$cartItemId');
       if (response.statusCode == 200 || response.statusCode == 201) {
         Navigator.pop(Get.context!);
-        Utils.successSnackBar("Successful", "Successfully Delete the");
+        Utils.successSnackBar('Successful', 'Successfully Delete the');
         await fetchCart(chefId);
       } else {
         Utils.errorSnackBar('Error', 'Failed to delete item');
@@ -310,7 +359,7 @@ class CartController extends GetxController {
 
     // ✅ FIX: Format the date/time properly for display in the text field
     // Example output: "1 January 2026, 10:00 AM"
-    dateController.text = "${selectedDate.dateMonthYear}, $time";
+    dateController.text = '${selectedDate.dateMonthYear}, $time';
 
     // Close the dialog
     Navigator.pop(Get.context!);

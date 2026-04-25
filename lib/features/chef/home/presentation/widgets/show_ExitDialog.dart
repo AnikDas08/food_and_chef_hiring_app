@@ -31,7 +31,7 @@ Future<bool> showExitDialog() async {
 
             /// Title
             const Text(
-              "Exit App",
+              'Exit App',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -42,7 +42,7 @@ Future<bool> showExitDialog() async {
 
             /// Message
             const Text(
-              "Are you sure you want to exit this app?",
+              'Are you sure you want to exit this app?',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
@@ -63,7 +63,7 @@ Future<bool> showExitDialog() async {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text("Cancel"),
+                    child: const Text('Cancel'),
                   ),
                 ),
 
@@ -78,7 +78,7 @@ Future<bool> showExitDialog() async {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text("Exit",style: TextStyle(color: Colors.white),),
+                    child: const Text('Exit',style: TextStyle(color: Colors.white),),
                   ),
                 ),
               ],

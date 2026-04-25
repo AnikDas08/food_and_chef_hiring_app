@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 
 import '../../../../../../component/button/common_button.dart';
+import '../../../../../../component/image/common_image.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../config/api/api_end_point.dart';
 import '../../controller/kitchen_equipment_controller.dart';
@@ -27,66 +29,80 @@ class KitchenEquipmentScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: Column(
+      body: Stack(
         children: [
-          // ── Hero kitchen image ──
-          _KitchenHeroImage(controller: controller,),
+          ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              // ── Hero kitchen image ──
+              _KitchenHeroImage(controller: controller),
 
-          // ── Scrollable body ──
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              children: [
-                SizedBox(height: 20.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 20.h),
 
-                // Title
-                CommonText(
-                  text: 'Your Kitchen Equipment',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.black,
-                  textAlign: TextAlign.start,
-                ),
-                SizedBox(height: 14.h),
-
-                // ── Ready for cooking card ──
-                _ReadyForCookingCard(controller: controller),
-                SizedBox(height: 20.h),
-
-                // ── Kitchen type label ──
-                RichText(
-                  text: TextSpan(children: [
-                    TextSpan(
-                      text: 'Which kitchen best describes yours? ',
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.black,
-                      ),
+                    // Title
+                    const CommonText(
+                      text: 'Kitchen Equipment',
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      textAlign: TextAlign.start,
                     ),
-                    TextSpan(
-                      text: '*',
-                      style: TextStyle(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.red,
-                      ),
+                    SizedBox(height: 14.h),
+
+                    // ── Ready for cooking card ──
+                    _ReadyForCookingCard(controller: controller),
+                    SizedBox(height: 20.h),
+
+                    // ── Kitchen type label ──
+                    RichText(
+                      text: TextSpan(children: [
+                        TextSpan(
+                          text: 'Which kitchen best describes yours? ',
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '*',
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ]),
                     ),
-                  ]),
+                    SizedBox(height: 10.h),
+
+                    // ── Preset cards from API + Custom Setup at bottom ──
+                    _PresetCards(controller: controller),
+                    SizedBox(height: 10.h),
+
+                    // ── Equipment sections ──
+                    // Custom Setup selected: checkable list from API
+                    // Preset selected / default: read-only sections from kitchen data
+                    _EquipmentBody(controller: controller),
+
+                    SizedBox(height: 100.h),
+                  ],
                 ),
-                SizedBox(height: 10.h),
-
-                // ── Preset cards from API + Custom Setup at bottom ──
-                _PresetCards(controller: controller),
-                SizedBox(height: 10.h),
-
-                // ── Equipment sections ──
-                // Custom Setup selected: checkable list from API
-                // Preset selected / default: read-only sections from kitchen data
-                _EquipmentBody(controller: controller),
-
-                SizedBox(height: 100.h),
-              ],
+              ),
+            ],
+          ),
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 8.h,
+            left: 16.w,
+            child: InkWell(
+              onTap: () => Get.back(),
+              child: const CommonImage(
+                imageSrc: 'assets/icons/back.svg',
+              ),
             ),
           ),
         ],
@@ -98,7 +114,6 @@ class KitchenEquipmentScreen extends StatelessWidget {
         child: CommonButton(
           titleText: 'Customize Your Kitchen',
           buttonColor: AppColors.black,
-          titleColor: AppColors.white,
           onTap: () => Get.to(() => const CustomizeKitchenScreen()),
         ),
       ),
@@ -149,23 +164,6 @@ class _KitchenHeroImage extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-            top: MediaQuery.of(context).padding.top + 8.h,
-            left: 16.w,
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                width: 34.w,
-                height: 34.w,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.85),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(Icons.arrow_back_ios_new_rounded,
-                    size: 16.sp, color: AppColors.black),
-              ),
-            ),
-          ),
         ],
       );
     });
@@ -193,7 +191,7 @@ class _PresetCards extends StatelessWidget {
         return const Center(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
-            child: CircularProgressIndicator(color: Colors.black),
+            child: CupertinoActivityIndicator(),
           ),
         );
       }
@@ -242,8 +240,8 @@ class _PresetCard extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 13.h),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.black : const Color(0xFFF7F7F7),
-            borderRadius: BorderRadius.circular(12.r),
+            color: isSelected ? const Color(0xff272727) : const Color(0xFFFAFAFA),
+            borderRadius: BorderRadius.circular(20.r),
           ),
           child: Row(
             children: [
@@ -267,11 +265,9 @@ class _PresetCard extends StatelessWidget {
                         text: preset.items,
                         fontSize: 11,
                         color: isSelected
-                            ? const Color(0xFFCCCCCC)
-                            : const Color(0xFF888888),
+                            ? const Color(0xFFFFFFFF)
+                            : const Color(0xFF777777),
                         textAlign: TextAlign.start,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ],
@@ -281,8 +277,7 @@ class _PresetCard extends StatelessWidget {
                 SizedBox(
                   width: 16.w,
                   height: 16.w,
-                  child: const CircularProgressIndicator(
-                      strokeWidth: 2, color: Colors.white),
+                  child: const CupertinoActivityIndicator(radius: 8, color: Colors.white),
                 ),
             ],
           ),
@@ -331,7 +326,7 @@ class _PresetThumbnail extends StatelessWidget {
   Widget _iconFallback() => Icon(
     Icons.kitchen_outlined,
     size: 22.sp,
-    color: isSelected ? Colors.white70 : const Color(0xFF888888),
+    color: isSelected ? Colors.white : const Color(0xFF888888),
   );
 }
 
@@ -402,7 +397,7 @@ class _EquipmentBody extends StatelessWidget {
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 24.h),
             child: const Center(
-                child: CircularProgressIndicator(color: Colors.black)),
+                child: CupertinoActivityIndicator()),
           );
         }
         if (controller.customSetupError.value.isNotEmpty) {
@@ -550,9 +545,7 @@ class _CustomSetupSection extends StatelessWidget {
                               Expanded(
                                 child: CommonText(
                                   text: item.name,
-                                  fontSize: 14,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.black,
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -562,7 +555,7 @@ class _CustomSetupSection extends StatelessWidget {
                       }),
                     ),
                     if (i < category.items.length - 1)
-                      Divider(height: 1, color: const Color(0xFFF0F0F0)),
+                      const Divider(height: 1, color: Color(0xFFF0F0F0)),
                   ],
                 );
               }),
@@ -570,7 +563,7 @@ class _CustomSetupSection extends StatelessWidget {
             secondChild: const SizedBox.shrink(),
           ),
 
-          Divider(height: 1, color: const Color(0xFFEEEEEE)),
+          const Divider(height: 1, color: Color(0xFFEEEEEE)),
         ],
       );
     });
@@ -649,10 +642,10 @@ class _CollapsibleSection extends StatelessWidget {
             firstChild: items.isEmpty
                 ? Padding(
               padding: EdgeInsets.only(bottom: 12.h),
-              child: CommonText(
+              child: const CommonText(
                 text: 'No items',
                 fontSize: 13,
-                color: const Color(0xFFAAAAAA),
+                color: Color(0xFFAAAAAA),
                 textAlign: TextAlign.start,
               ),
             )
@@ -691,36 +684,34 @@ class _CollapsibleSection extends StatelessWidget {
                           Expanded(
                             child: CommonText(
                               text: item.name,
-                              fontSize: 14,
                               fontWeight: FontWeight.w400,
-                              color: AppColors.black,
                               textAlign: TextAlign.start,
                             ),
                           ),
                           // Quantity badge
-                          if (item.quantity > 0)
+                          /*if (item.quantity > 0)
                             Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8.w, vertical: 2.h),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFF2F2F2),
-                                borderRadius:
-                                BorderRadius.circular(20.r),
+                              width: 24.w,
+                              height: 24.w,
+                              decoration: const BoxDecoration(
+                                color: Colors.black,
+                                shape: BoxShape.circle,
                               ),
-                              child: CommonText(
-                                text: 'x${item.quantity}',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xFF555555),
+                              child: Center(
+                                child: CommonText(
+                                  text: '${item.quantity}',
+                                  fontSize: 11,
+                                  color: const Color(0xffffffff),
+                                ),
                               ),
-                            ),
+                            ),*/
                         ],
                       ),
                     ),
                     if (i < items.length - 1)
-                      Divider(
+                      const Divider(
                           height: 1,
-                          color: const Color(0xFFF0F0F0)),
+                          color: Color(0xFFF0F0F0)),
                   ],
                 );
               }),
@@ -728,7 +719,7 @@ class _CollapsibleSection extends StatelessWidget {
             secondChild: const SizedBox.shrink(),
           ),
 
-          Divider(height: 1, color: const Color(0xFFEEEEEE)),
+          const Divider(height: 1, color: Color(0xFFEEEEEE)),
         ],
       );
     });
@@ -750,18 +741,16 @@ class _ReadyForCookingCard extends StatelessWidget {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
         decoration: BoxDecoration(
-          color: const Color(0xFFFFF8F0),
+          color: const Color(0xFFF1F1F1),
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: const Color(0xFFFFE0B2), width: 1),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CommonText(
+            const CommonText(
               text: 'You\'re Ready for Cooking',
-              fontSize: 13,
               fontWeight: FontWeight.w600,
-              color: const Color(0xFFE65100),
+              color: Color(0xFF272727),
               textAlign: TextAlign.start,
             ),
             SizedBox(height: 8.h),
@@ -837,16 +826,14 @@ class _ErrorRetry extends StatelessWidget {
                 text: message,
                 fontSize: 13,
                 color: const Color(0xFF888888),
-                maxLines: 3,
-                textAlign: TextAlign.center),
+                maxLines: 3),
             SizedBox(height: 10.h),
             GestureDetector(
               onTap: onRetry,
-              child: CommonText(
+              child: const CommonText(
                   text: 'Tap to retry',
                   fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.black),
+                  fontWeight: FontWeight.w600),
             ),
           ],
         ),

@@ -21,45 +21,45 @@ class SocketServices {
           .build(),
     );
 
-    _socket.onConnect((data) => appLog("=============> Connection $data"));
-    _socket.onConnectError((data) => appLog("========>Connection Error $data"));
+    _socket.onConnect((data) => appLog('=============> Connection $data'));
+    _socket.onConnectError((data) => appLog('========>Connection Error $data'));
     _socket.connect();
 
-    _socket.on("get-notification::${LocalStorage.userId}", (data) {
-      appLog("================> get Data on socket: $data");
+    _socket.on('get-notification::${LocalStorage.userId}', (data) {
+      appLog('================> get Data on socket: $data');
       NotificationService.showNotification(data);
       Get.find<NotificationsController>().getNotificationsRepo();
     });
 
-    _socket.on("order::${LocalStorage.userId}", (data) {
-      appLog("================> get Data on socket: $data");
+    _socket.on('order::${LocalStorage.userId}', (data) {
+      appLog('================> get Data on socket: $data');
       //final String id = data['_id'];
-      Map<String, dynamic> orderData = Map<String, dynamic>.from(data);
-      if(LocalStorage.myRole=="CUSTOMER"){
+      final Map<String, dynamic> orderData = Map<String, dynamic>.from(data);
+      if(LocalStorage.myRole=='CUSTOMER'){
 
       }
       else{
-        bookingDetailsPopup(Get.context!, order: orderData, selectedTab: "Unconfirmed");
+        bookingDetailsPopup(Get.context!, order: orderData, selectedTab: 'Unconfirmed');
       }
     });
 
   }
 
-  static on(String event, Function(dynamic data) handler) {
+  static void on(String event, Function(dynamic data) handler) {
     if (!_socket.connected) {
       connectToSocket();
     }
     _socket.on(event, handler);
   }
 
-  static emit(String event, Function(dynamic data) handler) {
+  static void emit(String event, Function(dynamic data) handler) {
     if (!_socket.connected) {
       connectToSocket();
     }
     _socket.emit(event, handler);
   }
 
-  static emitWithAck(
+  static void emitWithAck(
     String event,
     Map<String, dynamic> data,
     Function(dynamic data) handler,

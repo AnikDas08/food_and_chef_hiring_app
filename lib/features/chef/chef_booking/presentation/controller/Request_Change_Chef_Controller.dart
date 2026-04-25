@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
+import '../../../../../utils/app_utils.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 
 class RequestChangeChefController extends GetxController {
@@ -16,14 +17,13 @@ class RequestChangeChefController extends GetxController {
     required String addressId,
   }) async {
     if (dateController.text.trim().isEmpty || timeController.text.trim().isEmpty) {
-      Get.snackbar("Warning", "Please select date and time",
+      Get.snackbar('Warning', 'Please select date and time',
           backgroundColor: Colors.orange, colorText: Colors.white);
       return;
     }
 
     if (orderId.isEmpty) {
-      Get.snackbar("Error", "Order ID not found",
-          backgroundColor: Colors.red, colorText: Colors.white);
+      Utils.errorSnackBar('Error', 'Order ID not found');
       return;
     }
 
@@ -32,10 +32,10 @@ class RequestChangeChefController extends GetxController {
       final response = await ApiService.post(
         '${ApiEndPoint.requestChangeSchedule}$orderId',
         body: {
-          "requested_date": _formatToISO(dateController.text.trim()),
-          "requested_time": timeController.text.trim(),
-          "address_id": addressId,
-          "note": noteController.text.trim(),
+          'requested_date': _formatToISO(dateController.text.trim()),
+          'requested_time': timeController.text.trim(),
+          'address_id': addressId,
+          'note': noteController.text.trim(),
         },
       );
 
@@ -46,19 +46,15 @@ class RequestChangeChefController extends GetxController {
         await home?.fetchUpcomingBookings();
 
         Navigator.pop(Get.context!);
-        Get.snackbar("Success", "Change request submitted successfully",
-            backgroundColor: Colors.green, colorText: Colors.white);
+        Utils.successSnackBar('Success', 'Change request submitted successfully');
       } else {
-        Get.snackbar(
-          "Error",
-          response.data['message']?.toString() ?? "Something went wrong",
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
+        Utils.errorSnackBar(
+          'Error',
+          response.data['message']?.toString() ?? 'Something went wrong',
         );
       }
     } catch (e) {
-      Get.snackbar("Error", e.toString(),
-          backgroundColor: Colors.red, colorText: Colors.white);
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoading.value = false;
     }
@@ -79,7 +75,7 @@ class RequestChangeChefController extends GetxController {
       if (monthIndex == -1) return displayDate;
       final month = monthIndex.toString().padLeft(2, '0');
       final year = parts[2];
-      return "$year-$month-$day";
+      return '$year-$month-$day';
     } catch (_) {
       return displayDate;
     }

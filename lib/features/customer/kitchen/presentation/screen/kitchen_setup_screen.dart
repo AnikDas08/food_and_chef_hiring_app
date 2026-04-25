@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,17 @@ class KitchenSetupScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.white,
+      appBar: AppBar(
+        title: const Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: CommonText(
+            text: 'Your Kitchen Setup',
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            textAlign: TextAlign.start,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -27,48 +39,50 @@ class KitchenSetupScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 12.h),
-              _ProgressBar(totalSteps: 5, currentStep: 1),
+              const _ProgressBar(totalSteps: 5, currentStep: 1),
               SizedBox(height: 20.h),
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Icon(Icons.arrow_back_ios, size: 20.sp, color: AppColors.black),
-              ),
-              SizedBox(height: 24.h),
-              CommonText(
-                text: 'Your Kitchen Setup',
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-                color: AppColors.black,
-                textAlign: TextAlign.start,
-              ),
+
               SizedBox(height: 8.h),
-              CommonText(
-                text: 'This helps us to find dishes that matches your kitchen, so the chef can prepare a perfect dish, every time.',
+              const CommonText(
+                text:
+                    'This helps us to find dishes that matches your kitchen, so the chef can prepare a perfect dish, every time.',
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
-                color: const Color(0xFF888888),
+                color: Color(0xFF888888),
                 maxLines: 3,
                 textAlign: TextAlign.start,
               ),
               SizedBox(height: 24.h),
               RichText(
-                text: TextSpan(children: [
-                  TextSpan(
-                    text: 'Which kitchen best describes yours? ',
-                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: AppColors.black),
-                  ),
-                  TextSpan(
-                    text: '*',
-                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.red),
-                  ),
-                ]),
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Which kitchen best describes yours? ',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: '*',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 12.h),
 
               Expanded(
                 child: Obx(() {
                   if (controller.isLoadingPresets.value) {
-                    return const Center(child: CircularProgressIndicator(color: Colors.black));
+                    return const Center(
+                      child: CupertinoActivityIndicator(),
+                    );
                   }
                   if (controller.presetsError.value.isNotEmpty) {
                     return Center(
@@ -80,16 +94,14 @@ class KitchenSetupScreen extends StatelessWidget {
                             fontSize: 13,
                             color: const Color(0xFF888888),
                             maxLines: 3,
-                            textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 12.h),
                           GestureDetector(
                             onTap: controller.fetchKitchenPresets,
-                            child: CommonText(
+                            child: const CommonText(
                               text: 'Tap to retry',
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
-                              color: AppColors.black,
                             ),
                           ),
                         ],
@@ -115,44 +127,48 @@ class KitchenSetupScreen extends StatelessWidget {
                 }),
               ),
 
-              CommonText(
+              const CommonText(
                 text: 'You can update your setup anytime before a booking',
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
-                color: const Color(0xFF888888),
+                color: Color(0xFF888888),
                 textAlign: TextAlign.start,
               ),
-              SizedBox(height: 16.h),
-              SizedBox(height: 10.h),
+              SizedBox(height: 12.h),
               Obx(() {
                 final selected = controller.isAnythingSelected;
                 final submitting = controller.isSubmittingPreset.value;
                 final loadingEquipment = controller.isLoadingEquipment.value;
-                final loadingPresetItems = controller.isLoadingPresetItems.value;
-                final busy = submitting || loadingEquipment || loadingPresetItems;
+                final loadingPresetItems =
+                    controller.isLoadingPresetItems.value;
+                final busy =
+                    submitting || loadingEquipment || loadingPresetItems;
 
                 return CommonButton(
                   titleText: busy ? 'Please wait...' : 'Continue',
-                  buttonColor: selected ? AppColors.black : const Color(0xFFAAAAAA),
-                  titleColor: AppColors.white,
-                  onTap: (!selected || busy)
-                      ? null
-                      : () async {
-                    if (controller.isCustomSetup) {
-                      // Custom Setup: fetch equipment (all unselected), go to next screen
-                      await controller.fetchEquipmentList();
-                      Get.to(() => const CookingAppliancesScreen());
-                    } else {
-                      // Preset: fetch preset items first (to know which to pre-select),
-                      // then fetch full equipment list (applyPresetSelections is called
-                      // inside fetchEquipmentList after build), then navigate
-                      final preset = controller
-                          .kitchenPresets[controller.selectedKitchenIndex.value];
-                      await controller.fetchPresetItems(preset.kitchen);
-                      await controller.fetchEquipmentList();
-                      Get.to(() => const CookingAppliancesScreen());
-                    }
-                  },
+                  buttonColor:
+                      selected ? AppColors.primaryColor : const Color(0xFFAAAAAA),
+                  onTap:
+                      (!selected || busy)
+                          ? null
+                          : () async {
+                            if (controller.isCustomSetup) {
+                              // Custom Setup: fetch equipment (all unselected), go to next screen
+                              await controller.fetchEquipmentList();
+                              Get.to(() => const CookingAppliancesScreen());
+                            } else {
+                              // Preset: fetch preset items first (to know which to pre-select),
+                              // then fetch full equipment list (applyPresetSelections is called
+                              // inside fetchEquipmentList after build), then navigate
+                              final preset =
+                                  controller.kitchenPresets[controller
+                                      .selectedKitchenIndex
+                                      .value];
+                              await controller.fetchPresetItems(preset.kitchen);
+                              await controller.fetchEquipmentList();
+                              Get.to(() => const CookingAppliancesScreen());
+                            }
+                          },
                 );
               }),
               SizedBox(height: 20.h),
@@ -199,7 +215,6 @@ class _PresetCard extends StatelessWidget {
                   children: [
                     CommonText(
                       text: preset.name,
-                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: isSelected ? AppColors.white : AppColors.black,
                       textAlign: TextAlign.start,
@@ -210,10 +225,12 @@ class _PresetCard extends StatelessWidget {
                         text: preset.items,
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                        color: isSelected ? const Color(0xFFCCCCCC) : const Color(0xFF888888),
+                        color:
+                            isSelected
+                                ? const Color(0xFFCCCCCC)
+                                : const Color(0xFF888888),
                         textAlign: TextAlign.start,
                         maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ],
@@ -230,7 +247,9 @@ class _PresetCard extends StatelessWidget {
 class _PresetImage extends StatelessWidget {
   final String? imageUrl;
   final bool isSelected;
+
   const _PresetImage({this.imageUrl, required this.isSelected});
+
   bool get _hasImage => imageUrl != null && imageUrl!.isNotEmpty;
 
   @override
@@ -240,7 +259,9 @@ class _PresetImage extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.r),
         child: CachedNetworkImage(
           imageUrl: ApiEndPoint.imageUrl + imageUrl!,
-          width: 44.w, height: 44.w, fit: BoxFit.cover,
+          width: 44.w,
+          height: 44.w,
+          fit: BoxFit.cover,
           placeholder: (_, __) => _defaultBox(),
           errorWidget: (_, __, ___) => _defaultBox(),
         ),
@@ -250,18 +271,24 @@ class _PresetImage extends StatelessWidget {
   }
 
   Widget _defaultBox() => Container(
-    width: 44.w, height: 44.w,
+    width: 44.w,
+    height: 44.w,
     decoration: BoxDecoration(
-      color: isSelected ? Colors.white.withOpacity(0.15) : const Color(0xFFEEEEEE),
+      color:
+          isSelected ? Colors.white.withOpacity(0.15) : const Color(0xFFEEEEEE),
       borderRadius: BorderRadius.circular(8.r),
     ),
-    child: Icon(Icons.kitchen_outlined, size: 24.sp,
-        color: isSelected ? Colors.white70 : const Color(0xFF888888)),
+    child: Icon(
+      Icons.kitchen_outlined,
+      size: 24.sp,
+      color: isSelected ? Colors.white70 : const Color(0xFF888888),
+    ),
   );
 }
 
 class _CustomSetupCard extends StatelessWidget {
   final KitchenSetupController controller;
+
   const _CustomSetupCard({required this.controller});
 
   @override
@@ -280,18 +307,23 @@ class _CustomSetupCard extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 44.w, height: 44.w,
+                width: 44.w,
+                height: 44.w,
                 decoration: BoxDecoration(
-                  color: isSelected ? Colors.white.withOpacity(0.15) : const Color(0xFFEEEEEE),
+                  color:
+                      isSelected
+                          ? Colors.white.withOpacity(0.15)
+                          : const Color(0xFFEEEEEE),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
-                child: Center(child: Text('🔨', style: TextStyle(fontSize: 22.sp))),
+                child: Center(
+                  child: Text('🔨', style: TextStyle(fontSize: 22.sp)),
+                ),
               ),
               SizedBox(width: 12.w),
               Expanded(
                 child: CommonText(
                   text: 'Custom Setup',
-                  fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: isSelected ? AppColors.white : AppColors.black,
                   textAlign: TextAlign.start,
@@ -308,6 +340,7 @@ class _CustomSetupCard extends StatelessWidget {
 class _ProgressBar extends StatelessWidget {
   final int totalSteps;
   final int currentStep;
+
   const _ProgressBar({required this.totalSteps, required this.currentStep});
 
   @override
@@ -319,7 +352,10 @@ class _ProgressBar extends StatelessWidget {
             margin: EdgeInsets.only(right: index < totalSteps - 1 ? 4.w : 0),
             height: 3.h,
             decoration: BoxDecoration(
-              color: index < currentStep ? AppColors.black : const Color(0xFFE0E0E0),
+              color:
+                  index < currentStep
+                      ? AppColors.black
+                      : const Color(0xFFE0E0E0),
               borderRadius: BorderRadius.circular(2),
             ),
           ),

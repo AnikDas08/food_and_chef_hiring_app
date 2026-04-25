@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
@@ -8,6 +7,7 @@ import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/text/common_text.dart';
+import '../../../../../utils/constants/app_colors.dart';
 import '../controller/home_controller.dart';
 import '../data/order_model.dart';
 
@@ -15,15 +15,15 @@ Widget orderAgain() {
   return GetBuilder<HomeController>(
     builder: (controller) {
       if (controller.isLoadingOrderAgain) {
-        return Center(child: CupertinoActivityIndicator());
+        return const Center(child: CupertinoActivityIndicator());
       }
 
       if (controller.orderAgainList.isEmpty) {
-        return Center(
+        return const Center(
           child: CommonText(
-            text: "No previous orders",
-            fontSize: 12.sp,
-            color: Color(0xff777777),
+            text: 'No orders to show',
+            fontSize: 12,
+            color: AppColors.grey,
             fontWeight: FontWeight.w400,
           ),
         );
@@ -42,10 +42,10 @@ Widget orderAgain() {
           final int moreCount = totalItems > 2 ? totalItems - 2 : 0;
 
           return Container(
-            margin: EdgeInsets.only(right: 10),
-            padding: EdgeInsets.all(12),
+            margin: const EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Color(0xffF2F2F2),
+              color: const Color(0xffF2F2F2),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
@@ -55,10 +55,11 @@ Widget orderAgain() {
                 Row(
                   children: [
                     CommonImage(
-                      imageSrc: (order.chef?.image != null &&
-                          order.chef!.image!.isNotEmpty)
-                          ? ApiEndPoint.imageUrl + order.chef!.image!
-                          : AppImages.image4,
+                      imageSrc:
+                          (order.chef?.image != null &&
+                                  order.chef!.image!.isNotEmpty)
+                              ? ApiEndPoint.imageUrl + order.chef!.image!
+                              : AppImages.image4,
                       size: 40,
                     ),
                     12.width,
@@ -66,16 +67,16 @@ Widget orderAgain() {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CommonText(
-                          text: order.chef?.name ?? "Chef",
+                          text: order.chef?.name ?? 'Chef',
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xff272727),
+                          color: const Color(0xff272727),
                         ),
                         CommonText(
-                          text: order.dateStr ?? "",
+                          text: order.dateStr ?? '',
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xff777777),
+                          color: const Color(0xff777777),
                         ),
                       ],
                     ),
@@ -93,16 +94,18 @@ Widget orderAgain() {
                       final menuImages = items[i].menu?.images ?? [];
                       final hasImage =
                           menuImages.isNotEmpty && menuImages[0].isNotEmpty;
-                      final menuName = items[i].menu?.name ?? "";
+                      final menuName = items[i].menu?.name ?? '';
 
                       return Padding(
                         padding: EdgeInsets.only(
-                          right: (i < visibleCount - 1 || moreCount > 0) ? 6 : 0,
+                          right:
+                              (i < visibleCount - 1 || moreCount > 0) ? 6 : 0,
                         ),
                         child: _foodImageWithName(
-                          imageSrc: hasImage
-                              ? ApiEndPoint.imageUrl + menuImages[0]
-                              : AppImages.noImage,
+                          imageSrc:
+                              hasImage
+                                  ? ApiEndPoint.imageUrl + menuImages[0]
+                                  : AppImages.noImage,
                           name: menuName,
                         ),
                       );
@@ -122,10 +125,7 @@ Widget orderAgain() {
 }
 
 /// Food image card with name label overlaid at the bottom
-Widget _foodImageWithName({
-  required String imageSrc,
-  required String name,
-}) {
+Widget _foodImageWithName({required String imageSrc, required String name}) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(10),
     child: Stack(
@@ -147,10 +147,7 @@ Widget _foodImageWithName({
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Colors.transparent,
-                  Colors.black.withOpacity(0.65),
-                ],
+                colors: [Colors.transparent, Colors.black.withOpacity(0.65)],
               ),
             ),
           ),
@@ -164,7 +161,7 @@ Widget _foodImageWithName({
             name,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 9,
               fontWeight: FontWeight.w600,
               color: Colors.white,
@@ -188,16 +185,16 @@ Widget _moreItemsTile(int count) {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
+        const Icon(
           CupertinoIcons.collections,
           size: 22,
           color: Color(0xff9E9E9E),
         ),
         4.height,
         Text(
-          "$count more\nitems",
+          '$count more\nitems',
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 9,
             fontWeight: FontWeight.w500,
             color: Color(0xff9E9E9E),

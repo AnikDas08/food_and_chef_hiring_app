@@ -1,8 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/food_item.dart';
-import '../../../../../component/other_widgets/common_loader.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../utils/constants/app_colors.dart';
 import '../../data/mamu_model.dart';
 import '../controller/chef_detail_controller.dart';
 
@@ -29,11 +30,11 @@ class MenuPage extends StatelessWidget {
         }
 
         if (sections.isEmpty) {
-          return Center(
+          return const Center(
             child: CommonText(
-              text: "No menu sections available",
-              fontSize: 14,
-              color: const Color(0xff777777),
+              text: 'No menu sections available',
+              color: AppColors.grey,
+              fontSize: 12,
               fontWeight: FontWeight.w400,
             ),
           );
@@ -74,8 +75,7 @@ class _SearchResultsList extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             CommonText(
-              text: "No results for \"$query\"",
-              fontSize: 14,
+              text: 'No results for "$query"',
               color: const Color(0xff777777),
               fontWeight: FontWeight.w400,
             ),
@@ -153,18 +153,17 @@ class _MenuListState extends State<_MenuList>
         if (isFirst ||
             (isLoading &&
                 (controller.menuCache[widget.section]?.isEmpty ?? true))) {
-          return const CommonLoader();
+          return const Center(child: CupertinoActivityIndicator());
         }
 
         final List<MenuData> items =
             controller.menuCache[widget.section] ?? [];
 
         if (items.isEmpty) {
-          return Center(
+          return const Center(
             child: CommonText(
-              text: "No items in this section",
-              fontSize: 14,
-              color: const Color(0xff777777),
+              text: 'No items in this section',
+              color: Color(0xff777777),
               fontWeight: FontWeight.w400,
             ),
           );
@@ -185,17 +184,16 @@ class _MenuListState extends State<_MenuList>
               if (loadingMore) {
                 return const Padding(
                   padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(child: CupertinoActivityIndicator()),
                 );
               }
               if (!hasMore && items.length > 10) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16),
                   child: Center(
                     child: CommonText(
-                      text: "No more items",
-                      fontSize: 14,
-                      color: const Color(0xff777777),
+                      text: 'No more items',
+                      color: Color(0xff777777),
                       fontWeight: FontWeight.w400,
                     ),
                   ),

@@ -14,7 +14,7 @@ Widget bookInfo() {
       margin: EdgeInsets.only(top: 16.sp),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Color(0xffF2F2F2),
+        color: const Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -25,18 +25,18 @@ Widget bookInfo() {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
-                    text: "Avg Bookings per Week",
+                  const CommonText(
+                    text: 'Avg Bookings per Week',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
                   ),
                   CommonText(
-                    text: "${controller.totalBooking.value}",
+                    text: '${controller.totalBooking.value}',
                     fontSize: 16,
                     top: 2,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
+                    color: const Color(0xff272727),
                   ),
                 ],
               ),
@@ -44,18 +44,18 @@ Widget bookInfo() {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
-                    text: "Avg Earnings per Booking",
+                  const CommonText(
+                    text: 'Avg Earnings per Booking',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
                   ),
                   CommonText(
-                    text: "\$${controller.avgPrice.value.toStringAsFixed(2)}",
+                    text: '\$${controller.avgPrice.value.toStringAsFixed(2)}',
                     fontSize: 16,
                     top: 2,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
+                    color: const Color(0xff272727),
                   ),
                 ],
               ),
@@ -68,18 +68,18 @@ Widget bookInfo() {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
-                    text: "Avg Booking Length",
+                  const CommonText(
+                    text: 'Avg Booking Length',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
                   ),
                   CommonText(
-                    text: "${controller.avgDuration.value}h",
+                    text: '${controller.avgDuration.value}h',
                     fontSize: 16,
                     top: 2,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
+                    color: const Color(0xff272727),
                   ),
                 ],
               ),
@@ -87,18 +87,18 @@ Widget bookInfo() {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
-                    text: "Avg Dishes per Booking",
+                  const CommonText(
+                    text: 'Avg Dishes per Booking',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xff777777),
                   ),
                   CommonText(
-                    text: "${controller.avgMenus.value}",
+                    text: '${controller.avgMenus.value}',
                     fontSize: 16,
                     top: 2,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
+                    color: const Color(0xff272727),
                   ),
                 ],
               ),

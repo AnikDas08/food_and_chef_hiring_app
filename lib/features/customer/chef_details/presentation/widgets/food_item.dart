@@ -53,7 +53,7 @@ class _FoodItemState extends State<FoodItem>
 
     // kitchen status badge
     final bool kitchenReady =
-        item.kitchenStatus?.toLowerCase() == "ready" ||
+        item.kitchenStatus?.toLowerCase() == 'ready' ||
             item.kitchenStatus == null;
 
     return InkWell(
@@ -61,28 +61,26 @@ class _FoodItemState extends State<FoodItem>
         itemDetails(context, _controller, item);
       },
       child: Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Color(0xffF2F2F2),
+          color: const Color(0xffF2F2F2),
           borderRadius: BorderRadius.circular(16.r),
         ),
-        margin: EdgeInsets.only(top: 16),
+        margin: const EdgeInsets.only(top: 16),
         child: Column(
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 // ── Text info ────────────────────────────────────────────
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       // Name
                       CommonText(
-                        text: item.name ?? "N/A",
-                        color: Color(0xff272727),
+                        text: item.name ?? 'N/A',
+                        color: const Color(0xff272727),
                         fontWeight: FontWeight.w600,
                       ),
                       4.height,
@@ -90,13 +88,13 @@ class _FoodItemState extends State<FoodItem>
                       // Ingredients count
                       Row(
                         children: [
-                          CommonImage(
+                          const CommonImage(
                             imageSrc: AppIcons.ingredients,
                             size: 16,
                             imageColor: Color(0xff777777),
                           ),
-                          CommonText(
-                            text: "Ingredients : ",
+                          const CommonText(
+                            text: 'Ingredients : ',
                             fontSize: 12,
                             left: 4,
                             color: Color(0xff777777),
@@ -104,9 +102,9 @@ class _FoodItemState extends State<FoodItem>
                           ),
                           CommonText(
                             text:
-                            "${item.ingredients?.length ?? 0} items",
+                            '${item.ingredients?.length ?? 0} items',
                             fontSize: 12,
-                            color: Color(0xff272727),
+                            color: const Color(0xff272727),
                             fontWeight: FontWeight.w400,
                           ),
                         ],
@@ -116,22 +114,22 @@ class _FoodItemState extends State<FoodItem>
                       // Cooking time
                       Row(
                         children: [
-                          CommonImage(
+                          const CommonImage(
                             imageSrc: AppIcons.time,
                             size: 16,
                             imageColor: Color(0xff777777),
                           ),
-                          CommonText(
-                            text: "Cooking Time : ",
+                          const CommonText(
+                            text: 'Cooking Time : ',
                             fontSize: 12,
                             left: 4,
                             color: Color(0xff777777),
                             fontWeight: FontWeight.w400,
                           ),
                           CommonText(
-                            text: item.estCookingTime ?? "N/A",
+                            text: item.estCookingTime ?? 'N/A',
                             fontSize: 12,
-                            color: Color(0xff272727),
+                            color: const Color(0xff272727),
                             fontWeight: FontWeight.w400,
                           ),
                         ],
@@ -141,26 +139,25 @@ class _FoodItemState extends State<FoodItem>
 
                       // Kitchen status badge
                       Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 6),
                         decoration: BoxDecoration(
                           color: kitchenReady
-                              ? Color(0xffDBEBD9)
-                              : Color(0xffFFF0E0),
+                              ? const Color(0xffDBEBD9)
+                              : const Color(0xffFFF0E0),
                           borderRadius: BorderRadius.circular(30),
-                          border: Border.all(
+                          /*border: Border.all(
                             color: kitchenReady
-                                ? Color(0xffC2E2BE)
-                                : Color(0xffFFD4A0),
-                          ),
+                                ? const Color(0xffC2E2BE)
+                                : const Color(0xffFFD4A0),
+                          ),*/
                         ),
                         child: CommonText(
-                          text: item.kitchenStatus ?? "Your Kitchen is Ready",
+                          text: item.kitchenStatus ?? 'Your Kitchen is Ready',
                           color: kitchenReady
-                              ? Color(0xff2F8328)
-                              : Color(0xffC17A00),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
+                              ? const Color(0xff2F8328)
+                              : const Color(0xffE39400),
+                          fontSize: 10,
                         ),
                       ),
                     ],
@@ -169,9 +166,9 @@ class _FoodItemState extends State<FoodItem>
 
                 // ── Food image ────────────────────────────────────────────
                 CommonImage(
-                  imageSrc: firstImage != null
+                  imageSrc: (firstImage != null && firstImage.isNotEmpty)
                       ? _buildImageUrl(firstImage)
-                      : AppImages.image6,
+                      : AppImages.noImage,
                   size: 120,
                   borderRadius: 8,
                   fill: BoxFit.cover,

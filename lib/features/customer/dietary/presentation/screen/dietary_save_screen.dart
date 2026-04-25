@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/dietary_controller.dart';
 
@@ -17,11 +18,7 @@ class DietarySaveScreen extends StatelessWidget {
           appBar: AppBar(
             elevation: 0,
             backgroundColor: Colors.white,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new,
-                  color: Colors.black, size: 20),
-              onPressed: () => Navigator.pop(context),
-            ),
+            flexibleSpace: appBarOpacity(),
           ),
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -39,8 +36,8 @@ class DietarySaveScreen extends StatelessWidget {
                     color: Color(0xff272727),
                   ),
                 ),*/
-                CommonText(
-                  text: "Dietary Restrictions & Allergies",
+                const CommonText(
+                  text: 'Dietary Restrictions & Allergies',
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
                   color: Color(0xff272727),
@@ -55,8 +52,8 @@ class DietarySaveScreen extends StatelessWidget {
                     color: Color(0xff777777),
                   ),
                 ),*/
-                CommonText(
-                  text: "Vegetarian? Kosher? Halal? Food allergies? Enter the details below.",
+                const CommonText(
+                  text: 'Vegetarian? Kosher? Halal? Food allergies? Enter the details below.',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff777777),

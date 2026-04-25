@@ -106,7 +106,7 @@ class ChatBubbleMessage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (isMe) ...[
-                          CommonImage(imageSrc: AppIcons.sended),
+                          const CommonImage(imageSrc: AppIcons.sended),
                           4.width,
                         ],
                         CommonText(
@@ -430,7 +430,6 @@ class ChatBubbleMessage extends StatelessWidget {
                     maxLines: 2,
                     text: fileName,
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
                     color: isMe ? Colors.white : const Color(0xff222222),
                   ),
                   4.height,
@@ -643,7 +642,6 @@ class _FileDownloadHelper {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: const Color(0xff4CAF50),
         colorText: Colors.white,
-        duration: const Duration(seconds: 3),
         margin: const EdgeInsets.all(12),
         borderRadius: 12,
         icon: const Icon(Icons.check_circle, color: Colors.white),

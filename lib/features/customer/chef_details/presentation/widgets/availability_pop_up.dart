@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
@@ -38,28 +39,35 @@ void availabilityPopup(BuildContext context, String chefId) {
                     },
                     calendarStyle: CalendarStyle(
                       selectedDecoration: const BoxDecoration(
-                        color: Colors.black,        // 🔥 selected date circle color
+                        color: Colors.black, // 🔥 selected date circle color
                         shape: BoxShape.circle,
                       ),
                       todayDecoration: BoxDecoration(
                         color: Colors.grey.shade300, // optional: today color
                         shape: BoxShape.circle,
                       ),
-                      defaultDecoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
+                      weekendTextStyle: const TextStyle(color: Colors.black),
+                    ),
+                    headerStyle: const HeaderStyle(
+                      formatButtonVisible: false,
+                      titleCentered: true,
+                      leftChevronIcon: Icon(Icons.chevron_left, color: Colors.black),
+                      rightChevronIcon: Icon(Icons.chevron_right, color: Colors.black),
+                    ),
+                    daysOfWeekStyle: const DaysOfWeekStyle(
+                      weekendStyle: TextStyle(color: Colors.black),
                     ),
                   ),
 
                   20.height,
-                  const CommonText(text: "Select start time", fontSize: 14, fontWeight: FontWeight.w600),
+                  const CommonText(text: 'Select start time', fontWeight: FontWeight.w600),
                   12.height,
 
                   // Show loader or slots
                   if (controller.isSlotLoading)
-                    const Center(child: CircularProgressIndicator())
+                    const Center(child: CupertinoActivityIndicator())
                   else if (controller.timeSlots.isEmpty)
-                    const Center(child: CommonText(text: "No slots available for this date", fontSize: 12))
+                    const Center(child: CommonText(text: 'No slots available for this date', fontSize: 12))
                   else
                     Wrap(
                       spacing: 10,
@@ -86,7 +94,6 @@ void availabilityPopup(BuildContext context, String chefId) {
                             child: CommonText(
                               text: time,
                               color: isSelected ? Colors.white : Colors.black,
-                              fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),
                           ),
@@ -96,7 +103,7 @@ void availabilityPopup(BuildContext context, String chefId) {
 
                   24.height,
                   CommonButton(
-                      titleText: "Done",
+                      titleText: 'Done',
                       onTap: () {
                         // You can return the data back to the screen
                         Navigator.pop(context, {

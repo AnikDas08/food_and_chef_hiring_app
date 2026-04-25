@@ -36,7 +36,7 @@ class RequestChangeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const CommonText(
           text: AppString.requestChange,
-          fontSize: 14,
+          fontSize: 24,
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
         ),
@@ -45,11 +45,15 @@ class RequestChangeScreen extends StatelessWidget {
         builder: (historyCtrl) {
           // Show loader while fetching details
           if (historyCtrl.isDetailLoading) {
-            return const Center(child: CircularProgressIndicator(color: Color(0xffFD713F)));
+            return const Center(
+              child: CircularProgressIndicator(color: Color(0xffFD713F)),
+            );
           }
 
           final order = historyCtrl.selectedOrderDetail;
-          if (order == null) return const Center(child: Text("Order not found"));
+          if (order == null) {
+            return const Center(child: Text('Order not found'));
+          }
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -64,29 +68,38 @@ class RequestChangeScreen extends StatelessWidget {
                   bottom: 8,
                 ),
                 GetBuilder<CartController>(
-                    builder: (cartCtrl) {
-                      // This logic updates the text field whenever the controller state changes
-                      if (cartCtrl.selectedTime.isNotEmpty) {
-                        final date = cartCtrl.selectedDate;
-                        String formattedDate = "${date.day}/${date.month}/${date.year}";
-                        dateController.text = "$formattedDate, ${cartCtrl.selectedTime}";
-                      }
-
-                      return CommonTextField(
-                        controller: dateController,
-                        keyboardType: TextInputType.none,
-                        borderRadius: 20,
-                        hintText: "Select Date & Time",
-                        onTap: () => bookingDateTimePopup(id: historyCtrl.selectedOrderDetail!.chef.id),
-                        suffixIcon: InkWell(
-                          onTap: () => bookingDateTimePopup(id: historyCtrl.selectedOrderDetail!.chef.id),
-                          child: const Icon(
-                            CupertinoIcons.calendar,
-                            color: Color(0xffFD713F),
-                          ),
-                        ),
-                      );
+                  builder: (cartCtrl) {
+                    // This logic updates the text field whenever the controller state changes
+                    if (cartCtrl.selectedTime.isNotEmpty) {
+                      final date = cartCtrl.selectedDate;
+                      final String formattedDate =
+                          '${date.day}/${date.month}/${date.year}';
+                      dateController.text =
+                          '$formattedDate, ${cartCtrl.selectedTime}';
                     }
+
+                    return CommonTextField(
+                      controller: dateController,
+                      keyboardType: TextInputType.none,
+                      paddingVertical: 20,
+                      borderRadius: 14,
+                      hintText: 'Select Date & Time',
+                      onTap:
+                          () => bookingDateTimePopup(
+                            id: historyCtrl.selectedOrderDetail!.chef.id,
+                          ),
+                      suffixIcon: InkWell(
+                        onTap:
+                            () => bookingDateTimePopup(
+                              id: historyCtrl.selectedOrderDetail!.chef.id,
+                            ),
+                        child: const Icon(
+                          CupertinoIcons.calendar,
+                          color: Color(0xffFD713F),
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 20.height,
 
@@ -107,27 +120,68 @@ class RequestChangeScreen extends StatelessWidget {
                         }
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                        constraints: BoxConstraints(minHeight: 60.h),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 12.h,
+                        ),
                         decoration: BoxDecoration(
-                          color: const Color(0xffF0F0F0),
+                          color: const Color(0xfff2f2f2),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
                           children: [
-                            CommonImage(imageSrc: AppIcons.mapIcon, imageColor: const Color(0xffFD713F), size: 24),
-                            8.width,
                             Expanded(
-                              child: cartCtrl.selectedAddress != null
-                                  ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CommonText(text: cartCtrl.selectedAddress!.label, fontSize: 12, fontWeight: FontWeight.w600),
-                                  CommonText(text: cartCtrl.selectedAddress!.detailsAddress, fontSize: 12, color: const Color(0xff777777)),
-                                ],
-                              )
-                                  : const CommonText(text: "Select delivery address", fontSize: 12, color: Color(0xff777777)),
+                              child:
+                                  cartCtrl.selectedAddress != null
+                                      ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          CommonText(
+                                            text:
+                                                cartCtrl
+                                                        .selectedAddress!
+                                                        .ownerName
+                                                        .isNotEmpty
+                                                    ? cartCtrl
+                                                        .selectedAddress!
+                                                        .ownerName
+                                                    : cartCtrl
+                                                        .selectedAddress!
+                                                        .label,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            color: const Color(0xff272727),
+                                          ),
+                                          CommonText(
+                                            text:
+                                                cartCtrl
+                                                    .selectedAddress!
+                                                    .detailsAddress,
+                                            fontSize: 12,
+                                            top: 2,
+                                            fontWeight: FontWeight.w400,
+                                            color: const Color(0xff777777),
+                                          ),
+                                        ],
+                                      )
+                                      : const CommonText(
+                                        text: 'Select delivery address',
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: Color(0xff777777),
+                                        textAlign: TextAlign.left,
+                                      ),
                             ),
-                            const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                            8.width,
+                            const CommonImage(
+                              imageSrc: AppIcons.mapIcon,
+                              imageColor: Color(0xffFD713F),
+                              size: 24,
+                            ),
                           ],
                         ),
                       ),
@@ -141,21 +195,42 @@ class RequestChangeScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const CommonText(text: AppString.orderDetails, fontSize: 16, fontWeight: FontWeight.w600),
-                    CommonText(text: "${order.staticItems.length} Items", fontSize: 12, color: const Color(0xff777777)),
+                    const CommonText(
+                      text: AppString.orderDetails,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    CommonText(
+                      text: '${order.staticItems.length} Items',
+                      fontSize: 12,
+                      color: const Color(0xff777777),
+                    ),
                   ],
                 ),
                 20.height,
                 Row(
                   children: [
-                    CommonImage(imageSrc: order.chef.image, size: 40, borderRadius: 50, fill: BoxFit.fill),
+                    CommonImage(
+                      imageSrc: order.chef.image,
+                      size: 40,
+                      borderRadius: 50,
+                      fill: BoxFit.fill,
+                    ),
                     12.width,
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CommonText(text: order.chef.name, fontSize: 12, fontWeight: FontWeight.w600),
-                          CommonText(text: "Booking ID: ${order.orderId}", fontSize: 12, color: const Color(0xff777777)),
+                          CommonText(
+                            text: order.chef.name,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          CommonText(
+                            text: 'Booking ID: ${order.orderId}',
+                            fontSize: 12,
+                            color: const Color(0xff777777),
+                          ),
                         ],
                       ),
                     ),
@@ -166,26 +241,44 @@ class RequestChangeScreen extends StatelessWidget {
                 32.height,
 
                 // --- Dynamic Menu Items ---
-                ...order.staticItems.map((item) => Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CommonText(text: item.menuName, fontSize: 14, fontWeight: FontWeight.w600),
-                          CommonText(text: "${item.quantity} Items", fontSize: 12, color: const Color(0xff777777)),
-                        ],
-                      ),
-                      CommonText(text: "\$${item.totalPrice.toStringAsFixed(2)}", fontSize: 14),
-                    ],
+                ...order.staticItems.map(
+                  (item) => Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CommonText(
+                              text: item.menuName,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            CommonText(
+                              text: '${item.quantity} Items',
+                              fontSize: 12,
+                              color: const Color(0xff777777),
+                            ),
+                          ],
+                        ),
+                        CommonText(
+                          text: '\$${item.totalPrice.toStringAsFixed(2)}',
+                        ),
+                      ],
+                    ),
                   ),
-                )),
+                ),
 
                 28.height,
-                const CommonText(text: AppString.notesToPrivaeChef, fontSize: 14, fontWeight: FontWeight.w600, bottom: 8),
-                CommonTextField(controller: noteController, hintText: "Reason for change..."),
+                const CommonText(
+                  text: AppString.notesToPrivaeChef,
+                  fontWeight: FontWeight.w600,
+                  bottom: 8,
+                ),
+                CommonTextField(
+                  controller: noteController,
+                  hintText: 'Reason for change...',
+                ),
               ],
             ),
           );
@@ -206,13 +299,15 @@ class RequestChangeScreen extends StatelessWidget {
             final historyCtrl = Get.find<BookingHistoryController>();
 
             // Format the date to YYYY-MM-DD
-            String formattedDate = "${cartController.selectedDate.year}-${cartController.selectedDate.month.toString().padLeft(2, '0')}-${cartController.selectedDate.day.toString().padLeft(2, '0')}";
+            final String formattedDate =
+                "${cartController.selectedDate.year}-${cartController.selectedDate.month.toString().padLeft(2, '0')}-${cartController.selectedDate.day.toString().padLeft(2, '0')}";
 
             historyCtrl.submitChangeRequest(
               orderId: orderId,
               date: formattedDate,
-              time: cartController.selectedTime, // Takes "05:00 PM" from CartController
-              addressId: cartController.selectedAddress?.id ?? "",
+              time: cartController.selectedTime,
+              // Takes "05:00 PM" from CartController
+              addressId: cartController.selectedAddress?.id ?? '',
               note: noteController.text.trim(),
             );
           },

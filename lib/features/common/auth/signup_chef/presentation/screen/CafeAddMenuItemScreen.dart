@@ -13,18 +13,18 @@ class CafeAddMenuItemScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text("Add $title"),
+        title: Text('Add $title'),
         content: TextField(controller: ctrl, autofocus: true, decoration: InputDecoration(hintText: title)),
         actions: [
           TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Cancel")),
+              child: const Text('Cancel')),
           TextButton(
               onPressed: () {
                 onAdd(ctrl.text);
                 Navigator.of(context).pop();
               },
-              child: const Text("Add")),
+              child: const Text('Add')),
         ],
       ),
     );
@@ -33,7 +33,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
   void _showIngredientDialog(BuildContext context, CafeAddMenuItemController c) {
     final nameCtrl = TextEditingController();
     final qtyCtrl = TextEditingController();
-    String localUnit = c.unitsList.isNotEmpty ? c.unitsList.first : "kg";
+    String localUnit = c.unitsList.isNotEmpty ? c.unitsList.first : 'kg';
 
     showDialog(
       context: context,
@@ -41,19 +41,19 @@ class CafeAddMenuItemScreen extends StatelessWidget {
         builder: (ctx, setState) => AlertDialog(
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-          title: Text("Add Ingredient", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700)),
+          title: Text('Add Ingredient', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _dialogField(nameCtrl, "Ingredient name", autofocus: true),
+              _dialogField(nameCtrl, 'Ingredient name', autofocus: true),
               10.verticalSpace,
-              _dialogField(qtyCtrl, "Quantity", isNumber: true),
+              _dialogField(qtyCtrl, 'Quantity', isNumber: true),
               10.verticalSpace,
               Obx(() {
                 if (c.isLoadingUnits.value) {
                   return const Center(child: CircularProgressIndicator(strokeWidth: 2));
                 }
-                final units = c.unitsList.isEmpty ? ["kg", "g", "ml", "l"] : c.unitsList;
+                final units = c.unitsList.isEmpty ? ['kg', 'g', 'ml', 'l'] : c.unitsList;
                 if (!units.contains(localUnit)) localUnit = units.first;
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -75,8 +75,8 @@ class CafeAddMenuItemScreen extends StatelessWidget {
             ],
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.of(context).pop(), child: Text("Cancel",)),
-            TextButton(onPressed: () { c.addIngredient(nameCtrl.text, qtyCtrl.text, localUnit); Navigator.of(context).pop(); }, child: Text("Add",)),
+            TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel',)),
+            TextButton(onPressed: () { c.addIngredient(nameCtrl.text, qtyCtrl.text, localUnit); Navigator.of(context).pop(); }, child: const Text('Add',)),
 
           ],
         ),
@@ -122,7 +122,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                 color: Color(0xffF6F6F6),
                 shape: BoxShape.circle,
               ),
-              child: CommonImage(
+              child: const CommonImage(
                 imageSrc: AppIcons.backIcon,
                 size: 24,
               ),
@@ -141,15 +141,15 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Add Menu Item",
+                    Text('Add Menu Item',
                         style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.w700,
                             color: const Color(0xFF272727), letterSpacing: -0.5)),
                     8.verticalSpace,
-                    Text("Add your menu and items to showcase what you can cook for customers.",
+                    Text('Add your menu and items to showcase what you can cook for customers.',
                         style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777), height: 1.5)),
                     20.verticalSpace,
 
-                    _label("Previews"),
+                    _label('Previews'),
                     8.verticalSpace,
                     Obx(() => GestureDetector(
                       onTap: () => c.pickImage(),
@@ -164,7 +164,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                       ),
                     )),
                     20.verticalSpace,
-                    _label("Menu Category"),
+                    _label('Menu Category'),
                     8.verticalSpace,
                     Obx(() {
                       if (c.isLoadingCategory.value) {
@@ -179,7 +179,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                           width: double.infinity,
                           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
                           decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
-                          child: Text("No category found. Add a menu section first.",
+                          child: Text('No category found. Add a menu section first.',
                               style: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB))),
                         );
                       }
@@ -206,12 +206,12 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     }),
                     16.verticalSpace,
 
-                    _label("Item Name"),
+                    _label('Item Name'),
                     8.verticalSpace,
                     _textField(c.nameController,),
                     16.verticalSpace,
 
-                    _label("Description"),
+                    _label('Description'),
                     8.verticalSpace,
                     Container(
                       decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
@@ -222,14 +222,14 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.all(14.w),
-                          hintText: "Describe your dish...",
+                          hintText: 'Describe your dish...',
                           hintStyle: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB)),
                         ),
                       ),
                     ),
                     16.verticalSpace,
 
-                    _label("Diet Types"),
+                    _label('Diet Types'),
                     8.verticalSpace,
                     Obx(() => _dropdownContainer(
                       value: c.selectedDietType,
@@ -238,7 +238,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     )),
                     16.verticalSpace,
 
-                    _label("Allergens"),
+                    _label('Allergens'),
                     8.verticalSpace,
                     Obx(() => _dropdownContainer(
                       value: c.selectedAllergen,
@@ -247,7 +247,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     )),
                     16.verticalSpace,
 
-                    _label("Est. Preparation Time"),
+                    _label('Est. Preparation Time'),
                     8.verticalSpace,
                     Obx(() => _TimeInputRow(
                       controller: c.prepTimeController,
@@ -257,7 +257,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     )),
                     16.verticalSpace,
 
-                    _label("Est. Cooking Time"),
+                    _label('Est. Cooking Time'),
                     8.verticalSpace,
                     Obx(() => _TimeInputRow(
                       controller: c.cookTimeController,
@@ -268,9 +268,9 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     16.verticalSpace,
 
                     Obx(() => _SectionHeader(
-                      title: "Customize the Dish",
+                      title: 'Customize the Dish',
                       expanded: c.customizeExpanded.value,
-                      onAddTap: () => _showAddDialog(context, "Customize Option", c.addCustomizeOption),
+                      onAddTap: () => _showAddDialog(context, 'Customize Option', c.addCustomizeOption),
                       onToggle: c.toggleCustomize,
                     )),
                     Obx(() => c.customizeExpanded.value
@@ -284,7 +284,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     16.verticalSpace,
 
                     Obx(() => _SectionHeader(
-                      title: "Ingredients",
+                      title: 'Ingredients',
                       expanded: c.ingredientsExpanded.value,
                       onAddTap: () => _showIngredientDialog(context, c),
                       onToggle: c.toggleIngredients,
@@ -296,7 +296,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                         c.ingredientsList.isEmpty
                             ? Padding(
                           padding: EdgeInsets.symmetric(vertical: 6.h),
-                          child: Text("select at least one ingredient",
+                          child: Text('select at least one ingredient',
                               style: TextStyle(fontSize: 12.sp, color: const Color(0xFF999999))),
                         )
                             : Column(
@@ -310,7 +310,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                         : const SizedBox.shrink()),
                     16.verticalSpace,
 
-                    _label("Special Equipment"),
+                    _label('Special Equipment'),
                     8.verticalSpace,
                     Obx(() => GestureDetector(
                       onTap: c.toggleEquipment,
@@ -326,7 +326,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                c.selectedEquipmentIds.isEmpty ? "Select equipment..." : c.selectedEquipmentNames.join(", "),
+                                c.selectedEquipmentIds.isEmpty ? 'Select equipment...' : c.selectedEquipmentNames.join(', '),
                                 style: TextStyle(fontSize: 13.sp,
                                     color: c.selectedEquipmentIds.isEmpty ? const Color(0xFFBBBBBB) : const Color(0xFF272727)),
                                 maxLines: 1, overflow: TextOverflow.ellipsis,
@@ -353,7 +353,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: const Color(0xFFF7F7F7),
                           borderRadius: BorderRadius.vertical(bottom: Radius.circular(12.r))),
-                      child: Text("No equipment found", style: TextStyle(fontSize: 13.sp, color: const Color(0xFF999999))),
+                      child: Text('No equipment found', style: TextStyle(fontSize: 13.sp, color: const Color(0xFF999999))),
                     )
                         : Container(
                       decoration: BoxDecoration(
@@ -420,7 +420,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                   child: c.isSubmitting.value
                       ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
                       : Text(
-                    c.isEditMode.value ? "Update Item" : "Add Item",
+                    c.isEditMode.value ? 'Update Item' : 'Add Item',
                     style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
                   ),
                 ),
@@ -443,7 +443,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
       decoration: InputDecoration(
         border: InputBorder.none,
         contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
-        hintText: "Enter name",
+        hintText: 'Enter name',
         hintStyle: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB)),
       ),
     ),
@@ -492,7 +492,7 @@ class _IngredientRow extends StatelessWidget {
         child: Row(
           children: [
             Expanded(flex: 3, child: Text(name, style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600, color: const Color(0xFF272727)))),
-            Expanded(flex: 2, child: Text("$quantity $unit", style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777)))),
+            Expanded(flex: 2, child: Text('$quantity $unit', style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777)))),
             GestureDetector(onTap: onRemove, child: Icon(Icons.close, size: 16.sp, color: const Color(0xFF999999))),
           ],
         ),
@@ -526,7 +526,7 @@ class _TimeInputRow extends StatelessWidget {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
-                hintText: "Enter time",
+                hintText: 'Enter time',
                 hintStyle: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB)),
               ),
             ),
@@ -576,7 +576,7 @@ class _SectionHeader extends StatelessWidget {
           child: Row(children: [
             Icon(Icons.add, size: 14.sp, color: const Color(0xFF272727)),
             4.horizontalSpace,
-            Text("Add", style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500, color: const Color(0xFF272727))),
+            Text('Add', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500, color: const Color(0xFF272727))),
           ]),
         ),
         12.horizontalSpace,

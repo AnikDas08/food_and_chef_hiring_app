@@ -1,17 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/button/common_button.dart';
-import 'package:new_untitled/component/other_widgets/common_loader.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../controller/cart_controller.dart';
 import '../widgets/cart_item.dart';
@@ -31,15 +30,14 @@ class CartScreen extends StatelessWidget {
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             systemOverlayStyle: SystemUiOverlayStyle.dark,
-            automaticallyImplyLeading: false,
+            //automaticallyImplyLeading: false,
             centerTitle: true,
             backgroundColor: Colors.transparent,
             elevation: 0,
-
-            // ── Liquid Glass Header ──────────────────────────────────────────
-            flexibleSpace: LiquidGlassLayer(
+            flexibleSpace: appBarOpacity(),
+            actions: [LiquidGlassLayer(
               child: LiquidGlass(
-                shape: LiquidRoundedSuperellipse(borderRadius: 0),
+                shape: const LiquidRoundedSuperellipse(borderRadius: 0),
                 child: Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -50,53 +48,43 @@ class CartScreen extends StatelessWidget {
                         Colors.white.withOpacity(0.05),
                       ],
                     ),
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.black.withOpacity(0.05),
-                        width: 0.5,
-                      ),
-                    ),
                   ),
                 ),
               ),
             ),
+            ],
 
-            leading: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: SvgPicture.asset(
-                AppIcons.backIcon,
-                height: 24.sp,
-              ),
-            ),
-
-            title: CommonText(
+            title: const CommonText(
               text: AppString.cart,
-              fontSize: 24.sp,
+              fontSize: 24,
               fontWeight: FontWeight.w600,
-              color: const Color(0xff272727),
+              color: Color(0xff272727),
             ),
           ),
 
-          body: controller.isLoadingCart
-              ? const CommonLoader()
-              : controller.cartResponse == null
-              ? const SizedBox.shrink()
-              : controller.chefGroups.isEmpty
-              ? _buildEmptyState()
-              : _buildCartContent(controller, context),
+          body:
+              controller.isLoadingCart
+                  ? const Center(child: CupertinoActivityIndicator())
+                  : controller.cartResponse == null
+                  ? const SizedBox.shrink()
+                  : controller.chefGroups.isEmpty
+                  ? _buildEmptyState()
+                  : _buildCartContent(controller, context),
 
           // ── Bottom Checkout Button ───────────────────────────────────────
-          bottomNavigationBar: controller.chefGroups.isEmpty
-              ? null
-              : Padding(
-            padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
-            child: SafeArea(
-              child: CommonButton(
-                titleText: AppString.continueToCheckout,
-                onTap: () => Get.toNamed(AppRoutes.checkout),
-              ),
-            ),
-          ),
+          bottomNavigationBar:
+              controller.chefGroups.isEmpty
+                  ? null
+                  : Padding(
+                    padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
+                    child: SafeArea(
+                      child: CommonButton(
+                        titleText:
+                            "Continue for \$${controller.priceBreakdown?.subtotal?.toStringAsFixed(2) ?? '0.00'}/hr",
+                        onTap: () => Get.toNamed(AppRoutes.checkout),
+                      ),
+                    ),
+                  ),
         );
       },
     );
@@ -115,9 +103,8 @@ class CartScreen extends StatelessWidget {
           ),
           16.height,
           CommonText(
-            text: "Your cart is empty",
+            text: 'Your cart is empty',
             fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
             color: const Color(0xff777777),
           ),
         ],
@@ -132,7 +119,7 @@ class CartScreen extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(16.w, 110.h, 16.w, 120.h),
       physics: const BouncingScrollPhysics(), // Better feel for glass scrolling
       children: [
-        SizedBox(height: 12,),
+        const SizedBox(height: 12),
         ...controller.chefGroups.map((group) {
           final menus = group.menus ?? [];
           final chefId = group.chef?.id ?? '';
@@ -149,16 +136,13 @@ class CartScreen extends StatelessWidget {
 
         CommonText(
           text: AppString.notesToPrivaeChef,
-          fontSize: 14.sp,
           fontWeight: FontWeight.w600,
           color: const Color(0xff272727),
           textAlign: TextAlign.start,
           top: 8.h,
           bottom: 8.h,
         ),
-        CommonTextField(
-          hintText: AppString.notesToPrivaeChef,
-        ),
+        CommonTextField(hintText: AppString.notesToPrivaeChefHint),
 
         24.height,
         _buildPriceSection(controller),
@@ -173,52 +157,53 @@ class CartScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+        /*Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CommonText(
-              text: "Subtotals",
+              text: 'Subtotals',
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),
             ),
             CommonText(
-              text: "\$${subtotal.toStringAsFixed(2)}",
+              text: '\$${subtotal.toStringAsFixed(2)}',
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
               color: const Color(0xff272727),
             ),
           ],
-        ),
+        ),*/
         if (controller.estimatedTime != null) ...[
           12.height,
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-            decoration: BoxDecoration(
-              color: const Color(0xffF2F2F2),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.timer_outlined,
-                  size: 16.r,
-                  color: const Color(0xff777777),
-                ),
-                8.width,
-                Flexible(
-                  child: CommonText(
-                    text: "Estimated time: ${controller.estimatedTime}",
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    color: const Color(0xff777777),
-                  ),
-                ),
-              ],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const CommonText(
+                text: 'Estimated cooking time',
+                fontWeight: FontWeight.w600,
+                color: Color(0xff272727),
+              ),
+              CommonText(
+                text: '${controller.estimatedTime} hours',
+                fontWeight: FontWeight.w600,
+                color: const Color(0xff272727),
+              ),
+            ],
           ),
         ],
+        SizedBox(height: 4.h,),
+        const Text(
+          'For scheduling only: Billing reflects time worked.',
+          style: TextStyle(
+            fontStyle: FontStyle.italic,
+            fontFamily: 'SF Pro',
+            fontSize: 14,
+            color: Color(0xff777777),
+              letterSpacing: 0,
+            fontWeight: FontWeight.w400
+          ),
+        )
       ],
     );
   }

@@ -20,9 +20,9 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
-  String chatId = Get.parameters["chatId"] ?? "";
-  String name = Get.parameters["name"] ?? "";
-  String image = Get.parameters["image"] ?? "";
+  String chatId = Get.parameters['chatId'] ?? '';
+  String name = Get.parameters['name'] ?? '';
+  String image = Get.parameters['image'] ?? '';
 
   @override
   void initState() {
@@ -71,14 +71,13 @@ class _MessageScreenState extends State<MessageScreen> {
                     CommonText(
                       text: name,
                       fontWeight: FontWeight.w600,
-                      fontSize: 14,
                       color: const Color(0xff272727),
                     ),
-                    CommonText(
-                      text: "Online",
+                    const CommonText(
+                      text: 'Online',
                       fontWeight: FontWeight.w400,
                       fontSize: 11,
-                      color: const Color(0xff4CAF50),
+                      color: Color(0xff4CAF50),
                     ),
                   ],
                 ),
@@ -117,10 +116,10 @@ class _MessageScreenState extends State<MessageScreen> {
                         ),
                       ),
                       8.width,
-                      CommonText(
-                        text: "Sending...",
+                      const CommonText(
+                        text: 'Sending...',
                         fontSize: 12,
-                        color: const Color(0xff777777),
+                        color: Color(0xff777777),
                       ),
                     ],
                   ),
@@ -145,16 +144,15 @@ class _MessageScreenState extends State<MessageScreen> {
                         color: const Color(0xffCCCCCC),
                       ),
                       8.height,
-                      CommonText(
-                        text: "No messages yet",
-                        fontSize: 14,
-                        color: const Color(0xff999999),
+                      const CommonText(
+                        text: 'No messages yet',
+                        color: Color(0xff999999),
                       ),
                       4.height,
-                      CommonText(
-                        text: "Say hello! 👋",
+                      const CommonText(
+                        text: 'Say hello! 👋',
                         fontSize: 12,
-                        color: const Color(0xffBBBBBB),
+                        color: Color(0xffBBBBBB),
                       ),
                     ],
                   ),
@@ -183,7 +181,7 @@ class _MessageScreenState extends State<MessageScreen> {
                       );
                     }
 
-                    ChatMessageModel message = controller.messages[index];
+                    final ChatMessageModel message = controller.messages[index];
 
                     return ChatBubbleMessage(
                       avatarImage: message.avatarImage,
@@ -312,8 +310,8 @@ class _AttachmentButton extends StatelessWidget {
       child: Container(
         width: 46.sp,
         height: 46.sp,
-        decoration: BoxDecoration(
-          color: const Color(0xffF2F2F2),
+        decoration: const BoxDecoration(
+          color: Color(0xffF2F2F2),
           shape: BoxShape.circle,
         ),
         child: Center(
@@ -358,19 +356,19 @@ class _AttachmentButton extends StatelessWidget {
               children: [
                 _attachOption(
                   icon: Icons.camera_alt_rounded,
-                  label: "Camera",
+                  label: 'Camera',
                   color: const Color(0xff2196F3),
                   onTap: controller.pickImageFromCamera,
                 ),
                 _attachOption(
                   icon: Icons.photo_library_rounded,
-                  label: "Gallery",
+                  label: 'Gallery',
                   color: const Color(0xff4CAF50),
                   onTap: controller.pickImageFromGallery,
                 ),
                 _attachOption(
                   icon: Icons.insert_drive_file_rounded,
-                  label: "Document",
+                  label: 'Document',
                   color: const Color(0xffFD713F),
                   onTap: controller.pickDocument,
                 ),
@@ -410,7 +408,6 @@ class _AttachmentButton extends StatelessWidget {
           CommonText(
             text: label,
             fontSize: 12,
-            fontWeight: FontWeight.w500,
             color: const Color(0xff444444),
           ),
         ],

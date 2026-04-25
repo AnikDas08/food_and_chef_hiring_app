@@ -1,8 +1,9 @@
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
 import '../../../../../../../utils/extensions/extension.dart';
 import 'package:get/get.dart';
@@ -22,45 +23,20 @@ class DietaryPreferencesScreen extends StatelessWidget {
     return Scaffold(
       /// App Bar Section Starts Here
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Center(
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                height: 40,
-                width: 40,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFF6F6F6),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  // Conditional Icon based on Platform
-                  Platform.isIOS
-                      ? Icons.arrow_back_ios_new
-                      : Icons.arrow_back,
-                  size: 24,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ),
-        ),
+        flexibleSpace: appBarOpacity(),
       ),
 
       /// Body Section Starts Here
       body: GetBuilder<SignUpController>(
         builder: (controller) {
           return Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -84,8 +60,8 @@ class DietaryPreferencesScreen extends StatelessWidget {
 
                   CommonTextField(
                     hintText: AppString.search,
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.only(left: 14),
+                    prefixIcon: const Padding(
+                      padding: EdgeInsets.only(left: 14),
                       child: Icon(CupertinoIcons.search),
                     ),
                     paddingHorizontal: 10,
@@ -100,7 +76,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                   if (controller.isLoadingDietary)
                     const Expanded(
                       child: Center(
-                        child: CircularProgressIndicator(),
+                        child: CupertinoActivityIndicator(),
                       ),
                     )
                   else
@@ -108,14 +84,14 @@ class DietaryPreferencesScreen extends StatelessWidget {
                       child: ListView.builder(
                         itemCount: controller.filteredDietaryOption.length,
                         itemBuilder: (context, index) {
-                          String value =
+                          final String value =
                           controller.filteredDietaryOption[index];
                           return InkWell(
                             onTap: () {
                               controller.onChangeDietary(value);
                             },
                             child: Container(
-                              margin: EdgeInsets.symmetric(vertical: 14),
+                              margin: const EdgeInsets.symmetric(vertical: 14),
                               child: Row(
                                 children: [
                                   Container(
@@ -124,14 +100,14 @@ class DietaryPreferencesScreen extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       color: controller.selectDietary
                                           .contains(value)
-                                          ? Color(0xff272727)
-                                          : Color(0xffF1F1F1),
+                                          ? const Color(0xff272727)
+                                          : const Color(0xffF1F1F1),
                                       shape: BoxShape.circle,
                                     ),
                                     child: !controller.selectDietary
                                         .contains(value)
                                         ? null
-                                        : Icon(
+                                        : const Icon(
                                       Icons.check,
                                       color: Colors.white,
                                       size: 10,
@@ -142,7 +118,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                                     fontSize: 12,
                                     left: 8,
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xff272727),
+                                    color: const Color(0xff272727),
                                   ),
                                 ],
                               ),
@@ -175,7 +151,7 @@ class DietaryPreferencesScreen extends StatelessWidget {
                   }
                 },
               ),
-              const SizedBox(height: 12),
+              //const SizedBox(height: 12),
               /*InkWell(
                 onTap: () => Get.find<SignUpController>().completeProfile(),
                 borderRadius: BorderRadius.circular(12),
@@ -205,16 +181,27 @@ class DietaryPreferencesScreen extends StatelessWidget {
                   ),
                 ),
               ),*/
-              CommonButton(
-                titleText: "Skip for Now",
+              /*CommonButton(
+                titleText: 'Skip for Now',
                 onTap: () {
                   Get.toNamed(AppRoutes.reviewDetail);
                 },
                 buttonColor: Colors.transparent,
-                borderColor: Colors.transparent,
                 titleColor: Colors.black,
                 titleSize: 10.sp,
-              )
+              )*/
+              const SizedBox(height: 12,),
+              GestureDetector(
+                onTap: (){
+                  Get.toNamed(AppRoutes.reviewDetail);
+                },
+                child: const CommonText(
+                  text: 'Skip for Now',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF777777),
+                ),
+              ),
             ],
           ),
         ),

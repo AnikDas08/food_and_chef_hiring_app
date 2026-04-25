@@ -14,6 +14,7 @@ import '../../../../../../services/api/api_service.dart';
 import '../../../../../../services/storage/storage_keys.dart';
 import '../../../../../../services/storage/storage_services.dart';
 import '../../../../../../utils/app_utils.dart';
+import '../../../../../../utils/log/app_log.dart';
 import '../screen/Cafe_Enable_AutoAccept_Screen.dart';
 import '../screen/Cafe_Setup_Profile_Screen.dart';
 import '../screen/Cafe_set_your_price_screen.dart';
@@ -28,7 +29,7 @@ class SignUpChefController extends GetxController {
 
   Timer? _timer;
   int start = 0;
-  String time = "";
+  String time = '';
   String? image;
 
   String tempAbout = '';
@@ -36,13 +37,13 @@ class SignUpChefController extends GetxController {
   String? tempImagePath;
 
   TextEditingController firstNameController = TextEditingController(
-    text: kDebugMode ? "" : "",
+    text: kDebugMode ? '' : '',
   );
   TextEditingController lastNameController = TextEditingController(
-    text: kDebugMode ? "" : "",
+    text: kDebugMode ? '' : '',
   );
   TextEditingController emailController = TextEditingController(
-    text: kDebugMode ? "" : '',
+    text: kDebugMode ? '' : '',
   );
   TextEditingController passwordController = TextEditingController(
     text: kDebugMode ? '' : '',
@@ -58,28 +59,28 @@ class SignUpChefController extends GetxController {
   );
 
   List dietaryOption = [
-    "Vegetarian", "Vegan", "Pescatarian", "Gluten-free",
-    "Dairy-free", "Lactose-free", "Nut-free", "Soy-free",
-    "Egg-free", "Shellfish-free", "Halal", "Kosher",
+    'Vegetarian', 'Vegan', 'Pescatarian', 'Gluten-free',
+    'Dairy-free', 'Lactose-free', 'Nut-free', 'Soy-free',
+    'Egg-free', 'Shellfish-free', 'Halal', 'Kosher',
   ];
   List selectDietary = [];
 
-  List selectedOption = ["User", "Consultant"];
-  String selectRole = "User";
-  String countryCode = "+880";
+  List selectedOption = ['User', 'Consultant'];
+  String selectRole = 'User';
+  String countryCode = '+880';
   String signUpToken = '';
 
   static SignUpChefController get instance => Get.put(SignUpChefController());
 
   String get _onboardingEndpoint =>
-      "user/onboarding/${LocalStorage.userId}";
+      'user/onboarding/${LocalStorage.userId}';
 
   void onChangeDietary(value) {
     if (selectDietary.contains(value)) {
       selectDietary.remove(value);
     } else {
       selectDietary.add(value);
-      dietaryController.text = selectDietary.join(", ");
+      dietaryController.text = selectDietary.join(', ');
     }
     update();
   }
@@ -111,7 +112,7 @@ class SignUpChefController extends GetxController {
         start--;
         final minutes = (start ~/ 60).toString().padLeft(2, '0');
         final seconds = (start % 60).toString().padLeft(2, '0');
-        time = "$minutes:$seconds";
+        time = '$minutes:$seconds';
         update();
       } else {
         _timer?.cancel();
@@ -125,13 +126,13 @@ class SignUpChefController extends GetxController {
 
     final response = await ApiService.post(
       ApiEndPoint.signUp,
-      body: {"email": emailController.text, "role": role},
+      body: {'email': emailController.text, 'role': role},
     );
 
     if (response.statusCode == 200) {
       Get.toNamed(AppRoutes.chef_verify_user);
     } else if (response.statusCode == 400 &&
-        response.data["suggestRoute"] == "/api/v1/auth/verify-email") {
+        response.data['suggestRoute'] == '/api/v1/auth/verify-email') {
     } else {
       Utils.errorSnackBar(response.statusCode.toString(), response.message);
     }
@@ -147,30 +148,30 @@ class SignUpChefController extends GetxController {
     final response = await ApiService.post(
       ApiEndPoint.verifyEmail,
       body: {
-        "email": emailController.text,
-        "oneTimeCode": int.parse(otpController.text),
+        'email': emailController.text,
+        'oneTimeCode': int.parse(otpController.text),
       },
     );
 
     if (response.statusCode == 200) {
       final data = response.data;
 
-      final userId = data["data"]?.toString() ?? "";
+      final userId = data['data']?.toString() ?? '';
       LocalStorage.userId = userId;
       await LocalStorage.setString(LocalStorageKeys.userId, userId);
 
-      final token = data["token"] ??
-          data["accessToken"] ??
-          (data["data"] is Map ? data["data"]["accessToken"] : null) ?? "";
+      final token = data['token'] ??
+          data['accessToken'] ??
+          (data['data'] is Map ? data['data']['accessToken'] : null) ?? '';
 
       if (token.toString().isNotEmpty) {
         await LocalStorage.setString(LocalStorageKeys.token, token.toString());
-        print("✅ token saved: $token");
+        appLog('✅ token saved: $token');
       } else {
-        print("⚠️ token পাওয়া যায়নি! response: $data");
+        appLog('⚠️ token পাওয়া যায়নি! response: $data');
       }
 
-      print("✅ userId: $userId");
+      appLog('✅ userId: $userId');
 
       Get.toNamed(AppRoutes.create_password_chef_screen);
     } else {
@@ -188,32 +189,32 @@ class SignUpChefController extends GetxController {
       final response = await ApiService.patch(
         _onboardingEndpoint,
         body: {
-          "password": passwordController.text.trim(),
-          "first_name": firstNameController.text.trim(),
-          "last_name": lastNameController.text.trim(),
+          'password': passwordController.text.trim(),
+          'first_name': firstNameController.text.trim(),
+          'last_name': lastNameController.text.trim(),
         },
       );
 
       if (response.statusCode == 200) {
         final data = response.data;
 
-        final token = data["data"]?["accessToken"] ??
-            data["accessToken"] ??
-            data["token"] ?? "";
+        final token = data['data']?['accessToken'] ??
+            data['accessToken'] ??
+            data['token'] ?? '';
         if (token.toString().isNotEmpty) {
           await LocalStorage.setString(LocalStorageKeys.token, token.toString());
-          print("✅ token saved: $token");
+          appLog('✅ token saved: $token');
         }
 
         if (data['success'] == true) {
         } else {
-          Utils.errorSnackBar("Error", data['message'] ?? "Something went wrong");
+          Utils.errorSnackBar('Error', data['message'] ?? 'Something went wrong');
         }
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Request failed");
+        Utils.errorSnackBar('Error', response.data['message'] ?? 'Request failed');
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoading = false;
       update();
@@ -251,28 +252,27 @@ class SignUpChefController extends GetxController {
       final List files = [];
 
       if (idCardFrontPath != null && idCardFrontPath.isNotEmpty) {
-        files.add({"name": "id_card_front", "image": await _compressImage(idCardFrontPath)});
+        files.add({'name': 'id_card_front', 'image': await _compressImage(idCardFrontPath)});
       }
       if (idCardBackPath != null && idCardBackPath.isNotEmpty) {
-        files.add({"name": "id_card_back", "image": await _compressImage(idCardBackPath)});
+        files.add({'name': 'id_card_back', 'image': await _compressImage(idCardBackPath)});
       }
       if (proofOfAddressPath != null && proofOfAddressPath.isNotEmpty) {
-        files.add({"name": "proof_of_address", "image": await _compressImage(proofOfAddressPath)});
+        files.add({'name': 'proof_of_address', 'image': await _compressImage(proofOfAddressPath)});
       }
       if (foodSafetyCertPath != null && foodSafetyCertPath.isNotEmpty) {
-        files.add({"name": "food_safety_certificate", "image": await _compressImage(foodSafetyCertPath)});
+        files.add({'name': 'food_safety_certificate', 'image': await _compressImage(foodSafetyCertPath)});
       }
       if (additionalCulinaryPath != null && additionalCulinaryPath.isNotEmpty) {
-        files.add({"name": "additional_culinary_licenses", "image": await _compressImage(additionalCulinaryPath)});
+        files.add({'name': 'additional_culinary_licenses', 'image': await _compressImage(additionalCulinaryPath)});
       }
       if (image != null && image!.isNotEmpty) {
-        files.add({"name": "image", "image": await _compressImage(image!)});
+        files.add({'name': 'image', 'image': await _compressImage(image!)});
       }
 
       final response = await ApiService.multipartImage(
         _onboardingEndpoint,
-        method: "PATCH",
-        body: {"role": "CHEF"},
+        body: {'role': 'CHEF'},
         files: files,
       );
 
@@ -280,7 +280,7 @@ class SignUpChefController extends GetxController {
 
         if(LocalStorage.isLogIn == false){
 
-          Get.to(() => CafeSetupProfileScreen());
+          Get.to(() => const CafeSetupProfileScreen());
 
         }else if(LocalStorage.isLogIn == true){
 
@@ -288,15 +288,15 @@ class SignUpChefController extends GetxController {
 
         }else {
 
-          Utils.errorSnackBar("message", response.data['message'] ?? "Something is logically wrong.");
+          Utils.errorSnackBar('message', response.data['message'] ?? 'Something is logically wrong.');
 
         }
 
       } else {
-        Utils.errorSnackBar("message", response.data['message'] ?? "Something went wrong");
+        Utils.errorSnackBar('message', response.data['message'] ?? 'Something went wrong');
       }
     } catch (e) {
-      Utils.errorSnackBar("message", e.toString());
+      Utils.errorSnackBar('message', e.toString());
     } finally {
       isLoading = false;
       update();
@@ -317,17 +317,16 @@ class SignUpChefController extends GetxController {
     try {
       final List files = [];
       if (imagePath != null && imagePath.isNotEmpty) {
-        files.add({"name": "image", "image": imagePath});
+        files.add({'name': 'image', 'image': imagePath});
       }
 
       final response = await ApiService.multipartImage(
         _onboardingEndpoint,
-        method: "PATCH",
         body: {
-          "cooking_area_distance": int.tryParse(cookingAreaDistance) ?? 0,
-          "address": address,
-          "lat": lat,
-          "lng": lng,
+          'cooking_area_distance': int.tryParse(cookingAreaDistance) ?? 0,
+          'address': address,
+          'lat': lat,
+          'lng': lng,
         },
         files: files,
       );
@@ -337,10 +336,10 @@ class SignUpChefController extends GetxController {
         Navigator.pop(Get.context!);
 
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
+        Utils.errorSnackBar('Error', response.data['message'] ?? 'Something went wrong');
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoading = false;
       update();
@@ -361,19 +360,18 @@ class SignUpChefController extends GetxController {
     try {
       final List files = [];
       if (imagePath != null && imagePath.isNotEmpty) {
-        files.add({"name": "image", "image": imagePath});
+        files.add({'name': 'image', 'image': imagePath});
       }
 
       final response = await ApiService.multipartImage(
         _onboardingEndpoint,
-        method: "PATCH",
         body: {
-          "about": about,
-          "experience": int.tryParse(experience) ?? 0,
-          "cooking_area_distance": int.tryParse(cookingAreaDistance) ?? 0,
-          "address": address,
-          "lat": lat,
-          "lng": lng,
+          'about': about,
+          'experience': int.tryParse(experience) ?? 0,
+          'cooking_area_distance': int.tryParse(cookingAreaDistance) ?? 0,
+          'address': address,
+          'lat': lat,
+          'lng': lng,
         },
         files: files,
       );
@@ -381,10 +379,10 @@ class SignUpChefController extends GetxController {
       if (response.statusCode == 200) {
         Get.to(() => const CafeSetYourPriceScreen());
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
+        Utils.errorSnackBar('Error', response.data['message'] ?? 'Something went wrong');
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoading = false;
       update();
@@ -403,24 +401,23 @@ class SignUpChefController extends GetxController {
     update();
     try {
       final Map<String, dynamic> body = {
-        "pricing": pricing,
-        "role": "CHEF",
-        "week_days_discount_has": weekDaysDiscountHas.toString(),
-        "weekend_discount_has": weekendDiscountHas.toString(),
-        "weekend_discount_amount": weekendDiscountAmount,
-        "minimum_short_order_hours": minimumShortOrderHours,
-        "week_days_discount": jsonEncode(weekDaysDiscountHas && weekDaysDiscount.isNotEmpty
+        'pricing': pricing,
+        'role': 'CHEF',
+        'week_days_discount_has': weekDaysDiscountHas.toString(),
+        'weekend_discount_has': weekendDiscountHas.toString(),
+        'weekend_discount_amount': weekendDiscountAmount,
+        'minimum_short_order_hours': minimumShortOrderHours,
+        'week_days_discount': jsonEncode(weekDaysDiscountHas && weekDaysDiscount.isNotEmpty
             ? {
-          "start_time": weekDaysDiscount["from"] ?? "",
-          "end_time": weekDaysDiscount["to"] ?? "",
-          "amount": int.tryParse(weekDaysDiscount["amount"]?.toString() ?? "0") ?? 0,
+          'start_time': weekDaysDiscount['from'] ?? '',
+          'end_time': weekDaysDiscount['to'] ?? '',
+          'amount': int.tryParse(weekDaysDiscount['amount']?.toString() ?? '0') ?? 0,
         }
-            : {"start_time": "", "end_time": "", "amount": 0}),
+            : {'start_time': '', 'end_time': '', 'amount': 0}),
       };
 
       final response = await ApiService.multipartImage(
         _onboardingEndpoint,
-        method: "PATCH",
         body: body,
         files: [],
       );
@@ -428,10 +425,10 @@ class SignUpChefController extends GetxController {
       if (response.statusCode == 200) {
         Get.to(() => const CafeSetAvailabilityScreen());
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
+        Utils.errorSnackBar('Error', response.data['message'] ?? 'Something went wrong');
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoading = false;
       update();
@@ -448,12 +445,12 @@ class SignUpChefController extends GetxController {
       final List<Map<String, dynamic>> availabilityList = days.map((day) {
 
         return {
-          "day": day.name.toLowerCase(),
-          "availability": day.isEnabled,
-          "availability_times": day.isEnabled
+          'day': day.name.toLowerCase(),
+          'availability': day.isEnabled,
+          'availability_times': day.isEnabled
               ? day.slots.map((slot) => {
-            "start_time": _formatTime(slot.from),
-            "end_time": _formatTime(slot.to),
+            'start_time': _formatTime(slot.from),
+            'end_time': _formatTime(slot.to),
           }).toList()
               : [],
         };
@@ -462,9 +459,8 @@ class SignUpChefController extends GetxController {
 
       final response = await ApiService.multipartImage(
         ApiEndPoint.user,
-        method: "PATCH",
         body: {
-          "availability": jsonEncode(availabilityList),
+          'availability': jsonEncode(availabilityList),
         },
         files: [],
       );
@@ -475,10 +471,10 @@ class SignUpChefController extends GetxController {
           Navigator.pop(Get.context!);
         }
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
+        Utils.errorSnackBar('Error', response.data['message'] ?? 'Something went wrong');
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoading = false;
       update();
@@ -495,15 +491,15 @@ class SignUpChefController extends GetxController {
 
       for (int i = 0; i < days.length; i++) {
         final day = days[i];
-        body["availability[$i][day]"] = day.name.toLowerCase();
-        body["availability[$i][availability]"] = day.isEnabled;
+        body['availability[$i][day]'] = day.name.toLowerCase();
+        body['availability[$i][availability]'] = day.isEnabled;
 
         if (day.isEnabled) {
           for (int j = 0; j < day.slots.length; j++) {
             final slot = day.slots[j];
-            body["availability[$i][availability_times][$j][start_time]"] =
+            body['availability[$i][availability_times][$j][start_time]'] =
                 _formatTime(slot.from);
-            body["availability[$i][availability_times][$j][end_time]"] =
+            body['availability[$i][availability_times][$j][end_time]'] =
                 _formatTime(slot.to);
           }
         }
@@ -511,7 +507,6 @@ class SignUpChefController extends GetxController {
 
       final response = await ApiService.multipartImage(
         _onboardingEndpoint,
-        method: "PATCH",
         body: body,
         files: [],
       );
@@ -519,10 +514,10 @@ class SignUpChefController extends GetxController {
       if (response.statusCode == 200) {
         Get.to(() => const CafeEnableAutoAcceptScreen());
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
+        Utils.errorSnackBar('Error', response.data['message'] ?? 'Something went wrong');
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoading = false;
       update();
@@ -535,18 +530,17 @@ class SignUpChefController extends GetxController {
     try {
       final response = await ApiService.multipartImage(
         _onboardingEndpoint,
-        method: "PATCH",
-        body: {"order_auto_accept": autoAccept.toString()},
+        body: {'order_auto_accept': autoAccept.toString()},
         files: [],
       );
 
       if (response.statusCode == 200) {
         Get.to(() => const CafeAddMenuItemsScreen());
       } else {
-        Utils.errorSnackBar("Error", response.data['message'] ?? "Something went wrong");
+        Utils.errorSnackBar('Error', response.data['message'] ?? 'Something went wrong');
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoading = false;
       update();
@@ -557,21 +551,21 @@ class SignUpChefController extends GetxController {
     isCompleteProfile = true;
     update();
     try {
-      Map<String, dynamic> body = {
-        "first_name": firstNameController.text,
-        "last_name": lastNameController.text,
-        "address": addressController.text,
-        "password": passwordController.text,
-        "contact": "$countryCode${numberController.text}",
+      final Map<String, dynamic> body = {
+        'first_name': firstNameController.text,
+        'last_name': lastNameController.text,
+        'address': addressController.text,
+        'password': passwordController.text,
+        'contact': '$countryCode${numberController.text}',
       };
 
       for (int i = 0; i < selectDietary.length; i++) {
-        body["foods[$i]"] = selectDietary[i];
+        body['foods[$i]'] = selectDietary[i];
       }
 
-      List files = [];
+      final List files = [];
       if (image != null && image!.isNotEmpty) {
-        files.add({"name": "image", "image": image});
+        files.add({'name': 'image', 'image': image});
       }
 
       final response = await ApiService.multipartImage(
@@ -586,7 +580,7 @@ class SignUpChefController extends GetxController {
         Utils.errorSnackBar(response.statusCode.toString(), response.message);
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isCompleteProfile = false;
       update();

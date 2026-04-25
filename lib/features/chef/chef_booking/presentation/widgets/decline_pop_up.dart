@@ -5,11 +5,12 @@ import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/pop_up/common_pop_menu.dart';
+import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_booking_controller.dart';
 
-declineBookingPopUp({
+void declineBookingPopUp({
   required String orderId,
   required VoidCallback onSuccess,
 }) {
@@ -26,11 +27,11 @@ declineBookingPopUp({
             return FadeTransition(
               opacity: ModalRoute.of(context)!.animation!,
               child: Dialog(
-                insetPadding: EdgeInsets.symmetric(horizontal: 16),
+                insetPadding: const EdgeInsets.symmetric(horizontal: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.r),
                 ),
-                backgroundColor: Color(0xffFFFFFF),
+                backgroundColor: const Color(0xffFFFFFF),
                 child: GetBuilder<ChefBookingController>(
                   builder: (controller) {
                     return Padding(
@@ -38,17 +39,17 @@ declineBookingPopUp({
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          CommonText(
-                            text: "Want to cancel order?",
+                          const CommonText(
+                            text: 'Want to cancel order?',
                             fontSize: 16,
                             top: 16,
                             bottom: 8,
                             fontWeight: FontWeight.w600,
                             color: Color(0xff272727),
                           ),
-                          CommonText(
+                          const CommonText(
                             text:
-                                "Please select a reason why you want to decline the request?",
+                                'Please select a reason why you want to decline the request?',
                             fontSize: 12,
                             bottom: 12,
                             textAlign: TextAlign.start,
@@ -61,7 +62,7 @@ declineBookingPopUp({
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              String value = controller.dietaryOption[index];
+                              final String value = controller.dietaryOption[index];
                               return InkWell(
                                 hoverColor: Colors.transparent,
                                 splashColor: Colors.transparent,
@@ -70,7 +71,7 @@ declineBookingPopUp({
                                   controller.onChangeDietary(value);
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 14),
+                                  margin: const EdgeInsets.symmetric(vertical: 14),
                                   child: Row(
                                     children: [
                                       Container(
@@ -81,8 +82,8 @@ declineBookingPopUp({
                                               controller.selectDietary.contains(
                                                     value,
                                                   )
-                                                  ? Color(0xff272727)
-                                                  : Color(0xffF1F1F1),
+                                                  ? const Color(0xff272727)
+                                                  : const Color(0xffF1F1F1),
                                           shape: BoxShape.circle,
                                         ),
                                         child:
@@ -90,7 +91,7 @@ declineBookingPopUp({
                                                   value,
                                                 )
                                                 ? null
-                                                : Icon(
+                                                : const Icon(
                                                   Icons.check,
                                                   color: Colors.white,
                                                   size: 10,
@@ -101,7 +102,7 @@ declineBookingPopUp({
                                         fontSize: 12,
                                         left: 8,
                                         fontWeight: FontWeight.w400,
-                                        color: Color(0xff272727),
+                                        color: const Color(0xff272727),
                                       ),
                                     ],
                                   ),
@@ -113,13 +114,11 @@ declineBookingPopUp({
                           CommonButton(
                             titleText: AppString.submit,
                             buttonHeight: 48,
-                            titleSize: 16,
                             buttonRadius: 16,
-                            titleColor: Colors.white,
                             onTap: () async {
 
                               if (controller.selectDietary.isEmpty) {
-                                Get.snackbar("Message", "Please select a reason");
+                                Utils.errorSnackBar('Message', 'Please select a reason');
                                 return;
                               }
 
@@ -136,9 +135,9 @@ declineBookingPopUp({
 
                                 onSuccess();
                               } else {
-                                Get.snackbar(
-                                  "Error",
-                                  res.data['message']?.toString() ?? "Something went wrong",
+                                Utils.errorSnackBar(
+                                  'Error',
+                                  res.data['message']?.toString() ?? 'Something went wrong',
                                 );
                               }
                             },

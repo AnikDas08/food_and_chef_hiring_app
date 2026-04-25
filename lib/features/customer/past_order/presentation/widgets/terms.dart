@@ -6,11 +6,11 @@ class Terms extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text.rich(
+    return const Text.rich(
       TextSpan(
         children: [
           TextSpan(
-            text: "Terms: ",
+            text: 'Terms: ',
             style: TextStyle(
               color: Color(0xff222222),
               fontSize: 14,
@@ -20,7 +20,7 @@ class Terms extends StatelessWidget {
 
           /// Sign Up Button here
           TextSpan(
-            text: "All prices incl. VAT. For your order the ",
+            text: 'All prices incl. VAT. For your order the ',
             style: TextStyle(
               color: Color(0xff636363),
               fontSize: 14,
@@ -28,7 +28,7 @@ class Terms extends StatelessWidget {
             ),
           ),
           TextSpan(
-            text: "Privae Chef Terms & conditions apply",
+            text: 'Privae Chef Terms & conditions apply',
             style: TextStyle(
               color: Color(0xff2F8328),
               fontSize: 14,

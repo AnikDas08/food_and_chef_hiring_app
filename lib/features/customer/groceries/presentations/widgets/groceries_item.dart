@@ -40,7 +40,7 @@ class GroceryItemTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CommonText(
-                    text: data['name'] ?? "",
+                    text: data['name'] ?? '',
                     fontWeight: FontWeight.w600,
                     fontSize: 16
                 ),

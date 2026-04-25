@@ -18,7 +18,7 @@ class NotificationItem extends StatelessWidget {
     final controller = Get.find<NotificationsController>();
 
     return InkWell(
-      onTap: () => controller.markAsRead(item.id ?? ""),
+      onTap: () => controller.markAsRead(item.id ?? ''),
       child: Container(
         margin: EdgeInsets.only(bottom: 12.h),
         padding: EdgeInsets.all(12.sp),
@@ -66,23 +66,21 @@ class NotificationItem extends StatelessWidget {
                     children: [
                       Flexible(
                         child: CommonText(
-                          text: item.title ?? "",
+                          text: item.title ?? '',
                           fontSize: 14.sp,
                           // Make text bolder if unread
                           fontWeight: item.isRead == false ? FontWeight.bold : FontWeight.w600,
-                          maxLines: 1,
                         ),
                       ),
                       CommonText(
                         text: item.createdAt.checkTime,
                         fontSize: 11.sp,
                         color: Colors.grey,
-                        maxLines: 1,
                       ),
                     ],
                   ),
                   CommonText(
-                    text: item.message ?? "",
+                    text: item.message ?? '',
                     fontSize: 13.sp,
                     color: item.isRead == false ? Colors.black87 : Colors.black54,
                     maxLines: 3,

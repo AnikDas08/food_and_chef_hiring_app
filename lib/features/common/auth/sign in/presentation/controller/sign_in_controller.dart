@@ -7,6 +7,7 @@ import '../../../../../../config/route/app_routes.dart';
 import '../../../../../../services/api/api_service.dart';
 import '../../../../../../services/storage/storage_keys.dart';
 import '../../../../../../services/storage/storage_services.dart';
+import '../../../../../../utils/app_utils.dart';
 
 class SignInController extends GetxController {
   /// Sign in Button Loading variable
@@ -22,7 +23,7 @@ class SignInController extends GetxController {
   );
 
   TextEditingController passwordController = TextEditingController(
-    text: kDebugMode ? 'hello123' : "",
+    text: kDebugMode ? 'hello123' : '',
   );
 
   /// Sign in Api call here
@@ -30,18 +31,18 @@ class SignInController extends GetxController {
     isLoading = true;
     update();
 
-    Map<String, String> body = {
-      "email": emailController.text,
-      "password": passwordController.text,
+    final Map<String, String> body = {
+      'email': emailController.text,
+      'password': passwordController.text,
     };
 
-    var response = await ApiService.post(
+    final response = await ApiService.post(
       ApiEndPoint.signIn,
       body: body,
     ).timeout(const Duration(seconds: 30));
 
     if (response.statusCode == 200) {
-      var data = response.data;
+      final data = response.data;
 
       /*if (response.data["data"]["onboarding"] == false) {
         isLoading = false;
@@ -51,9 +52,9 @@ class SignInController extends GetxController {
         return;
       }*/
 
-      LocalStorage.token = data['data']["accessToken"];
-      LocalStorage.userId = data['data']["userId"];
-      LocalStorage.myRole = data["data"]["role"];
+      LocalStorage.token = data['data']['accessToken'];
+      LocalStorage.userId = data['data']['userId'];
+      LocalStorage.myRole = data['data']['role'];
       LocalStorage.isLogIn = true;
 
       await LocalStorage.setBool(LocalStorageKeys.isLogIn, LocalStorage.isLogIn);
@@ -64,16 +65,16 @@ class SignInController extends GetxController {
       emailController.clear();
       passwordController.clear();
 
-      if (response.data["data"]["role"] == "CHEF") {
+      if (response.data['data']['role'] == 'CHEF') {
         Get.offAllNamed(AppRoutes.chefHomeScreen);
-      } else if (response.data["data"]["role"] == "CUSTOMER") {
+      } else if (response.data['data']['role'] == 'CUSTOMER') {
         Get.offAllNamed(AppRoutes.customerHomeScreen);
       } else {
-        Get.snackbar("Message", response.message);
+        Utils.successSnackBar('Message', response.message);
       }
 
     } else {
-      Get.snackbar(response.statusCode.toString(), response.message);
+      Utils.errorSnackBar('Error', response.message);
     }
 
     isLoading = false;

@@ -28,16 +28,15 @@ class ConfirmedGroceryScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CommonText(
-                text: "My groceries",
+                text: 'My groceries',
                 fontSize: 24,
                 fontWeight: FontWeight.bold
             ),
             SizedBox(height: 12.h),
             const CommonText(
-              text: "Your groceries will appear here once you have a confirmed upcoming booking with a chef",
+              text: 'Your groceries will appear here once you have a confirmed upcoming booking with a chef',
               maxLines: 2,
               color: Colors.grey,
-              fontSize: 14,
               textAlign: TextAlign.start,
             ),
 
@@ -45,7 +44,7 @@ class ConfirmedGroceryScreen extends StatelessWidget {
             if (controller.receivedOrderIds.isNotEmpty) ...[
               SizedBox(height: 10.h),
               CommonText(
-                text: "Selected Orders: ${controller.receivedOrderIds.length}",
+                text: 'Selected Orders: ${controller.receivedOrderIds.length}',
                 color: const Color(0xffFD713F),
                 fontWeight: FontWeight.w600,
               ),
@@ -53,22 +52,22 @@ class ConfirmedGroceryScreen extends StatelessWidget {
 
             SizedBox(height: 32.h),
             const CommonText(
-              text: "Choose your grocery delivery partner",
+              text: 'Choose your grocery delivery partner',
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
             SizedBox(height: 4.h),
             const CommonText(
-                text: "Order groceries for your booking",
+                text: 'Order groceries for your booking',
                 color: Colors.grey,
                 fontSize: 12
             ),
             SizedBox(height: 24.h),
 
             Obx(() => _buildPartnerIcon(
-              name: "Instacart",
-              imagePath: "assets/images/intacart.png", // Corrected path to match your asset
-              isSelected: controller.selectedPartner.value == "Instacart",
+              name: 'Instacart',
+              imagePath: 'assets/images/intacart.png', // Corrected path to match your asset
+              isSelected: controller.selectedPartner.value == 'Instacart',
               controller: controller,
             )),
           ],

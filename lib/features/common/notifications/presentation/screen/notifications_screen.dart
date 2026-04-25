@@ -1,11 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
-import 'package:new_untitled/component/image/common_image.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
-import '../../../../../component/other_widgets/common_loader.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/notifications_controller.dart';
 import '../../data/model/notification_model.dart';
@@ -22,36 +21,14 @@ class NotificationScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: false,
+        centerTitle: true,
         leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Center(
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                height: 40,
-                width: 40,
-                decoration: const BoxDecoration(
-                  color: Color(0xffF6F6F6),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: CommonImage(
-                    imageSrc: AppIcons.backIcon,
-                    size: 24,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        flexibleSpace: LiquidGlassLayer(
+        flexibleSpace: appBarOpacity(),
+        actions: [LiquidGlassLayer(
           child: LiquidGlass(
-            shape: LiquidRoundedSuperellipse(borderRadius: 0),
+            shape: const LiquidRoundedSuperellipse(borderRadius: 0),
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -62,18 +39,13 @@ class NotificationScreen extends StatelessWidget {
                     Colors.white.withOpacity(0.05),
                   ],
                 ),
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.black.withOpacity(0.05),
-                    width: 0.5,
-                  ),
-                ),
               ),
             ),
           ),
         ),
+        ],
         title: const CommonText(
-          text: "Notifications",
+          text: 'Notifications',
           fontWeight: FontWeight.w600,
           fontSize: 24,
           color: Color(0xff272727),
@@ -82,7 +54,7 @@ class NotificationScreen extends StatelessWidget {
       body: GetBuilder<NotificationsController>(
         builder: (ctrl) {
           if (ctrl.isLoading) {
-            return const Center(child: CommonLoader());
+            return const Center(child: CupertinoActivityIndicator());
           }
 
           if (ctrl.notifications.isEmpty) {
@@ -92,7 +64,8 @@ class NotificationScreen extends StatelessWidget {
           final grouped = ctrl.groupedNotifications;
 
           return RefreshIndicator(
-            color: const Color(0xff5B5FEF),
+            backgroundColor: Colors.white,
+            color: Colors.black,
             onRefresh: () => ctrl.getNotificationsRepo(),
             child: ListView.builder(
               controller: ctrl.scrollController,
@@ -105,7 +78,7 @@ class NotificationScreen extends StatelessWidget {
                 if (resolved == null) {
                   return const Padding(
                     padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Center(child: CommonLoader(size: 28)),
+                    child: Center(child: CupertinoActivityIndicator(radius: 14)),
                   );
                 }
 
@@ -161,14 +134,21 @@ class _SectionLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 12.h, bottom: 8.h),
-      child: Text(
+      child: /*Text(
         label,
         style: TextStyle(
           fontSize: 13.sp,
           fontWeight: FontWeight.w600,
           color: const Color(0xff272727),
         ),
-      ),
+      ),*/
+      CommonText(
+          text: label,
+          color: const Color(0xff272727),
+          fontWeight: FontWeight.w600,
+          textAlign: TextAlign.start,
+      )
+
     );
   }
 }
@@ -200,7 +180,7 @@ class _NotificationCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  /*Text(
                     item.title ?? 'Notification',
                     style: TextStyle(
                       fontSize: 13.sp,
@@ -209,9 +189,18 @@ class _NotificationCard extends StatelessWidget {
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+                  ),*/
+                  CommonText(
+                    text: item.title ?? 'Notification',
+                    fontSize: 12,
+                    color: const Color(0xff1A1A1A),
+                    height: 1.45,
+                    fontWeight: FontWeight.w600,
+                    maxLines: 4,
+                    textAlign: TextAlign.start,
                   ),
                   SizedBox(height: 4.h),
-                  Text(
+                  /*Text(
                     item.message ?? '',
                     style: TextStyle(
                       fontSize: 12.sp,
@@ -221,7 +210,16 @@ class _NotificationCard extends StatelessWidget {
                     ),
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
-                  ),
+                  ),*/
+                  CommonText(
+                    text: item.message ?? '',
+                    fontSize: 12,
+                    color: const Color(0xff6B7280),
+                    height: 1.45,
+                    fontWeight: FontWeight.w400,
+                    maxLines: 4,
+                    textAlign: TextAlign.start,
+                  )
                 ],
               ),
             ),

@@ -15,19 +15,18 @@ class Screen1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF1F1F1),
+      backgroundColor: const Color(0xffF1F1F1),
 
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     28.height,
-                    CommonImage(imageSrc: AppImages.logo),
+                    const CommonImage(imageSrc: AppImages.logo),
                     28.height,
                     CommonImage(
                       imageSrc: AppImages.onboarding_1,
@@ -40,8 +39,8 @@ class Screen1 extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
-              decoration: BoxDecoration(color: Colors.white),
-              child: Column(
+              decoration: const BoxDecoration(color: Colors.white),
+              child: const Column(
                 children: [
                   CommonText(
                     text: AppString.welcomeToPrivae,
@@ -79,21 +78,21 @@ class OnboardingItem extends StatefulWidget {
 class _OnboardingItemState extends State<OnboardingItem> {
   final List _list = [
     {
-      "image": AppImages.onboarding_1,
-      "title": AppString.welcomeToPrivae,
-      "subtitle": AppString.effortlesslyHirePersonal,
+      'image': AppImages.onboarding_1,
+      'title': AppString.welcomeToPrivae,
+      'subtitle': AppString.effortlesslyHirePersonal,
     },
 
     {
-      "image": AppImages.onboarding_2,
-      "title": AppString.findYourPrivaeChef,
-      "subtitle": AppString.browseThroughTalentedChefs,
+      'image': AppImages.onboarding_2,
+      'title': AppString.findYourPrivaeChef,
+      'subtitle': AppString.browseThroughTalentedChefs,
     },
 
     {
-      "image": AppImages.onboarding_3,
-      "title": AppString.bookAnytimeAnywhere,
-      "subtitle": AppString.scheduleYourChefAtYourConvenience,
+      'image': AppImages.onboarding_3,
+      'title': AppString.bookAnytimeAnywhere,
+      'subtitle': AppString.scheduleYourChefAtYourConvenience,
     },
   ];
 
@@ -107,7 +106,7 @@ class _OnboardingItemState extends State<OnboardingItem> {
     init();
   }
 
-  init() {
+  void init() {
     Timer.periodic(const Duration(seconds: 3), (Timer t) {
       if (currentPage < _list.length - 1) {
         currentPage++;
@@ -120,7 +119,7 @@ class _OnboardingItemState extends State<OnboardingItem> {
 
   Map get item => _list[currentPage];
 
-  update(details) {
+  void update(details) {
     if (details.primaryVelocity == null) return;
 
     if (details.primaryVelocity! > 0) {
@@ -136,21 +135,20 @@ class _OnboardingItemState extends State<OnboardingItem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF1F1F1),
+      backgroundColor: const Color(0xffF1F1F1),
       body: SafeArea(
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onHorizontalDragEnd: update,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
                       28.height,
-                      CommonImage(
+                      const CommonImage(
                         imageSrc: AppImages.logo,
                         height: 38,
                         width: 104,
@@ -158,7 +156,7 @@ class _OnboardingItemState extends State<OnboardingItem> {
                       ),
                       28.height,
                       CommonImage(
-                        imageSrc: item["image"],
+                        imageSrc: item['image'],
                         fill: BoxFit.fill,
                         height: 330.h,
                       ),
@@ -168,21 +166,21 @@ class _OnboardingItemState extends State<OnboardingItem> {
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
-                decoration: BoxDecoration(color: Colors.white),
+                decoration: const BoxDecoration(color: Colors.white),
                 child: Column(
                   children: [
                     CommonText(
-                      text: item["title"],
+                      text: item['title'],
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                       top: 28,
                     ),
                     CommonText(
-                      text: item["subtitle"],
+                      text: item['subtitle'],
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xff777777),
+                      color: const Color(0xff777777),
                       top: 12,
                       bottom: 20,
                       maxLines: 3,

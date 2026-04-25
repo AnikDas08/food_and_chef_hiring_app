@@ -16,7 +16,7 @@ class BookTime extends StatelessWidget {
         height: 243.h,
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Color(0xffF2F2F2),
+          color: const Color(0xffF2F2F2),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
@@ -24,9 +24,8 @@ class BookTime extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CommonText(
-                  text: "Most Booked Times",
-                  fontSize: 14,
+                const CommonText(
+                  text: 'Most Booked Times',
                   fontWeight: FontWeight.w600,
                   color: Color(0xff272727),
                 ),
@@ -35,7 +34,7 @@ class BookTime extends StatelessWidget {
                     showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                       ),
                       builder: (_) {
@@ -44,16 +43,16 @@ class BookTime extends StatelessWidget {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                SizedBox(height: 12),
+                                const SizedBox(height: 12),
                                 Container(
                                   width: 40,
                                   height: 4,
                                   decoration: BoxDecoration(
-                                    color: Color(0xffE0E0E0),
+                                    color: const Color(0xffE0E0E0),
                                     borderRadius: BorderRadius.circular(2),
                                   ),
                                 ),
-                                SizedBox(height: 16),
+                                const SizedBox(height: 16),
                                 ...controller.days.map((day) {
                                   final bool isSelected = controller.selectedDay.value == day;
                                   return ListTile(
@@ -66,15 +65,15 @@ class BookTime extends StatelessWidget {
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                                        color: isSelected ? Color(0xffFD713F) : Color(0xff272727),
+                                        color: isSelected ? const Color(0xffFD713F) : const Color(0xff272727),
                                       ),
                                     ),
                                     trailing: isSelected
-                                        ? Icon(Icons.check, color: Color(0xffFD713F))
+                                        ? const Icon(Icons.check, color: Color(0xffFD713F))
                                         : null,
                                   );
                                 }),
-                                SizedBox(height: 16),
+                                const SizedBox(height: 16),
                               ],
                             ),
                           )),
@@ -93,11 +92,10 @@ class BookTime extends StatelessWidget {
                         CommonText(
                           text: controller.selectedDay.value,
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff272727),
+                          color: const Color(0xff272727),
                           right: 4,
                         ),
-                        Icon(Icons.keyboard_arrow_down_outlined),
+                        const Icon(Icons.keyboard_arrow_down_outlined),
                       ],
                     ),
                   ),
@@ -107,9 +105,9 @@ class BookTime extends StatelessWidget {
             SizedBox(
               height: 160.h,
               child: controller.bookingLoading.value
-                  ? Center(child: CircularProgressIndicator(color: Color(0xffFD713F)))
+                  ? const Center(child: CircularProgressIndicator(color: Color(0xffFD713F)))
                   : controller.mappedData.isEmpty
-                  ? Center(child: Text("DATA EMPTY")) // debug
+                  ? const Center(child: Text('DATA EMPTY')) // debug
                   : Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: BarChartSample3(

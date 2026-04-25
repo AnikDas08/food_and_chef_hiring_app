@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../../../config/route/app_routes.dart';
@@ -7,6 +7,7 @@ import '../../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../../component/button/common_button.dart';
+import '../../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../component/text_field/common_text_field.dart'
     show CommonTextField;
@@ -50,27 +51,10 @@ class _SignInScreenState extends State<SignInScreen> {
       child: Scaffold(
         /// App Bar Sections Starts here
         appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          automaticallyImplyLeading: false,
-          leadingWidth: 60,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  color: Color(0xffF6F6F6),
-                  shape: BoxShape.circle,
-                ),
-                child: CommonImage(
-                  imageSrc: AppIcons.backIcon,
-                  size: 24,
-                ),
-              ),
-            ),
-          ),
+          flexibleSpace: appBarOpacity(),
         ),
 
         /// Body Sections Starts here
@@ -82,7 +66,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Form(
                   key: controller.formKey,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       /// Log In Instruction here
@@ -145,7 +128,6 @@ class _SignInScreenState extends State<SignInScreen> {
                             bottom: 24,
                             color: Color(0xff272727),
                             fontSize: 12,
-                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
@@ -166,7 +148,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                       Row(
                         children: [
-                          Expanded(child: Divider()),
+                          const Expanded(child: Divider()),
                           10.width,
                           const CommonText(
                             text: AppString.orUsing,
@@ -174,7 +156,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             color: Color(0xff777777),
                           ),
                           10.width,
-                          Expanded(child: Divider()),
+                          const Expanded(child: Divider()),
                         ],
                       ),
 
@@ -182,18 +164,16 @@ class _SignInScreenState extends State<SignInScreen> {
                       Container(
                         height: 60.h,
                         decoration: BoxDecoration(
-                          color: Color(0xffF2F2F2),
+                          color: const Color(0xffF2F2F2),
                           borderRadius: BorderRadius.circular(20.r),
                         ),
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CommonImage(imageSrc: AppIcons.facebook),
                             CommonText(
                               text: AppString.signInWithFacebook,
                               left: 14,
-                              fontWeight: FontWeight.w600,
                             ),
                           ],
                         ),
@@ -202,25 +182,23 @@ class _SignInScreenState extends State<SignInScreen> {
                       Container(
                         height: 60.h,
                         decoration: BoxDecoration(
-                          color: Color(0xffF2F2F2),
+                          color: const Color(0xffF2F2F2),
                           borderRadius: BorderRadius.circular(20.r),
-                          border: Border.all(color: Color(0xffF2F2F2)),
+                          border: Border.all(color: const Color(0xffF2F2F2)),
                         ),
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CommonImage(imageSrc: AppIcons.google),
                             CommonText(
                               text: AppString.signInWithGoogle,
                               left: 14,
-                              fontWeight: FontWeight.w600,
                             ),
                           ],
                         ),
                       ),
                       24.height,
-                      DoNotHaveAccount().center,
+                      const DoNotHaveAccount().center,
                     ],
                   ),
                 ),

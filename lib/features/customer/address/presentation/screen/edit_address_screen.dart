@@ -1,5 +1,6 @@
 // lib/features/address/view/edit_address_screen.dart
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -32,15 +33,13 @@ class EditAddressScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Edit Address"),
-      ),
+      appBar: AppBar(),
       body: GetBuilder<AddressController>(
         builder: (controller) {
-
           // ── Full screen loader while fetching ────────────
           if (controller.isLoadingEdit) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+                child: CupertinoActivityIndicator());
           }
 
           return SafeArea(
@@ -49,11 +48,11 @@ class EditAddressScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
-                    text: "Edit Address",
+                  const CommonText(
+                    text: 'Edit Address',
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 24,
                   ),
 
@@ -80,24 +79,28 @@ class EditAddressScreen extends StatelessWidget {
                           right: 0,
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                left: 16, right: 16, bottom: 16),
+                              left: 16,
+                              right: 16,
+                              bottom: 16,
+                            ),
                             child: GetBuilder<AddressController>(
                               builder: (ctrl) {
                                 return CommonButton(
                                   buttonHeight: 48,
-                                  buttonRadius: 20,
-                                  titleText: ctrl.isLoadingCurrentLocation
-                                      ? "Getting Location..."
-                                      : AppString.useCurrentLocation,
+                                  titleText:
+                                      ctrl.isLoadingCurrentLocation
+                                          ? 'Getting Location...'
+                                          : AppString.useCurrentLocation,
                                   isLoading: ctrl.isLoadingCurrentLocation,
-                                  onTap: ctrl.isLoadingCurrentLocation
-                                      ? null
-                                      : () {
-                                    // Same method as AddAddressScreen —
-                                    // gets GPS, reverse geocodes, and
-                                    // fills address + details fields
-                                    ctrl.getCurrentLocationAndFillAddress();
-                                  },
+                                  onTap:
+                                      ctrl.isLoadingCurrentLocation
+                                          ? null
+                                          : () {
+                                            // Same method as AddAddressScreen —
+                                            // gets GPS, reverse geocodes, and
+                                            // fills address + details fields
+                                            ctrl.getCurrentLocationAndFillAddress();
+                                          },
                                 );
                               },
                             ),
@@ -110,22 +113,20 @@ class EditAddressScreen extends StatelessWidget {
                   CommonText(
                     text: AppString.addressDetails.toUpperCase(),
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
                     color: const Color(0xff777777),
                     bottom: 12,
                     top: 24,
                   ),
 
                   // ── ADDRESS LABEL ────────────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.addressLabel,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 8,
                   ),
                   CommonTextField(
-                    hintText: "Enter Address Label",
+                    hintText: 'Enter Address Label',
                     keyboardType: TextInputType.name,
                     controller: controller.addressLabelController,
                     suffixIcon: PopUpMenu(
@@ -136,19 +137,18 @@ class EditAddressScreen extends StatelessWidget {
                   ),
 
                   // ── ADDRESS (with suggestions) ───────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.address,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 8,
                     top: 16,
                   ),
                   CommonTextField(
-                    hintText: "Enter Address",
+                    hintText: 'Enter Address',
                     controller: controller.addressController,
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.all(14.0),
+                    suffixIcon: const Padding(
+                      padding: EdgeInsets.all(14.0),
                       child: CommonImage(
                         imageSrc: AppImages.house,
                         imageColor: Colors.black,
@@ -163,32 +163,30 @@ class EditAddressScreen extends StatelessWidget {
                     ),
 
                   // ── DETAILS ADDRESS ──────────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.detailedAddress,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 8,
                     top: 16,
                   ),
                   CommonTextField(
-                    hintText: "Enter Detailed Address",
+                    hintText: 'Enter Detailed Address',
                     controller: controller.detailsAddressController,
                     maxLines: 3,
                     keyboardType: TextInputType.multiline,
                   ),
 
                   // ── ADDITIONAL ADDRESS (optional) ────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.additionalAddress,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 8,
                     top: 16,
                   ),
                   CommonTextField(
-                    hintText: "${AppString.additionalAddress} (Optional)",
+                    hintText: '${AppString.additionalAddress} (Optional)',
                     controller: controller.additionalAddressController,
                     maxLines: 3,
                     keyboardType: TextInputType.multiline,
@@ -201,11 +199,10 @@ class EditAddressScreen extends StatelessWidget {
                     ),
 
                   // ── OWNER ────────────────────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.owner,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 8,
                     top: 16,
                   ),
@@ -215,11 +212,10 @@ class EditAddressScreen extends StatelessWidget {
                   ),
 
                   // ── PHONE ────────────────────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.phoneNumber,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     bottom: 8,
                     top: 16,
                   ),
@@ -237,7 +233,7 @@ class EditAddressScreen extends StatelessWidget {
                         value: controller.isDefault,
                         onChanged: controller.onChangeDefaultAddress,
                       ),
-                      Expanded(
+                      const Expanded(
                         child: CommonText(
                           text: AppString.makeAsActiveAddress,
                           textAlign: TextAlign.start,
@@ -258,17 +254,20 @@ class EditAddressScreen extends StatelessWidget {
       persistentFooterButtons: [
         SafeArea(
           child: GetBuilder<AddressController>(
-            builder: (controller) => Column(
-              children: [
-                10.height,
-                controller.isSubmitting
-                    ? const Center(child: CircularProgressIndicator())
-                    : CommonButton(
-                  titleText: AppString.editAddress,
-                  onTap: controller.updateAddress,
+            builder:
+                (controller) => Column(
+                  children: [
+                    10.height,
+                    controller.isSubmitting
+                        ? const Center(
+                            child:
+                                CupertinoActivityIndicator())
+                        : CommonButton(
+                          titleText: AppString.editAddress,
+                          onTap: controller.updateAddress,
+                        ),
+                  ],
                 ),
-              ],
-            ),
           ),
         ),
       ],
@@ -305,52 +304,53 @@ class _SuggestionList extends StatelessWidget {
       ),
       child: isLoading
           ? const Padding(
-        padding: EdgeInsets.all(12),
-        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
-      )
-          : suggestions.isEmpty
-          ? const Padding(
-        padding: EdgeInsets.all(12),
-        child: Text(
-          "No results found",
-          style: TextStyle(color: Color(0xff777777)),
-        ),
-      )
-          : ListView.separated(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: suggestions.length,
-        separatorBuilder: (_, __) => const Divider(height: 1),
-        itemBuilder: (context, i) {
-          final s = suggestions[i];
-          return ListTile(
-            dense: true,
-            leading: const Icon(
-              Icons.location_on_outlined,
-              color: Color(0xffFD713F),
-              size: 18,
-            ),
-            title: Text(
-              s['main_text'] ?? '',
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff272727),
+              padding: EdgeInsets.all(12),
+              child: Center(
+                  child: CupertinoActivityIndicator()),
+            )
+              : suggestions.isEmpty
+              ? const Padding(
+                padding: EdgeInsets.all(12),
+                child: Text(
+                  'No results found',
+                  style: TextStyle(color: Color(0xff777777)),
+                ),
+              )
+              : ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: suggestions.length,
+                separatorBuilder: (_, __) => const Divider(height: 1),
+                itemBuilder: (context, i) {
+                  final s = suggestions[i];
+                  return ListTile(
+                    dense: true,
+                    leading: const Icon(
+                      Icons.location_on_outlined,
+                      color: Color(0xffFD713F),
+                      size: 18,
+                    ),
+                    title: Text(
+                      s['main_text'] ?? '',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff272727),
+                      ),
+                    ),
+                    subtitle: Text(
+                      s['secondary_text'] ?? '',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Color(0xff777777),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: () => onTap(s),
+                  );
+                },
               ),
-            ),
-            subtitle: Text(
-              s['secondary_text'] ?? '',
-              style: const TextStyle(
-                fontSize: 11,
-                color: Color(0xff777777),
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            onTap: () => onTap(s),
-          );
-        },
-      ),
     );
   }
 }

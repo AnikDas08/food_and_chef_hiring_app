@@ -8,7 +8,7 @@ class PastOrderRepository {
     int limit = 10,
   }) async {
     final response = await ApiService.get(
-      "order?status=Completed&page=$page&limit=$limit",
+      'order?status=Completed&page=$page&limit=$limit',
     );
     if (response.statusCode == 200) {
       return PastOrderListResponse.fromJson(response.data);
@@ -20,7 +20,7 @@ class PastOrderRepository {
   // lib/features/orders/repository/past_order_repository.dart
 
   static Future<PastOrderModel?> getOrderById(String id) async {
-    final response = await ApiService.get("order/$id");
+    final response = await ApiService.get('order/$id');
     if (response.statusCode == 200) {
       return PastOrderModel.fromJson(response.data['data']);
     }

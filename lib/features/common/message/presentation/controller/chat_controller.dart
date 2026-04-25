@@ -38,11 +38,14 @@ class ChatController extends GetxController {
     if (query.trim().isEmpty) {
       filteredChats = List.from(chats);
     } else {
-      filteredChats = chats
-          .where((chat) => chat.participant.fullName
-          .toLowerCase()
-          .contains(query.toLowerCase()))
-          .toList();
+      filteredChats =
+          chats
+              .where(
+                (chat) => chat.participant.fullName.toLowerCase().contains(
+                  query.toLowerCase(),
+                ),
+              )
+              .toList();
     }
     update();
   }
@@ -66,10 +69,10 @@ class ChatController extends GetxController {
       update();
     }
 
-    var response = await ApiService.get(ApiEndPoint.chats);
+    final response = await ApiService.get(ApiEndPoint.chats);
 
     if (response.statusCode == 200) {
-      var data = response.data['data'] ?? [];
+      final data = response.data['data'] ?? [];
 
       if (page == 1) chats.clear();
 
@@ -90,7 +93,7 @@ class ChatController extends GetxController {
 
   /// Chat data Update Socket listener
   void listenChat() {
-    SocketServices.on("update-chatlist::${LocalStorage.userId}", (data) {
+    SocketServices.on('update-chatlist::${LocalStorage.userId}', (data) {
       page = 1;
       chats.clear();
 

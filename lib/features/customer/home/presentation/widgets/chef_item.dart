@@ -15,14 +15,14 @@ Widget chefItem({
   required ChefData chef,
 }) {
   // Check if chef has verified badge (you can adjust this logic)
-  bool isVerified = (chef.totalRating ?? 0) >= 5;
+  final bool isVerified = (chef.totalRating ?? 0) >= 5;
 
   return InkWell(
     onTap: () => Get.toNamed(AppRoutes.chefDetails, arguments: chef),
     child: Container(
-      margin: EdgeInsets.only(right: 12),
+      margin: const EdgeInsets.only(right: 12),
       decoration: BoxDecoration(
-        color: Color(0xffF2F2F2),
+        color: const Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -31,7 +31,7 @@ Widget chefItem({
           Stack(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(12),
                   topRight: Radius.circular(12),
                 ),
@@ -39,12 +39,11 @@ Widget chefItem({
                   imageSrc: chef.image ?? '',
                   height: height.toDouble(),
                   width: 240,
-                  borderRadius: 0,
                   fill: BoxFit.cover,
                 ),
               ),
               if (isVerified)
-                Positioned(
+                const Positioned(
                   bottom: 10,
                   left: 10,
                   child: CommonImage(imageSrc: AppIcons.chef),
@@ -63,9 +62,9 @@ Widget chefItem({
                     children: [
                       Flexible(
                         child: CommonText(
-                          text: chef.name ?? "N/A",
+                          text: chef.name ?? 'N/A',
                           fontSize: 12,
-                          color: Color(0xff272727),
+                          color: const Color(0xff272727),
                           fontWeight: FontWeight.w600,
                           top: 8,
                           bottom: 4,
@@ -76,14 +75,14 @@ Widget chefItem({
                         children: [
                           Icon(
                             Icons.star_rounded,
-                            color: Color(0xffFD713F),
+                            color: const Color(0xffFD713F),
                             size: 16.sp,
                           ),
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                           CommonText(
                             text: (chef.avgRating ?? 0).toStringAsFixed(1),
                             fontSize: 12,
-                            color: Color(0xff272727),
+                            color: const Color(0xff272727),
                             fontWeight: FontWeight.w600,
                             left: 4,
                             right: 8,
@@ -98,25 +97,25 @@ Widget chefItem({
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      CommonImage(
+                      const CommonImage(
                         imageSrc: AppIcons.location,
                         imageColor: Color(0xff777777),
                       ),
                       CommonText(
-                        text: chef.distance ?? "N/A",
+                        text: chef.distance ?? 'N/A',
                         fontSize: 12,
-                        color: Color(0xff777777),
+                        color: const Color(0xff777777),
                         fontWeight: FontWeight.w400,
                         left: 4,
                         right: 16,
                       ),
-                      CommonImage(imageSrc: AppIcons.briefcase),
+                      const CommonImage(imageSrc: AppIcons.briefcase),
                       Expanded(
                         child: CommonText(
-                          text: "${chef.experience ?? 0} years Experience",
+                          text: '${chef.experience ?? 0} years Experience',
                           fontSize: 12,
                           left: 4,
-                          color: Color(0xff777777),
+                          color: const Color(0xff777777),
                           //maxLine: 1,
                         ),
                       ),
@@ -129,14 +128,14 @@ Widget chefItem({
                     children: [
                       TextSpan(
                         text: "\$${chef.priceWithFee?.toStringAsFixed(2) ?? '0.00'}",
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Color(0xff272727),
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      TextSpan(
-                        text: " /hr",
+                      const TextSpan(
+                        text: ' /hr',
                         style: TextStyle(
                           color: Color(0xff777777),
                           fontSize: 12,

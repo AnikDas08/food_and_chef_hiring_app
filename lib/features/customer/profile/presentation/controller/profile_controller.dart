@@ -14,36 +14,36 @@ import '../../../../../utils/app_utils.dart';
 
 class ProfileController extends GetxController {
   /// --- Language & Profile Options ---
-  List languages = ["English", "French", "Arabic"];
+  List languages = ['English', 'French', 'Arabic'];
   List<Map<String, dynamic>> profileOptions = [
-    {"name": "Chef", "image": AppIcons.chefIcon},
-    {"name": "Customers", "image": AppIcons.customers},
+    {'name': 'Chef', 'image': AppIcons.chefIcon},
+    {'name': 'Customers', 'image': AppIcons.customers},
   ];
 
   final formKey = GlobalKey<FormState>();
   final deletePasswordController = TextEditingController();
 
   /// --- Rx State Variables ---
-  RxString imagePath = "".obs;
-  RxString name = "".obs;
-  RxString email = "".obs;
-  RxString profileImage = "".obs;
+  RxString imagePath = ''.obs;
+  RxString name = ''.obs;
+  RxString email = ''.obs;
+  RxString profileImage = ''.obs;
   RxList linkAccounts = [].obs;
   RxBool isLoading = false.obs;
   RxBool isDeleteLoading = false.obs;
   RxBool isKitchen = false.obs;
 
   // ✅ Make savedCountryIsoCode reactive so UI rebuilds when profile loads
-  RxString savedCountryIsoCode = "US".obs;
+  RxString savedCountryIsoCode = 'US'.obs;
 
-  String selectedLanguage = "English";
+  String selectedLanguage = 'English';
   Map<String, dynamic> selectedProfile = {
-    "name": "Customers",
-    "image": AppIcons.customers
+    'name': 'Customers',
+    'image': AppIcons.customers
   };
 
-  String savedCountryCode = "+1";
-  String fullPhoneNumber = "";
+  String savedCountryCode = '+1';
+  String fullPhoneNumber = '';
 
   /// --- Controllers ---
   TextEditingController nameController = TextEditingController();
@@ -60,77 +60,77 @@ class ProfileController extends GetxController {
   }
 
   /// 1. Fetch User Profile Data
-  getProfile() async {
+  Future<void> getProfile() async {
     try {
-      final response = await ApiService.get("user/profile");
+      final response = await ApiService.get('user/profile');
 
       if (response.statusCode == 200) {
         final data = response.data['data'];
 
         if (data != null) {
-          name.value = data["orginal_name"] ?? "";
-          email.value = data["email"] ?? "";
-          profileImage.value = data["image"] ?? "";
-          linkAccounts.value = data["link_accounts"] ?? [];
-          isKitchen.value = data["is_kitchen_has"] ?? false;
-          print("Profile image: ${ApiEndPoint.imageUrl + profileImage.value}");
+          name.value = data['orginal_name'] ?? '';
+          email.value = data['email'] ?? '';
+          profileImage.value = data['image'] ?? '';
+          linkAccounts.value = data['link_accounts'] ?? [];
+          isKitchen.value = data['is_kitchen_has'] ?? false;
+          print('Profile image: ${ApiEndPoint.imageUrl + profileImage.value}');
 
           nameController.text = name.value;
-          addressController.text = data["address"] ?? "";
+          addressController.text = data['address'] ?? '';
 
-          String existingPhone = data["contact"] ?? "";
+          final String existingPhone = data['contact'] ?? '';
           fullPhoneNumber = existingPhone;
 
-          if (existingPhone.contains(" ")) {
-            List<String> parts = existingPhone.split(" ");
+          if (existingPhone.contains(' ')) {
+            final List<String> parts = existingPhone.split(' ');
 
             // ✅ parts[0] = "+1", parts[1..] = the number
             savedCountryCode = parts[0];
-            numberController.text = parts.sublist(1).join(" ");
+            numberController.text = parts.sublist(1).join(' ');
 
             // ✅ Strip "+" and find matching ISO code from dial code
-            String cleanCode = parts[0].replaceAll("+", "");
+            final String cleanCode = parts[0].replaceAll('+', '');
             try {
               savedCountryIsoCode.value = countries
                   .firstWhere(
                     (c) => c.dialCode == cleanCode,
-                orElse: () => countries.firstWhere((c) => c.code == "US"),
+                orElse: () => countries.firstWhere((c) => c.code == 'US'),
               )
                   .code;
             } catch (e) {
-              savedCountryIsoCode.value = "US";
+              savedCountryIsoCode.value = 'US';
             }
           } else {
             // No space found — treat entire string as number, default to US
             numberController.text = existingPhone;
-            savedCountryIsoCode.value = "US";
+            savedCountryIsoCode.value = 'US';
           }
         }
       }
     } catch (e) {
-      debugPrint("Error fetching profile: $e");
+      debugPrint('Error fetching profile: $e');
     }
   }
 
   void onCountryChanged(Country country) {
-    savedCountryCode = "${country.dialCode}";
+    savedCountryCode = '${country.dialCode}';
     savedCountryIsoCode.value = country.code;
 
     // ✅ Rebuild fullPhoneNumber with new country code + existing number
-    String currentNumber = numberController.text.trim();
-    fullPhoneNumber = "${country.dialCode} $currentNumber";
+    final String currentNumber = numberController.text.trim();
+    fullPhoneNumber = '${country.dialCode} $currentNumber';
   }
 
   /// 2. Handle International Phone Changes
   void onPhoneChanged(PhoneNumber phone) {
-    String complete = phone.completeNumber;
-    String number = phone.number;
-    String code = complete.replaceAll(number, "");
-    String countryCode = phone.countryCode;
+    final String complete = phone.completeNumber;
+    final String number = phone.number;
+    final String code = complete.replaceAll(number, '');
+    final String countryCode = phone.countryCode;
 
     savedCountryCode = code;
     savedCountryIsoCode.value = phone.countryISOCode; // ✅ Update reactive ISO code on manual change
-    fullPhoneNumber = "$countryCode $number";
+    fullPhoneNumber = '$countryCode $number';
   }
 
   /// 3. Select Image from Gallery
@@ -153,49 +153,48 @@ class ProfileController extends GetxController {
 
     isLoading.value = true;
 
-    Map<String, dynamic> body = {
-      "name": nameController.text.trim(),
-      "contact": fullPhoneNumber,
+    final Map<String, dynamic> body = {
+      'name': nameController.text.trim(),
+      'contact': fullPhoneNumber,
     };
 
-    List files = [];
+    final List files = [];
     if (image != null && image!.isNotEmpty) {
-      files.add({"name": "image", "image": image});
+      files.add({'name': 'image', 'image': image});
     }
 
     try {
-      var response = await ApiService.multipartImage(
+      final response = await ApiService.multipartImage(
         ApiEndPoint.user,
-        method: "PATCH",
         body: body,
         files: files,
       );
 
       if (response.statusCode == 200) {
-        var data = response.data['data'];
+        final data = response.data['data'];
 
-        LocalStorage.userId = data?["_id"] ?? "";
-        LocalStorage.myImage = data?["image"] ?? "";
-        LocalStorage.myName = data?["name"] ?? "";
-        LocalStorage.myEmail = data?["email"] ?? "";
+        LocalStorage.userId = data?['_id'] ?? '';
+        LocalStorage.myImage = data?['image'] ?? '';
+        LocalStorage.myName = data?['name'] ?? '';
+        LocalStorage.myEmail = data?['email'] ?? '';
 
         // Update Rx values so UI reflects immediately
         name.value = LocalStorage.myName;
         email.value = LocalStorage.myEmail;
         profileImage.value = LocalStorage.myImage;
 
-        LocalStorage.setString("userId", LocalStorage.userId);
-        LocalStorage.setString("myImage", LocalStorage.myImage);
-        LocalStorage.setString("myName", LocalStorage.myName);
-        LocalStorage.setString("myEmail", LocalStorage.myEmail);
-        Get.offAllNamed(AppRoutes.customerHomeScreen, arguments: {"index": 4});
-        Utils.successSnackBar("Success", "Profile Updated Successfully");
+        LocalStorage.setString('userId', LocalStorage.userId);
+        LocalStorage.setString('myImage', LocalStorage.myImage);
+        LocalStorage.setString('myName', LocalStorage.myName);
+        LocalStorage.setString('myEmail', LocalStorage.myEmail);
+        Get.offAllNamed(AppRoutes.customerHomeScreen, arguments: {'index': 4});
+        Utils.successSnackBar('Success', 'Profile Updated Successfully');
       } else {
         Utils.errorSnackBar(response.statusCode, response.message);
       }
     } catch (e) {
-      debugPrint("Multipart Error: $e");
-      Utils.errorSnackBar("Error", "Something went wrong while uploading");
+      debugPrint('Multipart Error: $e');
+      Utils.errorSnackBar('Error', 'Something went wrong while uploading');
     }
 
     isLoading.value = false;
@@ -214,21 +213,21 @@ class ProfileController extends GetxController {
   Future<void> deleteAccount() async {
     final password = deletePasswordController.text.trim();
     if (password.isEmpty) {
-      Utils.errorSnackBar("Error", "Please enter your password");
+      Utils.errorSnackBar('Error', 'Please enter your password');
       return;
     }
 
     isDeleteLoading.value = true;
 
     try {
-      var response = await ApiService.delete(
-        "user/account-delete",
-        body: {"password": password},
+      final response = await ApiService.delete(
+        'user/account-delete',
+        body: {'password': password},
       );
 
       if (response.statusCode == 200) {
         Navigator.of(Get.context!).pop();
-        Utils.successSnackBar("Success", "Account deleted successfully");
+        Utils.successSnackBar('Success', 'Account deleted successfully');
 
         // Clear local storage and navigate to login
         await LocalStorage.removeAllPrefData();
@@ -236,12 +235,12 @@ class ProfileController extends GetxController {
       } else {
         Utils.errorSnackBar(
           response.statusCode,
-          response.message ?? "Incorrect password or request failed",
+          response.message ?? 'Incorrect password or request failed',
         );
       }
     } catch (e) {
-      debugPrint("Delete Account Error: $e");
-      Utils.errorSnackBar("Error", "Something went wrong. Please try again.");
+      debugPrint('Delete Account Error: $e');
+      Utils.errorSnackBar('Error', 'Something went wrong. Please try again.');
     }
 
     isDeleteLoading.value = false;
@@ -282,8 +281,8 @@ class _DeleteAccountDialog extends StatelessWidget {
                 color: Color(0xffFF0000),
               ),
             ),*/
-            CommonText(
-                text: "Delete Account",
+            const CommonText(
+                text: 'Delete Account',
               fontSize: 24,
               fontWeight: FontWeight.w700,
               color: Color(0xffFF0000),
@@ -300,9 +299,8 @@ class _DeleteAccountDialog extends StatelessWidget {
                 height: 1.5,
               ),
             ),*/
-            CommonText(
-              text: "Are you sure you want to delete your account? This action is permanent and cannot be undone.\n\nTo confirm, please enter your password below.",
-              fontSize: 14,
+            const CommonText(
+              text: 'Are you sure you want to delete your account? This action is permanent and cannot be undone.\n\nTo confirm, please enter your password below.',
               fontWeight: FontWeight.w400,
               maxLines: 4,
               color: Color(0xff555555),
@@ -315,7 +313,7 @@ class _DeleteAccountDialog extends StatelessWidget {
               controller: controller.deletePasswordController,
               obscureText: true,
               decoration: InputDecoration(
-                labelText: "Enter your password",
+                labelText: 'Enter your password',
                 labelStyle: const TextStyle(color: Color(0xff777777)),
                 prefixIcon: const Icon(Icons.lock_outline, color: Color(0xff777777)),
                 border: OutlineInputBorder(
@@ -360,8 +358,8 @@ class _DeleteAccountDialog extends StatelessWidget {
                         color: Color(0xff444444),
                       ),
                     ),*/
-                    CommonText(
-                        text: "Cancel",
+                    const CommonText(
+                        text: 'Cancel',
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
                       color: Color(0xff444444),
@@ -402,8 +400,8 @@ class _DeleteAccountDialog extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),*/
-                    CommonText(
-                        text: "Confirm",
+                    const CommonText(
+                        text: 'Confirm',
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,

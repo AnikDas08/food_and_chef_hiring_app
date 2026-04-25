@@ -34,18 +34,16 @@ class GroceryConfirmationPopup extends StatelessWidget {
               fontSize: 18,
               fontWeight: FontWeight.bold,
               maxLines: 2,
-              textAlign: TextAlign.center,
             ),
             SizedBox(height: 16.h),
 
             /// 3. Description Text
-            CommonText(
+            const CommonText(
               text: 'You\'ve purchased the list of groceries here selected, '
                   'and they are ready in your kitchen for the booking to take place.',
               fontSize: 13,
               color: Colors.grey,
               maxLines: 3,
-              textAlign: TextAlign.center,
             ),
             SizedBox(height: 32.h),
 
@@ -68,7 +66,7 @@ class GroceryConfirmationPopup extends StatelessWidget {
                   elevation: 0,
                 ),
                 child: const Text(
-                  "I got my groceries",
+                  'I got my groceries',
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                 ),
               ),
@@ -85,7 +83,7 @@ class GroceryConfirmationPopup extends StatelessWidget {
                   backgroundColor: const Color(0xffF5F5F5),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
                 ),
-                child: const Text("Cancel",
+                child: const Text('Cancel',
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600)),
               ),
             ),

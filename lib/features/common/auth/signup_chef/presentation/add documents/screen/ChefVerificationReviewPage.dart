@@ -115,15 +115,13 @@ class _ChefVerificationReviewPageState
   Widget build(BuildContext context) {
 
     final sections = [
-      _DocSection('Government-issued Photo ID (Front)', _govIdFront,
-          required: true),
+      _DocSection('Government-issued Photo ID (Front)', _govIdFront),
 
-      _DocSection('Government-issued Photo ID (Back)', _govIdBack,
-          required: true),
+      _DocSection('Government-issued Photo ID (Back)', _govIdBack),
 
-      _DocSection('Proof of Address', _proofOfAddress, required: true),
+      _DocSection('Proof of Address', _proofOfAddress),
 
-      _DocSection('Food Safety Certification', _foodSafety, required: true),
+      _DocSection('Food Safety Certification', _foodSafety),
 
       _DocSection(
           'Additional Culinary Certifications', _culinaryCerts,
@@ -154,7 +152,7 @@ class _ChefVerificationReviewPageState
                           : const Color(0xffF6F6F6),
                       shape: BoxShape.circle,
                     ),
-                    child: CommonImage(
+                    child: const CommonImage(
                       imageSrc: AppIcons.backIcon,
                       size: 24,
                     ),

@@ -1,5 +1,6 @@
-import 'dart:io';
 
+import 'package:flutter/services.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -35,45 +36,20 @@ class _VerifyUserState extends State<VerifyUser> {
     return Scaffold(
       /// App Bar Section starts here
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Center(
-            child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                height: 40,
-                width: 40,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFF6F6F6),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  // Conditional Icon based on Platform
-                  Platform.isIOS
-                      ? Icons.arrow_back_ios_new
-                      : Icons.arrow_back,
-                  size: 24,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ),
-        ),
+        flexibleSpace: appBarOpacity(),
       ),
 
       /// Body Section starts here
       body: GetBuilder<SignUpController>(
         builder: (controller) {
           return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 20.w),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Form(
               key: formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -83,7 +59,6 @@ class _VerifyUserState extends State<VerifyUser> {
                     top: 10,
                     maxLines: 2,
                     textAlign: TextAlign.start,
-                    right: 40,
                     fontWeight: FontWeight.w600,
                   ),
 
@@ -102,7 +77,6 @@ class _VerifyUserState extends State<VerifyUser> {
                   const CommonText(
                     text: AppString.enterCode,
                     bottom: 8,
-                    fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                   ),
@@ -126,13 +100,12 @@ class _VerifyUserState extends State<VerifyUser> {
                             : () {},
                     child:
                         controller.time == '00:00'
-                            ? ResendOtp()
+                            ? const ResendOtp()
                             : CommonText(
                               text:
-                                  "${AppString.resendCodeIn} ${controller.time} ${AppString.minute}",
+                                  '${AppString.resendCodeIn} ${controller.time} ${AppString.minute}',
                               fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff272727),
+                              color: const Color(0xff272727),
                             ),
                   ),
 

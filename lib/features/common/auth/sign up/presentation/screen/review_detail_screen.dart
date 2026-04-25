@@ -1,6 +1,9 @@
 
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
 import 'package:new_untitled/component/text_field/common_phone_number_text_filed.dart';
 import 'package:new_untitled/utils/app_utils.dart';
 import '../../../../../../../utils/extensions/extension.dart';
@@ -24,38 +27,20 @@ class ReviewDetailScreen extends StatelessWidget {
     return Scaffold(
       /// App Bar Section Starts Here
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
-                shape: BoxShape.circle,
-              ),
-              child: CommonImage(
-                imageSrc: AppIcons.backIcon,
-                size: 24,
-              ),
-            ),
-          ),
-        ),
+        flexibleSpace: appBarOpacity(),
       ),
 
       /// Body Section Starts Here
       body: GetBuilder<SignUpController>(
         builder: (controller) {
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
@@ -85,7 +70,7 @@ class ReviewDetailScreen extends StatelessWidget {
                   CommonText(
                     text: AppString.personalDetails.toUpperCase(),
                     fontSize: 12,
-                    color: Color(0xff777777),
+                    color: const Color(0xff777777),
                     bottom: 12,
                     top: 28,
                   ),
@@ -149,7 +134,7 @@ class ReviewDetailScreen extends StatelessWidget {
                     },
                   ),
 
-                  CommonText(
+                  const CommonText(
                     text: AppString.detailedAddress,
                     fontSize: 12,
                     color: Color(0xff777777),
@@ -159,7 +144,7 @@ class ReviewDetailScreen extends StatelessWidget {
                   CommonText(
                     text: AppString.address.toUpperCase(),
                     bottom: 8,
-                    color: Color(0xff272727),
+                    color: const Color(0xff272727),
                     fontWeight: FontWeight.w600,
                   ),
 
@@ -172,10 +157,10 @@ class ReviewDetailScreen extends StatelessWidget {
                       hoverColor: Colors.transparent,
                       splashColor: Colors.transparent,
                       onTap: () {
-                        controller.addressController.text = "";
+                        controller.addressController.text = '';
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
+                      child: const Padding(
+                        padding: EdgeInsets.all(12),
                         child: CommonImage(
                           imageSrc: AppIcons.location,
                           imageColor: Color(0xffFD713F),
@@ -212,7 +197,7 @@ class ReviewDetailScreen extends StatelessWidget {
                           ? const Padding(
                         padding: EdgeInsets.all(12),
                         child: Text(
-                          "No results found",
+                          'No results found',
                           style:
                           TextStyle(color: Color(0xff777777)),
                         ),
@@ -262,7 +247,7 @@ class ReviewDetailScreen extends StatelessWidget {
                   CommonText(
                     text: AppString.allergicPreferences.toUpperCase(),
                     fontSize: 12,
-                    color: Color(0xff777777),
+                    color: const Color(0xff777777),
                     bottom: 12,
                     top: 28,
                   ),
@@ -288,22 +273,27 @@ class ReviewDetailScreen extends StatelessWidget {
         },
       ),
 
+
       /// Bottom Section Starts Here
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 20, right: 16, left: 16),
-        child: SafeArea(
-          child: CommonButton(
-            titleText: AppString.createAccount,
-            onTap: () {
-              final controller = Get.find<SignUpController>();
-              if (_formKey.currentState!.validate()) {
-                controller.completeProfile();
-              } else {
-                Utils.errorSnackBar("Error", "Please, Full fill all Field");
-              }
-            },
-          ),
-        ),
+      bottomNavigationBar: GetBuilder<SignUpController>(
+        builder: (controller) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 20, right: 16, left: 16),
+            child: SafeArea(
+              child: CommonButton(
+                isLoading: controller.isLoading,
+                titleText: AppString.createAccount,
+                onTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    controller.completeProfile();
+                  } else {
+                    Utils.errorSnackBar('Error', 'Please, Full fill all Field');
+                  }
+                },
+              ),
+            ),
+          );
+        },
       ),
     );
   }

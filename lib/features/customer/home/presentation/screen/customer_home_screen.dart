@@ -6,8 +6,6 @@ import 'package:cupertino_native/cupertino_native.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/groceries_screen.dart';
 
-import '../../../../../component/image/common_image.dart';
-import '../../../../../utils/constants/app_icons.dart';
 import '../../../../common/message/presentation/screen/chat_screen.dart';
 import '../../../booking/presentation/screen/booking_history_screen.dart';
 import '../../../profile/presentation/screen/profile_screen.dart';
@@ -30,35 +28,22 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
   int selectedTabIndex = 0;
 
   final List<TabData> tabs = [
+    TabData(title: 'Home', icon: 'house', selectedIcon: 'house.fill'),
     TabData(
-      title: "Home",
-      icon: "house",
-      selectedIcon: "house.fill",
-      asset: AppIcons.home,
+      title: 'Bookings',
+      icon: 'calendar.badge.clock',
+      selectedIcon: 'calendar.badge.clock',
+    ),
+    TabData(title: 'Groceries', icon: 'basket', selectedIcon: 'basket.fill'),
+    TabData(
+      title: 'Chats',
+      icon: 'ellipsis.message',
+      selectedIcon: 'ellipsis.message.fill',
     ),
     TabData(
-      title: "Bookings",
-      icon: "calendar",
-      selectedIcon: "calendar",
-      asset: AppIcons.booking,
-    ),
-    TabData(
-      title: "Groceries",
-      icon: "basket",
-      selectedIcon: "basket.fill",
-      asset: AppIcons.groceries,
-    ),
-    TabData(
-      title: "Chats",
-      icon: "message",
-      selectedIcon: "message.fill",
-      asset: AppIcons.chats,
-    ),
-    TabData(
-      title: "Profile",
-      icon: "person",
-      selectedIcon: "person.fill",
-      asset: AppIcons.profile,
+      title: 'Profile',
+      icon: 'person.crop.circle',
+      selectedIcon: 'person.circle.fill',
     ),
   ];
 
@@ -74,7 +59,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
   void initState() {
     super.initState();
     // Get initial index from arguments safely
-    selectedTabIndex = Get.arguments?["index"] ?? 0;
+    selectedTabIndex = Get.arguments?['index'] ?? 0;
     tabController = TabController(
       length: tabs.length,
       vsync: this,
@@ -168,7 +153,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(tabs.length, (index) {
-            bool isSelected = selectedTabIndex == index;
+            final bool isSelected = selectedTabIndex == index;
             return Expanded(
               child: InkWell(
                 onTap: () => onTabTap(index),
@@ -176,30 +161,16 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CommonImage(
-                      imageSrc: tabs[index].asset,
-                      size: 22.sp, // Scale icon with screen density
-                      imageColor:
-                          isSelected ? Colors.black : const Color(0xff777777),
-                    ),
-                    /*Text(
-                      tabs[index].title,
-                      style: TextStyle(
-                        fontSize: 10.sp, // Scale text
-                        fontWeight:
-                            isSelected ? FontWeight.w600 : FontWeight.w400,
-                        color:
-                            isSelected
-                                ? const Color(0xff272727)
-                                : const Color(0xff777777),
-                      ),
-                    ),*/
                     CommonText(
-                        text: tabs[index].title,
+                      text: tabs[index].title,
                       fontSize: 10.sp, // Scale text
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                      color: isSelected ? const Color(0xff272727) : const Color(0xff777777),
-                    )
+                      fontWeight:
+                          isSelected ? FontWeight.w600 : FontWeight.w400,
+                      color:
+                          isSelected
+                              ? const Color(0xff272727)
+                              : const Color(0xff777777),
+                    ),
                   ],
                 ),
               ),
@@ -215,12 +186,10 @@ class TabData {
   final String title;
   final String icon;
   final String selectedIcon;
-  final String asset;
 
   TabData({
     required this.title,
     required this.icon,
     required this.selectedIcon,
-    required this.asset,
   });
 }

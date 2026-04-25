@@ -20,65 +20,65 @@ class AddPaymentMethod extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CommonText(
-                text: "Add payment",
+              const CommonText(
+                text: 'Add payment',
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
               ),
 
-              CommonText(
-                text: "Provide your banking details to enable payouts",
+              const CommonText(
+                text: 'Provide your banking details to enable payouts',
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
                 color: Color(0xff777777),
               ),
 
-              CommonText(
-                text: "Account holder name",
+              const CommonText(
+                text: 'Account holder name',
                 top: 28,
                 bottom: 8,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
               ),
 
-              CommonTextField(hintText: "Enter your account holder name"),
+              CommonTextField(hintText: 'Enter your account holder name'),
 
-              CommonText(
-                text: "Account number",
+              const CommonText(
+                text: 'Account number',
                 top: 16,
                 bottom: 8,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
               ),
-              CommonTextField(hintText: "Enter your Account number"),
+              CommonTextField(hintText: 'Enter your Account number'),
 
-              CommonText(
-                text: "5-Digit transit number",
+              const CommonText(
+                text: '5-Digit transit number',
                 top: 16,
                 bottom: 8,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
               ),
-              CommonTextField(hintText: "Enter transit number"),
+              CommonTextField(hintText: 'Enter transit number'),
 
-              CommonText(
-                text: "Country",
+              const CommonText(
+                text: 'Country',
                 top: 16,
                 bottom: 8,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
               ),
-              CommonTextField(hintText: "Enter your Country"),
+              CommonTextField(hintText: 'Enter your Country'),
 
-              CommonText(
-                text: "Currency",
+              const CommonText(
+                text: 'Currency',
                 top: 16,
                 bottom: 8,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff272727),
               ),
-              CommonTextField(hintText: "Enter Currency"),
+              CommonTextField(hintText: 'Enter Currency'),
 
               16.height,
 

@@ -18,12 +18,12 @@ class SignUpController extends GetxController {
   bool isLoading = false;
   bool isLoadingVerify = false;
   bool isCompleteProfile = false;
-  String countryCode = "+1";
+  String countryCode = '+1';
 
   Timer? _timer;
   int start = 0;
 
-  String time = "";
+  String time = '';
 
   String? image;
 
@@ -42,12 +42,12 @@ class SignUpController extends GetxController {
   List filteredDietaryOption = [];
   TextEditingController dietarySearchController = TextEditingController();
 
-  getProfileImage() async {
+  Future<void> getProfileImage() async {
     image = await OtherHelper.openGallery();
     update();
   }
 
-  List selectedOption = ["User", "Consultant"];
+  List selectedOption = ['User', 'Consultant'];
 
   List selectDietary = [];
 
@@ -64,7 +64,7 @@ class SignUpController extends GetxController {
     update();
   }
 
-  onChangeDietary(value) {
+  void onChangeDietary(value) {
     if (selectDietary.contains(value)) {
       selectDietary.remove(value);
       update();
@@ -72,7 +72,7 @@ class SignUpController extends GetxController {
     }
     selectDietary.add(value);
     update();
-    dietaryController.text = selectDietary.join(", ");
+    dietaryController.text = selectDietary.join(', ');
   }
 
   /// Fetch dietary options from API
@@ -80,7 +80,7 @@ class SignUpController extends GetxController {
     isLoadingDietary = true;
     update();
     try {
-      var response = await ApiService.get("dietary"); // your dietary url
+      final response = await ApiService.get('dietary'); // your dietary url
       if (response.statusCode == 200) {
         final List data = response.data['data'] ?? [];
         dietaryOption = data;
@@ -90,27 +90,27 @@ class SignUpController extends GetxController {
             response.statusCode.toString(), response.message);
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isLoadingDietary = false;
       update();
     }
   }
 
-  String selectRole = "User";
+  String selectRole = 'User';
 
   String signUpToken = '';
 
   static SignUpController get instance => Get.put(SignUpController());
 
   TextEditingController firstNameController = TextEditingController(
-    text: kDebugMode ? "" : "",
+    text: kDebugMode ? '' : '',
   );
   TextEditingController lastNameController = TextEditingController(
-    text: kDebugMode ? "" : "",
+    text: kDebugMode ? '' : '',
   );
   TextEditingController emailController = TextEditingController(
-    text: kDebugMode ? "" : '',
+    text: kDebugMode ? '' : '',
   );
   TextEditingController passwordController = TextEditingController(
     text: kDebugMode ? '' : '',
@@ -181,7 +181,7 @@ class SignUpController extends GetxController {
         .where((e) => e.isNotEmpty)
         .toList();
 
-    List<String> result = [];
+    final List<String> result = [];
     if (main.isNotEmpty) result.add(main);
     for (final p in parts) {
       if (result.length >= 3) break;
@@ -208,35 +208,35 @@ class SignUpController extends GetxController {
     } catch (_) {}
   }
 
-  onCountryChange(PhoneNumber value) {
+  void onCountryChange(PhoneNumber value) {
     countryCode = value.countryCode.toString();
   }
 
-  setSelectedRole(value) {
+  void setSelectedRole(value) {
     selectRole = value;
     update();
   }
 
-  openGallery() async {
+  Future<void> openGallery() async {
     image = await OtherHelper.openGallery();
     update();
   }
 
-  signUpUser(String role) async {
+  Future<void> signUpUser(String role) async {
     isLoading = true;
     update();
-    Map<String, String> body = {
-      "email": emailController.text,
-      "role": role,
+    final Map<String, String> body = {
+      'email': emailController.text,
+      'role': role,
     };
 
-    var response =
+    final response =
     await ApiService.post(ApiEndPoint.signUp, body: body);
 
     if (response.statusCode == 200) {
       Get.toNamed(AppRoutes.verifyUser);
     } else if (response.statusCode == 400 &&
-        response.data["suggestRoute"] == "/api/v1/auth/verify-email") {
+        response.data['suggestRoute'] == '/api/v1/auth/verify-email') {
       Get.toNamed(AppRoutes.verifyUser);
     } else {
       Utils.errorSnackBar(
@@ -254,7 +254,7 @@ class SignUpController extends GetxController {
         start--;
         final minutes = (start ~/ 60).toString().padLeft(2, '0');
         final seconds = (start % 60).toString().padLeft(2, '0');
-        time = "$minutes:$seconds";
+        time = '$minutes:$seconds';
         update();
       } else {
         _timer?.cancel();
@@ -265,18 +265,18 @@ class SignUpController extends GetxController {
   Future<void> verifyOtpRepo() async {
     isLoadingVerify = true;
     update();
-    Map<String, dynamic> body = {
-      "email": emailController.text,
-      "oneTimeCode": int.parse(otpController.text),
+    final Map<String, dynamic> body = {
+      'email': emailController.text,
+      'oneTimeCode': int.parse(otpController.text),
     };
-    var response = await ApiService.post(
+    final response = await ApiService.post(
       ApiEndPoint.verifyEmail,
       body: body,
     );
 
     if (response.statusCode == 200) {
-      var data = response.data;
-      LocalStorage.userId = await data["data"];
+      final data = response.data;
+      LocalStorage.userId = await data['data'];
       await LocalStorage.setString(
           LocalStorageKeys.userId, LocalStorage.userId);
       Get.toNamed(AppRoutes.createSignUpPassword);
@@ -288,45 +288,45 @@ class SignUpController extends GetxController {
     update();
   }
 
-  completeProfile() async {
+  Future<void> completeProfile() async {
     isCompleteProfile = true;
     update();
     try {
-      Map<String, dynamic> body = {
-        "first_name": firstNameController.text,
-        "last_name": lastNameController.text,
-        "address": addressController.text,
-        "password": passwordController.text,
-        "lat": selectedLat.toString(),
-        "lng": selectedLng.toString(),
+      final Map<String, dynamic> body = {
+        'first_name': firstNameController.text,
+        'last_name': lastNameController.text,
+        'address': addressController.text,
+        'password': passwordController.text,
+        'lat': selectedLat.toString(),
+        'lng': selectedLng.toString(),
       };
 
       // Only add contact if phone number is provided
       final phone = numberController.text.trim();
       if (phone.isNotEmpty) {
-        body["contact"] = "$countryCode $phone";
+        body['contact'] = '$countryCode $phone';
       }
 
       // Only add foods if dietary selections exist
       for (int i = 0; i < selectDietary.length; i++) {
-        body["foods[$i]"] = selectDietary[i];
+        body['foods[$i]'] = selectDietary[i];
       }
 
-      List files = [];
+      final List files = [];
       if (image != null && image!.isNotEmpty) {
-        files.add({"name": "image", "image": image});
+        files.add({'name': 'image', 'image': image});
       }
 
-      var response = await ApiService.multipartImage(
-        "user/onboarding/${LocalStorage.userId}",
+      final response = await ApiService.multipartImage(
+        'user/onboarding/${LocalStorage.userId}',
         body: body,
         files: files,
       );
       if (response.statusCode == 200) {
         final data = response.data;
-        LocalStorage.token = data['data']["accessToken"];
-        LocalStorage.userId = data['data']["userId"];
-        LocalStorage.myRole = data["data"]["role"];
+        LocalStorage.token = data['data']['accessToken'];
+        LocalStorage.userId = data['data']['userId'];
+        LocalStorage.myRole = data['data']['role'];
         LocalStorage.isLogIn = true;
 
         await LocalStorage.setBool(LocalStorageKeys.isLogIn, LocalStorage.isLogIn);
@@ -338,7 +338,7 @@ class SignUpController extends GetxController {
         Utils.errorSnackBar(response.statusCode.toString(), response.message);
       }
     } catch (e) {
-      Utils.errorSnackBar("Error", e.toString());
+      Utils.errorSnackBar('Error', e.toString());
     } finally {
       isCompleteProfile = false;
       update();

@@ -28,9 +28,9 @@ void bookingDetailsShow(BuildContext context) {
 
           // ── Loading State ────────────────────────────────
           if (controller.isLoadingDetail || controller.selectedOrder == null) {
-            return SizedBox(
+            return const SizedBox(
               height: 300,
-              child: const Center(child: CircularProgressIndicator()),
+              child: Center(child: CircularProgressIndicator()),
             );
           }
 
@@ -71,7 +71,7 @@ void bookingDetailsShow(BuildContext context) {
                       children: [
                         CommonImage(
                           imageSrc:
-                          "${ApiEndPoint.imageUrl}${order.chef.image}",
+                          '${ApiEndPoint.imageUrl}${order.chef.image}',
                           size: 40,
                           borderRadius: 50,
                           fill: BoxFit.cover,
@@ -106,7 +106,6 @@ void bookingDetailsShow(BuildContext context) {
                           child: CommonText(
                             text: order.status,
                             fontSize: 10,
-                            fontWeight: FontWeight.w500,
                             color: statusColor,
                           ),
                         ),
@@ -125,9 +124,9 @@ void bookingDetailsShow(BuildContext context) {
                           color: Color(0xffF2F2F2),
                           shape: BoxShape.circle,
                         ),
-                        child: CommonImage(
+                        child: const CommonImage(
                           imageSrc: AppIcons.location,
-                          imageColor: const Color(0xffFD713F),
+                          imageColor: Color(0xffFD713F),
                           size: 20,
                         ),
                       ),
@@ -167,9 +166,9 @@ void bookingDetailsShow(BuildContext context) {
                           color: Color(0xffF2F2F2),
                           shape: BoxShape.circle,
                         ),
-                        child: CommonImage(
+                        child: const CommonImage(
                           imageSrc: AppIcons.date,
-                          imageColor: const Color(0xffFD713F),
+                          imageColor: Color(0xffFD713F),
                           size: 20,
                         ),
                       ),
@@ -212,11 +211,11 @@ void bookingDetailsShow(BuildContext context) {
                   ],*/
 
                   // ── Order Details ────────────────────────
-                  CommonText(
+                  const CommonText(
                     text: AppString.orderDetails,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xff272727),
+                    color: Color(0xff272727),
                     top: 4,
                     bottom: 16,
                   ),
@@ -236,11 +235,10 @@ void bookingDetailsShow(BuildContext context) {
                   if (order.rating > 0) ...[
                     Row(
                       children: [
-                        CommonText(
-                          text: "Your Rating: ",
+                        const CommonText(
+                          text: 'Your Rating: ',
                           fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xff272727),
+                          color: Color(0xff272727),
                         ),
                         ...List.generate(5, (i) {
                           return Icon(
@@ -254,7 +252,7 @@ void bookingDetailsShow(BuildContext context) {
                           );
                         }),
                         CommonText(
-                          text: " ${order.rating}",
+                          text: ' ${order.rating}',
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xffFD713F),
@@ -262,7 +260,7 @@ void bookingDetailsShow(BuildContext context) {
                         ),
                       ],
                     ),
-                    if (order.rating!="")
+                    if (order.rating!='')
                       Container(
                         margin: const EdgeInsets.only(top: 8),
                         padding: const EdgeInsets.all(12),
@@ -292,9 +290,8 @@ void bookingDetailsShow(BuildContext context) {
                     /*titleText: order.rating > 0
                         ? "Edit Rating"
                         : "Leave a Rating",*/
-                    titleText: "Leave a Rating",
+                    titleText: 'Leave a Rating',
                     buttonColor: const Color(0xffF2F2F2),
-                    borderColor: Colors.transparent,
                     titleColor: const Color(0xff272727),
                     onTap: () => Get.toNamed(AppRoutes.review, arguments: order),
                   ),
@@ -367,7 +364,6 @@ class _OrderItemRow extends StatelessWidget {
               children: [
                 CommonText(
                   text: item.menuName,
-                  fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: const Color(0xff4E4E4E),
                 ),
@@ -383,8 +379,7 @@ class _OrderItemRow extends StatelessWidget {
             ),
           ),
           CommonText(
-            text: "\$${item.totalPrice.toStringAsFixed(2)}",
-            fontSize: 14,
+            text: '\$${item.totalPrice.toStringAsFixed(2)}',
             fontWeight: FontWeight.w400,
             color: const Color(0xff272727),
           ),
@@ -404,18 +399,18 @@ class _PriceBreakdownWidget extends StatelessWidget {
     final pb = order.priceBreakdown;
     return Column(
       children: [
-        _PriceRow(label: "Subtotal", value: pb.subtotal),
-        _PriceRow(label: "Tax", value: pb.taxs),
-        _PriceRow(label: "Service Fee", value: pb.serviceFee),
+        _PriceRow(label: 'Subtotal', value: pb.subtotal),
+        _PriceRow(label: 'Tax', value: pb.taxs),
+        _PriceRow(label: 'Service Fee', value: pb.serviceFee),
         if (order.hasDiscount)
           _PriceRow(
-            label: "Discount",
+            label: 'Discount',
             value: -order.discountAmount,
             valueColor: const Color(0xff2F8328),
           ),
         const Divider(),
         _PriceRow(
-          label: "Total",
+          label: 'Total',
           value: pb.total,
           isBold: true,
         ),
@@ -475,7 +470,7 @@ String _formatDateOnly(String isoDate) {
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
-    return "${dt.day} ${months[dt.month - 1]}, ${dt.year}";
+    return '${dt.day} ${months[dt.month - 1]}, ${dt.year}';
   } catch (_) {
     return isoDate;
   }

@@ -16,7 +16,6 @@ class AddEquipmentScreen extends StatefulWidget {
 }
 
 class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
-
   // Add this inside the _AddEquipmentScreenState class
   Widget buildProgressSection() {
     return Container(
@@ -50,11 +49,11 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
           SizedBox(height: 10.h),
           RichText(
             text: TextSpan(
-              text: "Your kitchen can handle ",
+              text: 'Your kitchen can handle ',
               style: TextStyle(color: const Color(0xff777777), fontSize: 12.sp),
               children: [
                 TextSpan(
-                  text: "100%",
+                  text: '100%',
                   style: TextStyle(
                     color: const Color(0xffFD713F),
                     fontSize: 12.sp,
@@ -62,7 +61,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
                   ),
                 ),
                 TextSpan(
-                  text: " of recipes on the platform",
+                  text: ' of recipes on the platform',
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
@@ -76,6 +75,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
       ),
     );
   }
+
   List<Map<String, dynamic>> cookingItems = [
     {'name': 'Large pan', 'selected': true},
     {'name': 'Large pot', 'selected': false},
@@ -98,16 +98,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(Get.context!);
-          },
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-        ),
-        elevation: 0,
-      ),
+      appBar: AppBar(backgroundColor: Colors.white),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -122,7 +113,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
               SizedBox(height: 28.h),
               buildProgressSection(),
               SizedBox(height: 32.h),
-        
+
               ///================================ Cooking Equipment Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,13 +122,13 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
                     'Cooking Equipment',
                     style: TextStyle(
                       fontSize: 16.sp,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.keyboard_arrow_up),
+                    icon: const Icon(Icons.keyboard_arrow_up),
                   ),
                 ],
               ),
@@ -153,7 +144,7 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
                 shrinkWrap: true,
               ),
               SizedBox(height: 32.h),
-        
+
               /// ======================Banking Equipment Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,13 +153,13 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
                     'Banking Equipment',
                     style: TextStyle(
                       fontSize: 16.sp,
-                      color: Color(0xff272727),
+                      color: const Color(0xff272727),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.keyboard_arrow_up),
+                    icon: const Icon(Icons.keyboard_arrow_up),
                   ),
                 ],
               ),
@@ -184,11 +175,11 @@ class _AddEquipmentScreenState extends State<AddEquipmentScreen> {
                 shrinkWrap: true,
               ),
               SizedBox(height: 40.h),
-        
+
               ///==============================add button
               InkWell(
                 onTap: () {
-                  Get.to(AddItemScreen());
+                  Get.to(const AddItemScreen());
                 },
                 child: Container(
                   height: 45.h,
@@ -236,7 +227,7 @@ class EquipmentGrid extends StatelessWidget {
     return GridView.builder(
       itemCount: items.length,
       padding: EdgeInsets.zero,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       // scroll off
       shrinkWrap: shrinkWrap,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -258,7 +249,7 @@ class EquipmentGrid extends StatelessWidget {
                 child: Container(
                   width: 109.w,
                   decoration: BoxDecoration(
-                    color: Color(0xFFF2F2F2),
+                    color: const Color(0xFFF2F2F2),
                     borderRadius: BorderRadius.circular(16.r),
                     border: Border.all(
                       color:
@@ -267,7 +258,7 @@ class EquipmentGrid extends StatelessWidget {
                     ),
                   ),
                   child:
-                      CommonImage(imageSrc: AppImages.large, size: 60).center,
+                      const CommonImage(imageSrc: AppImages.large, size: 60).center,
                 ),
               ),
 

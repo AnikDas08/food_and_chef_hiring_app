@@ -10,19 +10,19 @@ class ChefBookingDetailController extends GetxController {
 
   // Status steps — order matters!
   static const List<String> statusSteps = [
-    "Booking Ordered",
-    "Chef Confirmed",
-    "Groceries Ordered",
-    "Booking Complete",
+    'Booking Ordered',
+    'Chef Confirmed',
+    'Groceries Ordered',
+    'Booking Complete',
   ];
 
   // Map history type → step index
   static const Map<String, int> _typeToStep = {
-    "Booking Ordered": 0,
-    "Chef Confirmed": 1,
-    "Groceries Ordered": 2,
-    "Booking Completed": 3,
-    "Booking Complete": 3,
+    'Booking Ordered': 0,
+    'Chef Confirmed': 1,
+    'Groceries Ordered': 2,
+    'Booking Completed': 3,
+    'Booking Complete': 3,
   };
 
   // Returns 0-based current step index derived from history
@@ -32,7 +32,7 @@ class ChefBookingDetailController extends GetxController {
     final history = data['history'] as List? ?? [];
     int maxStep = 0;
     for (final h in history) {
-      final type = h['type'] as String? ?? "";
+      final type = h['type'] as String? ?? '';
       final step = _typeToStep[type];
       if (step != null && step > maxStep) maxStep = step;
     }
@@ -43,17 +43,17 @@ class ChefBookingDetailController extends GetxController {
     isLoading.value = true;
     try {
       final response = await ApiService.get(
-        "${ApiEndPoint.singleOrder}/$orderId",
+        '${ApiEndPoint.singleOrder}/$orderId',
       );
       if (response.statusCode == 200 && response.data['success'] == true) {
         order.value = Map<String, dynamic>.from(response.data['data']);
       } else {
-        Get.snackbar("Error",
-            response.data['message']?.toString() ?? "Something went wrong",
+        Get.snackbar('Error',
+            response.data['message']?.toString() ?? 'Something went wrong',
             backgroundColor: Colors.red, colorText: Colors.white);
       }
     } catch (e) {
-      Get.snackbar("Error", e.toString(),
+      Get.snackbar('Error', e.toString(),
           backgroundColor: Colors.red, colorText: Colors.white);
     } finally {
       isLoading.value = false;

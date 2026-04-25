@@ -1,14 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:new_untitled/features/common/auth/signup_chef/presentation/controller/sign_up_chef_controller.dart';
 import '../../../../../../../utils/extensions/extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../../component/button/common_button.dart';
-import '../../../../../../component/image/common_image.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../component/text_field/common_text_field.dart';
-import '../../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/helpers/other_helper.dart';
 import '../../../../../../../utils/constants/app_string.dart';
 import '../Widget/ChefDocFlowState.dart';
@@ -27,23 +24,6 @@ class ChefNameScreen extends StatelessWidget {
         elevation: 0,
         automaticallyImplyLeading: false,
         leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
-                shape: BoxShape.circle,
-              ),
-              child: CommonImage(
-                imageSrc: AppIcons.backIcon,
-                size: 24,
-              ),
-            ),
-          ),
-        ),
       ),
 
       /// Body Section Starts Here
@@ -54,7 +34,6 @@ class ChefNameScreen extends StatelessWidget {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(

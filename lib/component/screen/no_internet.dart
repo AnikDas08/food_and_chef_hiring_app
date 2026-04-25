@@ -16,7 +16,6 @@ class NoInternet extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Center(child: Icon(Icons.wifi_off, size: 100)),
             const CommonText(text: AppString.noInternet, fontSize: 18, top: 16),

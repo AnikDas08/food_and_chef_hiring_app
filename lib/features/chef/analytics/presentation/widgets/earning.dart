@@ -39,7 +39,7 @@ Widget earning() {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xffFD713F),
               ),
-              child: const Text("Retry",
+              child: const Text('Retry',
                   style: TextStyle(color: Colors.white)),
             ),
           ],
@@ -54,35 +54,35 @@ Widget earning() {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
+                  const CommonText(
                     text: AppString.totalEarning,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: const Color(0xff777777),
+                    color: Color(0xff777777),
                   ),
                   CommonText(
                     text:
-                    "\$${controller.totalEarning.value.toStringAsFixed(0)}",
+                    '\$${controller.totalEarning.value.toStringAsFixed(0)}',
                     fontSize: 28,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xff272727),
                   ),
-                  Row(
+                  const Row(
                     children: [
                       CommonImage(imageSrc: AppIcons.arrowUpDown),
                       CommonText(
-                        text: "0.48%",
+                        text: '0.48%',
                         fontSize: 12,
                         left: 4,
                         right: 4,
                         fontWeight: FontWeight.w400,
-                        color: const Color(0xff2F8328),
+                        color: Color(0xff2F8328),
                       ),
                       CommonText(
-                        text: "higher than last week",
+                        text: 'higher than last week',
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                        color: const Color(0xff272727),
+                        color: Color(0xff272727),
                       ),
                     ],
                   ),
@@ -93,7 +93,7 @@ Widget earning() {
                   showModalBottomSheet(
                     context: Get.context!,
                     isScrollControlled: true,
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
                           top: Radius.circular(20)),
                     ),
@@ -103,17 +103,17 @@ Widget earning() {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              SizedBox(height: 12),
+                              const SizedBox(height: 12),
                               Container(
                                 width: 40,
                                 height: 4,
                                 decoration: BoxDecoration(
-                                  color: Color(0xffE0E0E0),
+                                  color: const Color(0xffE0E0E0),
                                   borderRadius:
                                   BorderRadius.circular(2),
                                 ),
                               ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               ...controller.filters.map((filter) {
                                 final bool isSelected =
                                     controller.selectedFilter.value ==
@@ -131,17 +131,17 @@ Widget earning() {
                                           ? FontWeight.w600
                                           : FontWeight.w400,
                                       color: isSelected
-                                          ? Color(0xffFD713F)
-                                          : Color(0xff272727),
+                                          ? const Color(0xffFD713F)
+                                          : const Color(0xff272727),
                                     ),
                                   ),
                                   trailing: isSelected
-                                      ? Icon(Icons.check,
+                                      ? const Icon(Icons.check,
                                       color: Color(0xffFD713F))
                                       : null,
                                 );
                               }),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                             ],
                           ),
                         )),
@@ -161,7 +161,6 @@ Widget earning() {
                       CommonText(
                         text: controller.selectedFilter.value,
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
                         color: const Color(0xff272727),
                       ),
                       const Icon(Icons.keyboard_arrow_down_rounded),
@@ -173,7 +172,7 @@ Widget earning() {
           ),
           Expanded(
             child: controller.formatArray.isEmpty
-                ? const Center(child: Text("No data available"))
+                ? const Center(child: Text('No data available'))
                 : LineChartSample2(
               chartData: controller.formatArray,
             ),

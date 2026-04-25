@@ -18,12 +18,12 @@ class TermsOfServicesController extends GetxController {
       Get.put(TermsOfServicesController());
 
   ///  Terms of services Api call here
-  geTermsOfServicesRepo() async {
+  Future<void> geTermsOfServicesRepo() async {
     return;
     status = Status.loading;
     update();
 
-    var response = await ApiService.get(ApiEndPoint.termsOfServices);
+    final response = await ApiService.get(ApiEndPoint.termsOfServices);
 
     if (response.statusCode == 200) {
       data = HtmlModel.fromJson(response.data['data']['attributes']);

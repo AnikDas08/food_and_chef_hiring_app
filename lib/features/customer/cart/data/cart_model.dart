@@ -106,13 +106,17 @@ class CartMenuDetail {
   String? id;
   List<String>? images;
   String? name;
+  List<String>? customizations;
 
-  CartMenuDetail({this.id, this.images, this.name});
+  CartMenuDetail({this.id, this.images, this.name, this.customizations});
 
   CartMenuDetail.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     images = json['images'] != null ? List<String>.from(json['images']) : [];
     name = json['name'];
+    customizations = json['customizations'] != null
+        ? List<String>.from(json['customizations'])
+        : [];
   }
 }
 

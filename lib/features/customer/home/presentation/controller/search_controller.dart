@@ -41,16 +41,16 @@ class SearchController extends GetxController {
   RxList<ChefData> nearbyChefsList = <ChefData>[].obs;
 
   /// Currently active sort/filter label (matches the chip label in SearchItem)
-  String selectedSortLabel = "Recommended";
+  String selectedSortLabel = 'Recommended';
 
   Timer? _debounce;
 
   /// Maps chip label → query param string (appended to the base URL)
   static const Map<String, String> _sortParamMap = {
-    "Recommended": "",
-    "Rating": "sort=rating",
-    "Price": "sort=price",
-    "Next Available": "availability=next_week",
+    'Recommended': '',
+    'Rating': 'sort=rating',
+    'Price': 'sort=price',
+    'Next Available': 'availability=next_week',
   };
 
   // ── FILTER STATE ────────────────────────────────────────────────────────────
@@ -67,7 +67,7 @@ class SearchController extends GetxController {
     super.onInit();
     if (Get.arguments != null && Get.arguments is CuisineData) {
       cuisineData = Get.arguments as CuisineData;
-      searchController.text = cuisineData?.name ?? "";
+      searchController.text = cuisineData?.name ?? '';
       getChefsByCuisineId(cuisineData!.id!);
     } else {
       getCurrentLocationAndFetchChefs();
@@ -98,7 +98,7 @@ class SearchController extends GetxController {
   Future<void> fetchCuisines() async {
     isLoadingCuisines.value = true;
     try {
-      final response = await ApiService.get("cusine");
+      final response = await ApiService.get('cusine');
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data['data'] ?? [];
         cuisineList.assignAll(
@@ -131,47 +131,47 @@ class SearchController extends GetxController {
     final List<String> params = [];
 
     // Pagination
-    params.add("page=$page");
-    params.add("limit=$_pageLimit");
+    params.add('page=$page');
+    params.add('limit=$_pageLimit');
 
     if (searchTerm != null && searchTerm.isNotEmpty) {
-      params.add("searchTerm=$searchTerm");
+      params.add('searchTerm=$searchTerm');
     }
 
     if (selectedCuisines.isNotEmpty) {
-      params.add("cusine=${selectedCuisines.first}");
+      params.add('cusine=${selectedCuisines.first}');
     }
 
     if (minPrice.value > 0 || maxPrice.value < 100) {
-      params.add("minPrice=${minPrice.value.toInt()}");
-      params.add("maxPrice=${maxPrice.value.toInt()}");
+      params.add('minPrice=${minPrice.value.toInt()}');
+      params.add('maxPrice=${maxPrice.value.toInt()}');
     }
 
     if (selectedAvailability.isNotEmpty) {
-      params.add("availability=${selectedAvailability.first}");
+      params.add('availability=${selectedAvailability.first}');
     }
 
     if (selectedProfessionalLevels.isNotEmpty) {
-      String levels = selectedProfessionalLevels.join(',');
-      params.add("chef_professional_level=$levels");
+      final String levels = selectedProfessionalLevels.join(',');
+      params.add('chef_professional_level=$levels');
     }
 
     if (selectedDietaryPrefs.isNotEmpty) {
-      String dietary = jsonEncode(selectedDietaryPrefs);
-      params.add("dietary=$dietary");
+      final String dietary = jsonEncode(selectedDietaryPrefs);
+      params.add('dietary=$dietary');
     }
 
     if (savedChefsOnly.value) {
-      params.add("save=true");
+      params.add('save=true');
     }
 
-    final String sortParam = _sortParamMap[selectedSortLabel] ?? "";
+    final String sortParam = _sortParamMap[selectedSortLabel] ?? '';
     if (sortParam.isNotEmpty) {
       params.add(sortParam);
     }
 
-    final String query = params.isNotEmpty ? "?${params.join('&')}" : "";
-    return "user/search-chefs$query";
+    final String query = params.isNotEmpty ? "?${params.join('&')}" : '';
+    return 'user/search-chefs$query';
   }
 
   // ── APPLY FILTERS ──────────────────────────────────────────────────────────
@@ -189,7 +189,7 @@ class SearchController extends GetxController {
     selectedDietaryPrefs.clear();
     selectedCuisines.clear();
     savedChefsOnly.value = false;
-    selectedSortLabel = "Recommended";
+    selectedSortLabel = 'Recommended';
     update();
   }
 
@@ -203,8 +203,8 @@ class SearchController extends GetxController {
     update();
 
     try {
-      final String url = _buildFilterUrl(searchTerm: searchTerm, page: 1);
-      print("🔍 Filter URL: $url");
+      final String url = _buildFilterUrl(searchTerm: searchTerm);
+      print('🔍 Filter URL: $url');
 
       final response = await ApiService.get(url);
 
@@ -246,7 +246,7 @@ class SearchController extends GetxController {
     try {
       final int nextPage = currentPage.value + 1;
       final String url = _buildFilterUrl(searchTerm: searchTerm, page: nextPage);
-      print("📄 Load more URL (page $nextPage / ${totalPages.value}): $url");
+      print('📄 Load more URL (page $nextPage / ${totalPages.value}): $url');
 
       final response = await ApiService.get(url);
 
@@ -301,12 +301,12 @@ class SearchController extends GetxController {
       isLoading.value = true;
       errorMessage.value = '';
 
-      ApiResponseModel response = await ApiService.get(
+      final ApiResponseModel response = await ApiService.get(
         'user/search-chefs?searchTerm=$searchTerm',
       );
 
       if (response.statusCode == 200) {
-        ChefModel searchResponse = ChefModel.fromJson(response.data);
+        final ChefModel searchResponse = ChefModel.fromJson(response.data);
         searchResults.assignAll(searchResponse.data ?? []);
         hasSearched.value = true;
       } else {
@@ -326,7 +326,7 @@ class SearchController extends GetxController {
     update();
 
     try {
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         Utils.errorSnackBar('Location Error', 'Location services are disabled.');
         isLoadingLocation = false;
@@ -352,7 +352,7 @@ class SearchController extends GetxController {
         return;
       }
 
-      Position position = await Geolocator.getCurrentPosition(
+      final Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
       currentLat = position.latitude;

@@ -7,34 +7,31 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
-import '../../../../../utils/constants/app_images.dart';
 
 Widget menuItem() {
   return InkWell(
     onTap: () {},
     child: Container(
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Color(0xffF2F2F2),
+        color: const Color(0xffF2F2F2),
         borderRadius: BorderRadius.circular(20),
       ),
-      margin: EdgeInsets.only(top: 16),
+      margin: const EdgeInsets.only(top: 16),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                CommonText(
-                  text: "Quesadilla",
+                const CommonText(
+                  text: 'Quesadilla',
                   color: Color(0xff272727),
                   fontWeight: FontWeight.w600,
                 ),
                 4.height,
-                Row(
+                const Row(
                   children: [
                     CommonImage(
                       imageSrc: AppIcons.ingredients,
@@ -42,14 +39,14 @@ Widget menuItem() {
                       imageColor: Color(0xff777777),
                     ),
                     CommonText(
-                      text: "Ingredients : ",
+                      text: 'Ingredients : ',
                       fontSize: 12,
                       left: 4,
                       color: Color(0xff777777),
                       fontWeight: FontWeight.w400,
                     ),
                     CommonText(
-                      text: "10 items",
+                      text: '10 items',
                       fontSize: 12,
                       color: Color(0xff272727),
                       fontWeight: FontWeight.w400,
@@ -57,7 +54,7 @@ Widget menuItem() {
                   ],
                 ),
                 4.height,
-                Row(
+                const Row(
                   children: [
                     CommonImage(
                       imageSrc: AppIcons.time,
@@ -65,14 +62,14 @@ Widget menuItem() {
                       imageColor: Color(0xff777777),
                     ),
                     CommonText(
-                      text: "Cooking Time : ",
+                      text: 'Cooking Time : ',
                       fontSize: 12,
                       left: 4,
                       color: Color(0xff777777),
                       fontWeight: FontWeight.w400,
                     ),
                     CommonText(
-                      text: "40 minutes",
+                      text: '40 minutes',
                       fontSize: 12,
                       color: Color(0xff272727),
                       fontWeight: FontWeight.w400,
@@ -87,7 +84,7 @@ Widget menuItem() {
                         Get.toNamed(AppRoutes.editMenu);
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 8,
                         ),
@@ -95,11 +92,11 @@ Widget menuItem() {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Row(
+                        child: const Row(
                           children: [
                             Icon(Icons.edit_outlined, size: 16),
                             CommonText(
-                              text: "Edit Item",
+                              text: 'Edit Item',
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: Color(0xff272727),
@@ -109,8 +106,8 @@ Widget menuItem() {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 8),
-                      padding: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.only(left: 8),
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 8,
                         vertical: 8,
                       ),
@@ -118,7 +115,7 @@ Widget menuItem() {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Icon(CupertinoIcons.delete, size: 16),
+                      child: const Icon(CupertinoIcons.delete, size: 16),
                     ),
                   ],
                 ),
@@ -126,11 +123,11 @@ Widget menuItem() {
             ),
           ),
 
-          CommonImage(
-            imageSrc: AppImages.image6,
+          /*const CommonImage(
+            imageSrc: (item.images != null && item.images!.isNotEmpty) ? _buildImageUrl(item.images!.first) : AppImages.noImage,
             size: 120,
             borderRadius: 8,
-          ),
+          ),*/
         ],
       ),
     ),

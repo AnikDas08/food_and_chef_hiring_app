@@ -22,14 +22,14 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-init() async {
-  DependencyInjection dI = DependencyInjection();
+Future<void> init() async {
+  final DependencyInjection dI = DependencyInjection();
   dI.dependencies();
 
   await Future.wait([
     LocalStorage.getAllPrefData(),
     NotificationService.initLocalNotification(),
-    dotenv.load(fileName: ".env"),
+    dotenv.load(),
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,

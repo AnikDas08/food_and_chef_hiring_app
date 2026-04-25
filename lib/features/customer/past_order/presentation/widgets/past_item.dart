@@ -51,7 +51,7 @@ Widget pastItem(BuildContext context, PastOrderModel order) {
             children: [
               // Chef image
               CommonImage(
-                imageSrc: "${ApiEndPoint.imageUrl}${order.chef.image}",
+                imageSrc: '${ApiEndPoint.imageUrl}${order.chef.image}',
                 size: 40,
                 borderRadius: 50,
                 fill: BoxFit.cover,
@@ -91,7 +91,6 @@ Widget pastItem(BuildContext context, PastOrderModel order) {
                 child: CommonText(
                   text: order.status,
                   fontSize: 10,
-                  fontWeight: FontWeight.w500,
                   color: statusText,
                 ),
               ),
@@ -156,12 +155,11 @@ Widget pastItem(BuildContext context, PastOrderModel order) {
               children: [
                 // Date & time
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    CommonImage(
+                    const CommonImage(
                       imageSrc: AppIcons.date,
                       size: 16,
-                      imageColor: const Color(0xffA7A7A7),
+                      imageColor: Color(0xffA7A7A7),
                     ),
                     SizedBox(width: 20.h,),
                     Flexible(
@@ -179,22 +177,20 @@ Widget pastItem(BuildContext context, PastOrderModel order) {
 
                 // Items
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    CommonImage(
+                    const CommonImage(
                       imageSrc: AppIcons.ingredients,
                       size: 16,
-                      imageColor: const Color(0xffA7A7A7),
+                      imageColor: Color(0xffA7A7A7),
                     ),
                     SizedBox(width: 20.h,),
                     Flexible(
                       child: CommonText(
                         text:
-                        "${order.itemCountLabel} (${order.itemNames})",
+                        '${order.itemCountLabel} (${order.itemNames})',
                         fontSize: 12,
                         left: 4,
                         fontWeight: FontWeight.w400,
-                        maxLines: 1,
                       ),
                     ),
                   ],
@@ -203,12 +199,11 @@ Widget pastItem(BuildContext context, PastOrderModel order) {
 
                 // Address
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    CommonImage(
+                    const CommonImage(
                       imageSrc: AppIcons.location,
                       size: 16,
-                      imageColor: const Color(0xffA7A7A7),
+                      imageColor: Color(0xffA7A7A7),
                     ),
                     SizedBox(width: 20.h,),
                     Flexible(
@@ -217,7 +212,6 @@ Widget pastItem(BuildContext context, PastOrderModel order) {
                         fontSize: 12,
                         left: 4,
                         fontWeight: FontWeight.w400,
-                        maxLines: 1,
                         textAlign: TextAlign.start,
                       ),
                     ),
@@ -237,14 +231,14 @@ Widget pastItem(BuildContext context, PastOrderModel order) {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonText(
+                  const CommonText(
                     text: AppString.total,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: const Color(0xff777777),
+                    color: Color(0xff777777),
                   ),
                   CommonText(
-                    text: "\$${order.userPaid.toStringAsFixed(2)}",
+                    text: '\$${order.userPaid.toStringAsFixed(2)}',
                     fontWeight: FontWeight.w600,
                     color: const Color(0xff272727),
                     top: 2,
@@ -267,8 +261,8 @@ Widget pastItem(BuildContext context, PastOrderModel order) {
                   children: [
                     CommonText(
                       text: order.rating > 0
-                          ? "You rated ${order.rating}"
-                          : "Rate",
+                          ? 'You rated ${order.rating}'
+                          : 'Rate',
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: const Color(0xff272727),
@@ -299,7 +293,7 @@ Widget pastItem(BuildContext context, PastOrderModel order) {
                     borderRadius: BorderRadius.circular(12.sp),
                     border: Border.all(color: const Color(0xffF1F1F1)),
                   ),
-                  child: CommonText(
+                  child: const CommonText(
                     text: AppString.reorder,
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
@@ -326,7 +320,7 @@ String _formatDate(String isoDate) {
     final hour = dt.hour > 12 ? dt.hour - 12 : dt.hour == 0 ? 12 : dt.hour;
     final minute = dt.minute.toString().padLeft(2, '0');
     final period = dt.hour >= 12 ? 'PM' : 'AM';
-    return "${dt.day} ${months[dt.month - 1]}, ${dt.year} at $hour:$minute $period";
+    return '${dt.day} ${months[dt.month - 1]}, ${dt.year} at $hour:$minute $period';
   } catch (_) {
     return isoDate;
   }
