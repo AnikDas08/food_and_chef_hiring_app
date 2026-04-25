@@ -114,16 +114,37 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                     elevation: _isCollapsed ? 1 : 0,
                     titleSpacing: 0,
                     automaticallyImplyLeading: false,
+                    leadingWidth: 80,
                     leading:
                         _isCollapsed
                             ? null
-                            : Padding(
-                              padding: EdgeInsets.only(left: 16.w),
-                              child: Center(
+                            : Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 28,
+                              ),
+                              child: SizedBox(
+                                width: 40.sp,
+                                height: 40.sp,
                                 child: InkWell(
-                                  onTap: () => Get.back(),
-                                  child: const CommonImage(
-                                    imageSrc: 'assets/icons/back.svg',
+                                  borderRadius: BorderRadius.circular(50),
+                                  onTap: Get.back,
+                                  child: const LiquidGlassLayer(
+                                    child: LiquidGlass(
+                                      shape: LiquidRoundedSuperellipse(
+                                        borderRadius: 50,
+                                      ),
+                                      child: Center(
+                                        child: Icon(
+                                          CupertinoIcons.back,
+                                          color: Colors.white,
+                                          size: 28,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -153,14 +174,20 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                   onTap: controller.toggleFavourite,
                                   child: LiquidGlassLayer(
                                     child: LiquidGlass(
-                                      shape: const LiquidRoundedSuperellipse(borderRadius: 30),
+                                      shape: const LiquidRoundedSuperellipse(
+                                        borderRadius: 30,
+                                      ),
                                       child: Container(
                                         width: 40.sp,
                                         height: 40.sp,
                                         padding: EdgeInsets.all(8.sp),
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
+                                          border: Border.all(
+                                            color: Colors.black.withValues(
+                                              alpha: 0.07,
+                                            ),
+                                          ),
                                         ),
                                         child: Center(
                                           child: Icon(
@@ -168,10 +195,10 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                                 ? Icons.favorite
                                                 : Icons.favorite_border,
                                             color:
-                                            controller.isFavorite
-                                                ? Colors.red
-                                                : Colors.white,
-                                            size: 24,
+                                                controller.isFavorite
+                                                    ? Colors.red
+                                                    : Colors.white,
+                                            size: 28,
                                           ),
                                         ),
                                       ),
@@ -187,8 +214,32 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                       ShareParams(text: 'https://example.com'),
                                     );
                                   },
-                                  child: const CommonImage(
-                                    imageSrc: AppIcons.share,
+                                  child: LiquidGlassLayer(
+                                    child: LiquidGlass(
+                                      shape: const LiquidRoundedSuperellipse(
+                                        borderRadius: 30,
+                                      ),
+                                      child: Container(
+                                        width: 40.sp,
+                                        height: 40.sp,
+                                        padding: EdgeInsets.all(8.sp),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.black.withValues(
+                                              alpha: 0.07,
+                                            ),
+                                          ),
+                                        ),
+                                        child: const Center(
+                                          child: Icon(
+                                            CupertinoIcons.share,
+                                            color: Colors.white,
+                                            size: 24,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -411,9 +462,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                           height: 60,
                           decoration: const BoxDecoration(
                             color: AppColors.primaryColor,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20),
-                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
                           child: Row(
                             children: [
@@ -437,8 +486,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                               ),
                               const Spacer(),
                               CommonText(
-                                text:
-                                    '\$${pricePerChef.toStringAsFixed(2)}',
+                                text: '\$${pricePerChef.toStringAsFixed(2)}',
                                 color: Colors.white,
                               ),
                             ],
@@ -738,7 +786,6 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
                             maxLines: 1,
                             textAlign: TextAlign.center,
                           ),
-
                         ),
                       )
                       .toList(),
