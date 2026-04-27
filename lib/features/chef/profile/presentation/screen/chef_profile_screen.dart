@@ -100,28 +100,6 @@ class ChefProfileScreen extends StatelessWidget {
                           ],
                         );
                       }),
-                      //16.height,
-                      // CommonTextField(
-                      //   keyboardType: TextInputType.none,
-                      //   borderColor: Color(0xffF1F1F1),
-                      //   borderRadius: 8,
-                      //   fillColor: Color(0xffFDFDFD),
-                      //   paddingVertical: 14,
-                      //   prefixIcon: Padding(
-                      //     padding: const EdgeInsets.only(left: 8.0),
-                      //     child: CommonImage(
-                      //       imageSrc: controller.selectedProfile['image'],
-                      //       size: 30,
-                      //     ),
-                      //   ),
-                      //   hintText: controller.selectedProfile['name'],
-                      //   hintTextColor: Color(0xff272727),
-                      //   suffixIcon: ProfileList(
-                      //     items: controller.profileOptions,
-                      //     selectedItem: controller.selectedProfile,
-                      //     onTap: controller.onChangeProfile,
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
@@ -235,15 +213,21 @@ class ChefProfileScreen extends StatelessWidget {
                         },
                       ),
 
-                      14.height,
                       Obx(
                         () => Row(
                           children: [
-                            const Icon(CupertinoIcons.bell),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 0),
+                              child: CommonImage(
+                                imageSrc: AppIcons.notification,
+                                size: 22,
+                                imageColor: const Color(0xff272727),
+                              ),
+                            ),
                             const CommonText(
                               text: AppString.notifications,
-                              left: 12,
-                              fontWeight: FontWeight.w600,
+                              left: 16,
+                              fontWeight: FontWeight.w500,
                               color: Color(0xff272727),
                             ),
                             const Spacer(),
@@ -251,8 +235,9 @@ class ChefProfileScreen extends StatelessWidget {
                               value: controller.isNotification.value,
                               onTap: () => controller.notification(),
                             ),
+                            12.width,
                           ],
-                        ),
+                        ).paddingSymmetric(vertical: 14.h),
                       ),
                     ],
                   ),
@@ -274,14 +259,12 @@ class ChefProfileScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      InkWell(
-                        child: Item(
-                          icon: CupertinoIcons.question_circle,
-                          title: AppString.contactSupport,
-                          onTap: () {
-                            Get.to(const HelpSupportScreen());
-                          },
-                        ),
+                      Item(
+                        icon: CupertinoIcons.question_circle,
+                        title: AppString.contactSupport,
+                        onTap: () {
+                          Get.to(const HelpSupportScreen());
+                        },
                       ),
 
                       Item(

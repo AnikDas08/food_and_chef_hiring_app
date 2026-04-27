@@ -14,7 +14,6 @@ class IngredientInputModel {
   final String quantity;
   final String unit;
   IngredientInputModel({required this.name, required this.quantity, required this.unit});
-
   Map<String, dynamic> toJson() => {'name': name, 'quantity': quantity, 'unit': unit};
 }
 
@@ -69,9 +68,7 @@ class MenuItemModel {
 class MenuSectionModel {
   final String menuSection;
   final List<MenuItemModel> menus;
-
   MenuSectionModel({required this.menuSection, required this.menus});
-
   factory MenuSectionModel.fromJson(Map<String, dynamic> json) => MenuSectionModel(
     menuSection: json['menu_section'] ?? '',
     menus: (json['menus'] as List? ?? []).map((e) => MenuItemModel.fromJson(e)).toList(),
@@ -88,7 +85,6 @@ class EquipmentModel {
   final String id;
   final String name;
   EquipmentModel({required this.id, required this.name});
-
   factory EquipmentModel.fromJson(Map<String, dynamic> json) =>
       EquipmentModel(id: json['_id'] ?? '', name: json['name'] ?? '');
 }
@@ -106,14 +102,24 @@ class CafeAddMenuItemController extends GetxController {
 
   final RxString _selectedCategory = ''.obs;
   final RxString _selectedDietType = 'Vegetarian'.obs;
-  final RxString _selectedAllergen = 'peanuts'.obs;
+  final RxList<String> selectedAllergens = <String>[].obs;
 
   String get selectedCategory => _selectedCategory.value;
   String get selectedDietType => _selectedDietType.value;
-  String get selectedAllergen => _selectedAllergen.value;
 
   final dietTypes = ['Vegetarian', 'Vegan', 'Non-Vegetarian', 'Gluten-Free'];
   final allergens = ['peanuts', 'dairy', 'gluten', 'eggs', 'shellfish'];
+  final RxBool allergensExpanded = false.obs;
+
+  void toggleAllergen(String allergen) {
+    if (selectedAllergens.contains(allergen)) {
+      selectedAllergens.remove(allergen);
+    } else {
+      selectedAllergens.add(allergen);
+    }
+  }
+
+  void toggleAllergensExpanded() => allergensExpanded.value = !allergensExpanded.value;
 
   final prepTimeController = TextEditingController(text: '30');
   final cookTimeController = TextEditingController(text: '30');
@@ -200,7 +206,6 @@ class CafeAddMenuItemController extends GetxController {
     editingItemId.value = item.id;
     nameController.text = item.name;
     descriptionController.text = item.description;
-
     _selectedCategory.value = item.menuSection;
 
     final prepParts = item.estPrepTime.split(' ');
@@ -212,21 +217,16 @@ class CafeAddMenuItemController extends GetxController {
     _selectedCookUnit.value = cookParts.length > 1 ? cookParts[1] : 'Minutes';
 
     if (item.dietTypes.isNotEmpty) _selectedDietType.value = item.dietTypes.first;
-    if (item.allergens.isNotEmpty) _selectedAllergen.value = item.allergens.first;
+    selectedAllergens.value = List.from(item.allergens);
 
     existingImageUrl.value = item.images.isNotEmpty ? item.images.first : '';
     previewImage.value = null;
-
     ingredientsList.value = List.from(item.ingredients);
     customizeOptions.value = item.customizations.isNotEmpty
         ? List.from(item.customizations)
         : [
-      'Without onions',
-      'Without iceberg lettuce',
-      'Without cheese',
-      'Without cucumber slices',
-      'Without Tomato',
-      'Without Bacon',
+      'Without onions', 'Without iceberg lettuce', 'Without cheese',
+      'Without cucumber slices', 'Without Tomato', 'Without Bacon',
     ];
   }
 
@@ -241,17 +241,13 @@ class CafeAddMenuItemController extends GetxController {
     _selectedPrepUnit.value = 'Minutes';
     _selectedCookUnit.value = 'Minutes';
     _selectedDietType.value = 'Vegetarian';
-    _selectedAllergen.value = 'peanuts';
+    selectedAllergens.clear();
     previewImage.value = null;
     ingredientsList.clear();
     selectedEquipmentIds.clear();
     customizeOptions.value = [
-      'Without onions',
-      'Without iceberg lettuce',
-      'Without cheese',
-      'Without cucumber slices',
-      'Without Tomato',
-      'Without Bacon',
+      'Without onions', 'Without iceberg lettuce', 'Without cheese',
+      'Without cucumber slices', 'Without Tomato', 'Without Bacon',
     ];
   }
 
@@ -284,16 +280,14 @@ class CafeAddMenuItemController extends GetxController {
     }
   }
 
-
   bool _categoriesFetched = false;
 
   Future<void> fetchCategories({bool force = false}) async {
-    if (_categoriesFetched && !force) return; // ✅ force parameter add
+    if (_categoriesFetched && !force) return;
     _categoriesFetched = true;
     isLoadingCategory.value = true;
     try {
-      final response =
-      await ApiService.get('${ApiEndPoint.AddMenuSection}${LocalStorage.userId}');
+      final response = await ApiService.get('${ApiEndPoint.AddMenuSection}${LocalStorage.userId}');
       if (response.statusCode == 200 && response.data['success'] == true) {
         final List list = response.data['data'] ?? [];
         final seen = <String>{};
@@ -303,7 +297,6 @@ class CafeAddMenuItemController extends GetxController {
             .toList();
         categoryList.value = categoryModels.map((e) => e.name).toList();
 
-        // ✅ Fixed — duplicate ছাড়া, সঠিক id সহ
         final defaults = ['Starter', 'Main Dish', 'Dessert'];
         for (final name in defaults) {
           if (!categoryList.contains(name)) {
@@ -327,8 +320,7 @@ class CafeAddMenuItemController extends GetxController {
       }
     } catch (e) {
       debugPrint('❌ Category fetch error: $e');
-      Get.snackbar('Error', 'Failed to load categories.',
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', 'Failed to load categories.', snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoadingCategory.value = false;
     }
@@ -337,19 +329,15 @@ class CafeAddMenuItemController extends GetxController {
   Future<void> fetchMenus() async {
     isLoadingMenu.value = true;
     try {
-      final response =
-      await ApiService.get('${ApiEndPoint.addMenuItem}${LocalStorage.userId}');
+      final response = await ApiService.get('${ApiEndPoint.addMenuItem}${LocalStorage.userId}');
       if (response.statusCode == 200 && response.data['success'] == true) {
         final List list = response.data['data'] ?? [];
-        final List<MenuItemModel> items =
-        list.map((e) => MenuItemModel.fromJson(e)).toList();
-
+        final List<MenuItemModel> items = list.map((e) => MenuItemModel.fromJson(e)).toList();
         final Map<String, List<MenuItemModel>> grouped = {};
         for (var item in items) {
           final section = item.menuSection.isEmpty ? 'Other' : item.menuSection;
           grouped.putIfAbsent(section, () => []).add(item);
         }
-
         menuSections.value = grouped.entries
             .map((e) => MenuSectionModel(menuSection: e.key, menus: e.value))
             .toList();
@@ -361,15 +349,23 @@ class CafeAddMenuItemController extends GetxController {
     }
   }
 
-  Future<void> submitMenuItem() async {
+  // ✅ Helper to add ingredients as indexed multipart fields
+  void _appendIngredients(FormData formData) {
+    for (int i = 0; i < ingredientsList.length; i++) {
+      final ing = ingredientsList[i];
+      formData.fields.add(MapEntry('ingradients[$i][name]', ing.name));
+      formData.fields.add(MapEntry('ingradients[$i][quantity]', ing.quantity));
+      formData.fields.add(MapEntry('ingradients[$i][unit]', ing.unit));
+    }
+  }
 
+  Future<void> submitMenuItem() async {
     if (nameController.text.trim().isEmpty) {
-      Get.snackbar('Message', 'Item name is required', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Required', 'Item name is required', snackPosition: SnackPosition.BOTTOM);
       return;
     }
-
     if (ingredientsList.isEmpty) {
-      Get.snackbar('message', 'Please add at least one ingredient', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Required', 'Please add at least one ingredient', snackPosition: SnackPosition.BOTTOM);
       return;
     }
 
@@ -383,9 +379,11 @@ class CafeAddMenuItemController extends GetxController {
         MapEntry('est_prep_time', '${prepTimeController.text.trim()} $selectedPrepUnit'),
         MapEntry('est_cooking_time', '${cookTimeController.text.trim()} $selectedCookUnit'),
         MapEntry('diet_types[]', selectedDietType),
-        MapEntry('alergens[]', selectedAllergen),
       ]);
 
+      for (final allergen in selectedAllergens) {
+        formData.fields.add(MapEntry('alergens[]', allergen));
+      }
       for (final opt in customizeOptions) {
         formData.fields.add(MapEntry('customizations[]', opt));
       }
@@ -393,10 +391,8 @@ class CafeAddMenuItemController extends GetxController {
         formData.fields.add(MapEntry('special_equipment[]', id));
       }
 
-      formData.fields.add(MapEntry(
-        'ingradients',
-        jsonEncode(ingredientsList.map((e) => e.toJson()).toList()),
-      ));
+      // ✅ Send ingredients as indexed multipart fields instead of JSON string
+      _appendIngredients(formData);
 
       if (previewImage.value != null) {
         final file = previewImage.value!;
@@ -417,33 +413,29 @@ class CafeAddMenuItemController extends GetxController {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // ✅ POST response diye directly UI-te add koro — GET call lagbe na
         final newItem = MenuItemModel.fromJson(response.data['data']);
         final sectionName = newItem.menuSection.isEmpty ? 'Other' : newItem.menuSection;
-
-        final existingSection = menuSections.firstWhereOrNull(
-              (s) => s.menuSection == sectionName,
-        );
-
+        final existingSection = menuSections.firstWhereOrNull((s) => s.menuSection == sectionName);
         if (existingSection != null) {
           existingSection.menus.add(newItem);
         } else {
           menuSections.add(MenuSectionModel(menuSection: sectionName, menus: [newItem]));
         }
         menuSections.refresh();
-
         Get.back(result: true);
         Get.snackbar('Success', 'Menu item added successfully!',
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white);
       } else {
-        Get.snackbar('Error', "${response.data['message'] ?? 'Failed to add menu item.'}",
-            snackPosition: SnackPosition.BOTTOM);
+        // ✅ More descriptive error message
+        final msg = response.data['message'] ?? response.data['error'] ?? 'Failed to add menu item.';
+        Get.snackbar('Error', msg.toString(), snackPosition: SnackPosition.BOTTOM);
+        debugPrint('❌ Submit failed: ${response.data}');
       }
     } catch (e) {
       debugPrint('Submit error: $e');
-      Get.snackbar('Error', 'Something went wrong: $e', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', 'Something went wrong. Please try again.', snackPosition: SnackPosition.BOTTOM);
     } finally {
       isSubmitting.value = false;
     }
@@ -451,19 +443,14 @@ class CafeAddMenuItemController extends GetxController {
 
   Future<void> updateMenuItem() async {
     if (nameController.text.trim().isEmpty) {
-      Get.snackbar('Message', 'Item name is required', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Required', 'Item name is required', snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+    if (ingredientsList.isEmpty) {
+      Get.snackbar('Required', 'Please add at least one ingredient', snackPosition: SnackPosition.BOTTOM);
       return;
     }
 
-    if (ingredientsList.isEmpty) {
-      Get.snackbar(
-        'Ingredients Required',
-        'Please add at least one ingredient to save the menu item.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.cyanAccent,
-      );
-      return;
-    }
     isSubmitting.value = true;
     try {
       final formData = FormData();
@@ -474,9 +461,11 @@ class CafeAddMenuItemController extends GetxController {
         MapEntry('est_prep_time', '${prepTimeController.text.trim()} $selectedPrepUnit'),
         MapEntry('est_cooking_time', '${cookTimeController.text.trim()} $selectedCookUnit'),
         MapEntry('diet_types[]', selectedDietType),
-        MapEntry('alergens[]', selectedAllergen),
       ]);
 
+      for (final allergen in selectedAllergens) {
+        formData.fields.add(MapEntry('alergens[]', allergen));
+      }
       for (final opt in customizeOptions) {
         formData.fields.add(MapEntry('customizations[]', opt));
       }
@@ -484,10 +473,8 @@ class CafeAddMenuItemController extends GetxController {
         formData.fields.add(MapEntry('special_equipment[]', id));
       }
 
-      formData.fields.add(MapEntry(
-        'ingradients',
-        jsonEncode(ingredientsList.map((e) => e.toJson()).toList()),
-      ));
+      // ✅ Same fix for update
+      _appendIngredients(formData);
 
       if (previewImage.value != null) {
         final file = previewImage.value!;
@@ -508,51 +495,44 @@ class CafeAddMenuItemController extends GetxController {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // ✅ PATCH response diye directly UI update koro — GET call lagbe na
         final updatedItem = MenuItemModel.fromJson(response.data['data']);
         for (var section in menuSections) {
           final idx = section.menus.indexWhere((m) => m.id == updatedItem.id);
-          if (idx != -1) {
-            section.menus[idx] = updatedItem;
-          }
+          if (idx != -1) section.menus[idx] = updatedItem;
         }
         menuSections.refresh();
-
         Get.back(result: true);
         Get.snackbar('Success', 'Menu item updated successfully!',
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white);
       } else {
-        Get.snackbar('Error', "${response.data['message'] ?? 'Failed to update menu item.'}",
-            snackPosition: SnackPosition.BOTTOM);
+        final msg = response.data['message'] ?? response.data['error'] ?? 'Failed to update menu item.';
+        Get.snackbar('Error', msg.toString(), snackPosition: SnackPosition.BOTTOM);
+        debugPrint('❌ Update failed: ${response.data}');
       }
     } catch (e) {
       debugPrint('Update error: $e');
-      Get.snackbar('Error', 'Something went wrong: $e', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', 'Something went wrong. Please try again.', snackPosition: SnackPosition.BOTTOM);
     } finally {
       isSubmitting.value = false;
     }
   }
+
   Future<void> addMenuSection(String sectionName) async {
     try {
       final res = await ApiService.post(
         '${ApiEndPoint.AddMenuSection}${LocalStorage.userId}',
         body: {'name': sectionName},
       );
-
       if (res.statusCode == 200 || res.statusCode == 201) {
         final newId = res.data['data']['_id'] ?? '';
-
         menuSections.add(MenuSectionModel(menuSection: sectionName, menus: []));
-
         if (!categoryList.contains(sectionName)) {
           categoryModels.add(MenuCategoryModel(id: newId, name: sectionName));
           categoryList.add(sectionName);
         }
-
         _selectedCategory.value = sectionName;
-
         menuSections.refresh();
       }
     } catch (e) {
@@ -573,29 +553,23 @@ class CafeAddMenuItemController extends GetxController {
   }
 
   Future<void> pickImage() async {
-    final picked =
-    await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 80);
+    final picked = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (picked != null) previewImage.value = File(picked.path);
   }
 
   void setCategory(String val) => _selectedCategory.value = val;
   void setDietType(String val) => _selectedDietType.value = val;
-  void setAllergen(String val) => _selectedAllergen.value = val;
-
   void toggleCustomize() => customizeExpanded.value = !customizeExpanded.value;
   void toggleIngredients() => ingredientsExpanded.value = !ingredientsExpanded.value;
   void toggleEquipment() => equipmentExpanded.value = !equipmentExpanded.value;
-
   void addCustomizeOption(String val) {
     if (val.trim().isNotEmpty) customizeOptions.add(val.trim());
   }
-
   void removeCustomizeOption(String val) => customizeOptions.remove(val);
 
   void addIngredient(String name, String quantity, String unit) {
     if (name.trim().isNotEmpty) {
-      ingredientsList.add(
-          IngredientInputModel(name: name.trim(), quantity: quantity.trim(), unit: unit));
+      ingredientsList.add(IngredientInputModel(name: name.trim(), quantity: quantity.trim(), unit: unit));
     }
   }
 

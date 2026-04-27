@@ -6,8 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../../../../component/image/common_image.dart';
+import '../../../../../../component/text/common_text.dart';
 import '../../../../../../utils/constants/app_icons.dart';
 import '../controller/sign_up_chef_controller.dart';
 
@@ -20,12 +20,10 @@ class CafeSetCookingAreaScreen extends StatefulWidget {
 }
 
 class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
-
   final TextEditingController _searchController = TextEditingController();
   GoogleMapController? _mapController;
   Timer? _debounce;
   bool _isSubmitting = false;
-
 
   String? _selectedAddress;
   LatLng? _selectedLatLng;
@@ -45,7 +43,6 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
   }
 
   void _onSearchChanged() {
-
     if (_isSelecting) return;
 
     final query = _searchController.text.trim();
@@ -74,8 +71,8 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
     try {
       final uri = Uri.parse(
         'https://maps.googleapis.com/maps/api/place/autocomplete/json'
-            '?input=${Uri.encodeComponent(query)}'
-            '&key=$_apiKey',
+        '?input=${Uri.encodeComponent(query)}'
+        '&key=$_apiKey',
       );
 
       final res = await http.get(uri).timeout(const Duration(seconds: 8));
@@ -126,9 +123,9 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
     try {
       final uri = Uri.parse(
         'https://maps.googleapis.com/maps/api/place/details/json'
-            "?place_id=${item['placeId']}"
-            '&fields=geometry'
-            '&key=$_apiKey',
+        "?place_id=${item['placeId']}"
+        '&fields=geometry'
+        '&key=$_apiKey',
       );
 
       final res = await http.get(uri).timeout(const Duration(seconds: 8));
@@ -168,8 +165,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
 
   void _showError(String msg) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(msg)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   Set<Circle> _buildCircles() {
@@ -192,8 +188,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
       Marker(
         markerId: const MarkerId('selected'),
         position: _selectedLatLng!,
-        icon: BitmapDescriptor.defaultMarkerWithHue(
-            BitmapDescriptor.hueOrange),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
       ),
     };
   }
@@ -233,10 +228,7 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                 color: Color(0xffF6F6F6),
                 shape: BoxShape.circle,
               ),
-              child: const CommonImage(
-                imageSrc: AppIcons.backIcon,
-                size: 24,
-              ),
+              child: const CommonImage(imageSrc: AppIcons.backIcon, size: 24),
             ),
           ),
         ),
@@ -248,28 +240,26 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 keyboardDismissBehavior:
-                ScrollViewKeyboardDismissBehavior.onDrag,
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Title
-                    Text(
-                      'Set Your Cooking Area',
-                      style: TextStyle(
-                        fontSize: 26.sp,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF272727),
-                        letterSpacing: -0.5,
-                      ),
+                    const CommonText(
+                      text: 'Update your cooking area',
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF272727),
+                      textAlign: TextAlign.start,
                     ),
                     8.verticalSpace,
-                    Text(
-                      'Where can you travel to for chef visits to customers? Set your cooking area so that we can help your future customers find you best!',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: const Color(0xFF777777),
-                        height: 1.5,
-                      ),
+                    const CommonText(
+                      text:
+                          'Where can you travel to for chef visits to customers? Set your cooking area so that we can help your future customers find you best!',
+                      fontSize: 12,
+                      color: Color(0xFF777777),
+                      textAlign: TextAlign.start,
+                      maxLines: 4,
                     ),
                     20.verticalSpace,
 
@@ -295,38 +285,37 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                               color: const Color(0xFF777777), size: 20.sp),
                           suffixIcon: _isSearching
                               ? Padding(
-                            padding: EdgeInsets.all(14.w),
-                            child: SizedBox(
-                              width: 16.w,
-                              height: 16.w,
-                              child: const CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Color(0xFF777777),
-                              ),
-                            ),
-                          )
+                                  padding: EdgeInsets.all(14.w),
+                                  child: SizedBox(
+                                    width: 16.w,
+                                    height: 16.w,
+                                    child: const CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Color(0xFF777777),
+                                    ),
+                                  ),
+                                )
                               : _searchController.text.isNotEmpty
-                              ? IconButton(
-                            icon: Icon(Icons.clear,
-                                color: const Color(0xFF777777),
-                                size: 18.sp),
-                            onPressed: () {
-                              _isSelecting = false;
-                              _searchController.clear();
-                              setState(() {
-                                _suggestions = [];
-                                _showMap = false;
-                                _selectedAddress = null;
-                                _selectedLatLng = null;
-                              });
-                            },
-                          )
-                              : Icon(Icons.map_outlined,
-                              color: const Color(0xFF777777),
-                              size: 20.sp),
+                                  ? IconButton(
+                                      icon: Icon(Icons.clear,
+                                          color: const Color(0xFF777777),
+                                          size: 18.sp),
+                                      onPressed: () {
+                                        _isSelecting = false;
+                                        _searchController.clear();
+                                        setState(() {
+                                          _suggestions = [];
+                                          _showMap = false;
+                                          _selectedAddress = null;
+                                          _selectedLatLng = null;
+                                        });
+                                      },
+                                    )
+                                  : Icon(Icons.map_outlined,
+                                      color: const Color(0xFF777777),
+                                      size: 20.sp),
                           border: InputBorder.none,
-                          contentPadding:
-                          EdgeInsets.symmetric(vertical: 14.h),
+                          contentPadding: EdgeInsets.symmetric(vertical: 14.h),
                         ),
                       ),
                     ),
@@ -334,18 +323,16 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
 
                     // ── Suggestions List ──
                     if (_suggestions.isNotEmpty) ...[
-                      Text(
-                        'SUGGESTED ADDRESS',
-                        style: TextStyle(
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xFF777777),
-                          letterSpacing: 1.2,
-                        ),
+                      const CommonText(
+                        text: 'SUGGESTED ADDRESS',
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF777777),
+                        textAlign: TextAlign.start,
                       ),
                       12.verticalSpace,
                       ..._suggestions.map(
-                            (item) => _SuggestionTile(
+                        (item) => _SuggestionTile(
                           item: item,
                           onTap: () => _selectAddress(item),
                         ),
@@ -366,13 +353,12 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
 
                     // ── Map View ──
                     if (_showMap && _selectedLatLng != null) ...[
-                      Text(
-                        'Order Area Distance',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF272727),
-                        ),
+                      const CommonText(
+                        text: 'Order Area Distance',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF272727),
+                        textAlign: TextAlign.start,
                       ),
                       12.verticalSpace,
 
@@ -386,21 +372,19 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                             horizontal: 16.w, vertical: 14.h),
                         child: Row(
                           children: [
-                            Text(
-                              '${_distanceKm.toInt()}',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xFF272727),
-                              ),
+                            CommonText(
+                              text: '${_distanceKm.toInt()}',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF272727),
+                              textAlign: TextAlign.start,
                             ),
                             const Spacer(),
-                            Text(
-                              'Distance',
-                              style: TextStyle(
-                                fontSize: 13.sp,
-                                color: const Color(0xFF777777),
-                              ),
+                            const CommonText(
+                              text: 'Miles',
+                              fontSize: 13,
+                              color: Color(0xFF777777),
+                              textAlign: TextAlign.end,
                             ),
                           ],
                         ),
@@ -468,26 +452,31 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                   onPressed: _isSubmitting
                       ? null
                       : () async {
-                    if (_selectedAddress == null || _selectedLatLng == null) {
-                      Get.snackbar('Message', 'Please select an address first.',backgroundColor: Colors.red,colorText: Colors.red);
-                      return;
-                    }
-                    setState(() => _isSubmitting = true);
-                    try {
-                      final controller = SignUpChefController.instance;
-                      await controller.setupChefProfile(
-                        about: controller.tempAbout,
-                        experience: controller.tempExperience,
-                        cookingAreaDistance: _distanceKm.toInt().toString(),
-                        address: _selectedAddress!,
-                        lat: _selectedLatLng!.latitude.toString(),
-                        lng: _selectedLatLng!.longitude.toString(),
-                        imagePath: controller.tempImagePath,
-                      );
-                    } finally {
-                      if (mounted) setState(() => _isSubmitting = false);
-                    }
-                  },
+                          if (_selectedAddress == null ||
+                              _selectedLatLng == null) {
+                            Get.snackbar(
+                                'Message', 'Please select an address first.',
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white);
+                            return;
+                          }
+                          setState(() => _isSubmitting = true);
+                          try {
+                            final controller = SignUpChefController.instance;
+                            await controller.setupChefProfile(
+                              about: controller.tempAbout,
+                              experience: controller.tempExperience,
+                              cookingAreaDistance:
+                                  _distanceKm.toInt().toString(),
+                              address: _selectedAddress!,
+                              lat: _selectedLatLng!.latitude.toString(),
+                              lng: _selectedLatLng!.longitude.toString(),
+                              imagePath: controller.tempImagePath,
+                            );
+                          } finally {
+                            if (mounted) setState(() => _isSubmitting = false);
+                          }
+                        },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1C1C1C),
                     foregroundColor: Colors.white,
@@ -500,33 +489,31 @@ class _CafeSetCookingAreaScreenState extends State<CafeSetCookingAreaScreen> {
                   ),
                   child: _isSubmitting
                       ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 18.w,
-                        height: 18.w,
-                        child: const CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2.5,
-                        ),
-                      ),
-                      10.horizontalSpace,
-                      Text(
-                        'Loading...',
-                        style: TextStyle(
-                          fontSize: 16.sp,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 18.w,
+                              height: 18.w,
+                              child: const CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2.5,
+                              ),
+                            ),
+                            10.horizontalSpace,
+                            const CommonText(
+                              text: 'Loading...',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ],
+                        )
+                      : const CommonText(
+                          text: 'Continue',
+                          fontSize: 16,
                           fontWeight: FontWeight.w600,
+                          color: Colors.white,
                         ),
-                      ),
-                    ],
-                  )
-                      : Text(
-                    'Continue',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
                 ),
               ),
             ),
@@ -563,21 +550,19 @@ class _SuggestionTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    item['title']!,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFF272727),
-                    ),
+                  CommonText(
+                    text: item['title']!,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF272727),
+                    textAlign: TextAlign.start,
                   ),
                   4.verticalSpace,
-                  Text(
-                    item['sub']!,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: const Color(0xFF777777),
-                    ),
+                  CommonText(
+                    text: item['sub']!,
+                    fontSize: 12,
+                    color: const Color(0xFF777777),
+                    textAlign: TextAlign.start,
                   ),
                 ],
               ),

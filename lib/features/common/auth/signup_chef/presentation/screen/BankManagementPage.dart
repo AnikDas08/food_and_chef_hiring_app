@@ -4,6 +4,11 @@ import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/services/api/api_service.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../../../../component/image/common_image.dart';
+import '../../../../../../component/text/common_text.dart';
+import '../../../../../../utils/constants/app_icons.dart';
+import '../../../../../../component/button/common_button.dart';
+
 class BankManagementController extends GetxController {
   final RxBool isLoading = false.obs;
 
@@ -62,6 +67,7 @@ class StripeWebViewPage extends StatefulWidget {
   @override
   State<StripeWebViewPage> createState() => _StripeWebViewPageState();
 }
+
 class _StripeWebViewPageState extends State<StripeWebViewPage> {
   late final WebViewController _controller;
   bool isLoading = true;
@@ -71,7 +77,6 @@ class _StripeWebViewPageState extends State<StripeWebViewPage> {
   void initState() {
     super.initState();
 
-    // ৩০ সেকেন্ড পর loading বন্ধ করবে
     Future.delayed(const Duration(seconds: 30), () {
       if (mounted && isLoading) {
         setState(() {
@@ -87,14 +92,20 @@ class _StripeWebViewPageState extends State<StripeWebViewPage> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (url) {
-            if (mounted) setState(() { isLoading = true; hasError = false; });
+            if (mounted) setState(() {
+              isLoading = true;
+              hasError = false;
+            });
           },
           onPageFinished: (url) {
             if (mounted) setState(() => isLoading = false);
           },
           onWebResourceError: (error) {
             if (error.isForMainFrame == true && mounted) {
-              setState(() { isLoading = false; hasError = true; });
+              setState(() {
+                isLoading = false;
+                hasError = true;
+              });
             }
           },
           onNavigationRequest: (request) => NavigationDecision.navigate,
@@ -103,7 +114,8 @@ class _StripeWebViewPageState extends State<StripeWebViewPage> {
       ..loadRequest(
         Uri.parse(widget.url),
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 Chrome/91.0.4472.120 Mobile Safari/537.36',
+          'User-Agent':
+              'Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 Chrome/91.0.4472.120 Mobile Safari/537.36',
           'Accept-Language': 'en-US,en;q=0.9',
           'Cache-Control': 'no-cache',
         },
@@ -114,7 +126,11 @@ class _StripeWebViewPageState extends State<StripeWebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Connect Bank Account'),
+        title: const CommonText(
+          text: 'Connect Bank Account',
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+        ),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
@@ -132,12 +148,10 @@ class _StripeWebViewPageState extends State<StripeWebViewPage> {
                   children: [
                     CircularProgressIndicator(color: Color(0xff1A1A1A)),
                     SizedBox(height: 16),
-                    Text(
-                      'Connecting to Stripe...',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xffAAAAAA),
-                      ),
+                    CommonText(
+                      text: 'Connecting to Stripe...',
+                      fontSize: 14,
+                      color: Color(0xffAAAAAA),
                     ),
                   ],
                 ),
@@ -150,26 +164,30 @@ class _StripeWebViewPageState extends State<StripeWebViewPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.wifi_off_rounded, size: 52, color: Color(0xffCCCCCC)),
+                    const Icon(Icons.wifi_off_rounded,
+                        size: 52, color: Color(0xffCCCCCC)),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Connection failed',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff1A1A1A),
-                      ),
+                    const CommonText(
+                      text: 'Connection failed',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff1A1A1A),
                     ),
                     const SizedBox(height: 6),
-                    const Text(
-                      'Please check your internet\nand try again.',
+                    const CommonText(
+                      text: 'Please check your internet\nand try again.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 13, color: Color(0xffAAAAAA)),
+                      fontSize: 13,
+                      color: Color(0xffAAAAAA),
+                      maxLines: 2,
                     ),
                     const SizedBox(height: 24),
                     ElevatedButton(
                       onPressed: () {
-                        setState(() { hasError = false; isLoading = true; });
+                        setState(() {
+                          hasError = false;
+                          isLoading = true;
+                        });
                         _controller.reload();
                       },
                       style: ElevatedButton.styleFrom(
@@ -180,9 +198,9 @@ class _StripeWebViewPageState extends State<StripeWebViewPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 32, vertical: 14),
                       ),
-                      child: const Text(
-                        'Try Again',
-                        style: TextStyle(color: Colors.white),
+                      child: const CommonText(
+                        text: 'Try Again',
+                        color: Colors.white,
                       ),
                     ),
                   ],
@@ -211,8 +229,6 @@ class BankManagementPage extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: false,
         leadingWidth: 60,
-
-        // 🔙 Custom Back Button
         leading: Padding(
           padding: const EdgeInsets.only(left: 16),
           child: GestureDetector(
@@ -223,24 +239,15 @@ class BankManagementPage extends StatelessWidget {
                 color: Color(0xffF6F6F6),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 18,
-                color: Color(0xff1A1A1A),
-              ),
+              child: const CommonImage(imageSrc: AppIcons.backIcon, size: 24),
             ),
           ),
         ),
-
-        // 📝 Title
-        title: const Text(
-          'Bank Management',
-          style: TextStyle(
-            color: Color(0xff1A1A1A),
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            letterSpacing: -0.3,
-          ),
+        title: const CommonText(
+          text: 'Bank Management',
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: Color(0xff1A1A1A),
         ),
       ),
       body: SafeArea(
@@ -250,21 +257,14 @@ class BankManagementPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-
-              // ── Subtitle ──
-              const Text(
-                'Connect your bank account\nto receive payments.',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xff888888),
-                  height: 1.6,
-                  letterSpacing: -0.1,
-                ),
+              const CommonText(
+                text: 'Connect your bank account\nto receive payments.',
+                fontSize: 14,
+                color: Color(0xff888888),
+                textAlign: TextAlign.start,
+                maxLines: 2,
               ),
-
               const SizedBox(height: 28),
-
-              // ── Main Card ──
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
@@ -282,7 +282,6 @@ class BankManagementPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    // Bank icon
                     Container(
                       width: 64,
                       height: 64,
@@ -296,34 +295,22 @@ class BankManagementPage extends StatelessWidget {
                         color: Color(0xff1A1A1A),
                       ),
                     ),
-
                     const SizedBox(height: 16),
-
-                    const Text(
-                      'Link Your Bank',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff1A1A1A),
-                        letterSpacing: -0.3,
-                      ),
+                    const CommonText(
+                      text: 'Link Your Bank',
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff1A1A1A),
                     ),
-
                     const SizedBox(height: 6),
-
-                    const Text(
-                      'Securely connect via Stripe to\nstart receiving payments.',
+                    const CommonText(
+                      text: 'Securely connect via Stripe to\nstart receiving payments.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xffAAAAAA),
-                        height: 1.6,
-                      ),
+                      fontSize: 13,
+                      color: Color(0xffAAAAAA),
+                      maxLines: 2,
                     ),
-
                     const SizedBox(height: 24),
-
-
                     const SizedBox(height: 12),
                     _featureTile(
                       icon: Icons.bolt_rounded,
@@ -339,72 +326,41 @@ class BankManagementPage extends StatelessWidget {
                   ],
                 ),
               ),
-
               const Spacer(),
-
-              Obx(() => SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  onPressed: controller.isLoading.value
-                      ? null
-                      : controller.connectBankAccount,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff1A1A1A),
-                    disabledBackgroundColor: const Color(0xff1A1A1A),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: controller.isLoading.value
-                      ? const SizedBox(
-                    width: 22,
-                    height: 22,
-                    child: CircularProgressIndicator(
-                        color: Colors.white, strokeWidth: 2.5),
-                  )
-                      : const Text(
-                    'Connect Bank Account',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                      letterSpacing: -0.2,
-                    ),
-                  ),
-                ),
-              )),
-
+              Obx(() => CommonButton(
+                    titleText: 'Connect Bank Account',
+                    isLoading: controller.isLoading.value,
+                    buttonColor: const Color(0xff1A1A1A),
+                    buttonRadius: 16,
+                    buttonHeight: 56,
+                    onTap: controller.connectBankAccount,
+                  )),
               Obx(() => controller.isLoading.value
                   ? const Padding(
-                padding: EdgeInsets.only(top: 12),
-                child: Text(
-                  'Setting up your account...',
-                  style: TextStyle(fontSize: 12, color: Color(0xffAAAAAA)),
-                ),
-              )
+                      padding: EdgeInsets.only(top: 12),
+                      child: Center(
+                        child: CommonText(
+                          text: 'Setting up your account...',
+                          fontSize: 12,
+                          color: Color(0xffAAAAAA),
+                        ),
+                      ),
+                    )
                   : const SizedBox.shrink()),
-
               const SizedBox(height: 14),
-
-              // ── Stripe badge ──
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.verified_outlined,
                       size: 14, color: Color(0xffBBBBBB)),
                   SizedBox(width: 5),
-                  Text(
-                    'Secured by Stripe',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xffBBBBBB),
-                    ),
+                  CommonText(
+                    text: 'Secured by Stripe',
+                    fontSize: 12,
+                    color: Color(0xffBBBBBB),
                   ),
                 ],
               ),
-
               const SizedBox(height: 24),
             ],
           ),
@@ -430,26 +386,26 @@ class BankManagementPage extends StatelessWidget {
           child: Icon(icon, size: 18, color: const Color(0xff1A1A1A)),
         ),
         const SizedBox(width: 14),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CommonText(
+                text: title,
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: Color(0xff1A1A1A),
+                color: const Color(0xff1A1A1A),
+                textAlign: TextAlign.start,
               ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              subtitle,
-              style: const TextStyle(
+              const SizedBox(height: 2),
+              CommonText(
+                text: subtitle,
                 fontSize: 12,
-                color: Color(0xffAAAAAA),
+                color: const Color(0xffAAAAAA),
+                textAlign: TextAlign.start,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );

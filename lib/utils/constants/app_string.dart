@@ -344,7 +344,7 @@ class AppString {
   static const String requestedBookings = 'Requested Bookings';
   static const String seeAll = 'See All';
   static const String analytics = 'Analytics';
-  static const String totalEarning = 'Total Earning';
+  static const String totalEarning = 'Total Earnings';
   static const String mostBookedTimes = 'Most Booked Times';
   static const String avgBookingsPerWeek = 'Avg Bookings per Week';
 
