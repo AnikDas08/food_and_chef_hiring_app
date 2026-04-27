@@ -18,12 +18,13 @@ class NoNotification extends StatelessWidget {
         children: [
           CommonImage(
             imageSrc: AppIcons.notification,
-            height: 70.sp,
-            width: 70.sp,
+            height: 63.sp,
+            width: 63.sp,
           ),
           const CommonText(
             text: AppString.noNotification,
-            fontSize: 16,
+            fontSize: 12,
+            color: Color(0xff777777),
             top: 8,
           )
         ],

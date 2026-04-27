@@ -87,7 +87,7 @@ class CheckoutScreen extends StatelessWidget {
                   keyboardType: TextInputType.none,
                   paddingVertical: 20,
                   fontSize: 12,
-                  hintText: '1 January 2026, 5:20PM',
+                  hintText: 'Select booking time',
                   onTap:
                       () => bookingDateTimePopup(
                         id:
@@ -586,10 +586,7 @@ class CheckoutScreen extends StatelessWidget {
           _summaryRow('Fees', fee),
           8.height,
           _summaryRow('Estimated Taxes', tax),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 12.h),
-            child: const Divider(height: 1, color: Color(0xffE0E0E0)),
-          ),
+          SizedBox(height: 12,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

@@ -5,6 +5,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import '../../../utils/constants/app_colors.dart';
 import '../../../utils/constants/app_string.dart';
+import '../text/common_text.dart';
 
 class CommonPhoneNumberTextFiled extends StatelessWidget {
   const CommonPhoneNumberTextFiled({
@@ -27,16 +28,16 @@ class CommonPhoneNumberTextFiled extends StatelessWidget {
       key: ValueKey(initialCountryCode),
       controller: controller,
       onCountryChanged: countryChange,
-      dropdownTextStyle: const TextStyle(color: AppColors.black, fontSize: 14),
+      dropdownTextStyle: const TextStyle(color: Color(0xff272727), fontSize: 14),
       onChanged: (phone) {
         onChanged?.call(phone);
       },
-      style: const TextStyle(color: AppColors.black, fontSize: 14),
+      style: TextStyle(color: Colors.black, fontSize: 14,letterSpacing: getLetterSpacing(14, FontWeight.w600)),
       pickerDialogStyle: PickerDialogStyle(backgroundColor: const Color(0xffF2F2F2)),
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         hintText: AppString.phoneNumber,
-        hintStyle: TextStyle(color: AppColors.textFiledColor, fontSize: 14),
-        labelStyle: TextStyle(color: AppColors.textFiledColor, fontSize: 14),
+        hintStyle: TextStyle(color: Color(0xff777777), fontSize: 12,letterSpacing: getLetterSpacing(12, FontWeight.w400),),
+        labelStyle: TextStyle(color: Color(0xff777777), fontSize: 14),
         fillColor: Color(0xffF2F2F2),
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         filled: true,

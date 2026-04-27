@@ -99,20 +99,22 @@ class Filter extends StatelessWidget {
                               },
                             ),
                           ),
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CommonText(
-                                text: '\$0/hr',
-                                fontSize: 12,
-                                color: Color(0xff777777),
-                              ),
-                              CommonText(
-                                text: '\$100/hr',
-                                fontSize: 12,
-                                color: Color(0xff777777),
-                              ),
-                            ],
+                          Obx(
+                            () => Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CommonText(
+                                  text: '\$${controller.minPrice.value.toInt()}/hr',
+                                  fontSize: 12,
+                                  color: Color(0xff777777),
+                                ),
+                                CommonText(
+                                  text: '\$${controller.maxPrice.value.toInt()}/hr',
+                                  fontSize: 12,
+                                  color: Color(0xff777777),
+                                ),
+                              ],
+                            ),
                           ),
 
                           Divider(color: const Color(0xffF1F1F1), height: 32.h),

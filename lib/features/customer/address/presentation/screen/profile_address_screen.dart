@@ -84,7 +84,7 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
                             text: 'No addresses found',
                             fontWeight: FontWeight.w400,
                             fontSize: 12,
-                            color: Color(0xff272727),
+                            color: Color(0xff777777),
                           ),
                         ],
                       ),

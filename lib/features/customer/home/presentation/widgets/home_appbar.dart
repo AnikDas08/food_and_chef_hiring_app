@@ -252,6 +252,11 @@ AppBar homeAppbar() {
                       ),
                     ),
                   ),
+                  const Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    color: Color(0xff777777),
+                    size: 20,
+                  ),
                 ],
               ),
             ],

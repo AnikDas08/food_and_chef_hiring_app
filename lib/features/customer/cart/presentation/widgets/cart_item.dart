@@ -215,7 +215,6 @@ Widget _buildPill(String text) {
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(20.r),
-      border: Border.all(color: const Color(0xffE0E0E0)),
     ),
     child: CommonText(
       text: text,
