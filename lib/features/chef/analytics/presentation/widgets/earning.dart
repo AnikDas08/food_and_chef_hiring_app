@@ -71,7 +71,7 @@ Widget earning() {
                     children: [
                       CommonImage(imageSrc: AppIcons.arrowUpDown),
                       CommonText(
-                        text: '0.48%',
+                        text: '0.00%',
                         fontSize: 12,
                         left: 4,
                         right: 4,
@@ -93,6 +93,8 @@ Widget earning() {
                   showModalBottomSheet(
                     context: Get.context!,
                     isScrollControlled: true,
+                    backgroundColor: Colors.white,
+                    barrierColor: Colors.black.withOpacity(0.1),
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
                           top: Radius.circular(20)),
@@ -123,17 +125,16 @@ Widget earning() {
                                     controller.changeFilter(filter);
                                     Navigator.pop(Get.context!);
                                   },
-                                  title: Text(
-                                    filter,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: isSelected
-                                          ? FontWeight.w600
-                                          : FontWeight.w400,
-                                      color: isSelected
-                                          ? const Color(0xffFD713F)
-                                          : const Color(0xff272727),
-                                    ),
+                                  title: CommonText(
+                                    text: filter,
+                                    fontSize: 14,
+                                    fontWeight: isSelected
+                                        ? FontWeight.w600
+                                        : FontWeight.w400,
+                                    color: isSelected
+                                        ? const Color(0xffFD713F)
+                                        : const Color(0xff272727),
+                                    textAlign: TextAlign.start,
                                   ),
                                   trailing: isSelected
                                       ? const Icon(Icons.check,

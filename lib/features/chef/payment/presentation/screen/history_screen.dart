@@ -17,8 +17,10 @@ class HistoryScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        centerTitle: true,
         title: const CommonText(
           text: 'History',
+          fontSize: 18,
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
         ),
@@ -66,13 +68,13 @@ class HistoryScreen extends StatelessWidget {
                           margin: EdgeInsets.only(right: 8.w),
                           decoration: BoxDecoration(
                             color: controller.selectedBookingHistory == value
-                                ? const Color(0xff222222)
+                                ? const Color(0xff272727)
                                 : const Color(0xffF2F2F2),
-                            borderRadius: BorderRadius.circular(12.sp),
+                            borderRadius: BorderRadius.circular(30.sp),
                           ),
                           child: CommonText(
                             text: value,
-                            fontSize: 12.sp,
+                            fontSize: 12,
                             fontWeight: FontWeight.w400,
                             color: controller.selectedBookingHistory == value
                                 ? Colors.white
@@ -92,11 +94,11 @@ class HistoryScreen extends StatelessWidget {
                     : controller.history.isEmpty
                     ? Padding(
                   padding: EdgeInsets.only(top: 40.h),
-                  child: CommonText(
+                  child: const CommonText(
                     text: 'No history found',
-                    fontSize: 14.sp,
+                    fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: const Color(0xff9CA3AF),
+                    color: Color(0xff9CA3AF),
                   ),
                 )
                     : ListView.builder(

@@ -40,6 +40,9 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                     color: const Color(0xff272727),
                   );
                 }),
+
+                SizedBox(height: 4.h,),
+
                 const CommonText(
                   text: "Let's get cooking!",
                   fontSize: 15,
@@ -138,7 +141,6 @@ AppBar chefHomeAppBar() {
                 text: "Let's get cooking!",
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
-                color: Color(0xff777777),
                 left: 4,
               ),
             ],

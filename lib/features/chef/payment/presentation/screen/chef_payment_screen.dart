@@ -19,41 +19,13 @@ class ChefPaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        scrolledUnderElevation: 0,
         centerTitle: true,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
-
-
-
-        // 📝 Title
-        title: const CommonText(text: 'Payment'),
-
-        // ⚙️ Settings Button
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: GestureDetector(
-              onTap: () {
-                // TODO: settings action
-              },
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                  color: Color(0xffF6F6F6),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.settings,
-                  size: 20,
-                  color: Color(0xff272727),
-                ),
-              ),
-            ),
-          ),
-        ],
+        title: const CommonText(
+          text: 'Payment',
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: Color(0xff272727),
+        ),
       ),
       body: GetBuilder<ChefPaymentController>(
         builder: (controller) {
@@ -62,33 +34,35 @@ class ChefPaymentScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 children: [
-                  const CommonImage(
-                    imageSrc: AppImages.paymentCard,
-                    height: 180,
-                    fill: BoxFit.fill,
-                  ),
+                  // const CommonImage(
+                  //   imageSrc: AppImages.paymentCard,
+                  //   height: 180,
+                  //   fill: BoxFit.fill,
+                  // ),
+                  //
+                  // Row(
+                  //   children: [
+                  //     Checkbox(
+                  //       activeColor: const Color(0xffFD713F),
+                  //       value: controller.isMainAccount,
+                  //       onChanged: controller.onChangeMainAccount,
+                  //     ),
+                  //     const CommonText(
+                  //       text: 'Make it the main account',
+                  //       fontSize: 12,
+                  //       color: Color(0xff272727),
+                  //     ),
+                  //   ],
+                  // ),
 
-                  Row(
-                    children: [
-                      Checkbox(
-                        activeColor: const Color(0xffFD713F),
-                        value: controller.isMainAccount,
-                        onChanged: controller.onChangeMainAccount,
-                      ),
-                      const CommonText(
-                        text: 'Make it the main account',
-                        fontSize: 12,
-                        color: Color(0xff272727),
-                      ),
-                    ],
-                  ),
-
-                  28.height,
+                  8.height,
 
                   CommonButton(
+
                     titleText: 'Add New Account',
 
                     onTap: () => Get.toNamed(AppRoutes.addPaymentMethod),
+
                   ),
 
                   12.height,
@@ -123,7 +97,9 @@ class ChefPaymentScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+
                       12.width,
+
                       Expanded(
                         child: InkWell(
                           onTap: () => Get.toNamed(AppRoutes.history),

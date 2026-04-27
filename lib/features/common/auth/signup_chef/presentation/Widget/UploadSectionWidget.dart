@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/image/common_image.dart';
+import '../../../../../../component/text/common_text.dart';
 import '../../../../../../utils/constants/app_icons.dart';
 import '../add documents/Model/UploadedFileModel.dart';
 
 class UploadSectionWidget extends StatelessWidget {
+
   final String? label;
   final bool isRequired;
   final List<UploadedFileModel> files;
@@ -38,17 +39,17 @@ class UploadSectionWidget extends StatelessWidget {
       children: [
         if (label != null) ...[
           Row(children: [
-            Text(label!,
-                style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: _textPrimary)),
+            CommonText(
+                text: label!,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: _textPrimary),
             if (isRequired)
-              const Text(' *',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: _required)),
+              const CommonText(
+                  text: ' *',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: _required),
           ]),
           const SizedBox(height: 10),
         ],
@@ -86,8 +87,10 @@ class UploadSectionWidget extends StatelessWidget {
                         size: 20, color: _textMuted),
                   ),
                   const SizedBox(height: 12),
-                  const Text('Drag & Drop file(s) to upload',
-                      style: TextStyle(fontSize: 13, color: _textMuted)),
+                  const CommonText(
+                      text: 'Drag & Drop file(s) to upload',
+                      fontSize: 13,
+                      color: _textMuted),
                 ],
               ),
             ),
@@ -127,21 +130,20 @@ class UploadSectionWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  file.name,
+                CommonText(
+                  text: file.name,
                   maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: _textPrimary),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: _textPrimary,
+                  textAlign: TextAlign.start,
                 ),
-                Text(
-                  file.size,
+                CommonText(
+                  text: file.size,
                   maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontSize: 11, color: _textMuted),
+                  fontSize: 11,
+                  color: _textMuted,
+                  textAlign: TextAlign.start,
                 ),
               ],
             ),
@@ -210,35 +212,40 @@ class BaseDocPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
               child: Row(children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 8,bottom: 3),
-                  child: GestureDetector(
-                    onTap: onBack ?? () => Navigator.of(context).maybePop(),
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                        color: Color(0xffF6F6F6),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const CommonImage(
-                        imageSrc: AppIcons.backIcon,
-                        size: 24,
-                      ),
+                GestureDetector(
+                  onTap: onBack ?? () => Navigator.of(context).maybePop(),
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      color: Color(0xffF6F6F6),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const CommonImage(
+                      imageSrc: AppIcons.backIcon,
+                      size: 24,
                     ),
                   ),
                 ),
-                const Spacer(),
-                if (trailingAction != null) trailingAction!,
+                Expanded(
+                  child: Center(
+                    child: CommonText(
+                      text: 'Required documents',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: _textPrimary,
+                    ),
+                  ),
+                ),
+                if (trailingAction != null) trailingAction! else const SizedBox(width: 40),
               ]),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
               child: Row(
                 children: List.generate(totalSteps, (i) => Expanded(
                   child: Container(
@@ -261,20 +268,19 @@ class BaseDocPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 28),
-                    Text(title,
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700,
-                          color: _textPrimary,
-                          letterSpacing: -0.3,
-                        )),
+                    CommonText(
+                        text: title,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                        color: _textPrimary,
+                        textAlign: TextAlign.start),
                     const SizedBox(height: 8),
-                    Text(description,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF8A8A8A),
-                          height: 1.5,
-                        )),
+                    CommonText(
+                        text: description,
+                        fontSize: 14,
+                        color: const Color(0xFF8A8A8A),
+                        textAlign: TextAlign.start,
+                        maxLines: 4),
                     const SizedBox(height: 24),
 
                     body,
@@ -287,10 +293,12 @@ class BaseDocPage extends StatelessWidget {
                           size: 14, color: _securityGreen),
                       SizedBox(width: 6),
                       Flexible(
-                        child: Text(
-                          'Your documents are encrypted and kept private.',
-                          style: TextStyle(
-                              fontSize: 12, color: Color(0xFF2F8328)),
+                        child: CommonText(
+                          text: 'Your documents are encrypted and kept private.',
+                          fontSize: 12,
+                          color: Color(0xFF2F8328),
+                          textAlign: TextAlign.start,
+                          maxLines: 2,
                         ),
                       ),
                     ]),
@@ -324,20 +332,22 @@ class BaseDocPage extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                           letterSpacing: 0.2),
                     ),
-                    child: const Text('Continue'),
+                    child: const CommonText(
+                      text: 'Continue',
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   if (onSkip != null) ...[
                     const SizedBox(height: 12),
-
-
                     CommonButton(
                       titleText: 'Skip for Now',
                       onTap: onSkip,
                       buttonColor: Colors.transparent,
                       titleColor: Colors.black,
-                      titleSize: 10.sp,
+                      titleSize: 14,
                     )
-
                   ],
                 ],
               ),

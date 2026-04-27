@@ -240,11 +240,68 @@ class CafeAddMenuItemScreen extends StatelessWidget {
 
                     _label('Allergens'),
                     8.verticalSpace,
-                    Obx(() => _dropdownContainer(
-                      value: c.selectedAllergen,
-                      items: c.allergens,
-                      onChanged: c.setAllergen,
+                    Obx(() => GestureDetector(
+                      onTap: c.toggleAllergensExpanded,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF7F7F7),
+                          borderRadius: c.allergensExpanded.value
+                              ? BorderRadius.vertical(top: Radius.circular(12.r))
+                              : BorderRadius.circular(12.r),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                c.selectedAllergens.isEmpty ? 'Select allergens...' : c.selectedAllergens.join(', '),
+                                style: TextStyle(fontSize: 13.sp,
+                                    color: c.selectedAllergens.isEmpty ? const Color(0xFFBBBBBB) : const Color(0xFF272727)),
+                                maxLines: 1, overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Icon(c.allergensExpanded.value ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                size: 18.sp, color: const Color(0xFF272727)),
+                          ],
+                        ),
+                      ),
                     )),
+                    Obx(() => c.allergensExpanded.value
+                        ? Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF7F7F7),
+                        border: const Border(top: BorderSide(color: Color(0xFFEEEEEE))),
+                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(12.r)),
+                      ),
+                      child: Column(
+                        children: c.allergens.map((allergen) {
+                          final isSelected = c.selectedAllergens.contains(allergen);
+                          return InkWell(
+                            onTap: () => c.toggleAllergen(allergen),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 18.w, height: 18.w,
+                                    decoration: BoxDecoration(
+                                      color: isSelected ? const Color(0xFF1C1C1C) : Colors.transparent,
+                                      border: Border.all(color: isSelected ? const Color(0xFF1C1C1C) : const Color(0xFFCCCCCC), width: 1.5),
+                                      borderRadius: BorderRadius.circular(4.r),
+                                    ),
+                                    child: isSelected ? Icon(Icons.check, size: 12.sp, color: Colors.white) : null,
+                                  ),
+                                  12.horizontalSpace,
+                                  Text(allergen, style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727),
+                                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400)),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    )
+                        : const SizedBox.shrink()),
                     16.verticalSpace,
 
                     _label('Est. Preparation Time'),
@@ -455,6 +512,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
     if (safeValue == null) return const SizedBox.shrink();
 
     return Container(
+      width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 14.w),
       decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
       child: DropdownButtonHideUnderline(

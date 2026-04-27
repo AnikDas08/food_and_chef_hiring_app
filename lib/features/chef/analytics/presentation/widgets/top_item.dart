@@ -42,9 +42,24 @@ Widget topItem() {
             ],
           ),
           controller.topMenuLoading.value
-              ? const Center(child: CircularProgressIndicator(color: Color(0xffFD713F)))
+              ? const Padding(
+            padding: EdgeInsets.only(top: 32),
+            child: Center(
+              child: CircularProgressIndicator(color: Color(0xffFD713F)),
+            ),
+          )
               : controller.topMenuList.isEmpty
-              ? const Center(child: Text('No items found'))
+              ? const Padding(
+            padding: EdgeInsets.only(top: 32),
+            child: Center(
+              child: CommonText(
+                text: 'No items found',
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey, // grey text here
+              ),
+            ),
+          )
               : ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,

@@ -85,7 +85,7 @@ class ChefHomeScreen extends StatelessWidget {
                                 children: [
                                   const CommonText(
                                     text: 'Current Balance',
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w400,
                                     color: Colors.white60,
                                     textAlign: TextAlign.start,
@@ -105,12 +105,11 @@ class ChefHomeScreen extends StatelessWidget {
                                           color: const Color(0xff4CAF50),
                                           size: 13.sp),
                                       SizedBox(width: 3.w),
-                                      // RichText রাখতে হবে — mixed colors একই line এ
                                       RichText(
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: '0.48%',
+                                              text: '0.00%',
                                               style: TextStyle(
                                                 color: const Color(0xff4CAF50),
                                                 fontSize: 12.sp,
@@ -207,6 +206,7 @@ class ChefHomeScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: 32.h),
                       child: const CommonText(
                         text: 'No requested bookings',
+                        fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Colors.grey,
                       ),
@@ -259,6 +259,7 @@ class ChefHomeScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: 32.h),
                       child: const CommonText(
                         text: 'No upcoming bookings',
+                        fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Colors.grey,
                       ),

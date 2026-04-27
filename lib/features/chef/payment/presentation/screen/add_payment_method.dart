@@ -71,14 +71,14 @@ class AddPaymentMethod extends StatelessWidget {
               ),
               CommonTextField(hintText: 'Enter your Country'),
 
-              const CommonText(
-                text: 'Currency',
-                top: 16,
-                bottom: 8,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff272727),
-              ),
-              CommonTextField(hintText: 'Enter Currency'),
+              // const CommonText(
+              //   text: 'Currency',
+              //   top: 16,
+              //   bottom: 8,
+              //   fontWeight: FontWeight.w600,
+              //   color: Color(0xff272727),
+              // ),
+              //CommonTextField(hintText: 'USD'),
 
               16.height,
 

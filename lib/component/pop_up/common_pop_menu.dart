@@ -130,6 +130,7 @@ void logOutPopUp() {
                   text: AppString.youSureWantToLogout,
                   maxLines: 2,
                   fontWeight: FontWeight.w600,
+                  fontSize: 16,
                 ),
                 actions: [
                   Column(
@@ -190,14 +191,14 @@ void deletePopUp({
                 Center(
                   child: CommonText(
                     text: AppString.areYouSure,
-                    fontSize: 20.sp,
+                    fontSize: 18,
                     fontWeight: FontWeight.w700,
                     bottom: 24.h,
                   ),
                 ),
                 CommonText(
                   text: AppString.deleteDetails,
-                  fontSize: 16.sp,
+                  fontSize: 14,
                   maxLines: 2,
                   bottom: 20.h,
                 ),
@@ -260,6 +261,7 @@ void logOutPopUps() {
             text: AppString.youSureWantToLogout,
             maxLines: 2,
             fontWeight: FontWeight.w600,
+            fontSize: 16,
           ),
           actions: [
             Row(

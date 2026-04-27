@@ -6,6 +6,8 @@ import '../../../../../component/button/common_button.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../../utils/constants/app_images.dart';
 import '../../../../../component/other_widgets/app_bar_opacity.dart';
+import '../../../../../component/text/common_text.dart';
+import '../../../../../utils/constants/app_icons.dart';
 import '../../../home/presentation/controller/chef_home_controller.dart';
 import '../controller/chef_profile_controller.dart';
 import '../widgets/chef_profile_all_filed.dart';
@@ -41,16 +43,28 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
             scrolledUnderElevation: 0,
             centerTitle: true,
             flexibleSpace: appBarOpacity(),
-            title: const Text(
-              'Edit Profile',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff272727),
-              ),
+            title: const CommonText(
+              text: 'Edit Profile',
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff272727),
             ),
             automaticallyImplyLeading: false,
             leadingWidth: 60,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    color: Color(0xffF6F6F6),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const CommonImage(imageSrc: AppIcons.backIcon, size: 24),
+                ),
+              ),
+            ),
           ),
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -157,14 +171,11 @@ class _SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: 11.sp,
-        fontWeight: FontWeight.w600,
-        color: const Color(0xff999999),
-        letterSpacing: 0.8,
-      ),
+    return CommonText(
+      text: text,
+      fontSize: 11,
+      fontWeight: FontWeight.w600,
+      color: const Color(0xff999999),
     );
   }
 }

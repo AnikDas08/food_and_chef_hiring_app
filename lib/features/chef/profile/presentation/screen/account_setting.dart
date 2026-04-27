@@ -6,9 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/button/common_button.dart';
+import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../../utils/constants/app_string.dart';
 import '../../../../../component/text_field/common_text_field.dart';
+import '../../../../../utils/constants/app_icons.dart';
 import '../widgets/delete_pop_up.dart';
 
 class AccountSetting extends StatefulWidget {
@@ -18,7 +20,6 @@ class AccountSetting extends StatefulWidget {
 }
 
 class _AccountSettingState extends State<AccountSetting> {
-
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -34,11 +35,26 @@ class _AccountSettingState extends State<AccountSetting> {
     return GetBuilder<ChefProfileController>(
       builder: (controller) {
         return Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
             automaticallyImplyLeading: false,
             leadingWidth: 60,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    color: Color(0xffF6F6F6),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const CommonImage(imageSrc: AppIcons.backIcon, size: 24),
+                ),
+              ),
+            ),
           ),
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -58,7 +74,8 @@ class _AccountSettingState extends State<AccountSetting> {
                     const CommonText(
                       text: 'ACCOUNT DETAILS',
                       fontSize: 12,
-                      color: Color(0xff777777),
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff999999),
                       bottom: 8,
                     ),
                     Column(
@@ -68,27 +85,36 @@ class _AccountSettingState extends State<AccountSetting> {
                         const CommonText(
                           text: 'Email',
                           fontWeight: FontWeight.w600,
+                          fontSize: 14,
                           top: 20,
                           bottom: 8,
+                          color: Color(0xff272727),
                         ),
                         CommonTextField(
                           controller: controller.emailController,
                           hintText: 'Enter email',
                           keyboardType: TextInputType.emailAddress,
+                          borderRadius: 12,
                         ),
 
                         // ── Phone ──
                         const CommonText(
                           text: AppString.phoneNumber,
                           fontWeight: FontWeight.w600,
+                          fontSize: 14,
                           top: 20,
                           bottom: 8,
+                          color: Color(0xff272727),
                         ),
                         IntlPhoneField(
                           controller: controller.phoneController,
                           initialCountryCode: 'US',
                           decoration: InputDecoration(
                             hintText: 'Enter phone number',
+                            hintStyle: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xffAAAAAA),
+                            ),
                             filled: true,
                             fillColor: const Color(0xFFF7F7F7),
                             border: OutlineInputBorder(
@@ -105,11 +131,13 @@ class _AccountSettingState extends State<AccountSetting> {
                             ),
                           ),
                           style: TextStyle(
-                              fontSize: 13.sp,
-                              color: const Color(0xFF272727)),
+                            fontSize: 14.sp,
+                            color: const Color(0xFF272727),
+                          ),
                           dropdownTextStyle: TextStyle(
-                              fontSize: 13.sp,
-                              color: const Color(0xFF272727)),
+                            fontSize: 14.sp,
+                            color: const Color(0xFF272727),
+                          ),
                           flagsButtonPadding: EdgeInsets.only(left: 12.w),
                           onChanged: (phone) {
                             controller.phoneController.text = phone.number;
@@ -121,7 +149,8 @@ class _AccountSettingState extends State<AccountSetting> {
                         const CommonText(
                           text: 'ACCOUNT ACTION',
                           fontSize: 12,
-                          color: Color(0xff777777),
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff999999),
                           top: 28,
                           bottom: 16,
                         ),
@@ -129,7 +158,7 @@ class _AccountSettingState extends State<AccountSetting> {
                           onTap: deletePopUp,
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
+                              horizontal: 16,
                               vertical: 16,
                             ),
                             decoration: BoxDecoration(
@@ -140,18 +169,21 @@ class _AccountSettingState extends State<AccountSetting> {
                               children: [
                                 const Icon(
                                   CupertinoIcons.delete,
-                                  color: Color(0xff343330),
+                                  color: Color(0xff272727),
+                                  size: 18,
                                 ),
                                 const CommonText(
                                   text: AppString.deleteAccount,
-                                  color: Color(0xff343330),
+                                  color: Color(0xff272727),
                                   fontWeight: FontWeight.w600,
-                                  left: 4,
+                                  fontSize: 14,
+                                  left: 12,
                                 ),
                                 const Spacer(),
                                 Icon(
                                   Icons.arrow_forward_ios_outlined,
-                                  size: 16.sp,
+                                  size: 14.sp,
+                                  color: const Color(0xff777777),
                                 ),
                               ],
                             ),

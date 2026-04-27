@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../../config/api/api_end_point.dart';
+import '../../../../../component/image/common_image.dart';
+import '../../../../../utils/constants/app_icons.dart';
 import '../../../../common/auth/signup_chef/presentation/controller/Chef_add_menu_controller.dart';
 import 'add_menu_screen.dart';
 
@@ -13,6 +15,26 @@ class MenuScreen extends StatelessWidget {
     final c = CafeAddMenuItemController.instance;
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        leadingWidth: 60,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: Color(0xffF6F6F6),
+                shape: BoxShape.circle,
+              ),
+              child: const CommonImage(imageSrc: AppIcons.backIcon, size: 24),
+            ),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Obx(() => Column(
           children: [
@@ -21,26 +43,16 @@ class MenuScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(
-                      width: 36.w, height: 36.h,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF5F5F5),
-                        borderRadius: BorderRadius.circular(30.r),
-                      ),
-                      child: Icon(Icons.arrow_back_ios_new_rounded,
-                          size: 16.sp, color: const Color(0xFF272727)),
-                    ),
-                  ),
+
                   Text(
                     'Menu',
                     style: TextStyle(
-                      fontSize: 18.sp,
+                      fontSize: 22.sp,
                       fontWeight: FontWeight.w700,
                       color: const Color(0xFF272727),
                     ),
                   ),
+
                   GestureDetector(
                     onTap: () async {
                       c.resetForm();

@@ -84,7 +84,7 @@ class ChefBookingScreen extends StatelessWidget {
                                       ),
                                       child: CommonText(
                                         text: value,
-                                        fontSize: 12.sp,
+                                        fontSize: 12,
                                         color:
                                             controller.selectedBookingHistory ==
                                                     value
@@ -111,6 +111,7 @@ class ChefBookingScreen extends StatelessWidget {
                       ? const Center(
                         child: CommonText(
                           text: 'No bookings found',
+                          fontSize: 12,
                           fontWeight: FontWeight.w400,
                           color: Color(0xff9CA3AF),
                         ),
