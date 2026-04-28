@@ -20,6 +20,8 @@ class ChefHomeController extends GetxController {
   final RxBool isLoadingBookings = false.obs;
   final RxBool isLoadingProfile = false.obs;
   final RxDouble walletBalance = 0.0.obs;
+  final RxDouble lastMonthPercentage = 0.0.obs;
+  final RxBool isUp = true.obs;
   final selectedBookingTab = 0.obs;
 
 
@@ -93,7 +95,10 @@ class ChefHomeController extends GetxController {
     try {
       final response = await ApiService.get(ApiEndPoint.wallet);
       if (response.statusCode == 200 && response.data['success'] == true) {
-        walletBalance.value = (response.data['data']['balance'] ?? 0).toDouble();
+        final data = response.data['data'];
+        walletBalance.value = (data['balance'] ?? 0).toDouble();
+        lastMonthPercentage.value = (data['last_month_percentage'] ?? 0).toDouble();
+        isUp.value = data['isUp'] ?? true;
       }
     } catch (e) {
       debugPrint('Wallet fetch error: $e');

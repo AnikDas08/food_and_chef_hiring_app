@@ -254,33 +254,10 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white.withValues(alpha: 0.7),
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
         leadingWidth: 60,
-        flexibleSpace: appBarOpacity(),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.5),
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.6),
-                ),
-              ),
-              child: const CommonImage(
-                imageSrc: AppIcons.backIcon,
-                size: 24,
-              ),
-            ),
-          ),
-        ),
       ),
-
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
@@ -317,6 +294,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                         textAlign: TextAlign.start,
                         overflow: TextOverflow.visible,
                       ),
+
                       20.verticalSpace,
 
                       ..._days.map((day) => _buildDayItem(day)),

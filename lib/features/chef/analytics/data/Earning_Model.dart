@@ -13,24 +13,30 @@ class EarningModel {
     return EarningModel(
       success: json['success'] ?? false,
       message: json['message'] ?? '',
-      data: EarningData.fromJson(json['data']),
+      data: EarningData.fromJson(json['data'] ?? {}),
     );
   }
 }
 
 class EarningData {
   final double totalEarning;
+  final double lastMonthPercentage;
+  final bool isUp;
   final List<MonthEarning> formatArray;
 
   EarningData({
     required this.totalEarning,
+    required this.lastMonthPercentage,
+    required this.isUp,
     required this.formatArray,
   });
 
   factory EarningData.fromJson(Map<String, dynamic> json) {
     return EarningData(
-      totalEarning: (json['totalEarning'] as num).toDouble(),
-      formatArray: (json['formatArray'] as List)
+      totalEarning: (json['totalEarning'] as num? ?? 0).toDouble(),
+      lastMonthPercentage: (json['last_month_percentage'] as num? ?? 0).toDouble(),
+      isUp: json['isUp'] ?? true,
+      formatArray: (json['formatArray'] as List? ?? [])
           .map((e) => MonthEarning.fromJson(e))
           .toList(),
     );
@@ -46,7 +52,7 @@ class MonthEarning {
   factory MonthEarning.fromJson(Map<String, dynamic> json) {
     return MonthEarning(
       text: json['text'] ?? '',
-      value: (json['value'] as num).toDouble(),
+      value: (json['value'] as num? ?? 0).toDouble(),
     );
   }
 }

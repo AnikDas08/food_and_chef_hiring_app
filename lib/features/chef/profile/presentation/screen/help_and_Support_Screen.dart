@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../../../../../../utils/constants/app_colors.dart';
 import '../../../../../../utils/extensions/extension.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../component/button/common_button.dart';
 import '../controller/help_and_Support_controller.dart';
 
 class HelpSupportScreen extends StatelessWidget {
@@ -26,7 +25,9 @@ class HelpSupportScreen extends StatelessWidget {
           text: 'Contact & Support',
           fontSize: 24,
           fontWeight: FontWeight.w600,
+          color: Color(0xff272727),
         ),
+        centerTitle: false,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -36,20 +37,25 @@ class HelpSupportScreen extends StatelessWidget {
             const CommonText(
               text: 'Issue Title',
               fontWeight: FontWeight.w600,
-              color: Colors.black87,
+              fontSize: 14,
+              color: Color(0xff272727),
+              textAlign: TextAlign.start,
+              top: 20,
+              bottom: 12,
             ),
-            10.height,
             _buildTextField(
               controller: ctrl.titleController,
               hintText: 'Enter Your Issue Title Here',
             ),
-            20.height,
             const CommonText(
               text: 'Description',
               fontWeight: FontWeight.w600,
-              color: Colors.black87,
+              fontSize: 14,
+              color: Color(0xff272727),
+              textAlign: TextAlign.start,
+              top: 20,
+              bottom: 12,
             ),
-            10.height,
             _buildTextField(
               controller: ctrl.descriptionController,
               hintText: 'Enter Your Description Here..',
@@ -58,37 +64,35 @@ class HelpSupportScreen extends StatelessWidget {
             20.height,
 
             // Attach File Button
-            Container(
-              width: double.infinity,
-              height: 52.h,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12.r),
-                border: Border.all(color: const Color(0xFFEEEEEE), width: 1.2),
-              ),
-              child: GestureDetector(
-                onTap: () => _showPickerBottomSheet(context, ctrl),
-                child: Row(
+            GestureDetector(
+              onTap: () => _showPickerBottomSheet(context, ctrl),
+              child: Container(
+                width: double.infinity,
+                height: 60.h,
+                decoration: BoxDecoration(
+                  color: const Color(0xffF2F2F2),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       Icons.attach_file_rounded,
-                      size: 18.r,
-                      color: AppColors.primaryColor,
+                      size: 18,
+                      color: Color(0xff272727),
                     ),
-                    6.width,
-                    const CommonText(
+                    CommonText(
                       text: 'Attach File',
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.primaryColor,
+                      color: Color(0xff272727),
+                      left: 6,
                     ),
                   ],
                 ),
               ),
             ),
 
-            // Selected images
             GetBuilder<HelpSupportController>(
               builder: (c) {
                 if (c.selectedFiles.isEmpty) return const SizedBox.shrink();
@@ -154,30 +158,10 @@ class HelpSupportScreen extends StatelessWidget {
             // Submit Button
             GetBuilder<HelpSupportController>(
               builder: (c) {
-                return SizedBox(
-                  width: double.infinity,
-                  height: 50.h,
-                  child: ElevatedButton(
-                    onPressed: c.isLoading ? null : c.submitSupport,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                      elevation: 0,
-                    ),
-                    child:
-                        c.isLoading
-                            ? const CircularProgressIndicator(
-                              color: Colors.white,
-                            )
-                            : const CommonText(
-                              text: 'Submit',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                  ),
+                return CommonButton(
+                  titleText: 'Submit',
+                  isLoading: c.isLoading,
+                  onTap: c.submitSupport,
                 );
               },
             ),
@@ -195,6 +179,7 @@ class HelpSupportScreen extends StatelessWidget {
   ) {
     showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
       ),
@@ -207,12 +192,12 @@ class HelpSupportScreen extends StatelessWidget {
                 ListTile(
                   leading: const Icon(
                     Icons.photo_library,
-                    color: AppColors.primaryColor,
+                    color: Color(0xff272727),
                   ),
                   title: const CommonText(
                     text: 'Pick from Gallery',
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff272727),
                     textAlign: TextAlign.start,
                   ),
                   onTap: () {
@@ -269,21 +254,20 @@ class HelpSupportScreen extends StatelessWidget {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: const Color(0xFFEEEEEE), width: 1.2),
+        color: const Color(0xffF7F7F7),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: TextField(
         controller: controller,
         maxLines: maxLines,
-        style: TextStyle(fontSize: 13.sp, color: Colors.black87),
+        style: TextStyle(fontSize: 14.sp, color: const Color(0xff272727)),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: TextStyle(fontSize: 13.sp, color: Colors.black38),
+          hintStyle: TextStyle(fontSize: 14.sp, color: const Color(0xffAAAAAA)),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(
-            horizontal: 14.w,
-            vertical: 12.h,
+            horizontal: 16.w,
+            vertical: 14.h,
           ),
         ),
       ),

@@ -74,7 +74,6 @@ class ProfileScreen extends StatelessWidget {
             ),
             child: Row(
               children: [
-                // Reactive profile image
                 Obx(() {
                   final src =
                       controller.profileImage.value.startsWith('http')
@@ -91,9 +90,11 @@ class ProfileScreen extends StatelessWidget {
                 12.width,
                 Expanded(
                   child: Column(
+
                     crossAxisAlignment: CrossAxisAlignment.start,
+
                     children: [
-                      // Reactive name
+
                       Obx(
                         () => CommonText(
                           text: controller.name.value,
@@ -102,7 +103,7 @@ class ProfileScreen extends StatelessWidget {
                           color: const Color(0xff272727),
                         ),
                       ),
-                      // Reactive email
+
                       Obx(
                         () => CommonText(
                           text: controller.email.value,
@@ -111,6 +112,8 @@ class ProfileScreen extends StatelessWidget {
                           color: const Color(0xff777777),
                         ),
                       ),
+
+
                     ],
                   ),
                 ),
@@ -118,7 +121,6 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
 
-          // ── Account Info ──────────────────────────────────────────────
           const CommonText(
             text: AppString.accountInfo,
             fontSize: 12,
