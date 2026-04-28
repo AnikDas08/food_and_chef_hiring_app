@@ -218,31 +218,15 @@ class BankManagementPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final controller = Get.put(BankManagementController());
 
     return Scaffold(
       backgroundColor: const Color(0xffFAFAFA),
       appBar: AppBar(
-        backgroundColor: const Color(0xffFAFAFA),
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
-                shape: BoxShape.circle,
-              ),
-              child: const CommonImage(imageSrc: AppIcons.backIcon, size: 24),
-            ),
-          ),
-        ),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      leadingWidth: 60,
         title: const CommonText(
           text: 'Bank Management',
           fontSize: 18,

@@ -67,22 +67,32 @@ Widget earning() {
                     fontWeight: FontWeight.w600,
                     color: const Color(0xff272727),
                   ),
-                  const Row(
+                  Row(
                     children: [
-                      CommonImage(imageSrc: AppIcons.arrowUpDown),
+                      Icon(
+                        controller.isUp.value
+                            ? Icons.north_east
+                            : Icons.south_east,
+                        color: controller.isUp.value
+                            ? const Color(0xff2F8328)
+                            : Colors.red,
+                        size: 14.sp,
+                      ),
                       CommonText(
-                        text: '0.00%',
+                        text: '${controller.lastMonthPercentage.value.toStringAsFixed(2)}%',
                         fontSize: 12,
                         left: 4,
                         right: 4,
                         fontWeight: FontWeight.w400,
-                        color: Color(0xff2F8328),
+                        color: controller.isUp.value
+                            ? const Color(0xff2F8328)
+                            : Colors.red,
                       ),
                       CommonText(
-                        text: 'higher than last week',
+                        text: '${controller.isUp.value ? 'higher' : 'lower'} than last ${controller.selectedFilter.value == 'Weekly' ? 'week' : 'month'}',
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                        color: Color(0xff272727),
+                        color: const Color(0xff272727),
                       ),
                     ],
                   ),

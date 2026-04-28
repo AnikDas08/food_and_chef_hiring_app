@@ -35,10 +35,11 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
   Widget build(BuildContext context) {
     return GetBuilder<ChefProfileController>(
       builder: (controller) {
+
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            backgroundColor: Colors.white.withOpacity(0.7),
+            backgroundColor: Colors.transparent,
             elevation: 0,
             scrolledUnderElevation: 0,
             centerTitle: true,
@@ -49,22 +50,7 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
               fontWeight: FontWeight.w600,
               color: Color(0xff272727),
             ),
-            automaticallyImplyLeading: false,
             leadingWidth: 60,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: Color(0xffF6F6F6),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const CommonImage(imageSrc: AppIcons.backIcon, size: 24),
-                ),
-              ),
-            ),
           ),
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 20.w),

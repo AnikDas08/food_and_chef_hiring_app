@@ -8,6 +8,7 @@ import '../../../../common/auth/signup_chef/presentation/controller/Chef_add_men
 import 'add_menu_screen.dart';
 
 class MenuScreen extends StatelessWidget {
+
   const MenuScreen({super.key});
 
   @override
@@ -18,22 +19,7 @@ class MenuScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
         leadingWidth: 60,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xffF6F6F6),
-                shape: BoxShape.circle,
-              ),
-              child: const CommonImage(imageSrc: AppIcons.backIcon, size: 24),
-            ),
-          ),
-        ),
       ),
       body: SafeArea(
         child: Obx(() => Column(

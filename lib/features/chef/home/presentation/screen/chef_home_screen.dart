@@ -101,17 +101,24 @@ class ChefHomeScreen extends StatelessWidget {
                                   SizedBox(height: 4.h),
                                   Row(
                                     children: [
-                                      Icon(Icons.north_east,
-                                          color: const Color(0xff4CAF50),
+                                      Icon(
+                                          c.isUp.value
+                                              ? Icons.north_east
+                                              : Icons.south_east,
+                                          color: c.isUp.value
+                                              ? const Color(0xff4CAF50)
+                                              : Colors.red,
                                           size: 13.sp),
                                       SizedBox(width: 3.w),
                                       RichText(
                                         text: TextSpan(
                                           children: [
                                             TextSpan(
-                                              text: '0.00%',
+                                              text: '${c.lastMonthPercentage.value.toStringAsFixed(2)}%',
                                               style: TextStyle(
-                                                color: const Color(0xff4CAF50),
+                                                color: c.isUp.value
+                                                    ? const Color(0xff4CAF50)
+                                                    : Colors.red,
                                                 fontSize: 12.sp,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -174,15 +181,20 @@ class ChefHomeScreen extends StatelessWidget {
               32.height,
 
               Row(
+
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                 children: [
+
                   const CommonText(
                     text: AppString.requestedBookings,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                   ),
+
                   InkWell(
+
                     onTap: () {
                       Get.offAndToNamed(AppRoutes.chefHomeScreen,
                           arguments: {'index': 2});
@@ -196,6 +208,7 @@ class ChefHomeScreen extends StatelessWidget {
               ),
 
               Obx(() {
+
                 final c = Get.find<ChefHomeController>();
                 if (c.isLoadingBookings.value) {
                   return const Center(child: CircularProgressIndicator());

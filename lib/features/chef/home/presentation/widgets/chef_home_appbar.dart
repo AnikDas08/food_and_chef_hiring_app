@@ -13,7 +13,7 @@ import '../../../../common/notifications/presentation/controller/notifications_c
 import '../controller/chef_home_controller.dart';
 
 class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const ChefHomeAppBar({super.key});
+  const                                                                                                                             ChefHomeAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

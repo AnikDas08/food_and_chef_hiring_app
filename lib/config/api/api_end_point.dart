@@ -5,10 +5,6 @@ class ApiEndPoint {
   static const image = 'http://187.124.93.197:5014';
   static const socketUrl = 'http://187.124.93.197:5014';
 
-  // static const baseUrl = "http://187.124.93.197:5014/api/v1/";
-  // static const imageUrl = "http://187.124.93.197:5014/files";
-  // static const image = "http://187.124.93.197:5014";
-  // static const socketUrl = "http://187.124.93.197:5014";
 
   static const signUp = 'user';
   static const verifyEmail = 'auth/verify-email';

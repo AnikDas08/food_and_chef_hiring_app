@@ -1,13 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../../../../../component/button/common_button.dart';
-import '../../../../../../component/image/common_image.dart';
 import '../../../../../../component/text/common_text.dart';
-import '../../../../../../utils/constants/app_icons.dart';
+import '../../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../add documents/Model/UploadedFileModel.dart';
 
 class UploadSectionWidget extends StatelessWidget {
-
   final String? label;
   final bool isRequired;
   final List<UploadedFileModel> files;
@@ -208,42 +206,50 @@ class BaseDocPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _bg,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        leadingWidth: 60,
+        flexibleSpace: appBarOpacity(),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: GestureDetector(
+            onTap: onBack ?? () => Navigator.of(context).maybePop(),
+            child: Container(
+              alignment: Alignment.center,
+              child: const Icon(
+                Icons.arrow_back,
+                size: 24,
+                color: _textPrimary,
+              ),
+            ),
+          ),
+        ),
+        title: const CommonText(
+          text: 'Required documents',
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          color: _textPrimary,
+        ),
+        actions: [
+          if (trailingAction != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: trailingAction!,
+            )
+          else
+            const SizedBox(width: 60),
+        ],
+      ),
       body: SafeArea(
+        top: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: Row(children: [
-                GestureDetector(
-                  onTap: onBack ?? () => Navigator.of(context).maybePop(),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      color: Color(0xffF6F6F6),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const CommonImage(
-                      imageSrc: AppIcons.backIcon,
-                      size: 24,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: CommonText(
-                      text: 'Required documents',
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: _textPrimary,
-                    ),
-                  ),
-                ),
-                if (trailingAction != null) trailingAction! else const SizedBox(width: 40),
-              ]),
-            ),
+
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
               child: Row(

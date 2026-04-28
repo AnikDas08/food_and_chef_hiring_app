@@ -10,6 +10,8 @@ import '../../data/Top_Menu_Model.dart';
 class AnalyticsController extends GetxController {
   var isLoading = false.obs;
   var totalEarning = 0.0.obs;
+  var lastMonthPercentage = 0.0.obs;
+  var isUp = true.obs;
   var formatArray = <MonthEarning>[].obs;
   var selectedFilter = 'Weekly'.obs;
   var errorMessage = ''.obs;
@@ -88,6 +90,8 @@ class AnalyticsController extends GetxController {
         final model = EarningModel.fromJson(response.data as Map<String, dynamic>);
         if (model.success) {
           totalEarning.value = model.data.totalEarning;
+          lastMonthPercentage.value = model.data.lastMonthPercentage;
+          isUp.value = model.data.isUp;
           formatArray.value = model.data.formatArray;
         }
       } else {
