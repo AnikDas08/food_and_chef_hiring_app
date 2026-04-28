@@ -347,7 +347,7 @@ class _PresetThumbnail extends StatelessWidget {
         height: 24.w,
         child: _hasImage
             ? CachedNetworkImage(
-          imageUrl: ApiEndPoint.imageUrl + imageUrl!,
+          imageUrl: imageUrl!,
           width: 24.w,
           height: 24.w,
           fit: BoxFit.cover,

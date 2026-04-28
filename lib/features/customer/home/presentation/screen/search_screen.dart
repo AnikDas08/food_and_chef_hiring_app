@@ -174,7 +174,7 @@ class _SearchScreenState extends State<SearchScreen> {
               Obx(() {
                 final hasActiveFilters =
                     _controller.minPrice.value > 0 ||
-                    _controller.maxPrice.value < 100 ||
+                    _controller.maxPrice.value < _controller.apiMaxPrice.value ||
                     _controller.selectedAvailability.isNotEmpty ||
                     _controller.selectedProfessionalLevels.isNotEmpty ||
                     _controller.selectedDietaryPrefs.isNotEmpty ||

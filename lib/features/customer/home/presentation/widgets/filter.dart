@@ -86,7 +86,7 @@ class Filter extends StatelessWidget {
                                 controller.minPrice.value,
                                 controller.maxPrice.value,
                               ),
-                              max: 100,
+                              max: controller.apiMaxPrice.value,
                               activeColor: const Color(0xff272727),
                               inactiveColor: const Color(0xffEFEFEF),
                               labels: RangeLabels(

@@ -45,5 +45,7 @@ class ApiEndPoint {
   static const String ChefReview = '/review';
   static const String ChefChatNav = '/chat/';
   static const String getCuisines = '${baseUrl}/cusine';
+  static const String chefMinMaxPrice = 'user/chef-min-max-price';
+  static const String couponCheck = 'coupon/check';
 
 }

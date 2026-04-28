@@ -7,6 +7,7 @@ import 'package:new_untitled/features/customer/home/presentation/data/chef_model
 import '../../../../../services/api/api_response_model.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/app_utils.dart';
+import '../../../../../config/api/api_end_point.dart';
 import '../data/cousine_data.dart';
 
 class SearchController extends GetxController {
@@ -56,6 +57,7 @@ class SearchController extends GetxController {
   // ── FILTER STATE ────────────────────────────────────────────────────────────
   RxDouble minPrice = 0.0.obs;
   RxDouble maxPrice = 100.0.obs;
+  RxDouble apiMaxPrice = 100.0.obs; // Store max price from API
   RxList<String> selectedAvailability = <String>[].obs;
   RxList<String> selectedProfessionalLevels = <String>[].obs;
   RxList<String> selectedDietaryPrefs = <String>[].obs;
@@ -91,6 +93,30 @@ class SearchController extends GetxController {
     });
 
     fetchCuisines();
+    fetchChefMinMaxPrice();
+  }
+
+  // ── FETCH CHEF MIN-MAX PRICE FROM API ────────────────────────────────────────
+  Future<void> fetchChefMinMaxPrice() async {
+    try {
+      final response = await ApiService.get(ApiEndPoint.chefMinMaxPrice);
+      if (response.statusCode == 200) {
+        final data = response.data['data'];
+        if (data != null) {
+          final min = data['min'] ?? 0;
+          final max = data['max'] ?? 100;
+          apiMaxPrice.value = max.toDouble();
+          
+          // Update maxPrice if it's currently using the default value
+          if (maxPrice.value == 100.0) {
+            maxPrice.value = max.toDouble();
+          }
+        }
+      }
+    } catch (e) {
+      // Keep default values if API fails
+      print('Failed to fetch chef min-max price: $e');
+    }
   }
 
   // ── FETCH CUISINES FROM API ────────────────────────────────────────────────
@@ -142,7 +168,7 @@ class SearchController extends GetxController {
       params.add('cusine=${selectedCuisines.first}');
     }
 
-    if (minPrice.value > 0 || maxPrice.value < 100) {
+    if (minPrice.value > 0 || maxPrice.value < apiMaxPrice.value) {
       params.add('minPrice=${minPrice.value.toInt()}');
       params.add('maxPrice=${maxPrice.value.toInt()}');
     }
@@ -183,7 +209,7 @@ class SearchController extends GetxController {
 
   void clearAllFilters() {
     minPrice.value = 0.0;
-    maxPrice.value = 100.0;
+    maxPrice.value = apiMaxPrice.value; // Use API max price
     selectedAvailability.clear();
     selectedProfessionalLevels.clear();
     selectedDietaryPrefs.clear();

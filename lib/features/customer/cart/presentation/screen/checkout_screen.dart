@@ -229,9 +229,18 @@ class CheckoutScreen extends StatelessWidget {
                 // ── Promo Code ─────────────────────────────────────────
                 InkWell(
                   onTap: () async {
-                    final result = await Get.toNamed(AppRoutes.promoCode);
-                    if (result != null && result is String) {
-                      controller.onPromoCodeApplied(result);
+                    if (controller.promoCode != null) {
+                      // If promo code exists, remove it
+                      controller.onPromoCodeApplied('');
+                    } else {
+                      // Navigate to promo code screen
+                      final result = await Get.toNamed(AppRoutes.promoCode);
+                      if (result != null && result is String) {
+                        controller.onPromoCodeApplied(result);
+                        // Automatically validate the coupon when returned from promo screen
+                        final total = controller.priceBreakdown?.total ?? 0;
+                        await controller.validateCoupon(result, total);
+                      }
                     }
                   },
                   child: Row(
@@ -255,23 +264,40 @@ class CheckoutScreen extends StatelessWidget {
                         ],
                       ),
                       controller.promoCode != null
-                          ? InkWell(
-                            onTap: () => controller.onPromoCodeApplied(''),
-                            child: const Icon(
+                          ? const Icon(
                               Icons.close,
                               size: 16,
-                              color: Color(0xffE53935),
-                            ),
-                          )
+                              color: Color(0xffD713F),
+                            )
                           : const Icon(
-                            Icons.arrow_forward_ios_sharp,
-                            size: 16,
-                            color: Color(0xff777777),
-                          ),
+                              Icons.arrow_forward_ios_sharp,
+                              size: 16,
+                              color: Color(0xff777777),
+                            ),
                     ],
                   ),
                 ),
-
+                if (controller.isValidatingCoupon) ...[
+                  8.height,
+                  const Row(
+                    children: [
+                      SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color(0xffFD713F)),
+                        ),
+                      ),
+                      CommonText(
+                        text: 'Validating promo code...',
+                        fontSize: 12,
+                        color: Color(0xff777777),
+                      ),
+                    ],
+                  ),
+                ],
+                
                 24.height,
 
                 // ── Tax / Invoice ──────────────────────────────────────
@@ -421,7 +447,7 @@ class CheckoutScreen extends StatelessWidget {
                 child: const Icon(
                   Icons.close,
                   size: 16,
-                  color: Color(0xffE53935),
+                  color: Color(0xffFD713F),
                 ),
               )
               : const Icon(
@@ -550,6 +576,7 @@ class CheckoutScreen extends StatelessWidget {
     final double tax = controller.priceBreakdown?.tax ?? 0;
     final double fee = controller.priceBreakdown?.fee ?? 0;
     final double total = controller.priceBreakdown?.total ?? 0;
+    final double finalTotal = controller.priceWithDiscount > 0 ? controller.priceWithDiscount : total;
 
     return Container(
       child: Column(
@@ -586,6 +613,10 @@ class CheckoutScreen extends StatelessWidget {
           _summaryRow('Fees', fee),
           8.height,
           _summaryRow('Estimated Taxes', tax),
+          if (controller.discountAmount > 0) ...[
+            8.height,
+            _summaryRow('Discount', -controller.discountAmount, isDiscount: true),
+          ],
           SizedBox(height: 12,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -597,7 +628,7 @@ class CheckoutScreen extends StatelessWidget {
                 color: const Color(0xff272727),
               ),
               CommonText(
-                text: '\$${total.toStringAsFixed(2)}',
+                text: '\$${finalTotal.toStringAsFixed(2)}',
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xff272727),
@@ -609,7 +640,7 @@ class CheckoutScreen extends StatelessWidget {
     );
   }
 
-  Widget _summaryRow(String label, double amount) {
+  Widget _summaryRow(String label, double amount, {bool isDiscount = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -620,7 +651,7 @@ class CheckoutScreen extends StatelessWidget {
           fontSize: 12,
         ),
         CommonText(
-          text: '\$${amount.toStringAsFixed(2)}',
+          text: isDiscount ? '-\$${amount.abs().toStringAsFixed(2)}' : '\$${amount.toStringAsFixed(2)}',
           fontWeight: FontWeight.w400,
           color: const Color(0xff272727),
           fontSize: 12,

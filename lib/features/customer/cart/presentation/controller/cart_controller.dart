@@ -4,6 +4,7 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/app_utils.dart';
 import '../../../../../config/route/app_routes.dart';
+import '../../../../../config/api/api_end_point.dart';
 import '../../../address/data/address_model.dart';
 import '../../data/cart_model.dart';
 import '../screen/stripe_webview_screen.dart';
@@ -43,10 +44,58 @@ class CartController extends GetxController {
 
   bool isCheckingOut = false;
   String? promoCode;
+  bool isValidatingCoupon = false;
+  double discountAmount = 0;
+  double priceWithDiscount = 0;
 
   void onPromoCodeApplied(String code) {
     promoCode = code.trim().isEmpty ? null : code.trim();
+    if (promoCode == null) {
+      discountAmount = 0;
+      priceWithDiscount = 0;
+    }
     update();
+  }
+
+  Future<void> validateCoupon(String code, double totalPrice) async {
+    if (code.trim().isEmpty) {
+      Utils.errorSnackBar('Error', 'Please enter a promo code');
+      return;
+    }
+
+    isValidatingCoupon = true;
+    update();
+
+    try {
+      final response = await ApiService.post(
+        ApiEndPoint.couponCheck,
+        body: {
+          'code': code.trim(),
+          'price': totalPrice,
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = response.data['data'];
+        discountAmount = data['discount_price']?.toDouble() ?? 0;
+        priceWithDiscount = data['price_with_discount']?.toDouble() ?? totalPrice;
+        
+        Utils.successSnackBar('Success', 'Coupon applied successfully');
+      } else {
+        discountAmount = 0;
+        priceWithDiscount = 0;
+        promoCode = null; // Clear the promo code when validation fails
+        Utils.errorSnackBar('Error', response.data['message'] ?? 'Invalid coupon code');
+      }
+    } catch (e) {
+      discountAmount = 0;
+      priceWithDiscount = 0;
+      promoCode = null; // Clear the promo code when validation fails
+      Utils.errorSnackBar('Error', e.toString());
+    } finally {
+      isValidatingCoupon = false;
+      update();
+    }
   }
 
   AddressModel? selectedAddress;
