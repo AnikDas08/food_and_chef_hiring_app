@@ -41,62 +41,62 @@ class PopUpMenu extends StatelessWidget {
     return SizedBox(
       height: height.h,
       child: PopupMenuButton<String>(
-        color: const Color(0xffF2F2F2),
+        color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.r),
-          side: BorderSide(color: selectedColor),
+          //side: BorderSide(color: Colors.transparent),
         ),
         offset: const Offset(1, 1),
         padding: EdgeInsets.zero,
         itemBuilder:
             (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem<String>(
-                value: 'option1',
-                child: Column(
-                  children: List.generate(
-                    items.length,
+          PopupMenuItem<String>(
+            value: 'option1',
+            child: Column(
+              children: List.generate(
+                items.length,
                     (index) => GestureDetector(
-                      onTap: () async {
-                        onTap(index);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          children: [
-                            Text(items[index].toString(), style: style),
-                            const Spacer(),
-                            Container(
-                              height: 15,
-                              width: 15,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: selectedColor),
-                                color:
-                                    selectedItem.contains(
-                                          items[index].toString(),
-                                        )
-                                        ? selectedColor
-                                        : unselectedColor,
-                                shape: BoxShape.circle,
-                              ),
-                              child:
-                                  !selectedItem.contains(
-                                        items[index].toString(),
-                                      )
-                                      ? null
-                                      : const Icon(
-                                        Icons.check,
-                                        color: Colors.white,
-                                        size: 10,
-                                      ).center,
-                            ),
-                          ],
+                  onTap: () async {
+                    onTap(index);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      children: [
+                        Text(items[index].toString(), style: style),
+                        const Spacer(),
+                        Container(
+                          height: 15,
+                          width: 15,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: selectedColor),
+                            color:
+                            selectedItem.contains(
+                              items[index].toString(),
+                            )
+                                ? selectedColor
+                                : unselectedColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child:
+                          !selectedItem.contains(
+                            items[index].toString(),
+                          )
+                              ? null
+                              : const Icon(
+                            Icons.check,
+                            color: Colors.white,
+                            size: 10,
+                          ).center,
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 ),
               ),
-            ],
+            ),
+          ),
+        ],
         icon: Padding(
           padding: EdgeInsets.only(left: isContainer ? 40 : 0),
           child: Icon(iconData, color: iconColor, size: height),

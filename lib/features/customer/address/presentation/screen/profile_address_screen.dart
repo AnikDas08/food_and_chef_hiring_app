@@ -83,7 +83,8 @@ class _ProfileAddressScreenState extends State<ProfileAddressScreen> {
                           CommonText(
                             text: 'No addresses found',
                             fontWeight: FontWeight.w400,
-                            color: Color(0xff272727),
+                            fontSize: 12,
+                            color: Color(0xff777777),
                           ),
                         ],
                       ),

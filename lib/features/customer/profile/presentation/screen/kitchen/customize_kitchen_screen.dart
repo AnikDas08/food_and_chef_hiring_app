@@ -45,11 +45,12 @@ class CustomizeKitchenScreen extends StatelessWidget {
                   children: [
                     SizedBox(height: 20.h),
                     const CommonText(
-                      text: 'Your Kitchen Equipment',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
+                      text: 'Kitchen Equipment',
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
                       textAlign: TextAlign.start,
                     ),
+                    SizedBox(height: 14.h),
                     SizedBox(height: 14.h),
                     _ReadyForCookingCard(controller: controller),
                     SizedBox(height: 20.h),
@@ -58,9 +59,9 @@ class CustomizeKitchenScreen extends StatelessWidget {
                         TextSpan(
                           text: 'Which kitchen best describes yours? ',
                           style: TextStyle(
-                            fontSize: 13.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.black,
+                            color: AppColors.primaryColor,
                           ),
                         ),
                         TextSpan(
@@ -95,10 +96,28 @@ class CustomizeKitchenScreen extends StatelessWidget {
           Positioned(
             top: MediaQuery.of(context).padding.top + 8.h,
             left: 16.w,
-            child: InkWell(
+            child: GestureDetector(
               onTap: () => Get.back(),
-              child: const CommonImage(
-                imageSrc: 'assets/icons/back.svg',
+              child: LiquidGlassLayer(
+                child: LiquidGlass(
+                  shape: const LiquidRoundedSuperellipse(borderRadius: 30),
+                  child: Container(
+                    width: 40.sp,
+                    height: 40.sp,
+                    padding: EdgeInsets.all(8.sp),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
+                    ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
@@ -111,8 +130,8 @@ class CustomizeKitchenScreen extends StatelessWidget {
         child: Obx(() => CommonButton(
           titleText: controller.isSaving.value ? 'Saving...' : 'Save',
           buttonColor: controller.isSaving.value
-              ? const Color(0xFFAAAAAA)
-              : AppColors.black,
+              ? const Color(0xff2727272)
+              : AppColors.primaryColor,
           onTap: controller.isSaving.value ? null : controller.save,
         )),
       ),
@@ -139,7 +158,7 @@ class _KitchenHeroImage extends StatelessWidget {
       return Stack(
         children: [
           SizedBox(
-            height: 160.h,
+            height: 200.h,
             width: double.infinity,
             child: hasLocal
                 ? Image.file(File(localFile.path),
@@ -155,7 +174,7 @@ class _KitchenHeroImage extends StatelessWidget {
                 : _placeholder(),
           ),
           Container(
-            height: 160.h,
+            height: 200.h,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
@@ -202,7 +221,7 @@ class _KitchenHeroImage extends StatelessWidget {
   }
 
   Widget _placeholder() => Container(
-    height: 160,
+    height: 200.h,
     color: const Color(0xFF3A3A3A),
     child: const Center(
         child: Icon(Icons.kitchen_outlined, size: 48, color: Colors.white24)),
@@ -215,7 +234,7 @@ class _KitchenHeroImage extends StatelessWidget {
       color: Colors.white.withOpacity(0.85),
       shape: BoxShape.circle,
     ),
-    child: Icon(icon, size: 16, color: Colors.black),
+    child: Icon(icon, size: 16, color: AppColors.primaryColor),
   );
 }
 
@@ -269,7 +288,7 @@ class _PresetCard extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 13.h),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.black : const Color(0xFFF7F7F7),
+            color: isSelected ? AppColors.primaryColor : const Color(0xFFF7F7F7),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Row(
@@ -294,9 +313,9 @@ class _PresetCard extends StatelessWidget {
                   children: [
                     CommonText(
                       text: preset.name,
-                      fontSize: 13,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: isSelected ? AppColors.white : AppColors.black,
+                      color: isSelected ? AppColors.white : AppColors.primaryColor,
                       textAlign: TextAlign.start,
                     ),
                     if (preset.items.isNotEmpty) ...[
@@ -342,7 +361,7 @@ class _CustomSetupCard extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 13.h),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.black : const Color(0xFFF7F7F7),
+            color: isSelected ? AppColors.primaryColor : const Color(0xFFF7F7F7),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Row(
@@ -363,9 +382,9 @@ class _CustomSetupCard extends StatelessWidget {
               Expanded(
                 child: CommonText(
                   text: 'Custom Setup',
-                  fontSize: 13,
+                  fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: isSelected ? AppColors.white : AppColors.black,
+                  color: isSelected ? AppColors.white : AppColors.primaryColor,
                   textAlign: TextAlign.start,
                 ),
               ),
@@ -477,7 +496,7 @@ class _QuantitySection extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.black,
+                          color: AppColors.primaryColor,
                         ),
                       ),
                       TextSpan(
@@ -512,7 +531,7 @@ class _QuantitySection extends StatelessWidget {
                         turns: expanded ? 0 : 0.5,
                         duration: const Duration(milliseconds: 250),
                         child: Icon(Icons.keyboard_arrow_up_rounded,
-                            size: 22.sp, color: AppColors.black),
+                            size: 22.sp, color: AppColors.primaryColor),
                       ),
                     ],
                   ),
@@ -624,7 +643,7 @@ class _QuantityRow extends StatelessWidget {
                     size: 16.sp,
                     color: qty == 0
                         ? const Color(0xFFCCCCCC)
-                        : AppColors.black),
+                        : AppColors.primaryColor),
               ),
             ),
             SizedBox(width: 12.w),
@@ -648,7 +667,7 @@ class _QuantityRow extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(Icons.add_rounded,
-                    size: 16.sp, color: AppColors.black),
+                    size: 16.sp, color: AppColors.primaryColor),
               ),
             ),
           ],
@@ -683,18 +702,16 @@ class _ReadyForCookingCard extends StatelessWidget {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
         decoration: BoxDecoration(
-          color: const Color(0xFFFFF8F0),
+          color: const Color(0xFFF1F1F1),
           borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: const Color(0xFFFFE0B2)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CommonText(
-              text: "You're Ready for Cooking",
-              fontSize: 13,
+              text: 'You\'re Ready for Cooking',
               fontWeight: FontWeight.w600,
-              color: Color(0xFFE65100),
+              color: Color(0xFF272727),
               textAlign: TextAlign.start,
             ),
             SizedBox(height: 8.h),
@@ -704,7 +721,7 @@ class _ReadyForCookingCard extends StatelessWidget {
                   height: 6.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFE0B2),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(3),
                   ),
                 ),

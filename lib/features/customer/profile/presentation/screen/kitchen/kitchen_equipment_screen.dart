@@ -3,12 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 
 import '../../../../../../component/button/common_button.dart';
 import '../../../../../../component/image/common_image.dart';
+import '../../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../config/api/api_end_point.dart';
+import '../../../../../../utils/constants/app_string.dart';
 import '../../controller/kitchen_equipment_controller.dart';
 import 'customize_kitchen_screen.dart';
 
@@ -27,97 +30,137 @@ class KitchenEquipmentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(KitchenEquipmentController());
 
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      body: Stack(
-        children: [
-          ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              // ── Hero kitchen image ──
-              _KitchenHeroImage(controller: controller),
-
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 20.h),
-
-                    // Title
-                    const CommonText(
-                      text: 'Kitchen Equipment',
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      textAlign: TextAlign.start,
-                    ),
-                    SizedBox(height: 14.h),
-
-                    // ── Ready for cooking card ──
-                    _ReadyForCookingCard(controller: controller),
-                    SizedBox(height: 20.h),
-
-                    // ── Kitchen type label ──
-                    RichText(
-                      text: TextSpan(children: [
-                        TextSpan(
-                          text: 'Which kitchen best describes yours? ',
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.black,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '*',
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ]),
-                    ),
-                    SizedBox(height: 10.h),
-
-                    // ── Preset cards from API + Custom Setup at bottom ──
-                    _PresetCards(controller: controller),
-                    SizedBox(height: 10.h),
-
-                    // ── Equipment sections ──
-                    // Custom Setup selected: checkable list from API
-                    // Preset selected / default: read-only sections from kitchen data
-                    _EquipmentBody(controller: controller),
-
-                    SizedBox(height: 100.h),
-                  ],
+    return Obx(() {
+      final hasImage = controller.myKitchenImage.value.isNotEmpty;
+      return Scaffold(
+        backgroundColor: AppColors.white,
+        appBar: hasImage
+            ? null
+            : AppBar(
+                backgroundColor: AppColors.white,
+                elevation: 0,
+                scrolledUnderElevation: 0,
+                centerTitle: true,
+                title: const CommonText(
+                  text: 'Kitchen Equipment',
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                ),
+                automaticallyImplyLeading: false,
+                leading: IconButton(
+                  onPressed: () => Get.back(),
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    size: 24,
+                    color: Color(0xff272727),
+                  ),
                 ),
               ),
-            ],
-          ),
-          Positioned(
-            top: MediaQuery.of(context).padding.top + 8.h,
-            left: 16.w,
-            child: InkWell(
-              onTap: () => Get.back(),
-              child: const CommonImage(
-                imageSrc: 'assets/icons/back.svg',
-              ),
-            ),
-          ),
-        ],
-      ),
+        body: Stack(
+          children: [
+            ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                // ── Hero kitchen image ──
+                _KitchenHeroImage(controller: controller),
 
-      bottomNavigationBar: Container(
-        color: AppColors.white,
-        padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 28.h),
-        child: CommonButton(
-          titleText: 'Customize Your Kitchen',
-          buttonColor: AppColors.black,
-          onTap: () => Get.to(() => const CustomizeKitchenScreen()),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 20.h),
+
+                      const CommonText(
+                        text: 'Kitchen Equipment',
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                      ),
+                      SizedBox(height: 14.h),
+
+                      // ── Ready for cooking card ──
+                      _ReadyForCookingCard(controller: controller),
+                      SizedBox(height: 20.h),
+
+                      // ── Kitchen type label ──
+                      RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                            text: 'Which kitchen best describes yours? ',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff272727),
+                            ),
+                          ),
+                          TextSpan(
+                            text: '*',
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ]),
+                      ),
+                      SizedBox(height: 10.h),
+
+                      // ── Preset cards from API + Custom Setup at bottom ──
+                      _PresetCards(controller: controller),
+                      SizedBox(height: 10.h),
+
+                      // ── Equipment sections ──
+                      // Custom Setup selected: checkable list from API
+                      // Preset selected / default: read-only sections from kitchen data
+                      _EquipmentBody(controller: controller),
+
+                      SizedBox(height: 100.h),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            // ── Fixed Back Button (only when image is present) ──
+            if (hasImage)
+              Positioned(
+                top: MediaQuery.of(context).padding.top + 8.h,
+                left: 16.w,
+                child: GestureDetector(
+                  onTap: () => Get.back(),
+                  child: LiquidGlassLayer(
+                    child: LiquidGlass(
+                      shape: const LiquidRoundedSuperellipse(borderRadius: 30),
+                      child: Container(
+                        width: 40.sp,
+                        height: 40.sp,
+                        padding: EdgeInsets.all(8.sp),
+                        child: const Center(
+                          child: Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            size: 20,
+                            color: Color(0xff272727),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+          ],
         ),
-      ),
-    );
+        bottomNavigationBar: Container(
+          color: AppColors.white,
+          padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 28.h),
+          child: CommonButton(
+            titleText: 'Customize Your Kitchen',
+            buttonColor: const Color(0xff272727),
+            onTap: () => Get.to(() => const CustomizeKitchenScreen()),
+          ),
+        ),
+      );
+    });
   }
 }
 
@@ -132,7 +175,7 @@ class _KitchenHeroImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       final String image = controller.myKitchenImage.value;
-      final bool hasImage = image.isNotEmpty;
+      if (image.isEmpty) return const SizedBox.shrink();
 
       return Stack(
         children: [
@@ -140,16 +183,14 @@ class _KitchenHeroImage extends StatelessWidget {
             height: 200.h,
             width: double.infinity,
             color: const Color(0xFF2C2C2C),
-            child: hasImage
-                ? CachedNetworkImage(
+            child: CachedNetworkImage(
               imageUrl: ApiEndPoint.imageUrl + image,
               width: double.infinity,
               height: 200.h,
               fit: BoxFit.cover,
               placeholder: (_, __) => _defaultImage(),
               errorWidget: (_, __, ___) => _defaultImage(),
-            )
-                : _defaultImage(),
+            ),
           ),
           Container(
             height: 200.h,
@@ -170,11 +211,11 @@ class _KitchenHeroImage extends StatelessWidget {
   }
 
   Widget _defaultImage() => Image.asset(
-    'assets/images/noImage.png',
-    width: double.infinity,
-    height: 200,
-    fit: BoxFit.cover,
-  );
+        'assets/images/noImage.png',
+        width: double.infinity,
+        height: 200.h,
+        fit: BoxFit.cover,
+      );
 }
 
 // ─────────────────────────────────────────────────────
@@ -212,9 +253,9 @@ class _PresetCards extends StatelessWidget {
             child: isCustom
                 ? _CustomSetupCard(controller: controller)
                 : _PresetCard(
-              controller: controller,
-              index: index,
-            ),
+                    controller: controller,
+                    index: index,
+                  ),
           );
         }),
       );
@@ -232,7 +273,8 @@ class _PresetCard extends StatelessWidget {
     return Obx(() {
       final preset = controller.presets[index];
       final bool isSelected = controller.selectedPresetIndex.value == index;
-      final String? imageUrl = preset.image; // add this field to your preset model if not there
+      final String? imageUrl =
+          preset.image; // add this field to your preset model if not there
 
       return GestureDetector(
         onTap: () => controller.onPresetTap(index),
@@ -254,9 +296,9 @@ class _PresetCard extends StatelessWidget {
                   children: [
                     CommonText(
                       text: preset.name,
-                      fontSize: 13,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: isSelected ? AppColors.white : AppColors.black,
+                      color: isSelected ? AppColors.white : AppColors.primaryColor,
                       textAlign: TextAlign.start,
                     ),
                     if (preset.items.isNotEmpty) ...[
@@ -344,7 +386,7 @@ class _CustomSetupCard extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 13.h),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.black : const Color(0xFFF7F7F7),
+            color: isSelected ? AppColors.primaryColor : const Color(0xFFF7F7F7),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Row(
@@ -365,9 +407,9 @@ class _CustomSetupCard extends StatelessWidget {
               SizedBox(width: 12.w),
               CommonText(
                 text: 'Custom Setup',
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: isSelected ? AppColors.white : AppColors.black,
+                color: isSelected ? AppColors.white : AppColors.primaryColor,
                 textAlign: TextAlign.start,
               ),
             ],
@@ -469,7 +511,7 @@ class _CustomSetupSection extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.black,
+                          color: AppColors.primaryColor,
                         ),
                       ),
                       TextSpan(
@@ -486,7 +528,7 @@ class _CustomSetupSection extends StatelessWidget {
                     turns: expanded ? 0 : 0.5,
                     duration: const Duration(milliseconds: 250),
                     child: Icon(Icons.keyboard_arrow_up_rounded,
-                        size: 22.sp, color: AppColors.black),
+                        size: 22.sp, color: AppColors.primaryColor),
                   ),
                 ],
               ),
@@ -526,7 +568,7 @@ class _CustomSetupSection extends StatelessWidget {
                                 height: 22.w,
                                 decoration: BoxDecoration(
                                   color: isChecked
-                                      ? AppColors.black
+                                      ? AppColors.primaryColor
                                       : Colors.transparent,
                                   shape: BoxShape.circle,
                                   border: Border.all(
@@ -609,7 +651,7 @@ class _CollapsibleSection extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.black,
+                          color: AppColors.primaryColor,
                         ),
                       ),
                       TextSpan(
@@ -626,7 +668,7 @@ class _CollapsibleSection extends StatelessWidget {
                     turns: expanded ? 0 : 0.5,
                     duration: const Duration(milliseconds: 250),
                     child: Icon(Icons.keyboard_arrow_up_rounded,
-                        size: 22.sp, color: AppColors.black),
+                        size: 22.sp, color: AppColors.primaryColor),
                   ),
                 ],
               ),
@@ -665,12 +707,12 @@ class _CollapsibleSection extends StatelessWidget {
                             height: 22.w,
                             decoration: BoxDecoration(
                               color: item.availability
-                                  ? AppColors.black
+                                  ? AppColors.primaryColor
                                   : Colors.transparent,
                               shape: BoxShape.circle,
                               border: Border.all(
                                 color: item.availability
-                                    ? AppColors.black
+                                    ? AppColors.primaryColor
                                     : const Color(0xFFCCCCCC),
                                 width: 1.5,
                               ),
@@ -760,7 +802,7 @@ class _ReadyForCookingCard extends StatelessWidget {
                   height: 6.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFFE0B2),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(3),
                   ),
                 ),

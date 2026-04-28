@@ -352,13 +352,14 @@ class CustomizeKitchenController extends GetxController {
       if (response.statusCode == 200) {
         final json = response.data as Map<String, dynamic>;
         if (json['success'] == true) {
-          Get.offAllNamed(AppRoutes.customerHomeScreen);
+          //Get.offAllNamed(AppRoutes.customerHomeScreen, arguments: {'index': 4});
+          Navigator.pop(Get.context!);
           Get.snackbar(
             'Saved',
             'Your kitchen has been updated.',
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.black,
-            colorText: Colors.white,
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.white,
+            colorText: Color(0xff272727),
             margin: const EdgeInsets.all(16),
             borderRadius: 12,
           );

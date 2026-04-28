@@ -87,7 +87,7 @@ class CheckoutScreen extends StatelessWidget {
                   keyboardType: TextInputType.none,
                   paddingVertical: 20,
                   fontSize: 12,
-                  hintText: '1 January 2026, 5:20PM',
+                  hintText: 'Select booking time',
                   onTap:
                       () => bookingDateTimePopup(
                         id:
@@ -128,9 +128,11 @@ class CheckoutScreen extends StatelessWidget {
                   },
                   child: Container(
                     constraints: const BoxConstraints(minHeight: 60),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 12.h,
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                      right: 0.w,
+                      top: 12.h,
+                      bottom: 12.h,
                     ),
                     decoration: BoxDecoration(
                       color: const Color(0xfff2f2f2),
@@ -182,11 +184,13 @@ class CheckoutScreen extends StatelessWidget {
                                     textAlign: TextAlign.left,
                                   ),
                         ),
-                        8.width,
-                        const CommonImage(
-                          imageSrc: AppIcons.mapIcon,
-                          imageColor: Color(0xffFD713F),
-                          size: 24,
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.w, right: 12.w),
+                          child: const CommonImage(
+                            imageSrc: AppIcons.mapIcon,
+                            imageColor: Color(0xffFD713F),
+                            size: 24,
+                          ),
                         ),
                       ],
                     ),
@@ -571,20 +575,18 @@ class CheckoutScreen extends StatelessWidget {
                   text: 'Estimated time: ${controller.estimatedTime}',
                   fontWeight: FontWeight.w400,
                   color: const Color(0xff777777),
+                  fontSize: 12,
                 ),
               ],
             ),
           ],
           const SizedBox(height: 12,),
-          _summaryRow('Subtotal', priceSubtotal),
+          _summaryRow('Hourly Rate', priceSubtotal),
           8.height,
           _summaryRow('Fees', fee),
           8.height,
           _summaryRow('Estimated Taxes', tax),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 12.h),
-            child: const Divider(height: 1, color: Color(0xffE0E0E0)),
-          ),
+          SizedBox(height: 12,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -615,11 +617,13 @@ class CheckoutScreen extends StatelessWidget {
           text: label,
           fontWeight: FontWeight.w400,
           color: const Color(0xff777777),
+          fontSize: 12,
         ),
         CommonText(
           text: '\$${amount.toStringAsFixed(2)}',
           fontWeight: FontWeight.w400,
           color: const Color(0xff272727),
+          fontSize: 12,
         ),
       ],
     );

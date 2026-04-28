@@ -120,10 +120,10 @@ class ChefProfileScreen extends StatelessWidget {
                         onTap:
                             () => {
                               appLog('id: 😊😊😊😊😊😊😊${LocalStorage.userId}'),
-                              Get.toNamed(
+                              /*Get.toNamed(
                                 AppRoutes.chefDetails,
                                 arguments: LocalStorage.userId,
-                              ),
+                              ),*/
                             },
                       ),
                     ],

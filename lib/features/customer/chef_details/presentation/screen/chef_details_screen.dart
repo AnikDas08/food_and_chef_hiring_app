@@ -118,37 +118,32 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                     leading:
                         _isCollapsed
                             ? null
-                            : Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                                vertical: 28,
-                              ),
-                              child: SizedBox(
-                                width: 40.sp,
-                                height: 40.sp,
+                            : Center(
                                 child: InkWell(
-                                  borderRadius: BorderRadius.circular(50),
                                   onTap: Get.back,
-                                  child: const LiquidGlassLayer(
+                                  child: LiquidGlassLayer(
                                     child: LiquidGlass(
-                                      shape: LiquidRoundedSuperellipse(
-                                        borderRadius: 50,
+                                      shape: const LiquidRoundedSuperellipse(
+                                        borderRadius: 20,
                                       ),
-                                      child: Center(
-                                        child: Icon(
-                                          CupertinoIcons.back,
-                                          color: Colors.white,
-                                          size: 28,
+                                      child: Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Center(
+                                          child: Icon(
+                                            CupertinoIcons.back,
+                                            color: Color(0xff272727),
+                                            size: 24,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
 
                     title:
                         _isCollapsed
@@ -175,19 +170,13 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                   child: LiquidGlassLayer(
                                     child: LiquidGlass(
                                       shape: const LiquidRoundedSuperellipse(
-                                        borderRadius: 30,
+                                        borderRadius: 20,
                                       ),
                                       child: Container(
-                                        width: 40.sp,
-                                        height: 40.sp,
-                                        padding: EdgeInsets.all(8.sp),
-                                        decoration: BoxDecoration(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: Colors.black.withValues(
-                                              alpha: 0.07,
-                                            ),
-                                          ),
                                         ),
                                         child: Center(
                                           child: Icon(
@@ -197,8 +186,8 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                             color:
                                                 controller.isFavorite
                                                     ? Colors.red
-                                                    : Colors.white,
-                                            size: 28,
+                                                    : Color(0xff272727),
+                                            size: 24,
                                           ),
                                         ),
                                       ),
@@ -217,24 +206,18 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                   child: LiquidGlassLayer(
                                     child: LiquidGlass(
                                       shape: const LiquidRoundedSuperellipse(
-                                        borderRadius: 30,
+                                        borderRadius: 20,
                                       ),
                                       child: Container(
-                                        width: 40.sp,
-                                        height: 40.sp,
-                                        padding: EdgeInsets.all(8.sp),
-                                        decoration: BoxDecoration(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: Colors.black.withValues(
-                                              alpha: 0.07,
-                                            ),
-                                          ),
                                         ),
                                         child: const Center(
                                           child: Icon(
                                             CupertinoIcons.share,
-                                            color: Colors.white,
+                                            color: Color(0xff272727),
                                             size: 24,
                                           ),
                                         ),
@@ -290,9 +273,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                               ),
                             )
                             : Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
                               child: Column(
                                 children: [
                                   const SizedBox(height: 12),
@@ -452,11 +433,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                     child: InkWell(
                       onTap: () => Get.toNamed(AppRoutes.cart),
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 16,
-                          right: 16,
-                          bottom: 20,
-                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                         child: Container(
                           padding: const EdgeInsets.all(16),
                           height: 60,
@@ -519,7 +496,7 @@ class _SearchAppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: const Color(0xffF2F2F2),
@@ -604,7 +581,7 @@ class _CollapsedAppBarTitle extends StatelessWidget {
     final chef = controller.chefDetail;
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: const Color(0xffF2F2F2),
@@ -742,10 +719,10 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-          const CommonText(
+          CommonText(
             text: AppString.menu,
             fontSize: 16,
-            left: 16,
+            left: 16.w,
             fontWeight: FontWeight.w600,
             color: Color(0xff272727),
           ),

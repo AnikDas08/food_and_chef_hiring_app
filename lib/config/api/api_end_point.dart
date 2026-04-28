@@ -16,7 +16,7 @@ class ApiEndPoint {
   static const support = '/support';
   static const forgotPassword = 'auth/forget-password';
   static const verifyOtp = 'auth/verify-email';
-  static const googleMapsApiKey = 'AIzaSyCZTRv24vE1zWXiLgKt5LbktOVGb1AeX_E';
+  static const googleMapsApiKey = 'AIzaSyCVoe2GBYsk1jU6E9RFIxhVfsyBCSkMX_w';
   static const resetPassword = 'auth/reset-password';
   static const changePassword = 'users/change-password';
   static const user = 'user/profile';

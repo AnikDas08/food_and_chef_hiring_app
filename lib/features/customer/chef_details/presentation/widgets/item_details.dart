@@ -136,6 +136,7 @@ void itemDetails(
                                   height: 232,
                                   width: Get.width,
                                   fill: BoxFit.cover,
+                                  defaultImage: AppImages.noImage,
                                 ),
 
                                 // ── Name ─────────────────────────────────
