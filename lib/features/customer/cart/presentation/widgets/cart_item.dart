@@ -270,15 +270,9 @@ Widget _buildStepper(BuildContext context, CartController controller, String id,
       children: [
         _stepperActionBtn(
           icon: Icons.remove,
-          onTap: () {
-            if (qty > 1) {
-              controller.updateQuantity(
-                  cartItemId: id, increment: false, chefId: chefId);
-            }
-          },
-          // onTap: () => qty <= 1
-          //     ? _confirmDelete(context, controller, id, chefId)
-          //     : controller.updateQuantity(cartItemId: id, increment: false, chefId: chefId),
+          onTap: () => qty <= 1
+              ? _confirmDelete(context, controller, id, chefId)
+              : controller.updateQuantity(cartItemId: id, increment: false, chefId: chefId),
         ),
         SizedBox(
           width: 32.w,
@@ -309,37 +303,41 @@ Widget _stepperActionBtn({required IconData icon, required VoidCallback onTap}) 
 
 // ── CONFIRMATION DIALOG ──
 
-/*
 void _confirmDelete(BuildContext context, CartController controller, String cartItemId, String chefId) {
   showDialog(
     context: context,
     builder: (_) => AlertDialog(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-      title: CommonText(
+      title: const CommonText(
         text: 'Remove Item',
-        fontSize: 16.sp, fontWeight: FontWeight.w600
+        fontSize: 14
+          , fontWeight: FontWeight.w500
+          ,
+        textAlign: TextAlign.start,
       ),
 
       content: CommonText(
         text: 'Are you sure you want to remove this item from your cart?',
-        fontSize: 13.sp, color: const Color(0xff777777),
+        fontSize: 12.sp, color: const Color(0xff777777),
         maxLines: 2,
+        textAlign: TextAlign.start,
+        fontWeight: FontWeight.w400,
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: CommonText(text: 'Cancel', color: const Color(0xff777777), fontSize: 13.sp),
+          child: const CommonText(
+              text: 'Cancel', color: const Color(0xff777777), fontSize: 14),
         ),
         TextButton(
           onPressed: () {
             Navigator.pop(Get.context!);
             controller.deleteCartItem(cartItemId: cartItemId, chefId: chefId);
           },
-          child: CommonText(text: 'Remove', color: const Color(0xffE53935), fontWeight: FontWeight.w600, fontSize: 13.sp),
+          child: CommonText(text: 'Remove', color: const Color(0xffE53935), fontWeight: FontWeight.w600, fontSize: 14),
         ),
       ],
     ),
   );
 }
-*/

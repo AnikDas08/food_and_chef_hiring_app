@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 
@@ -61,7 +62,7 @@ class KitchenSetupScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.black,
+                        color: AppColors.primaryColor,
                       ),
                     ),
                     TextSpan(
@@ -202,7 +203,7 @@ class _PresetCard extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.black : const Color(0xFFF7F7F7),
+            color: isSelected ? AppColors.primaryColor : const Color(0xFFF7F7F7),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Row(
@@ -216,7 +217,7 @@ class _PresetCard extends StatelessWidget {
                     CommonText(
                       text: preset.name,
                       fontWeight: FontWeight.w600,
-                      color: isSelected ? AppColors.white : AppColors.black,
+                      color: isSelected ? AppColors.white : AppColors.primaryColor,
                       textAlign: TextAlign.start,
                     ),
                     if (preset.items.isNotEmpty) ...[
@@ -227,10 +228,11 @@ class _PresetCard extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         color:
                             isSelected
-                                ? const Color(0xFFCCCCCC)
-                                : const Color(0xFF888888),
+                                ? Colors.white
+                                : Color(0xFF777777),
                         textAlign: TextAlign.start,
-                        maxLines: 2,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ],
@@ -259,8 +261,8 @@ class _PresetImage extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.r),
         child: CachedNetworkImage(
           imageUrl: ApiEndPoint.imageUrl + imageUrl!,
-          width: 44.w,
-          height: 44.w,
+          width: 24.w,
+          height: 24.w,
           fit: BoxFit.cover,
           placeholder: (_, __) => _defaultBox(),
           errorWidget: (_, __, ___) => _defaultBox(),
@@ -271,17 +273,12 @@ class _PresetImage extends StatelessWidget {
   }
 
   Widget _defaultBox() => Container(
-    width: 44.w,
-    height: 44.w,
-    decoration: BoxDecoration(
-      color:
-          isSelected ? Colors.white.withOpacity(0.15) : const Color(0xFFEEEEEE),
-      borderRadius: BorderRadius.circular(8.r),
-    ),
+    width: 24.w,
+    height: 24.w,
     child: Icon(
       Icons.kitchen_outlined,
       size: 24.sp,
-      color: isSelected ? Colors.white70 : const Color(0xFF888888),
+      color: isSelected ? Colors.white : const Color(0xFF777777),
     ),
   );
 }
@@ -301,31 +298,22 @@ class _CustomSetupCard extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.black : const Color(0xFFF7F7F7),
+            color: isSelected ? AppColors.primaryColor : const Color(0xFFF7F7F7),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Row(
             children: [
               Container(
-                width: 44.w,
-                height: 44.w,
-                decoration: BoxDecoration(
-                  color:
-                      isSelected
-                          ? Colors.white.withOpacity(0.15)
-                          : const Color(0xFFEEEEEE),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Center(
-                  child: Text('🔨', style: TextStyle(fontSize: 22.sp)),
-                ),
+                width: 24.w,
+                height: 24.w,
+                child: CommonImage(imageSrc: "assets/images/custom_image.png")
               ),
               SizedBox(width: 12.w),
               Expanded(
                 child: CommonText(
                   text: 'Custom Setup',
                   fontWeight: FontWeight.w600,
-                  color: isSelected ? AppColors.white : AppColors.black,
+                  color: isSelected ? AppColors.white : AppColors.primaryColor,
                   textAlign: TextAlign.start,
                 ),
               ),
@@ -354,7 +342,7 @@ class _ProgressBar extends StatelessWidget {
             decoration: BoxDecoration(
               color:
                   index < currentStep
-                      ? AppColors.black
+                      ? AppColors.primaryColor
                       : const Color(0xFFE0E0E0),
               borderRadius: BorderRadius.circular(2),
             ),

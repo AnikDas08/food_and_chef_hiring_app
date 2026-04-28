@@ -22,7 +22,7 @@ class PastOrderScreen extends StatelessWidget {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: false,
+        centerTitle: true,
         flexibleSpace: appBarOpacity(),
         actions: [LiquidGlassLayer(
           child: LiquidGlass(

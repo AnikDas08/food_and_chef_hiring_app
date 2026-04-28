@@ -343,19 +343,13 @@ class _PresetThumbnail extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8.r),
       child: Container(
-        width: 40.w,
-        height: 40.w,
-        decoration: BoxDecoration(
-          color: isSelected
-              ? Colors.white.withOpacity(0.15)
-              : const Color(0xFFEEEEEE),
-          borderRadius: BorderRadius.circular(8.r),
-        ),
+        width: 24.w,
+        height: 24.w,
         child: _hasImage
             ? CachedNetworkImage(
           imageUrl: ApiEndPoint.imageUrl + imageUrl!,
-          width: 40.w,
-          height: 40.w,
+          width: 24.w,
+          height: 24.w,
           fit: BoxFit.cover,
           placeholder: (_, __) => _iconFallback(),
           errorWidget: (_, __, ___) => _iconFallback(),
@@ -392,17 +386,11 @@ class _CustomSetupCard extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 40.w,
-                height: 40.w,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? Colors.white.withOpacity(0.15)
-                      : const Color(0xFFEEEEEE),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Center(
-                  child: Text('🔨', style: TextStyle(fontSize: 20.sp)),
-                ),
+                width: 24.w,
+                height: 24.w,
+                child: CommonImage(
+                    imageSrc: "assets/images/custom_image.png",
+                )
               ),
               SizedBox(width: 12.w),
               CommonText(

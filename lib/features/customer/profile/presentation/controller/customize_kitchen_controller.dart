@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/services/api/api_service.dart';
 import 'package:new_untitled/services/storage/storage_services.dart';
+import 'package:new_untitled/utils/app_utils.dart';
 
 import '../../../../../services/api/api_response_model.dart';
 import 'kitchen_equipment_controller.dart';
@@ -354,7 +355,7 @@ class CustomizeKitchenController extends GetxController {
         if (json['success'] == true) {
           //Get.offAllNamed(AppRoutes.customerHomeScreen, arguments: {'index': 4});
           Navigator.pop(Get.context!);
-          Get.snackbar(
+          /*Get.snackbar(
             'Saved',
             'Your kitchen has been updated.',
             snackPosition: SnackPosition.TOP,
@@ -362,7 +363,9 @@ class CustomizeKitchenController extends GetxController {
             colorText: Color(0xff272727),
             margin: const EdgeInsets.all(16),
             borderRadius: 12,
-          );
+          );*/
+          Get.back();
+          Utils.successSnackBar("Successful", "Your kitchen has been updated");
         } else {
           Get.snackbar(
             'Error',

@@ -113,7 +113,7 @@ class CustomizeKitchenScreen extends StatelessWidget {
                       child: Icon(
                         Icons.arrow_back_ios_new_rounded,
                         size: 20,
-                        color: Colors.white,
+                        color: AppColors.primaryColor,
                       ),
                     ),
                   ),
@@ -207,7 +207,7 @@ class _KitchenHeroImage extends StatelessWidget {
                       child: Icon(
                         Icons.edit_outlined,
                         size: 24,
-                        color: Colors.white,
+                        color: AppColors.primaryColor,
                       ),
                     ),
                   ),
@@ -222,9 +222,9 @@ class _KitchenHeroImage extends StatelessWidget {
 
   Widget _placeholder() => Container(
     height: 200.h,
-    color: const Color(0xFF3A3A3A),
+    color: const Color(0xFFF1F1F1),
     child: const Center(
-        child: Icon(Icons.kitchen_outlined, size: 48, color: Colors.white24)),
+        child: Icon(Icons.kitchen_outlined, size: 48, color: AppColors.secondaryTextColor)),
   );
 
   Widget _overlayBtn(IconData icon) => Container(
@@ -252,7 +252,7 @@ class _PresetCards extends StatelessWidget {
         return const Center(
             child: Padding(
               padding: EdgeInsets.all(16),
-              child: CupertinoActivityIndicator(),
+              child: CupertinoActivityIndicator(color: AppColors.primaryColor),
             ));
       }
 
@@ -293,19 +293,7 @@ class _PresetCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Container(
-                width: 40.w,
-                height: 40.w,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? Colors.white.withOpacity(0.15)
-                      : const Color(0xFFEEEEEE),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Icon(Icons.kitchen_outlined,
-                    size: 22.sp,
-                    color: isSelected ? Colors.white70 : const Color(0xFF888888)),
-              ),
+              _PresetThumbnail(imageUrl: preset.image, isSelected: isSelected),
               SizedBox(width: 12.w),
               Expanded(
                 child: Column(
@@ -347,6 +335,42 @@ class _PresetCard extends StatelessWidget {
   }
 }
 
+class _PresetThumbnail extends StatelessWidget {
+  final String? imageUrl;
+  final bool isSelected;
+
+  const _PresetThumbnail({this.imageUrl, required this.isSelected});
+
+  bool get _hasImage => imageUrl != null && imageUrl!.isNotEmpty;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8.r),
+      child: SizedBox(
+        width: 24.w,
+        height: 24.w,
+        child: _hasImage
+            ? CachedNetworkImage(
+          imageUrl: ApiEndPoint.imageUrl + imageUrl!,
+          width: 24.w,
+          height: 24.w,
+          fit: BoxFit.cover,
+          placeholder: (_, __) => _iconFallback(),
+          errorWidget: (_, __, ___) => _iconFallback(),
+        )
+            : _iconFallback(),
+      ),
+    );
+  }
+
+  Widget _iconFallback() => Icon(
+    Icons.kitchen_outlined,
+    size: 24.sp,
+    color: isSelected ? Colors.white : const Color(0xFF888888),
+  );
+}
+
 class _CustomSetupCard extends StatelessWidget {
   final CustomizeKitchenController controller;
   const _CustomSetupCard({required this.controller});
@@ -367,16 +391,9 @@ class _CustomSetupCard extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 40.w,
-                height: 40.w,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? Colors.white.withOpacity(0.15)
-                      : const Color(0xFFEEEEEE),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Center(
-                    child: Text('🔨', style: TextStyle(fontSize: 20.sp))),
+                width: 24.w,
+                height: 24.w,
+                child:CommonImage(imageSrc: "assets/images/custom_image.png")
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -422,7 +439,7 @@ class _EquipmentBody extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 24.h),
           child: const Center(
-              child: CupertinoActivityIndicator()),
+              child: CupertinoActivityIndicator(color: AppColors.primaryColor)),
         );
       }
 

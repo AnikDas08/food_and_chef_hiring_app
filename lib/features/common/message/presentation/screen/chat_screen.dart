@@ -143,26 +143,26 @@ class ChatListScreen extends StatelessWidget {
         children: [
           Icon(
             CupertinoIcons.chat_bubble_text,
-            size: 80.sp,
-            color: Colors.grey.withValues(alpha: 0.5),
+            size: 63.sp,
+            color: Color(0xff777777),
           ),
           SizedBox(height: 16.h),
 
           const CommonText(
             text: 'No chats yet',
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppColors.grey,
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+            color: Color(0xff777777),
           ),
           SizedBox(height: 8.h),
-          const CommonText(
+          /*const CommonText(
             text:
                 'Book a chef to chat about the final details\n for your cooking session.',
             fontSize: 12,
             color: AppColors.grey,
             fontWeight: FontWeight.w400,
             maxLines: 2,
-          ),
+          ),*/
         ],
       ),
     );
