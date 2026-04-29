@@ -56,98 +56,97 @@ class KitchenEquipmentScreen extends StatelessWidget {
                   ),
                 ),
               ),
-        body: Stack(
+        body: ListView(
+          padding: EdgeInsets.zero,
           children: [
-            ListView(
-              padding: EdgeInsets.zero,
+            // ── Hero kitchen image with back button overlay ──
+            Stack(
               children: [
-                // ── Hero kitchen image ──
                 _KitchenHeroImage(controller: controller),
-
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20.h),
-
-                      const CommonText(
-                        text: 'Kitchen Equipment',
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        textAlign: TextAlign.start,
-                      ),
-                      SizedBox(height: 14.h),
-
-                      // ── Ready for cooking card ──
-                      _ReadyForCookingCard(controller: controller),
-                      SizedBox(height: 20.h),
-
-                      // ── Kitchen type label ──
-                      RichText(
-                        text: TextSpan(children: [
-                          TextSpan(
-                            text: 'Which kitchen best describes yours? ',
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff272727),
+                // ── Back Button overlay on hero image (only when image is present) ──
+                if (hasImage)
+                  Positioned(
+                    top: MediaQuery.of(context).padding.top + 8.h,
+                    left: 16.w,
+                    child: GestureDetector(
+                      onTap: () => Get.back(),
+                      child: LiquidGlassLayer(
+                        child: LiquidGlass(
+                          shape: const LiquidRoundedSuperellipse(borderRadius: 30),
+                          child: Container(
+                            width: 40.sp,
+                            height: 40.sp,
+                            padding: EdgeInsets.all(8.sp),
+                            child: const Center(
+                              child: Icon(
+                                Icons.arrow_back_ios_new_rounded,
+                                size: 20,
+                                color: Color(0xff272727),
+                              ),
                             ),
-                          ),
-                          TextSpan(
-                            text: '*',
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ]),
-                      ),
-                      SizedBox(height: 10.h),
-
-                      // ── Preset cards from API + Custom Setup at bottom ──
-                      _PresetCards(controller: controller),
-                      SizedBox(height: 10.h),
-
-                      // ── Equipment sections ──
-                      // Custom Setup selected: checkable list from API
-                      // Preset selected / default: read-only sections from kitchen data
-                      _EquipmentBody(controller: controller),
-
-                      SizedBox(height: 100.h),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-
-            // ── Fixed Back Button (only when image is present) ──
-            if (hasImage)
-              Positioned(
-                top: MediaQuery.of(context).padding.top + 8.h,
-                left: 16.w,
-                child: GestureDetector(
-                  onTap: () => Get.back(),
-                  child: LiquidGlassLayer(
-                    child: LiquidGlass(
-                      shape: const LiquidRoundedSuperellipse(borderRadius: 30),
-                      child: Container(
-                        width: 40.sp,
-                        height: 40.sp,
-                        padding: EdgeInsets.all(8.sp),
-                        child: const Center(
-                          child: Icon(
-                            Icons.arrow_back_ios_new_rounded,
-                            size: 20,
-                            color: Color(0xff272727),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
+              ],
+            ),
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20.h),
+
+                  const CommonText(
+                    text: 'Kitchen Equipment',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    textAlign: TextAlign.start,
+                  ),
+                  SizedBox(height: 14.h),
+
+                  // ── Ready for cooking card ──
+                  _ReadyForCookingCard(controller: controller),
+                  SizedBox(height: 20.h),
+
+                  // ── Kitchen type label ──
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: 'Which kitchen best describes yours? ',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff272727),
+                        ),
+                      ),
+                      TextSpan(
+                        text: '*',
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ]),
+                  ),
+                  SizedBox(height: 10.h),
+
+                  // ── Preset cards from API + Custom Setup at bottom ──
+                  _PresetCards(controller: controller),
+                  SizedBox(height: 10.h),
+
+                  // ── Equipment sections ──
+                  // Custom Setup selected: checkable list from API
+                  // Preset selected / default: read-only sections from kitchen data
+                  _EquipmentBody(controller: controller),
+
+                  SizedBox(height: 100.h),
+                ],
               ),
+            ),
           ],
         ),
         bottomNavigationBar: Container(
@@ -347,7 +346,7 @@ class _PresetThumbnail extends StatelessWidget {
         height: 24.w,
         child: _hasImage
             ? CachedNetworkImage(
-          imageUrl: imageUrl!,
+          imageUrl: imageUrl!.startsWith('http') ? imageUrl! : '${ApiEndPoint.imageUrl}/$imageUrl!',
           width: 24.w,
           height: 24.w,
           fit: BoxFit.cover,

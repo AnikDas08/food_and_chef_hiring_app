@@ -29,7 +29,7 @@ class CustomizeKitchenController extends GetxController {
   Future<void> _initLoad() async {
     await fetchMyKitchen();
     await fetchPresets();
-    await _loadEquipmentList({});
+    await _loadEquipmentList(_myItemQty);
   }
 
   final Rx<dynamic> localImage = Rx<dynamic>(null);

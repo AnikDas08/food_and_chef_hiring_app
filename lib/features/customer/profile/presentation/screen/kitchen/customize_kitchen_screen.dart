@@ -30,99 +30,98 @@ class CustomizeKitchenScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: Stack(
-        children: [
-          ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              // ── Hero image ──
-              _KitchenHeroImage(controller: controller),
-
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 20.h),
-                    const CommonText(
-                      text: 'Kitchen Equipment',
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      textAlign: TextAlign.start,
-                    ),
-                    SizedBox(height: 14.h),
-                    SizedBox(height: 14.h),
-                    _ReadyForCookingCard(controller: controller),
-                    SizedBox(height: 20.h),
-                    RichText(
-                      text: TextSpan(children: [
-                        TextSpan(
-                          text: 'Which kitchen best describes yours? ',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryColor,
+      body: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            // ── Hero image with back button overlay ──
+            Stack(
+              children: [
+                _KitchenHeroImage(controller: controller),
+                // ── Back Button overlay on hero image ──
+                Positioned(
+                  top: MediaQuery.of(context).padding.top + 8.h,
+                  left: 16.w,
+                  child: GestureDetector(
+                    onTap: () => Get.back(),
+                    child: LiquidGlassLayer(
+                      child: LiquidGlass(
+                        shape: const LiquidRoundedSuperellipse(borderRadius: 30),
+                        child: Container(
+                          width: 40.sp,
+                          height: 40.sp,
+                          padding: EdgeInsets.all(8.sp),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.arrow_back_ios_new_rounded,
+                              size: 20,
+                              color: AppColors.primaryColor,
+                            ),
                           ),
                         ),
-                        TextSpan(
-                          text: '*',
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ]),
-                    ),
-                    SizedBox(height: 10.h),
-                  ],
-                ),
-              ),
-
-              // ── Preset cards + Custom Setup ──
-              _PresetCards(controller: controller),
-
-              const Divider(height: 1, color: Color(0xFFEEEEEE)),
-              SizedBox(height: 4.h),
-
-              // ── Equipment sections (qty or read-only) ──
-              _EquipmentBody(controller: controller),
-
-              SizedBox(height: 100.h),
-            ],
-          ),
-
-          // ── Fixed Back Button ──
-          Positioned(
-            top: MediaQuery.of(context).padding.top + 8.h,
-            left: 16.w,
-            child: GestureDetector(
-              onTap: () => Get.back(),
-              child: LiquidGlassLayer(
-                child: LiquidGlass(
-                  shape: const LiquidRoundedSuperellipse(borderRadius: 30),
-                  child: Container(
-                    width: 40.sp,
-                    height: 40.sp,
-                    padding: EdgeInsets.all(8.sp),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        size: 20,
-                        color: AppColors.primaryColor,
                       ),
                     ),
                   ),
                 ),
+              ],
+            ),
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20.h),
+                  const CommonText(
+                    text: 'Kitchen Equipment',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    textAlign: TextAlign.start,
+                  ),
+                  SizedBox(height: 14.h),
+                  SizedBox(height: 14.h),
+                  _ReadyForCookingCard(controller: controller),
+                  SizedBox(height: 20.h),
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: 'Which kitchen best describes yours? ',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                      TextSpan(
+                        text: '*',
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ]),
+                  ),
+                  SizedBox(height: 10.h),
+                ],
               ),
             ),
-          ),
-        ],
-      ),
+
+            // ── Preset cards + Custom Setup ──
+            _PresetCards(controller: controller),
+
+            const Divider(height: 1, color: Color(0xFFEEEEEE)),
+            SizedBox(height: 4.h),
+
+            // ── Equipment sections (qty or read-only) ──
+            _EquipmentBody(controller: controller),
+
+            SizedBox(height: 100.h),
+          ],
+        ),
 
       bottomNavigationBar: Container(
         color: AppColors.white,
@@ -312,8 +311,8 @@ class _PresetCard extends StatelessWidget {
                         text: preset.items,
                         fontSize: 11,
                         color: isSelected
-                            ? const Color(0xFFCCCCCC)
-                            : const Color(0xFF888888),
+                            ? Colors.white
+                            : const Color(0xFF777777),
                         textAlign: TextAlign.start,
                       ),
                     ],
@@ -352,7 +351,7 @@ class _PresetThumbnail extends StatelessWidget {
         height: 24.w,
         child: _hasImage
             ? CachedNetworkImage(
-          imageUrl: ApiEndPoint.imageUrl + imageUrl!,
+          imageUrl: imageUrl!.startsWith('http') ? imageUrl! : '${ApiEndPoint.imageUrl}/$imageUrl!',
           width: 24.w,
           height: 24.w,
           fit: BoxFit.cover,

@@ -257,10 +257,15 @@ class _PresetImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (_hasImage) {
+      String fullImageUrl = imageUrl!;
+      if (!imageUrl!.startsWith('http')) {
+        fullImageUrl = '${ApiEndPoint.imageUrl}/$imageUrl';
+      }
+      
       return ClipRRect(
         borderRadius: BorderRadius.circular(8.r),
         child: CachedNetworkImage(
-          imageUrl: ApiEndPoint.imageUrl + imageUrl!,
+          imageUrl: fullImageUrl,
           width: 24.w,
           height: 24.w,
           fit: BoxFit.cover,
