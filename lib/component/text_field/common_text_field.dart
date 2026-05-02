@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '../../../utils/constants/app_colors.dart';
 import '../text/common_text.dart';
 
-// ignore: must_be_immutable
 class CommonTextField extends StatelessWidget {
   CommonTextField({
     super.key,

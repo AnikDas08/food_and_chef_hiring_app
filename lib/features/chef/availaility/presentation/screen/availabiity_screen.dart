@@ -479,7 +479,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
               textAlign: TextAlign.start,
             ),
             const Spacer(),
-            Switch.adaptive(
+            Switch(
               value: day.isEnabled,
               onChanged: (val) => setState(() {
                 day.isEnabled = val;
@@ -490,10 +490,10 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   ));
                 }
               }),
-              activeColor: Colors.white,
               activeTrackColor: const Color(0xFF1C1C1C),
               inactiveThumbColor: Colors.white,
               inactiveTrackColor: const Color(0xFFCCCCCC),
+              trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
             ),
           ],
         ),

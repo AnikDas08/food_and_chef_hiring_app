@@ -64,10 +64,10 @@ class _AccountSettingState extends State<AccountSetting> {
                       color: Color(0xff999999),
                       bottom: 8,
                     ),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // ── Email ──
                         const CommonText(
                           text: 'Email',
                           fontWeight: FontWeight.w600,

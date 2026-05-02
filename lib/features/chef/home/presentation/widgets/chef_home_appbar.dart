@@ -35,7 +35,7 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                   final name = c.chefProfile.value?.originalName ?? '';
                   return CommonText(
                     text: 'Hello, $name 👋',
-                    fontSize: 20,
+                    fontSize: 24,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xff272727),
                   );
@@ -45,11 +45,12 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
                 const CommonText(
                   text: "Let's get cooking!",
-                  fontSize: 15,
+                  fontSize: 14,
+                  textAlign: TextAlign.start,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff777777),
-                  left: 4,
                 ),
+
               ],
             ),
           ),

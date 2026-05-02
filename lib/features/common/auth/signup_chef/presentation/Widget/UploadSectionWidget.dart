@@ -14,7 +14,7 @@ class UploadSectionWidget extends StatelessWidget {
   final VoidCallback? onEdit;
 
   static const _textPrimary = Color(0xFF1A1A1A);
-  static const _textMuted   = Color(0xFF8A8A8A);
+  static const _textMuted   = Color(0Xff777777);
   static const _border      = Color(0xFFE0E0E0);
   static const _uploadBg    = Color(0xFFF9F9F9);
   static const _required    = Color(0xFFE53935);
@@ -62,7 +62,6 @@ class UploadSectionWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: _uploadBg,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: _border),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -87,7 +86,8 @@ class UploadSectionWidget extends StatelessWidget {
                   const SizedBox(height: 12),
                   const CommonText(
                       text: 'Drag & Drop file(s) to upload',
-                      fontSize: 13,
+                      fontSize: 12,
+
                       color: _textMuted),
                 ],
               ),
@@ -184,7 +184,7 @@ class BaseDocPage extends StatelessWidget {
   final Widget? trailingAction;
   final VoidCallback? onSkip;
 
-  static const _textPrimary   = Color(0xFF1A1A1A);
+  static const _textPrimary   = Color(0xff272727);
   static const _border        = Color(0xFFE0E0E0);
   static const _securityGreen = Color(0xFF4CAF50);
   static const _bg            = Color(0xFFFFFFFF);
