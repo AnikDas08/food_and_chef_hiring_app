@@ -266,8 +266,8 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                         decoration: InputDecoration(
                           hintText: 'Search address...',
                           hintStyle: TextStyle(
-                            fontSize: 14.sp,
-                            color: const Color(0xFFBBBBBB),
+                            fontSize: 12.sp,
+                            color: const Color(0xff777777),
                           ),
                           prefixIcon: Icon(Icons.search,
                               color: const Color(0xFF777777), size: 20.sp),
@@ -362,7 +362,9 @@ class _ChefUpdateLocationScreenState extends State<ChefUpdateLocationScreen> {
                               color: const Color(0xFF272727),
                               textAlign: TextAlign.start,
                             ),
+
                             const Spacer(),
+
                             const CommonText(
                               text: 'Miles',
                               fontSize: 13,

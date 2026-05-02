@@ -274,6 +274,7 @@ class ChefProfileScreen extends StatelessWidget {
                           Get.to(const AppInformationScreen());
                         },
                       ),
+
                     ],
                   ),
                 ),
@@ -287,6 +288,8 @@ class ChefProfileScreen extends StatelessWidget {
                   disableDivider: true,
                   disableIcon: true,
                 ),
+
+
               ],
             ),
           );

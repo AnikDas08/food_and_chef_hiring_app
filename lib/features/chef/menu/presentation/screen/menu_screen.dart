@@ -158,8 +158,9 @@ class MenuScreen extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(vertical: 14.h),
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFF0F0F0),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF0F0F0),
+                      borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -237,7 +238,6 @@ class _MenuCard extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8.r),
-                            border: Border.all(color: const Color(0xFFE0E0E0)),
                           ),
                           child: Row(children: [
                             Icon(Icons.edit_outlined, size: 13.sp, color: const Color(0xFF272727)),
@@ -255,7 +255,6 @@ class _MenuCard extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8.r),
-                            border: Border.all(color: const Color(0xFFE0E0E0)),
                           ),
                           child: Icon(Icons.delete_outline, size: 16.sp, color: Colors.red),
                         ),

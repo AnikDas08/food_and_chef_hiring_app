@@ -518,10 +518,11 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
             Switch.adaptive(
               value: day.isEnabled,
               onChanged: (val) => setState(() => day.isEnabled = val),
-              activeColor: Colors.white,
               activeTrackColor: const Color(0xFF1C1C1C),
               inactiveThumbColor: Colors.white,
               inactiveTrackColor: const Color(0xFFCCCCCC),
+              trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
+
             ),
           ],
         ),

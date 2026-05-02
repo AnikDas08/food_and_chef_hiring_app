@@ -408,10 +408,13 @@ class _ToggleCard extends StatelessWidget {
                 value: isEnabled,
                 onChanged: (_) => onToggle(),
                 activeThumbColor: Colors.white,
-                activeTrackColor: const Color(0xff272727),
-                inactiveThumbColor: Colors.white,
-                inactiveTrackColor: const Color(0xffCCCCCC),
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeTrackColor: const Color(0xFF1C1C1C),
+                inactiveThumbColor: Colors.white,
+                inactiveTrackColor: const Color(0xFFCCCCCC),
+                trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
+
+
               ),
             ],
           ),
