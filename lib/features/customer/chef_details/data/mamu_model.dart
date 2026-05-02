@@ -28,10 +28,10 @@ class MenuPagination {
   MenuPagination({this.total, this.limit, this.page, this.totalPage});
 
   MenuPagination.fromJson(Map<String, dynamic> json) {
-    total = json['total'];
-    limit = json['limit'];
-    page = json['page'];
-    totalPage = json['totalPage'];
+    total = json['total'] as int?;
+    limit = json['limit'] as int?;
+    page = json['page'] as int?;
+    totalPage = json['totalPage'] as int?;
   }
 }
 
@@ -77,21 +77,67 @@ class MenuData {
   });
 
   MenuData.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    images = json['images'] != null ? List<String>.from(json['images']) : [];
-    name = json['name'];
-    description = json['description'];
-    menuSection = json['menu_section'];
-    dietTypes = json['diet_types'] != null
-        ? List<String>.from(json['diet_types'])
-        : [];
-    alergens =
-    json['alergens'] != null ? List<String>.from(json['alergens']) : [];
-    estCookingTime = json['est_cooking_time'];
-    estPrepTime = json['est_prep_time'];
-    customizations = json['customizations'] != null
-        ? List<String>.from(json['customizations'])
-        : [];
+    id = json['_id']?.toString();
+    
+    // Handle images array with null safety
+    if (json['images'] != null) {
+      try {
+        images = List<String>.from(
+          json['images'].map((item) => item?.toString() ?? '')
+        );
+      } catch (e) {
+        images = <String>[];
+      }
+    } else {
+      images = <String>[];
+    }
+    
+    name = json['name']?.toString();
+    description = json['description']?.toString();
+    menuSection = json['menu_section']?.toString();
+    
+    // Handle diet_types with proper null safety
+    if (json['diet_types'] != null) {
+      try {
+        dietTypes = List<String>.from(
+          json['diet_types'].map((item) => item?.toString() ?? '')
+        );
+      } catch (e) {
+        dietTypes = <String>[];
+      }
+    } else {
+      dietTypes = <String>[];
+    }
+    
+    // Handle alergens with proper null safety
+    if (json['alergens'] != null) {
+      try {
+        alergens = List<String>.from(
+          json['alergens'].map((item) => item?.toString() ?? '')
+        );
+      } catch (e) {
+        alergens = <String>[];
+      }
+    } else {
+      alergens = <String>[];
+    }
+    
+    estCookingTime = json['est_cooking_time']?.toString();
+    estPrepTime = json['est_prep_time']?.toString();
+    
+    // Handle customizations with proper null safety
+    if (json['customizations'] != null) {
+      try {
+        customizations = List<String>.from(
+          json['customizations'].map((item) => item?.toString() ?? '')
+        );
+      } catch (e) {
+        customizations = <String>[];
+      }
+    } else {
+      customizations = <String>[];
+    }
+    
     if (json['ingradients'] != null) {
       ingredients = <MenuIngredient>[];
       json['ingradients']
@@ -102,12 +148,12 @@ class MenuData {
       json['special_equipment']
           .forEach((v) => specialEquipment!.add(MenuEquipment.fromJson(v)));
     }
-    user = json['user'];
-    status = json['status'];
-    totalBooking = json['total_booking'];
+    user = json['user']?.toString();
+    status = json['status']?.toString();
+    totalBooking = json['total_booking'] as int?;
     avgRating = (json['avg_rating'] as num?)?.toDouble();
-    kitchenStatus = json['kitchen_status'];
-    createdAt = json['createdAt'];
+    kitchenStatus = json['kitchen_status']?.toString();
+    createdAt = json['createdAt']?.toString();
   }
 }
 
@@ -120,10 +166,10 @@ class MenuIngredient {
   MenuIngredient({this.id, this.name, this.quantity, this.unit});
 
   MenuIngredient.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    name = json['name'];
-    quantity = json['quantity'];
-    unit = json['unit'];
+    id = json['_id']?.toString();
+    name = json['name']?.toString();
+    quantity = json['quantity']?.toString();
+    unit = json['unit']?.toString();
   }
 }
 
@@ -136,9 +182,22 @@ class MenuEquipment {
   MenuEquipment({this.id, this.name, this.images, this.status});
 
   MenuEquipment.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    name = json['name'];
-    images = json['images'] != null ? List<String>.from(json['images']) : [];
-    status = json['status'];
+    id = json['_id']?.toString();
+    name = json['name']?.toString();
+    
+    // Handle images array with null safety
+    if (json['images'] != null) {
+      try {
+        images = List<String>.from(
+          json['images'].map((item) => item?.toString() ?? '')
+        );
+      } catch (e) {
+        images = <String>[];
+      }
+    } else {
+      images = <String>[];
+    }
+    
+    status = json['status']?.toString();
   }
 }

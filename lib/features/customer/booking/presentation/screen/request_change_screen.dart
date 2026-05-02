@@ -129,7 +129,7 @@ class RequestChangeScreen extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: const Color(0xfff2f2f2),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(14),
                         ),
                         child: Row(
                           children: [

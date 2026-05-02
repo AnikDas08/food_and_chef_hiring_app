@@ -81,23 +81,23 @@ class CartMenuItem {
   });
 
   CartMenuItem.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    user = json['user'];
+    id = json['_id']?.toString();
+    user = json['user']?.toString();
     if (json['menu'] != null) {
       menu = <CartMenuDetail>[];
       json['menu'].forEach((v) => menu!.add(CartMenuDetail.fromJson(v)));
     }
-    chef = json['chef'];
-    quantity = json['quantity'];
+    chef = json['chef']?.toString();
+    quantity = json['quantity'] as int?;
     customizations = json['customizations'] != null
         ? List<String>.from(json['customizations'])
         : [];
-    unitTimeStr = json['unit_time_str'];
+    unitTimeStr = json['unit_time_str']?.toString();
     unitHour = (json['unit_hour'] as num?)?.toDouble();
     unitPrice = (json['unit_price'] as num?)?.toDouble();
     totalPrice = (json['total_price'] as num?)?.toDouble();
-    unitPrepTime = json['unit_prep_time'];
-    cartId = json['cart_id'];
+    unitPrepTime = json['unit_prep_time']?.toString();
+    cartId = json['cart_id']?.toString();
   }
   String? get menuId => menu != null && menu!.isNotEmpty ? menu!.first.id : null;
 }
@@ -111,9 +111,22 @@ class CartMenuDetail {
   CartMenuDetail({this.id, this.images, this.name, this.customizations});
 
   CartMenuDetail.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    images = json['images'] != null ? List<String>.from(json['images']) : [];
-    name = json['name'];
+    id = json['_id']?.toString();
+    
+    // Handle images array with null safety
+    if (json['images'] != null) {
+      try {
+        images = List<String>.from(
+          json['images'].map((item) => item?.toString() ?? '')
+        );
+      } catch (e) {
+        images = <String>[];
+      }
+    } else {
+      images = <String>[];
+    }
+    
+    name = json['name']?.toString();
     customizations = json['customizations'] != null
         ? List<String>.from(json['customizations'])
         : [];
@@ -129,9 +142,9 @@ class CartChefInfo {
   CartChefInfo({this.id, this.image, this.name, this.pricing});
 
   CartChefInfo.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    image = json['image'];
-    name = json['name'];
+    id = json['_id']?.toString();
+    image = json['image']?.toString();
+    name = json['name']?.toString();
     pricing = (json['pricing'] as num?)?.toDouble();
   }
 }

@@ -44,19 +44,30 @@ class ChefDetailData {
   });
 
   ChefDetailData.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    image = json['image'];
-    about = json['about'];
-    experience = json['experience'];
-    name = json['name'];
+    id = json['_id']?.toString();
+    image = json['image']?.toString();
+    about = json['about']?.toString() ?? '';
+    experience = json['experience'] as int?;
+    name = json['name']?.toString();
     pricing = (json['pricing'] as num?)?.toDouble();
     avgRating = (json['avg_rating'] as num?)?.toDouble();
-    totalRating = json['total_rating'];
-    menuSections = json['menu_sections'] != null
-        ? List<String>.from(json['menu_sections'])
-        : [];
+    totalRating = json['total_rating'] as int?;
+    
+    // Handle menu_sections with proper null safety and type conversion
+    if (json['menu_sections'] != null) {
+      try {
+        menuSections = List<String>.from(
+          json['menu_sections'].map((item) => item?.toString() ?? '')
+        );
+      } catch (e) {
+        menuSections = <String>[];
+      }
+    } else {
+      menuSections = <String>[];
+    }
+    
     priceWithFee = (json['price_with_fee'] as num?)?.toDouble();
-    estCookingTime = json['est_cooking_time'];
-    isFavorite = json['isFavorite'];
+    estCookingTime = json['est_cooking_time']?.toString();
+    isFavorite = json['isFavorite'] as bool?;
   }
 }

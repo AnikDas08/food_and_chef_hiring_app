@@ -93,8 +93,7 @@ class BookingHistoryScreen extends StatelessWidget {
                                             alpha: 0.2,
                                           ),
                                         ),
-                                        color:
-                                            controller.selectedBookingHistory ==
+                                        color: controller.selectedBookingHistory ==
                                                     value
                                                 ? const Color(0xff272727)
                                                 : Colors.transparent,
