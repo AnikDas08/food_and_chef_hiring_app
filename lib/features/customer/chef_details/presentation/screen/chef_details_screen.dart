@@ -8,6 +8,7 @@ import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/availability_pop_up.dart';
+import 'package:new_untitled/services/storage/storage_services.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
@@ -164,6 +165,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                         _isCollapsed
                             ? []
                             : [
+                              if(LocalStorage.myRole=="CUSTOMER")
                               Center(
                                 child: InkWell(
                                   onTap: controller.toggleFavourite,
@@ -287,6 +289,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                         fontWeight: FontWeight.w600,
                                         color: const Color(0xff272727),
                                       ),
+                                      if(LocalStorage.myRole=="CUSTOMER")
                                       Text.rich(
                                         TextSpan(
                                           children: [
@@ -645,12 +648,20 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 4),
+                          if(LocalStorage.myRole=="CUSTOMER")
                           CommonText(
                             text:
                                 "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}/hr",
                             fontSize: 12,
                             color: const Color(0xff555555),
                           ),
+                          if(LocalStorage.myRole=="CHEF")
+                            CommonText(
+                              text:
+                              "\$${chef?.pricing?.toStringAsFixed(2) ?? '0.00'}/hr",
+                              fontSize: 12,
+                              color: const Color(0xff555555),
+                            ),
                         ],
                       ),
                     ),
