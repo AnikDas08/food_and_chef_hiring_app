@@ -24,7 +24,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                 onAdd(ctrl.text);
                 Navigator.of(context).pop();
               },
-              child: const Text('Add')),
+              child: const Text('Add',)),
         ],
       ),
     );
@@ -315,13 +315,16 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                     16.verticalSpace,
 
                     _label('Est. Cooking Time'),
+
                     8.verticalSpace,
+
                     Obx(() => _TimeInputRow(
                       controller: c.cookTimeController,
                       selectedUnit: c.selectedCookUnit,
                       units: c.timeUnits,
                       onUnitChanged: c.setCookUnit,
                     )),
+
                     16.verticalSpace,
 
                     Obx(() => _SectionHeader(
@@ -330,6 +333,7 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                       onAddTap: () => _showAddDialog(context, 'Customize Option', c.addCustomizeOption),
                       onToggle: c.toggleCustomize,
                     )),
+
                     Obx(() => c.customizeExpanded.value
                         ? Column(
                       children: [
@@ -616,6 +620,7 @@ class _TimeInputRow extends StatelessWidget {
 }
 
 class _SectionHeader extends StatelessWidget {
+
   final String title;
   final bool expanded;
   final VoidCallback onAddTap;
@@ -625,16 +630,28 @@ class _SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Row(
+
       children: [
+
         Text(title, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: const Color(0xFF272727))),
+
         const Spacer(),
+
         GestureDetector(
+
           onTap: onAddTap,
+
           child: Row(children: [
+
             Icon(Icons.add, size: 14.sp, color: const Color(0xFF272727)),
+
             4.horizontalSpace,
+
             Text('Add', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500, color: const Color(0xFF272727))),
+
+
           ]),
         ),
         12.horizontalSpace,

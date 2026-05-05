@@ -6,20 +6,94 @@ import '../../../../common/auth/signup_chef/presentation/controller/Chef_add_men
 class AddMenuScreen extends StatelessWidget {
   const AddMenuScreen({super.key});
 
-  void _showAddDialog(BuildContext context, String title, Function(String) onAdd) {
+  void _showAddDialog(
+      BuildContext context,
+      String title,
+      Function(String) onAdd,
+      ) {
     final ctrl = TextEditingController();
+
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: Text('Add $title'),
-        content: TextField(controller: ctrl, autofocus: true, decoration: InputDecoration(hintText: title)),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-          TextButton(
-            onPressed: () { onAdd(ctrl.text); Navigator.pop(Get.context!); },
-            child: const Text('Add'),
+      builder: (_) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// 🔹 Title
+              Text(
+                'Add $title',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF272727),
+                ),
+              ),
+
+              20.verticalSpace,
+
+              /// 🔹 Input Field (underline style)
+              TextField(
+                controller: ctrl,
+                autofocus: true,
+                style: TextStyle(fontSize: 14.sp),
+                decoration: InputDecoration(
+                  hintText: title,
+                  hintStyle: TextStyle(
+                    color: const Color(0xFFBBBBBB),
+                    fontSize: 14.sp,
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                ),
+              ),
+
+              20.verticalSpace,
+
+              /// 🔹 Buttons (right aligned)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      if (ctrl.text.trim().isEmpty) return;
+                      onAdd(ctrl.text.trim());
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      'Add',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: const Color(0xFF1C1C1C),
+                        fontWeight: FontWeight.w600,
+
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -102,7 +176,7 @@ class AddMenuScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: const Text('Cancel',style: TextStyle(color: Colors.grey),),
             ),
             TextButton(
               onPressed: () {
@@ -441,6 +515,7 @@ class AddMenuScreen extends StatelessWidget {
                       onAddTap: () => _showAddDialog(context, 'Customize Option', c.addCustomizeOption),
                       onToggle: c.toggleCustomize,
                     )),
+
                     Obx(() => c.customizeExpanded.value
                         ? Column(children: [
                       8.verticalSpace,

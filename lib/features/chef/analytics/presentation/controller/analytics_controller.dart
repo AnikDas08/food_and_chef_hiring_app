@@ -47,9 +47,13 @@ class AnalyticsController extends GetxController {
     'Saturday',
     'Sunday',
   ];
+
   Future<void> fetchBookingTime() async {
+
     try {
+
       bookingLoading(true);
+
       final response = await ApiService.get(
         '${ApiEndPoint.mostBookingTime}${selectedDay.value.toLowerCase()}',
       );

@@ -82,6 +82,7 @@ class BookTime extends StatelessWidget {
                       },
                     );
                   },
+
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
@@ -108,7 +109,7 @@ class BookTime extends StatelessWidget {
               child: controller.bookingLoading.value
                   ? const Center(child: CircularProgressIndicator(color: Color(0xffFD713F)))
                   : controller.mappedData.isEmpty
-                  ? const Center(child: Text('DATA EMPTY')) // debug
+                  ? const Center(child: Text('DATA EMPTY'))
                   : Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: BarChartSample3(

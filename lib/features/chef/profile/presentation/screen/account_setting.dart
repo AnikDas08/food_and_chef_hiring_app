@@ -17,6 +17,7 @@ class AccountSetting extends StatefulWidget {
   const AccountSetting({super.key});
   @override
   State<AccountSetting> createState() => _AccountSettingState();
+
 }
 
 class _AccountSettingState extends State<AccountSetting> {
@@ -92,7 +93,6 @@ class _AccountSettingState extends State<AccountSetting> {
                           bottom: 8,
                           color: Color(0xff272727),
                         ),
-
 
                         IntlPhoneField(
                           controller: controller.phoneController,

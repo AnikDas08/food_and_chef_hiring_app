@@ -290,16 +290,27 @@ class CafeAddMenuItemController extends GetxController {
       final response = await ApiService.get('${ApiEndPoint.AddMenuSection}${LocalStorage.userId}');
       if (response.statusCode == 200 && response.data['success'] == true) {
         final List list = response.data['data'] ?? [];
-        final seen = <String>{};
-        categoryModels.value = list
-            .map((e) => MenuCategoryModel(id: e['_id'] ?? '', name: e['name'] ?? ''))
-            .where((e) => e.name.isNotEmpty && seen.add(e.name))
-            .toList();
+        final seenKeys = <String>{};
+        final List<MenuCategoryModel> filteredModels = [];
+
+        for (var e in list) {
+          String rawName = e['name'] ?? '';
+          String trimmedName = rawName.trim();
+          if (trimmedName.isEmpty) continue;
+
+          String lowerName = trimmedName.toLowerCase();
+          if (seenKeys.add(lowerName)) {
+            filteredModels.add(MenuCategoryModel(id: e['_id'] ?? '', name: trimmedName));
+          }
+        }
+
+        categoryModels.value = filteredModels;
         categoryList.value = categoryModels.map((e) => e.name).toList();
 
         final defaults = ['Starter', 'Main Dish', 'Dessert'];
         for (final name in defaults) {
-          if (!categoryList.contains(name)) {
+          bool alreadyExists = categoryList.any((c) => c.toLowerCase() == name.toLowerCase());
+          if (!alreadyExists) {
             try {
               final res = await ApiService.post(
                 '${ApiEndPoint.AddMenuSection}${LocalStorage.userId}',
@@ -307,20 +318,20 @@ class CafeAddMenuItemController extends GetxController {
               );
               if (res.statusCode == 200 || res.statusCode == 201) {
                 final newId = res.data['data']['_id'] ?? '';
-                categoryModels.add(MenuCategoryModel(id: newId, name: name));
-                categoryList.add(name);
+                final newName = res.data['data']['name'] ?? name;
+                categoryModels.add(MenuCategoryModel(id: newId, name: newName));
+                categoryList.add(newName);
               }
             } catch (_) {}
           }
         }
 
-        if (categoryList.isNotEmpty) {
+        if (categoryList.isNotEmpty && _selectedCategory.value.isEmpty) {
           _selectedCategory.value = categoryList.first;
         }
       }
     } catch (e) {
       debugPrint('❌ Category fetch error: $e');
-      Get.snackbar('Error', 'Failed to load categories.', snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoadingCategory.value = false;
     }
@@ -349,23 +360,19 @@ class CafeAddMenuItemController extends GetxController {
     }
   }
 
-  // ✅ Helper to add ingredients as indexed multipart fields
   void _appendIngredients(FormData formData) {
-    for (int i = 0; i < ingredientsList.length; i++) {
-      final ing = ingredientsList[i];
-      formData.fields.add(MapEntry('ingradients[$i][name]', ing.name));
-      formData.fields.add(MapEntry('ingradients[$i][quantity]', ing.quantity));
-      formData.fields.add(MapEntry('ingradients[$i][unit]', ing.unit));
-    }
+    final list = ingredientsList.map((ing) => ing.toJson()).toList();
+    formData.fields.add(MapEntry('ingradients', jsonEncode(list)));
   }
+
 
   Future<void> submitMenuItem() async {
     if (nameController.text.trim().isEmpty) {
-      Get.snackbar('Required', 'Item name is required', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Required', 'Item name is required', snackPosition: SnackPosition.TOP,backgroundColor: Colors.green);
       return;
     }
     if (ingredientsList.isEmpty) {
-      Get.snackbar('Required', 'Please add at least one ingredient', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Required', 'Please add at least one ingredient', snackPosition: SnackPosition.TOP,backgroundColor: Colors.green);
       return;
     }
 
@@ -430,7 +437,7 @@ class CafeAddMenuItemController extends GetxController {
       } else {
         // ✅ More descriptive error message
         final msg = response.data['message'] ?? response.data['error'] ?? 'Failed to add menu item.';
-        Get.snackbar('Error', msg.toString(), snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar('Message', msg.toString(), snackPosition: SnackPosition.TOP,backgroundColor: Colors.green);
         debugPrint('❌ Submit failed: ${response.data}');
       }
     } catch (e) {
