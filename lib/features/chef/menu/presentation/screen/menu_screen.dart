@@ -112,6 +112,7 @@ class MenuScreen extends StatelessWidget {
                                     child: const Text('Cancel',style: TextStyle(color: Colors.grey),),
 
                                   ),
+
                                   TextButton(
                                     onPressed: () async {
                                       if (ctrl.text.trim().isEmpty) {
@@ -120,14 +121,15 @@ class MenuScreen extends StatelessWidget {
                                         });
                                         return;
                                       }
-
                                       Navigator.pop(context);
                                       await c.addMenuSection(ctrl.text.trim());
                                     },
+
                                     child: const Text(
                                       'Add',
-                                      style: TextStyle(color: Color(0xFF1C1C1C)),
+                                      style: TextStyle(color: Color(0xFF1C1C1C),fontWeight: FontWeight.bold),
                                     ),
+
                                   ),
                                 ],
                               );

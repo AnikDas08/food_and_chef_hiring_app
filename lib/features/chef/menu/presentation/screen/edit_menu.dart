@@ -26,6 +26,7 @@ class EditMenu extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   const CommonText(
                     text: 'Edit Item',
                     fontSize: 16,
@@ -33,6 +34,7 @@ class EditMenu extends StatelessWidget {
                     top: 24,
                     color: Color(0xff272727),
                   ),
+
                   const CommonText(
                     text:
                     'Add your menu and items to showcase what you can cook for customers.',
@@ -43,6 +45,7 @@ class EditMenu extends StatelessWidget {
                     textAlign: TextAlign.start,
                     top: 8,
                   ),
+
                   const CommonText(
                     text: 'Previews',
                     fontWeight: FontWeight.w600,
@@ -60,6 +63,7 @@ class EditMenu extends StatelessWidget {
                     ),
                     child: const Icon(Icons.add),
                   ),
+
                   const CommonText(
                     text: AppString.menuSection,
                     fontWeight: FontWeight.w600,
@@ -67,6 +71,7 @@ class EditMenu extends StatelessWidget {
                     top: 16,
                     color: Color(0xff272727),
                   ),
+
                   CommonTextField(
                     validator: OtherHelper.validator,
                     hintText: AppString.menuSection,

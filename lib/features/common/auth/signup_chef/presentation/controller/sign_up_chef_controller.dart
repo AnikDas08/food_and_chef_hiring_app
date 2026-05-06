@@ -166,13 +166,8 @@ class SignUpChefController extends GetxController {
 
       if (token.toString().isNotEmpty) {
         await LocalStorage.setString(LocalStorageKeys.token, token.toString());
-        appLog('✅ token saved: $token');
       } else {
-        appLog('⚠️ token পাওয়া যায়নি! response: $data');
       }
-
-      appLog('✅ userId: $userId');
-
       Get.toNamed(AppRoutes.create_password_chef_screen);
     } else {
       Get.snackbar(response.statusCode.toString(), response.message);
@@ -203,7 +198,6 @@ class SignUpChefController extends GetxController {
             data['token'] ?? '';
         if (token.toString().isNotEmpty) {
           await LocalStorage.setString(LocalStorageKeys.token, token.toString());
-          appLog('✅ token saved: $token');
         }
 
         if (data['success'] == true) {
@@ -267,7 +261,9 @@ class SignUpChefController extends GetxController {
         files.add({'name': 'additional_culinary_licenses', 'image': await _compressImage(additionalCulinaryPath)});
       }
       if (image != null && image!.isNotEmpty) {
+
         files.add({'name': 'image', 'image': await _compressImage(image!)});
+
       }
 
       final response = await ApiService.multipartImage(

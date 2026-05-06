@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
@@ -468,7 +469,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
               textAlign: TextAlign.start,
             ),
             const Spacer(),
-            Switch(
+            CupertinoSwitch(
               value: day.isEnabled,
               onChanged: (val) => setState(() {
                 day.isEnabled = val;
@@ -479,11 +480,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   ));
                 }
               }),
-              activeTrackColor: const Color(0xFF1C1C1C),
-              inactiveThumbColor: Colors.white,
-              inactiveTrackColor: const Color(0xFFCCCCCC),
-              trackOutlineColor:
-              const WidgetStatePropertyAll(Colors.transparent),
+              activeColor: const Color(0xFF1C1C1C),
             ),
           ],
         ),
