@@ -561,7 +561,7 @@ class CafeAddMenuItemController extends GetxController {
       } else {
         final msg = response.data['message'] ?? response.data['error'] ?? 'Failed to update menu item.';
         Get.snackbar('Error', msg.toString(), snackPosition: SnackPosition.BOTTOM);
-        debugPrint('❌ Update failed: ${response.data}');
+        debugPrint('Update failed: ${response.data}');
       }
     } catch (e) {
       debugPrint('Update error: $e');
@@ -609,10 +609,15 @@ class CafeAddMenuItemController extends GetxController {
   void toggleCustomize() => customizeExpanded.value = !customizeExpanded.value;
   void toggleIngredients() => ingredientsExpanded.value = !ingredientsExpanded.value;
   void toggleEquipment() => equipmentExpanded.value = !equipmentExpanded.value;
+
+
   void addCustomizeOption(String val) {
     if (val.trim().isNotEmpty) customizeOptions.add(val.trim());
   }
+
+
   void removeCustomizeOption(String val) => customizeOptions.remove(val);
+
 
   void addIngredient(String name, String quantity, String unit) {
     if (name.trim().isNotEmpty) {
