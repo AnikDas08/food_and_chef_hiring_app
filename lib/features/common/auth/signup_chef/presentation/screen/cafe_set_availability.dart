@@ -5,6 +5,7 @@ import '../../../../../../component/image/common_image.dart';
 import '../../../../../../utils/constants/app_icons.dart';
 import '../../../../../chef/profile/presentation/widgets/custom_TimePicker.dart';
 import '../controller/sign_up_chef_controller.dart';
+import '../../../../../../component/button/switch_button.dart';
 
 class TimeSlot {
   TimeOfDay from;
@@ -147,42 +148,25 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                                 color: const Color(0xFF272727),
                               ),
                             ),
-                            // Selected: dark circle with checkmark
-                            // Unselected: grey inactive switch/toggle shape (matches Figma)
-                            isSelected
-                                ? Container(
+
+                            Container(
                               width: 22.w,
                               height: 22.w,
-                              decoration: const BoxDecoration(
-                                color: Color(0xFF272727),
+                              decoration: BoxDecoration(
                                 shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: isSelected ? const Color(0xFF272727) : const Color(0xFFCCCCCC),
+                                  width: 2,
+                                ),
+                                color: isSelected ? const Color(0xFF272727) : Colors.transparent,
                               ),
-                              child: Icon(
+                              child: isSelected
+                                  ? Icon(
                                 Icons.check,
                                 size: 13.sp,
                                 color: Colors.white,
-                              ),
-                            )
-                                : Container(
-                              width: 36.w,
-                              height: 22.w,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFDDDDDD),
-                                borderRadius:
-                                BorderRadius.circular(100.r),
-                              ),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Container(
-                                  margin: EdgeInsets.all(2.w),
-                                  width: 18.w,
-                                  height: 18.w,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              ),
+                              )
+                                  : null,
                             ),
                           ],
                         ),
@@ -236,6 +220,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
                     Text(
                       'Set Your Availability',
                       style: TextStyle(
@@ -245,7 +230,9 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                         letterSpacing: -0.5,
                       ),
                     ),
+
                     8.verticalSpace,
+
                     Text(
                       "Set up your availability to let customers know when you're available to cook. This helps you get booked at the right times.",
                       style: TextStyle(
@@ -254,12 +241,13 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                         height: 1.5,
                       ),
                     ),
+
                     20.verticalSpace,
 
                     ..._days.map((day) => _buildDayItem(day)),
+
                     20.verticalSpace,
 
-                    // Booking Preferences
                     Text(
                       'Booking Preferences',
                       style: TextStyle(
@@ -270,14 +258,16 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                     ),
                     10.verticalSpace,
 
-                    // Summary sentence with bold values — matches Figma
                     RichText(
+
+
                       text: TextSpan(
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: const Color(0xFF777777),
                           height: 1.6,
                         ),
+
                         children: [
                           const TextSpan(text: 'Customers can place orders at least '),
                           TextSpan(
@@ -288,7 +278,9 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                               fontSize: 13.sp,
                             ),
                           ),
+
                           const TextSpan(text: ' or maximum of '),
+
                           TextSpan(
                             text: '$_maxDays $_maxUnit',
                             style: TextStyle(
@@ -297,10 +289,13 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                               fontSize: 13.sp,
                             ),
                           ),
+
                           const TextSpan(text: ' in advance'),
+
                         ],
                       ),
                     ),
+
                     14.verticalSpace,
 
                     // Min booking input row
@@ -320,16 +315,18 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                           _editingMin = false;
                         });
                       },
+
                       onUnitTap: (offset) => _showUnitPopup(
                         context: context,
                         offset: offset,
                         selected: _minUnit,
                         onSelect: (v) => setState(() => _minUnit = v),
                       ),
+
                     ),
+
                     12.verticalSpace,
 
-                    // Max booking input row
                     _buildBookingInputRow(
                       value: _maxDays,
                       unit: _maxUnit,
@@ -339,6 +336,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                         _maxController.text = _maxDays.toString();
                         setState(() => _editingMax = true);
                       },
+
                       onEditDone: () {
                         final val = int.tryParse(_maxController.text);
                         setState(() {
@@ -346,20 +344,23 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                           _editingMax = false;
                         });
                       },
+
                       onUnitTap: (offset) => _showUnitPopup(
                         context: context,
                         offset: offset,
                         selected: _maxUnit,
                         onSelect: (v) => setState(() => _maxUnit = v),
                       ),
+
                     ),
+
                     32.verticalSpace,
+
                   ],
                 ),
               ),
             ),
 
-            // Continue Button
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
               child: SizedBox(
@@ -413,7 +414,6 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
     );
   }
 
-  // Number + Unit input row — matches Figma layout exactly
   Widget _buildBookingInputRow({
     required int value,
     required String unit,
@@ -478,7 +478,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
           onTapDown: (details) => onUnitTap(details.globalPosition),
           child: Container(
             height: 48.h,
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 2.h),
             decoration: boxDecoration,
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -491,7 +491,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                       color: const Color(0xFF272727)),
                 ),
                 4.horizontalSpace,
-                Icon(Icons.keyboard_arrow_down,
+                Icon(Icons.expand_more,
                     size: 18.sp, color: const Color(0xFF272727)),
               ],
             ),
@@ -515,14 +515,9 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                   color: const Color(0xFF272727)),
             ),
             const Spacer(),
-            Switch.adaptive(
+            switchButton(
               value: day.isEnabled,
-              onChanged: (val) => setState(() => day.isEnabled = val),
-              activeTrackColor: const Color(0xFF1C1C1C),
-              inactiveThumbColor: Colors.white,
-              inactiveTrackColor: const Color(0xFFCCCCCC),
-              trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
-
+              onTap: () => setState(() => day.isEnabled = !day.isEnabled),
             ),
           ],
         ),
@@ -541,47 +536,44 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                         style: TextStyle(
                             fontSize: 12.sp, color: const Color(0xFF777777))),
                   ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF7F7F7),
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  padding:
-                  EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
-                  child: Row(
-                    children: [
-                      Text('From',
-                          style: TextStyle(
-                              fontSize: 12.sp,
-                              color: const Color(0xFF777777))),
-                      10.horizontalSpace,
-                      GestureDetector(
-                        onTap: () => _pickTime(day, i, true),
-                        child: Text(
+                GestureDetector(
+                  onTap: () => _pickTime(day, i, true),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF7F7F7),
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    padding:
+                    EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+                    child: Row(
+                      children: [
+                        Text('From',
+                            style: TextStyle(
+                                fontSize: 12.sp,
+                                color: const Color(0xFF777777))),
+                        10.horizontalSpace,
+                        Text(
                           _formatTime(slot.from),
                           style: TextStyle(
                               fontSize: 13.sp,
                               fontWeight: FontWeight.w600,
                               color: const Color(0xFF272727)),
                         ),
-                      ),
-                      const Spacer(),
-                      Text('To',
-                          style: TextStyle(
-                              fontSize: 12.sp,
-                              color: const Color(0xFF777777))),
-                      10.horizontalSpace,
-                      GestureDetector(
-                        onTap: () => _pickTime(day, i, false),
-                        child: Text(
+                        const Spacer(),
+                        Text('To',
+                            style: TextStyle(
+                                fontSize: 12.sp,
+                                color: const Color(0xFF777777))),
+                        10.horizontalSpace,
+                        Text(
                           _formatTime(slot.to),
                           style: TextStyle(
                               fontSize: 13.sp,
                               fontWeight: FontWeight.w600,
                               color: const Color(0xFF272727)),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 6.verticalSpace,

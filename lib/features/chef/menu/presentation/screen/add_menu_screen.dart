@@ -1,25 +1,98 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../../component/button/common_button.dart';
 import '../../../../common/auth/signup_chef/presentation/controller/Chef_add_menu_controller.dart';
 
 class AddMenuScreen extends StatelessWidget {
   const AddMenuScreen({super.key});
 
-  void _showAddDialog(BuildContext context, String title, Function(String) onAdd) {
+  void _showAddDialog(
+    BuildContext context,
+    String title,
+    Function(String) onAdd,
+  ) {
     final ctrl = TextEditingController();
+
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: Text('Add $title'),
-        content: TextField(controller: ctrl, autofocus: true, decoration: InputDecoration(hintText: title)),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-          TextButton(
-            onPressed: () { onAdd(ctrl.text); Navigator.pop(Get.context!); },
-            child: const Text('Add'),
+      builder: (_) => Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// 🔹 Title
+              Text(
+                'Add $title',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF272727),
+                ),
+              ),
+
+              20.verticalSpace,
+
+              /// 🔹 Input Field (Rounded Container Style)
+              Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF7F7F7),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: TextField(
+                  controller: ctrl,
+                  autofocus: true,
+                  style: TextStyle(fontSize: 14.sp, color: const Color(0xFF272727)),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+                    hintText: 'Enter $title',
+                    hintStyle: TextStyle(
+                      color: const Color(0xFFBBBBBB),
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                ),
+              ),
+
+              20.verticalSpace,
+
+              /// 🔹 Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  10.horizontalSpace,
+                  GestureDetector(
+                    onTap: () {
+                      if (ctrl.text.trim().isEmpty) return;
+                      onAdd(ctrl.text.trim());
+                      Navigator.pop(context);
+                    },
+                    child: Padding(padding:EdgeInsetsGeometry.only(right: 10),child: Text('Add', style: TextStyle(color: const Color(0xFF1C1C1C), fontWeight: FontWeight.w600))),
+
+
+                  ),
+                ],
+              )
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -102,7 +175,7 @@ class AddMenuScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: const Text('Cancel',style: TextStyle(color: Colors.grey),),
             ),
             TextButton(
               onPressed: () {
@@ -441,6 +514,7 @@ class AddMenuScreen extends StatelessWidget {
                       onAddTap: () => _showAddDialog(context, 'Customize Option', c.addCustomizeOption),
                       onToggle: c.toggleCustomize,
                     )),
+
                     Obx(() => c.customizeExpanded.value
                         ? Column(children: [
                       8.verticalSpace,
@@ -608,31 +682,14 @@ class AddMenuScreen extends StatelessWidget {
               ),
             ),
 
-            // ── Submit Button ──
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
-              child: Obx(() => SizedBox(
-                width: double.infinity, height: 54.h,
-                child: ElevatedButton(
-                  onPressed: c.isSubmitting.value
-                      ? null
-                      : () => c.isEditMode.value ? c.updateMenuItem() : c.submitMenuItem(),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1C1C1C),
-                    disabledBackgroundColor: const Color(0xFF1C1C1C),
-                    disabledForegroundColor: Colors.white,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
-                    elevation: 0,
-                  ),
-                  child: c.isSubmitting.value
-                      ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
-                      : Text(
-                    c.isEditMode.value ? 'Update Item' : 'Add Item',
-                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-                  ),
-                ),
+              child: Obx(() => CommonButton(
+                isLoading: c.isSubmitting.value,
+                titleText: c.isEditMode.value ? 'Update Item' : 'Add Item',
+                onTap: () => c.isEditMode.value ? c.updateMenuItem() : c.submitMenuItem(),
               )),
+
             ),
           ],
         ),

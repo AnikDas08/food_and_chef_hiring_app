@@ -38,7 +38,7 @@ class SetAvailabilityPicker extends StatefulWidget {
 }
 
 class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
-  static const double _itemHeight = 80.0;
+  static const double _itemHeight = 70.0; // Adjusted height for better fit
   static const int _intervalMinutes = 15;
 
   late List<TimeOfDay> _timeSlots;
@@ -49,7 +49,8 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
 
   List<TimeOfDay> _generateTimeSlots() {
     final slots = <TimeOfDay>[];
-    for (int h = 1; h <= 12; h++) {
+    // Generate 24 hours (AM/PM combined in the list for scrolling)
+    for (int h = 0; h < 24; h++) {
       for (int m = 0; m < 60; m += _intervalMinutes) {
         slots.add(TimeOfDay(hour: h, minute: m));
       }
@@ -58,11 +59,10 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
   }
 
   int _findClosestIndex(TimeOfDay time) {
-    final hourOfPeriod = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
     final roundedMinute =
         ((time.minute / _intervalMinutes).round() * _intervalMinutes) % 60;
     for (int i = 0; i < _timeSlots.length; i++) {
-      if (_timeSlots[i].hourOfPeriod == hourOfPeriod &&
+      if (_timeSlots[i].hour == time.hour &&
           _timeSlots[i].minute == roundedMinute) {
         return i;
       }
@@ -111,11 +111,11 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
   }) {
     return SizedBox(
       height: _itemHeight * 5,
-      width: 140.w,
+      width: 130.w,
       child: ListWheelScrollView.useDelegate(
         controller: controller,
         itemExtent: _itemHeight,
-        diameterRatio: 2.8,
+        diameterRatio: 1.5,
         physics: const FixedExtentScrollPhysics(),
         onSelectedItemChanged: onChanged,
         childDelegate: ListWheelChildBuilderDelegate(
@@ -126,13 +126,9 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
 
             Color color;
             if (isSelected) {
-              color = const Color(0xFF1C1C1E);
-            } else if (diff == 1) {
-              color = const Color(0xFF8E8E93);
-            } else if (diff == 2) {
-              color = const Color(0xFFAEAEB2);
+              color = const Color(0xFF272727); // Brand dark grey
             } else {
-              color = const Color(0xFFC7C7CC);
+              color = const Color(0xFFBBBBBB); // Faded grey
             }
 
             if (isSelected) {
@@ -142,14 +138,14 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
                   children: [
                     CommonText(
                       text: _formatTimeLine1(_timeSlots[index]),
-                      fontSize: 26,
+                      fontSize: 22,
                       fontWeight: FontWeight.w700,
                       color: color,
                     ),
                     CommonText(
                       text: _formatTimeLine2(_timeSlots[index]),
-                      fontSize: 26,
-                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
                       color: color,
                     ),
                   ],
@@ -160,8 +156,8 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
             return Center(
               child: CommonText(
                 text: _formatTimeSingleLine(_timeSlots[index]),
-                fontSize: diff == 1 ? 17 : 15,
-                fontWeight: FontWeight.w400,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
                 color: color,
               ),
             );
@@ -176,82 +172,74 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
       ),
-      padding: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 32.h),
+      padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 24.h),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Handle bar
           Center(
             child: Container(
-              width: 36.w,
+              width: 40.w,
               height: 4.h,
               decoration: BoxDecoration(
-                color: const Color(0xFFD1D1D6),
-                borderRadius: BorderRadius.circular(4.r),
+                color: const Color(0xFFE5E5E5),
+                borderRadius: BorderRadius.circular(10.r),
               ),
             ),
           ),
-          18.verticalSpace,
+          24.verticalSpace,
 
-          // Title
           const CommonText(
             text: 'Set Availability',
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF1C1C1E),
-            textAlign: TextAlign.start,
+            color: Color(0xFF272727),
           ),
+          20.verticalSpace,
 
-          // Scroll Wheels
-          SizedBox(
-            height: _itemHeight * 5,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Positioned(
-                  top: _itemHeight * 2,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    height: _itemHeight,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF2F2F7),
-                      borderRadius: BorderRadius.circular(14.r),
+          // Scroll Wheels Area
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              // Highlight bar
+              Container(
+                height: 80.h,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF7F7F7), // Matches availability slots background
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildWheel(
+                    controller: _fromController,
+                    selectedIndex: _fromIndex,
+                    onChanged: (i) => setState(() => _fromIndex = i),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    child: CommonText(
+                      text: 'to',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF777777),
                     ),
                   ),
-                ),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildWheel(
-                      controller: _fromController,
-                      selectedIndex: _fromIndex,
-                      onChanged: (i) => setState(() => _fromIndex = i),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w),
-                      child: const CommonText(
-                        text: 'to',
-                        fontSize: 16,
-                        color: Color(0xFF3C3C43),
-                      ),
-                    ),
-                    _buildWheel(
-                      controller: _toController,
-                      selectedIndex: _toIndex,
-                      onChanged: (i) => setState(() => _toIndex = i),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  _buildWheel(
+                    controller: _toController,
+                    selectedIndex: _toIndex,
+                    onChanged: (i) => setState(() => _toIndex = i),
+                  ),
+                ],
+              ),
+            ],
           ),
 
-          20.verticalSpace,
+          32.verticalSpace,
 
           CommonButton(
             titleText: 'Apply',
@@ -263,6 +251,7 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
               Navigator.pop(context);
             },
           ),
+          10.verticalSpace,
         ],
       ),
     );

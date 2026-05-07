@@ -393,12 +393,8 @@ class ChefProfileController extends GetxController {
 
         Future.delayed(const Duration(milliseconds: 500), () {
           if (Get.context != null) {
-            ScaffoldMessenger.of(Get.context!).showSnackBar(
-              const SnackBar(
-                content: Text('Profile updated successfully'),
-                backgroundColor: Colors.green,
-              ),
-            );
+
+            Get.snackbar('Success', 'Profile updated successfully',backgroundColor: Colors.green,colorText: Colors.white);
           }
         });
       }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -404,18 +405,11 @@ class _ToggleCard extends StatelessWidget {
                   maxLines: 2,
                 ),
               ),
-              Switch(
+              CupertinoSwitch(
                 value: isEnabled,
                 onChanged: (_) => onToggle(),
-                activeThumbColor: Colors.white,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                activeTrackColor: const Color(0xFF1C1C1C),
-                inactiveThumbColor: Colors.white,
-                inactiveTrackColor: const Color(0xFFCCCCCC),
-                trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
-
-
-              ),
+                activeColor: const Color(0xFF1C1C1C),
+              )
             ],
           ),
           if (subtitle != null)

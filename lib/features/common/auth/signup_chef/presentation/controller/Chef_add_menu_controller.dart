@@ -44,25 +44,39 @@ class MenuItemModel {
     required this.ingredients,
   });
 
-  factory MenuItemModel.fromJson(Map<String, dynamic> json) => MenuItemModel(
-    id: json['_id'] ?? '',
-    images: List<String>.from(json['images'] ?? []),
-    name: json['name'] ?? '',
-    description: json['description'] ?? '',
-    menuSection: json['menu_section'] ?? '',
-    dietTypes: List<String>.from(json['diet_types'] ?? []),
-    allergens: List<String>.from(json['alergens'] ?? []),
-    estCookingTime: json['est_cooking_time'] ?? '',
-    estPrepTime: json['est_prep_time'] ?? '',
-    customizations: List<String>.from(json['customizations'] ?? []),
-    ingredients: (json['ingradients'] as List? ?? [])
-        .map((e) => IngredientInputModel(
-      name: e['name'] ?? '',
-      quantity: e['quantity'] ?? '',
-      unit: e['unit'] ?? '',
-    ))
-        .toList(),
-  );
+  factory MenuItemModel.fromJson(Map<String, dynamic> json) {
+    try {
+      return MenuItemModel(
+        id: (json['_id'] ?? json['id'] ?? '').toString(),
+        images: (json['images'] as List? ?? []).map((e) => e.toString()).toList(),
+        name: (json['name'] ?? '').toString(),
+        description: (json['description'] ?? '').toString(),
+        menuSection: (json['menu_section'] ?? json['menuSection'] ?? '').toString(),
+        dietTypes: (json['diet_types'] as List? ?? []).map((e) => e.toString()).toList(),
+        allergens: (json['alergens'] as List? ?? []).map((e) => e.toString()).toList(),
+        estCookingTime: (json['est_cooking_time'] ?? '').toString(),
+        estPrepTime: (json['est_prep_time'] ?? '').toString(),
+        customizations: (json['customizations'] as List? ?? []).map((e) => e.toString()).toList(),
+        ingredients: (json['ingradients'] as List? ?? [])
+            .map((e) {
+          final m = e as Map<String, dynamic>? ?? {};
+          return IngredientInputModel(
+            name: (m['name'] ?? '').toString(),
+            quantity: (m['quantity'] ?? '').toString(),
+            unit: (m['unit'] ?? '').toString(),
+          );
+        })
+            .toList(),
+      );
+    } catch (e) {
+      debugPrint('❌ Error parsing MenuItemModel: $e');
+      return MenuItemModel(
+        id: '', images: [], name: 'Error Parsing', description: '',
+        menuSection: '', dietTypes: [], allergens: [], estCookingTime: '',
+        estPrepTime: '', customizations: [], ingredients: [],
+      );
+    }
+  }
 }
 
 class MenuSectionModel {
@@ -190,6 +204,13 @@ class CafeAddMenuItemController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _initData();
+  }
+
+  Future<void> _initData() async {
+    if (LocalStorage.userId.isEmpty) {
+      await LocalStorage.getAllPrefData();
+    }
     fetchCategories();
     fetchMenus();
     fetchEquipments();
@@ -284,22 +305,36 @@ class CafeAddMenuItemController extends GetxController {
 
   Future<void> fetchCategories({bool force = false}) async {
     if (_categoriesFetched && !force) return;
+    if (LocalStorage.userId.isEmpty) await LocalStorage.getAllPrefData();
+    if (LocalStorage.userId.isEmpty) return;
+
     _categoriesFetched = true;
     isLoadingCategory.value = true;
     try {
       final response = await ApiService.get('${ApiEndPoint.AddMenuSection}${LocalStorage.userId}');
       if (response.statusCode == 200 && response.data['success'] == true) {
         final List list = response.data['data'] ?? [];
-        final seen = <String>{};
-        categoryModels.value = list
-            .map((e) => MenuCategoryModel(id: e['_id'] ?? '', name: e['name'] ?? ''))
-            .where((e) => e.name.isNotEmpty && seen.add(e.name))
-            .toList();
+        final seenKeys = <String>{};
+        final List<MenuCategoryModel> filteredModels = [];
+
+        for (var e in list) {
+          String rawName = e['name'] ?? '';
+          String trimmedName = rawName.trim();
+          if (trimmedName.isEmpty) continue;
+
+          String lowerName = trimmedName.toLowerCase();
+          if (seenKeys.add(lowerName)) {
+            filteredModels.add(MenuCategoryModel(id: e['_id'] ?? '', name: trimmedName));
+          }
+        }
+
+        categoryModels.value = filteredModels;
         categoryList.value = categoryModels.map((e) => e.name).toList();
 
         final defaults = ['Starter', 'Main Dish', 'Dessert'];
         for (final name in defaults) {
-          if (!categoryList.contains(name)) {
+          bool alreadyExists = categoryList.any((c) => c.toLowerCase() == name.toLowerCase());
+          if (!alreadyExists) {
             try {
               final res = await ApiService.post(
                 '${ApiEndPoint.AddMenuSection}${LocalStorage.userId}',
@@ -307,65 +342,98 @@ class CafeAddMenuItemController extends GetxController {
               );
               if (res.statusCode == 200 || res.statusCode == 201) {
                 final newId = res.data['data']['_id'] ?? '';
-                categoryModels.add(MenuCategoryModel(id: newId, name: name));
-                categoryList.add(name);
+                final newName = res.data['data']['name'] ?? name;
+                categoryModels.add(MenuCategoryModel(id: newId, name: newName));
+                categoryList.add(newName);
               }
             } catch (_) {}
           }
         }
 
-        if (categoryList.isNotEmpty) {
+        if (categoryList.isNotEmpty && _selectedCategory.value.isEmpty) {
           _selectedCategory.value = categoryList.first;
         }
       }
     } catch (e) {
       debugPrint('❌ Category fetch error: $e');
-      Get.snackbar('Error', 'Failed to load categories.', snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoadingCategory.value = false;
     }
   }
 
   Future<void> fetchMenus() async {
+    if (LocalStorage.userId.isEmpty) await LocalStorage.getAllPrefData();
+    if (LocalStorage.userId.isEmpty) {
+      debugPrint('❌ fetchMenus: userId is empty');
+      return;
+    }
+
     isLoadingMenu.value = true;
     try {
-      final response = await ApiService.get('${ApiEndPoint.addMenuItem}${LocalStorage.userId}');
+      final url = '${ApiEndPoint.addMenuItem}${LocalStorage.userId}';
+      debugPrint('DEBUG: Calling fetchMenus URL: $url');
+
+      final response = await ApiService.get(url);
+      debugPrint('DEBUG: Response status: ${response.statusCode}');
+
       if (response.statusCode == 200 && response.data['success'] == true) {
-        final List list = response.data['data'] ?? [];
-        final List<MenuItemModel> items = list.map((e) => MenuItemModel.fromJson(e)).toList();
-        final Map<String, List<MenuItemModel>> grouped = {};
-        for (var item in items) {
-          final section = item.menuSection.isEmpty ? 'Other' : item.menuSection;
-          grouped.putIfAbsent(section, () => []).add(item);
+        var rawData = response.data['data'];
+        List itemsList = [];
+
+        if (rawData is List) {
+          itemsList = rawData;
+        } else if (rawData is Map) {
+          itemsList = rawData['menus'] ?? rawData['items'] ?? rawData['data'] ?? [];
         }
-        menuSections.value = grouped.entries
-            .map((e) => MenuSectionModel(menuSection: e.key, menus: e.value))
-            .toList();
+
+        if (itemsList.isEmpty) {
+          debugPrint('DEBUG: itemsList is empty from API');
+          menuSections.clear();
+        } else {
+          if (itemsList.first is Map && (itemsList.first as Map).containsKey('menus')) {
+            menuSections.value = itemsList.map((e) => MenuSectionModel.fromJson(e)).toList();
+          } else {
+            final List<MenuItemModel> items = itemsList
+                .map((e) => MenuItemModel.fromJson(e as Map<String, dynamic>? ?? {}))
+                .toList();
+
+            final Map<String, List<MenuItemModel>> grouped = {};
+            for (var item in items) {
+              final section = item.menuSection.isEmpty ? 'Other' : item.menuSection;
+              grouped.putIfAbsent(section, () => []).add(item);
+            }
+
+            menuSections.value = grouped.entries
+                .map((e) => MenuSectionModel(menuSection: e.key, menus: e.value))
+                .toList();
+          }
+        }
+        menuSections.refresh();
+        debugPrint('DEBUG: Final menuSections length: ${menuSections.length}');
+      } else {
+        debugPrint('DEBUG: Fetch menus failed with status ${response.statusCode}');
       }
-    } catch (e) {
-      debugPrint('Menu fetch error: $e');
+    } catch (e, stack) {
+      debugPrint('❌ Menu fetch error: $e');
+      debugPrint(stack.toString());
     } finally {
       isLoadingMenu.value = false;
     }
   }
 
-  // ✅ Helper to add ingredients as indexed multipart fields
   void _appendIngredients(FormData formData) {
-    for (int i = 0; i < ingredientsList.length; i++) {
-      final ing = ingredientsList[i];
-      formData.fields.add(MapEntry('ingradients[$i][name]', ing.name));
-      formData.fields.add(MapEntry('ingradients[$i][quantity]', ing.quantity));
-      formData.fields.add(MapEntry('ingradients[$i][unit]', ing.unit));
-    }
+    final list = ingredientsList.map((ing) => ing.toJson()).toList();
+    formData.fields.add(MapEntry('ingradients', jsonEncode(list)));
   }
+
 
   Future<void> submitMenuItem() async {
     if (nameController.text.trim().isEmpty) {
-      Get.snackbar('Required', 'Item name is required', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Required', 'Item name is required', snackPosition: SnackPosition.TOP,backgroundColor: Colors.green);
       return;
     }
     if (ingredientsList.isEmpty) {
-      Get.snackbar('Required', 'Please add at least one ingredient', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Required', 'Please add at least one ingredient', snackPosition: SnackPosition.TOP,backgroundColor: Colors.green);
       return;
     }
 
@@ -391,7 +459,6 @@ class CafeAddMenuItemController extends GetxController {
         formData.fields.add(MapEntry('special_equipment[]', id));
       }
 
-      // ✅ Send ingredients as indexed multipart fields instead of JSON string
       _appendIngredients(formData);
 
       if (previewImage.value != null) {
@@ -413,24 +480,15 @@ class CafeAddMenuItemController extends GetxController {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final newItem = MenuItemModel.fromJson(response.data['data']);
-        final sectionName = newItem.menuSection.isEmpty ? 'Other' : newItem.menuSection;
-        final existingSection = menuSections.firstWhereOrNull((s) => s.menuSection == sectionName);
-        if (existingSection != null) {
-          existingSection.menus.add(newItem);
-        } else {
-          menuSections.add(MenuSectionModel(menuSection: sectionName, menus: [newItem]));
-        }
-        menuSections.refresh();
+        await fetchMenus();
         Get.back(result: true);
         Get.snackbar('Success', 'Menu item added successfully!',
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.green,
             colorText: Colors.white);
       } else {
-        // ✅ More descriptive error message
         final msg = response.data['message'] ?? response.data['error'] ?? 'Failed to add menu item.';
-        Get.snackbar('Error', msg.toString(), snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar('Message', msg.toString(), snackPosition: SnackPosition.TOP,backgroundColor: Colors.green);
         debugPrint('❌ Submit failed: ${response.data}');
       }
     } catch (e) {
@@ -473,7 +531,6 @@ class CafeAddMenuItemController extends GetxController {
         formData.fields.add(MapEntry('special_equipment[]', id));
       }
 
-      // ✅ Same fix for update
       _appendIngredients(formData);
 
       if (previewImage.value != null) {
@@ -490,17 +547,12 @@ class CafeAddMenuItemController extends GetxController {
       }
 
       final response = await ApiService.patch(
-        '${ApiEndPoint.baseUrl}menu/${editingItemId.value}',
+        'menu/${editingItemId.value}?id=${LocalStorage.userId}',
         body: formData,
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final updatedItem = MenuItemModel.fromJson(response.data['data']);
-        for (var section in menuSections) {
-          final idx = section.menus.indexWhere((m) => m.id == updatedItem.id);
-          if (idx != -1) section.menus[idx] = updatedItem;
-        }
-        menuSections.refresh();
+        await fetchMenus();
         Get.back(result: true);
         Get.snackbar('Success', 'Menu item updated successfully!',
             snackPosition: SnackPosition.BOTTOM,
@@ -509,7 +561,7 @@ class CafeAddMenuItemController extends GetxController {
       } else {
         final msg = response.data['message'] ?? response.data['error'] ?? 'Failed to update menu item.';
         Get.snackbar('Error', msg.toString(), snackPosition: SnackPosition.BOTTOM);
-        debugPrint('❌ Update failed: ${response.data}');
+        debugPrint('Update failed: ${response.data}');
       }
     } catch (e) {
       debugPrint('Update error: $e');
@@ -520,20 +572,16 @@ class CafeAddMenuItemController extends GetxController {
   }
 
   Future<void> addMenuSection(String sectionName) async {
+    if (LocalStorage.userId.isEmpty) await LocalStorage.getAllPrefData();
+    if (LocalStorage.userId.isEmpty) return;
     try {
       final res = await ApiService.post(
         '${ApiEndPoint.AddMenuSection}${LocalStorage.userId}',
         body: {'name': sectionName},
       );
       if (res.statusCode == 200 || res.statusCode == 201) {
-        final newId = res.data['data']['_id'] ?? '';
-        menuSections.add(MenuSectionModel(menuSection: sectionName, menus: []));
-        if (!categoryList.contains(sectionName)) {
-          categoryModels.add(MenuCategoryModel(id: newId, name: sectionName));
-          categoryList.add(sectionName);
-        }
-        _selectedCategory.value = sectionName;
-        menuSections.refresh();
+        await fetchCategories(force: true);
+        await fetchMenus();
       }
     } catch (e) {
       debugPrint('Add section error: $e');
@@ -541,12 +589,11 @@ class CafeAddMenuItemController extends GetxController {
   }
 
   Future<void> deleteMenuItem(String itemId) async {
-    for (var section in menuSections) {
-      section.menus.removeWhere((item) => item.id == itemId);
-    }
-    menuSections.refresh();
     try {
-      await ApiService.delete('${ApiEndPoint.baseUrl}menu/$itemId');
+      final response = await ApiService.delete('menu/$itemId?id=${LocalStorage.userId}');
+      if (response.statusCode == 200) {
+        await fetchMenus();
+      }
     } catch (e) {
       debugPrint('Delete error: $e');
     }
@@ -562,10 +609,15 @@ class CafeAddMenuItemController extends GetxController {
   void toggleCustomize() => customizeExpanded.value = !customizeExpanded.value;
   void toggleIngredients() => ingredientsExpanded.value = !ingredientsExpanded.value;
   void toggleEquipment() => equipmentExpanded.value = !equipmentExpanded.value;
+
+
   void addCustomizeOption(String val) {
     if (val.trim().isNotEmpty) customizeOptions.add(val.trim());
   }
+
+
   void removeCustomizeOption(String val) => customizeOptions.remove(val);
+
 
   void addIngredient(String name, String quantity, String unit) {
     if (name.trim().isNotEmpty) {

@@ -17,6 +17,7 @@ class AccountSetting extends StatefulWidget {
   const AccountSetting({super.key});
   @override
   State<AccountSetting> createState() => _AccountSettingState();
+
 }
 
 class _AccountSettingState extends State<AccountSetting> {
@@ -92,27 +93,38 @@ class _AccountSettingState extends State<AccountSetting> {
                           bottom: 8,
                           color: Color(0xff272727),
                         ),
+
                         IntlPhoneField(
                           controller: controller.phoneController,
                           initialCountryCode: 'US',
                           decoration: InputDecoration(
                             hintText: 'Enter phone number',
-                            hintStyle: const TextStyle(
-                              fontSize: 14,
-                              color: Color(0xffAAAAAA),
+                            hintStyle: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xff777777),
                             ),
                             filled: true,
-                            fillColor: const Color(0xFFF7F7F7),
+                            fillColor: const Color(0xffF2F2F2),
+                            counterText: '',
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                              vertical: 18.h,
+                            ),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.r),
+                              borderRadius: BorderRadius.circular(15.r),
                               borderSide: BorderSide.none,
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.r),
+                              borderRadius: BorderRadius.circular(15.r),
                               borderSide: BorderSide.none,
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.r),
+                              borderRadius: BorderRadius.circular(15.r),
+                              borderSide: BorderSide.none,
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.r),
                               borderSide: BorderSide.none,
                             ),
                           ),
@@ -130,7 +142,6 @@ class _AccountSettingState extends State<AccountSetting> {
                             controller.selectedCountryCode = phone.countryCode;
                           },
                         ),
-
                         // ── Account Action ──
                         const CommonText(
                           text: 'ACCOUNT ACTION',
