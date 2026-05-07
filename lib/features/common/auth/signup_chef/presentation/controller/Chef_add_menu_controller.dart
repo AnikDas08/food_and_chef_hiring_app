@@ -59,13 +59,13 @@ class MenuItemModel {
         customizations: (json['customizations'] as List? ?? []).map((e) => e.toString()).toList(),
         ingredients: (json['ingradients'] as List? ?? [])
             .map((e) {
-              final m = e as Map<String, dynamic>? ?? {};
-              return IngredientInputModel(
-                name: (m['name'] ?? '').toString(),
-                quantity: (m['quantity'] ?? '').toString(),
-                unit: (m['unit'] ?? '').toString(),
-              );
-            })
+          final m = e as Map<String, dynamic>? ?? {};
+          return IngredientInputModel(
+            name: (m['name'] ?? '').toString(),
+            quantity: (m['quantity'] ?? '').toString(),
+            unit: (m['unit'] ?? '').toString(),
+          );
+        })
             .toList(),
       );
     } catch (e) {
@@ -307,7 +307,7 @@ class CafeAddMenuItemController extends GetxController {
     if (_categoriesFetched && !force) return;
     if (LocalStorage.userId.isEmpty) await LocalStorage.getAllPrefData();
     if (LocalStorage.userId.isEmpty) return;
-    
+
     _categoriesFetched = true;
     isLoadingCategory.value = true;
     try {
@@ -367,15 +367,15 @@ class CafeAddMenuItemController extends GetxController {
       debugPrint('❌ fetchMenus: userId is empty');
       return;
     }
-    
+
     isLoadingMenu.value = true;
     try {
       final url = '${ApiEndPoint.addMenuItem}${LocalStorage.userId}';
       debugPrint('DEBUG: Calling fetchMenus URL: $url');
-      
+
       final response = await ApiService.get(url);
       debugPrint('DEBUG: Response status: ${response.statusCode}');
-      
+
       if (response.statusCode == 200 && response.data['success'] == true) {
         var rawData = response.data['data'];
         List itemsList = [];
@@ -383,7 +383,6 @@ class CafeAddMenuItemController extends GetxController {
         if (rawData is List) {
           itemsList = rawData;
         } else if (rawData is Map) {
-          // সার্ভার যদি কোনো নির্দিষ্ট কী-র ভেতর ডেটা পাঠায়
           itemsList = rawData['menus'] ?? rawData['items'] ?? rawData['data'] ?? [];
         }
 
@@ -391,21 +390,19 @@ class CafeAddMenuItemController extends GetxController {
           debugPrint('DEBUG: itemsList is empty from API');
           menuSections.clear();
         } else {
-          // চেক করা হচ্ছে ডেটা কি অলরেডি সেকশন অনুযায়ী গ্রুপ করা কি না
           if (itemsList.first is Map && (itemsList.first as Map).containsKey('menus')) {
             menuSections.value = itemsList.map((e) => MenuSectionModel.fromJson(e)).toList();
           } else {
-            // ফ্ল্যাট লিস্ট আসলে ম্যানুয়ালি গ্রুপ করা হচ্ছে
             final List<MenuItemModel> items = itemsList
                 .map((e) => MenuItemModel.fromJson(e as Map<String, dynamic>? ?? {}))
                 .toList();
-            
+
             final Map<String, List<MenuItemModel>> grouped = {};
             for (var item in items) {
               final section = item.menuSection.isEmpty ? 'Other' : item.menuSection;
               grouped.putIfAbsent(section, () => []).add(item);
             }
-            
+
             menuSections.value = grouped.entries
                 .map((e) => MenuSectionModel(menuSection: e.key, menus: e.value))
                 .toList();
@@ -483,7 +480,7 @@ class CafeAddMenuItemController extends GetxController {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        await fetchMenus(); 
+        await fetchMenus();
         Get.back(result: true);
         Get.snackbar('Success', 'Menu item added successfully!',
             snackPosition: SnackPosition.BOTTOM,
@@ -550,12 +547,12 @@ class CafeAddMenuItemController extends GetxController {
       }
 
       final response = await ApiService.patch(
-        '${ApiEndPoint.baseUrl}menu/${editingItemId.value}',
+        'menu/${editingItemId.value}?id=${LocalStorage.userId}',
         body: formData,
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        await fetchMenus(); 
+        await fetchMenus();
         Get.back(result: true);
         Get.snackbar('Success', 'Menu item updated successfully!',
             snackPosition: SnackPosition.BOTTOM,
@@ -593,7 +590,7 @@ class CafeAddMenuItemController extends GetxController {
 
   Future<void> deleteMenuItem(String itemId) async {
     try {
-      final response = await ApiService.delete('${ApiEndPoint.baseUrl}menu/$itemId');
+      final response = await ApiService.delete('menu/$itemId?id=${LocalStorage.userId}');
       if (response.statusCode == 200) {
         await fetchMenus();
       }
