@@ -30,6 +30,7 @@ class SignUpController extends GetxController {
   // ── Location ──────────────────────────────────────────────
   double selectedLat = 0;
   double selectedLng = 0;
+  bool isLoadingResendotp=false;
 
   // ── Address Suggestions ───────────────────────────────────
   List<Map<String, dynamic>> addressSuggestions = [];
@@ -342,6 +343,32 @@ class SignUpController extends GetxController {
     } finally {
       isCompleteProfile = false;
       update();
+    }
+  }
+  Future<void> resendOtp()async{
+    isLoadingResendotp=true;
+    update();
+    try{
+      Map<String, String> body = {
+        "email": emailController.text,
+      };
+
+      final response = await ApiService.post("auth/forget-password", body: body);
+
+      if (response.statusCode == 200) {
+        isLoadingResendotp = false;
+        update();
+        otpController.clear();
+        startTimer();
+        Utils.successSnackBar("Success", "OTP has been resent to your email");
+      } else {
+        isLoadingResendotp = false;
+        update();
+        Utils.errorSnackBar("Error", response.message);
+      }
+    }
+    catch(e){
+
     }
   }
 }

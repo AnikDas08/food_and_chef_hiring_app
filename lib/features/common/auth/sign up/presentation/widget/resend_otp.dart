@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../../../utils/constants/app_string.dart';
+import '../controller/sign_up_controller.dart';
 
 class ResendOtp extends StatelessWidget {
   const ResendOtp({super.key});
@@ -28,7 +30,7 @@ class ResendOtp extends StatelessWidget {
             recognizer:
                 TapGestureRecognizer()
                   ..onTap = () {
-                    // Get.toNamed(AppRoutes.signIn);
+                    Get.find<SignUpController>().resendOtp();
                   },
             style: const TextStyle(
               color: Color(0xff272727),
