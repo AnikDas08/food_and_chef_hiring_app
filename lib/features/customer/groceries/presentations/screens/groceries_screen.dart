@@ -8,7 +8,6 @@ import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/my_groceries_screen.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/utils/constants/app_colors.dart';
-import 'package:new_untitled/utils/constants/app_icons.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
@@ -25,17 +24,19 @@ class GroceryScreen extends StatelessWidget {
       tag: DateTime.now().millisecondsSinceEpoch.toString(),
     );
 
+    // Check if coming from booking history (has arguments)
+    final bool fromBookingHistory = Get.arguments != null;
+
     return Scaffold(
       backgroundColor: Colors.white,
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: fromBookingHistory,
 
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
 
-        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: false,
+        centerTitle: fromBookingHistory,
         flexibleSpace: appBarOpacity(),
         actions: [LiquidGlassLayer(
           child: LiquidGlass(
@@ -55,13 +56,6 @@ class GroceryScreen extends StatelessWidget {
           ),
         ),
         ],
-        leading:
-            controller.isBack == false
-                ? IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const CommonImage(imageSrc: AppIcons.backIcon, size: 24),
-                )
-                : null,
         title: const CommonText(
           text: 'Groceries',
           fontSize: 24,
@@ -81,43 +75,34 @@ class GroceryScreen extends StatelessWidget {
             controller.initialOrderId!.isNotEmpty;
 
         return SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(16.w, 110.h, 16.w, 30.h),
+          padding: EdgeInsets.fromLTRB(16.w, fromBookingHistory ? 100.h : 16.h, 16.w, fromBookingHistory ? 30.h : 16.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10.h),
-
-              // --- 1. BOOKING LIST (SINGLE vs ALL) ---
-              if (hasInitialId) ...[
-                const CommonText(
-                  text: 'Ordering for this booking',
-                  color: Colors.grey,
-                ),
-                SizedBox(height: 16.h),
-                _buildSingleOrderView(controller),
-              ] else ...[
-                const CommonText(
-                  text: 'Select bookings for grocery delivery',
-                  color: Color(0xff272727),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-                SizedBox(height: 12.h),
-                // Inside the Column, replace _buildFullListView(controller) with:
-                controller.availableOrders.isEmpty
-                    ? Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20.h),
-                        child: const CommonText(
-                          text: 'No pending bookings available',
-                          color: AppColors.grey,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    )
-                    : _buildFullListView(controller),
-              ],
+              // --- 1. BOOKING LIST ---
+              const CommonText(
+                text: 'Select bookings for grocery delivery',
+                color: Color(0xff272727),
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+              SizedBox(height: 12.h),
+              if (hasInitialId)
+                _buildSingleOrderView(controller)
+              else if (controller.availableOrders.isEmpty)
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20.h),
+                    child: const CommonText(
+                      text: 'No pending bookings available',
+                      color: AppColors.grey,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                )
+              else
+                _buildFullListView(controller),
 
               SizedBox(height: 24.h),
 
@@ -238,7 +223,7 @@ class GroceryScreen extends StatelessWidget {
       orElse: () => {},
     );
     if (order.isEmpty) return const SizedBox();
-    return _buildBookingCard(order: order, isSelected: true, onTap: () {});
+    return _buildBookingCard(order: order, isSelected: true, onTap: () {}, isLast: true);
   }
 
   Widget _buildFullListView(GroceryController controller) {
@@ -248,10 +233,12 @@ class GroceryScreen extends StatelessWidget {
       itemCount: controller.availableOrders.length,
       itemBuilder: (context, index) {
         final order = controller.availableOrders[index];
+        final bool isLast = index == controller.availableOrders.length - 1;
         return _buildBookingCard(
           order: order,
           isSelected: controller.selectedOrderIds.contains(order['_id']),
           onTap: () => controller.toggleOrderSelection(order['_id']),
+          isLast: isLast,
         );
       },
     );
@@ -261,6 +248,7 @@ class GroceryScreen extends StatelessWidget {
     required Map<String, dynamic> order,
     required bool isSelected,
     required VoidCallback onTap,
+    bool isLast = false,
   }) {
     final chef = order['chef'] ?? {};
     final List staticItems = order['static_items'] as List? ?? [];
@@ -278,21 +266,17 @@ class GroceryScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.only(bottom: 12.h),
+        margin: EdgeInsets.only(bottom: isLast ? 0 : 12.h),
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
-          color: const Color(0xffF5F5F5),
+          color: isSelected ? const Color(0xff272727) : const Color(0xffF5F5F5),
           borderRadius: BorderRadius.circular(16.r),
-          border:
-              isSelected
-                  ? Border.all(color: const Color(0xffFD713F), width: 1.5)
-                  : null,
         ),
         child: Row(
           children: [
             Icon(
               isSelected ? Icons.check_circle : Icons.circle_outlined,
-              color: isSelected ? const Color(0xffFD713F) : Colors.grey[400],
+              color: isSelected ? Colors.white : Colors.grey[400],
               size: 22,
             ),
             SizedBox(width: 8.w),
@@ -308,11 +292,12 @@ class GroceryScreen extends StatelessWidget {
                   CommonText(
                     text: chef['name'] ?? 'Unknown Chef',
                     fontWeight: FontWeight.bold,
+                    color: isSelected ? Colors.white : const Color(0xff272727),
                   ),
                   CommonText(
                     text:
                         "${staticItems.length} Recipe • ${order['order_id'] ?? ''}",
-                    color: Colors.grey,
+                    color: isSelected ? Colors.white : Colors.grey,
                     fontSize: 12,
                   ),
                 ],

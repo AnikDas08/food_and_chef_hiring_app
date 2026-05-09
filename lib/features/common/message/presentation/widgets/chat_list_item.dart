@@ -59,14 +59,14 @@ Widget chatListItem({required ChatModel item}) {
               color: const Color(0xff272727),
               bottom: 8,
             ),
-            Container(
+            /*Container(
               width: 8.sp,
               height: 8.sp,
               decoration: const BoxDecoration(
                 color: Color(0xffFD713F),
                 shape: BoxShape.circle,
               ),
-            ),
+            ),*/
           ],
         ),
       ],

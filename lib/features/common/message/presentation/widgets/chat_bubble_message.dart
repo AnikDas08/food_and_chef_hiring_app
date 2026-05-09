@@ -9,6 +9,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../utils/constants/app_colors.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../../../utils/extensions/extension.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
@@ -156,7 +157,7 @@ class ChatBubbleMessage extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
       decoration: BoxDecoration(
-        color: isMe ? const Color(0xffFD713F) : const Color(0xffF0F0F0),
+        color: isMe ? const Color(0xff222222) : const Color(0xffF1F1F1),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(18.r),
           topRight: Radius.circular(18.r),
@@ -169,7 +170,7 @@ class ChatBubbleMessage extends StatelessWidget {
         text: text.isEmpty ? '...' : text,
         fontSize: 13,
         fontWeight: FontWeight.w400,
-        color: isMe ? Colors.white : const Color(0xff222222),
+        color: isMe ? Colors.white : AppColors.primaryColor,
         textAlign: isMe ? TextAlign.right : TextAlign.left,
       ),
     );
@@ -237,7 +238,7 @@ class ChatBubbleMessage extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
             decoration: BoxDecoration(
               color:
-              isMe ? const Color(0xffFD713F) : const Color(0xffF0F0F0),
+              isMe ? const Color(0xff222222) : const Color(0xffF1F1F1),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(18.r),
                 topRight: Radius.circular(18.r),
@@ -249,7 +250,7 @@ class ChatBubbleMessage extends StatelessWidget {
               maxLines: 100,
               text: text,
               fontSize: 13,
-              color: isMe ? Colors.white : const Color(0xff222222),
+              color: isMe ? Colors.white : AppColors.primaryColor,
             ),
           ),
       ],
@@ -348,13 +349,13 @@ class ChatBubbleMessage extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
             decoration: BoxDecoration(
               color:
-              isMe ? const Color(0xffFD713F) : const Color(0xffF0F0F0),
+              isMe ? const Color(0xff222222) : const Color(0xffF1F1F1),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: CommonText(
               text: text,
               fontSize: 13,
-              color: isMe ? Colors.white : const Color(0xff222222),
+              color: isMe ? Colors.white : AppColors.primaryColor,
             ),
           ),
       ],
@@ -374,7 +375,7 @@ class ChatBubbleMessage extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
         decoration: BoxDecoration(
-          color: isMe ? const Color(0xffFD713F) : const Color(0xffF0F0F0),
+          color: isMe ? const Color(0xff222222) : const Color(0xffF1F1F1),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(18.r),
             topRight: Radius.circular(18.r),
@@ -430,7 +431,7 @@ class ChatBubbleMessage extends StatelessWidget {
                     maxLines: 2,
                     text: fileName,
                     fontSize: 12,
-                    color: isMe ? Colors.white : const Color(0xff222222),
+                    color: isMe ? Colors.white : AppColors.primaryColor,
                   ),
                   4.height,
                   CommonText(

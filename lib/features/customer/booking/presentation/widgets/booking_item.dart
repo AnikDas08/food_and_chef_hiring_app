@@ -244,7 +244,7 @@ Widget bookingItem(BookingHistoryModel order) {
                 child: CommonText(
                   text: _formatDate(order.formattedDate),
                   fontSize: 12,
-                  left: 8,
+                  left: 4,
                   fontWeight: FontWeight.w400,
                   color: const Color(0xff272727),
                 ),
