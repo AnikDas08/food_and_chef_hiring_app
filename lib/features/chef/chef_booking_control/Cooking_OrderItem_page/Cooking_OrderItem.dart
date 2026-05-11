@@ -2,8 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
+import '../../../../component/text/common_text.dart';
 import '../../../../services/api/api_service.dart';
+import '../../../../utils/constants/app_colors.dart';
 
 class CookingOrderItem {
   final String name;
@@ -45,17 +46,13 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
   @override
   void initState() {
     super.initState();
-
-    // Pulse animation for the orange circle
     _pulseController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
-
     _pulseAnim = Tween<double>(begin: 1.0, end: 1.04).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
-
     _startTimer();
   }
 
@@ -68,16 +65,13 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
   }
 
   void _togglePause() {
-
     setState(() => _isRunning = !_isRunning);
-
   }
 
   void _onStopPressed() {
     setState(() => _isRunning = false);
     _showStopConfirmation();
   }
-
 
   void _showStopConfirmation() {
     showDialog(
@@ -100,6 +94,7 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
       ),
     );
   }
+
   String _formatShort(Duration d) {
     final h = d.inHours.toString().padLeft(2, '0');
     final m = (d.inMinutes % 60).toString().padLeft(2, '0');
@@ -122,40 +117,43 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Back button ──
+
+            // ── Back button + Title একই row এ ──
             Padding(
-              padding: EdgeInsets.only(left: 8.w, top: 8.h),
-              child: IconButton(
-                onPressed: Get.back,
-                icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                    size: 20, color: Color(0xFF1A1A1A)),
+              padding: EdgeInsets.only(left: 4.w, right: 20.w, top: 8.h),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: Get.back,
+                    icon: const Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      size: 20,
+                      color: Color(0xFF1A1A1A),
+                    ),
+                  ),
+                  SizedBox(width: 4.w),
+                  CommonText(
+                    text: 'Cooking stop watch',
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.black,
+                    textAlign: TextAlign.start,
+                    maxLines: 1,
+                  ),
+                ],
               ),
             ),
 
-            // ── Title ──
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Cooking stop watch',
-                    style: TextStyle(
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF1A1A1A),
-                    ),
-                  ),
-                  SizedBox(height: 6.h),
-                  Text(
-                    'Set a stop watch to measure the amount of time spent\ncooking, and then stop the timer when you are done.',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.grey[500],
-                      height: 1.5,
-                    ),
-                  ),
-                ],
+              padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 4.h),
+              child: CommonText(
+                text: 'Set a stop watch to measure the amount of time spent cooking, and then stop the timer when you are done.',
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: const Color(0xFF777777),
+                textAlign: TextAlign.start,
+                maxLines: 3,
+                height: 1.5,
               ),
             ),
 
@@ -164,7 +162,9 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
             // ── Timer Circle ──
             Center(
               child: ScaleTransition(
-                scale: _isRunning ? _pulseAnim : const AlwaysStoppedAnimation(1.0),
+                scale: _isRunning
+                    ? _pulseAnim
+                    : const AlwaysStoppedAnimation(1.0),
                 child: Container(
                   width: 220.r,
                   height: 220.r,
@@ -182,13 +182,12 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Cooking time',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: Colors.white.withOpacity(0.85),
-                          fontWeight: FontWeight.w400,
-                        ),
+                      CommonText(
+                        text: 'Cooking time',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white.withOpacity(0.85),
+                        textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 8.h),
                       Text(
@@ -199,24 +198,26 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
                           color: Colors.white,
                           letterSpacing: 1.5,
                           fontFeatures: const [FontFeature.tabularFigures()],
+                          height: 1.3,
                         ),
                       ),
                       if (!_isRunning) ...[
                         SizedBox(height: 8.h),
                         Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 3.h),
+                            horizontal: 10.w,
+                            vertical: 3.h,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(10.r),
                           ),
-                          child: Text(
-                            'Paused',
-                            style: TextStyle(
-                              fontSize: 11.sp,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          child: CommonText(
+                            text: 'Paused',
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ],
@@ -240,13 +241,12 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Order Details',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w800,
-                        color: const Color(0xFF1A1A1A),
-                      ),
+                    CommonText(
+                      text: 'Order Details',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.black,
+                      textAlign: TextAlign.start,
                     ),
                     SizedBox(height: 12.h),
                     Expanded(
@@ -254,7 +254,7 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
                         itemCount: widget.orderItems.length,
                         separatorBuilder: (_, __) => Divider(
                           height: 16.h,
-                          color: Colors.grey[300],
+                          color: const Color(0xFFDDDDDD),
                         ),
                         itemBuilder: (_, i) {
                           final item = widget.orderItems[i];
@@ -264,21 +264,21 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      item.name,
-                                      style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF1A1A1A),
-                                      ),
+                                    CommonText(
+                                      text: item.name,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.black,
+                                      textAlign: TextAlign.start,
                                     ),
                                     SizedBox(height: 3.h),
-                                    Text(
-                                      item.description,
-                                      style: TextStyle(
-                                        fontSize: 11.sp,
-                                        color: Colors.grey[500],
-                                      ),
+                                    CommonText(
+                                      text: item.description,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400,
+                                      color: const Color(0xFF777777),
+                                      textAlign: TextAlign.start,
+                                      maxLines: 2,
                                     ),
                                   ],
                                 ),
@@ -289,21 +289,23 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
                                   height: 52.r,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.r),
-                                    color: Colors.grey[200], // loading এর সময় background
+                                    color: const Color(0xFFE0E0E0),
                                   ),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10.r),
                                     child: Image.network(
                                       item.image!,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) {
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
                                         return Icon(
                                           Icons.broken_image,
-                                          color: Colors.grey,
+                                          color: const Color(0xFF9E9E9E),
                                           size: 24.r,
                                         );
                                       },
-                                      loadingBuilder: (context, child, progress) {
+                                      loadingBuilder:
+                                          (context, child, progress) {
                                         if (progress == null) return child;
                                         return const Center(
                                           child: CircularProgressIndicator(
@@ -327,13 +329,16 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
 
             SizedBox(height: 16.h),
 
-            // ── Pause / Stop Buttons ──
             Padding(
               padding: EdgeInsets.fromLTRB(
-                  20.w, 0, 20.w, MediaQuery.of(context).padding.bottom + 16.h),
+                20.w,
+                0,
+                20.w,
+                MediaQuery.of(context).padding.bottom + 16.h,
+              ),
               child: Row(
                 children: [
-                  // Pause
+                  // Pause / Resume
                   Expanded(
                     child: GestureDetector(
                       onTap: _togglePause,
@@ -351,31 +356,31 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
                                   ? Icons.pause_rounded
                                   : Icons.play_arrow_rounded,
                               size: 20.r,
-                              color: const Color(0xFF1A1A1A),
+                              color: AppColors.black,
                             ),
                             SizedBox(width: 6.w),
-                            Text(
-                              _isRunning ? 'Pause' : 'Resume',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xFF1A1A1A),
-                              ),
+                            CommonText(
+                              text: _isRunning ? 'Pause' : 'Resume',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.black,
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),
                       ),
                     ),
                   ),
+
                   SizedBox(width: 12.w),
-                  // Stop
+
                   Expanded(
                     child: GestureDetector(
                       onTap: _onStopPressed,
                       child: Container(
                         height: 52.h,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF1A1A1A),
+                          color: AppColors.black,
                           borderRadius: BorderRadius.circular(14.r),
                         ),
                         child: Row(
@@ -387,13 +392,12 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
                               color: Colors.white,
                             ),
                             SizedBox(width: 6.w),
-                            Text(
-                              'Stop',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
+                            CommonText(
+                              text: 'Stop',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),
@@ -409,15 +413,17 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
     );
   }
 }
+
 class _StopConfirmationDialog extends StatelessWidget {
+
   final Duration totalTime;
-  final String orderId; // ← যোগ করো
+  final String orderId;
   final VoidCallback onConfirm;
   final VoidCallback onCheckAgain;
 
   const _StopConfirmationDialog({
     required this.totalTime,
-    required this.orderId, // ← যোগ করো
+    required this.orderId,
     required this.onConfirm,
     required this.onCheckAgain,
   });
@@ -443,6 +449,7 @@ class _StopConfirmationDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // ── Warning icon ──
             Container(
               width: 56.r,
               height: 56.r,
@@ -450,39 +457,49 @@ class _StopConfirmationDialog extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Color(0xFFF5A623),
               ),
-              child: Icon(Icons.priority_high_rounded,
-                  color: Colors.white, size: 28.r),
+              child: Icon(
+                Icons.priority_high_rounded,
+                color: Colors.white,
+                size: 28.r,
+              ),
             ),
+
             SizedBox(height: 16.h),
-            Text(
-              "Are you sure you're done ?",
+
+            CommonText(
+              text: "Are you sure you're done ?",
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: AppColors.black,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w800,
-                color: const Color(0xFF1A1A1A),
-              ),
+              maxLines: 2,
             ),
+
             SizedBox(height: 10.h),
-            Text(
-              'Are you sure that all recipes have been prepared and the kitchen is cleaned up?',
+
+            CommonText(
+              text: 'Are you sure that all recipes have been prepared and the kitchen is cleaned up?',
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: const Color(0xFF777777),
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: Colors.grey[500],
-                height: 1.5,
-              ),
+              maxLines: 3,
+              height: 1.5,
             ),
+
             SizedBox(height: 14.h),
-            Text(
-              'Total cooking time: ${_formatShort(totalTime)}',
-              style: TextStyle(
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w700,
-                color: const Color(0xFF1A1A1A),
-              ),
+
+            CommonText(
+              text: 'Total cooking time: ${_formatShort(totalTime)}',
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: AppColors.black,
+              textAlign: TextAlign.center,
             ),
+
             SizedBox(height: 20.h),
+
+            // ── I'm sure ──
             GestureDetector(
               onTap: () async {
                 try {
@@ -491,9 +508,15 @@ class _StopConfirmationDialog extends StatelessWidget {
                     'order/clearence/$orderId',
                     body: {'time': timeString},
                   );
-                  if (response.statusCode == 200 || response.statusCode == 201) {
+                  if (response.statusCode == 200 ||
+                      response.statusCode == 201) {
                     onConfirm();
-                    Get.snackbar('Message', 'Successfully submitted cooking time',backgroundColor: Colors.green);
+                    Get.snackbar(
+                      'Message',
+                      'Successfully submitted cooking time',
+                      backgroundColor: Colors.green,
+                    );
+                    Get.back();
                   } else {
                     Get.snackbar('Error', 'Failed to submit cooking time');
                   }
@@ -505,17 +528,24 @@ class _StopConfirmationDialog extends StatelessWidget {
                 width: double.infinity,
                 height: 50.h,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
+                  color: AppColors.black,
                   borderRadius: BorderRadius.circular(14.r),
                 ),
                 child: Center(
-                  child: Text("I'm sure",
-                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w700, color: Colors.white),
+                  child: CommonText(
+                    text: "I'm sure",
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
             ),
+
             SizedBox(height: 10.h),
+
+            // ── Check again ──
             GestureDetector(
               onTap: onCheckAgain,
               child: Container(
@@ -526,8 +556,12 @@ class _StopConfirmationDialog extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14.r),
                 ),
                 child: Center(
-                  child: Text('Check again',
-                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: const Color(0xFF1A1A1A)),
+                  child: CommonText(
+                    text: 'Check again',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.black,
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),

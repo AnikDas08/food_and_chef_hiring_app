@@ -4,6 +4,7 @@ import 'package:new_untitled/component/button/common_button.dart';
 import '../../../../../component/text/common_text.dart';
 
 class SetAvailabilityPicker extends StatefulWidget {
+
   final TimeOfDay initialFromTime;
   final TimeOfDay initialToTime;
   final Function(TimeOfDay from, TimeOfDay to) onApply;
@@ -126,9 +127,9 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
 
             Color color;
             if (isSelected) {
-              color = const Color(0xFF272727); // Brand dark grey
+              color = const Color(0xFF272727);
             } else {
-              color = const Color(0xFFBBBBBB); // Faded grey
+              color = const Color(0xFFBBBBBB);
             }
 
             if (isSelected) {
@@ -203,23 +204,27 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
           Stack(
             alignment: Alignment.center,
             children: [
-              // Highlight bar
+
               Container(
                 height: 80.h,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF7F7F7), // Matches availability slots background
+                  color: const Color(0xFFF7F7F7),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
               ),
 
               Row(
+
                 mainAxisAlignment: MainAxisAlignment.center,
+
                 children: [
+
                   _buildWheel(
                     controller: _fromController,
                     selectedIndex: _fromIndex,
                     onChanged: (i) => setState(() => _fromIndex = i),
                   ),
+
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10.w),
                     child: CommonText(
@@ -229,11 +234,13 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
                       color: const Color(0xFF777777),
                     ),
                   ),
+
                   _buildWheel(
                     controller: _toController,
                     selectedIndex: _toIndex,
                     onChanged: (i) => setState(() => _toIndex = i),
                   ),
+
                 ],
               ),
             ],

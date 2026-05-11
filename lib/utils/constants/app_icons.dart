@@ -10,6 +10,7 @@ class AppIcons {
   static const String customers = '$baseurl/customers.svg';
   static const String date = '$baseurl/date.svg';
   static const String edit = '$baseurl/edit.svg';
+  static const String appleLogo = '$baseurl/apple.svg';
   static const String facebook = '$baseurl/facebook.svg';
   static const String fliter = '$baseurl/fliter.svg';
   static const String google = '$baseurl/google.svg';

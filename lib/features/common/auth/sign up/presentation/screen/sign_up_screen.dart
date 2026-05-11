@@ -111,9 +111,9 @@ class SignUpScreen extends StatelessWidget {
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CommonImage(imageSrc: AppIcons.facebook),
+                        CommonImage(imageSrc: AppIcons.appleLogo),
                         CommonText(
-                          text: AppString.signUpWithFacebook,
+                          text: AppString.signUpWithApple,
                           left: 14,
                         ),
                       ],

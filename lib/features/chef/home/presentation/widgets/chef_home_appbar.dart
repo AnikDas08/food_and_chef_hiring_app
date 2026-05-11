@@ -51,6 +51,7 @@ class ChefHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: Color(0xff777777),
                 ),
 
+                SizedBox(height: 4,)
               ],
             ),
           ),
