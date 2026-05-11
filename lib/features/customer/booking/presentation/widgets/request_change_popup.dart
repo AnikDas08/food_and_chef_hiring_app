@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
+import 'package:new_untitled/utils/constants/app_colors.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
@@ -45,12 +46,25 @@ void requestChange(BuildContext context,dynamic order) {
 
                             Get.dialog(
                               AlertDialog(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-                                title: const CommonText(text: 'Cancel Booking', fontWeight: FontWeight.bold),
+                                backgroundColor: AppColors.white,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
+                                title: const CommonText(
+                                    text: 'Cancel Booking',
+                                    fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                  color: Color(0xff272727),
+                                ),
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const CommonText(text: 'Please provide a reason for cancelling this booking:',maxLines:  4, fontSize: 13,textAlign: TextAlign.start, bottom: 12),
+                                    const CommonText(
+                                        text: 'Please provide a reason for cancelling this booking:',
+                                        maxLines:  4,
+                                        fontSize: 12,
+                                        textAlign: TextAlign.start,
+                                        bottom: 12,
+
+                                    ),
                                     TextField(
                                       controller: reasonController,
                                       maxLines: 3,

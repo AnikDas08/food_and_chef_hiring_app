@@ -278,7 +278,7 @@ Widget _buildStepper(BuildContext context, CartController controller, String id,
           width: 32.w,
           child: CommonText(
             text: qty.toString(),
-            fontSize: 14.sp, fontWeight: FontWeight.w600
+            fontSize: 12, fontWeight: FontWeight.w600
           ),
         ),
         _stepperActionBtn(

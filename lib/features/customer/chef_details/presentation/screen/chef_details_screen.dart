@@ -315,6 +315,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                     ],
                                   ),
                                   const SizedBox(height: 8),
+                                  if(LocalStorage.myRole=="CUSTOMER")
                                   Row(
                                     children: [
                                       const CommonImage(
@@ -349,6 +350,25 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                       ),
                                     ],
                                   ),
+                                  if(LocalStorage.myRole=="CHEF")
+                                    Row(
+                                      children: [
+                                        const CommonImage(
+                                          imageSrc: AppIcons.location,
+                                        ),
+                                        Expanded(
+                                          child: CommonText(
+                                            text:
+                                            chef?.cookingArea?.address ??
+                                                'N/A',
+                                            fontSize: 12,
+                                            textAlign: TextAlign.start,
+                                            left: 4,
+                                            color: const Color(0xff777777),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   Row(
                                     children: [
                                       const Flexible(
@@ -722,8 +742,6 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    final bool isScrollable = sections.length > 2;
-
     return Container(
       color: Colors.white,
       child: Column(
@@ -733,25 +751,24 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
           CommonText(
             text: AppString.menu,
             fontSize: 16,
-            left: 16.w,
+            left: 16,
             fontWeight: FontWeight.w600,
-            color: Color(0xff272727),
+            color: const Color(0xff272727),
           ),
           const SizedBox(height: 8),
           SizedBox(
             height: 36,
             child: TabBar(
               controller: controller.tabController,
-              isScrollable: isScrollable,
+              isScrollable: true,
               indicatorSize: TabBarIndicatorSize.label,
-              tabAlignment:
-                  isScrollable ? TabAlignment.start : TabAlignment.fill,
+              tabAlignment: TabAlignment.start,
               indicator: const UnderlineTabIndicator(
                 borderSide: BorderSide(width: 2.5, color: Color(0xffFD713F)),
               ),
               dividerColor: Colors.transparent,
               indicatorColor: Colors.transparent,
-              labelPadding: const EdgeInsets.symmetric(horizontal: 16),
+              labelPadding: EdgeInsets.symmetric(horizontal: 16.w),
               labelColor: const Color(0xffFD713F),
               unselectedLabelColor: const Color(0xff777777),
               labelStyle: TextStyle(

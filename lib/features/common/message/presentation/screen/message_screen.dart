@@ -6,6 +6,7 @@ import 'package:new_untitled/config/api/api_end_point.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_text_field.dart';
+import '../../../../../utils/constants/app_colors.dart';
 import '../../data/model/chat_message_model.dart';
 import '../../../../../../utils/extensions/extension.dart';
 import '../../../../../../utils/constants/app_string.dart';
@@ -141,18 +142,12 @@ class _MessageScreenState extends State<MessageScreen> {
                       Icon(
                         CupertinoIcons.chat_bubble_2,
                         size: 48.sp,
-                        color: const Color(0xffCCCCCC),
+                        color: const Color(0xff777777),
                       ),
                       8.height,
                       const CommonText(
                         text: 'No messages yet',
-                        color: Color(0xff999999),
-                      ),
-                      4.height,
-                      const CommonText(
-                        text: 'Say hello! 👋',
-                        fontSize: 12,
-                        color: Color(0xffBBBBBB),
+                        color: Color(0xff777777),
                       ),
                     ],
                   ),
@@ -265,7 +260,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         decoration: BoxDecoration(
                           color: controller.isSending || controller.isSendingImage
                               ? const Color(0xffCCCCCC)
-                              : const Color(0xffFD713F),
+                              : AppColors.primaryColor,
                           shape: BoxShape.circle,
                         ),
                         child: Center(

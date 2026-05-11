@@ -64,6 +64,10 @@ class CheckoutScreen extends StatelessWidget {
       ),
       body: GetBuilder<CartController>(
         builder: (controller) {
+          final double total = controller.priceBreakdown?.total ?? 0;
+          final double finalTotal = controller.priceWithDiscount > 0
+              ? controller.priceWithDiscount
+              : total;
           return SingleChildScrollView(
             padding: EdgeInsets.only(
               left: 16.w,
@@ -335,11 +339,12 @@ class CheckoutScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 12.h),
-                const CommonText(
-                  text: 'A temporary authorization hold of \$45.08/hr may be placed on your payment method. You will only be charged once the service has been completed.',
+                CommonText(
+                  text:
+                      'A temporary authorization hold of \$${finalTotal.toStringAsFixed(2)} may be placed on your payment method. You will only be charged once the service has been completed.',
                   left: 2,
                   fontWeight: FontWeight.w400,
-                  color: Color(0xff636363),
+                  color: const Color(0xff636363),
                   textAlign: TextAlign.start,
                   maxLines: 4,
                   fontSize: 12,

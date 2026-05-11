@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/features/customer/chef_details/presentation/widgets/food_item.dart';
 import '../../../../../component/text/common_text.dart';
@@ -85,7 +86,7 @@ class _SearchResultsList extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12),
       itemCount: results.length,
       itemBuilder: (_, index) => FoodItem(item: results[index]),
     );
@@ -175,7 +176,7 @@ class _MenuListState extends State<_MenuList>
 
         return ListView.builder(
           controller: _scrollController,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12),
           // +1 for the loader/end row at the bottom
           itemCount: items.length + 1,
           itemBuilder: (_, index) {

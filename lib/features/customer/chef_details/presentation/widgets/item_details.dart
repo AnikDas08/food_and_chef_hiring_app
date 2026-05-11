@@ -214,6 +214,12 @@ void itemDetails(
                                           color: item.kitchenStatus == 'Missing Equipment'
                                               ? const Color(0xffFFF0E0)
                                               : const Color(0xffDBEBD9),
+                                          border: Border.all(
+                                            color: item.kitchenStatus == 'Missing Equipment'
+                                                ? const Color(0xffFFF0E0)
+                                                : const Color(0xffDBEBD9),
+                                            width: 2,
+                                          ),
                                           borderRadius:
                                           BorderRadius.circular(8),
                                         ),

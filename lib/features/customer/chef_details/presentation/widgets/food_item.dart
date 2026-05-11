@@ -61,7 +61,7 @@ class _FoodItemState extends State<FoodItem>
         itemDetails(context, _controller, item);
       },
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: const Color(0xffF2F2F2),
           borderRadius: BorderRadius.circular(16.r),

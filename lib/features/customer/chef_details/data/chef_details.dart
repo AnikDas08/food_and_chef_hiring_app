@@ -27,6 +27,7 @@ class ChefDetailData {
   double? priceWithFee;
   String? estCookingTime;
   bool? isFavorite;
+  CookingArea? cookingArea;
 
   ChefDetailData({
     this.id,
@@ -41,6 +42,7 @@ class ChefDetailData {
     this.priceWithFee,
     this.estCookingTime,
     this.isFavorite,
+    this.cookingArea,
   });
 
   ChefDetailData.fromJson(Map<String, dynamic> json) {
@@ -69,5 +71,24 @@ class ChefDetailData {
     priceWithFee = (json['price_with_fee'] as num?)?.toDouble();
     estCookingTime = json['est_cooking_time']?.toString();
     isFavorite = json['isFavorite'] as bool?;
+    cookingArea = json['cooking_area'] != null
+        ? CookingArea.fromJson(json['cooking_area'])
+        : null;
+  }
+}
+
+class CookingArea {
+  String? address;
+  double? latitude;
+  double? longitude;
+  String? id;
+
+  CookingArea({this.address, this.latitude, this.longitude, this.id});
+
+  CookingArea.fromJson(Map<String, dynamic> json) {
+    address = json['address'];
+    latitude = (json['latitude'] as num?)?.toDouble();
+    longitude = (json['longitude'] as num?)?.toDouble();
+    id = json['_id'];
   }
 }
