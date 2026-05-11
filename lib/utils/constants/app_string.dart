@@ -126,8 +126,9 @@ class AppString {
   static const String signInToYourPrivaeAccount =
       'Sign in to your Privae account to book chefs. Enter your details to get started!';
   static const String orUsing = 'or use';
-  static const String signInWithFacebook = 'Sign In with Facebook';
-  static const String signUpWithApple = 'Sign Up with Apple';
+  static const String signInWithApple = 'Sign In with Apple';
+  static const String signUpWithApple = 'Sign up with Apple';
+  static const String signUpWithFacebook = 'Sign Up with Apple';
   static const String signInWithGoogle = 'Sign In with Google';
   static const String signUpWithGoogle = 'Sign Up with Google';
   static const String vegetarianKosherHalalFoodAllergies =

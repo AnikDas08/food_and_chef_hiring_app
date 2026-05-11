@@ -170,9 +170,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CommonImage(imageSrc: AppIcons.facebook),
                             CommonText(
-                              text: AppString.signInWithFacebook,
+                              text: AppString.signInWithApple,
                               left: 14,
                             ),
                           ],

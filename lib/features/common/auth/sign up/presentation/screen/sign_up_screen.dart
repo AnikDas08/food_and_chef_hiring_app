@@ -23,7 +23,7 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /// App Bar Section Starts Here
+
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         backgroundColor: Colors.transparent,
@@ -31,7 +31,6 @@ class SignUpScreen extends StatelessWidget {
         flexibleSpace: appBarOpacity(),
       ),
 
-      /// Body Section Starts Here
       body: GetBuilder<SignUpController>(
         builder: (controller) {
           return SingleChildScrollView(
@@ -41,6 +40,7 @@ class SignUpScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   const CommonText(
                     text: AppString.registerAccount,
                     fontSize: 24,
@@ -61,21 +61,21 @@ class SignUpScreen extends StatelessWidget {
                     bottom: 28,
                   ),
 
-                  /// Account Email Input here
                   const CommonText(
                     text: AppString.email,
                     bottom: 8,
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                   ),
+
                   CommonTextField(
                     controller: controller.emailController,
                     hintText: AppString.email,
                     validator: OtherHelper.emailValidator,
                   ),
+
                   28.height,
 
-                  /// Submit Button Here
                   CommonButton(
                     titleText: AppString.signUp,
                     isLoading: controller.isLoading,
@@ -85,6 +85,7 @@ class SignUpScreen extends StatelessWidget {
                       }
                     },
                   ),
+
                   28.height,
 
                   Row(
@@ -113,13 +114,15 @@ class SignUpScreen extends StatelessWidget {
                       children: [
                         CommonImage(imageSrc: AppIcons.appleLogo),
                         CommonText(
-                          text: AppString.signUpWithApple,
+                          text: AppString.signInWithApple,
                           left: 14,
                         ),
                       ],
                     ),
                   ),
+
                   12.height,
+
                   Container(
                     height: 60,
                     decoration: BoxDecoration(
@@ -157,7 +160,7 @@ class SignUpScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w600, // different style
                                 color: Color(
                                   0xff000000,
-                                ), // change color যদি চাও
+                                ),
                               ),
                               recognizer:
                                   TapGestureRecognizer()
