@@ -165,6 +165,7 @@ class GroceryScreen extends StatelessWidget {
                 )
               else
                 ListView.builder(
+                  padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: controller.basketItems.length,
@@ -172,6 +173,7 @@ class GroceryScreen extends StatelessWidget {
                       (context, index) => GroceryItemTile(
                         data: controller.basketItems[index],
                         onTap: () => controller.toggleBasketItem(index),
+                        isLast: index == controller.basketItems.length - 1,
                       ),
                 ),
 
@@ -228,6 +230,7 @@ class GroceryScreen extends StatelessWidget {
 
   Widget _buildFullListView(GroceryController controller) {
     return ListView.builder(
+      padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: controller.availableOrders.length,
@@ -375,11 +378,11 @@ class GroceryScreen extends StatelessWidget {
               shape: BoxShape.circle,
               color:
                   isSelected
-                      ? const Color(0xffFD713F).withOpacity(0.1)
+                      ? const Color(0xff272727).withOpacity(0.1)
                       : const Color(0xffF5F5F5),
               border:
                   isSelected
-                      ? Border.all(color: const Color(0xffFD713F), width: 2)
+                      ? Border.all(color: const Color(0xff272727), width: 2)
                       : null,
             ),
             child: Center(

@@ -6,13 +6,19 @@ import '../../../../../component/text/common_text.dart';
 class GroceryItemTile extends StatelessWidget {
   final Map<String, dynamic> data;
   final VoidCallback onTap;
+  final bool isLast;
 
-  const GroceryItemTile({super.key, required this.data, required this.onTap});
+  const GroceryItemTile({
+    super.key,
+    required this.data,
+    required this.onTap,
+    this.isLast = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.h),
+      padding: EdgeInsets.only(bottom: isLast ? 0 : 12.h),
       child: Row(
         children: [
           // ICON CONTAINER instead of NetworkImage
@@ -42,14 +48,14 @@ class GroceryItemTile extends StatelessWidget {
                 CommonText(
                     text: data['name'] ?? '',
                     fontWeight: FontWeight.w600,
-                    fontSize: 16
+                    fontSize: 14
                 ),
                 SizedBox(height: 4.h),
                 // Showing Quantity and Unit (e.g., 2 kg)
                 CommonText(
                     text: "${data['items']} ${data['unit'] ?? ''}",
-                    color: Colors.grey,
-                    fontSize: 13
+                    color: Color(0xff777777),
+                    fontSize: 12
                 ),
               ],
             ),
@@ -62,8 +68,8 @@ class GroceryItemTile extends StatelessWidget {
               padding: EdgeInsets.all(4.r),
               child: Icon(
                 data['isSelected'] ? Icons.check_circle : Icons.circle_outlined,
-                color: data['isSelected'] ? Colors.black : Colors.grey[300],
-                size: 24.sp,
+                color: data['isSelected'] ? Color(0xff272727) : Color(0xff777777),
+                size: 18,
               ),
             ),
           ),
