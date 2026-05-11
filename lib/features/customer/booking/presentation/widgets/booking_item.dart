@@ -102,12 +102,15 @@ Widget bookingItem(BookingHistoryModel order) {
 
                     Get.dialog(
                       AlertDialog(
+                        backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16.r),
                         ),
                         title: const CommonText(
                           text: 'Cancel Booking',
                           fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Color(0xff272727),
                         ),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -116,16 +119,26 @@ Widget bookingItem(BookingHistoryModel order) {
                               text:
                                   'Please provide a reason for cancelling this booking:',
                               maxLines: 4,
-                              fontSize: 13,
+                              fontSize: 14,
                               textAlign: TextAlign.start,
+                              fontWeight: FontWeight.w400,
                               bottom: 12,
                             ),
                             TextField(
                               controller: reasonController,
                               maxLines: 3,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xff272727),
+                              ),
                               decoration: InputDecoration(
                                 hintText: 'Enter reason here...',
-                                hintStyle: const TextStyle(fontSize: 12),
+                                hintStyle: const TextStyle(
+                                    fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xff777777)
+                                ),
                                 fillColor: const Color(0xffF5F5F5),
                                 filled: true,
                                 border: OutlineInputBorder(
@@ -137,36 +150,53 @@ Widget bookingItem(BookingHistoryModel order) {
                           ],
                         ),
                         actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(Get.context!),
-                            child: const Text('Cancel'),
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.r),
-                              ),
-                            ),
-                            onPressed: () {
-                              if (reasonController.text.trim().isEmpty) {
-                                Get.snackbar(
-                                  'Reason Required',
-                                  'Please enter a reason before cancelling.',
-                                );
-                              } else {
-                                Navigator.pop(Get.context!); // Close dialog
-                                Get.find<BookingHistoryController>()
-                                    .cancelBooking(
-                                      order.id,
-                                      reasonController.text.trim(),
-                                    );
-                              }
-                            },
-                            child: const Text(
-                              'Confirm Cancel',
-                              style: TextStyle(color: Colors.white),
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TextButton(
+                                  onPressed: () => Navigator.pop(Get.context!),
+                                  child: const CommonText(
+                                    text: "Cancel",
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xff777777),
+                                  )),
+                              8.width,
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 8.h, horizontal: 8.w),
+                                    minimumSize: Size.zero,
+                                    tapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    if (reasonController.text.trim().isEmpty) {
+                                      Get.snackbar(
+                                        'Reason Required',
+                                        'Please enter a reason before cancelling.',
+                                      );
+                                    } else {
+                                      Navigator.pop(Get.context!); // Close dialog
+                                      Get.find<BookingHistoryController>()
+                                          .cancelBooking(
+                                        order.id,
+                                        reasonController.text.trim(),
+                                      );
+                                    }
+                                  },
+                                  child: const CommonText(
+                                    text: "Confirm Cancellation",
+                                    fontSize: 12,
+                                    maxLines: 1,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  )),
+                            ],
                           ),
                         ],
                       ),
