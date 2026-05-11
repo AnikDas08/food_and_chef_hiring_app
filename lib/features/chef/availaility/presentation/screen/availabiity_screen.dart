@@ -37,10 +37,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
   int _maxDays = 14;
   String _maxUnit = 'Days';
   bool _isSubmitting = false;
-  bool _editingMin = false;
-  bool _editingMax = false;
-  final TextEditingController _minController = TextEditingController();
-  final TextEditingController _maxController = TextEditingController();
 
   @override
   void initState() {
@@ -119,8 +115,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
 
   @override
   void dispose() {
-    _minController.dispose();
-    _maxController.dispose();
     super.dispose();
   }
 
@@ -243,6 +237,88 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
     overlay.insert(entry);
   }
 
+  void _showNumberPopup({
+    required BuildContext context,
+    required Offset offset,
+    required int selected,
+    required List<int> options,
+    required Function(int) onSelect,
+  }) {
+    final overlay = Overlay.of(context);
+    late OverlayEntry entry;
+
+    entry = OverlayEntry(
+      builder: (_) => Stack(
+        children: [
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: () => entry.remove(),
+              behavior: HitTestBehavior.translucent,
+            ),
+          ),
+          Positioned(
+            left: offset.dx,
+            top: offset.dy,
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                width: 100.w,
+                constraints: BoxConstraints(maxHeight: 250.h),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14.r),
+                  border: Border.all(color: const Color(0xFFF1F1F1)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  itemCount: options.length,
+                  itemBuilder: (context, index) {
+                    final val = options[index];
+                    final isSelected = val == selected;
+                    return InkWell(
+                      borderRadius: BorderRadius.circular(14.r),
+                      onTap: () {
+                        onSelect(val);
+                        entry.remove();
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 12.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CommonText(
+                              text: val.toString(),
+                              color: const Color(0xFF272727),
+                              textAlign: TextAlign.start,
+                            ),
+                            if (isSelected)
+                              Icon(Icons.check,
+                                  size: 13.sp, color: const Color(0xFF272727)),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    overlay.insert(entry);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -336,21 +412,13 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       _buildBookingInputRow(
                         value: _minHours,
                         unit: _minUnit,
-                        isEditing: _editingMin,
-                        controller: _minController,
-                        onEditStart: () {
-                          _minController.text = _minHours.toString();
-                          setState(() => _editingMin = true);
-                        },
-                        onEditDone: () {
-                          final val = int.tryParse(_minController.text);
-                          setState(() {
-                            if (val != null && val >= 1 && val <= 24) {
-                              _minHours = val;
-                            }
-                            _editingMin = false;
-                          });
-                        },
+                        onValueTap: (offset) => _showNumberPopup(
+                          context: context,
+                          offset: offset,
+                          selected: _minHours,
+                          options: List.generate(24, (index) => index + 1),
+                          onSelect: (v) => setState(() => _minHours = v),
+                        ),
                         onUnitTap: (offset) => _showUnitPopup(
                           context: context,
                           offset: offset,
@@ -363,21 +431,13 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       _buildBookingInputRow(
                         value: _maxDays,
                         unit: _maxUnit,
-                        isEditing: _editingMax,
-                        controller: _maxController,
-                        onEditStart: () {
-                          _maxController.text = _maxDays.toString();
-                          setState(() => _editingMax = true);
-                        },
-                        onEditDone: () {
-                          final val = int.tryParse(_maxController.text);
-                          setState(() {
-                            if (val != null && val >= 1 && val <= 30) {
-                              _maxDays = val;
-                            }
-                            _editingMax = false;
-                          });
-                        },
+                        onValueTap: (offset) => _showNumberPopup(
+                          context: context,
+                          offset: offset,
+                          selected: _maxDays,
+                          options: List.generate(30, (index) => index + 1),
+                          onSelect: (v) => setState(() => _maxDays = v),
+                        ),
                         onUnitTap: (offset) => _showUnitPopup(
                           context: context,
                           offset: offset,
@@ -595,10 +655,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
   Widget _buildBookingInputRow({
     required int value,
     required String unit,
-    required bool isEditing,
-    required TextEditingController controller,
-    required VoidCallback onEditStart,
-    required VoidCallback onEditDone,
+    required Function(Offset) onValueTap,
     required Function(Offset) onUnitTap,
   }) {
     final boxDecoration = BoxDecoration(
@@ -618,33 +675,25 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         GestureDetector(
-          onTap: onEditStart,
+          onTapDown: (details) => onValueTap(details.globalPosition),
           child: Container(
             width: 70.w,
             height: 48.h,
             decoration: boxDecoration,
             alignment: Alignment.center,
-            child: isEditing
-                ? TextField(
-              controller: controller,
-              autofocus: true,
-              keyboardType: TextInputType.number,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 15.sp,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CommonText(
+                  text: value.toString(),
+                  fontSize: 15,
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xFF272727)),
-              decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  isDense: true,
-                  contentPadding: EdgeInsets.zero),
-              onSubmitted: (_) => onEditDone(),
-            )
-                : CommonText(
-              text: value.toString(),
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF272727),
+                  color: const Color(0xFF272727),
+                ),
+                4.horizontalSpace,
+                Icon(Icons.keyboard_arrow_down,
+                    size: 18.sp, color: const Color(0xFF272727)),
+              ],
             ),
           ),
         ),

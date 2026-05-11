@@ -6,7 +6,6 @@ import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_images.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-import '../../../../../config/api/api_end_point.dart';
 import '../../../../../utils/app_utils.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../chef_booking/presentation/widgets/Chef_Booking_Detail_Page.dart';
@@ -38,7 +37,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
             children: [
               CommonImage(
                 imageSrc: booking.customerImage.isNotEmpty
-                    ? ApiEndPoint.imageUrl + booking.customerImage
+                    ? booking.customerImage
                     : AppImages.img8,
                 size: 40,
                 borderRadius: 50,
@@ -182,7 +181,9 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                     ),
                   ],
                 ),
+
                 8.height,
+
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -191,13 +192,17 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       size: 16,
                       imageColor: Color(0xffF5865F),
                     ),
-                    CommonText(
-                      text: booking.itemSummary,
-                      fontSize: 12,
-                      left: 4,
-                      fontWeight: FontWeight.w400,
-                      color: const Color(0xff272727),
-                    ),
+                    Expanded(
+                      child: CommonText(
+                        text: booking.itemSummary,
+                        fontSize: 12,
+                        left: 4,
+                        maxLines: 6,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xff272727),
+                        textAlign: TextAlign.start,
+                      ),
+                    )
                   ],
                 ),
                 8.height,

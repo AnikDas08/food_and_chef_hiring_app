@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../component/image/common_image.dart';
 import '../../../services/storage/storage_services.dart';
 import '../../../utils/constants/app_images.dart';
+import '../auth/signup_chef/presentation/screen/cafe_set_availability.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,16 +16,21 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 3), () async {
-      appLog('My userId👌👌👌👌👌: ${LocalStorage.userId}');
 
       if (LocalStorage.isLogIn && LocalStorage.token != '') {
+
         if (LocalStorage.myRole == 'CUSTOMER') {
+
           Get.offAllNamed(AppRoutes.customerHomeScreen);
+
         } else {
+
           Get.offAllNamed(AppRoutes.chefHomeScreen);
+
         }
       } else {
         Get.offAllNamed(AppRoutes.onboarding);

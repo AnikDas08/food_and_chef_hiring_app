@@ -5,7 +5,6 @@ class ApiEndPoint {
   static const image = 'http://187.124.93.197:5014';
   static const socketUrl = 'http://187.124.93.197:5014';
 
-
   static const signUp = 'user';
   static const verifyEmail = 'auth/verify-email';
   static const signIn = 'auth/login';
@@ -24,7 +23,7 @@ class ApiEndPoint {
   static const chats = 'chat';
   static const messages = 'message';
   static const cuisine = '/cusine';
-  static const AddMenuSection = '/menu/section?id=';
+  static const AddMenuSection = '/                                                                                                                                                                     menu/section?id=';
   static const String getUnits = '/menu/units';
   static const String getEquipments = '/equipment';
   static const String addMenuItem = '/menu?id=';

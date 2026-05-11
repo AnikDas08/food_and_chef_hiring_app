@@ -20,18 +20,19 @@ class TabData {
 }
 
 class _TestState extends State<Test> with SingleTickerProviderStateMixin {
+
   late final TabController tabController;
+
   int selectedTabIndex = 0;
+
   final List<TabData> tabs = [
+
     TabData(title: 'Home', icon: 'house'),
     TabData(title: 'Bookings', icon: 'stove'),
-    // TabData(
-    //   title: "Analytics",
-    //   icon: "gauge.chart.leftthird.topthird.rightthird",
-    // ),
     TabData(title: 'Groceries', icon: 'basket'),
     TabData(title: 'Chats', icon: 'bubble.left.and.bubble.right'),
     TabData(title: 'Profile', icon: 'person'),
+
   ];
   @override
   void initState() {
@@ -49,9 +50,11 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   }
 
   void onTabTap(int index) {
+
     setState(() {
       selectedTabIndex = index;
     });
+
     tabController.animateTo(index);
   }
 
