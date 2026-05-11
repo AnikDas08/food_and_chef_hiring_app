@@ -315,6 +315,7 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                     ],
                                   ),
                                   const SizedBox(height: 8),
+                                  if(LocalStorage.myRole=="CUSTOMER")
                                   Row(
                                     children: [
                                       const CommonImage(
@@ -349,6 +350,25 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                       ),
                                     ],
                                   ),
+                                  if(LocalStorage.myRole=="CHEF")
+                                    Row(
+                                      children: [
+                                        const CommonImage(
+                                          imageSrc: AppIcons.location,
+                                        ),
+                                        Expanded(
+                                          child: CommonText(
+                                            text:
+                                            chef?.cookingArea?.address ??
+                                                'N/A',
+                                            fontSize: 12,
+                                            textAlign: TextAlign.start,
+                                            left: 4,
+                                            color: const Color(0xff777777),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   Row(
                                     children: [
                                       const Flexible(
