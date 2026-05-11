@@ -1,4 +1,5 @@
 class RequestedBookingModel {
+
   final String id;
   final String status;
   final String scheduledAt;
@@ -22,13 +23,14 @@ class RequestedBookingModel {
   });
 
   factory RequestedBookingModel.fromJson(Map<String, dynamic> json) {
+
     final user = json['user'] as Map<String, dynamic>? ?? {};
     final staticItems = json['static_items'] as List? ?? [];
     final priceBreakdown =
         json['price_breakdown'] as Map<String, dynamic>? ?? {};
 
-    // Date format
     String scheduledAt = '';
+
     final formattedDate = json['formatted_date'] as String? ?? '';
     final strTime = json['strTime'] as String? ?? '';
     if (formattedDate.isNotEmpty) {
@@ -42,8 +44,8 @@ class RequestedBookingModel {
       scheduledAt = strTime;
     }
 
-    // Item summary
     String itemSummary = '0 items';
+
     if (staticItems.isNotEmpty) {
       final firstName =
           (staticItems[0]['menu'] as Map<String, dynamic>?)?['name']
@@ -63,7 +65,8 @@ class RequestedBookingModel {
       status: json['status']?.toString() ?? '',
       scheduledAt: scheduledAt,
       itemSummary: itemSummary,
-      total: (priceBreakdown['total'] as num?)?.toDouble() ?? 0.0,
+      total: ((priceBreakdown['chef_price_breakdown']
+      as Map<String, dynamic>?)?['total'] as num?)?.toDouble() ?? 0.0,
       customerName: user['name']?.toString() ?? '',
       customerImage: user['image']?.toString() ?? '',
       address: json['formatted_address']?.toString() ?? '',

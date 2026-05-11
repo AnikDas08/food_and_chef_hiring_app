@@ -38,10 +38,11 @@ class ChefProfileController extends GetxController {
     );
 
     if (response.statusCode == 200 && response.data['success'] == true) {
-      Get.snackbar('Message', 'notification setting updated',
+      await Get.find<ChefHomeController>().fetchChefProfile();
+      Get.snackbar('Message', 'Notification setting updated',
           backgroundColor: Colors.green, colorText: Colors.white);
     } else {
-      isNotification.value = !newValue;
+      isNotification.value = !newValue; // revert on failure
       Utils.errorSnackBar('Error', 'Failed to update notification setting');
     }
   }

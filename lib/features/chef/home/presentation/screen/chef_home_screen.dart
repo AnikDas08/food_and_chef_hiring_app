@@ -199,11 +199,13 @@ class ChefHomeScreen extends StatelessWidget {
                       Get.offAndToNamed(AppRoutes.chefHomeScreen,
                           arguments: {'index': 2});
                     },
+
                     child: const CommonText(
                       text: AppString.seeAll,
                       color: Color(0xffFD713F),
                     ),
                   ),
+
                 ],
               ),
 

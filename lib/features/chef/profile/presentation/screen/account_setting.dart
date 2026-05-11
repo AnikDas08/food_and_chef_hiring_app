@@ -21,6 +21,7 @@ class AccountSetting extends StatefulWidget {
 }
 
 class _AccountSettingState extends State<AccountSetting> {
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -41,8 +42,13 @@ class _AccountSettingState extends State<AccountSetting> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             leadingWidth: 60,
+            titleSpacing: 0,
+            title: const CommonText(
+              text: AppString.accountSettings,
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Form(
@@ -51,21 +57,15 @@ class _AccountSettingState extends State<AccountSetting> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CommonText(
-                      text: AppString.accountSettings,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff272727),
-                      bottom: 28,
-                    ),
-                    const CommonText(
+
+                    const SizedBox(height: 14,),
+
+                  const CommonText(
                       text: 'ACCOUNT DETAILS',
-                      fontSize: 12,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: Color(0xff999999),
-                      bottom: 8,
                     ),
-
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -83,8 +83,6 @@ class _AccountSettingState extends State<AccountSetting> {
                           keyboardType: TextInputType.emailAddress,
                           borderRadius: 12,
                         ),
-
-                        // ── Phone ──
                         const CommonText(
                           text: AppString.phoneNumber,
                           fontWeight: FontWeight.w600,
@@ -93,7 +91,6 @@ class _AccountSettingState extends State<AccountSetting> {
                           bottom: 8,
                           color: Color(0xff272727),
                         ),
-
                         IntlPhoneField(
                           controller: controller.phoneController,
                           initialCountryCode: 'US',
@@ -142,10 +139,9 @@ class _AccountSettingState extends State<AccountSetting> {
                             controller.selectedCountryCode = phone.countryCode;
                           },
                         ),
-                        // ── Account Action ──
                         const CommonText(
                           text: 'ACCOUNT ACTION',
-                          fontSize: 12,
+                          fontSize: 14, // ✅ Fix 1: was 12
                           fontWeight: FontWeight.w600,
                           color: Color(0xff999999),
                           top: 28,

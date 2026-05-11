@@ -496,18 +496,19 @@ class AddMenuScreen extends StatelessWidget {
                     )),
                     16.verticalSpace,
 
-                    // ── Cook Time ──
                     _label('Est. Cooking Time'),
+
                     8.verticalSpace,
+
                     Obx(() => _TimeInputRow(
                       controller: c.cookTimeController,
                       selectedUnit: c.selectedCookUnit,
                       units: c.timeUnits,
                       onUnitChanged: c.setCookUnit,
                     )),
+
                     16.verticalSpace,
 
-                    // ── Customize ──
                     Obx(() => _SectionHeader(
                       title: 'Customize the Dish',
                       expanded: c.customizeExpanded.value,
@@ -522,15 +523,16 @@ class AddMenuScreen extends StatelessWidget {
                           _CheckItem(label: opt, onRemove: () => c.removeCustomizeOption(opt))),
                     ])
                         : const SizedBox.shrink()),
+
                     16.verticalSpace,
 
-                    // ── Ingredients ──
                     Obx(() => _SectionHeader(
                       title: 'Ingredients',
                       expanded: c.ingredientsExpanded.value,
                       onAddTap: () => _showIngredientDialog(context, c),
                       onToggle: c.toggleIngredients,
                     )),
+
                     Obx(() => c.ingredientsExpanded.value
                         ? Column(children: [
                       8.verticalSpace,
@@ -777,6 +779,7 @@ class _TimeInputRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(flex: 2, child: Container(
+          height: 50.h,
           decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
           child: TextField(
             controller: controller, keyboardType: TextInputType.number,
@@ -789,8 +792,11 @@ class _TimeInputRow extends StatelessWidget {
             ),
           ),
         )),
+
         10.horizontalSpace,
+
         Expanded(flex: 3, child: Container(
+          height: 50.h,
           padding: EdgeInsets.symmetric(horizontal: 14.w),
           decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
           child: DropdownButtonHideUnderline(

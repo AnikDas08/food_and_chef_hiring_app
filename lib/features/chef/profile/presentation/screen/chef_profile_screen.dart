@@ -214,26 +214,31 @@ class ChefProfileScreen extends StatelessWidget {
                       ),
 
                       Obx(
-                        () => Row(
+                            () => Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 0),
-                              child: CommonImage(
-                                imageSrc: AppIcons.notification,
-                                size: 22,
-                                imageColor: const Color(0xff272727),
-                              ),
+
+                            CommonImage(
+                              imageSrc: AppIcons.notification,
+                              size: 22,
+                              imageColor: const Color(0xff272727),
                             ),
+
                             const CommonText(
                               text: AppString.notifications,
                               left: 16,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff272727),
                             ),
+
                             const Spacer(),
-                            switchButton(
-                              value: controller.isNotification.value,
-                              onTap: () => controller.notification(),
+
+                            Transform.scale(
+                              scale: 0.75,
+                              alignment: Alignment.centerRight,
+                              child: switchButton(
+                                value: controller.isNotification.value,
+                                onTap: () => controller.notification(),
+                              ),
                             ),
                             12.width,
                           ],

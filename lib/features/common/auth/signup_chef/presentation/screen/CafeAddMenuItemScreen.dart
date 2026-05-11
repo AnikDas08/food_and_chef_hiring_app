@@ -302,16 +302,20 @@ class CafeAddMenuItemScreen extends StatelessWidget {
                       ),
                     )
                         : const SizedBox.shrink()),
+
                     16.verticalSpace,
 
                     _label('Est. Preparation Time'),
+
                     8.verticalSpace,
+
                     Obx(() => _TimeInputRow(
                       controller: c.prepTimeController,
                       selectedUnit: c.selectedPrepUnit,
                       units: c.timeUnits,
                       onUnitChanged: c.setPrepUnit,
                     )),
+
                     16.verticalSpace,
 
                     _label('Est. Cooking Time'),

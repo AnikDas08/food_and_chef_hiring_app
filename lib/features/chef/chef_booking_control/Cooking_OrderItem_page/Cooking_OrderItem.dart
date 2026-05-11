@@ -2,11 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/component/button/common_button.dart';
+import 'package:new_untitled/config/route/app_routes.dart';
 import '../../../../component/text/common_text.dart';
 import '../../../../services/api/api_service.dart';
 import '../../../../utils/constants/app_colors.dart';
 
 class CookingOrderItem {
+
   final String name;
   final String description;
   final String? image;
@@ -16,9 +19,11 @@ class CookingOrderItem {
     required this.description,
     this.image,
   });
+
 }
 
 class CookingStopwatchScreen extends StatefulWidget {
+
   final List<CookingOrderItem> orderItems;
   final String orderId;
   final void Function(Duration totalTime)? onDone;
@@ -32,6 +37,7 @@ class CookingStopwatchScreen extends StatefulWidget {
 
   @override
   State<CookingStopwatchScreen> createState() => _CookingStopwatchScreenState();
+
 }
 
 class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
@@ -50,10 +56,13 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
       vsync: this,
       duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
+
     _pulseAnim = Tween<double>(begin: 1.0, end: 1.04).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
+
     _startTimer();
+
   }
 
   void _startTimer() {
@@ -82,11 +91,10 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
         totalTime: _elapsed,
         orderId: widget.orderId,
         onConfirm: () {
-          Navigator.pop(context);
           _timer?.cancel();
           widget.onDone?.call(_elapsed);
-          Navigator.pop(Get.context!);
         },
+
         onCheckAgain: () {
           Navigator.pop(context);
           setState(() => _isRunning = true);
@@ -229,7 +237,6 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
 
             SizedBox(height: 36.h),
 
-            // ── Order Details ──
             Expanded(
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 20.w),
@@ -330,15 +337,16 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
             SizedBox(height: 16.h),
 
             Padding(
+
               padding: EdgeInsets.fromLTRB(
                 20.w,
                 0,
                 20.w,
                 MediaQuery.of(context).padding.bottom + 16.h,
               ),
+
               child: Row(
                 children: [
-                  // Pause / Resume
                   Expanded(
                     child: GestureDetector(
                       onTap: _togglePause,
@@ -499,31 +507,90 @@ class _StopConfirmationDialog extends StatelessWidget {
 
             SizedBox(height: 20.h),
 
-            // ── I'm sure ──
             GestureDetector(
               onTap: () async {
                 try {
                   final timeString = _formatShort(totalTime);
+
                   final response = await ApiService.post(
                     'order/clearence/$orderId',
                     body: {'time': timeString},
                   );
-                  if (response.statusCode == 200 ||
-                      response.statusCode == 201) {
+
+                  if (response.statusCode == 200 || response.statusCode == 201) {
+
                     onConfirm();
-                    Get.snackbar(
-                      'Message',
-                      'Successfully submitted cooking time',
-                      backgroundColor: Colors.green,
+
+                    final extraPrice = response.data?['data']?['extraPrice'] ?? 0;
+
+                    final earning = (extraPrice as num).toStringAsFixed(2);
+
+                    Get.dialog(
+                      Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.celebration,
+                                color: Colors.green,
+                                size: 50,
+                              ),
+
+                              const SizedBox(height: 12),
+
+                              CommonText(
+                                text: "Congratulations 🎉",
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+
+                              const SizedBox(height: 10),
+
+                              CommonText(
+                                text: "You just earned $earning USD",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black,
+                                textAlign: TextAlign.center,
+                              ),
+
+                              const SizedBox(height: 20),
+
+                              CommonButton(
+                                titleText: "Continue",
+                                onTap: () {
+                                  Get.back();
+                                  Get.offAllNamed(
+                                    AppRoutes.chefHomeScreen,
+                                    arguments: {'index': 2, 'tab': 'Completed'},
+                                  );
+                                },
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ),
+                      barrierDismissible: false,
                     );
-                    Get.back();
                   } else {
-                    Get.snackbar('Error', 'Failed to submit cooking time');
+                    Get.snackbar(
+                      'Error',
+                      'Failed to submit cooking time',
+                      backgroundColor: Colors.red,
+                    );
                   }
                 } catch (e) {
                   Get.snackbar('Error', e.toString());
                 }
               },
+
               child: Container(
                 width: double.infinity,
                 height: 50.h,
@@ -545,7 +612,6 @@ class _StopConfirmationDialog extends StatelessWidget {
 
             SizedBox(height: 10.h),
 
-            // ── Check again ──
             GestureDetector(
               onTap: onCheckAgain,
               child: Container(

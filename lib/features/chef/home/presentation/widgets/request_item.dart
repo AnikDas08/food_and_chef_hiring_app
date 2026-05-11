@@ -270,7 +270,6 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12.sp),
-                      border: Border.all(color: const Color(0xffFD713F)),
                     ),
                     child: const CommonText(
                       text: 'Decline',

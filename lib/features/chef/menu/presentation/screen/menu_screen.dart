@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../../config/api/api_end_point.dart';
-import '../../../../../component/image/common_image.dart';
-import '../../../../../utils/constants/app_icons.dart';
 import '../../../../common/auth/signup_chef/presentation/controller/Chef_add_menu_controller.dart';
 import 'add_menu_screen.dart';
 
 class MenuScreen extends StatelessWidget {
+
   const MenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     final c = CafeAddMenuItemController.instance;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -28,6 +29,7 @@ class MenuScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+
                   Text(
                     'Menu',
                     style: TextStyle(
@@ -36,6 +38,7 @@ class MenuScreen extends StatelessWidget {
                       color: const Color(0xFF272727),
                     ),
                   ),
+
                   GestureDetector(
                     onTap: () {
                       final ctrl = TextEditingController();
@@ -59,7 +62,6 @@ class MenuScreen extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // ✅ সুন্দর TextField (same design style)
                                     Container(
                                       decoration: BoxDecoration(
                                         color: const Color(0xFFF7F7F7),
@@ -91,8 +93,6 @@ class MenuScreen extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-
-                                    // ✅ Error message
                                     if (error != null) ...[
                                       4.verticalSpace,
                                       Text(
@@ -106,13 +106,10 @@ class MenuScreen extends StatelessWidget {
                                   ],
                                 ),
                                 actions: [
-
                                   TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: const Text('Cancel',style: TextStyle(color: Colors.grey),),
-
+                                    child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
                                   ),
-
                                   TextButton(
                                     onPressed: () async {
                                       if (ctrl.text.trim().isEmpty) {
@@ -124,12 +121,10 @@ class MenuScreen extends StatelessWidget {
                                       Navigator.pop(context);
                                       await c.addMenuSection(ctrl.text.trim());
                                     },
-
                                     child: const Text(
                                       'Add',
-                                      style: TextStyle(color: Color(0xFF1C1C1C),fontWeight: FontWeight.bold),
+                                      style: TextStyle(color: Color(0xFF1C1C1C), fontWeight: FontWeight.bold),
                                     ),
-
                                   ),
                                 ],
                               );
@@ -170,8 +165,7 @@ class MenuScreen extends StatelessWidget {
             Expanded(
               child: c.isLoadingMenu.value
                   ? const Center(
-                  child: CircularProgressIndicator(
-                      color: Color(0xFF1C1C1C)))
+                  child: CircularProgressIndicator(color: Color(0xFF1C1C1C)))
                   : c.menuSections.isEmpty
                   ? Center(
                 child: Padding(
@@ -180,8 +174,7 @@ class MenuScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(Icons.restaurant_menu,
-                          size: 48.sp,
-                          color: const Color(0xFFCCCCCC)),
+                          size: 48.sp, color: const Color(0xFFCCCCCC)),
                       16.verticalSpace,
                       Text(
                         'No menu items yet.\nAdd your first item!',
@@ -196,8 +189,7 @@ class MenuScreen extends StatelessWidget {
                 ),
               )
                   : ListView.builder(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 20.w, vertical: 12.h),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
                 itemCount: c.menuSections.length,
                 itemBuilder: (context, sectionIndex) {
                   final section = c.menuSections[sectionIndex];
@@ -209,8 +201,7 @@ class MenuScreen extends StatelessWidget {
                             horizontal: 10.w, vertical: 5.h),
                         decoration: BoxDecoration(
                           color: const Color(0xFF272727),
-                          borderRadius:
-                          BorderRadius.circular(6.r),
+                          borderRadius: BorderRadius.circular(6.r),
                         ),
                         child: Text(
                           section.menuSection.toUpperCase(),
@@ -222,8 +213,7 @@ class MenuScreen extends StatelessWidget {
                         ),
                       ),
                       10.verticalSpace,
-                      ...section.menus
-                          .map((item) => _MenuCard(item: item)),
+                      ...section.menus.map((item) => _MenuCard(item: item)),
                       16.verticalSpace,
                     ],
                   );
@@ -231,7 +221,6 @@ class MenuScreen extends StatelessWidget {
               ),
             ),
 
-            // ✅ নিচে এখন "Add Item" button
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 8.h),
               child: GestureDetector(
@@ -254,8 +243,7 @@ class MenuScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.add,
-                            size: 16.sp, color: const Color(0xFF272727)),
+                        Icon(Icons.add, size: 16.sp, color: const Color(0xFF272727)),
                         6.horizontalSpace,
                         Text('Add Item',
                             style: TextStyle(
@@ -289,7 +277,7 @@ class _MenuCard extends StatelessWidget {
           color: const Color(0xFFF7F7F7),
           borderRadius: BorderRadius.circular(12.r)),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: Padding(
@@ -309,8 +297,7 @@ class _MenuCard extends StatelessWidget {
                     4.horizontalSpace,
                     Text('Ingredients: ${item.ingredients.length} items',
                         style: TextStyle(
-                            fontSize: 12.sp,
-                            color: const Color(0xFF777777))),
+                            fontSize: 12.sp, color: const Color(0xFF777777))),
                   ]),
                   4.verticalSpace,
                   Row(children: [
@@ -319,8 +306,7 @@ class _MenuCard extends StatelessWidget {
                     4.horizontalSpace,
                     Text('Cooking: ${item.estCookingTime}',
                         style: TextStyle(
-                            fontSize: 12.sp,
-                            color: const Color(0xFF777777))),
+                            fontSize: 12.sp, color: const Color(0xFF777777))),
                   ]),
                   12.verticalSpace,
                   Row(
@@ -342,8 +328,7 @@ class _MenuCard extends StatelessWidget {
                           ),
                           child: Row(children: [
                             Icon(Icons.edit_outlined,
-                                size: 13.sp,
-                                color: const Color(0xFF272727)),
+                                size: 13.sp, color: const Color(0xFF272727)),
                             4.horizontalSpace,
                             Text('Edit Item',
                                 style: TextStyle(
@@ -372,32 +357,34 @@ class _MenuCard extends StatelessWidget {
               ),
             ),
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(12.r),
-                bottomRight: Radius.circular(12.r)),
-            child: item.images.isNotEmpty
-                ? Image.network(
-              item.images.first.startsWith('http')
-                  ? item.images.first
-                  : '${ApiEndPoint.imageUrl}${item.images.first}',
-              width: 110.w,
-              height: 130.h,
-              fit: BoxFit.cover,
-              loadingBuilder: (_, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Container(
-                  width: 110.w,
-                  height: 130.h,
-                  color: const Color(0xFFE0E0E0),
-                  child: const Center(
-                      child: CircularProgressIndicator(
-                          color: Color(0xFF272727), strokeWidth: 2)),
-                );
-              },
-              errorBuilder: (_, error, __) => _placeholder(),
-            )
-                : _placeholder(),
+
+          Padding(
+            padding: EdgeInsets.all(8.w),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.r),
+              child: item.images.isNotEmpty
+                  ? Image.network(
+                item.images.first.startsWith('http')
+                    ? item.images.first
+                    : '${ApiEndPoint.imageUrl}/${item.images.first}',
+                width: 90.w,
+                height: 90.w,
+                fit: BoxFit.cover,
+                loadingBuilder: (_, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Container(
+                    width: 90.w,
+                    height: 90.w,
+                    color: const Color(0xFFE0E0E0),
+                    child: const Center(
+                        child: CircularProgressIndicator(
+                            color: Color(0xFF272727), strokeWidth: 2)),
+                  );
+                },
+                errorBuilder: (_, error, __) => _placeholder(),
+              )
+                  : _placeholder(),
+            ),
           ),
         ],
       ),
@@ -405,9 +392,12 @@ class _MenuCard extends StatelessWidget {
   }
 
   Widget _placeholder() => Container(
-    width: 110.w,
-    height: 130.h,
-    color: const Color(0xFFE0E0E0),
+    width: 90.w,
+    height: 90.w,
+    decoration: BoxDecoration(
+      color: const Color(0xFFE0E0E0),
+      borderRadius: BorderRadius.circular(10.r),
+    ),
     child: Icon(Icons.restaurant,
         color: const Color(0xFF999999), size: 28.sp),
   );

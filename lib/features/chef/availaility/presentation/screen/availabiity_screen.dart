@@ -1,11 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:new_untitled/component/other_widgets/app_bar_opacity.dart';
-
-import '../../../../../component/image/common_image.dart';
-import '../../../../../component/text/common_text.dart';
-import '../../../../../utils/constants/app_icons.dart';
+import 'package:new_untitled/component/text/common_text.dart';
 import '../../../../common/auth/signup_chef/presentation/controller/sign_up_chef_controller.dart';
 import '../../../../common/auth/signup_chef/presentation/screen/cafe_set_availability.dart';
 import '../../../profile/presentation/widgets/custom_TimePicker.dart';
@@ -113,12 +109,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
     }
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  // ✅ Fix: time tap করলে popup আসবে
   Future<void> _pickTime(DaySchedule day, int slotIndex, bool isFrom) async {
     final slot = day.slots[slotIndex];
     await SetAvailabilityPicker.show(
@@ -141,7 +131,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
     return "${h.toString().padLeft(2, '0')}:$m $p";
   }
 
-  // ✅ Fix: toggle সরিয়ে শুধু checkbox রাখা হয়েছে
   void _showUnitPopup({
     required BuildContext context,
     required Offset offset,
@@ -150,7 +139,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
   }) {
     final overlay = Overlay.of(context);
     late OverlayEntry entry;
-
     entry = OverlayEntry(
       builder: (_) => Stack(
         children: [
@@ -173,7 +161,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   border: Border.all(color: const Color(0xFFF1F1F1)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.08),
+                      color: Colors.black.withOpacity(0.08),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
@@ -200,10 +188,9 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                               color: const Color(0xFF272727),
                               textAlign: TextAlign.start,
                             ),
-                            // ✅ Toggle সরিয়ে শুধু checkbox checkmark
                             Container(
-                              width: 22.w,
-                              height: 22.w,
+                              width: 20.w,
+                              height: 20.w,
                               decoration: BoxDecoration(
                                 color: isSelected
                                     ? const Color(0xFF272727)
@@ -218,7 +205,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                               ),
                               child: isSelected
                                   ? Icon(Icons.check,
-                                  size: 13.sp, color: Colors.white)
+                                  size: 12.sp, color: Colors.white)
                                   : null,
                             ),
                           ],
@@ -233,7 +220,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
         ],
       ),
     );
-
     overlay.insert(entry);
   }
 
@@ -246,7 +232,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
   }) {
     final overlay = Overlay.of(context);
     late OverlayEntry entry;
-
     entry = OverlayEntry(
       builder: (_) => Stack(
         children: [
@@ -270,7 +255,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   border: Border.all(color: const Color(0xFFF1F1F1)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.08),
+                      color: Colors.black.withOpacity(0.08),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
@@ -284,7 +269,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                     final val = options[index];
                     final isSelected = val == selected;
                     return InkWell(
-                      borderRadius: BorderRadius.circular(14.r),
                       onTap: () {
                         onSelect(val);
                         entry.remove();
@@ -302,7 +286,8 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                             ),
                             if (isSelected)
                               Icon(Icons.check,
-                                  size: 13.sp, color: const Color(0xFF272727)),
+                                  size: 13.sp,
+                                  color: const Color(0xFF272727)),
                           ],
                         ),
                       ),
@@ -315,26 +300,35 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
         ],
       ),
     );
-
     overlay.insert(entry);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leadingWidth: 60,
-      ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // ── Back button ──
+            Padding(
+              padding: EdgeInsets.only(left: 8.w, top: 8.h),
+              child: IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  size: 20,
+                  color: Color(0xFF1A1A1A),
+                ),
+              ),
+            ),
+
             if (_isLoadingData)
               const Expanded(
                 child: Center(
-                  child: CircularProgressIndicator(color: Color(0xFF1C1C1C)),
+                  child: CircularProgressIndicator(
+                      color: Color(0xFF1C1C1C)),
                 ),
               )
             else
@@ -344,17 +338,20 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(height: 4.h),
+
+                      // ── Title ──
                       const CommonText(
-                        text: 'Set Availability',
+                        text: 'Set Your Availability',
                         fontSize: 26,
                         fontWeight: FontWeight.w700,
                         color: Color(0xFF272727),
                         textAlign: TextAlign.start,
                       ),
-                      8.verticalSpace,
+                      SizedBox(height: 8.h),
                       const CommonText(
                         text:
-                        "Set up your availability to let customers know when you're available to cook. This helps you get booked at the right times.",
+                        "Set up your availability to let customers know when you're available to cook. This helps you get booked at the right times!",
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Color(0xFF777777),
@@ -362,10 +359,14 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                         textAlign: TextAlign.start,
                         overflow: TextOverflow.visible,
                       ),
-                      20.verticalSpace,
-                      ..._days.map((day) => _buildDayItem(day)),
-                      20.verticalSpace,
+                      SizedBox(height: 20.h),
 
+                      // ── Days ──
+                      ..._days.map((day) => _buildDayItem(day)),
+
+                      SizedBox(height: 20.h),
+
+                      // ── Booking Preferences ──
                       const CommonText(
                         text: 'Booking Preferences',
                         fontSize: 13,
@@ -373,7 +374,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                         color: Color(0xFF272727),
                         textAlign: TextAlign.start,
                       ),
-                      10.verticalSpace,
+                      SizedBox(height: 10.h),
 
                       RichText(
                         text: TextSpan(
@@ -384,7 +385,8 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                           ),
                           children: [
                             const TextSpan(
-                                text: 'Customers can place orders at least '),
+                                text:
+                                'Customers can place orders at least '),
                             TextSpan(
                               text: '$_minHours $_minUnit',
                               style: TextStyle(
@@ -407,7 +409,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                           ],
                         ),
                       ),
-                      14.verticalSpace,
+                      SizedBox(height: 14.h),
 
                       _buildBookingInputRow(
                         value: _minHours,
@@ -416,17 +418,20 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                           context: context,
                           offset: offset,
                           selected: _minHours,
-                          options: List.generate(24, (index) => index + 1),
-                          onSelect: (v) => setState(() => _minHours = v),
+                          options:
+                          List.generate(24, (index) => index + 1),
+                          onSelect: (v) =>
+                              setState(() => _minHours = v),
                         ),
                         onUnitTap: (offset) => _showUnitPopup(
                           context: context,
                           offset: offset,
                           selected: _minUnit,
-                          onSelect: (v) => setState(() => _minUnit = v),
+                          onSelect: (v) =>
+                              setState(() => _minUnit = v),
                         ),
                       ),
-                      12.verticalSpace,
+                      SizedBox(height: 12.h),
 
                       _buildBookingInputRow(
                         value: _maxDays,
@@ -435,23 +440,26 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                           context: context,
                           offset: offset,
                           selected: _maxDays,
-                          options: List.generate(30, (index) => index + 1),
-                          onSelect: (v) => setState(() => _maxDays = v),
+                          options:
+                          List.generate(30, (index) => index + 1),
+                          onSelect: (v) =>
+                              setState(() => _maxDays = v),
                         ),
                         onUnitTap: (offset) => _showUnitPopup(
                           context: context,
                           offset: offset,
                           selected: _maxUnit,
-                          onSelect: (v) => setState(() => _maxUnit = v),
+                          onSelect: (v) =>
+                              setState(() => _maxUnit = v),
                         ),
                       ),
-                      32.verticalSpace,
+                      SizedBox(height: 32.h),
                     ],
                   ),
                 ),
               ),
 
-            // Save Button
+            // ── Save Button ──
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
               child: SizedBox(
@@ -463,7 +471,8 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       : () async {
                     setState(() => _isSubmitting = true);
                     try {
-                      final controller = SignUpChefController.instance;
+                      final controller =
+                          SignUpChefController.instance;
                       await controller
                           .setupChefAvailability2(days: _days);
                     } finally {
@@ -492,7 +501,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                           strokeWidth: 2.5,
                         ),
                       ),
-                      10.horizontalSpace,
+                      SizedBox(width: 10.w),
                       const CommonText(
                         text: 'Loading...',
                         fontSize: 16,
@@ -520,31 +529,65 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // ── Day name + small toggle ──
         Row(
           children: [
             CommonText(
               text: day.name,
+              fontSize: 14,
               fontWeight: FontWeight.w600,
               color: const Color(0xFF272727),
               textAlign: TextAlign.start,
             ),
             const Spacer(),
-            CupertinoSwitch(
-              value: day.isEnabled,
-              onChanged: (val) => setState(() {
-                day.isEnabled = val;
-                if (val && day.slots.isEmpty) {
-                  day.slots.add(TimeSlot(
-                    from: const TimeOfDay(hour: 9, minute: 0),
-                    to: const TimeOfDay(hour: 17, minute: 0),
-                  ));
-                }
-              }),
-              activeColor: const Color(0xFF1C1C1C),
+            // ── Custom small toggle Figma এর মতো ──
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  day.isEnabled = !day.isEnabled;
+                  if (day.isEnabled && day.slots.isEmpty) {
+                    day.slots.add(TimeSlot(
+                      from: const TimeOfDay(hour: 9, minute: 0),
+                      to: const TimeOfDay(hour: 17, minute: 0),
+                    ));
+                  }
+                });
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                width: 44.w,
+                height: 26.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100.r),
+                  color: day.isEnabled
+                      ? const Color(0xFF1C1C1C)
+                      : const Color(0xFFE0E0E0),
+                ),
+                child: Stack(
+                  children: [
+                    AnimatedPositioned(
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                      left: day.isEnabled ? 20.w : 2.w,
+                      top: 3.h,
+                      child: Container(
+                        width: 20.w,
+                        height: 20.h,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
+
         if (day.isEnabled) ...[
+          SizedBox(height: 10.h),
           ...day.slots.asMap().entries.map((entry) {
             final i = entry.key;
             final slot = entry.value;
@@ -553,7 +596,8 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
               children: [
                 if (i > 0)
                   Padding(
-                    padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
+                    padding:
+                    EdgeInsets.only(top: 4.h, bottom: 8.h),
                     child: const CommonText(
                       text: 'And',
                       fontSize: 12,
@@ -562,80 +606,105 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       textAlign: TextAlign.start,
                     ),
                   ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF7F7F7),
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  padding:
-                  EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
-                  child: Row(
-                    children: [
-                      const CommonText(
-                        text: 'From',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF777777),
-                        textAlign: TextAlign.start,
-                      ),
-                      10.horizontalSpace,
-                      // ✅ Fix: GestureDetector সঠিকভাবে কাজ করবে
-                      GestureDetector(
+                // ── From / To boxes ──
+                Row(
+                  children: [
+                    // From box
+                    Expanded(
+                      child: GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () => _pickTime(day, i, true),
-                        child: CommonText(
-                          text: _formatTime(slot.from),
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF272727),
-                          textAlign: TextAlign.start,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 14.w, vertical: 12.h),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF7F7F7),
+                            borderRadius:
+                            BorderRadius.circular(10.r),
+                          ),
+                          child: Row(
+                            children: [
+                              const CommonText(
+                                text: 'From',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF777777),
+                                textAlign: TextAlign.start,
+                              ),
+                              SizedBox(width: 8.w),
+                              CommonText(
+                                text: _formatTime(slot.from),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFF272727),
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      const Spacer(),
-                      const CommonText(
-                        text: 'To',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF777777),
-                        textAlign: TextAlign.start,
-                      ),
-                      10.horizontalSpace,
-                      // ✅ Fix: GestureDetector সঠিকভাবে কাজ করবে
-                      GestureDetector(
+                    ),
+                    SizedBox(width: 10.w),
+                    // To box
+                    Expanded(
+                      child: GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () => _pickTime(day, i, false),
-                        child: CommonText(
-                          text: _formatTime(slot.to),
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF272727),
-                          textAlign: TextAlign.start,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 14.w, vertical: 12.h),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF7F7F7),
+                            borderRadius:
+                            BorderRadius.circular(10.r),
+                          ),
+                          child: Row(
+                            children: [
+                              const CommonText(
+                                text: 'To',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xFF777777),
+                                textAlign: TextAlign.start,
+                              ),
+                              SizedBox(width: 8.w),
+                              CommonText(
+                                text: _formatTime(slot.to),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFF272727),
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                6.verticalSpace,
+                SizedBox(height: 8.h),
               ],
             );
           }),
+
           GestureDetector(
             onTap: () {
               setState(() {
-                day.slots.add(
-                  TimeSlot(
-                    from: const TimeOfDay(hour: 9, minute: 0),
-                    to: const TimeOfDay(hour: 17, minute: 0),
-                  ),
-                );
+                day.slots.add(TimeSlot(
+                  from: const TimeOfDay(hour: 9, minute: 0),
+                  to: const TimeOfDay(hour: 17, minute: 0),
+                ));
               });
             },
             child: Padding(
-              padding: EdgeInsets.only(bottom: 4.h, top: 2.h),
+              padding:
+              EdgeInsets.only(bottom: 4.h, top: 2.h),
               child: Row(
                 children: [
-                  Icon(Icons.add, size: 16.sp, color: const Color(0xFF272727)),
-                  6.horizontalSpace,
+                  Icon(Icons.add,
+                      size: 16.sp,
+                      color: const Color(0xFF272727)),
+                  SizedBox(width: 6.w),
                   const CommonText(
                     text: 'Add Additional Time',
                     fontSize: 13,
@@ -647,7 +716,9 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
             ),
           ),
         ],
-        Divider(color: Colors.grey.shade200, height: 20.h),
+
+        Divider(
+            color: Colors.grey.shade200, height: 24.h),
       ],
     );
   }
@@ -664,7 +735,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
       border: Border.all(color: const Color(0xFFF1F1F1)),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.08),
+          color: Colors.black.withOpacity(0.08),
           blurRadius: 20,
           offset: const Offset(0, 8),
         ),
@@ -675,7 +746,8 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         GestureDetector(
-          onTapDown: (details) => onValueTap(details.globalPosition),
+          onTapDown: (details) =>
+              onValueTap(details.globalPosition),
           child: Container(
             width: 70.w,
             height: 48.h,
@@ -690,19 +762,22 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   fontWeight: FontWeight.w600,
                   color: const Color(0xFF272727),
                 ),
-                4.horizontalSpace,
+                SizedBox(width: 4.w),
                 Icon(Icons.keyboard_arrow_down,
-                    size: 18.sp, color: const Color(0xFF272727)),
+                    size: 18.sp,
+                    color: const Color(0xFF272727)),
               ],
             ),
           ),
         ),
-        8.horizontalSpace,
+        SizedBox(width: 8.w),
         GestureDetector(
-          onTapDown: (details) => onUnitTap(details.globalPosition),
+          onTapDown: (details) =>
+              onUnitTap(details.globalPosition),
           child: Container(
             height: 48.h,
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+            padding: EdgeInsets.symmetric(
+                horizontal: 8.w, vertical: 2.h),
             decoration: boxDecoration,
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -713,9 +788,10 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                   color: const Color(0xFF272727),
                   textAlign: TextAlign.start,
                 ),
-                4.horizontalSpace,
+                SizedBox(width: 4.w),
                 Icon(Icons.keyboard_arrow_down,
-                    size: 18.sp, color: const Color(0xFF272727)),
+                    size: 18.sp,
+                    color: const Color(0xFF272727)),
               ],
             ),
           ),

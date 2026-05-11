@@ -74,21 +74,23 @@ class _Body extends StatelessWidget {
     final String strTime = order['strTime'] ?? '';
     final String formattedDate = _formatDate(order['formatted_date']);
     final List staticItems = order['static_items'] ?? [];
-    final Map breakdown = order['price_breakdown'] ?? {};
-    final double subtotal = (breakdown['subtotal'] ?? 0).toDouble();
-    final double tax = (breakdown['taxs'] ?? 0).toDouble();
-    final double serviceFee = (breakdown['service_fee'] ?? 0).toDouble();
-    final double total = (order['user_paid'] ?? breakdown['total'] ?? 0).toDouble();
+    final String status = order['status'] ?? '';
     final bool hasDiscount = order['has_discount'] ?? false;
     final double discountAmt = (order['discount_amount'] ?? 0).toDouble();
-    final String status = order['status'] ?? '';
+
+    final Map breakdown = order['price_breakdown'] ?? {};
+    final Map chefBreakdown = breakdown['chef_price_breakdown'] ?? {};
+    final double subtotal = (chefBreakdown['subtotal'] ?? 0).toDouble();
+    final double tax = (chefBreakdown['taxs'] ?? 0).toDouble();
+    final double serviceFee = (chefBreakdown['service_fee'] ?? 0).toDouble();
+    final double total = (chefBreakdown['total'] ?? 0).toDouble();
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── User card ──
+
           _card(
             child: Row(
               children: [

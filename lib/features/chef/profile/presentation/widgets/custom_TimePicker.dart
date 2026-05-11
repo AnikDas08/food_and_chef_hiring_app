@@ -39,7 +39,8 @@ class SetAvailabilityPicker extends StatefulWidget {
 }
 
 class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
-  static const double _itemHeight = 70.0; // Adjusted height for better fit
+
+  static const double _itemHeight = 70.0;
   static const int _intervalMinutes = 15;
 
   late List<TimeOfDay> _timeSlots;
@@ -50,7 +51,6 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
 
   List<TimeOfDay> _generateTimeSlots() {
     final slots = <TimeOfDay>[];
-    // Generate 24 hours (AM/PM combined in the list for scrolling)
     for (int h = 0; h < 24; h++) {
       for (int m = 0; m < 60; m += _intervalMinutes) {
         slots.add(TimeOfDay(hour: h, minute: m));
@@ -198,9 +198,9 @@ class _SetAvailabilityPickerState extends State<SetAvailabilityPicker> {
             fontWeight: FontWeight.w700,
             color: Color(0xFF272727),
           ),
+
           20.verticalSpace,
 
-          // Scroll Wheels Area
           Stack(
             alignment: Alignment.center,
             children: [

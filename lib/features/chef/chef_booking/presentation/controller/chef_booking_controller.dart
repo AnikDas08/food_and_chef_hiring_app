@@ -19,6 +19,7 @@ class ChefBookingController extends GetxController {
     'Not Available',
     'Other',
   ];
+
   List<String> selectDietary = [];
 
 
@@ -39,6 +40,16 @@ class ChefBookingController extends GetxController {
   void onInit() {
     super.onInit();
     fetchOrders();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    final args = Get.arguments as Map?;
+    final tab = args?['tab']?.toString();
+    if (tab != null && bookingHistoryList.contains(tab)) {
+      onChangeBookingHistory(tab);
+    }
   }
 
   void onChangeBookingHistory(String value) {

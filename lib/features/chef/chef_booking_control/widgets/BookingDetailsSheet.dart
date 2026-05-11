@@ -239,6 +239,7 @@ class _BookingDetailsContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+
         Text(
           'Order Details',
           style: TextStyle(
@@ -247,7 +248,9 @@ class _BookingDetailsContent extends StatelessWidget {
             color: const Color(0xFF1A1A1A),
           ),
         ),
+
         SizedBox(height: 12.h),
+
         ...booking.orderItems.map(
               (item) => Padding(
             padding: EdgeInsets.only(bottom: 12.h),
@@ -380,6 +383,7 @@ class _BookingDetailsContent extends StatelessWidget {
             blurRadius: 10,
             offset: const Offset(0, -4),
           ),
+
         ],
       ),
       child: GestureDetector(
