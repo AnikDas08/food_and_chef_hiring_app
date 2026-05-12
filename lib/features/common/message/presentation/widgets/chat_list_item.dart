@@ -59,14 +59,16 @@ Widget chatListItem({required ChatModel item}) {
               color: const Color(0xff272727),
               bottom: 8,
             ),
-            /*Container(
-              width: 8.sp,
-              height: 8.sp,
-              decoration: const BoxDecoration(
-                color: Color(0xffFD713F),
-                shape: BoxShape.circle,
+            // Show unread indicator only when there are unread messages
+            if (item.unreadMessageCount > 0)
+              Container(
+                width: 8.sp,
+                height: 8.sp,
+                decoration: const BoxDecoration(
+                  color: Color(0xffFD713F),
+                  shape: BoxShape.circle,
+                ),
               ),
-            ),*/
           ],
         ),
       ],

@@ -24,11 +24,13 @@ class ChatModel {
   final String id;
   final Participant participant;
   final LatestMessage latestMessage;
+  final int unreadMessageCount;
 
   ChatModel({
     required this.id,
     required this.participant,
     required this.latestMessage,
+    required this.unreadMessageCount,
   });
 
   factory ChatModel.fromJson(Map<String, dynamic> json) {
@@ -36,6 +38,7 @@ class ChatModel {
       id: json['_id'] ?? '',
       participant: Participant.fromJson(json['participants'] ?? {}),
       latestMessage: LatestMessage.fromJson(json['lastMessage'] ?? {}),
+      unreadMessageCount: json['unreadMessageCount'] ?? 0,
     );
   }
 }
