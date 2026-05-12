@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:cupertino_native/cupertino_native.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/groceries_screen.dart';
+import '../controller/home_controller.dart';
 
 import '../../../../common/message/presentation/screen/chat_screen.dart';
 import '../../../booking/presentation/screen/booking_history_screen.dart';
@@ -22,6 +24,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
     with SingleTickerProviderStateMixin {
   late final TabController tabController;
   int selectedTabIndex = 0;
+  final HomeController homeController = Get.put(HomeController());
 
   final List<TabData> tabs = [
     TabData(title: 'Home', icon: 'house', selectedIcon: 'house.fill'),
@@ -62,6 +65,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
       initialIndex: selectedTabIndex,
     );
     tabController.addListener(_updateTabIndex);
+    // Call isRead to get unread message count
+    homeController.isRead();
   }
 
   void _updateTabIndex() {
@@ -100,31 +105,58 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
         children: pages,
       ),
       bottomNavigationBar:
-          Platform.isIOS ? _buildCupertinoBar() : _buildAndroidBar(),
+      Platform.isIOS ? _buildCupertinoBar() : _buildAndroidBar(),
     );
   }
 
   // IOS NATIVE STYLE
+  // Badge is positioned by dividing screen width into 5 equal tab slots.
+  // Chat tab is index 3. Icon center = tabWidth * 3 + tabWidth / 2.
+  // Icon width is 18.sp, so half = 9.sp. Badge sits at iconCenter + half icon width - half badge width.
   Widget _buildCupertinoBar() {
-    return CNTabBar(
-      items:
-          tabs
-              .map(
-                (tab) => CNTabBarItem(
+    return Builder(
+      builder: (context) {
+        final double screenWidth = MediaQuery.of(context).size.width;
+        final double tabWidth = screenWidth / tabs.length; // 5 tabs
+        // Center X of the chat tab (index 3)
+        final double chatIconCenterX = tabWidth * 3 + (tabWidth / 2);
+        // Place badge at top-right corner of the icon:
+        // iconCenter + half of icon size (9.sp) - half of badge size (4.w)
+        final double badgeLeft = chatIconCenterX + 9.sp - 4.w;
+
+        return Obx(() => Stack(
+          clipBehavior: Clip.none,
+          children: [
+            CNTabBar(
+              items: tabs.asMap().entries.map((entry) {
+                final index = entry.key;
+                final tab = entry.value;
+                return CNTabBarItem(
                   label: tab.title,
-                  icon: CNSymbol(
-                    tabs[selectedTabIndex] == tab ? tab.selectedIcon : tab.icon,
-                    color: const Color(0xff272727),
-                    size: 18.sp, // Responsive size
+                  icon: _buildIconWithBadge(tab, index),
+                );
+              }).toList(),
+              tint: const Color(0xff272727),
+              backgroundColor: Colors.white.withOpacity(0.9),
+              currentIndex: selectedTabIndex,
+              onTap: onTabTap,
+            ),
+            if (homeController.unreadCount.value > 0)
+              Positioned(
+                left: badgeLeft,
+                top: 6.h,
+                child: Container(
+                  width: 8.w,
+                  height: 8.w, // use .w for both to keep a perfect circle
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFFD713F),
+                    shape: BoxShape.circle,
                   ),
                 ),
-              )
-              .toList(),
-      tint: const Color(0xff272727),
-      backgroundColor: Colors.white.withOpacity(0.9),
-      //height: 90.h, // Scaled height
-      currentIndex: selectedTabIndex,
-      onTap: onTabTap,
+              ),
+          ],
+        ));
+      },
     );
   }
 
@@ -154,19 +186,31 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
               child: InkWell(
                 onTap: () => onTabTap(index),
                 borderRadius: BorderRadius.circular(35.r),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.center,
                   children: [
-                    CommonText(
-                      text: tabs[index].title,
-                      fontSize: 10.sp, // Scale text
-                      fontWeight:
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CommonText(
+                          text: tabs[index].title,
+                          fontSize: 10.sp, // Scale text
+                          fontWeight:
                           isSelected ? FontWeight.w600 : FontWeight.w400,
-                      color:
+                          color:
                           isSelected
                               ? const Color(0xff272727)
                               : const Color(0xff777777),
+                        ),
+                      ],
                     ),
+                    if (index == 3) // Chat tab index
+                      Positioned(
+                        top: -5.h,
+                        right: -5.w,
+                        child: Obx(() => _buildNotificationDot()),
+                      ),
                   ],
                 ),
               ),
@@ -175,6 +219,54 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
         ),
       ),
     );
+  }
+
+  // Build icon with badge for iOS
+  CNSymbol _buildIconWithBadge(TabData tab, int index) {
+    return CNSymbol(
+      tabs[selectedTabIndex] == tab ? tab.selectedIcon : tab.icon,
+      color: const Color(0xff272727),
+      size: 18.sp, // Responsive size
+    );
+  }
+
+  // Build notification dot
+  Widget _buildNotificationDot() {
+    return homeController.unreadCount.value > 0
+        ? Container(
+      width: 8.w,
+      height: 8.w, // .w for both to keep a perfect circle on all screens
+      decoration: const BoxDecoration(
+        color: Color(0xFFFD713F),
+        shape: BoxShape.circle,
+      ),
+    )
+        : const SizedBox.shrink();
+  }
+
+  // Helper method to map SF Symbol names to CupertinoIcons
+  IconData _getCupertinoIcon(String sfSymbolName) {
+    switch (sfSymbolName) {
+      case 'house':
+      case 'house.fill':
+        return CupertinoIcons.house_fill;
+      case 'calendar.badge.clock':
+        return CupertinoIcons.calendar;
+      case 'basket':
+        return CupertinoIcons.bag;
+      case 'basket.fill':
+        return CupertinoIcons.bag_fill;
+      case 'ellipsis.message':
+        return CupertinoIcons.chat_bubble;
+      case 'ellipsis.message.fill':
+        return CupertinoIcons.chat_bubble_fill;
+      case 'person.crop.circle':
+        return CupertinoIcons.person_circle;
+      case 'person.circle.fill':
+        return CupertinoIcons.person_circle_fill;
+      default:
+        return CupertinoIcons.question_circle;
+    }
   }
 }
 

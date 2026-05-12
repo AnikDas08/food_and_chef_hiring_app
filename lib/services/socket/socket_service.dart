@@ -4,6 +4,7 @@ import 'package:new_untitled/features/common/notifications/presentation/controll
 import 'package:new_untitled/utils/log/app_log.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import '../../config/api/api_end_point.dart';
+import '../../features/customer/home/presentation/controller/home_controller.dart';
 import '../notification/notification_service.dart';
 import '../storage/storage_services.dart';
 
@@ -29,6 +30,11 @@ class SocketServices {
       appLog('================> get Data on socket: $data');
       NotificationService.showNotification(data);
       Get.find<NotificationsController>().getNotificationsRepo();
+    });
+
+    _socket.on('getMessage::${LocalStorage.userId}', (data) {
+      appLog('================> get Data on socket: $data');
+      Get.find<HomeController>().isRead();
     });
 
     _socket.on('order::${LocalStorage.userId}', (data) {
@@ -68,5 +74,9 @@ class SocketServices {
       connectToSocket();
     }
     _socket.emitWithAck(event, data, ack: handler);
+  }
+
+  static void off(String event) {
+    _socket.off(event);
   }
 }

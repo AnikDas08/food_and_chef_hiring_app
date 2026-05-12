@@ -31,7 +31,10 @@ class ChatController extends GetxController {
   ScrollController scrollController = ScrollController();
 
   /// Chat Controller Instance create here
-  static ChatController get instance => Get.put(ChatController());
+  static ChatController get instance {
+    print('DEBUG: ChatController.instance called');
+    return Get.put(ChatController());
+  }
 
   /// Search by name
   void searchChats(String query) {
@@ -62,25 +65,33 @@ class ChatController extends GetxController {
     }
   }
 
+
+
   /// Chat data Loading function
   Future<void> getChatRepo() async {
+    print('DEBUG: getChatRepo called - page: $page, current chats count: ${chats.length}');
+    
     if (page == 1) {
+      chats.clear();
+      filteredChats.clear();
+      print('DEBUG: Cleared both chat lists');
       status = Status.loading;
       update();
     }
 
-    final response = await ApiService.get(ApiEndPoint.chats);
+    final response = await ApiService.get("${ApiEndPoint.chats}?page=$page&limit=10");
 
     if (response.statusCode == 200) {
       final data = response.data['data'] ?? [];
-
-      if (page == 1) chats.clear();
+      print('DEBUG: API returned ${data.length} items');
 
       for (var item in data) {
         chats.add(ChatModel.fromJson(item));
       }
 
+      print('DEBUG: After adding items, chats count: ${chats.length}');
       filteredChats = List.from(chats);
+      print('DEBUG: filteredChats count: ${filteredChats.length}');
       page = page + 1;
       status = Status.completed;
       update();
@@ -93,22 +104,38 @@ class ChatController extends GetxController {
 
   /// Chat data Update Socket listener
   void listenChat() {
+    // Clean up any existing socket listener before adding a new one
+    SocketServices.off('update-chatlist::${LocalStorage.userId}');
+    print('DEBUG: Socket listener cleanup completed');
+    
     SocketServices.on('update-chatlist::${LocalStorage.userId}', (data) {
+      print('DEBUG: Socket event received - ${data.length} items');
       page = 1;
       chats.clear();
+      print('DEBUG: Socket - cleared chats list');
 
       for (var item in data) {
         chats.add(ChatModel.fromJson(item));
       }
 
+      print('DEBUG: Socket - after adding items, chats count: ${chats.length}');
       filteredChats = List.from(chats);
+      print('DEBUG: Socket - filteredChats count: ${filteredChats.length}');
       status = Status.completed;
       update();
+    });
+    print('DEBUG: Socket listener added');
+  }
+
+  void listenMessage(String chatId) {
+    SocketServices.on('chatList::$chatId', (data) {
+
     });
   }
 
   @override
   void onInit() {
+    print('DEBUG: ChatController onInit called');
     getChatRepo();
     listenChat();
     super.onInit();
@@ -116,6 +143,8 @@ class ChatController extends GetxController {
 
   @override
   void onClose() {
+    print('DEBUG: ChatController onClose called');
+    SocketServices.off('update-chatlist::${LocalStorage.userId}');
     //searchControllers.dispose();
     scrollController.dispose();
     super.onClose();

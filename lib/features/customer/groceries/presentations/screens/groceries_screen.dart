@@ -285,7 +285,11 @@ class GroceryScreen extends StatelessWidget {
             SizedBox(width: 8.w),
             CircleAvatar(
               radius: 20.r,
-              backgroundImage: NetworkImage(chef['image'] ?? ''),
+              backgroundImage: NetworkImage(
+                (chef['image'] != null && chef['image'].toString().startsWith('http'))
+                    ? chef['image'].toString()
+                    : ApiEndPoint.imageUrl + (chef['image'] ?? ''),
+              ),
             ),
             SizedBox(width: 10.w),
             Expanded(
@@ -321,7 +325,9 @@ class GroceryScreen extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8.r),
                             child: Image.network(
-                              ApiEndPoint.imageUrl + imageUrl,
+                              imageUrl.startsWith('http')
+                                  ? imageUrl
+                                  : ApiEndPoint.imageUrl + imageUrl,
                               width: 40.w,
                               height: 40.w,
                               fit: BoxFit.cover,
