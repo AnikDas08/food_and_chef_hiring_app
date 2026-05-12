@@ -5,12 +5,14 @@ class AppIcons {
   static const String about = '$baseurl/about.svg';
   static const String briefcase = '$baseurl/briefcase.svg';
   static const String card = '$baseurl/card.svg';
+  static const String apple1 = '$baseurl/apple1.svg';
   static const String chart = '$baseurl/chart.svg';
   static const String chef = '$baseurl/chef.svg';
   static const String customers = '$baseurl/customers.svg';
   static const String date = '$baseurl/date.svg';
   static const String edit = '$baseurl/edit.svg';
   static const String appleLogo = '$baseurl/apple.svg';
+  static const String apple = '$baseurl/apple.svg';
   static const String facebook = '$baseurl/facebook.svg';
   static const String fliter = '$baseurl/fliter.svg';
   static const String google = '$baseurl/google.svg';
@@ -60,8 +62,6 @@ class AppIcons {
   static const String clock = '$baseurl/clock.svg';
   static const String download = '$baseurl/download.svg';
   static const String basketSvg = '$baseurl/basket_svg.svg';
-
-
   static const String calendarBadgeCheckmark = '$baseurl/calendar.badge.checkmark.svg';
   static const String highlighter = '$baseurl/highlighter.svg';
   static const String calendar = '$baseurl/calendar.svg';
@@ -71,8 +71,5 @@ class AppIcons {
   static const String stopwatch = '$baseurl/stopwatch.svg';
   static const String stove = '$baseurl/stove.svg';
   static const String trash = '$baseurl/trash.svg';
-
-
-
 
 }
