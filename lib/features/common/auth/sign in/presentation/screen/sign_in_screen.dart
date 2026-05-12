@@ -161,6 +161,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
 
                       20.height,
+
                       Container(
                         height: 60.h,
                         decoration: BoxDecoration(
@@ -177,7 +178,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           ],
                         ),
                       ),
+
                       12.height,
+
                       Container(
                         height: 60.h,
                         decoration: BoxDecoration(
