@@ -30,7 +30,7 @@ class SignupChefScreen extends StatelessWidget {
         elevation: 0,
         flexibleSpace: appBarOpacity(),
       ),
-      /// Body Section Starts Here
+
       body: GetBuilder<SignUpChefController>(
         builder: (controller) {
           return SingleChildScrollView(
@@ -40,6 +40,7 @@ class SignupChefScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   const CommonText(
                     text: AppString.registerAccountchef,
                     fontSize: 24,
@@ -58,18 +59,19 @@ class SignupChefScreen extends StatelessWidget {
                     bottom: 28,
                   ),
 
-                  /// Account Email Input here
                   const CommonText(
                     text: AppString.email,
                     bottom: 8,
                     fontWeight: FontWeight.w600,
                     color: Color(0xff272727),
                   ),
+
                   CommonTextField(
                     controller: controller.emailController,
                     hintText: AppString.email,
                     validator: OtherHelper.emailValidator,
                   ),
+
                   28.height,
 
                   CommonButton(
@@ -97,27 +99,36 @@ class SignupChefScreen extends StatelessWidget {
                   ),
 
                   28.height,
+
                   Container(
                     height: 60.h,
                     decoration: BoxDecoration(
                       color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(20.r),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
 
-                        CommonImage(imageSrc: AppIcons.appleLogo),
-
-                        CommonText(
-                          text: AppString.signUpWithApple,
-                          left: 14,
+                        SizedBox(
+                          height: 26.h,
+                          width: 26.w,
+                          child: CommonImage(
+                            imageSrc: AppIcons.apple,
+                          ),
                         ),
 
+                        SizedBox(width: 12.w),
+
+                        const CommonText(
+                          text: AppString.signInWithApple,
+                        ),
                       ],
                     ),
                   ),
+
                   12.height,
+
                   Container(
                     height: 60.h,
                     decoration: BoxDecoration(

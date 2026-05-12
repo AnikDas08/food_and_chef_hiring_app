@@ -168,12 +168,21 @@ class _SignInScreenState extends State<SignInScreen> {
                           color: const Color(0xffF2F2F2),
                           borderRadius: BorderRadius.circular(20.r),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CommonText(
+                            SizedBox(
+                              height: 26.h,
+                              width: 26.w,
+                              child: CommonImage(
+                                imageSrc: AppIcons.apple,
+                              ),
+                            ),
+
+                            SizedBox(width: 12.w),
+
+                            const CommonText(
                               text: AppString.signInWithApple,
-                              left: 14,
                             ),
                           ],
                         ),
@@ -188,6 +197,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           borderRadius: BorderRadius.circular(20.r),
                           border: Border.all(color: const Color(0xffF2F2F2)),
                         ),
+
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

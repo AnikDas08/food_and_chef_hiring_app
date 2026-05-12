@@ -103,20 +103,31 @@ class SignUpScreen extends StatelessWidget {
                   ),
 
                   28.height,
+
                   Container(
-                    height: 60,
+                    height: 60.h,
                     decoration: BoxDecoration(
                       color: const Color(0xffF2F2F2),
                       borderRadius: BorderRadius.circular(20.r),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CommonImage(imageSrc: AppIcons.appleLogo),
-                        CommonText(
-                          text: AppString.signInWithApple,
-                          left: 14,
+
+                        SizedBox(
+                          height: 26.h,
+                          width: 26.w,
+                          child: CommonImage(
+                            imageSrc: AppIcons.apple,
+                          ),
                         ),
+
+                        SizedBox(width: 12.w),
+
+                        const CommonText(
+                          text: AppString.signInWithApple,
+                        ),
+
                       ],
                     ),
                   ),
