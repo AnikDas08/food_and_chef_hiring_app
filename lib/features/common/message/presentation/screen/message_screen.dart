@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
+import 'package:new_untitled/features/common/message/presentation/controller/chat_controller.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../component/text_field/common_text_field.dart';
@@ -44,6 +45,21 @@ class _MessageScreenState extends State<MessageScreen> {
           appBar: AppBar(
             backgroundColor: Colors.white,
             elevation: 0.5,
+            leading: IconButton(
+              onPressed: () async{
+                print('DEBUG: Back button pressed - resetting page and calling getChatRepo');
+                final chatController = Get.find<ChatController>();
+                chatController.page = 1; // Reset page to get fresh data
+                await chatController.getChatRepo();
+                print('DEBUG: getChatRepo completed, going back');
+                Get.back();
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Color(0xff272727),
+                size: 24,
+              ),
+            ),
             titleSpacing: 0,
             title: Row(
               children: [

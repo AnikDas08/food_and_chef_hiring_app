@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:new_untitled/features/customer/home/presentation/controller/home_controller.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../services/socket/socket_service.dart';
@@ -406,11 +407,16 @@ class MessageController extends GetxController {
       name = Get.arguments['name'] ?? '';
       image = Get.arguments['image'] ?? '';
     }
+    
+    // Trigger immediate unread count update with a small delay to ensure UI is ready
+    Future.delayed(const Duration(milliseconds: 100), () {
+      Get.find<HomeController>().isRead();
+    });
   }
 
   @override
   void onClose() {
-    //SocketServices.off('getMessage::$chatId');
+    SocketServices.off('getMessage::$chatId');
     scrollController.dispose();
     messageController.dispose();
     super.onClose();

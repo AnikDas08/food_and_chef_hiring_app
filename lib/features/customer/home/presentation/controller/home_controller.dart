@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
@@ -8,12 +9,15 @@ import 'package:new_untitled/utils/app_utils.dart';
 
 import '../../../../../services/storage/storage_keys.dart';
 import '../../../../../services/storage/storage_services.dart';
+import '../../../../../services/socket/socket_service.dart';
+import '../../../../../utils/log/app_log.dart';
 import '../data/cousine_data.dart';
 import '../data/chef_model.dart';
 import '../data/order_model.dart';
 
 class HomeController extends GetxController {
   RangeValues values = const RangeValues(20, 100);
+  RxInt unreadCount = 0.obs;
 
   bool saved = false;
   String address = '';
@@ -85,7 +89,53 @@ class HomeController extends GetxController {
     getCusine();
     getCurrentLocationAndFetchChefs();
     getOrderAgain();
+    isRead();
+    _setupMessageListener();
+    startPeriodicUnreadCountCheck();
   }
+
+  @override
+  void onClose() {
+    stopPeriodicUnreadCountCheck();
+    super.onClose();
+  }
+
+  void _setupMessageListener() {
+    appLog('Setting up message listeners for user: ${LocalStorage.userId}');
+    
+    // Listen for general notifications (might include message notifications)
+    /*SocketServices.on('get-notification::${LocalStorage.userId}', (data) {
+      appLog('🔔 Notification received: $data');
+      // Check if this is a message notification
+      if (data != null && data['type'] == 'message') {
+        appLog('📨 Message notification detected, updating unread count');
+        isRead();
+      } else {
+        // For any notification, refresh unread count as fallback
+        appLog('📢 Non-message notification, checking unread count anyway');
+        isRead();
+      }
+    });*/
+
+    // Listen to the actual message events that are being received
+    // Based on logs, messages are coming through without specific event names
+
+
+    // Listen to all events for debugging
+    /*SocketServices.on('getMessage::${LocalStorage.userId}', (data) {
+      appLog('📨 getMessage event received: $data');
+      isRead();
+    });*/
+
+    appLog('✅ Message listeners setup complete');
+  }
+
+  // Test method to manually trigger badge update (for debugging)
+  void testBadgeUpdate() {
+    appLog('🧪 Manual badge update test triggered');
+    isRead();
+  }
+
 
   // Get current location with permission handling
   Future<void> getCurrentLocationAndFetchChefs() async {
@@ -353,6 +403,46 @@ class HomeController extends GetxController {
 
     selectCuisine.add(value);
     update();
+  }
+
+  Timer? _unreadCountTimer;
+
+  void isRead() async {
+    appLog('Fetching unread count...');
+    try {
+      final response = await ApiService.get("chat/unread-counts");
+      appLog('Unread count API response: ${response.statusCode} - ${response.data}');
+      
+      if (response.statusCode == 200) {
+        final newCount = response.data['data'] ?? 0;
+        appLog('Current unread count: ${unreadCount.value}, New count: $newCount');
+        
+        if (unreadCount.value != newCount) {
+          unreadCount.value = newCount;
+          update(); // Trigger UI update to refresh badge
+          appLog('✅ Unread count updated from ${unreadCount.value} to $newCount');
+        } else {
+          appLog('ℹ️ Unread count unchanged: $newCount');
+        }
+      } else {
+        appLog('❌ API error: ${response.statusCode}');
+      }
+    } catch (e) {
+      appLog('❌ Error fetching unread count: $e');
+    }
+  }
+
+  void startPeriodicUnreadCountCheck() {
+    // Check unread count every 30 seconds as fallback
+    _unreadCountTimer?.cancel();
+    _unreadCountTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
+      isRead();
+    });
+  }
+
+  void stopPeriodicUnreadCountCheck() {
+    _unreadCountTimer?.cancel();
+    _unreadCountTimer = null;
   }
 
   void onChangeLevel(String value) {
