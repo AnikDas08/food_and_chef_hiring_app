@@ -56,7 +56,7 @@ class _MessageScreenState extends State<MessageScreen> {
                       // Logic: If image starts with http, use it. Otherwise, add base URL.
                       imageSrc: image.startsWith('http')
                           ? image
-                          : ApiEndPoint.image+image,
+                          : ApiEndPoint.imageUrl+image,
                       size: 40,
                       fill: BoxFit.fill,
                     ),

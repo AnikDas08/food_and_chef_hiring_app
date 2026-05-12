@@ -359,8 +359,9 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                                         Expanded(
                                           child: CommonText(
                                             text:
-                                            chef?.cookingArea?.address ??
-                                                'N/A',
+                                            (chef?.cookingArea?.address != null && chef!.cookingArea!.address!.isNotEmpty)
+                                                ? chef.cookingArea!.address!
+                                                : (chef?.address ?? 'N/A'),
                                             fontSize: 12,
                                             textAlign: TextAlign.start,
                                             left: 4,

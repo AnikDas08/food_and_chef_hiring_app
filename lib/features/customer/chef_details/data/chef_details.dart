@@ -20,6 +20,7 @@ class ChefDetailData {
   String? about;
   int? experience;
   String? name;
+  String? address;
   double? pricing;
   double? avgRating;
   int? totalRating;
@@ -35,6 +36,7 @@ class ChefDetailData {
     this.about,
     this.experience,
     this.name,
+    this.address,
     this.pricing,
     this.avgRating,
     this.totalRating,
@@ -51,6 +53,7 @@ class ChefDetailData {
     about = json['about']?.toString() ?? '';
     experience = json['experience'] as int?;
     name = json['name']?.toString();
+    address = json['address']?.toString();
     pricing = (json['pricing'] as num?)?.toDouble();
     avgRating = (json['avg_rating'] as num?)?.toDouble();
     totalRating = json['total_rating'] as int?;
