@@ -10,8 +10,8 @@ Widget switchButton({
     onTap: onTap,
     child: AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      height: 31,
-      width: 51,
+      height: 26,
+      width: 44,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         color: !value ? Colors.black.withValues(alpha: 0.20) : color,
@@ -21,8 +21,8 @@ Widget switchButton({
         alignment: value ? Alignment.centerRight : Alignment.centerLeft,
         child: Container(
           margin: const EdgeInsets.all(3),
-          height: 25,
-          width: 25,
+          height: 20,
+          width: 20,
           decoration: BoxDecoration(
             color: AppColors.white,
             shape: BoxShape.circle,

@@ -30,7 +30,6 @@ class SignupChefScreen extends StatelessWidget {
         elevation: 0,
         flexibleSpace: appBarOpacity(),
       ),
-
       body: GetBuilder<SignUpChefController>(
         builder: (controller) {
           return SingleChildScrollView(
@@ -179,8 +178,6 @@ class SignupChefScreen extends StatelessWidget {
                       ),
                     ),
                   )
-
-
                 ],
               ),
             ),

@@ -405,11 +405,38 @@ class _ToggleCard extends StatelessWidget {
                   maxLines: 2,
                 ),
               ),
-              CupertinoSwitch(
-                value: isEnabled,
-                onChanged: (_) => onToggle(),
-                activeColor: const Color(0xFF1C1C1C),
-              )
+              GestureDetector(
+                onTap: onToggle,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: 44,
+                  height: 26,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: isEnabled
+                        ? const Color(0xFF1C1C1C)
+                        : const Color(0xFFE0E0E0),
+                  ),
+                  child: Stack(
+                    children: [
+                      AnimatedPositioned(
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeInOut,
+                        left: isEnabled ? 20 : 2,
+                        top: 3,
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
           if (subtitle != null)

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -92,15 +93,24 @@ Widget menuItem() {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Row(
+                        child: Row(
                           children: [
-                            Icon(Icons.edit_outlined, size: 16),
+
+                            SvgPicture.asset(
+                              AppIcons.editmanu,
+                              width: 16,
+                              height: 16,
+                            ),
+
+                            const SizedBox(width: 6),
+
                             CommonText(
                               text: 'Edit Item',
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: Color(0xff272727),
                             ),
+
                           ],
                         ),
                       ),
