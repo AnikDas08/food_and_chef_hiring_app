@@ -13,10 +13,6 @@ import '../../../booking/presentation/screen/booking_history_screen.dart';
 import '../../../profile/presentation/screen/profile_screen.dart';
 import 'home_screen.dart';
 
-// Assuming these are your local imports
-// import 'package:new_untitled/component/image/common_image.dart';
-// import 'package:new_untitled/component/text/common_text.dart';
-
 class CustomerHomeScreen extends StatefulWidget {
   const CustomerHomeScreen({super.key});
 

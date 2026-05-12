@@ -4,19 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-// Note: Ensure cupertino_native is still in your pubspec if using CNTabBar
-// import 'package:cupertino_native/cupertino_native.dart';
-
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:cupertino_native/cupertino_native.dart';
 
-// Import your screens...
+import '../../../../../services/api/api_service.dart';
 import '../../../analytics/presentation/screen/analytics_screen.dart';
 import '../../../chef_booking/presentation/screen/chef_booking_screen.dart';
-
 import '../../../profile/presentation/screen/chef_profile_screen.dart';
 import '../../../../common/message/presentation/screen/chat_screen.dart';
 import '../widgets/show_ExitDialog.dart';
@@ -45,6 +41,7 @@ class _ChefHomeState extends State<ChefHome>
     with SingleTickerProviderStateMixin {
   late final TabController tabController;
   int selectedTabIndex = 0;
+  final RxInt unreadChatCount = 0.obs; // ✅ unread count
 
   final List<TabData> tabs = [
     TabData(title: 'Home', icon: 'house', selectedIcon: 'house.fill'),
@@ -84,6 +81,18 @@ class _ChefHomeState extends State<ChefHome>
       initialIndex: selectedTabIndex,
     );
     tabController.addListener(_updateTabIndex);
+    _fetchUnreadCount();
+  }
+
+  Future<void> _fetchUnreadCount() async {
+    try {
+      final response = await ApiService.get('/chat/unread-counts');
+      if (response.data['success'] == true) {
+        unreadChatCount.value = response.data['data'] ?? 0;
+      }
+    } catch (e) {
+      debugPrint('Unread error: $e');
+    }
   }
 
   void _updateTabIndex() {
@@ -99,6 +108,7 @@ class _ChefHomeState extends State<ChefHome>
       selectedTabIndex = index;
     });
     tabController.animateTo(index);
+    if (index == 3) _fetchUnreadCount();
   }
 
   @override
@@ -121,7 +131,7 @@ class _ChefHomeState extends State<ChefHome>
           children: [TabBarView(controller: tabController, children: pages)],
         ),
         bottomNavigationBar:
-            Platform.isIOS ? _buildCupertinoBar() : _buildBottomBar(),
+        Platform.isIOS ? _buildCupertinoBar() : _buildBottomBar(),
       ),
     );
   }
@@ -154,22 +164,52 @@ class _ChefHomeState extends State<ChefHome>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CommonImage(
+                    index == 3
+                        ? Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        CommonImage(
+                          imageSrc: _list[index],
+                          size: 22.r,
+                          imageColor: isSelected
+                              ? Colors.black
+                              : const Color(0xff777777),
+                        ),
+                        Obx(() {
+                          if (unreadChatCount.value == 0) {
+                            return const SizedBox.shrink();
+                          }
+                          return Positioned(
+                            right: -2,
+                            top: -2,
+                            child: Container(
+                              width: 10,
+                              height: 10,
+                              decoration: const BoxDecoration(
+                                color: Color(0xffFD713F),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          );
+                        }),
+                      ],
+                    )
+                        : CommonImage(
                       imageSrc: _list[index],
                       size: 22.r,
-                      imageColor:
-                          isSelected ? Colors.black : const Color(0xff777777),
+                      imageColor: isSelected
+                          ? Colors.black
+                          : const Color(0xff777777),
                     ),
                     SizedBox(height: 4.h),
                     CommonText(
                       text: _string[index],
                       fontSize: 10.sp,
                       fontWeight:
-                          isSelected ? FontWeight.w600 : FontWeight.w400,
-                      color:
-                          isSelected
-                              ? const Color(0xff272727)
-                              : const Color(0xff777777),
+                      isSelected ? FontWeight.w600 : FontWeight.w400,
+                      color: isSelected
+                          ? const Color(0xff272727)
+                          : const Color(0xff777777),
                     ),
                   ],
                 ),
@@ -183,22 +223,20 @@ class _ChefHomeState extends State<ChefHome>
 
   Widget _buildCupertinoBar() {
     return CNTabBar(
-      items:
-          tabs
-              .map(
-                (tab) => CNTabBarItem(
-                  label: tab.title,
-                  icon: CNSymbol(
-                    tabs[selectedTabIndex] == tab ? tab.selectedIcon : tab.icon,
-                    color: const Color(0xff272727),
-                    size: 18.sp, // Responsive size
-                  ),
-                ),
-              )
-              .toList(),
+      items: tabs
+          .map(
+            (tab) => CNTabBarItem(
+          label: tab.title,
+          icon: CNSymbol(
+            tabs[selectedTabIndex] == tab ? tab.selectedIcon : tab.icon,
+            color: const Color(0xff272727),
+            size: 18.sp,
+          ),
+        ),
+      )
+          .toList(),
       tint: const Color(0xff272727),
       backgroundColor: Colors.white.withOpacity(0.9),
-      //height: 90.h, // Scaled height
       currentIndex: selectedTabIndex,
       onTap: onTabTap,
     );

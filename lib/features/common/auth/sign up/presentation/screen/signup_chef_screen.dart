@@ -83,7 +83,9 @@ class SignupChefScreen extends StatelessWidget {
                       }
                     },
                   ),
+
                   28.height,
+
                   Row(
                     children: [
                       const Expanded(child: Divider()),
@@ -123,6 +125,7 @@ class SignupChefScreen extends StatelessWidget {
                         const CommonText(
                           text: AppString.signInWithApple,
                         ),
+
                       ],
                     ),
                   ),
@@ -159,7 +162,7 @@ class SignupChefScreen extends StatelessWidget {
                             color: Color(0xff777777),
                           ),
                           children: [
-                            const TextSpan(text: 'Sign up to Privae as a '),
+                            const TextSpan(text: 'Sign up to Privae as a'),
                             TextSpan(
                               text: 'Customer',
                               style: const TextStyle(
@@ -176,6 +179,8 @@ class SignupChefScreen extends StatelessWidget {
                       ),
                     ),
                   )
+
+
                 ],
               ),
             ),
