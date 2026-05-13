@@ -55,9 +55,9 @@ class _MessageScreenState extends State<MessageScreen> {
                 Get.back();
               },
               icon: const Icon(
-                Icons.arrow_back_ios_new,
+                CupertinoIcons.back,
                 color: Color(0xff272727),
-                size: 24,
+                size: 28,
               ),
             ),
             titleSpacing: 0,

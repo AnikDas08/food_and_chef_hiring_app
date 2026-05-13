@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
+import '../../../../../component/button/common_button.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_colors.dart';
 import '../../../../../utils/constants/app_icons.dart';
@@ -41,18 +43,18 @@ Widget bookingItem(BookingHistoryModel order) {
                   fit: BoxFit.cover,
                   errorBuilder:
                       (_, __, ___) => CircleAvatar(
-                        radius: 20,
-                        backgroundColor: const Color(0xffE0E0E0),
-                        child: CommonText(
-                          text:
-                              order.chef.name.isNotEmpty
-                                  ? order.chef.name[0].toUpperCase()
-                                  : '?',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xff272727),
-                        ),
-                      ),
+                    radius: 20,
+                    backgroundColor: const Color(0xffE0E0E0),
+                    child: CommonText(
+                      text:
+                      order.chef.name.isNotEmpty
+                          ? order.chef.name[0].toUpperCase()
+                          : '?',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xff272727),
+                    ),
+                  ),
                 ),
               ),
 
@@ -98,107 +100,182 @@ Widget bookingItem(BookingHistoryModel order) {
                   // Inside onSelected in bookingItem
                   else if (value == 2) {
                     final TextEditingController reasonController =
-                        TextEditingController();
+                    TextEditingController();
 
                     Get.dialog(
-                      AlertDialog(
+                      Dialog(
                         backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.r),
+                          borderRadius: BorderRadius.circular(24.r),
                         ),
-                        title: const CommonText(
-                          text: 'Cancel Booking',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Color(0xff272727),
-                        ),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const CommonText(
-                              text:
-                                  'Please provide a reason for cancelling this booking:',
-                              maxLines: 4,
-                              fontSize: 14,
-                              textAlign: TextAlign.start,
-                              fontWeight: FontWeight.w400,
-                              bottom: 12,
-                            ),
-                            TextField(
-                              controller: reasonController,
-                              maxLines: 3,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xff272727),
-                              ),
-                              decoration: InputDecoration(
-                                hintText: 'Enter reason here...',
-                                hintStyle: const TextStyle(
-                                    fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xff777777)
-                                ),
-                                fillColor: const Color(0xffF5F5F5),
-                                filled: true,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        actions: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                        insetPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              TextButton(
-                                  onPressed: () => Navigator.pop(Get.context!),
-                                  child: const CommonText(
-                                    text: "Cancel",
+                              Center(
+                                child: SvgPicture.asset(
+                                  "assets/icons/delete_icon.svg", // replace with your actual SVG asset path
+                                  width: 86.sp,
+                                  height: 86.sp,
+                                ),
+                              ),
+
+                              16.height,
+
+                              // Title
+                              const CommonText(
+                                text: 'Cancel Booking',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                color: Color(0xff272727),
+                              ),
+
+                              12.height,
+
+                              // Subtitle
+                              const CommonText(
+                                text: 'Please provide a reason for cancelling this booking:',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff777777),
+                                textAlign: TextAlign.start,
+                                maxLines: 3,
+                              ),
+
+                              16.height,
+
+                              // Text field
+                              TextField(
+                                cursorColor: Color(0xff272727),
+                                controller: reasonController,
+                                maxLines: 3,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff272727),
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: 'Type...',
+                                  hintStyle: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xff777777),
-                                  )),
-                              8.width,
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 8.h, horizontal: 8.w),
-                                    minimumSize: Size.zero,
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  fillColor: const Color(0xffF2F2F2),
+                                  filled: true,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 12.w,
+                                    vertical: 10.h,
+                                  ),
+                                ),
+                              ),
+
+                              20.height,
+
+                              // Confirm Cancellation button (full width, black)
+                              /*SizedBox(
+                                  width: double.infinity,
+                                  height: 48,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xff272727),
+                                      padding: EdgeInsets.symmetric(vertical: 14.h),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16.r),
+                                      ),
+                                      elevation: 0,
+                                    ).copyWith(
+                                      overlayColor: WidgetStateProperty.all(
+                                        Colors.transparent,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      if (reasonController.text.trim().isEmpty) {
+                                        Get.snackbar(
+                                          'Reason Required',
+                                          'Please enter a reason before cancelling.',
+                                        );
+                                      } else {
+                                        Navigator.pop(Get.context!);
+                                        Get.find<BookingHistoryController>().cancelBooking(
+                                          order.id,
+                                          reasonController.text.trim(),
+                                        );
+                                      }
+                                    },
+                                    child: const CommonText(
+                                      text: 'Confirm Cancellation',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
                                     ),
                                   ),
-                                  onPressed: () {
-                                    if (reasonController.text.trim().isEmpty) {
-                                      Get.snackbar(
-                                        'Reason Required',
-                                        'Please enter a reason before cancelling.',
-                                      );
-                                    } else {
-                                      Navigator.pop(Get.context!); // Close dialog
-                                      Get.find<BookingHistoryController>()
-                                          .cancelBooking(
-                                        order.id,
-                                        reasonController.text.trim(),
-                                      );
-                                    }
-                                  },
-                                  child: const CommonText(
-                                    text: "Confirm Cancellation",
-                                    fontSize: 12,
-                                    maxLines: 1,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  )),
+                                ),*/
+                              CommonButton(
+                                titleText: "Confirm Cancellation",
+                                onTap: (){
+                                  if (reasonController.text.trim().isEmpty) {
+                                    Get.snackbar(
+                                      'Reason Required',
+                                      'Please enter a reason before cancelling.',
+                                    );
+                                  } else {
+                                    Navigator.pop(Get.context!);
+                                    Get.find<BookingHistoryController>().cancelBooking(
+                                      order.id,
+                                      reasonController.text.trim(),
+                                    );
+                                  }
+                                },
+                              ),
+
+                              SizedBox(height: 12.h,),
+
+                              // Cancel text button (plain, no border)
+                              /*SizedBox(
+                                  width: double.infinity,
+                                  height: 48,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xffF2F2F2),
+                                      padding: EdgeInsets.symmetric(vertical: 14.h),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16.r),
+                                      ),
+                                      elevation: 0,
+                                    ).copyWith(
+                                  overlayColor: WidgetStateProperty.all(
+                                  Colors.transparent,
+                                  ),
+                                ),
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    child: const CommonText(
+                                      text: 'Confirm Cancellation',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xff777777),
+                                    ),
+                                  ),
+                                ),*/
+                              CommonButton(
+                                titleText: "Cancel",
+                                onTap: (){
+                                  Get.back();
+                                },
+                                buttonColor: Color(0xffF2F2F2),
+                                titleColor: Color(0xff777777),
+                              )
                             ],
                           ),
-                        ],
+                        ),
                       ),
                     );
                   }
@@ -349,7 +426,7 @@ Widget bookingItem(BookingHistoryModel order) {
                   Flexible(
                     child: CommonText(
                       text:
-                          'Rescheduled to ${_formatDate(order.changeSchedule!)}',
+                      'Rescheduled to ${_formatDate(order.changeSchedule!)}',
                       fontSize: 12,
                       left: 4,
                       textAlign: TextAlign.left,

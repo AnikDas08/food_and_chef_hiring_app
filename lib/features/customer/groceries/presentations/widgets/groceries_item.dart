@@ -23,8 +23,8 @@ class GroceryItemTile extends StatelessWidget {
         children: [
           // ICON CONTAINER instead of NetworkImage
           Container(
-            width: 60.w,
-            height: 60.w,
+            width: 50.w,
+            height: 50.w,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12.r),
               // Light orange/grey background to match your theme
@@ -34,7 +34,7 @@ class GroceryItemTile extends StatelessWidget {
               child: Icon(
                 Icons.shopping_basket_outlined, // You can also use data['icon'] if available
                 color: const Color(0xffFD713F), // Theme color
-                size: 28.sp,
+                size: 24.sp,
               ),
             ),
           ),

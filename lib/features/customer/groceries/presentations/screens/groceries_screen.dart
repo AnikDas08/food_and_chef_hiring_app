@@ -76,141 +76,142 @@ class GroceryScreen extends StatelessWidget {
 
         return SingleChildScrollView(
           padding: EdgeInsets.fromLTRB(16.w, fromBookingHistory ? 100.h : 16.h, 16.w, fromBookingHistory ? 30.h : 16.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // --- 1. BOOKING LIST ---
-              const CommonText(
-                text: 'Select bookings for grocery delivery',
-                color: Color(0xff272727),
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-              SizedBox(height: 12.h),
-              if (hasInitialId)
-                _buildSingleOrderView(controller)
-              else if (controller.availableOrders.isEmpty)
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20.h),
-                    child: const CommonText(
-                      text: 'No pending bookings available',
-                      color: AppColors.grey,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                )
-              else
-                _buildFullListView(controller),
-
-              SizedBox(height: 24.h),
-
-              // --- 2. PARTNER SELECTION (RESTORED LOGIC) ---
-              const CommonText(
-                text: 'Choose your grocery delivery partner',
-                color: Color(0xff272727),
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-              SizedBox(height: 6.h),
-              const CommonText(
-                text: 'Order groceries for your booking',
-                color: Color(0xff777777),
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
-
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.h),
-                child: Row(
-                  children: [
-                    _partnerIcon(
-                      label: 'Instacart',
-                      iconPath: 'assets/images/intacart.png',
-                      isSelected:
-                          controller.selectedPartner.value == 'Instacart',
-                      onTap: () {
-                        controller.selectedPartner.value = 'Instacart';
-                        controller
-                            .createInstacartLink(); // CALLS API IMMEDIATELY
-                      },
-                    ),
-                    SizedBox(width: 20.w),
-                    _partnerIcon(
-                      label: 'Get your own\ngroceries',
-                      icon: Icons.directions_walk,
-                      isSelected: controller.selectedPartner.value == 'Self',
-                      onTap: () => controller.selectedPartner.value = 'Self',
-                    ),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: 24.h),
-
-              // --- 3. GROCERY BASKET ---
-              if (controller.basketItems.isNotEmpty)
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // --- 1. BOOKING LIST ---
                 const CommonText(
-                  text: 'Edit your grocery basket',
-                  fontWeight: FontWeight.w600,
+                  text: 'Select bookings for grocery delivery',
                   color: Color(0xff272727),
                   fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 ),
-              SizedBox(height: 12.h),
-
-              if (controller.isIngredientsLoading.value)
-                const Center(
-                  child: CupertinoActivityIndicator(),
-                )
-              else
-                ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: controller.basketItems.length,
-                  itemBuilder:
-                      (context, index) => GroceryItemTile(
-                        data: controller.basketItems[index],
-                        onTap: () => controller.toggleBasketItem(index),
-                        isLast: index == controller.basketItems.length - 1,
+                SizedBox(height: 12.h),
+                if (hasInitialId)
+                  _buildSingleOrderView(controller)
+                else if (controller.availableOrders.isEmpty)
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20.h),
+                      child: const CommonText(
+                        text: 'No pending bookings available',
+                        color: AppColors.grey,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
                       ),
+                    ),
+                  )
+                else
+                  _buildFullListView(controller),
+            
+                SizedBox(height: 24.h),
+            
+                // --- 2. PARTNER SELECTION (RESTORED LOGIC) ---
+                const CommonText(
+                  text: 'Choose your grocery delivery partner',
+                  color: Color(0xff272727),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 ),
-
-              SizedBox(height: 40.h),
-
-              // --- 4. BOTTOM BUTTON ---
-              if (controller.isInstacartLoading.value)
-                const Center(
-                  child: CupertinoActivityIndicator(),
-                )
-              else if (controller.basketItems.isNotEmpty)
-                CommonButton(
-                  titleText: 'Add to Cart',
-                  onTap: () {
-                    // We send the list of selected IDs to the next screen
-                    if (controller.selectedOrderIds.isNotEmpty) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ConfirmedGroceryScreen(),
-                          settings: RouteSettings(
-                            arguments:
-                                controller.selectedOrderIds
-                                    .toList(), // same as Get.arguments
-                          ),
+                SizedBox(height: 6.h),
+                const CommonText(
+                  text: 'Order groceries for your booking',
+                  color: Color(0xff777777),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+            
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                  child: Row(
+                    children: [
+                      _partnerIcon(
+                        label: 'Instacart',
+                        iconPath: 'assets/images/intacart.png',
+                        isSelected:
+                            controller.selectedPartner.value == 'Instacart',
+                        onTap: () {
+                          controller.selectedPartner.value = 'Instacart';
+                          controller
+                              .createInstacartLink(); // CALLS API IMMEDIATELY
+                        },
+                      ),
+                      SizedBox(width: 20.w),
+                      _partnerIcon(
+                        label: 'Get your own\ngroceries',
+                        icon: Icons.directions_walk,
+                        isSelected: controller.selectedPartner.value == 'Self',
+                        onTap: () => controller.selectedPartner.value = 'Self',
+                      ),
+                    ],
+                  ),
+                ),
+            
+                SizedBox(height: 24.h),
+            
+                // --- 3. GROCERY BASKET ---
+                if (controller.basketItems.isNotEmpty)
+                  const CommonText(
+                    text: 'Edit your grocery basket',
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff272727),
+                    fontSize: 16,
+                  ),
+                SizedBox(height: 12.h),
+            
+                if (controller.isIngredientsLoading.value)
+                  const Center(
+                    child: CupertinoActivityIndicator(),
+                  )
+                else
+                  ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: controller.basketItems.length,
+                    itemBuilder:
+                        (context, index) => GroceryItemTile(
+                          data: controller.basketItems[index],
+                          onTap: () => controller.toggleBasketItem(index),
+                          isLast: index == controller.basketItems.length - 1,
                         ),
-                      );
-                    } else {
-                      Get.snackbar(
-                        'Selection Required',
-                        'Please select at least one booking.',
-                      );
-                    }
-                  },
-                ),
-              SizedBox(height: 30.h),
-            ],
+                  ),
+
+                SizedBox(height: 20.h,),
+                // --- 4. BOTTOM BUTTON ---
+                if (controller.isInstacartLoading.value)
+                  const Center(
+                    child: CupertinoActivityIndicator(),
+                  )
+                else if (controller.basketItems.isNotEmpty)
+                  CommonButton(
+                    titleText: 'Add to Cart',
+                    onTap: () {
+                      // We send the list of selected IDs to the next screen
+                      if (controller.selectedOrderIds.isNotEmpty) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ConfirmedGroceryScreen(),
+                            settings: RouteSettings(
+                              arguments:
+                                  controller.selectedOrderIds
+                                      .toList(), // same as Get.arguments
+                            ),
+                          ),
+                        );
+                      } else {
+                        Get.snackbar(
+                          'Selection Required',
+                          'Please select at least one booking.',
+                        );
+                      }
+                    },
+                  ),
+                SizedBox(height: 30.h),
+              ],
+            ),
           ),
         );
       }),
@@ -272,14 +273,14 @@ class GroceryScreen extends StatelessWidget {
         margin: EdgeInsets.only(bottom: isLast ? 0 : 12.h),
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xff272727) : const Color(0xffF5F5F5),
+          color: isSelected ? const Color(0xff272727) : const Color(0xffffffff),
           borderRadius: BorderRadius.circular(16.r),
         ),
         child: Row(
           children: [
             Icon(
               isSelected ? Icons.check_circle : Icons.circle_outlined,
-              color: isSelected ? Colors.white : Colors.grey[400],
+              color: isSelected ? Colors.white : Color(0xff777777),
               size: 22,
             ),
             SizedBox(width: 8.w),
@@ -298,13 +299,13 @@ class GroceryScreen extends StatelessWidget {
                 children: [
                   CommonText(
                     text: chef['name'] ?? 'Unknown Chef',
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     color: isSelected ? Colors.white : const Color(0xff272727),
                   ),
                   CommonText(
                     text:
                         "${staticItems.length} Recipe • ${order['order_id'] ?? ''}",
-                    color: isSelected ? Colors.white : Colors.grey,
+                    color: isSelected ? Colors.white : Color(0xff777777),
                     fontSize: 12,
                   ),
                 ],

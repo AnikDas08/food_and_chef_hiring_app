@@ -176,6 +176,7 @@ class _MenuListState extends State<_MenuList>
 
         return ListView.builder(
           controller: _scrollController,
+          physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12),
           // +1 for the loader/end row at the bottom
           itemCount: items.length + 1,
