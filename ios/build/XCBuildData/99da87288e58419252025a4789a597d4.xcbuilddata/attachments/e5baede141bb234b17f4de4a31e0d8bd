@@ -1,0 +1,5 @@
+
+module cupertino_native.Swift {
+  header "cupertino_native-Swift.h"
+  requires objc
+}

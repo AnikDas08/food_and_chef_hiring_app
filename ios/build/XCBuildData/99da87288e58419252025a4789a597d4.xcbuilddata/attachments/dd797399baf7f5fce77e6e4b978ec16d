@@ -1,0 +1,4 @@
+
+module cupertino_native.__Swift {
+  exclude header "cupertino_native-Swift.h"
+}

@@ -1,0 +1,23 @@
+{
+  "version": 0,
+  "use-external-names": false,
+  "case-sensitive": false,
+  "roots": [{
+    "type": "directory",
+    "name": "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Release-iphoneos/cupertino_native/cupertino_native.framework/Modules",
+    "contents": [{
+      "type": "file",
+      "name": "module.modulemap",
+      "external-contents": "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/unextended-module.modulemap",
+    }]
+    },
+    {
+    "type": "directory",
+    "name": "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Release-iphoneos/cupertino_native/cupertino_native.framework/Headers",
+    "contents": [{
+      "type": "file",
+      "name": "cupertino_native-Swift.h",
+      "external-contents": "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/unextended-interface-header.h",
+    }]
+  }]
+}

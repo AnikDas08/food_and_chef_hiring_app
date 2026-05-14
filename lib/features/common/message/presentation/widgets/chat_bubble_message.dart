@@ -21,7 +21,6 @@ import 'package:new_untitled/config/api/api_end_point.dart';
 class ChatBubbleMessage extends StatelessWidget {
   final DateTime time;
   final String text;
-  final String avatarImage;
   final String localImagePath;
   final bool isMe;
   final bool isNotice;
@@ -33,7 +32,6 @@ class ChatBubbleMessage extends StatelessWidget {
     super.key,
     required this.time,
     required this.text,
-    required this.avatarImage,
     required this.isMe,
     this.localImagePath = '',
     this.isNotice = false,
@@ -81,16 +79,6 @@ class ChatBubbleMessage extends StatelessWidget {
         isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          // ── Other user avatar ──
-          if (!isMe) ...[
-            CircleAvatar(
-              radius: 16.sp,
-              backgroundColor: Colors.grey[200],
-              child: ClipOval(child: _buildAvatarImage()),
-            ),
-            8.width,
-          ],
-
           // ── Bubble + timestamp ──
           Flexible(
             child: ConstrainedBox(
@@ -123,16 +111,6 @@ class ChatBubbleMessage extends StatelessWidget {
               ),
             ),
           ),
-
-          // ── My avatar ──
-          if (isMe) ...[
-            8.width,
-            CircleAvatar(
-              radius: 16.sp,
-              backgroundColor: Colors.grey[200],
-              child: ClipOval(child: _buildAvatarImage()),
-            ),
-          ],
         ],
       ),
     );
@@ -155,14 +133,14 @@ class ChatBubbleMessage extends StatelessWidget {
 
   Widget _buildTextBubble() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: isMe ? const Color(0xff222222) : const Color(0xffF1F1F1),
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(18.r),
-          topRight: Radius.circular(18.r),
-          bottomLeft: Radius.circular(isMe ? 18.r : 4.r),
-          bottomRight: Radius.circular(isMe ? 4.r : 18.r),
+          topLeft: Radius.circular(12.r),
+          topRight: Radius.circular(12.r),
+          bottomLeft: Radius.circular(isMe ? 12.r : 4.r),
+          bottomRight: Radius.circular(isMe ? 4.r : 12.r),
         ),
       ),
       child: CommonText(
@@ -235,16 +213,11 @@ class ChatBubbleMessage extends StatelessWidget {
         if (text.isNotEmpty)
           Container(
             margin: EdgeInsets.only(top: 4.h),
-            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
             decoration: BoxDecoration(
               color:
               isMe ? const Color(0xff222222) : const Color(0xffF1F1F1),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(18.r),
-                topRight: Radius.circular(18.r),
-                bottomLeft: Radius.circular(isMe ? 18.r : 4.r),
-                bottomRight: Radius.circular(isMe ? 4.r : 18.r),
-              ),
+              borderRadius: BorderRadius.circular(12.r),
             ),
             child: CommonText(
               maxLines: 100,
@@ -266,12 +239,7 @@ class ChatBubbleMessage extends StatelessWidget {
     return GestureDetector(
       onTap: hasValidImages ? () => _openImageViewer(context, index) : null,
       child: ClipRRect(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(18.r),
-          topRight: Radius.circular(18.r),
-          bottomLeft: Radius.circular(isMe ? 18.r : 4.r),
-          bottomRight: Radius.circular(isMe ? 4.r : 18.r),
-        ),
+        borderRadius: BorderRadius.circular(12.r),
         child: SizedBox(
           width: Get.width * 0.62,
           height: 220.h,
@@ -346,7 +314,7 @@ class ChatBubbleMessage extends StatelessWidget {
         if (text.isNotEmpty)
           Container(
             margin: EdgeInsets.only(top: 4.h),
-            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
             decoration: BoxDecoration(
               color:
               isMe ? const Color(0xff222222) : const Color(0xffF1F1F1),
@@ -373,15 +341,10 @@ class ChatBubbleMessage extends StatelessWidget {
     return GestureDetector(
       onTap: docPath.isNotEmpty ? () => _openDocument(docPath) : null,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
         decoration: BoxDecoration(
           color: isMe ? const Color(0xff222222) : const Color(0xffF1F1F1),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(18.r),
-            topRight: Radius.circular(18.r),
-            bottomLeft: Radius.circular(isMe ? 18.r : 4.r),
-            bottomRight: Radius.circular(isMe ? 4.r : 18.r),
-          ),
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -478,28 +441,6 @@ class ChatBubbleMessage extends StatelessWidget {
           ),
           const Expanded(child: Divider(color: Color(0xffDDDDDD))),
         ],
-      ),
-    );
-  }
-
-  // ─── Avatar ────────────────────────────────────────────────────────────────
-
-  Widget _buildAvatarImage() {
-    if (avatarImage.isEmpty) {
-      return Container(
-        color: const Color(0xffEEEEEE),
-        child: Icon(Icons.person, size: 18.sp, color: Colors.grey),
-      );
-    }
-    final url = _fullUrl(avatarImage);
-    return Image.network(
-      url,
-      width: 32.sp,
-      height: 32.sp,
-      fit: BoxFit.cover,
-      errorBuilder: (_, __, ___) => Container(
-        color: const Color(0xffEEEEEE),
-        child: Icon(Icons.person, size: 18.sp, color: Colors.grey),
       ),
     );
   }

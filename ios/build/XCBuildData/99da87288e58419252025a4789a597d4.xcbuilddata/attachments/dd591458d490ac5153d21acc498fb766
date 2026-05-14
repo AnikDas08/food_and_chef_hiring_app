@@ -1,0 +1,21 @@
+{
+  "" : {
+    "const-values" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/path_provider_foundation.build/Objects-normal/arm64/path_provider_foundation-primary.swiftconstvalues",
+    "dependencies" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/path_provider_foundation.build/Objects-normal/arm64/path_provider_foundation-primary.d",
+    "diagnostics" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/path_provider_foundation.build/Objects-normal/arm64/path_provider_foundation-primary.dia",
+    "emit-module-dependencies" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/path_provider_foundation.build/Objects-normal/arm64/path_provider_foundation-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/path_provider_foundation.build/Objects-normal/arm64/path_provider_foundation-primary-emit-module.dia",
+    "pch" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/path_provider_foundation.build/Objects-normal/arm64/path_provider_foundation-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/path_provider_foundation.build/Objects-normal/arm64/path_provider_foundation-primary.swiftdeps"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/path_provider_foundation-2.4.2/darwin/path_provider_foundation/Sources/path_provider_foundation/PathProviderPlugin.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/path_provider_foundation.build/Objects-normal/arm64/PathProviderPlugin.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/path_provider_foundation.build/Objects-normal/arm64/PathProviderPlugin.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/path_provider_foundation.build/Objects-normal/arm64/PathProviderPlugin.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/path_provider_foundation-2.4.2/darwin/path_provider_foundation/Sources/path_provider_foundation/messages.g.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/path_provider_foundation.build/Objects-normal/arm64/messages.g.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/path_provider_foundation.build/Objects-normal/arm64/messages.g.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/path_provider_foundation.build/Objects-normal/arm64/messages.g.o"
+  }
+}

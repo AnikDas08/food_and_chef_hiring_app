@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/common/message/presentation/controller/chat_controller.dart';
@@ -195,7 +196,6 @@ class _MessageScreenState extends State<MessageScreen> {
                     final ChatMessageModel message = controller.messages[index];
 
                     return ChatBubbleMessage(
-                      avatarImage: message.avatarImage,
                       localImagePath: message.localImagePath,
                       time: message.time,
                       text: message.text,
@@ -212,97 +212,103 @@ class _MessageScreenState extends State<MessageScreen> {
           ),
 
           /// ── Bottom Input Bar ─────────────────────────────────────────────
+          /// ── Bottom Input Bar ─────────────────────────────────────────────
           bottomNavigationBar: SafeArea(
             child: AnimatedPadding(
               padding: MediaQuery.of(context).viewInsets,
               duration: const Duration(milliseconds: 100),
               curve: Curves.decelerate,
-              child: Container(
-                padding: EdgeInsets.only(
-                  left: 16.w,
-                  right: 16.w,
-                  bottom: 16.h,
-                  top: 8.h,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, -2),
+              child: Column(  // ← wrap with Column
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  /// Top divider line
+                  const Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: const Color(0xffEEEEEE),
+                  ),
+
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                      right: 16.w,
+                      bottom: 16.h,
+                      top: 8.h,
                     ),
-                  ],
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    /// Text input
-                    Expanded(
-                      child: CommonTextField(
-                        hintText: AppString.messageHere,
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.only(left: 16.w),
-                          child: Icon(
-                            CupertinoIcons.smiley,
-                            color: const Color(0xff777777),
-                            size: 20.sp,
-                          ),
+                    color: Colors.white,
+                    child: Container(
+                      height: 56.h,
+                      decoration: BoxDecoration(
+                        color: const Color(0xffF6F6F6),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: const Color(0xffF6F6F6),
+                          width: 1,
                         ),
-                        borderColor: const Color(0xffEEEEEE),
-                        borderRadius: 24,
-                        fillColor: const Color(0xffF9F9F9),
-                        controller: controller.messageController,
-                        onSubmitted: (_) => controller.addNewMessage(),
                       ),
-                    ),
-
-                    8.width,
-
-                    /// Attachment button (image + doc)
-                    _AttachmentButton(controller: controller),
-
-                    8.width,
-
-                    /// Send button
-                    GestureDetector(
-                      onTap: controller.isSending || controller.isSendingImage
-                          ? null
-                          : controller.addNewMessage,
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        width: 46.sp,
-                        height: 46.sp,
-                        decoration: BoxDecoration(
-                          color: controller.isSending || controller.isSendingImage
-                              ? const Color(0xffCCCCCC)
-                              : AppColors.primaryColor,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: controller.isSending
-                              ? SizedBox(
-                            width: 18.sp,
-                            height: 18.sp,
-                            child: const CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(width: 8),
+                          /// Text input
+                          Expanded(
+                            child: TextField(
+                              controller: controller.messageController,
+                              onSubmitted: (_) => controller.addNewMessage(),
+                              cursorColor: Color(0xff272727),
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: const Color(0xff272727),
+                              ),
+                              decoration: InputDecoration(
+                                hintText: "Type a message here...",
+                                hintStyle: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: const Color(0xff777777),
+                                ),
+                                border: InputBorder.none,
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+                              ),
                             ),
-                          )
-                              : Icon(
-                            CupertinoIcons.paperplane_fill,
-                            color: Colors.white,
-                            size: 18.sp,
                           ),
-                        ),
+
+                          /// Vertical divider
+                          Container(
+                            width: 1,
+                            height: 24.h,
+                            color: const Color(0xffDDDDDD),
+                          ),
+
+                          /// Send button
+                          GestureDetector(
+                            onTap: controller.isSending || controller.isSendingImage
+                                ? null
+                                : controller.addNewMessage,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 14.w),
+                              child: SvgPicture.asset(
+                                'assets/icons/send_icons.svg',
+                                width: 22.sp,
+                                height: 22.sp,
+                                colorFilter: ColorFilter.mode(
+                                  controller.isSending || controller.isSendingImage
+                                      ? const Color(0xffCCCCCC)
+                                      : const Color(0xff272727),
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
-        );
+          );
       },
     );
   }

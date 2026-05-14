@@ -1,0 +1,96 @@
+{
+  "" : {
+    "const-values" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/cupertino_native-primary.swiftconstvalues",
+    "dependencies" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/cupertino_native-primary.d",
+    "diagnostics" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/cupertino_native-primary.dia",
+    "emit-module-dependencies" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/cupertino_native-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/cupertino_native-primary-emit-module.dia",
+    "pch" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/cupertino_native-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/cupertino_native-primary.swiftdeps"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/CupertinoNativePlugin.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoNativePlugin.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoNativePlugin.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoNativePlugin.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Factories/CupertinoButtonFactory.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoButtonFactory.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoButtonFactory.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoButtonFactory.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Factories/CupertinoIconFactory.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoIconFactory.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoIconFactory.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoIconFactory.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Factories/CupertinoPopupMenuButtonFactory.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoPopupMenuButtonFactory.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoPopupMenuButtonFactory.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoPopupMenuButtonFactory.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Factories/CupertinoSegmentedControlFactory.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSegmentedControlFactory.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSegmentedControlFactory.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSegmentedControlFactory.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Factories/CupertinoSliderFactory.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSliderFactory.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSliderFactory.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSliderFactory.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Factories/CupertinoSwitchFactory.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSwitchFactory.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSwitchFactory.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSwitchFactory.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Factories/CupertinoTabBarFactory.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoTabBarFactory.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoTabBarFactory.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoTabBarFactory.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Shared/SliderShared.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/SliderShared.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/SliderShared.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/SliderShared.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Shared/SwitchShared.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/SwitchShared.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/SwitchShared.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/SwitchShared.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Views/CupertinoButtonPlatformView.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoButtonPlatformView.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoButtonPlatformView.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoButtonPlatformView.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Views/CupertinoIconPlatformView.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoIconPlatformView.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoIconPlatformView.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoIconPlatformView.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Views/CupertinoPopupMenuButtonPlatformView.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoPopupMenuButtonPlatformView.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoPopupMenuButtonPlatformView.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoPopupMenuButtonPlatformView.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Views/CupertinoSegmentedControlPlatformView.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSegmentedControlPlatformView.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSegmentedControlPlatformView.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSegmentedControlPlatformView.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Views/CupertinoSliderPlatformView.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSliderPlatformView.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSliderPlatformView.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSliderPlatformView.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Views/CupertinoSwitchPlatformView.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSwitchPlatformView.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSwitchPlatformView.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoSwitchPlatformView.o"
+  },
+  "/Users/anikdas/.pub-cache/hosted/pub.dev/cupertino_native-0.1.1/ios/Classes/Views/CupertinoTabBarPlatformView.swift" : {
+    "index-unit-output-path" : "/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoTabBarPlatformView.o",
+    "llvm-bc" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoTabBarPlatformView.bc",
+    "object" : "/Users/anikdas/Documents/project/joni_hirsch01_app/ios/build/Pods.build/Release-iphoneos/cupertino_native.build/Objects-normal/arm64/CupertinoTabBarPlatformView.o"
+  }
+}

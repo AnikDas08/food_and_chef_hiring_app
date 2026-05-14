@@ -1,0 +1,5 @@
+ extern const unsigned char cupertino_nativeVersionString[];
+ extern const double cupertino_nativeVersionNumber;
+
+ const unsigned char cupertino_nativeVersionString[] __attribute__ ((used)) = "@(#)PROGRAM:cupertino_native  PROJECT:Pods-1" "\n";
+ const double cupertino_nativeVersionNumber __attribute__ ((used)) = (double)1.;
