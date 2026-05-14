@@ -225,7 +225,7 @@ class ChefProfileScreen extends StatelessWidget {
 
                             const CommonText(
                               text: AppString.notifications,
-                              left: 16,
+                              left: 20,
                               fontWeight: FontWeight.w500,
                               color: Color(0xff272727),
                             ),

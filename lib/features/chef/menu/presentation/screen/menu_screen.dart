@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../../../../config/api/api_end_point.dart';
+import '../../../../../utils/constants/app_icons.dart';
 import '../../../../common/auth/signup_chef/presentation/controller/Chef_add_menu_controller.dart';
 import 'add_menu_screen.dart';
 
@@ -139,11 +141,17 @@ class MenuScreen extends StatelessWidget {
                         color: const Color(0xFFF7F7F7),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
+
                       child: Row(
+
                         mainAxisSize: MainAxisSize.min,
+
                         children: [
+
                           Icon(Icons.add, size: 14.sp, color: const Color(0xFF272727)),
+
                           4.horizontalSpace,
+
                           Text(
                             'Add Section',
                             style: TextStyle(
@@ -264,11 +272,14 @@ class MenuScreen extends StatelessWidget {
 }
 
 class _MenuCard extends StatelessWidget {
+
   final MenuItemModel item;
+
   const _MenuCard({required this.item});
 
   @override
   Widget build(BuildContext context) {
+
     final c = CafeAddMenuItemController.instance;
 
     return Container(
@@ -327,9 +338,15 @@ class _MenuCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8.r),
                           ),
                           child: Row(children: [
-                            Icon(Icons.edit_outlined,
-                                size: 13.sp, color: const Color(0xFF272727)),
+
+                            SvgPicture.asset(
+                              AppIcons.edit_icon,
+                              width: 16,
+                              height: 16,
+                            ),
+
                             4.horizontalSpace,
+
                             Text('Edit Item',
                                 style: TextStyle(
                                     fontSize: 12.sp,
