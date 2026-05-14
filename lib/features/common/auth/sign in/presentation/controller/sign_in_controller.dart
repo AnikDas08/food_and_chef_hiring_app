@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../../../../config/api/api_end_point.dart';
 import '../../../../../../config/route/app_routes.dart';
 import '../../../../../../services/api/api_service.dart';
+import '../../../../../../services/socket/socket_service.dart';
 import '../../../../../../services/storage/storage_keys.dart';
 import '../../../../../../services/storage/storage_services.dart';
 import '../../../../../../utils/app_utils.dart';
@@ -61,6 +62,9 @@ class SignInController extends GetxController {
       await LocalStorage.setString(LocalStorageKeys.token, LocalStorage.token);
       await LocalStorage.setString(LocalStorageKeys.myRole, LocalStorage.myRole);
       await LocalStorage.setString(LocalStorageKeys.userId, LocalStorage.userId);
+
+      // Reconnect socket to set up listeners with the new userId
+      SocketServices.connectToSocket();
 
       emailController.clear();
       passwordController.clear();

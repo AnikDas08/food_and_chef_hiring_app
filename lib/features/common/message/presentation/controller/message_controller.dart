@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:new_untitled/features/customer/home/presentation/controller/home_controller.dart';
+import 'package:new_untitled/features/chef/home/presentation/controller/chef_home_controller.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../services/socket/socket_service.dart';
@@ -349,6 +350,12 @@ class MessageController extends GetxController {
         );
       }
 
+      if(LocalStorage.myRole=="CUSTOMER"){
+        Get.find<HomeController>().isRead();
+      }else{
+        Get.find<ChefHomeController>().isRead();
+      }
+
       messages.insert(
         0,
         ChatMessageModel(
@@ -410,13 +417,21 @@ class MessageController extends GetxController {
     
     // Trigger immediate unread count update with a small delay to ensure UI is ready
     Future.delayed(const Duration(milliseconds: 100), () {
-      Get.find<HomeController>().isRead();
+      if (LocalStorage.isChef) {
+        if (Get.isRegistered<ChefHomeController>()) {
+          Get.find<ChefHomeController>().isRead();
+        }
+      } else {
+        if (Get.isRegistered<HomeController>()) {
+          Get.find<HomeController>().isRead();
+        }
+      }
     });
   }
 
   @override
   void onClose() {
-    SocketServices.off('getMessage::$chatId');
+    //SocketServices.off('getMessage::$chatId');
     scrollController.dispose();
     messageController.dispose();
     super.onClose();

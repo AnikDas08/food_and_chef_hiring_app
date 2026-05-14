@@ -128,10 +128,7 @@ class _MessageScreenState extends State<MessageScreen> {
                       SizedBox(
                         width: 14.sp,
                         height: 14.sp,
-                        child: const CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Color(0xffFD713F),
-                        ),
+                        child: const CupertinoActivityIndicator(),
                       ),
                       8.width,
                       const CommonText(
@@ -147,9 +144,7 @@ class _MessageScreenState extends State<MessageScreen> {
               Expanded(
                 child: controller.isLoading
                     ? const Center(
-                  child: CircularProgressIndicator(
-                    color: Color(0xffFD713F),
-                  ),
+                  child: CupertinoActivityIndicator(),
                 )
                     : controller.messages.isEmpty
                     ? Center(
@@ -185,9 +180,8 @@ class _MessageScreenState extends State<MessageScreen> {
                       return Padding(
                         padding: EdgeInsets.all(16.h),
                         child: const Center(
-                          child: CircularProgressIndicator(
+                          child: CupertinoActivityIndicator(
                             color: Color(0xffFD713F),
-                            strokeWidth: 2,
                           ),
                         ),
                       );

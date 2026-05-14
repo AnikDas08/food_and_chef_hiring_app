@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -35,7 +36,7 @@ class ImageViewerScreen extends StatelessWidget {
           );
         },
         loadingBuilder: (context, event) => const Center(
-          child: CircularProgressIndicator(color: Colors.white),
+          child: CupertinoActivityIndicator(color: CupertinoColors.white),
         ),
       ),
     );

@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:get/get.dart';
+import '../../../../../utils/log/app_log.dart';
 
 import '../../../../../config/api/api_end_point.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,7 @@ class ChefHomeController extends GetxController {
   final RxDouble lastMonthPercentage = 0.0.obs;
   final RxBool isUp = true.obs;
   final selectedBookingTab = 0.obs;
+  final RxInt unreadCount = 0.obs;
 
 
   @override
@@ -32,8 +35,30 @@ class ChefHomeController extends GetxController {
     fetchWalletBalance();
     fetchRequestedBookings();
     fetchUpcomingBookings();
+    isRead();
     if (!Get.isRegistered<NotificationsController>()) {
       Get.put(NotificationsController());
+    }
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
+
+  void isRead() async {
+    appLog('Fetching Chef unread count...');
+    try {
+      final response = await ApiService.get("chat/unread-counts");
+      appLog('Chef unread count response: ${response.statusCode} - ${response.data}');
+      if (response.statusCode == 200) {
+        final newCount = response.data['data'] ?? 0;
+        unreadCount.value = newCount;
+        update(); // Force update just in case
+        appLog('✅ Chef unreadCount updated to: $newCount');
+      }
+    } catch (e) {
+      appLog('❌ Chef Unread error: $e');
     }
   }
 

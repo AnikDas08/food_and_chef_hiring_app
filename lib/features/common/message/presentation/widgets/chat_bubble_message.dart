@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -269,14 +270,9 @@ class ChatBubbleMessage extends StatelessWidget {
         if (loadingProgress == null) return child;
         return Container(
           color: const Color(0xffF0F0F0),
-          child: Center(
-            child: CircularProgressIndicator(
-              color: const Color(0xffFD713F),
-              strokeWidth: 2,
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                  loadingProgress.expectedTotalBytes!
-                  : null,
+          child: const Center(
+            child: CupertinoActivityIndicator(
+              color: Color(0xffFD713F),
             ),
           ),
         );
@@ -531,9 +527,8 @@ class _ImageViewerScreenState extends State<_ImageViewerScreen> {
           );
         },
         loadingBuilder: (_, __) => const Center(
-          child: CircularProgressIndicator(
+          child: CupertinoActivityIndicator(
             color: Color(0xffFD713F),
-            strokeWidth: 2,
           ),
         ),
         backgroundDecoration: const BoxDecoration(color: Colors.black),

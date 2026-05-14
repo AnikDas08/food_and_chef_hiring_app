@@ -85,18 +85,17 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    if (LocalStorage.isChef) return;
     getProfileData();
     getCusine();
     getCurrentLocationAndFetchChefs();
     getOrderAgain();
     isRead();
     _setupMessageListener();
-    startPeriodicUnreadCountCheck();
   }
 
   @override
   void onClose() {
-    stopPeriodicUnreadCountCheck();
     super.onClose();
   }
 
@@ -405,44 +404,20 @@ class HomeController extends GetxController {
     update();
   }
 
-  Timer? _unreadCountTimer;
-
   void isRead() async {
     appLog('Fetching unread count...');
     try {
       final response = await ApiService.get("chat/unread-counts");
-      appLog('Unread count API response: ${response.statusCode} - ${response.data}');
-      
+      appLog('Unread count response: ${response.statusCode} - ${response.data}');
+
       if (response.statusCode == 200) {
-        final newCount = response.data['data'] ?? 0;
-        appLog('Current unread count: ${unreadCount.value}, New count: $newCount');
-        
-        if (unreadCount.value != newCount) {
-          unreadCount.value = newCount;
-          update(); // Trigger UI update to refresh badge
-          appLog('✅ Unread count updated from ${unreadCount.value} to $newCount');
-        } else {
-          appLog('ℹ️ Unread count unchanged: $newCount');
-        }
-      } else {
-        appLog('❌ API error: ${response.statusCode}');
+        final newCount = (response.data['data'] ?? 0) as int;
+        appLog('Updating unread count: ${unreadCount.value} → $newCount');
+        unreadCount.value = newCount; // ✅ Always assign, Rx handles equality
       }
     } catch (e) {
       appLog('❌ Error fetching unread count: $e');
     }
-  }
-
-  void startPeriodicUnreadCountCheck() {
-    // Check unread count every 30 seconds as fallback
-    _unreadCountTimer?.cancel();
-    _unreadCountTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
-      isRead();
-    });
-  }
-
-  void stopPeriodicUnreadCountCheck() {
-    _unreadCountTimer?.cancel();
-    _unreadCountTimer = null;
   }
 
   void onChangeLevel(String value) {

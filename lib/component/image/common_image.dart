@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -66,10 +67,7 @@ class CommonImage extends StatelessWidget {
             ),
         progressIndicatorBuilder:
             (context, url, downloadProgress) =>
-                CircularProgressIndicator(
-                  value: downloadProgress.progress,
-                  color: Colors.black,
-                ),
+                const Center(child: CupertinoActivityIndicator()),
         errorWidget: (context, url, error) {
           errorLog(error, source: 'Common Image');
 

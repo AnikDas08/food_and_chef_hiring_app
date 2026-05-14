@@ -15,6 +15,7 @@ import '../../../analytics/presentation/screen/analytics_screen.dart';
 import '../../../chef_booking/presentation/screen/chef_booking_screen.dart';
 import '../../../profile/presentation/screen/chef_profile_screen.dart';
 import '../../../../common/message/presentation/screen/chat_screen.dart';
+import '../controller/chef_home_controller.dart';
 import '../widgets/show_ExitDialog.dart';
 import 'chef_home_screen.dart';
 
@@ -41,7 +42,7 @@ class _ChefHomeState extends State<ChefHome>
     with SingleTickerProviderStateMixin {
   late final TabController tabController;
   int selectedTabIndex = 0;
-  final RxInt unreadChatCount = 0.obs; // ✅ unread count
+  final ChefHomeController _homeController = Get.put(ChefHomeController());
 
   final List<TabData> tabs = [
     TabData(title: 'Home', icon: 'house', selectedIcon: 'house.fill'),
@@ -81,18 +82,7 @@ class _ChefHomeState extends State<ChefHome>
       initialIndex: selectedTabIndex,
     );
     tabController.addListener(_updateTabIndex);
-    _fetchUnreadCount();
-  }
-
-  Future<void> _fetchUnreadCount() async {
-    try {
-      final response = await ApiService.get('/chat/unread-counts');
-      if (response.data['success'] == true) {
-        unreadChatCount.value = response.data['data'] ?? 0;
-      }
-    } catch (e) {
-      debugPrint('Unread error: $e');
-    }
+    _homeController.isRead();
   }
 
   void _updateTabIndex() {
@@ -108,7 +98,7 @@ class _ChefHomeState extends State<ChefHome>
       selectedTabIndex = index;
     });
     tabController.animateTo(index);
-    if (index == 3) _fetchUnreadCount();
+    _homeController.isRead();
   }
 
   @override
@@ -176,15 +166,15 @@ class _ChefHomeState extends State<ChefHome>
                               : const Color(0xff777777),
                         ),
                         Obx(() {
-                          if (unreadChatCount.value == 0) {
+                          if (_homeController.unreadCount.value == 0) {
                             return const SizedBox.shrink();
                           }
                           return Positioned(
                             right: -2,
                             top: -2,
                             child: Container(
-                              width: 10,
-                              height: 10,
+                              width: 8.w,
+                              height: 8.w,
                               decoration: const BoxDecoration(
                                 color: Color(0xffFD713F),
                                 shape: BoxShape.circle,
@@ -222,23 +212,50 @@ class _ChefHomeState extends State<ChefHome>
   }
 
   Widget _buildCupertinoBar() {
-    return CNTabBar(
-      items: tabs
-          .map(
-            (tab) => CNTabBarItem(
-          label: tab.title,
-          icon: CNSymbol(
-            tabs[selectedTabIndex] == tab ? tab.selectedIcon : tab.icon,
-            color: const Color(0xff272727),
-            size: 18.sp,
-          ),
-        ),
-      )
-          .toList(),
-      tint: const Color(0xff272727),
-      backgroundColor: Colors.white.withOpacity(0.9),
-      currentIndex: selectedTabIndex,
-      onTap: onTabTap,
+    return Builder(
+      builder: (context) {
+        final double screenWidth = MediaQuery.of(context).size.width;
+        final double tabWidth = screenWidth / tabs.length;
+        final double chatIconCenterX = tabWidth * 3 + (tabWidth / 2);
+        final double badgeLeft = chatIconCenterX + 9.sp - 4.w;
+
+        return Obx(() => Stack(
+          clipBehavior: Clip.none,
+          children: [
+            CNTabBar(
+              items: tabs.asMap().entries.map((entry) {
+                final index = entry.key;
+                final tab = entry.value;
+                return CNTabBarItem(
+                  label: tab.title,
+                  icon: CNSymbol(
+                    selectedTabIndex == index ? tab.selectedIcon : tab.icon,
+                    color: const Color(0xff272727),
+                    size: 18.sp,
+                  ),
+                );
+              }).toList(),
+              tint: const Color(0xff272727),
+              backgroundColor: Colors.white.withOpacity(0.9),
+              currentIndex: selectedTabIndex,
+              onTap: onTabTap,
+            ),
+            if (_homeController.unreadCount.value > 0)
+              Positioned(
+                left: badgeLeft,
+                top: 6.h,
+                child: Container(
+                  width: 8.w,
+                  height: 8.w,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFFD713F),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+          ],
+        ));
+      },
     );
   }
 }
