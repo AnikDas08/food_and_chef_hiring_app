@@ -112,7 +112,7 @@ class MessageController extends GetxController {
       if (pickedFile != null) {
         selectedImage = File(pickedFile.path);
         update();
-        Navigator.pop(Get.context!); // close bottom sheet
+        //Navigator.pop(Get.context!); // close bottom sheet
         await sendImageMessage();
       }
     } catch (e) {
@@ -130,7 +130,7 @@ class MessageController extends GetxController {
       if (pickedFile != null) {
         selectedImage = File(pickedFile.path);
         update();
-        Navigator.pop(Get.context!); // close bottom sheet
+        //Navigator.pop(Get.context!); // close bottom sheet
         await sendImageMessage();
       }
     } catch (e) {

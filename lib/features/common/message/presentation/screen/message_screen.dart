@@ -128,7 +128,9 @@ class _MessageScreenState extends State<MessageScreen> {
                       SizedBox(
                         width: 14.sp,
                         height: 14.sp,
-                        child: const CupertinoActivityIndicator(),
+                        child: const CupertinoActivityIndicator(
+                          color: Color(0xff272727),
+                        ),
                       ),
                       8.width,
                       const CommonText(
@@ -144,7 +146,9 @@ class _MessageScreenState extends State<MessageScreen> {
               Expanded(
                 child: controller.isLoading
                     ? const Center(
-                  child: CupertinoActivityIndicator(),
+                  child: CupertinoActivityIndicator(
+                    color: Color(0xff272727),
+                  ),
                 )
                     : controller.messages.isEmpty
                     ? Center(
@@ -181,7 +185,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         padding: EdgeInsets.all(16.h),
                         child: const Center(
                           child: CupertinoActivityIndicator(
-                            color: Color(0xffFD713F),
+                            color: Color(0xff272727),
                           ),
                         ),
                       );
@@ -212,14 +216,14 @@ class _MessageScreenState extends State<MessageScreen> {
               padding: MediaQuery.of(context).viewInsets,
               duration: const Duration(milliseconds: 100),
               curve: Curves.decelerate,
-              child: Column(  // ← wrap with Column
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   /// Top divider line
                   const Divider(
                     height: 1,
                     thickness: 1,
-                    color: const Color(0xffEEEEEE),
+                    color: Color(0xffEEEEEE),
                   ),
 
                   Container(
@@ -230,72 +234,230 @@ class _MessageScreenState extends State<MessageScreen> {
                       top: 8.h,
                     ),
                     color: Colors.white,
-                    child: Container(
-                      height: 56.h,
-                      decoration: BoxDecoration(
-                        color: const Color(0xffF6F6F6),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: const Color(0xffF6F6F6),
-                          width: 1,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+
+                        /// ── Plus Button (outside the pill) ──────────────────
+                        GestureDetector(
+                          onTap: () {
+                            showGeneralDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              barrierLabel: '',
+                              barrierColor: Colors.transparent,
+                              transitionDuration: const Duration(milliseconds: 200),
+                              pageBuilder: (ctx, anim1, anim2) => const SizedBox.shrink(),
+                              transitionBuilder: (ctx, anim1, anim2, child) {
+                                return Stack(
+                                  children: [
+                                    // Tap outside to dismiss
+                                    Positioned.fill(
+                                      child: GestureDetector(
+                                        onTap: () => Navigator.pop(ctx),
+                                        behavior: HitTestBehavior.opaque,
+                                        child: const SizedBox.shrink(),
+                                      ),
+                                    ),
+
+                                    // Popup anchored bottom-left
+                                    Positioned(
+                                      bottom: MediaQuery.of(context).viewInsets.bottom + 90.h,
+                                      left: 16.w,
+                                      child: ScaleTransition(
+                                        scale: CurvedAnimation(parent: anim1, curve: Curves.easeOutBack),
+                                        alignment: Alignment.bottomLeft,
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: Container(
+                                            width: 160.w,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff272727),
+                                              borderRadius: BorderRadius.circular(14),
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                // Camera
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.pop(ctx);
+                                                    controller.pickImageFromCamera();
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(
+                                                      horizontal: 16.w,
+                                                      vertical: 14.h,
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        Image.asset(
+                                                          'assets/icons/camera_icon.png',
+                                                          width: 28.sp,
+                                                          height: 28.sp,
+                                                          errorBuilder: (_, __, ___) => Icon(
+                                                            CupertinoIcons.camera_fill,
+                                                            color: Colors.white,
+                                                            size: 24.sp,
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 12.w),
+                                                        const CommonText(
+                                                            text: "Camera",
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.w400,
+                                                          color: Colors.white,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                // Divider
+                                                Container(
+                                                  height: 0.5,
+                                                  color: const Color(0xff3A3A3C),
+                                                ),
+
+                                                // Photos
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.pop(ctx);
+                                                    controller.pickImageFromGallery();
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(
+                                                      horizontal: 16.w,
+                                                      vertical: 14.h,
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        Image.asset(
+                                                          'assets/icons/photos_icon.png',
+                                                          width: 28.sp,
+                                                          height: 28.sp,
+                                                          errorBuilder: (_, __, ___) => Icon(
+                                                            CupertinoIcons.photo,
+                                                            color: Colors.white,
+                                                            size: 24.sp,
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 12.w),
+                                                        Text(
+                                                          'Photos',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 16.sp,
+                                                            fontWeight: FontWeight.w400,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            width: 44.sp,
+                            height: 44.sp,
+                            decoration: const BoxDecoration(
+                              color: Color(0xffF6F6F6),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: Icon(
+                                CupertinoIcons.plus,
+                                size: 24.sp,
+                                color: const Color(0xff777777),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(width: 8),
-                          /// Text input
-                          Expanded(
-                            child: TextField(
-                              controller: controller.messageController,
-                              onSubmitted: (_) => controller.addNewMessage(),
-                              cursorColor: Color(0xff272727),
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: const Color(0xff272727),
-                              ),
-                              decoration: InputDecoration(
-                                hintText: "Type a message here...",
-                                hintStyle: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: const Color(0xff777777),
-                                ),
-                                border: InputBorder.none,
-                                isDense: true,
-                                contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
+
+                        SizedBox(width: 8.w),
+
+                        /// ── Pill text field + send ────────────────────────────
+                        Expanded(
+                          child: Container(
+                            height: 56.h,
+                            decoration: BoxDecoration(
+                              color: const Color(0xffF6F6F6),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: const Color(0xffF6F6F6),
+                                width: 1,
                               ),
                             ),
-                          ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(width: 8.w),
 
-                          /// Vertical divider
-                          Container(
-                            width: 1,
-                            height: 24.h,
-                            color: const Color(0xffDDDDDD),
-                          ),
-
-                          /// Send button
-                          GestureDetector(
-                            onTap: controller.isSending || controller.isSendingImage
-                                ? null
-                                : controller.addNewMessage,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 14.w),
-                              child: SvgPicture.asset(
-                                'assets/icons/send_icons.svg',
-                                width: 22.sp,
-                                height: 22.sp,
-                                colorFilter: ColorFilter.mode(
-                                  controller.isSending || controller.isSendingImage
-                                      ? const Color(0xffCCCCCC)
-                                      : const Color(0xff272727),
-                                  BlendMode.srcIn,
+                                /// Text input
+                                Expanded(
+                                  child: TextField(
+                                    controller: controller.messageController,
+                                    onSubmitted: (_) => controller.addNewMessage(),
+                                    cursorColor: const Color(0xff272727),
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: const Color(0xff272727),
+                                    ),
+                                    decoration: InputDecoration(
+                                      hintText: "Type a message here...",
+                                      hintStyle: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: const Color(0xff777777),
+                                      ),
+                                      border: InputBorder.none,
+                                      isDense: true,
+                                      contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 8.w),
+                                    ),
+                                  ),
                                 ),
-                              ),
+
+                                /// Vertical divider
+                                Container(
+                                  width: 1,
+                                  height: 24.h,
+                                  color: const Color(0xffDDDDDD),
+                                ),
+
+                                /// Send button
+                                GestureDetector(
+                                  onTap: controller.isSending || controller.isSendingImage
+                                      ? null
+                                      : controller.addNewMessage,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 14.w),
+                                    child: SvgPicture.asset(
+                                      'assets/icons/send_icons.svg',
+                                      width: 22.sp,
+                                      height: 22.sp,
+                                      colorFilter: ColorFilter.mode(
+                                        controller.isSending || controller.isSendingImage
+                                            ? const Color(0xffCCCCCC)
+                                            : const Color(0xff272727),
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

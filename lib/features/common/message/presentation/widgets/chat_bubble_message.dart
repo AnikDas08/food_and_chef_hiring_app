@@ -272,7 +272,7 @@ class ChatBubbleMessage extends StatelessWidget {
           color: const Color(0xffF0F0F0),
           child: const Center(
             child: CupertinoActivityIndicator(
-              color: Color(0xffFD713F),
+              color: Color(0xff272727),
             ),
           ),
         );
@@ -528,7 +528,7 @@ class _ImageViewerScreenState extends State<_ImageViewerScreen> {
         },
         loadingBuilder: (_, __) => const Center(
           child: CupertinoActivityIndicator(
-            color: Color(0xffFD713F),
+            color: Color(0xff272727),
           ),
         ),
         backgroundDecoration: const BoxDecoration(color: Colors.black),
@@ -551,7 +551,7 @@ class _FileDownloadHelper {
         showProgressIndicator: true,
         progressIndicatorBackgroundColor: Colors.transparent,
         progressIndicatorValueColor:
-        const AlwaysStoppedAnimation(Color(0xffFD713F)),
+        const AlwaysStoppedAnimation(Color(0xff272727)),
         backgroundColor: const Color(0xff222222),
         colorText: Colors.white,
         duration: const Duration(seconds: 60),
