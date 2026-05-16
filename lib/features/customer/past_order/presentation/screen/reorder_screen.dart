@@ -1,284 +1,644 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
-import 'package:new_untitled/features/customer/past_order/presentation/widgets/terms.dart';
+import 'package:new_untitled/config/route/app_routes.dart';
 import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
-import 'package:new_untitled/utils/helpers/other_helper.dart';
 
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../config/api/api_end_point.dart';
 import '../../../../../utils/constants/app_images.dart';
 import '../../../../../utils/constants/app_string.dart';
-import '../../../cart/presentation/widgets/order_summary.dart';
+import '../../../address/data/address_model.dart';
+import '../../../cart/presentation/controller/cart_controller.dart';
+import '../../../cart/presentation/controller/text_controller.dart';
+import '../../../cart/presentation/widgets/booking_date_time_pop_up.dart';
+import '../../../cart/presentation/widgets/confirm_checking_popup.dart';
+import '../../../cart/presentation/widgets/tax_popup.dart';
+import '../../../cart/data/cart_model.dart';
 
 class ReorderScreen extends StatelessWidget {
-  ReorderScreen({super.key});
-
-  final TextEditingController dateController = TextEditingController();
+  const ReorderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: const CommonText(
-          text: 'Book Chef Again',
+          text: AppString.reorder,
+          fontSize: 24,
           fontWeight: FontWeight.w600,
           color: Color(0xff272727),
         ),
+        flexibleSpace: appBarOpacity(),
+        actions: [
+          LiquidGlassLayer(
+            child: LiquidGlass(
+              shape: const LiquidRoundedSuperellipse(borderRadius: 0),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.white.withOpacity(0.2),
+                      Colors.white.withOpacity(0.05),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CommonText(
-              text: AppString.reservationDetails,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xff272727),
-              bottom: 8,
-            ),
-            CommonTextField(
-              controller: dateController,
-              keyboardType: TextInputType.none,
-              hintText: '1 January 2026, 5:20PM',
-              onTap: () => OtherHelper.openDatePickerDialog(dateController),
-              suffixIcon: InkWell(
-                onTap: () => OtherHelper.openDatePickerDialog(dateController),
-                child: const Icon(Icons.calendar_today, color: Color(0xffFD713F)),
-              ),
-            ),
+      body: GetBuilder<CartController>(
+        builder: (controller) {
+          if (controller.isLoadingCart) {
+            return const Center(child: CupertinoActivityIndicator());
+          }
 
-            12.height,
-            Container(
-              height: 60.h,
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              decoration: BoxDecoration(
-                color: const Color(0xffF0F0F0),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  const CommonImage(
-                    imageSrc: AppIcons.location,
-                    imageColor: Color(0xffFD713F),
-                    size: 24,
-                  ),
-                  8.width,
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CommonText(
-                          text: 'Darren Monarch',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff272727),
-                        ),
-                        CommonText(
-                          text: '4140 Parker Rd. Allentown, New Mexico 31134',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff777777),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Icon(Icons.arrow_forward_ios_rounded),
-                ],
-              ),
+          final double total = controller.priceBreakdown?.total ?? 0;
+          final double finalTotal = controller.priceWithDiscount > 0
+              ? controller.priceWithDiscount
+              : total;
+
+          return SingleChildScrollView(
+            padding: EdgeInsets.only(
+              left: 16.w,
+              right: 16.w,
+              bottom: 16.h,
+              top: 110.h,
             ),
-
-            24.height,
-
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CommonText(
-                  text: AppString.orderDetails,
+                // ── Booking Details ────────────────────────────────────
+                const CommonText(
+                  text: AppString.bookingDetails,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Color(0xff272727),
+                  bottom: 8,
                 ),
-                CommonText(
-                  text: '2 items',
+                CommonTextField(
+                  controller: controller.dateController,
+                  keyboardType: TextInputType.none,
+                  paddingVertical: 20,
                   fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff777777),
-                ),
-              ],
-            ),
-            16.height,
-            Container(
-              height: 64.h,
-              padding: EdgeInsets.all(12.sp),
-              decoration: BoxDecoration(
-                color: const Color(0xffF2F2F2),
-                borderRadius: BorderRadius.circular(20.sp),
-              ),
-              child: Row(
-                children: [
-                  const CommonImage(
-                    imageSrc: AppImages.image3,
-                    size: 40,
-                    borderRadius: 50,
-                    fill: BoxFit.fill,
+                  hintText: 'Select booking time',
+                  onTap: () => bookingDateTimePopup(
+                    id: controller.chefGroups.isNotEmpty
+                        ? controller.chefGroups.first.chef?.id
+                        : null,
                   ),
+                  suffixIcon: InkWell(
+                    onTap: () => bookingDateTimePopup(
+                      id: controller.chefGroups.isNotEmpty
+                          ? controller.chefGroups.first.chef?.id
+                          : null,
+                    ),
+                    child: const Icon(
+                      CupertinoIcons.calendar,
+                      color: Color(0xffFD713F),
+                    ),
+                  ),
+                ),
 
-                  12.width,
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                20.height,
+
+                // ── Address ────────────────────────────────────────────
+                GestureDetector(
+                  onTap: () async {
+                    final result = await Get.toNamed(
+                      AppRoutes.addressScreen,
+                      arguments: {
+                        'fromCheckout': true,
+                        'selectedAddressId': controller.selectedAddress?.id,
+                      },
+                    );
+                    if (result != null && result is AddressModel) {
+                      controller.onAddressSelected(result);
+                    }
+                  },
+                  child: Container(
+                    constraints: const BoxConstraints(minHeight: 60),
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                      right: 0.w,
+                      top: 12.h,
+                      bottom: 12.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xfff2f2f2),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
                       children: [
-                        CommonText(
-                          text: 'Javier A.',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff272727),
-                          bottom: 2,
-                          left: 3,
+                        Expanded(
+                          child: controller.selectedAddress != null
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CommonText(
+                                      text: controller.selectedAddress!.ownerName
+                                              .isNotEmpty
+                                          ? controller.selectedAddress!.ownerName
+                                          : controller.selectedAddress!.label,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xff272727),
+                                    ),
+                                    CommonText(
+                                      text: controller
+                                          .selectedAddress!.detailsAddress,
+                                      fontSize: 12,
+                                      top: 2,
+                                      fontWeight: FontWeight.w400,
+                                      color: const Color(0xff777777),
+                                    ),
+                                  ],
+                                )
+                              : const CommonText(
+                                  text: ' Select delivery address',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xff777777),
+                                  textAlign: TextAlign.left,
+                                ),
                         ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              size: 16,
-                              color: Color(0xffFD713F),
-                            ),
-                            CommonText(
-                              text: '4.5  (482 Reviews)',
-                              fontSize: 12,
-                              left: 2,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff777777),
-                            ),
-                          ],
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.w, right: 12.w),
+                          child: const CommonImage(
+                            imageSrc: AppIcons.mapIcon,
+                            imageColor: Color(0xffFD713F),
+                            size: 24,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-
-            32.height,
-
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CommonText(
-                      text: 'Chopped Burrito',
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff4E4E4E),
-                    ),
-                    CommonText(
-                      text: '2 Items + Without Onions',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff777777),
-                    ),
-                  ],
                 ),
+
+                40.height,
+
+                // ── Chef Groups with Items ─────────────────────────────
+                ...controller.chefGroups.map((group) {
+                  final menus = group.menus ?? [];
+                  final chef = group.chef;
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Chef Info Row
+                      _buildChefInfo(chef, menus.length, controller),
+
+                      // Expanded item list
+                      if (controller.isExpanded) ...[
+                        16.height,
+                        ...menus.map((item) => _buildOrderItem(item)),
+                      ],
+
+                      20.height,
+                    ],
+                  );
+                }),
+
+                // ── Order Summary ──────────────────────────────────────
+                _buildOrderSummary(controller),
+
+                42.height,
+
+                // ── Promo Code ─────────────────────────────────────────
+                InkWell(
+                  onTap: () async {
+                    if (controller.promoCode != null) {
+                      controller.onPromoCodeApplied('');
+                    } else {
+                      final result = await Get.toNamed(AppRoutes.promoCode);
+                      if (result != null && result is String) {
+                        controller.onPromoCodeApplied(result);
+                        final total = controller.priceBreakdown?.total ?? 0;
+                        await controller.validateCoupon(result, total);
+                      }
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const CommonText(
+                            text: 'Add promo code',
+                            color: Color(0xff272727),
+                          ),
+                          if (controller.promoCode != null)
+                            CommonText(
+                              text: controller.promoCode!,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xffFD713F),
+                              top: 2,
+                            ),
+                        ],
+                      ),
+                      controller.promoCode != null
+                          ? const Icon(
+                              Icons.close,
+                              size: 16,
+                              color: Color(0xffD713F),
+                            )
+                          : const Icon(
+                              Icons.arrow_forward_ios_sharp,
+                              size: 16,
+                              color: Color(0xff777777),
+                            ),
+                    ],
+                  ),
+                ),
+                if (controller.isValidatingCoupon) ...[
+                  8.height,
+                  const Row(
+                    children: [
+                      SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Color(0xffFD713F)),
+                        ),
+                      ),
+                      CommonText(
+                        text: ' Validating promo code...',
+                        fontSize: 12,
+                        color: Color(0xff777777),
+                      ),
+                    ],
+                  ),
+                ],
+
+                24.height,
+
+                // ── Tax / Invoice ──────────────────────────────────────
+                _buildTaxSection(controller),
+
+                // ── Terms ──────────────────────────────────────────────
+                Padding(
+                  padding: EdgeInsets.only(top: 36.h),
+                  child: Text.rich(
+                    TextSpan(
+                      style: TextStyle(
+                        fontFamily: 'SFProDisplay',
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        height: 1.6,
+                        letterSpacing: 0,
+                      ),
+                      children: const [
+                        TextSpan(
+                          text: 'Terms: ',
+                          style: TextStyle(color: Color(0xff222222)),
+                        ),
+                        TextSpan(
+                          text:
+                              'All prices are exclusive of VAT. Your booking is subject to the applicable ',
+                          style: TextStyle(color: Color(0xff636363)),
+                        ),
+                        TextSpan(
+                          text: 'Privae Chef Terms & Conditions apply',
+                          style: TextStyle(color: Color(0xffFD713F)),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+                SizedBox(height: 12.h),
                 CommonText(
-                  text: '\$45.00',
+                  text:
+                      'A temporary authorization hold of \$${finalTotal.toStringAsFixed(2)} may be placed on your payment method. You will only be charged once the service has been completed.',
+                  left: 2,
                   fontWeight: FontWeight.w400,
-                  color: Color(0xff272727),
+                  color: const Color(0xff636363),
+                  textAlign: TextAlign.start,
+                  maxLines: 4,
+                  fontSize: 12,
+                ),
+                SizedBox(
+                  height: 12.h,
+                ),
+                const CommonText(
+                  text:
+                      'You will receive a final invoice after completion. You may cancel your booking at any time. Cancellations made within 24 hours of the scheduled start time may incur a cancellation fee equal to one hour at the chef’s hourly rate.',
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff636363),
+                  fontSize: 12,
+                  textAlign: TextAlign.start,
+                  maxLines: 7,
+                ),
+                SizedBox(
+                  height: 12.h,
+                ),
+                const CommonText(
+                  text:
+                      'All bookings are subject to the minimum duration set by the Privae Chef.',
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff636363),
+                  fontSize: 12,
+                  textAlign: TextAlign.start,
+                  maxLines: 7,
                 ),
               ],
             ),
-            12.height,
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CommonText(
-                      text: 'Chopped Burrito',
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff4E4E4E),
-                    ),
-                    CommonText(
-                      text: '2 Items + Without Onions',
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff777777),
-                    ),
-                  ],
-                ),
-                CommonText(
-                  text: '\$45.00',
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff272727),
-                ),
-              ],
-            ),
-            32.height,
-            orderSummary(),
-            28.height,
-
-            const CommonText(
-              text: AppString.paymentMethod,
-              bottom: 8,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xff272727),
-            ),
-
-            Container(
-              height: 60.h,
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              decoration: BoxDecoration(
-                color: const Color(0xffF2F2F2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  const CommonImage(imageSrc: AppIcons.master, size: 24),
-                  8.width,
-                  const CommonText(
-                    text: 'Mastercard',
-                    fontSize: 12,
-                    color: Color(0xff272727),
-                  ),
-                  const CommonText(
-                    text: '**** 4356',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xff777777),
-                    left: 8,
-                  ),
-                  const Spacer(),
-                  const Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 16,
-                    color: Color(0xff777777),
-                  ),
-                ],
-              ),
-            ),
-
-            32.height,
-            const Terms(),
-          ],
-        ),
+          );
+        },
       ),
-      persistentFooterButtons: [
-        SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-            child: CommonButton(
-              titleText: AppString.checkoutNow,
-              onTap: Get.back,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+        child: SafeArea(
+          child: GetBuilder<CartController>(
+            builder: (controller) => CommonButton(
+              titleText: controller.isCheckingOut
+                  ? 'Placing Order...'
+                  : AppString.checkoutNow,
+              onTap: controller.isCheckingOut ? () {} : confirmCheckingPopup,
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  // ── Tax / Invoice Section ──────────────────────────────────────────────────
+  Widget _buildTaxSection(CartController controller) {
+    final TaxController? taxCtrl =
+        Get.isRegistered<TaxController>() ? Get.find<TaxController>() : null;
+
+    String taxLabel = 'Add tax details';
+    if (controller.selectedTaxId != null && taxCtrl != null) {
+      if (taxCtrl.businessTax?.id == controller.selectedTaxId) {
+        taxLabel = taxCtrl.businessTax!.name;
+      } else if (taxCtrl.personalTax?.id == controller.selectedTaxId) {
+        taxLabel = taxCtrl.personalTax!.name;
+      }
+    }
+
+    return InkWell(
+      onTap: taxPopup,
+      child: Row(
+        children: [
+          Container(
+            height: 15.sp,
+            width: 15.sp,
+            decoration: BoxDecoration(
+              color: controller.selectedTaxId != null
+                  ? Colors.black
+                  : const Color(0xffF2F2F2),
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: controller.selectedTaxId != null
+                ? Icon(Icons.check, color: Colors.white, size: 10.sp)
+                : null,
+          ),
+          12.width,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CommonText(
+                  text: 'Request an invoice',
+                  color: Color(0xff272727),
+                ),
+                CommonText(
+                  text: taxLabel,
+                  fontSize: 12,
+                  top: 4,
+                  color: controller.selectedTaxId != null
+                      ? const Color(0xffFD713F)
+                      : const Color(0xff818181),
+                ),
+              ],
+            ),
+          ),
+          controller.selectedTaxId != null
+              ? InkWell(
+                  onTap: () => controller.onTaxSelected(null),
+                  child: const Icon(
+                    Icons.close,
+                    size: 16,
+                    color: Color(0xffFD713F),
+                  ),
+                )
+              : const Icon(
+                  Icons.arrow_forward_ios_sharp,
+                  size: 16,
+                  color: Color(0xff777777),
+                ),
+        ],
+      ),
+    );
+  }
+
+  // ── Chef Info Widget ───────────────────────────────────────────────────────
+  Widget _buildChefInfo(
+      CartChefInfo? chef, int itemCount, CartController controller) {
+    final String imageUrl = (chef?.image != null && chef!.image!.isNotEmpty)
+        ? (chef.image!.startsWith('http')
+            ? chef.image!
+            : ApiEndPoint.imageUrl + chef.image!)
+        : AppImages.image3;
+
+    return InkWell(
+      onTap: controller.onChangeExpanded,
+      child: Row(
+        children: [
+          CommonImage(
+            imageSrc: imageUrl,
+            size: 44,
+            borderRadius: 50,
+            fill: BoxFit.cover,
+          ),
+          12.width,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CommonText(
+                  text: chef?.name ?? 'Chef',
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xff272727),
+                ),
+                CommonText(
+                  text: "$itemCount Item${itemCount != 1 ? 's' : ''}",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xff777777),
+                ),
+              ],
+            ),
+          ),
+          Icon(
+            controller.isExpanded
+                ? Icons.keyboard_arrow_up
+                : Icons.keyboard_arrow_down_outlined,
+            size: 24,
+            color: const Color(0xff777777),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Single Order Item Row ──────────────────────────────────────────────────
+  Widget _buildOrderItem(CartMenuItem item) {
+    final menuDetail =
+        item.menu != null && item.menu!.isNotEmpty ? item.menu!.first : null;
+    final String name = menuDetail?.name ?? 'Item';
+    final String customizations =
+        item.customizations != null && item.customizations!.isNotEmpty
+            ? "${item.quantity ?? 1} Items + ${item.customizations!.join(', ')}"
+            : '${item.quantity ?? 1} Items';
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: 16.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CommonText(
+                  text: name,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xff272727),
+                  bottom: 10,
+                  maxLines: 5,
+                ),
+                CommonText(
+                  text: customizations,
+                  fontSize: 12,
+                  textAlign: TextAlign.start,
+                  fontWeight: FontWeight.w400,
+                  maxLines: 2,
+                  color: const Color(0xff777777),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Order Summary (Price Breakdown) ───────────────────────────────────────
+  Widget _buildOrderSummary(CartController controller) {
+    double priceSubtotal = 0;
+    for (final group in controller.chefGroups) {
+      final double chefPrice = group.chef?.pricing ?? 0;
+      priceSubtotal += chefPrice;
+    }
+    final double tax = controller.priceBreakdown?.tax ?? 0;
+    final double fee = controller.priceBreakdown?.fee ?? 0;
+    final double total = controller.priceBreakdown?.total ?? 0;
+    final double finalTotal =
+        controller.priceWithDiscount > 0 ? controller.priceWithDiscount : total;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CommonText(
+          text: 'Order Summary',
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w600,
+          color: const Color(0xff272727),
+          bottom: 12,
+        ),
+        if (controller.estimatedTime != null) ...[
+          Row(
+            children: [
+              const Icon(
+                Icons.timer_outlined,
+                size: 14,
+                color: Color(0xff777777),
+              ),
+              6.width,
+              CommonText(
+                text: 'Estimated time: ${controller.estimatedTime}',
+                fontWeight: FontWeight.w400,
+                color: const Color(0xff777777),
+                fontSize: 12,
+              ),
+            ],
+          ),
+        ],
+        const SizedBox(
+          height: 12,
+        ),
+        _summaryRow('Hourly Rate', priceSubtotal),
+        8.height,
+        _summaryRow('Fees', fee),
+        8.height,
+        _summaryRow('Estimated Taxes', tax),
+        if (controller.discountAmount > 0) ...[
+          8.height,
+          _summaryRow('Discount', -controller.discountAmount, isDiscount: true),
+        ],
+        const SizedBox(
+          height: 12,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CommonText(
+              text: 'Totals',
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff272727),
+            ),
+            CommonText(
+              text: '\$${finalTotal.toStringAsFixed(2)}',
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xff272727),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _summaryRow(String label, double amount, {bool isDiscount = false}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        CommonText(
+          text: label,
+          fontWeight: FontWeight.w400,
+          color: const Color(0xff777777),
+          fontSize: 12,
+        ),
+        CommonText(
+          text: isDiscount
+              ? '-\$${amount.abs().toStringAsFixed(2)}'
+              : '\$${amount.toStringAsFixed(2)}',
+          fontWeight: FontWeight.w400,
+          color: const Color(0xff272727),
+          fontSize: 12,
         ),
       ],
     );

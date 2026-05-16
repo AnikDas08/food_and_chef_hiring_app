@@ -1,6 +1,7 @@
 // lib/features/orders/view/review_screen.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../utils/constants/app_string.dart';
@@ -23,10 +25,13 @@ class ReviewScreen extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           appBar: AppBar(
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+            backgroundColor: Colors.transparent,
+            flexibleSpace: appBarOpacity(),
             title: const CommonText(
-              text: 'Leave Chef Rating',
+              text: "Leave Chef Rating",
+              fontSize: 24,
               fontWeight: FontWeight.w600,
-              color: Color(0xff272727),
             ),
           ),
 
@@ -139,16 +144,15 @@ class ReviewScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          CommonText(
+                          /*CommonText(
                             text: '\$${item.totalPrice.toStringAsFixed(2)}',
                             fontWeight: FontWeight.w400,
                             color: const Color(0xff272727),
-                          ),
+                          ),*/
                         ],
                       ),
                     ),
                   ),
-                  const Divider(),
                   _PriceRow(label: 'Subtotal',    value: controller.order.priceBreakdown.subtotal),
                   _PriceRow(label: 'Tax',         value: controller.order.priceBreakdown.taxs),
                   _PriceRow(label: 'Service Fee', value: controller.order.priceBreakdown.serviceFee),
@@ -340,13 +344,13 @@ class _PriceRow extends StatelessWidget {
         children: [
           CommonText(
             text: label,
-            fontSize: 13,
+            fontSize: 14,
             fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
             color: isBold ? const Color(0xff272727) : const Color(0xff777777),
           ),
           CommonText(
             text: '\$${value.toStringAsFixed(2)}',
-            fontSize: 13,
+            fontSize: 14,
             fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
             color: const Color(0xff272727),
           ),

@@ -8,6 +8,7 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_colors.dart';
+import '../../../cart/presentation/controller/cart_controller.dart';
 import '../controller/home_controller.dart';
 import '../data/order_model.dart';
 
@@ -41,81 +42,87 @@ Widget orderAgain() {
           final int visibleCount = totalItems > 2 ? 2 : totalItems;
           final int moreCount = totalItems > 2 ? totalItems - 2 : 0;
 
-          return Container(
-            margin: const EdgeInsets.only(right: 10),
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0xffF2F2F2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Chef info row
-                Row(
-                  children: [
-                    CommonImage(
-                      imageSrc:
-                          (order.chef?.image != null &&
-                                  order.chef!.image!.isNotEmpty)
-                              ? ApiEndPoint.imageUrl + order.chef!.image!
-                              : AppImages.image4,
-                      size: 40,
-                    ),
-                    12.width,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CommonText(
-                          text: order.chef?.name ?? 'Chef',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xff272727),
-                        ),
-                        CommonText(
-                          text: order.dateStr ?? '',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xff777777),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-
-                12.height,
-
-                // Food images row
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Show up to 2 food images with name overlay
-                    ...List.generate(visibleCount, (i) {
-                      final menuImages = items[i].menu?.images ?? [];
-                      final hasImage =
-                          menuImages.isNotEmpty && menuImages[0].isNotEmpty;
-                      final menuName = items[i].menu?.name ?? '';
-
-                      return Padding(
-                        padding: EdgeInsets.only(
-                          right:
-                              (i < visibleCount - 1 || moreCount > 0) ? 6 : 0,
-                        ),
-                        child: _foodImageWithName(
-                          imageSrc:
-                              hasImage
-                                  ? ApiEndPoint.imageUrl + menuImages[0]
-                                  : AppImages.noImage,
-                          name: menuName,
-                        ),
-                      );
-                    }),
-
-                    // Show "X more items" tile if there are extras
-                    if (moreCount > 0) _moreItemsTile(moreCount),
-                  ],
-                ),
-              ],
+          return GestureDetector(
+            onTap: () {
+              Get.find<CartController>().processOrderAgain(order);
+            },
+            child: Container(
+              margin: const EdgeInsets.only(right: 10),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xffF2F2F2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Chef info row
+                  Row(
+                    children: [
+                      CommonImage(
+                        imageSrc:
+                            (order.chef?.image != null &&
+                                    order.chef!.image!.isNotEmpty)
+                                ? ApiEndPoint.imageUrl + order.chef!.image!
+                                : AppImages.image4,
+                        size: 40,
+                      ),
+                      12.width,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CommonText(
+                            text: order.chef?.name ?? 'Chef',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xff272727),
+                          ),
+                          CommonText(
+                            text: order.dateStr ?? '',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: const Color(0xff777777),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+            
+                  12.height,
+            
+                  // Food images row
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Show up to 2 food images with name overlay
+                      ...List.generate(visibleCount, (i) {
+                        final menuImages = items[i].menu?.images ?? [];
+                        final hasImage =
+                            menuImages.isNotEmpty && menuImages[0].isNotEmpty;
+                        final menuName = items[i].menu?.name ?? '';
+            
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            right:
+                                (i < visibleCount - 1 || moreCount > 0) ? 6 : 0,
+                          ),
+                          child:_foodImageWithName(
+                            imageSrc: hasImage
+                                ? (menuImages[0].startsWith('http')
+                                ? menuImages[0]
+                                : '${ApiEndPoint.imageUrl}${menuImages[0]}')
+                                : AppImages.noImage,
+                            name: menuName,
+                          ),
+                        );
+                      }),
+            
+                      // Show "X more items" tile if there are extras
+                      if (moreCount > 0) _moreItemsTile(moreCount),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         },

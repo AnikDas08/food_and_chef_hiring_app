@@ -6,7 +6,10 @@ import '../../../../../utils/app_utils.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../address/data/address_model.dart';
+import '../../../home/presentation/data/order_model.dart' as home;
 import '../../data/cart_model.dart';
+import '../../../past_order/presentation/data/past_order_model.dart' hide PriceBreakdown;
+//import '../../home/presentation/data/order_model.dart' as home;
 import '../screen/stripe_webview_screen.dart';
 
 class CartController extends GetxController {
@@ -336,6 +339,87 @@ class CartController extends GetxController {
       }
     } catch (e) {
       Utils.errorSnackBar('Error', e.toString());
+    } finally {
+      isLoadingCart = false;
+      update();
+    }
+  }
+
+  Future<void> processReorder(PastOrderModel order) async {
+    isLoadingCart = true;
+    update();
+
+    try {
+      // Clear cart before adding new items if needed by business logic
+      // For now we just add them to the existing cart or replace? 
+      // Reorder flow usually means starting a fresh cart for that chef.
+      
+      // Add each item from past order to the cart
+      for (var item in order.staticItems) {
+        await ApiService.post(
+          'cart',
+          body: {
+            'menu': item.menuId,
+            'quantity': item.quantity,
+            'customizations': item.customizations,
+          },
+        );
+      }
+
+      // After adding all items, fetch the cart for this specific chef
+      await fetchCart(order.chef.id);
+
+      // Default values for reorder
+      dateController.clear();
+      selectedTime = '';
+      selectedAddress = null;
+
+      // Navigate to ReorderScreen
+      Get.toNamed(AppRoutes.reorder);
+    } catch (e) {
+      Utils.errorSnackBar('Error', 'Failed to process reorder: ${e.toString()}');
+    } finally {
+      isLoadingCart = false;
+      update();
+    }
+  }
+
+  Future<void> processOrderAgain(home.OrderAgainData order) async {
+    isLoadingCart = true;
+    update();
+
+    try {
+      final chefId = order.chef?.id;
+      if (chefId == null) throw 'Chef ID not found';
+
+      // Add each item from past order to the cart
+      final items = order.staticItems ?? [];
+      for (var item in items) {
+        final menuId = item.menu?.id;
+        if (menuId == null) continue;
+
+        await ApiService.post(
+          'cart',
+          body: {
+            'menu': menuId,
+            'quantity': item.quantity ?? 1,
+            'customizations': [], // OrderAgainData model doesn't have customizations field
+          },
+        );
+      }
+
+      // After adding all items, fetch the cart for this specific chef
+      await fetchCart(chefId);
+
+      // Default values for reorder
+      dateController.clear();
+      selectedTime = '';
+      selectedAddress = null;
+
+      // Navigate to ReorderScreen
+      Get.toNamed(AppRoutes.reorder);
+    } catch (e) {
+      Utils.errorSnackBar('Error', 'Failed to process reorder: ${e.toString()}');
     } finally {
       isLoadingCart = false;
       update();

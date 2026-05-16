@@ -228,7 +228,6 @@ void bookingDetailsShow(BuildContext context) {
                   // ── Price Breakdown ──────────────────────
                   _PriceBreakdownWidget(order: order),
 
-                  const Divider(),
                   12.height,
 
                   // ── Rating (if rated) ────────────────────
@@ -286,6 +285,7 @@ void bookingDetailsShow(BuildContext context) {
                     onTap: () => Get.toNamed(AppRoutes.reorder, arguments: order),
                   ),
                   12.height,
+                  if(order.rating==0)
                   CommonButton(
                     /*titleText: order.rating > 0
                         ? "Edit Rating"
@@ -378,11 +378,11 @@ class _OrderItemRow extends StatelessWidget {
               ],
             ),
           ),
-          CommonText(
+          /*CommonText(
             text: '\$${item.totalPrice.toStringAsFixed(2)}',
             fontWeight: FontWeight.w400,
             color: const Color(0xff272727),
-          ),
+          ),*/
         ],
       ),
     );

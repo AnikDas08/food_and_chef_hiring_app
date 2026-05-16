@@ -272,7 +272,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                           child: Container(
                                             width: 160.w,
                                             decoration: BoxDecoration(
-                                              color: const Color(0xff272727),
+                                              color: Colors.white,
                                               borderRadius: BorderRadius.circular(14),
                                             ),
                                             child: Column(
@@ -297,7 +297,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                                           height: 28.sp,
                                                           errorBuilder: (_, __, ___) => Icon(
                                                             CupertinoIcons.camera_fill,
-                                                            color: Colors.white,
+                                                            color: Color(0xff272727),
                                                             size: 24.sp,
                                                           ),
                                                         ),
@@ -306,7 +306,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                                             text: "Camera",
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.w400,
-                                                          color: Colors.white,
+                                                          color: Color(0xff272727),
                                                         )
                                                       ],
                                                     ),
@@ -314,10 +314,10 @@ class _MessageScreenState extends State<MessageScreen> {
                                                 ),
 
                                                 // Divider
-                                                Container(
+                                                /*Container(
                                                   height: 0.5,
                                                   color: const Color(0xff3A3A3C),
-                                                ),
+                                                ),*/
 
                                                 // Photos
                                                 GestureDetector(
@@ -338,7 +338,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                                           height: 28.sp,
                                                           errorBuilder: (_, __, ___) => Icon(
                                                             CupertinoIcons.photo,
-                                                            color: Colors.white,
+                                                            color: Color(0xff272727),
                                                             size: 24.sp,
                                                           ),
                                                         ),
@@ -346,7 +346,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                                         Text(
                                                           'Photos',
                                                           style: TextStyle(
-                                                            color: Colors.white,
+                                                            color: Color(0xff272727),
                                                             fontSize: 16.sp,
                                                             fontWeight: FontWeight.w400,
                                                           ),

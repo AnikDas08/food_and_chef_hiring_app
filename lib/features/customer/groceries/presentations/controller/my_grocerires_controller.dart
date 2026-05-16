@@ -15,12 +15,51 @@ class ConfirmedGroceryController extends GetxController {
   var isBookingConfirmed = true.obs;
   var selectedPartner = 'Instacart'.obs;
   var isLoading = false.obs;
+  var isIngredientsLoading = false.obs;
+  var basketItems = <Map<String, dynamic>>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     // Debug to verify you received the IDs
     debugPrint('Received Order IDs on Confirmation Screen: $receivedOrderIds');
+    fetchIngredients();
+  }
+
+  Future<void> fetchIngredients() async {
+    if (receivedOrderIds.isEmpty) {
+      basketItems.clear();
+      return;
+    }
+    isIngredientsLoading.value = true;
+    try {
+      final String queryString =
+          receivedOrderIds.map((id) => 'orderId[]=$id').join('&');
+      final response = await ApiService.get('cart/ingradients?$queryString');
+      if (response.statusCode == 200) {
+        final List rawIngs = response.data['data'] ?? [];
+        basketItems.value = rawIngs
+            .map(
+              (e) => {
+                'id': e['_id'],
+                'name': e['name'],
+                'items': e['quantity'],
+                'unit': e['unit'],
+                'isSelected': true,
+              },
+            )
+            .toList();
+      }
+    } catch (e) {
+      debugPrint('Ingredients API Error: $e');
+    } finally {
+      isIngredientsLoading.value = false;
+    }
+  }
+
+  void toggleBasketItem(int index) {
+    basketItems[index]['isSelected'] = !basketItems[index]['isSelected'];
+    basketItems.refresh();
   }
 
   Future<void> confirmGroceries() async {

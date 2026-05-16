@@ -99,7 +99,7 @@ class CustomerHome extends StatelessWidget {
 
           16.height,
           SizedBox(height: 160.h, child: orderAgain()),
-          10.height,
+          80.height,
         ],
       ),
     );

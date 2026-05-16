@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../../component/button/common_button.dart';
 import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_string.dart';
 import '../controller/my_grocerires_controller.dart';
+import '../widgets/groceries_item.dart';
 
 class ConfirmedGroceryScreen extends StatelessWidget {
   const ConfirmedGroceryScreen({super.key});
@@ -22,61 +24,67 @@ class ConfirmedGroceryScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         flexibleSpace: appBarOpacity(),
         title: const CommonText(
-          text: "My groceries",
+          text: "My shopping list",
           fontSize: 24,
           fontWeight: FontWeight.w600,
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 12.h),
-            const CommonText(
-              text: 'Your groceries will appear here once you have a confirmed upcoming booking with a chef',
-              maxLines: 2,
-              color: Color(0xff777777),
-              textAlign: TextAlign.start,
-              fontWeight: FontWeight.w400,
-              fontSize: 12,
-            ),
-
-            // --- UI Note: Showing the IDs for your reference ---
-            if (controller.receivedOrderIds.isNotEmpty) ...[
-              SizedBox(height: 10.h),
-              CommonText(
-                text: 'Selected Orders: ${controller.receivedOrderIds.length}',
-                color: const Color(0xffFD713F),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20.h),
+              const CommonText(
+                text: 'Ingredients your chef needs',
+                color: Color(0xff272727),
                 fontWeight: FontWeight.w600,
+                fontSize: 16,
               ),
+              SizedBox(height: 16.h),
+
+              Obx(() => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (controller.isIngredientsLoading.value)
+                    Padding(
+                      padding: EdgeInsets.only(top: 24.h),
+                      child: const Center(child: CircularProgressIndicator(color: Color(0xffFD713F))),
+                    )
+                  else if (controller.basketItems.isNotEmpty) ...[
+                    ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: controller.basketItems.length,
+                      itemBuilder: (context, index) => GroceryItemTile(
+                        data: controller.basketItems[index],
+                        onTap: () => controller.toggleBasketItem(index),
+                        isLast: index == controller.basketItems.length - 1,
+                      ),
+                    ),
+                  ],
+                ],
+              )),
             ],
-
-            SizedBox(height: 32.h),
-            const CommonText(
-              text: 'Choose your grocery delivery partner',
-              color: Color(0xff272727),
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-            ),
-            SizedBox(height: 4.h),
-            const CommonText(
-                text: 'Order groceries for your booking',
-                color: Color(0xff777777),
-                fontSize: 12,
-              fontWeight: FontWeight.w400,
-            ),
-            SizedBox(height: 24.h),
-
-            Obx(() => _buildPartnerIcon(
-              name: 'Instacart',
-              imagePath: 'assets/images/intacart.png', // Corrected path to match your asset
-              isSelected: controller.selectedPartner.value == 'Instacart',
-              controller: controller,
-            )),
-          ],
+          ),
         ),
       ),
+      bottomNavigationBar: Obx(() {
+        if (controller.basketItems.isNotEmpty && !controller.isIngredientsLoading.value) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+            child: CommonButton(
+              titleText: "I got my groceries",
+              onTap: () {
+                controller.showConfirmationDialog(context);
+              },
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      }),
     );
   }
 

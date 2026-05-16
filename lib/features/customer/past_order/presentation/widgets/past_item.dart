@@ -10,6 +10,7 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../config/api/api_end_point.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
+import '../../../cart/presentation/controller/cart_controller.dart';
 import '../controller/past_order_controller.dart';
 import '../data/past_order_model.dart';
 
@@ -250,8 +251,7 @@ Widget pastItem(BuildContext context, PastOrderModel order) {
 
               // Rating (show 0 as "Rate" if not yet rated)
               Container(
-                padding:
-                EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12.sp),
@@ -281,7 +281,10 @@ Widget pastItem(BuildContext context, PastOrderModel order) {
 
               // Reorder button
               InkWell(
-                onTap: () => Get.toNamed(AppRoutes.reorder, arguments: order),
+                onTap: () {
+                  final cartController = Get.find<CartController>();
+                  cartController.processReorder(order);
+                },
                 child: Container(
                   margin: EdgeInsets.only(left: 8.w),
                   padding: EdgeInsets.symmetric(

@@ -141,8 +141,7 @@ class GroceryScreen extends StatelessWidget {
                             controller.selectedPartner.value == 'Instacart',
                         onTap: () {
                           controller.selectedPartner.value = 'Instacart';
-                          controller
-                              .createInstacartLink(); // CALLS API IMMEDIATELY
+                          //controller.createInstacartLink(); // CALLS API IMMEDIATELY
                         },
                       ),
                       SizedBox(width: 20.w),
@@ -196,12 +195,17 @@ class GroceryScreen extends StatelessWidget {
                       color: Color(0xff272727),
                     ),
                   )
-                else if (controller.basketItems.isNotEmpty)
+                else if (controller.basketItems.isNotEmpty&&(controller.selectedPartner.value == 'Instacart'||controller.selectedPartner.value == 'Self'))
                   CommonButton(
-                    titleText: 'Add to Cart',
+                    titleText: controller.selectedPartner.value == 'Instacart'
+                        ? 'Buy Groceries Online'
+                        : 'Add to Shopping List',
                     onTap: () {
                       // We send the list of selected IDs to the next screen
-                      if (controller.selectedOrderIds.isNotEmpty) {
+                      if(controller.selectedPartner=="Instacart"&&controller.selectedOrderIds.isNotEmpty){
+                        controller.createInstacartLink();
+                      }
+                      else if (controller.selectedOrderIds.isNotEmpty) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -409,8 +413,7 @@ class GroceryScreen extends StatelessWidget {
                   icon != null
                       ? Icon(
                         icon,
-                        color:
-                            isSelected ? const Color(0xffFD713F) : Colors.grey,
+                        color: isSelected ? const Color(0xffFD713F) : Colors.grey,
                       )
                       : (iconPath != null
                           ? Image.asset(iconPath, width: 30.w)
