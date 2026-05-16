@@ -2,6 +2,7 @@ class AppIcons {
   static const String baseurl = 'assets/icons';
 
   static const String burger = '$baseurl/burger.svg';
+  static const String editmanubar = '$baseurl/edit_manu_bar.svg';
   static const String about = '$baseurl/about.svg';
   static const String briefcase = '$baseurl/briefcase.svg';
   static const String card = '$baseurl/card.svg';
@@ -16,6 +17,7 @@ class AppIcons {
   static const String edit_icon = '$baseurl/edit_icon.svg';
   static const String facebook = '$baseurl/facebook.svg';
   static const String fliter = '$baseurl/fliter.svg';
+  static const String doneSvg = '$baseurl/done.svg';
   static const String google = '$baseurl/google.svg';
   static const String kitchen = '$baseurl/kitchen.svg';
   static const String location = '$baseurl/location.svg';
@@ -24,11 +26,13 @@ class AppIcons {
   static const String notebook = '$baseurl/notebook.svg';
   static const String receipt = '$baseurl/receipt.svg';
   static const String share = '$baseurl/share.svg';
+  static const String delete_menu_icon = '$baseurl/delete_menu_icon.svg';
   static const String shop = '$baseurl/shop.svg';
   static const String store = '$baseurl/store.svg';
   static const String address = '$baseurl/address.svg';
   static const String editmanu = '$baseurl/editmanu.svg';
   static const String map = '$baseurl/map.svg';
+  static const String edit_manu_bar = '$baseurl/edit_manu_bar.svg';
   static const String booking = '$baseurl/booking.svg';
   static const String chats = '$baseurl/chats.svg';
   static const String groceries = '$baseurl/groceries.svg';

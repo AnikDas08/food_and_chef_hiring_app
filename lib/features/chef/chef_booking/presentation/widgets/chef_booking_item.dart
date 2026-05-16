@@ -195,7 +195,7 @@ Widget chefBookingItem({required Map order}) {
               const CommonImage(
                 imageSrc: AppIcons.date,
                 size: 16,
-                imageColor: Color(0xff777777),
+                imageColor: Color(0xffFD713F),
               ),
               Expanded(
                 child: CommonText(
@@ -215,7 +215,7 @@ Widget chefBookingItem({required Map order}) {
               const CommonImage(
                 imageSrc: AppIcons.ingredients,
                 size: 16,
-                imageColor: Color(0xff777777),
+                imageColor: Color(0xffFD713F),  // ✅ orange
               ),
               Expanded(
                 child: CommonText(
@@ -235,7 +235,7 @@ Widget chefBookingItem({required Map order}) {
               const CommonImage(
                 imageSrc: AppIcons.location,
                 size: 16,
-                imageColor: Color(0xff777777),
+                imageColor: Color(0xffFD713F),  // ✅ orange
               ),
               Expanded(
                 child: CommonText(
@@ -259,7 +259,7 @@ Widget chefBookingItem({required Map order}) {
                   const Icon(
                     CupertinoIcons.time,
                     size: 16,
-                    color: Color(0xff777777),
+                    color:  Color(0xffFD713F),
                   ),
                   const SizedBox(width: 4),
                   CommonText(
@@ -454,7 +454,7 @@ Widget chefBookingItem({required Map order}) {
                       borderRadius: BorderRadius.circular(10.sp),
                     ),
                     child: const Row(
-                      mainAxisSize: MainAxisSize.min, // ✅ এটা যোগ করুন
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         CommonImage(
                           imageSrc: AppIcons.chat,

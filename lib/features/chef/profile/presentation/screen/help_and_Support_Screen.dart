@@ -63,7 +63,6 @@ class HelpSupportScreen extends StatelessWidget {
             ),
             20.height,
 
-            // Attach File Button
             GestureDetector(
               onTap: () => _showPickerBottomSheet(context, ctrl),
               child: Container(
@@ -92,6 +91,7 @@ class HelpSupportScreen extends StatelessWidget {
                 ),
               ),
             ),
+
 
             GetBuilder<HelpSupportController>(
               builder: (c) {
@@ -155,12 +155,12 @@ class HelpSupportScreen extends StatelessWidget {
 
             20.height,
 
-            // Submit Button
             GetBuilder<HelpSupportController>(
               builder: (c) {
                 return CommonButton(
                   titleText: 'Submit',
                   isLoading: c.isLoading,
+                  buttonHeight: 60.h,
                   onTap: c.submitSupport,
                 );
               },

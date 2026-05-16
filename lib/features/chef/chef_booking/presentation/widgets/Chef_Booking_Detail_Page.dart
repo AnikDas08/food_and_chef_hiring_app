@@ -918,7 +918,7 @@ class _StopConfirmationDialog extends StatelessWidget {
                 width: double.infinity,
                 height: 50.h,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
+                  color: const Color(0xFF272727),
                   borderRadius: BorderRadius.circular(14.r),
                 ),
                 child: Center(
