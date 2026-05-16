@@ -67,7 +67,9 @@ class CommonImage extends StatelessWidget {
             ),
         progressIndicatorBuilder:
             (context, url, downloadProgress) =>
-                const Center(child: CupertinoActivityIndicator()),
+                const Center(child: CupertinoActivityIndicator(
+                  color: Color(0xff272727),
+                )),
         errorWidget: (context, url, error) {
           errorLog(error, source: 'Common Image');
 

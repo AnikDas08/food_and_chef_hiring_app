@@ -36,7 +36,7 @@ class ImageViewerScreen extends StatelessWidget {
           );
         },
         loadingBuilder: (context, event) => const Center(
-          child: CupertinoActivityIndicator(color: CupertinoColors.white),
+          child: CupertinoActivityIndicator(color: Color(0xff272727)),
         ),
       ),
     );

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../utils/constants/app_string.dart';
 import '../controller/my_grocerires_controller.dart';
 
 class ConfirmedGroceryScreen extends StatelessWidget {
@@ -15,29 +18,28 @@ class ConfirmedGroceryScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
-          onPressed: () => Navigator.pop(context),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: appBarOpacity(),
+        title: const CommonText(
+          text: "My groceries",
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
         ),
-        backgroundColor: Colors.white,
-        elevation: 0,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CommonText(
-                text: 'My groceries',
-                fontSize: 24,
-                fontWeight: FontWeight.bold
-            ),
             SizedBox(height: 12.h),
             const CommonText(
               text: 'Your groceries will appear here once you have a confirmed upcoming booking with a chef',
               maxLines: 2,
-              color: Colors.grey,
+              color: Color(0xff777777),
               textAlign: TextAlign.start,
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
             ),
 
             // --- UI Note: Showing the IDs for your reference ---
@@ -53,14 +55,16 @@ class ConfirmedGroceryScreen extends StatelessWidget {
             SizedBox(height: 32.h),
             const CommonText(
               text: 'Choose your grocery delivery partner',
-              fontWeight: FontWeight.bold,
+              color: Color(0xff272727),
+              fontWeight: FontWeight.w600,
               fontSize: 16,
             ),
             SizedBox(height: 4.h),
             const CommonText(
                 text: 'Order groceries for your booking',
-                color: Colors.grey,
-                fontSize: 12
+                color: Color(0xff777777),
+                fontSize: 12,
+              fontWeight: FontWeight.w400,
             ),
             SizedBox(height: 24.h),
 
@@ -95,7 +99,7 @@ class ConfirmedGroceryScreen extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: const Color(0xffF5F5F5),
-              border: isSelected ? Border.all(color: const Color(0xffFD713F), width: 2) : null,
+              border: isSelected ? Border.all(color: const Color(0xff272727), width: 2) : null,
             ),
             child: Center(
               child: Image.asset(
@@ -110,7 +114,7 @@ class ConfirmedGroceryScreen extends StatelessWidget {
           CommonText(
             text: name,
             fontSize: 12,
-            color: isSelected ? Colors.black : Colors.grey,
+            color: isSelected ? Color(0xff272727) : Color(0xff777777),
           ),
         ],
       ),

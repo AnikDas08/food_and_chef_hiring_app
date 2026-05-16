@@ -66,7 +66,9 @@ class GroceryScreen extends StatelessWidget {
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(
-            child: CupertinoActivityIndicator(),
+            child: CupertinoActivityIndicator(
+              color: Color(0xff272727),
+            ),
           );
         }
 
@@ -75,7 +77,13 @@ class GroceryScreen extends StatelessWidget {
             controller.initialOrderId!.isNotEmpty;
 
         return SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(16.w, fromBookingHistory ? 100.h : 16.h, 16.w, fromBookingHistory ? 30.h : 16.h),
+          //padding: EdgeInsets.fromLTRB(16.w, fromBookingHistory ? kToolbarHeight + 16.h : 16.h, 16.w, fromBookingHistory ? 30.h : 16.h),
+          padding: EdgeInsets.fromLTRB(
+            16.w,
+            (fromBookingHistory && !hasInitialId) ? 100.h : 16.h,
+            16.w,
+            fromBookingHistory ? 30.h : 16.h,
+          ),
           child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,7 +170,9 @@ class GroceryScreen extends StatelessWidget {
             
                 if (controller.isIngredientsLoading.value)
                   const Center(
-                    child: CupertinoActivityIndicator(),
+                    child: CupertinoActivityIndicator(
+                      color: Color(0xff272727),
+                    ),
                   )
                 else
                   ListView.builder(
@@ -182,7 +192,9 @@ class GroceryScreen extends StatelessWidget {
                 // --- 4. BOTTOM BUTTON ---
                 if (controller.isInstacartLoading.value)
                   const Center(
-                    child: CupertinoActivityIndicator(),
+                    child: CupertinoActivityIndicator(
+                      color: Color(0xff272727),
+                    ),
                   )
                 else if (controller.basketItems.isNotEmpty)
                   CommonButton(
