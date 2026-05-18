@@ -34,20 +34,20 @@ class ConfirmedGroceryController extends GetxController {
     isIngredientsLoading.value = true;
     try {
       final String queryString =
-          receivedOrderIds.map((id) => 'orderId[]=$id').join('&');
+      receivedOrderIds.map((id) => 'orderId[]=$id').join('&');
       final response = await ApiService.get('cart/ingradients?$queryString');
       if (response.statusCode == 200) {
         final List rawIngs = response.data['data'] ?? [];
         basketItems.value = rawIngs
             .map(
               (e) => {
-                'id': e['_id'],
-                'name': e['name'],
-                'items': e['quantity'],
-                'unit': e['unit'],
-                'isSelected': true,
-              },
-            )
+            'id': e['_id'],
+            'name': e['name'],
+            'items': e['quantity'],
+            'unit': e['unit'],
+            'isSelected': true,
+          },
+        )
             .toList();
       }
     } catch (e) {

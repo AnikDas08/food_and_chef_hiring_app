@@ -43,7 +43,6 @@ class ConfirmedGroceryScreen extends StatelessWidget {
                 fontSize: 16,
               ),
               SizedBox(height: 16.h),
-
               Obx(() => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

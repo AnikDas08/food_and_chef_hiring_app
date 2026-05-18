@@ -75,7 +75,7 @@ class GroceryScreen extends StatelessWidget {
 
         final bool hasInitialId =
             controller.initialOrderId != null &&
-            controller.initialOrderId!.isNotEmpty;
+                controller.initialOrderId!.isNotEmpty;
 
         return SingleChildScrollView(
           //padding: EdgeInsets.fromLTRB(16.w, fromBookingHistory ? kToolbarHeight + 16.h : 16.h, 16.w, fromBookingHistory ? 30.h : 16.h),
@@ -113,9 +113,9 @@ class GroceryScreen extends StatelessWidget {
                   )
                 else
                   _buildFullListView(controller),
-            
+
                 SizedBox(height: 24.h),
-            
+
                 // --- 2. PARTNER SELECTION (RESTORED LOGIC) ---
                 const CommonText(
                   text: 'Choose your grocery delivery partner',
@@ -130,7 +130,7 @@ class GroceryScreen extends StatelessWidget {
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                 ),
-            
+
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.h),
                   child: Row(
@@ -139,7 +139,7 @@ class GroceryScreen extends StatelessWidget {
                         label: 'Instacart',
                         iconPath: 'assets/images/intacart.png',
                         isSelected:
-                            controller.selectedPartner.value == 'Instacart',
+                        controller.selectedPartner.value == 'Instacart',
                         onTap: () {
                           controller.selectedPartner.value = 'Instacart';
                           //controller.createInstacartLink(); // CALLS API IMMEDIATELY
@@ -155,9 +155,9 @@ class GroceryScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-            
+
                 SizedBox(height: 24.h),
-            
+
                 // --- 3. GROCERY BASKET ---
                 if (controller.basketItems.isNotEmpty)
                   const CommonText(
@@ -167,7 +167,7 @@ class GroceryScreen extends StatelessWidget {
                     fontSize: 16,
                   ),
                 SizedBox(height: 12.h),
-            
+
                 if (controller.isIngredientsLoading.value)
                   const Center(
                     child: CupertinoActivityIndicator(
@@ -182,10 +182,10 @@ class GroceryScreen extends StatelessWidget {
                     itemCount: controller.basketItems.length,
                     itemBuilder:
                         (context, index) => GroceryItemTile(
-                          data: controller.basketItems[index],
-                          onTap: () => controller.toggleBasketItem(index),
-                          isLast: index == controller.basketItems.length - 1,
-                        ),
+                      data: controller.basketItems[index],
+                      onTap: () => controller.toggleBasketItem(index),
+                      isLast: index == controller.basketItems.length - 1,
+                    ),
                   ),
 
                 SizedBox(height: 20.h,),
@@ -230,20 +230,20 @@ class GroceryScreen extends StatelessWidget {
                 if(controller.basketItems.isNotEmpty)
                   CustomButtonIcon(
                     titleText: "Buy groceries online",
-                  prefixImage: "assets/images/groceries_image.png",
-                  buttonColor: Color(0xff003D29),
-                  onTap: (){
-                    controller.createInstacartLink();
-                  },
-                ),
+                    prefixImage: "assets/images/groceries_image.png",
+                    buttonColor: Color(0xff003D29),
+                    onTap: (){
+                      controller.createInstacartLink();
+                    },
+                  ),
                 SizedBox(height: 8.h),
                 if(controller.basketItems.isNotEmpty)
-                CommonButton(
+                  CommonButton(
                     titleText: "Confirm purchase of groceries",
-                  onTap: (){
+                    onTap: (){
 
-                  },
-                )
+                    },
+                  )
               ],
             ),
           ),
@@ -256,7 +256,7 @@ class GroceryScreen extends StatelessWidget {
 
   Widget _buildSingleOrderView(GroceryController controller) {
     final order = controller.availableOrders.firstWhere(
-      (e) => e['_id'] == controller.initialOrderId,
+          (e) => e['_id'] == controller.initialOrderId,
       orElse: () => {},
     );
     if (order.isEmpty) return const SizedBox();
@@ -338,7 +338,7 @@ class GroceryScreen extends StatelessWidget {
                   ),
                   CommonText(
                     text:
-                        "${staticItems.length} Recipe • ${order['order_id'] ?? ''}",
+                    "${staticItems.length} Recipe • ${order['order_id'] ?? ''}",
                     color: isSelected ? Colors.white : Color(0xff777777),
                     fontSize: 12,
                   ),
@@ -356,23 +356,23 @@ class GroceryScreen extends StatelessWidget {
                       .take(2)
                       .map(
                         (imageUrl) => Padding(
-                          padding: EdgeInsets.only(left: 6.w),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.r),
-                            child: Image.network(
-                              imageUrl.startsWith('http')
-                                  ? imageUrl
-                                  : ApiEndPoint.imageUrl + imageUrl,
-                              width: 40.w,
-                              height: 40.w,
-                              fit: BoxFit.cover,
-                              errorBuilder:
-                                  (context, error, stackTrace) =>
-                                      const SizedBox.shrink(), // Hide if URL fails
-                            ),
-                          ),
+                      padding: EdgeInsets.only(left: 6.w),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.r),
+                        child: Image.network(
+                          imageUrl.startsWith('http')
+                              ? imageUrl
+                              : ApiEndPoint.imageUrl + imageUrl,
+                          width: 40.w,
+                          height: 40.w,
+                          fit: BoxFit.cover,
+                          errorBuilder:
+                              (context, error, stackTrace) =>
+                          const SizedBox.shrink(), // Hide if URL fails
                         ),
                       ),
+                    ),
+                  ),
 
                   // 3. Show "more" count only if recipes exceed the 2 displayed images
                   if (staticItems.length > 2)
@@ -418,24 +418,24 @@ class GroceryScreen extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color:
-                  isSelected
-                      ? const Color(0xff272727).withOpacity(0.1)
-                      : const Color(0xffF5F5F5),
+              isSelected
+                  ? const Color(0xff272727).withOpacity(0.1)
+                  : const Color(0xffF5F5F5),
               border:
-                  isSelected
-                      ? Border.all(color: const Color(0xff272727), width: 2)
-                      : null,
+              isSelected
+                  ? Border.all(color: const Color(0xff272727), width: 2)
+                  : null,
             ),
             child: Center(
               child:
-                  icon != null
-                      ? Icon(
-                        icon,
-                        color: isSelected ? const Color(0xffFD713F) : Colors.grey,
-                      )
-                      : (iconPath != null
-                          ? Image.asset(iconPath, width: 30.w)
-                          : const SizedBox()),
+              icon != null
+                  ? Icon(
+                icon,
+                color: isSelected ? const Color(0xffFD713F) : Colors.grey,
+              )
+                  : (iconPath != null
+                  ? Image.asset(iconPath, width: 30.w)
+                  : const SizedBox()),
             ),
           ),
           SizedBox(height: 8.h),
