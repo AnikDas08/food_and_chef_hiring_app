@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/features/customer/home/presentation/controller/home_controller.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../data/model/notification_model.dart';
 
@@ -19,6 +20,7 @@ class NotificationsController extends GetxController {
   void onInit() {
     super.onInit();
     getNotificationsRepo(); // Initial load
+    ReadAll();
     _setupScrollListener();
   }
 
@@ -114,6 +116,26 @@ class NotificationsController extends GetxController {
     update();
   }
 
+  Future<void> ReadAll() async {
+
+    try {
+      final response = await ApiService.patch('notification');
+
+      if (response.statusCode == 200) {
+        print("Successfully marked all notification here");
+        // Update local state to mark all as read
+        unreadCount.value = 0;
+        Get.find<HomeController>().refresh();
+      }
+    } catch (e) {
+      page--; // Rollback page on error
+      debugPrint('Error loading more: $e');
+    }
+
+    isLoadingMore = false;
+    update();
+  }
+
   /// Mark single notification as read
   Future<void> markAsRead(String notificationId) async {
     final int index = notifications.indexWhere((element) => element.id == notificationId);
@@ -142,17 +164,6 @@ class NotificationsController extends GetxController {
     }
   }
 
-  /*Future<void> readAllNotification() async {
-
-      try {
-        final response = await ApiService.patch("notification");
-        if (response.statusCode != 200) {
-          getNotificationsRepo();
-        }
-      } catch (e) {
-
-      }
-    }*/
 
   /// Scroll Listener Logic
   void _setupScrollListener() {

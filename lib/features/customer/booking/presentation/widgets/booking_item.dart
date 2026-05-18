@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
+import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/button/common_button.dart';
@@ -37,7 +38,8 @@ Widget bookingItem(BookingHistoryModel order) {
               ClipRRect(
                 borderRadius: BorderRadius.circular(50),
                 child: Image.network(
-                  order.chef.image,
+                  order.chef.image.startsWith("http")?order.chef.image
+                  :ApiEndPoint.imageUrl+order.chef.image,
                   width: 40,
                   height: 40,
                   fit: BoxFit.cover,

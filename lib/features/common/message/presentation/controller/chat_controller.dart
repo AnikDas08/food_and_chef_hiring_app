@@ -104,34 +104,13 @@ class ChatController extends GetxController {
 
   /// Chat data Update Socket listener
   void listenChat() {
-    // Clean up any existing socket listener before adding a new one
-    SocketServices.off('update-chatlist::${LocalStorage.userId}');
-    print('DEBUG: Socket listener cleanup completed');
-    
-    SocketServices.on('update-chatlist::${LocalStorage.userId}', (data) {
-      print('DEBUG: Socket event received - ${data.length} items');
+    SocketServices.on('chatList::${LocalStorage.userId}', (data) {
       page = 1;
-      chats.clear();
-      print('DEBUG: Socket - cleared chats list');
-
-      for (var item in data) {
-        chats.add(ChatModel.fromJson(item));
-      }
-
-      print('DEBUG: Socket - after adding items, chats count: ${chats.length}');
-      filteredChats = List.from(chats);
-      print('DEBUG: Socket - filteredChats count: ${filteredChats.length}');
-      status = Status.completed;
-      update();
+      getChatRepo();
     });
     print('DEBUG: Socket listener added');
   }
 
-  void listenMessage(String chatId) {
-    SocketServices.on('chatList::$chatId', (data) {
-
-    });
-  }
 
   @override
   void onInit() {
@@ -144,7 +123,7 @@ class ChatController extends GetxController {
   @override
   void onClose() {
     print('DEBUG: ChatController onClose called');
-    SocketServices.off('update-chatlist::${LocalStorage.userId}');
+    //SocketServices.off('chatList::${LocalStorage.userId}');
     //searchControllers.dispose();
     scrollController.dispose();
     super.onClose();

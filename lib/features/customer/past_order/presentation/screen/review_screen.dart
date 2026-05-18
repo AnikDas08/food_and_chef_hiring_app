@@ -235,6 +235,7 @@ class ReviewScreen extends StatelessWidget {
                         allowHalfRating: true,
                         itemSize: 20,
                         ignoreGestures: true, // read-only
+                        unratedColor: const Color(0xffFD713F).withOpacity(0.3),
                         itemBuilder: (context, _) => const Icon(
                           Icons.star_rounded,
                           color: Color(0xffFD713F),
@@ -309,6 +310,7 @@ class _RatingItem extends StatelessWidget {
           Center(
             child: RatingBar.builder(
               allowHalfRating: true,
+              unratedColor: const Color(0xffFD713F).withOpacity(0.3),
               itemPadding: const EdgeInsets.symmetric(horizontal: 10),
               itemBuilder: (context, _) => const Icon(
                 Icons.star_rounded,

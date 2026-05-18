@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
+import 'package:new_untitled/component/button/icon_button.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/my_groceries_screen.dart';
 import 'package:new_untitled/component/image/common_image.dart';
@@ -194,8 +195,8 @@ class GroceryScreen extends StatelessWidget {
                     child: CupertinoActivityIndicator(
                       color: Color(0xff272727),
                     ),
-                  )
-                else if (controller.basketItems.isNotEmpty&&(controller.selectedPartner.value == 'Instacart'||controller.selectedPartner.value == 'Self'))
+                  ),
+                /*else if (controller.basketItems.isNotEmpty&&(controller.selectedPartner.value == 'Instacart'||controller.selectedPartner.value == 'Self'))
                   CommonButton(
                     titleText: controller.selectedPartner.value == 'Instacart'
                         ? 'Buy Groceries Online'
@@ -224,8 +225,25 @@ class GroceryScreen extends StatelessWidget {
                         );
                       }
                     },
-                  ),
-                SizedBox(height: 30.h),
+                  ),*/
+
+                if(controller.basketItems.isNotEmpty)
+                  CustomButtonIcon(
+                    titleText: "Buy groceries online",
+                  prefixImage: "assets/images/groceries_image.png",
+                  buttonColor: Color(0xff003D29),
+                  onTap: (){
+                    controller.createInstacartLink();
+                  },
+                ),
+                SizedBox(height: 8.h),
+                if(controller.basketItems.isNotEmpty)
+                CommonButton(
+                    titleText: "Confirm purchase of groceries",
+                  onTap: (){
+
+                  },
+                )
               ],
             ),
           ),

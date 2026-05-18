@@ -202,6 +202,7 @@ import 'package:new_untitled/utils/constants/app_string.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../config/route/app_routes.dart';
+import '../../../../common/notifications/presentation/controller/notifications_controller.dart';
 import '../controller/home_controller.dart';
 
 AppBar homeAppbar() {
@@ -266,28 +267,75 @@ AppBar homeAppbar() {
     ),
     flexibleSpace: appBarOpacity(),
     actions: [
-      LiquidGlassLayer(
-        child: LiquidGlass(
-          shape: const LiquidRoundedSuperellipse(borderRadius: 30),
-          child: InkWell(
-            onTap: () => Get.toNamed(AppRoutes.notifications),
-            child: Container(
-              width: 40.sp,
-              height: 40.sp,
-              padding: EdgeInsets.all(8.sp),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.black.withValues(alpha: 0.07)),
+      GetBuilder<NotificationsController>(
+        init: NotificationsController(),
+        builder: (controller) {
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              LiquidGlassLayer(
+                child: LiquidGlass(
+                  shape: const LiquidRoundedSuperellipse(borderRadius: 30),
+                  child: InkWell(
+                    onTap: () => Get.toNamed(AppRoutes.notifications),
+                    child: Container(
+                      width: 40.sp,
+                      height: 40.sp,
+                      padding: EdgeInsets.all(8.sp),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.black.withValues(alpha: 0.07),
+                        ),
+                      ),
+                      child: const Icon(
+                        CupertinoIcons.bell,
+                        color: Colors.black,
+                        size: 24,
+                      ).center,
+                    ),
+                  ),
+                ),
               ),
-              child:
-                  const Icon(
-                    CupertinoIcons.bell,
-                    color: Colors.black,
-                    size: 24,
-                  ).center,
-            ),
-          ),
-        ),
+              Obx(
+                () =>
+                    controller.unreadCount.value > 0
+                        ? Positioned(
+                          right: -2,
+                          top: -2,
+                          child: Container(
+                            padding: EdgeInsets.all(2.sp),
+                            decoration: BoxDecoration(
+                              color: const Color(0xffFD713F),
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 1.5,
+                              ),
+                            ),
+                            constraints: BoxConstraints(
+                              minWidth: 16.sp,
+                              minHeight: 16.sp,
+                            ),
+                            child: Center(
+                              child: Text(
+                                controller.unreadCount.value > 99
+                                    ? '99+'
+                                    : '${controller.unreadCount.value}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 8.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                        : const SizedBox.shrink(),
+              ),
+            ],
+          );
+        },
       ),
       12.width,
       LiquidGlassLayer(
