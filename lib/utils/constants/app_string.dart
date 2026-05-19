@@ -1,4 +1,5 @@
 class AppString {
+
   static const String dataEmpty = 'Data Empty';
   static const String noInternet = 'No Internet';
   static const String checkInternet = 'Check Internet';
@@ -40,7 +41,6 @@ class AppString {
   static const String didNotReceiveTheCode = 'Didn’t received the email?  ';
   static const String deleteDetails =
       'All your changes will be deleted and you will no longer be able to access them.';
-
   static const String someThingWrong = 'Some Thing Wrong';
   static const String byTellingUsYourFullName =
       'By telling us your full name we can personalize your Privae experience.';
@@ -348,7 +348,6 @@ class AppString {
   static const String totalEarning = 'Total Earnings';
   static const String mostBookedTimes = 'Most Booked Times';
   static const String avgBookingsPerWeek = 'Avg Bookings per Week';
-
   static String get avgEarningsPerBooking => 'Avg Earnings per Booking';
   static const String avgBookingLength = 'Avg Booking Length';
   static const String avgDishesPerBooking = 'Avg Dishes per Booking';
@@ -367,7 +366,6 @@ class AppString {
   static const String checkout = 'Checkout';
   static const String areYouSureYouWantToDeleteYourAccount =
       'Are you sure you want to delete your account?';
-
   static const String contact_support = 'Contact Support';
   static const String subject = 'Subject';
   static const String message = 'Message';

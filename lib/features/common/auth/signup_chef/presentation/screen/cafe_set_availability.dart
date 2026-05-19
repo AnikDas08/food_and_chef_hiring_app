@@ -378,6 +378,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                       if (mounted) setState(() => _isSubmitting = false);
                     }
                   },
+
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF1C1C1C),
                     foregroundColor: Colors.white,
@@ -385,6 +386,7 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                         borderRadius: BorderRadius.circular(14.r)),
                     elevation: 0,
                   ),
+
                   child: _isSubmitting
                       ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -395,7 +397,9 @@ class _CafeSetAvailabilityScreenState extends State<CafeSetAvailabilityScreen> {
                         child: const CircularProgressIndicator(
                             color: Colors.white, strokeWidth: 2.5),
                       ),
+
                       10.horizontalSpace,
+
                       Text('Loading...',
                           style: TextStyle(
                               fontSize: 16.sp,

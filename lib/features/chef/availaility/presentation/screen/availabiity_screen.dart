@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_untitled/component/text/common_text.dart';
@@ -131,177 +131,167 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
     return "${h.toString().padLeft(2, '0')}:$m $p";
   }
 
-  void _showUnitPopup({
+  void _showCombinedPopup({
     required BuildContext context,
     required Offset offset,
-    required String selected,
-    required Function(String) onSelect,
+    required int selectedValue,
+    required String selectedUnit,
+    required List<int> valueOptions,
+    required Function(int) onValueSelect,
+    required Function(String) onUnitSelect,
   }) {
-    final overlay = Overlay.of(context);
-    late OverlayEntry entry;
-    entry = OverlayEntry(
-      builder: (_) => Stack(
-        children: [
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: () => entry.remove(),
-              behavior: HitTestBehavior.translucent,
-            ),
-          ),
-          Positioned(
-            left: offset.dx,
-            top: offset.dy,
-            child: Material(
-              color: Colors.transparent,
+    int tempValue = selectedValue;
+    String tempUnit = selectedUnit;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (_) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return SafeArea(
               child: Container(
-                width: 160.w,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(14.r),
-                  border: Border.all(color: const Color(0xFFF1F1F1)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
                 ),
+                padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 20.h),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: ['Hours', 'Days'].map((unit) {
-                    final isSelected = unit == selected;
-                    return InkWell(
-                      borderRadius: BorderRadius.circular(14.r),
-                      onTap: () {
-                        onSelect(unit);
-                        entry.remove();
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 14.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CommonText(
-                              text: unit,
-                              color: const Color(0xFF272727),
-                              textAlign: TextAlign.start,
-                            ),
-                            Container(
-                              width: 20.w,
-                              height: 20.w,
+                  children: [
+                    // ── Handle bar ──
+                    Container(
+                      width: 40.w,
+                      height: 4.h,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE0E0E0),
+                        borderRadius: BorderRadius.circular(100.r),
+                      ),
+                    ),
+
+                    SizedBox(height: 20.h),
+
+                    Row(
+                      children: ['Hours', 'Days'].map((unit) {
+                        final isSelected = unit == tempUnit;
+                        return Expanded(
+                          child: GestureDetector(
+                            onTap: () => setModalState(() => tempUnit = unit),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 180),
+                              margin: EdgeInsets.symmetric(horizontal: 4.w),
+                              padding: EdgeInsets.symmetric(vertical: 12.h),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? const Color(0xFF272727)
-                                    : Colors.transparent,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: isSelected
-                                      ? const Color(0xFF272727)
-                                      : const Color(0xFFCCCCCC),
-                                  width: 1.5,
+                                    ? const Color(0xFF1C1C1C)
+                                    : const Color(0xFFF5F5F5),
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  unit,
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: isSelected
+                                        ? Colors.white
+                                        : const Color(0xFF777777),
+                                  ),
                                 ),
                               ),
-                              child: isSelected
-                                  ? Icon(Icons.check,
-                                  size: 12.sp, color: Colors.white)
-                                  : null,
                             ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-    overlay.insert(entry);
-  }
+                          ),
+                        );
+                      }).toList(),
+                    ),
 
-  void _showNumberPopup({
-    required BuildContext context,
-    required Offset offset,
-    required int selected,
-    required List<int> options,
-    required Function(int) onSelect,
-  }) {
-    final overlay = Overlay.of(context);
-    late OverlayEntry entry;
-    entry = OverlayEntry(
-      builder: (_) => Stack(
-        children: [
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: () => entry.remove(),
-              behavior: HitTestBehavior.translucent,
-            ),
-          ),
-          Positioned(
-            left: offset.dx,
-            top: offset.dy,
-            child: Material(
-              color: Colors.transparent,
-              child: Container(
-                width: 100.w,
-                constraints: BoxConstraints(maxHeight: 250.h),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(14.r),
-                  border: Border.all(color: const Color(0xFFF1F1F1)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
+                    SizedBox(height: 20.h),
+
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: valueOptions.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 6,
+                        mainAxisSpacing: 8.h,
+                        crossAxisSpacing: 8.w,
+                        childAspectRatio: 1.1,
+                      ),
+                      itemBuilder: (_, i) {
+                        final val = valueOptions[i];
+                        final isSelected = val == tempValue;
+                        return GestureDetector(
+                          onTap: () => setModalState(() => tempValue = val),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 150),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? const Color(0xFF1C1C1C)
+                                  : const Color(0xFFF5F5F5),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: Center(
+                              child: Text(
+                                val.toString(),
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: isSelected
+                                      ? FontWeight.w700
+                                      : FontWeight.w400,
+                                  color: isSelected
+                                      ? Colors.white
+                                      : const Color(0xFF272727),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+
+                    SizedBox(height: 20.h),
+
+                    SizedBox(
+                      width: double.infinity,
+                      height: 52.h,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          onValueSelect(tempValue);
+                          onUnitSelect(tempUnit);
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF1C1C1C),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14.r),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: Text(
+                          'Apply',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+
+
+
+                      ),
                     ),
                   ],
                 ),
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  itemCount: options.length,
-                  itemBuilder: (context, index) {
-                    final val = options[index];
-                    final isSelected = val == selected;
-                    return InkWell(
-                      onTap: () {
-                        onSelect(val);
-                        entry.remove();
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 12.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CommonText(
-                              text: val.toString(),
-                              color: const Color(0xFF272727),
-                              textAlign: TextAlign.start,
-                            ),
-                            if (isSelected)
-                              Icon(Icons.check,
-                                  size: 13.sp,
-                                  color: const Color(0xFF272727)),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
               ),
-            ),
-          ),
-        ],
-      ),
+            );
+          },
+        );
+      },
     );
-    overlay.insert(entry);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -311,7 +301,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Back button ──
+
             Padding(
               padding: EdgeInsets.only(left: 8.w, top: 8.h),
               child: IconButton(
@@ -327,8 +317,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
             if (_isLoadingData)
               const Expanded(
                 child: Center(
-                  child: CircularProgressIndicator(
-                      color: Color(0xFF1C1C1C)),
+                  child: CircularProgressIndicator(color: Color(0xFF1C1C1C)),
                 ),
               )
             else
@@ -340,7 +329,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                     children: [
                       SizedBox(height: 4.h),
 
-                      // ── Title ──
                       const CommonText(
                         text: 'Set Your Availability',
                         fontSize: 26,
@@ -361,12 +349,10 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       ),
                       SizedBox(height: 20.h),
 
-                      // ── Days ──
                       ..._days.map((day) => _buildDayItem(day)),
 
                       SizedBox(height: 20.h),
 
-                      // ── Booking Preferences ──
                       const CommonText(
                         text: 'Booking Preferences',
                         fontSize: 13,
@@ -376,8 +362,8 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       ),
                       SizedBox(height: 10.h),
 
-                      RichText(
-                        text: TextSpan(
+                      Text.rich(
+                        TextSpan(
                           style: TextStyle(
                             fontSize: 13.sp,
                             color: const Color(0xFF777777),
@@ -385,74 +371,75 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                           ),
                           children: [
                             const TextSpan(
-                                text:
-                                'Customers can place orders at least '),
-                            TextSpan(
-                              text: '$_minHours $_minUnit',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: const Color(0xFF272727),
-                                fontSize: 13.sp,
+                                text: 'Customers can place orders at least '),
+
+                            // ── "12 Hours" tappable ──
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: GestureDetector(
+                                onTapDown: (details) => _showCombinedPopup(
+                                  context: context,
+                                  offset: details.globalPosition,
+                                  selectedValue: _minHours,
+                                  selectedUnit: _minUnit,
+                                  valueOptions:
+                                  List.generate(24, (i) => i + 1),
+                                  onValueSelect: (v) =>
+                                      setState(() => _minHours = v),
+                                  onUnitSelect: (v) =>
+                                      setState(() => _minUnit = v),
+                                ),
+                                child: Text(
+                                  '$_minHours $_minUnit',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xFF272727),
+                                    fontSize: 13.sp,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: const Color(0xFF272727),
+                                    decorationThickness: 1.5,
+                                  ),
+                                ),
                               ),
                             ),
+
                             const TextSpan(
                                 text: ' in advance and a maximum of '),
-                            TextSpan(
-                              text: '$_maxDays $_maxUnit',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: const Color(0xFF272727),
-                                fontSize: 13.sp,
+
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: GestureDetector(
+                                onTapDown: (details) => _showCombinedPopup(
+                                  context: context,
+                                  offset: details.globalPosition,
+                                  selectedValue: _maxDays,
+                                  selectedUnit: _maxUnit,
+                                  valueOptions:
+                                  List.generate(30, (i) => i + 1),
+                                  onValueSelect: (v) =>
+                                      setState(() => _maxDays = v),
+                                  onUnitSelect: (v) =>
+                                      setState(() => _maxUnit = v),
+                                ),
+                                child: Text(
+                                  '$_maxDays $_maxUnit',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xFF272727),
+                                    fontSize: 13.sp,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: const Color(0xFF272727),
+                                    decorationThickness: 1.5,
+                                  ),
+                                ),
                               ),
                             ),
+
                             const TextSpan(text: ' in advance'),
                           ],
                         ),
                       ),
-                      SizedBox(height: 14.h),
 
-                      _buildBookingInputRow(
-                        value: _minHours,
-                        unit: _minUnit,
-                        onValueTap: (offset) => _showNumberPopup(
-                          context: context,
-                          offset: offset,
-                          selected: _minHours,
-                          options:
-                          List.generate(24, (index) => index + 1),
-                          onSelect: (v) =>
-                              setState(() => _minHours = v),
-                        ),
-                        onUnitTap: (offset) => _showUnitPopup(
-                          context: context,
-                          offset: offset,
-                          selected: _minUnit,
-                          onSelect: (v) =>
-                              setState(() => _minUnit = v),
-                        ),
-                      ),
-                      SizedBox(height: 12.h),
-
-                      _buildBookingInputRow(
-                        value: _maxDays,
-                        unit: _maxUnit,
-                        onValueTap: (offset) => _showNumberPopup(
-                          context: context,
-                          offset: offset,
-                          selected: _maxDays,
-                          options:
-                          List.generate(30, (index) => index + 1),
-                          onSelect: (v) =>
-                              setState(() => _maxDays = v),
-                        ),
-                        onUnitTap: (offset) => _showUnitPopup(
-                          context: context,
-                          offset: offset,
-                          selected: _maxUnit,
-                          onSelect: (v) =>
-                              setState(() => _maxUnit = v),
-                        ),
-                      ),
                       SizedBox(height: 32.h),
                     ],
                   ),
@@ -471,8 +458,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       : () async {
                     setState(() => _isSubmitting = true);
                     try {
-                      final controller =
-                          SignUpChefController.instance;
+                      final controller = SignUpChefController.instance;
                       await controller
                           .setupChefAvailability2(days: _days);
                     } finally {
@@ -529,7 +515,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // ── Day name + small toggle ──
         Row(
           children: [
             CommonText(
@@ -540,7 +525,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
               textAlign: TextAlign.start,
             ),
             const Spacer(),
-            // ── Custom small toggle Figma এর মতো ──
             GestureDetector(
               onTap: () {
                 setState(() {
@@ -596,8 +580,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
               children: [
                 if (i > 0)
                   Padding(
-                    padding:
-                    EdgeInsets.only(top: 4.h, bottom: 8.h),
+                    padding: EdgeInsets.only(top: 4.h, bottom: 8.h),
                     child: const CommonText(
                       text: 'And',
                       fontSize: 12,
@@ -606,10 +589,8 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       textAlign: TextAlign.start,
                     ),
                   ),
-                // ── From / To boxes ──
                 Row(
                   children: [
-                    // From box
                     Expanded(
                       child: GestureDetector(
                         behavior: HitTestBehavior.opaque,
@@ -619,8 +600,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                               horizontal: 14.w, vertical: 12.h),
                           decoration: BoxDecoration(
                             color: const Color(0xFFF7F7F7),
-                            borderRadius:
-                            BorderRadius.circular(10.r),
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: Row(
                             children: [
@@ -645,7 +625,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                       ),
                     ),
                     SizedBox(width: 10.w),
-                    // To box
                     Expanded(
                       child: GestureDetector(
                         behavior: HitTestBehavior.opaque,
@@ -655,8 +634,7 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                               horizontal: 14.w, vertical: 12.h),
                           decoration: BoxDecoration(
                             color: const Color(0xFFF7F7F7),
-                            borderRadius:
-                            BorderRadius.circular(10.r),
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: Row(
                             children: [
@@ -697,13 +675,10 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
               });
             },
             child: Padding(
-              padding:
-              EdgeInsets.only(bottom: 4.h, top: 2.h),
+              padding: EdgeInsets.only(bottom: 4.h, top: 2.h),
               child: Row(
                 children: [
-                  Icon(Icons.add,
-                      size: 16.sp,
-                      color: const Color(0xFF272727)),
+                  Icon(Icons.add, size: 16.sp, color: const Color(0xFF272727)),
                   SizedBox(width: 6.w),
                   const CommonText(
                     text: 'Add Additional Time',
@@ -716,87 +691,9 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
             ),
           ),
         ],
-
-        Divider(
-            color: Colors.grey.shade200, height: 24.h),
+        Divider(color: Colors.grey.shade200, height: 24.h),
       ],
     );
   }
 
-  Widget _buildBookingInputRow({
-    required int value,
-    required String unit,
-    required Function(Offset) onValueTap,
-    required Function(Offset) onUnitTap,
-  }) {
-    final boxDecoration = BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(8.r),
-      border: Border.all(color: const Color(0xFFF1F1F1)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.08),
-          blurRadius: 20,
-          offset: const Offset(0, 8),
-        ),
-      ],
-    );
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        GestureDetector(
-          onTapDown: (details) =>
-              onValueTap(details.globalPosition),
-          child: Container(
-            width: 70.w,
-            height: 48.h,
-            decoration: boxDecoration,
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CommonText(
-                  text: value.toString(),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF272727),
-                ),
-                SizedBox(width: 4.w),
-                Icon(Icons.keyboard_arrow_down,
-                    size: 18.sp,
-                    color: const Color(0xFF272727)),
-              ],
-            ),
-          ),
-        ),
-        SizedBox(width: 8.w),
-        GestureDetector(
-          onTapDown: (details) =>
-              onUnitTap(details.globalPosition),
-          child: Container(
-            height: 48.h,
-            padding: EdgeInsets.symmetric(
-                horizontal: 8.w, vertical: 2.h),
-            decoration: boxDecoration,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CommonText(
-                  text: unit,
-                  fontSize: 15,
-                  color: const Color(0xFF272727),
-                  textAlign: TextAlign.start,
-                ),
-                SizedBox(width: 4.w),
-                Icon(Icons.keyboard_arrow_down,
-                    size: 18.sp,
-                    color: const Color(0xFF272727)),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

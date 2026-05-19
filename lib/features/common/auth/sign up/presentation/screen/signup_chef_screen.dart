@@ -122,7 +122,7 @@ class SignupChefScreen extends StatelessWidget {
                         SizedBox(width: 12.w),
 
                         const CommonText(
-                          text: AppString.signInWithApple,
+                          text: AppString.signUpWithApple,
                         ),
 
                       ],
@@ -163,15 +163,19 @@ class SignupChefScreen extends StatelessWidget {
                           children: [
                             const TextSpan(text: 'Sign up to Privae as a'),
                             TextSpan(
-                              text: 'Customer',
+                              text: ' Customer',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xff000000),
                               ),
+
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Get.offNamed(AppRoutes.signUp);
                                 },
+
+
+
                             ),
                           ],
                         ),

@@ -125,7 +125,7 @@ class SignUpScreen extends StatelessWidget {
                         SizedBox(width: 12.w),
 
                         const CommonText(
-                          text: AppString.signInWithApple,
+                          text: AppString.signUpWithApple,
                         ),
 
                       ],
@@ -168,7 +168,7 @@ class SignUpScreen extends StatelessWidget {
                             TextSpan(
                               text: 'Chef',
                               style: const TextStyle(
-                                fontWeight: FontWeight.w600, // different style
+                                fontWeight: FontWeight.w600,
                                 color: Color(
                                   0xff000000,
                                 ),

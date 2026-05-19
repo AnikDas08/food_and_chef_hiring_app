@@ -55,10 +55,10 @@ class ChefHomeController extends GetxController {
         final newCount = response.data['data'] ?? 0;
         unreadCount.value = newCount;
         update(); // Force update just in case
-        appLog('✅ Chef unreadCount updated to: $newCount');
+        appLog('Chef unreadCount updated to: $newCount');
       }
     } catch (e) {
-      appLog('❌ Chef Unread error: $e');
+      appLog('Chef Unread error: $e');
     }
   }
 
@@ -71,7 +71,7 @@ class ChefHomeController extends GetxController {
         return response.data['data'] as Map<String, dynamic>;
       }
     } catch (e) {
-      debugPrint('❌ Single order fetch error: $e');
+      debugPrint('Single order fetch error: $e');
     }
     return null;
   }
@@ -162,7 +162,7 @@ class ChefHomeController extends GetxController {
         requestedBookings.clear();
       }
     } catch (e) {
-      debugPrint('❌ Bookings fetch error: $e');
+      debugPrint('Bookings fetch error: $e');
     } finally {
       isLoadingBookings.value = false;
     }
@@ -170,8 +170,11 @@ class ChefHomeController extends GetxController {
 
 
   Future<void> fetchUpcomingBookings() async {
+
     isLoadingUpcoming.value = true;
+
     try {
+
       final response = await ApiService.get(
         '${ApiEndPoint.order}?status=Confirm&limit=5',
       );
@@ -184,7 +187,7 @@ class ChefHomeController extends GetxController {
         upcomingBookings.clear();
       }
     } catch (e) {
-      debugPrint('❌ Upcoming fetch error: $e');
+      debugPrint('Upcoming fetch error: $e');
     } finally {
       isLoadingUpcoming.value = false;
     }

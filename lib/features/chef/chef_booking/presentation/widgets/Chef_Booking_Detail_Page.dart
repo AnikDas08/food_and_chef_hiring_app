@@ -523,13 +523,13 @@ class _ExpandableOrderDetailsState extends State<_ExpandableOrderDetails> {
                                 ],
                               ),
                             ),
-                            Text(
-                              '\$${price.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xff1A1A1A)),
-                            ),
+                            // Text(
+                            //   '\$${price.toStringAsFixed(2)}',
+                            //   style: const TextStyle(
+                            //       fontSize: 14,
+                            //       fontWeight: FontWeight.w500,
+                            //       color: Color(0xff1A1A1A)),
+                            // ),
                           ],
                         ),
                       );
