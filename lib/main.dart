@@ -5,6 +5,7 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 
 import 'app.dart';
 import 'config/dependency/dependency_injection.dart';
+import 'features/customer/groceries/presentations/widgets/personal_groceries_storage.dart';
 import 'services/notification/notification_service.dart';
 import 'services/socket/socket_service.dart';
 import 'services/storage/storage_services.dart';
@@ -18,6 +19,7 @@ Future<void> main() async {
       statusBarBrightness: Brightness.light,
     ),
   );
+  await PersonalGroceryService.init();
   await init.tryCatch();
   runApp(const MyApp());
 }

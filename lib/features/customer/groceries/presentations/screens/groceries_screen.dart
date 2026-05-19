@@ -116,9 +116,9 @@ class GroceryScreen extends StatelessWidget {
                 else
                   _buildFullListView(controller),
 
-                SizedBox(height: 24.h),
+                SizedBox(height: 12.h),
 
-                // --- 2. PARTNER SELECTION (RESTORED LOGIC) ---
+                if (controller.basketItems.isNotEmpty)
                 const CommonText(
                   text: '2. Buy Ingredients',
                   color: Color(0xff272727),
@@ -151,7 +151,7 @@ class GroceryScreen extends StatelessWidget {
                   ),
                 ),*/
 
-                SizedBox(height: 24.h),
+                SizedBox(height: 12.h),
 
                 // --- 3. GROCERY BASKET ---
                 if (controller.basketItems.isNotEmpty)
@@ -202,48 +202,130 @@ class GroceryScreen extends StatelessWidget {
                     ),
                   ),
                 SizedBox(height: 12,),
-                
-                const CommonText(
-                    text: "Other personal groceries",
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Color(0xff777777),
-                ),
-                SizedBox(height: 12.h,),
 
-                // Add groceries button
-                GestureDetector(
-                  onTap: () => _showAddGroceryPopup(context),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFFFFF),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: 50.w,
-                          height: 50.w,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF5F5F5),
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          child: const Icon(
-                            Icons.add,
-                            color: Color(0xff272727),
-                            size: 18,
-                          ),
-                        ),
-                        SizedBox(width: 12.w),
-                        const CommonText(
-                          text: 'Add groceries',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff272727),
-                        ),
-                      ],
-                    ),
+                // --- Other personal groceries section ---
+// Replace from: const CommonText(text: "Other personal groceries"...
+// To the end of the add groceries button
+
+                Obx(() => controller.personalItems.isNotEmpty
+                    ? Container(
+                  padding: EdgeInsets.all(16.r),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFFFFF),
+                    borderRadius: BorderRadius.circular(24.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF000000).withOpacity(0.12),
+                        blurRadius: 20,
+                        spreadRadius: 0,
+                        offset: const Offset(0, 0),
+                      ),
+                    ],
                   ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title
+                      const CommonText(
+                        text: "Other personal groceries",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: Color(0xff777777),
+                      ),
+
+                      SizedBox(height: 12.h),
+
+                      // Personal items list
+                      ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: controller.personalItems.length,
+                        itemBuilder: (context, index) {
+                          final item = controller.personalItems[index];
+                          return GroceryItemTile(
+                            data: item,
+                            onTap: () => controller.togglePersonalItem(index),
+                            isLast: index == controller.personalItems.length - 1,
+                          );
+                        },
+                      ),
+
+                      SizedBox(height: 12.h),
+
+                      // Add groceries button
+                      GestureDetector(
+                        onTap: () => _showAddGroceryPopup(context, controller),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 50.w,
+                              height: 50.w,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF5F5F5),
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: const Icon(
+                                Icons.add,
+                                color: Color(0xff272727),
+                                size: 24,
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            const CommonText(
+                              text: 'Add groceries',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff272727),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                    : // Add groceries button only (no container)
+                Column(
+                  children: [
+                    const CommonText(
+                      text: "Other personal groceries",
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Color(0xff777777),
+                    ),
+                    SizedBox(height: 12,),
+                    GestureDetector(
+                      onTap: () => _showAddGroceryPopup(context, controller),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 50.w,
+                            height: 50.w,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF5F5F5),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              color: Color(0xff272727),
+                              size: 24,
+                            ),
+                          ),
+                          SizedBox(width: 12.w),
+                          const CommonText(
+                            text: 'Add groceries',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff272727),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 ),
 
 
@@ -296,10 +378,10 @@ class GroceryScreen extends StatelessWidget {
                     },
                   ),
                 SizedBox(height: 8.h),
-                if(controller.basketItems.isNotEmpty)
+                if (controller.basketItems.isNotEmpty)
                   CommonButton(
-                    titleText: "Confirm purchase of groceries",
-                    onTap: (){
+                    titleText: '${(controller.basketItems.where((item) => item['isSelected'] == true).length + controller.personalItems.where((item) => item['isSelected'] == true).length)}. Confirm purchase of groceries',
+                    onTap: () {
                       controller.showConfirmationDialog(context);
                     },
                   )
@@ -460,11 +542,11 @@ class GroceryScreen extends StatelessWidget {
     );
   }
 
-  void _showAddGroceryPopup(BuildContext context) {
+  void _showAddGroceryPopup(BuildContext context, GroceryController controller) {
     final TextEditingController ingredientController = TextEditingController();
     final TextEditingController quantityController = TextEditingController();
     String selectedUnit = 'ounces';
-    List<String> units = ['ounces']; // default while loading
+    List<String> units = ['ounces'];
     bool isUnitsLoading = true;
 
     showDialog(
@@ -474,10 +556,10 @@ class GroceryScreen extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
 
-            // Fetch units once when dialog opens
             if (isUnitsLoading) {
               ApiService.get('menu/units').then((response) {
-                if (response.statusCode == 200 && response.data['success'] == true) {
+                if (response.statusCode == 200 &&
+                    response.data['success'] == true) {
                   final List<String> fetchedUnits =
                   List<String>.from(response.data['data'] ?? []);
                   setState(() {
@@ -491,7 +573,7 @@ class GroceryScreen extends StatelessWidget {
               }).catchError((_) {
                 setState(() => isUnitsLoading = false);
               });
-              isUnitsLoading = false; // prevent re-triggering
+              isUnitsLoading = false;
             }
 
             return Dialog(
@@ -520,11 +602,8 @@ class GroceryScreen extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () => Navigator.pop(context),
-                          child: const Icon(
-                            Icons.close,
-                            color: Color(0xff272727),
-                            size: 22,
-                          ),
+                          child: const Icon(Icons.close,
+                              color: Color(0xff272727), size: 22),
                         ),
                       ],
                     ),
@@ -537,9 +616,7 @@ class GroceryScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: 'Ingredient',
                         hintStyle: TextStyle(
-                          color: const Color(0xff777777),
-                          fontSize: 14.sp,
-                        ),
+                            color: const Color(0xff777777), fontSize: 14.sp),
                         filled: true,
                         fillColor: const Color(0xFFF5F5F5),
                         border: OutlineInputBorder(
@@ -547,9 +624,7 @@ class GroceryScreen extends StatelessWidget {
                           borderSide: BorderSide.none,
                         ),
                         contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 14.h,
-                        ),
+                            horizontal: 16.w, vertical: 14.h),
                       ),
                     ),
 
@@ -562,9 +637,7 @@ class GroceryScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: 'Quantity (e.g. 200)',
                         hintStyle: TextStyle(
-                          color: const Color(0xff777777),
-                          fontSize: 14.sp,
-                        ),
+                            color: const Color(0xff777777), fontSize: 14.sp),
                         filled: true,
                         fillColor: const Color(0xFFF5F5F5),
                         border: OutlineInputBorder(
@@ -572,9 +645,7 @@ class GroceryScreen extends StatelessWidget {
                           borderSide: BorderSide.none,
                         ),
                         contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 14.h,
-                        ),
+                            horizontal: 16.w, vertical: 14.h),
                       ),
                     ),
 
@@ -595,26 +666,22 @@ class GroceryScreen extends StatelessWidget {
                             width: 16,
                             height: 16,
                             child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Color(0xff272727),
-                            ),
+                                strokeWidth: 2,
+                                color: Color(0xff272727)),
                           ),
                           SizedBox(width: 12),
                           CommonText(
-                            text: 'Loading units...',
-                            fontSize: 14,
-                            color: Color(0xff777777),
-                          ),
+                              text: 'Loading units...',
+                              fontSize: 14,
+                              color: Color(0xff777777)),
                         ],
                       ),
                     )
                         : DropdownButtonFormField<String>(
                       value: selectedUnit,
                       isExpanded: true,
-                      icon: const Icon(
-                        Icons.keyboard_arrow_down,
-                        color: Color(0xff272727),
-                      ),
+                      icon: const Icon(Icons.keyboard_arrow_down,
+                          color: Color(0xff272727)),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFF5F5F5),
@@ -623,24 +690,17 @@ class GroceryScreen extends StatelessWidget {
                           borderSide: BorderSide.none,
                         ),
                         contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 14.h,
-                        ),
+                            horizontal: 16.w, vertical: 14.h),
                       ),
                       style: TextStyle(
-                        color: const Color(0xff272727),
-                        fontSize: 14.sp,
-                      ),
+                          color: const Color(0xff272727), fontSize: 14.sp),
                       dropdownColor: Colors.white,
                       menuMaxHeight: 250.h,
-                      onChanged: (value) {
-                        setState(() => selectedUnit = value!);
-                      },
+                      onChanged: (value) =>
+                          setState(() => selectedUnit = value!),
                       items: units
                           .map((unit) => DropdownMenuItem(
-                        value: unit,
-                        child: Text(unit),
-                      ))
+                          value: unit, child: Text(unit)))
                           .toList(),
                     ),
 
@@ -650,15 +710,34 @@ class GroceryScreen extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
-                          // Handle add logic here
-                          Navigator.pop(context);
+                        onPressed: () async {
+                          final name = ingredientController.text.trim();
+                          final quantity = quantityController.text.trim();
+
+                          if (name.isEmpty || quantity.isEmpty) {
+                            // show simple validation
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please fill all fields'),
+                                backgroundColor: Color(0xff272727),
+                              ),
+                            );
+                            return;
+                          }
+
+                          // Save to Hive via controller
+                          await controller.addPersonalItem(
+                            name: name,
+                            quantity: quantity,
+                            unit: selectedUnit,
+                          );
+
+                          Navigator.pop(context); // close popup
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xff272727),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14.r),
-                          ),
+                              borderRadius: BorderRadius.circular(14.r)),
                           padding: EdgeInsets.symmetric(vertical: 16.h),
                           elevation: 0,
                         ),

@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../services/api/api_service.dart';
 import '../../../../../utils/app_utils.dart';
+import '../widgets/personal_groceries_storage.dart';
 
 class GroceryController extends GetxController {
   final String? initialOrderId = Get.arguments?.toString();
@@ -19,13 +20,43 @@ class GroceryController extends GetxController {
   var selectedPartner = ''.obs;
   var isBack=false;
 
+  var personalItems = <Map<String, dynamic>>[].obs;
+
   @override
   void onInit() {
     super.onInit();
-    if(Get.arguments==null){
-      isBack=true;
+    if (Get.arguments == null) {
+      isBack = true;
     }
+    loadPersonalItems(); // <-- add this
     initializeData();
+  }
+
+  void loadPersonalItems() {
+    personalItems.value = PersonalGroceryService.getItems();
+  }
+
+  Future<void> addPersonalItem({
+    required String name,
+    required String quantity,
+    required String unit,
+  }) async {
+    await PersonalGroceryService.addItem(
+      name: name,
+      quantity: quantity,
+      unit: unit,
+    );
+    loadPersonalItems(); // refresh list
+  }
+
+  Future<void> togglePersonalItem(int index) async {
+    await PersonalGroceryService.toggleItem(index);
+    loadPersonalItems();
+  }
+
+  Future<void> deletePersonalItem(int index) async {
+    await PersonalGroceryService.deleteItem(index);
+    loadPersonalItems();
   }
 
   Future<void> initializeData() async {
@@ -156,6 +187,8 @@ class GroceryController extends GetxController {
       Navigator.pop(Get.context!); // Close loading indicator
 
       if (successCount == selectedOrderIds.length) {
+        await PersonalGroceryService.clearAll(); // <-- clear local storage
+        personalItems.clear();
         Utils.successSnackBar('Success', 'All groceries confirmed!');
         Get.offAllNamed(AppRoutes.customerHomeScreen);
       } else if (successCount > 0) {
