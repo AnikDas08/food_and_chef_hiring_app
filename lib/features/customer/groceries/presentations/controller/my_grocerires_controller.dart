@@ -109,10 +109,7 @@ class ConfirmedGroceryController extends GetxController {
   }
 
   void showConfirmationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => const GroceryConfirmationPopup(),
-    );
+
   }
 
   final List<Map<String, String>> partners = [

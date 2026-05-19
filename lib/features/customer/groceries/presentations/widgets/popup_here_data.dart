@@ -4,11 +4,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
+import 'package:new_untitled/features/customer/groceries/presentations/controller/grocerie_controller.dart';
 import '../../../../../component/text/common_text.dart';
 import '../controller/my_grocerires_controller.dart';
 
 class GroceryConfirmationPopup extends StatelessWidget {
-  const GroceryConfirmationPopup({super.key});
+  final GroceryController controller; // <-- add this
+
+  const GroceryConfirmationPopup({
+    super.key,
+    required this.controller, // <-- add this
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +26,6 @@ class GroceryConfirmationPopup extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            /// 1. Yellow Warning Icon
             SvgPicture.asset(
               "assets/icons/info.svg",
               height: 56,
@@ -28,7 +33,6 @@ class GroceryConfirmationPopup extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
 
-            /// 2. Header Title
             const CommonText(
               text: 'By clicking "I got my groceries", you confirm that:',
               fontSize: 16,
@@ -37,7 +41,6 @@ class GroceryConfirmationPopup extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
 
-            /// 3. Description Text
             const CommonText(
               text: 'You\'ve purchased the list of groceries here selected, '
                   'and they are ready in your kitchen for the booking to take place.',
@@ -49,53 +52,21 @@ class GroceryConfirmationPopup extends StatelessWidget {
             ),
             SizedBox(height: 32.h),
 
-            /// 4. Confirm Button
-            /*SizedBox(
-              width: double.infinity,
-              height: 55.h,
-              child: ElevatedButton(
-                onPressed: () {
-                  // 1. Close the popup first
-                  Navigator.pop(Get.context!);
-
-                  // 2. Find the controller and trigger the API loop
-                  final controller = Get.find<ConfirmedGroceryController>();
-                  controller.confirmGroceries();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff262626),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-                  elevation: 0,
-                ),
-                child: const Text(
-                  'I got my groceries',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-                ),
-              ),
-            ),*/
-            
             CommonButton(
-                titleText: "I got my gorceries",
-              onTap: (){
-                // 1. Close the popup first
-                Navigator.pop(Get.context!);
-
-                // 2. Find the controller and trigger the API loop
-                final controller = Get.find<ConfirmedGroceryController>();
-                controller.confirmGroceries();
+              titleText: "I got my groceries",
+              onTap: () async {
+                Navigator.pop(Get.context!); // close popup first
+                await controller.confirmGroceries(); // use passed controller
               },
             ),
             SizedBox(height: 12.h),
 
-            /// 5. Cancel Button
             CommonButton(
               titleText: "Cancel",
-              onTap: (){
-                Get.back();
-              },
-              buttonColor: Color(0xffF2F2F2),
-              titleColor: Color(0xff777777),
-            )
+              onTap: () => Get.back(),
+              buttonColor: const Color(0xffF2F2F2),
+              titleColor: const Color(0xff777777),
+            ),
           ],
         ),
       ),

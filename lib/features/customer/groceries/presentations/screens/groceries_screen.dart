@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:new_untitled/component/button/icon_button.dart';
+import 'package:new_untitled/component/text_field/common_text_field.dart';
 import 'package:new_untitled/config/api/api_end_point.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/my_groceries_screen.dart';
 import 'package:new_untitled/component/image/common_image.dart';
@@ -12,6 +13,7 @@ import 'package:new_untitled/utils/constants/app_colors.dart';
 import '../../../../../component/button/common_button.dart';
 import '../../../../../component/other_widgets/app_bar_opacity.dart';
 import '../../../../../component/text/common_text.dart';
+import '../../../../../services/api/api_service.dart';
 import '../controller/grocerie_controller.dart';
 import '../widgets/groceries_item.dart';
 
@@ -91,7 +93,7 @@ class GroceryScreen extends StatelessWidget {
               children: [
                 // --- 1. BOOKING LIST ---
                 const CommonText(
-                  text: 'Select bookings for grocery delivery',
+                  text: '1. Select bookings for grocery delivery',
                   color: Color(0xff272727),
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -118,20 +120,13 @@ class GroceryScreen extends StatelessWidget {
 
                 // --- 2. PARTNER SELECTION (RESTORED LOGIC) ---
                 const CommonText(
-                  text: 'Choose your grocery delivery partner',
+                  text: '2. Buy Ingredients',
                   color: Color(0xff272727),
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
-                SizedBox(height: 6.h),
-                const CommonText(
-                  text: 'Order groceries for your booking',
-                  color: Color(0xff777777),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
 
-                Padding(
+                /*Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.h),
                   child: Row(
                     children: [
@@ -154,39 +149,103 @@ class GroceryScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
+                ),*/
 
                 SizedBox(height: 24.h),
 
                 // --- 3. GROCERY BASKET ---
                 if (controller.basketItems.isNotEmpty)
-                  const CommonText(
-                    text: 'Edit your grocery basket',
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff272727),
-                    fontSize: 16,
-                  ),
-                SizedBox(height: 12.h),
+                  Container(
+                    padding: EdgeInsets.all(16.r), // Padding: 16px
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFFFFF),
+                      borderRadius: BorderRadius.circular(24.r), // Radius: 24px
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF000000).withOpacity(0.12), // #000000 at 12%
+                          blurRadius: 20,
+                          spreadRadius: 0,
+                          offset: const Offset(0, 0),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const CommonText(
+                          text: 'Ingredients your chef needs',
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff777777),
+                          fontSize: 14,
+                        ),
+                        SizedBox(height: 12.h),
 
-                if (controller.isIngredientsLoading.value)
-                  const Center(
-                    child: CupertinoActivityIndicator(
-                      color: Color(0xff272727),
-                    ),
-                  )
-                else
-                  ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.basketItems.length,
-                    itemBuilder:
-                        (context, index) => GroceryItemTile(
-                      data: controller.basketItems[index],
-                      onTap: () => controller.toggleBasketItem(index),
-                      isLast: index == controller.basketItems.length - 1,
+                        if (controller.isIngredientsLoading.value)
+                          const Center(
+                            child: CupertinoActivityIndicator(
+                              color: Color(0xff272727),
+                            ),
+                          )
+                        else
+                          ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: controller.basketItems.length,
+                            itemBuilder: (context, index) => GroceryItemTile(
+                              data: controller.basketItems[index],
+                              onTap: () => controller.toggleBasketItem(index),
+                              isLast: index == controller.basketItems.length - 1,
+                            ),
+                          ),
+                      ],
                     ),
                   ),
+                SizedBox(height: 12,),
+                
+                const CommonText(
+                    text: "Other personal groceries",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Color(0xff777777),
+                ),
+                SizedBox(height: 12.h,),
+
+                // Add groceries button
+                GestureDetector(
+                  onTap: () => _showAddGroceryPopup(context),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFFFFF),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 50.w,
+                          height: 50.w,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF5F5F5),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: const Icon(
+                            Icons.add,
+                            color: Color(0xff272727),
+                            size: 18,
+                          ),
+                        ),
+                        SizedBox(width: 12.w),
+                        const CommonText(
+                          text: 'Add groceries',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff272727),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
 
                 SizedBox(height: 20.h,),
                 // --- 4. BOTTOM BUTTON ---
@@ -241,7 +300,7 @@ class GroceryScreen extends StatelessWidget {
                   CommonButton(
                     titleText: "Confirm purchase of groceries",
                     onTap: (){
-
+                      controller.showConfirmationDialog(context);
                     },
                   )
               ],
@@ -398,6 +457,226 @@ class GroceryScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showAddGroceryPopup(BuildContext context) {
+    final TextEditingController ingredientController = TextEditingController();
+    final TextEditingController quantityController = TextEditingController();
+    String selectedUnit = 'ounces';
+    List<String> units = ['ounces']; // default while loading
+    bool isUnitsLoading = true;
+
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+
+            // Fetch units once when dialog opens
+            if (isUnitsLoading) {
+              ApiService.get('menu/units').then((response) {
+                if (response.statusCode == 200 && response.data['success'] == true) {
+                  final List<String> fetchedUnits =
+                  List<String>.from(response.data['data'] ?? []);
+                  setState(() {
+                    units = fetchedUnits;
+                    selectedUnit = fetchedUnits.contains('ounces')
+                        ? 'ounces'
+                        : fetchedUnits.first;
+                    isUnitsLoading = false;
+                  });
+                }
+              }).catchError((_) {
+                setState(() => isUnitsLoading = false);
+              });
+              isUnitsLoading = false; // prevent re-triggering
+            }
+
+            return Dialog(
+              backgroundColor: Colors.transparent,
+              insetPadding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(20.r),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(24.r),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const CommonText(
+                          text: 'Add Items',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff272727),
+                        ),
+                        GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: const Icon(
+                            Icons.close,
+                            color: Color(0xff272727),
+                            size: 22,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: 20.h),
+
+                    // Ingredient field
+                    TextField(
+                      controller: ingredientController,
+                      decoration: InputDecoration(
+                        hintText: 'Ingredient',
+                        hintStyle: TextStyle(
+                          color: const Color(0xff777777),
+                          fontSize: 14.sp,
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFF5F5F5),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 14.h,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 12.h),
+
+                    // Quantity field
+                    TextField(
+                      controller: quantityController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        hintText: 'Quantity (e.g. 200)',
+                        hintStyle: TextStyle(
+                          color: const Color(0xff777777),
+                          fontSize: 14.sp,
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFF5F5F5),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 14.h,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 12.h),
+
+                    // Unit dropdown
+                    isUnitsLoading
+                        ? Container(
+                      height: 50.h,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF5F5F5),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: const Row(
+                        children: [
+                          SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Color(0xff272727),
+                            ),
+                          ),
+                          SizedBox(width: 12),
+                          CommonText(
+                            text: 'Loading units...',
+                            fontSize: 14,
+                            color: Color(0xff777777),
+                          ),
+                        ],
+                      ),
+                    )
+                        : DropdownButtonFormField<String>(
+                      value: selectedUnit,
+                      isExpanded: true,
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Color(0xff272727),
+                      ),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color(0xFFF5F5F5),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 14.h,
+                        ),
+                      ),
+                      style: TextStyle(
+                        color: const Color(0xff272727),
+                        fontSize: 14.sp,
+                      ),
+                      dropdownColor: Colors.white,
+                      menuMaxHeight: 250.h,
+                      onChanged: (value) {
+                        setState(() => selectedUnit = value!);
+                      },
+                      items: units
+                          .map((unit) => DropdownMenuItem(
+                        value: unit,
+                        child: Text(unit),
+                      ))
+                          .toList(),
+                    ),
+
+                    SizedBox(height: 20.h),
+
+                    // Add button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Handle add logic here
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xff272727),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14.r),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          elevation: 0,
+                        ),
+                        child: const CommonText(
+                          text: 'Add',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 

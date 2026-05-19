@@ -19,61 +19,74 @@ class GroceryItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: isLast ? 0 : 12.h),
-      child: Row(
-        children: [
-          // ICON CONTAINER instead of NetworkImage
-          Container(
-            width: 50.w,
-            height: 50.w,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.r),
-              // Light orange/grey background to match your theme
-              color: const Color(0xffFFF2EE),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white.withOpacity(0.2),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
             ),
-            child: Center(
-              child: Icon(
-                Icons.shopping_basket_outlined, // You can also use data['icon'] if available
-                color: const Color(0xffFD713F), // Theme color
-                size: 24.sp,
+          ],
+        ),
+        child: Row(
+          children: [
+            // ICON CONTAINER instead of NetworkImage
+            Container(
+              width: 50.w,
+              height: 50.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.r),
+                // Light orange/grey background to match your theme
+                color: const Color(0xffFFF2EE),
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.shopping_basket_outlined, // You can also use data['icon'] if available
+                  color: const Color(0xffFD713F), // Theme color
+                  size: 24.sp,
+                ),
               ),
             ),
-          ),
 
-          SizedBox(width: 16.w),
+            SizedBox(width: 16.w),
 
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CommonText(
-                    text: data['name'] ?? '',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14
-                ),
-                SizedBox(height: 4.h),
-                // Showing Quantity and Unit (e.g., 2 kg)
-                CommonText(
-                    text: "${data['items']} ${data['unit'] ?? ''}",
-                    color: Color(0xff777777),
-                    fontSize: 12
-                ),
-              ],
-            ),
-          ),
-
-          InkWell(
-            onTap: onTap,
-            borderRadius: BorderRadius.circular(50),
-            child: Padding(
-              padding: EdgeInsets.all(4.r),
-              child: Icon(
-                data['isSelected'] ? Icons.check_circle : Icons.circle_outlined,
-                color: data['isSelected'] ? Color(0xff272727) : Color(0xff777777),
-                size: 18,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CommonText(
+                      text: data['name'] ?? '',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14
+                  ),
+                  SizedBox(height: 4.h),
+                  // Showing Quantity and Unit (e.g., 2 kg)
+                  CommonText(
+                      text: "${data['items']} ${data['unit'] ?? ''}",
+                      color: Color(0xff777777),
+                      fontSize: 12
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+
+            InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(50),
+              child: Padding(
+                padding: EdgeInsets.all(4.r),
+                child: Icon(
+                  data['isSelected'] ? Icons.check_circle : Icons.circle_outlined,
+                  color: data['isSelected'] ? Color(0xff272727) : Color(0xff777777),
+                  size: 18,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

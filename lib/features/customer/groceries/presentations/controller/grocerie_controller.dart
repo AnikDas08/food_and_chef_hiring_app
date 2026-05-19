@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:new_untitled/features/customer/groceries/presentations/widgets/popup_here_data.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../../../config/route/app_routes.dart';
 import '../../../../../services/api/api_service.dart';
+import '../../../../../utils/app_utils.dart';
 
 class GroceryController extends GetxController {
   final String? initialOrderId = Get.arguments?.toString();
@@ -120,9 +123,65 @@ class GroceryController extends GetxController {
     fetchIngredients();
   }
 
+  Future<void> confirmGroceries() async {
+    if (selectedOrderIds.isEmpty) return;
+
+    try {
+      isLoading.value = true;
+      Get.dialog(
+        const Center(child: CircularProgressIndicator(color: Color(0xffFD713F))),
+        barrierDismissible: false,
+      );
+
+      int successCount = 0;
+
+      for (String id in selectedOrderIds) {
+        try {
+          final response = await ApiService.patch(
+            // Ensure the path matches your API requirements
+            'order/change-status/$id',
+            body: {'status': 'Groceries Ordered'},
+          );
+
+          // Check if response was actually successful based on your API's structure
+          if (response.statusCode == 200 || response.data['success'] == true) {
+            successCount++;
+          }
+        } catch (e) {
+          debugPrint('Failed to update Order ID $id: $e');
+          // We don't 'throw' here so the loop continues to the next ID
+        }
+      }
+
+      Navigator.pop(Get.context!); // Close loading indicator
+
+      if (successCount == selectedOrderIds.length) {
+        Utils.successSnackBar('Success', 'All groceries confirmed!');
+        Get.offAllNamed(AppRoutes.customerHomeScreen);
+      } else if (successCount > 0) {
+        Utils.successSnackBar('Partial Success', '$successCount orders updated, some failed.');
+      } else {
+        Utils.errorSnackBar('Error', 'Could not update orders. Please try again.');
+      }
+
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+
   void toggleBasketItem(int index) {
     basketItems[index]['isSelected'] = !basketItems[index]['isSelected'];
     basketItems.refresh();
+  }
+
+  void showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => GroceryConfirmationPopup(
+        controller: this, // <-- pass the controller itself
+      ),
+    );
   }
 
   // YOUR ORIGINAL LOGIC: Triggered when icon is clicked
