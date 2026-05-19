@@ -181,44 +181,56 @@ void bookingDetailsPopup(
                   color: Color(0xff777777),
                 )
               else
+
                 ...staticItems.map((item) {
                   final String name = item['menu']?['name'] ?? '';
                   final int qty = item['quantity'] ?? 1;
-                  final double price = (item['menu']?['price'] ?? 0).toDouble();
                   final String note = item['note'] ?? '';
+
                   return Padding(
+
                     padding: const EdgeInsets.only(bottom: 12),
+
                     child: Row(
+
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                       children: [
+
                         Column(
+
                           crossAxisAlignment: CrossAxisAlignment.start,
+
                           children: [
+
                             CommonText(
                               text: name,
                               fontWeight: FontWeight.w600,
                               color: const Color(0xff4E4E4E),
                             ),
+
+
                             CommonText(
                               text: "$qty item${qty > 1 ? 's' : ''}${note.isNotEmpty ? ' + $note' : ''}",
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
                               color: const Color(0xff777777),
                             ),
+
+
                           ],
+
                         ),
-                        CommonText(
-                          text: '\$${price.toStringAsFixed(2)}',
-                          fontWeight: FontWeight.w400,
-                          color: const Color(0xff272727),
-                        ),
+
                       ],
                     ),
                   );
                 }),
 
               16.height,
+
               orderSummarychef(order: order),
+
               const Divider(),
 
               if (selectedTab == 'Unconfirmed')

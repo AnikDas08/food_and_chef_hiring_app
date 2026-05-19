@@ -300,6 +300,7 @@ Widget _buildOrderDetailsAccordion(
           ],
         ),
       ),
+
       if (controller.isOrderDetailsPopup) ...[
         24.height,
         ...order.staticItems

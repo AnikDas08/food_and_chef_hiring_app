@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/config/route/app_routes.dart';
 import '../../../../component/text/common_text.dart';
 import '../../../../services/api/api_service.dart';
 import '../../../../utils/constants/app_colors.dart';
+import '../../../../utils/constants/app_icons.dart';
 
 class CookingOrderItem {
 
@@ -388,7 +390,7 @@ class _CookingStopwatchScreenState extends State<CookingStopwatchScreen>
                       child: Container(
                         height: 52.h,
                         decoration: BoxDecoration(
-                          color: AppColors.black,
+                          color: const Color(0xFF272727),
                           borderRadius: BorderRadius.circular(14.r),
                         ),
                         child: Row(
@@ -535,10 +537,14 @@ class _StopConfirmationDialog extends StatelessWidget {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(
-                                Icons.celebration,
-                                color: Colors.green,
-                                size: 50,
+                              SvgPicture.asset(
+                                AppIcons.doneSvg,
+                                width: 50,
+                                height: 50,
+                                colorFilter: const ColorFilter.mode(
+                                  Colors.green,
+                                  BlendMode.srcIn,
+                                ),
                               ),
 
                               const SizedBox(height: 12),

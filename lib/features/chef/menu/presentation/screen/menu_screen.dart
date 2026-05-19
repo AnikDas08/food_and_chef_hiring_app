@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../../../../config/api/api_end_point.dart';
+import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
 import '../../../../common/auth/signup_chef/presentation/controller/Chef_add_menu_controller.dart';
 import 'add_menu_screen.dart';
@@ -205,20 +206,21 @@ class MenuScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
+
                         padding: EdgeInsets.symmetric(
                             horizontal: 10.w, vertical: 5.h),
                         decoration: BoxDecoration(
                           color: const Color(0xFF272727),
                           borderRadius: BorderRadius.circular(6.r),
                         ),
-                        child: Text(
-                          section.menuSection.toUpperCase(),
-                          style: TextStyle(
-                              fontSize: 11.sp,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                              letterSpacing: 1.1),
-                        ),
+
+                        child: CommonText(
+                          text: section.menuSection.toUpperCase(),
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        )
+
                       ),
                       10.verticalSpace,
                       ...section.menus.map((item) => _MenuCard(item: item)),
@@ -296,12 +298,19 @@ class _MenuCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(item.name,
-                      style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFF272727))),
+
+                  Text(
+                    item.name,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF272727),
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+
                   8.verticalSpace,
+
                   Row(children: [
                     Icon(Icons.restaurant_menu,
                         size: 13.sp, color: const Color(0xFF777777)),
@@ -310,7 +319,9 @@ class _MenuCard extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 12.sp, color: const Color(0xFF777777))),
                   ]),
+
                   4.verticalSpace,
+
                   Row(children: [
                     Icon(Icons.access_time,
                         size: 13.sp, color: const Color(0xFF777777)),
@@ -340,7 +351,7 @@ class _MenuCard extends StatelessWidget {
                           child: Row(children: [
 
                             SvgPicture.asset(
-                              AppIcons.edit_icon,
+                              AppIcons.edit_manu_bar,
                               width: 16,
                               height: 16,
                             ),
@@ -352,10 +363,13 @@ class _MenuCard extends StatelessWidget {
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.w500,
                                     color: const Color(0xFF272727))),
+
                           ]),
                         ),
                       ),
+
                       12.horizontalSpace,
+
                       GestureDetector(
                         onTap: () => c.deleteMenuItem(item.id),
                         child: Container(
@@ -364,8 +378,12 @@ class _MenuCard extends StatelessWidget {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8.r),
                           ),
-                          child: Icon(Icons.delete_outline,
-                              size: 16.sp, color: Colors.red),
+                          child:
+                          SvgPicture.asset(
+                            AppIcons.delete_menu_icon,
+                            width: 16,
+                            height: 16,
+                          ),
                         ),
                       ),
                     ],

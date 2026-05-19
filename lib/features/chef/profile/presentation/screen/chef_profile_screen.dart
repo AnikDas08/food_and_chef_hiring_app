@@ -45,7 +45,6 @@ class ChefProfileScreen extends StatelessWidget {
         ),
       ),
 
-      /// Body Section Starts here
       body: GetBuilder<ChefProfileController>(
         builder: (controller) {
           return Padding(
@@ -69,9 +68,9 @@ class ChefProfileScreen extends StatelessWidget {
                           children: [
                             CommonImage(
                               imageSrc:
-                                  (profile?.image.isNotEmpty ?? false)
-                                      ? profile!.image
-                                      : AppImages.image3,
+                              (profile?.image.isNotEmpty ?? false)
+                                  ? profile!.image
+                                  : AppImages.image3,
                               height: 52,
                               width: 52,
                               fill: BoxFit.cover,
@@ -119,18 +118,17 @@ class ChefProfileScreen extends StatelessWidget {
                         title: AppString.seePublicProfile,
                         onTap:
                             () => {
-                              appLog('id: 😊😊😊😊😊😊😊${LocalStorage.userId}'),
-                              Get.toNamed(
-                                AppRoutes.chefDetails,
-                                arguments: LocalStorage.userId,
-                              ),
-                            },
+                          appLog('id: ${LocalStorage.userId}'),
+                          Get.toNamed(
+                            AppRoutes.chefDetails,
+                            arguments: LocalStorage.userId,
+                          ),
+                        },
                       ),
                     ],
                   ),
                 ),
 
-                /// Edit Profile item here
                 const CommonText(
                   text: AppString.account,
                   fontSize: 12,
@@ -154,7 +152,6 @@ class ChefProfileScreen extends StatelessWidget {
                         onTap: () => Get.toNamed(AppRoutes.chefEditProfile),
                       ),
 
-                      /// Setting item here
                       Item(
                         image: AppIcons.date,
                         title: AppString.availability,
@@ -240,7 +237,6 @@ class ChefProfileScreen extends StatelessWidget {
                                 onTap: () => controller.notification(),
                               ),
                             ),
-                            12.width,
                           ],
                         ).paddingSymmetric(vertical: 14.h),
                       ),
