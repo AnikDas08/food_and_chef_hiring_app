@@ -32,7 +32,7 @@ class GroceryScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      extendBodyBehindAppBar: fromBookingHistory,
+      extendBodyBehindAppBar: true,
 
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -207,53 +207,101 @@ class GroceryScreen extends StatelessWidget {
 // Replace from: const CommonText(text: "Other personal groceries"...
 // To the end of the add groceries button
 
-                Obx(() => controller.personalItems.isNotEmpty
-                    ? Container(
-                  padding: EdgeInsets.all(16.r),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFFFFFF),
-                    borderRadius: BorderRadius.circular(24.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF000000).withOpacity(0.12),
-                        blurRadius: 20,
-                        spreadRadius: 0,
-                        offset: const Offset(0, 0),
-                      ),
-                    ],
-                  ),
-                  child: Column(
+              if(controller.basketItems.isNotEmpty)
+                ...[
+                  // Show "Other personal groceries" section regardless of basketItems
+                  Obx(() => controller.personalItems.isNotEmpty
+                      ? Container(
+                    padding: EdgeInsets.all(16.r),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFFFFF),
+                      borderRadius: BorderRadius.circular(24.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF000000).withOpacity(0.12),
+                          blurRadius: 20,
+                          spreadRadius: 0,
+                          offset: const Offset(0, 0),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CommonText(
+                              text: "Other personal groceries",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                              color: Color(0xff777777),
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                await controller.clearPersonalItems();
+                              },
+                              child: Icon(
+                                CupertinoIcons.delete,
+                                color: Color(0xff777777),
+                                size: 18.r,
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 12.h),
+                        ListView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.personalItems.length,
+                          itemBuilder: (context, index) {
+                            final item = controller.personalItems[index];
+                            return GroceryItemTile(
+                              data: item,
+                              onTap: () => controller.togglePersonalItem(index),
+                              isLast: index == controller.personalItems.length - 1,
+                            );
+                          },
+                        ),
+                        SizedBox(height: 12.h),
+                        GestureDetector(
+                          onTap: () => _showAddGroceryPopup(context, controller),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 50.w,
+                                height: 50.w,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFF5F5F5),
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                                child: const Icon(Icons.add, color: Color(0xff272727), size: 24),
+                              ),
+                              SizedBox(width: 12.w),
+                              const CommonText(
+                                text: 'Add groceries',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xff272727),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                      : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Title
                       const CommonText(
                         text: "Other personal groceries",
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                         color: Color(0xff777777),
                       ),
-
-                      SizedBox(height: 12.h),
-
-                      // Personal items list
-                      ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: controller.personalItems.length,
-                        itemBuilder: (context, index) {
-                          final item = controller.personalItems[index];
-                          return GroceryItemTile(
-                            data: item,
-                            onTap: () => controller.togglePersonalItem(index),
-                            isLast: index == controller.personalItems.length - 1,
-                          );
-                        },
-                      ),
-
-                      SizedBox(height: 12.h),
-
-                      // Add groceries button
+                      SizedBox(height: 8.h),
                       GestureDetector(
                         onTap: () => _showAddGroceryPopup(context, controller),
                         child: Row(
@@ -266,11 +314,7 @@ class GroceryScreen extends StatelessWidget {
                                 color: const Color(0xFFF5F5F5),
                                 borderRadius: BorderRadius.circular(8.r),
                               ),
-                              child: const Icon(
-                                Icons.add,
-                                color: Color(0xff272727),
-                                size: 24,
-                              ),
+                              child: const Icon(Icons.add, color: Color(0xff272727), size: 24),
                             ),
                             SizedBox(width: 12.w),
                             const CommonText(
@@ -284,59 +328,45 @@ class GroceryScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                )
-                    : // Add groceries button only (no container)
-                Column(
-                  children: [
-                    const CommonText(
-                      text: "Other personal groceries",
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Color(0xff777777),
-                    ),
-                    SizedBox(height: 12,),
-                    GestureDetector(
-                      onTap: () => _showAddGroceryPopup(context, controller),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 50.w,
-                            height: 50.w,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF5F5F5),
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                            child: const Icon(
-                              Icons.add,
-                              color: Color(0xff272727),
-                              size: 24,
-                            ),
-                          ),
-                          SizedBox(width: 12.w),
-                          const CommonText(
-                            text: 'Add groceries',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff272727),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                ),
+                  ),
+                  SizedBox(height: 12.h),
+                ],
+
+// basketItems dependent buttons — still gated
+                if (controller.basketItems.isNotEmpty) ...[
+                  /*if (controller.isInstacartLoading.value)
+                    const Center(
+                      child: CupertinoActivityIndicator(color: Color(0xff272727)),
+                    ),*/
+                  CustomButtonIcon(
+                    titleText: "Buy groceries online",
+                    prefixImage: "assets/images/groceries_image.png",
+                    buttonColor: const Color(0xff108910),
+                    onTap: () => controller.createInstacartLink(),
+                  ),
+                  SizedBox(height: 12.h),
+                  const CommonText(
+                    text: '3. Confirm purchase of ingredients',
+                    color: Color(0xff272727),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  SizedBox(height: 12.h),
+                  CommonButton(
+                    titleText: "I’m ready for my chef visit",
+                    onTap: () => controller.showConfirmationDialog(context),
+                  ),
+                ],
 
 
                 SizedBox(height: 20.h,),
                 // --- 4. BOTTOM BUTTON ---
-                if (controller.isInstacartLoading.value)
+                /*if (controller.isInstacartLoading.value)
                   const Center(
                     child: CupertinoActivityIndicator(
                       color: Color(0xff272727),
                     ),
-                  ),
+                  ),*/
                 /*else if (controller.basketItems.isNotEmpty&&(controller.selectedPartner.value == 'Instacart'||controller.selectedPartner.value == 'Self'))
                   CommonButton(
                     titleText: controller.selectedPartner.value == 'Instacart'
@@ -367,24 +397,6 @@ class GroceryScreen extends StatelessWidget {
                       }
                     },
                   ),*/
-
-                if(controller.basketItems.isNotEmpty)
-                  CustomButtonIcon(
-                    titleText: "Buy groceries online",
-                    prefixImage: "assets/images/groceries_image.png",
-                    buttonColor: Color(0xff003D29),
-                    onTap: (){
-                      controller.createInstacartLink();
-                    },
-                  ),
-                SizedBox(height: 8.h),
-                if (controller.basketItems.isNotEmpty)
-                  CommonButton(
-                    titleText: '${(controller.basketItems.where((item) => item['isSelected'] == true).length + controller.personalItems.where((item) => item['isSelected'] == true).length)}. Confirm purchase of groceries',
-                    onTap: () {
-                      controller.showConfirmationDialog(context);
-                    },
-                  )
               ],
             ),
           ),
@@ -448,7 +460,7 @@ class GroceryScreen extends StatelessWidget {
         margin: EdgeInsets.only(bottom: isLast ? 0 : 12.h),
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xff272727) : const Color(0xffffffff),
+          color: isSelected ? const Color(0xff272727) : const Color(0xffF2F2F2),
           borderRadius: BorderRadius.circular(16.r),
         ),
         child: Row(

@@ -59,6 +59,12 @@ class GroceryController extends GetxController {
     loadPersonalItems();
   }
 
+  Future<void> clearPersonalItems() async {
+    await PersonalGroceryService.clearAll();
+    loadPersonalItems();
+    Get.snackbar('Success', 'All personal items have been cleared.');
+  }
+
   Future<void> initializeData() async {
     isLoading.value = true;
     await fetchAllOrders();
@@ -212,7 +218,7 @@ class GroceryController extends GetxController {
     showDialog(
       context: context,
       builder: (context) => GroceryConfirmationPopup(
-        controller: this, // <-- pass the controller itself
+        controller: this,
       ),
     );
   }

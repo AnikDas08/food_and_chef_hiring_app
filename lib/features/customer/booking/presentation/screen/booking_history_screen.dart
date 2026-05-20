@@ -193,19 +193,36 @@ class BookingHistoryScreen extends StatelessWidget {
                 color: Colors.grey,
                 fontWeight: FontWeight.w400,
               ).center
-              : ListView.builder(
-                // Padding top must be enough to clear the AppBar height (80h toolbar + 50h tabs + status bar)
-                padding: EdgeInsets.fromLTRB(16.w, 140.h, 16.w, 100.h),
-                itemCount:
-                    controller.orders.length +
-                    (controller.isPaginationLoading ? 1 : 0),
-                itemBuilder: (context, index) {
-                  if (index == controller.orders.length) {
-                    return const Center(child: CupertinoActivityIndicator());
-                  }
-
-                  return bookingItem(controller.orders[index]);
+              : NotificationListener<ScrollNotification>(
+                // Listen to scroll and trigger pagination when near the bottom
+                onNotification: (ScrollNotification scrollInfo) {
+                  try {
+                    final max = scrollInfo.metrics.maxScrollExtent;
+                    final current = scrollInfo.metrics.pixels;
+                    // Trigger loadMore when within 200 pixels of the bottom
+                    if (current >= (max - 200) &&
+                        !controller.isPaginationLoading &&
+                        controller.hasMore &&
+                        !controller.isLoading) {
+                      controller.loadMore();
+                    }
+                  } catch (_) {}
+                  return false;
                 },
+                child: ListView.builder(
+                  // Padding top must be enough to clear the AppBar height (80h toolbar + 50h tabs + status bar)
+                  padding: EdgeInsets.fromLTRB(16.w, 140.h, 16.w, 100.h),
+                  itemCount:
+                      controller.orders.length +
+                      (controller.isPaginationLoading ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index == controller.orders.length) {
+                      return const Center(child: CupertinoActivityIndicator());
+                    }
+
+                    return bookingItem(controller.orders[index]);
+                  },
+                ),
               ),
     );
   }
