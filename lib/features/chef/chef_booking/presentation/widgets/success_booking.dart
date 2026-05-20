@@ -15,7 +15,6 @@ void successBookingPopUp() {
   showDialog(
     context: Get.context!,
     builder: (context) {
-      // Controller for the animation
       return AnimationPopUp(
         child: AnimatedBuilder(
           animation: CurvedAnimation(
@@ -36,7 +35,9 @@ void successBookingPopUp() {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+
                       const CommonImage(imageSrc: AppImages.reviewSuccess, size: 88),
+
                       const CommonText(
                         text: AppString.congratulations,
                         fontSize: 16,
@@ -45,6 +46,7 @@ void successBookingPopUp() {
                         fontWeight: FontWeight.w600,
                         color: Color(0xff272727),
                       ),
+
                       const CommonText(
                         text: AppString.youHaveSuccessfully,
                         fontSize: 12,
@@ -53,19 +55,18 @@ void successBookingPopUp() {
                         color: Color(0xff777777),
                         maxLines: 5,
                       ),
+
                       CommonButton(
                         titleText: AppString.close,
                         buttonHeight: 48,
                         buttonRadius: 16,
                         onTap: () async {
-
-                          Get.offNamed(AppRoutes.chefBooking);
-
-                          // await AnimationPopUpState.closeDialog();
+                          Get.offAllNamed(AppRoutes.chefHomeScreen);
                         },
                       ),
 
                       16.height,
+
                     ],
                   ),
                 ),

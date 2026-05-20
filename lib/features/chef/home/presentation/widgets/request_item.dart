@@ -155,23 +155,30 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                 ),
             ],
           ),
+
           16.height,
+
           Container(
             padding: EdgeInsets.all(8.sp),
             decoration: BoxDecoration(
               color: const Color(0xffF2F2F2),
               border: Border.all(color: const Color(0xffF1F1F1)),
             ),
+
             child: Column(
+
               children: [
+
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
                     const CommonImage(
                       imageSrc: AppIcons.date,
                       size: 16,
                       imageColor: Color(0xffF5865F),
                     ),
+
                     CommonText(
                       text: booking.scheduledAt,
                       fontSize: 12,
@@ -179,6 +186,8 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       color: const Color(0xff272727),
                       fontWeight: FontWeight.w400,
                     ),
+
+
                   ],
                 ),
 
@@ -319,16 +328,22 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                     ),
                   ),
                 ),
+
               ] else
+
                 InkWell(
+
                   onTap: () async {
+
                     Get.dialog(
                       const Center(child: CircularProgressIndicator()),
                       barrierDismissible: false,
                     );
 
                     try {
+
                       final homeC = Get.find<ChefHomeController>();
+
                       final orderData = await homeC.fetchSingleOrder(booking.id);
 
                       Navigator.pop(Get.context!);
@@ -338,11 +353,13 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       } else {
                         Utils.errorSnackBar('Message', 'Could not load order details');
                       }
+
                     } catch (e) {
                       Navigator.pop(Get.context!);
                       Utils.errorSnackBar('Message', 'Something went wrong');
                     }
                   },
+
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                     decoration: BoxDecoration(
@@ -350,6 +367,7 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
                       borderRadius: BorderRadius.circular(12.sp),
                       border: Border.all(color: const Color(0xffF1F1F1)),
                     ),
+
                     child: const CommonText(
                       text: 'Request Change',
                       fontSize: 12,
@@ -366,19 +384,29 @@ Widget requestItem(BuildContext context, RequestedBookingModel booking,
     ),
   );
 }
+
 void showSuccessDialog() {
+
   Get.dialog(
+
     Dialog(
+
       backgroundColor: Colors.transparent,
+
       insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+
       child: Container(
+
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(18),
         ),
+
         child: Column(
+
           mainAxisSize: MainAxisSize.min,
+
           children: [
             Container(
               width: 54,
@@ -389,7 +417,9 @@ void showSuccessDialog() {
               ),
               child: const Icon(Icons.check, color: Colors.white, size: 30),
             ),
+
             const SizedBox(height: 14),
+
             const Text(
               'Congratulations!',
               style: TextStyle(
@@ -398,7 +428,9 @@ void showSuccessDialog() {
                 color: Color(0xff111111),
               ),
             ),
+
             const SizedBox(height: 6),
+
             Text(
               'You’ve successfully confirmed the order.',
               textAlign: TextAlign.center,
@@ -408,7 +440,9 @@ void showSuccessDialog() {
                 height: 1.3,
               ),
             ),
+
             const SizedBox(height: 16),
+
             SizedBox(
               width: double.infinity,
               height: 48,
