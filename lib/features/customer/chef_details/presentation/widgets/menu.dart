@@ -78,6 +78,7 @@ class _SearchResultsList extends StatelessWidget {
             CommonText(
               text: 'No results for "$query"',
               color: const Color(0xff777777),
+              fontSize: 12,
               fontWeight: FontWeight.w400,
             ),
           ],
@@ -105,8 +106,6 @@ class _MenuList extends StatefulWidget {
 
 class _MenuListState extends State<_MenuList>
     with AutomaticKeepAliveClientMixin {
-  final ScrollController _scrollController = ScrollController();
-
   @override
   bool get wantKeepAlive => true;
 
@@ -122,21 +121,6 @@ class _MenuListState extends State<_MenuList>
         c.fetchMenuForSection(widget.section);
       }
     });
-
-    // Load more when user scrolls near the bottom
-    _scrollController.addListener(() {
-      final c = Get.find<ChefDetailsController>();
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 200) {
-        c.loadMoreMenu(widget.section);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
   }
 
   @override
@@ -165,6 +149,7 @@ class _MenuListState extends State<_MenuList>
             child: CommonText(
               text: 'No items in this section',
               color: Color(0xff777777),
+              fontSize: 12,
               fontWeight: FontWeight.w400,
             ),
           );
@@ -174,38 +159,50 @@ class _MenuListState extends State<_MenuList>
         final bool loadingMore =
         controller.isLoadingMoreForSection(widget.section);
 
-        return ListView.builder(
-          controller: _scrollController,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12),
-          // +1 for the loader/end row at the bottom
-          itemCount: items.length + 1,
-          itemBuilder: (_, index) {
-            // Last item — show loader or "no more" indicator
-            if (index == items.length) {
-              if (loadingMore) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Center(child: CupertinoActivityIndicator()),
-                );
+        return NotificationListener<ScrollNotification>(
+          onNotification: (notification) {
+            if (notification is ScrollUpdateNotification) {
+              if (notification.metrics.pixels >=
+                  notification.metrics.maxScrollExtent - 200) {
+                controller.loadMoreMenu(widget.section);
               }
-              if (!hasMore && items.length > 10) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Center(
-                    child: CommonText(
-                      text: 'No more items',
-                      color: Color(0xff777777),
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                );
-              }
-              return const SizedBox.shrink();
             }
-
-            return FoodItem(item: items[index]);
+            return false;
           },
+          child: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12),
+            // +1 for the loader/end row at the bottom
+            itemCount: items.length + 1,
+            itemBuilder: (_, index) {
+              // Last item — show loader or "no more" indicator
+              if (index == items.length) {
+                if (loadingMore) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: CupertinoActivityIndicator()),
+                  );
+                }
+                if (!hasMore && items.length > 10) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(
+                      child: CommonText(
+                        text: 'No more items',
+                        color: Color(0xff777777),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              }
+
+              return FoodItem(item: items[index]);
+            },
+          ),
         );
       },
     );

@@ -181,7 +181,7 @@ class CheckoutScreen extends StatelessWidget {
                                     ],
                                   )
                                   : const CommonText(
-                                    text: ' Select delivery address',
+                                    text: ' Select cooking address',
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xff777777),
