@@ -66,7 +66,7 @@ class _FoodItemState extends State<FoodItem>
           color: const Color(0xffF2F2F2),
           borderRadius: BorderRadius.circular(16.r),
         ),
-        margin: const EdgeInsets.only(top: 16),
+        margin: const EdgeInsets.only(top: 12),
         child: Column(
           children: [
             Row(

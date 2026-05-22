@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -43,15 +44,22 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
       }
       final int liveQty = liveItem?.quantity ?? currentQty;
 
-      return _CartItemInkWell(
-        controller: controller,
-        item: item,
-        menuDetail: menuDetail,
-        chefId: chefId,
-        name: name,
+      return _SwipeableCartItem(
+        key: Key(cartItemId),
         cartItemId: cartItemId,
-        liveQty: liveQty,
-        imageUrl: imageUrl,
+        onDelete: () {
+          controller.deleteCartItem(cartItemId: cartItemId, chefId: chefId);
+        },
+        child: _CartItemInkWell(
+          controller: controller,
+          item: item,
+          menuDetail: menuDetail,
+          chefId: chefId,
+          name: name,
+          cartItemId: cartItemId,
+          liveQty: liveQty,
+          imageUrl: imageUrl,
+        ),
       );
     },
   );
@@ -106,7 +114,7 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
     return InkWell(
       onTap: widget.controller.isEditingOrder
           ? () {
-              if (widget.menuDetail == null) return;
+              /*if (widget.menuDetail == null) return;
 
               final menuData = MenuData(
                 id: widget.menuDetail!.id,
@@ -122,7 +130,7 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
                 menuData,
                 cartItem: widget.item,
                 chefId: widget.chefId,
-              );
+              );*/
             }
           : null,
       borderRadius: BorderRadius.circular(12.r),
@@ -155,6 +163,32 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
                       ),
                       SizedBox(width: 4.w),
                       //_buildDeleteBtn(context, widget.controller, widget.cartItemId, widget.chefId),
+                      GestureDetector(
+                        onTap: (){
+                          if (widget.menuDetail == null) return;
+
+                          final menuData = MenuData(
+                            id: widget.menuDetail!.id,
+                            name: widget.menuDetail!.name,
+                            images: widget.menuDetail!.images,
+                            estCookingTime: widget.item.unitTimeStr,
+                            customizations: widget.menuDetail!.customizations ?? [],
+                          );
+
+                          itemDetails(
+                            context,
+                            _controller,
+                            menuData,
+                            cartItem: widget.item,
+                            chefId: widget.chefId,
+                          );
+                        },
+                        child: Icon(
+                          Icons.mode_edit_outline_outlined,
+                          size: 20,color:
+                        Color(0xff272727),
+                        ),
+                      )
                     ],
                   ),
                   8.height,
@@ -270,9 +304,9 @@ Widget _buildStepper(BuildContext context, CartController controller, String id,
       children: [
         _stepperActionBtn(
           icon: Icons.remove,
-          onTap: () => qty <= 1
-              ? _confirmDelete(context, controller, id, chefId)
-              : controller.updateQuantity(cartItemId: id, increment: false, chefId: chefId),
+          onTap: qty > 1
+              ? () => controller.updateQuantity(cartItemId: id, increment: false, chefId: chefId)
+              : null,
         ),
         SizedBox(
           width: 32.w,
@@ -290,30 +324,33 @@ Widget _buildStepper(BuildContext context, CartController controller, String id,
   );
 }
 
-Widget _stepperActionBtn({required IconData icon, required VoidCallback onTap}) {
+Widget _stepperActionBtn({required IconData icon, VoidCallback? onTap}) {
   return InkWell(
     onTap: onTap,
     borderRadius: BorderRadius.circular(20.r),
     child: Padding(
       padding: EdgeInsets.all(4.r),
-      child: Icon(icon, size: 16.r, color: const Color(0xff272727)),
+      child: Icon(
+        icon,
+        size: 16.r,
+        color: onTap == null ? const Color(0xffC0C0C0) : const Color(0xff272727),
+      ),
     ),
   );
 }
 
 // ── CONFIRMATION DIALOG ──
 
-void _confirmDelete(BuildContext context, CartController controller, String cartItemId, String chefId) {
-  showDialog(
+Future<bool?> _confirmDelete(BuildContext context, CartController controller, String cartItemId, String chefId) {
+  return showDialog<bool>(
     context: context,
     builder: (_) => AlertDialog(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       title: const CommonText(
         text: 'Remove Item',
-        fontSize: 14
-          , fontWeight: FontWeight.w500
-          ,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
         textAlign: TextAlign.start,
       ),
 
@@ -326,18 +363,142 @@ void _confirmDelete(BuildContext context, CartController controller, String cart
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pop(context, false),
           child: const CommonText(
-              text: 'Cancel', color: const Color(0xff777777), fontSize: 14),
+              text: 'Cancel', color: Color(0xff777777), fontSize: 14),
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(Get.context!);
-            controller.deleteCartItem(cartItemId: cartItemId, chefId: chefId);
+            Navigator.pop(context, true);
           },
-          child: CommonText(text: 'Remove', color: const Color(0xffE53935), fontWeight: FontWeight.w600, fontSize: 14),
+          child: const CommonText(text: 'Remove', color: Color(0xffE53935), fontWeight: FontWeight.w600, fontSize: 14),
         ),
       ],
     ),
   );
+}
+
+// ── SWIPE TO REVEAL DELETE ──
+
+class _SwipeableCartItem extends StatefulWidget {
+  final Widget child;
+  final VoidCallback onDelete;
+  final String cartItemId;
+
+  const _SwipeableCartItem({
+    super.key,
+    required this.child,
+    required this.onDelete,
+    required this.cartItemId,
+  });
+
+  @override
+  State<_SwipeableCartItem> createState() => _SwipeableCartItemState();
+}
+
+class _SwipeableCartItemState extends State<_SwipeableCartItem> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<Offset> _animation;
+  double _dragExtent = 0;
+  final double _actionWidth = 80.w;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+    _animation = Tween<Offset>(
+      begin: Offset.zero,
+      end: Offset(-_actionWidth, 0),
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onHorizontalDragUpdate(DragUpdateDetails details) {
+    setState(() {
+      _dragExtent += details.delta.dx;
+      if (_dragExtent > 0) _dragExtent = 0;
+      if (_dragExtent < -_actionWidth * 1.5) _dragExtent = -_actionWidth * 1.5;
+
+      _controller.value = (-_dragExtent) / _actionWidth;
+    });
+  }
+
+  void _onHorizontalDragEnd(DragEndDetails details) {
+    if (_controller.value > 0.4) {
+      _controller.forward();
+      setState(() {
+        _dragExtent = -_actionWidth;
+      });
+    } else {
+      _controller.reverse();
+      setState(() {
+        _dragExtent = 0;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Container(
+            margin: EdgeInsets.only(top: 16.h),
+            decoration: BoxDecoration(
+              color: const Color(0xffffffff),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: widget.onDelete,
+                  behavior: HitTestBehavior.opaque,
+                  child: Container(
+                    width: _actionWidth,
+                    decoration: BoxDecoration(
+                      color: const Color(0xffffffff),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(12.r),
+                        bottomRight: Radius.circular(12.r),
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Icon(
+                      CupertinoIcons.delete,
+                      color: Colors.red,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child) {
+            return Transform.translate(
+              offset: _animation.value,
+              child: GestureDetector(
+                onHorizontalDragUpdate: _onHorizontalDragUpdate,
+                onHorizontalDragEnd: _onHorizontalDragEnd,
+                behavior: HitTestBehavior.opaque,
+                child: child,
+              ),
+            );
+          },
+          child: widget.child,
+        ),
+      ],
+    );
+  }
 }

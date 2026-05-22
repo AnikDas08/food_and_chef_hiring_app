@@ -17,194 +17,134 @@ class MenuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<ChefDetailsController>(
       builder: (controller) {
-        final List<String> sections =
-            controller.chefDetail?.menuSections ?? [];
+        final sections = controller.filteredSections;
 
-        if (controller.isLoadingDetail) return const SizedBox.shrink();
+        if (controller.isLoadingDetail) {
+          return const SliverToBoxAdapter(
+            child: SizedBox(
+              height: 200,
+              child: Center(child: CupertinoActivityIndicator()),
+            ),
+          );
+        }
 
         // ── Search results view ──────────────────────────────────────
         if (isSearchMode && controller.isSearching) {
-          return _SearchResultsList(
-            results: controller.searchResults,
-            query: controller.searchQuery,
+          return SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  if (controller.searchResults.isEmpty) {
+                    return _buildNoSearchResults(controller.searchQuery);
+                  }
+                  return FoodItem(item: controller.searchResults[index]);
+                },
+                childCount: controller.searchResults.isEmpty ? 1 : controller.searchResults.length,
+              ),
+            ),
           );
         }
 
         if (sections.isEmpty) {
-          return const Center(
-            child: CommonText(
-              text: 'No menu sections available',
-              color: AppColors.grey,
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
+          return const SliverToBoxAdapter(
+            child: SizedBox(
+              height: 100,
+              child: Center(
+                child: CommonText(
+                  text: 'No menu sections available',
+                  color: AppColors.grey,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
             ),
           );
         }
 
-        // ── Normal tab view ──────────────────────────────────────────
-        return TabBarView(
-          controller: controller.tabController,
-          children: sections.map((s) => _MenuList(section: s)).toList(),
-        );
-      },
-    );
-  }
-}
-
-// ── Search results list ───────────────────────────────────────────────────────
-
-class _SearchResultsList extends StatelessWidget {
-  final List<MenuData> results;
-  final String query;
-
-  const _SearchResultsList({
-    required this.results,
-    required this.query,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (results.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.search_off_rounded,
-              size: 48,
-              color: Color(0xffCCCCCC),
-            ),
-            const SizedBox(height: 12),
-            CommonText(
-              text: 'No results for "$query"',
-              color: const Color(0xff777777),
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-            ),
-          ],
-        ),
-      );
-    }
-
-    return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12),
-      itemCount: results.length,
-      itemBuilder: (_, index) => FoodItem(item: results[index]),
-    );
-  }
-}
-
-// ── Per-section list with pagination ─────────────────────────────────────────
-
-class _MenuList extends StatefulWidget {
-  final String section;
-  const _MenuList({required this.section});
-
-  @override
-  State<_MenuList> createState() => _MenuListState();
-}
-
-class _MenuListState extends State<_MenuList>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Fetch first page when tab first appears
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final c = Get.find<ChefDetailsController>();
-      final hasId = c.chefArg?.id != null || c.chefId.isNotEmpty;
-      if (hasId) {
-        c.fetchMenuForSection(widget.section);
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-
-    return GetBuilder<ChefDetailsController>(
-      builder: (controller) {
-        final bool isFirst =
-        !controller.menuCache.containsKey(widget.section);
-        final bool isLoading = controller.isLoadingMenu &&
-            controller.selectedMenuSection == widget.section;
-
-        // First load spinner
-        if (isFirst ||
-            (isLoading &&
-                (controller.menuCache[widget.section]?.isEmpty ?? true))) {
-          return const Center(child: CupertinoActivityIndicator());
-        }
-
-        final List<MenuData> items =
-            controller.menuCache[widget.section] ?? [];
-
-        if (items.isEmpty) {
-          return const Center(
-            child: CommonText(
-              text: 'No items in this section',
-              color: Color(0xff777777),
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-            ),
-          );
-        }
-
-        final bool hasMore = controller.hasMorePages(widget.section);
-        final bool loadingMore =
-        controller.isLoadingMoreForSection(widget.section);
-
-        return NotificationListener<ScrollNotification>(
-          onNotification: (notification) {
-            if (notification is ScrollUpdateNotification) {
-              if (notification.metrics.pixels >=
-                  notification.metrics.maxScrollExtent - 200) {
-                controller.loadMoreMenu(widget.section);
-              }
-            }
-            return false;
-          },
-          child: ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12),
-            // +1 for the loader/end row at the bottom
-            itemCount: items.length + 1,
-            itemBuilder: (_, index) {
-              // Last item — show loader or "no more" indicator
-              if (index == items.length) {
-                if (loadingMore) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Center(child: CupertinoActivityIndicator()),
-                  );
-                }
-                if (!hasMore && items.length > 10) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Center(
+        // ── Combined list for all sections ───────────────────────────
+        return SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w).copyWith(bottom: 100),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                // We need to flatten the sections and their items
+                int currentIndex = 0;
+                for (var section in sections) {
+                  // Category Header
+                  if (currentIndex == index) {
+                    // Ensure key exists for this section
+                    controller.categoryKeys.putIfAbsent(section, () => GlobalKey());
+                    return Container(
+                      key: controller.categoryKeys[section],
+                      padding: EdgeInsets.only(top: sections.indexOf(section) == 0 ? 12.h : 24.h, bottom: 4.h),
                       child: CommonText(
-                        text: 'No more items',
-                        color: Color(0xff777777),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
+                        text: section,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xff272727),
+                        textAlign: TextAlign.start,
                       ),
-                    ),
-                  );
-                }
-                return const SizedBox.shrink();
-              }
+                    );
+                  }
+                  currentIndex++;
 
-              return FoodItem(item: items[index]);
-            },
+                  final items = controller.menuCache[section] ?? [];
+                  
+                  if (items.isEmpty) continue;
+
+                  // Items in section
+                  if (index >= currentIndex && index < currentIndex + items.length) {
+                    return FoodItem(item: items[index - currentIndex]);
+                  }
+                  currentIndex += items.length;
+                    
+                  // Optional: Pagination loader
+                  final hasMore = controller.hasMorePages(section);
+                  if (hasMore) {
+                    if (currentIndex == index) {
+                      // Trigger load more
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        controller.loadMoreMenu(section);
+                      });
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Center(child: CupertinoActivityIndicator()),
+                      );
+                    }
+                    currentIndex++;
+                  }
+                  }
+                return null;
+              },
+            ),
           ),
         );
       },
     );
   }
+
+  Widget _buildNoSearchResults(String query) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 100.h),
+          const Icon(
+            Icons.search_off_rounded,
+            size: 48,
+            color: Color(0xffCCCCCC),
+          ),
+          const SizedBox(height: 12),
+          CommonText(
+            text: 'No results for "$query"',
+            color: const Color(0xff777777),
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+          ),
+        ],
+      ),
+    );
+  }
 }
+

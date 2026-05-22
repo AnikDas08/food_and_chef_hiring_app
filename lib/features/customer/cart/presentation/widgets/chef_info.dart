@@ -57,7 +57,7 @@ Widget chefInfo(CartChefInfo? chef) {
           ],
         ),
       ),
-      Obx(() => InkWell(
+      /*Obx(() => InkWell(
         onTap: controller.toggleEditingOrder,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
@@ -82,7 +82,7 @@ Widget chefInfo(CartChefInfo? chef) {
             ],
           ),
         ),
-      )),
+      )),*/
     ],
   );
 }

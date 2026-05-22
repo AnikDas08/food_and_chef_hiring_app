@@ -18,6 +18,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../config/route/app_routes.dart';
 import '../../../../../utils/constants/app_icons.dart';
+import '../../../cart/presentation/controller/cart_controller.dart';
 import '../controller/chef_detail_controller.dart';
 import '../widgets/exten_text.dart';
 import '../widgets/menu.dart';
@@ -48,18 +49,39 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
   bool _isClamping = false;
 
   void _onScroll() {
-    // Clamp scroll to prevent food items from going behind pinned headers.
-    // SliverFillRemaining(hasScrollBody: true) adds extra scroll extent
-    // equal to the pinned headers height, so we subtract it.
-    if (!_isClamping && _scrollController.position.hasContentDimensions) {
-      final double pinnedExtent = 90.h + 100.h; // toolbarHeight + menuBarHeight
-      final double maxAllowed =
-          _scrollController.position.maxScrollExtent - pinnedExtent;
-      if (maxAllowed > 0 && _scrollController.offset > maxAllowed) {
-        _isClamping = true;
-        _scrollController.jumpTo(maxAllowed);
-        _isClamping = false;
-        return;
+    if (!mounted) return;
+    final controller = Get.find<ChefDetailsController>();
+    final sections = controller.visibleSections;
+
+    // ── Sync Scroll to Tab ──────────────────────────────────────────
+    if (sections.isNotEmpty && !_isTabClicking) {
+      int activeIndex = 0;
+      double minDistance = double.infinity;
+      // appBar (90) + menuBar (80)
+      final threshold = 90.h + 80.h;
+
+      for (int i = 0; i < sections.length; i++) {
+        final key = controller.categoryKeys[sections[i]];
+        if (key != null && key.currentContext != null) {
+          final RenderObject? renderObject = key.currentContext?.findRenderObject();
+          if (renderObject is! RenderBox) continue;
+
+          final position = renderObject.localToGlobal(Offset.zero).dy;
+          final distance = (position - threshold).abs();
+
+          if (distance < minDistance) {
+            minDistance = distance;
+            activeIndex = i;
+          }
+        }
+      }
+
+      final TabController? tabCtrl = controller.tabController;
+      if (tabCtrl != null &&
+          tabCtrl.index != activeIndex &&
+          !tabCtrl.indexIsChanging &&
+          activeIndex < tabCtrl.length) {
+        tabCtrl.animateTo(activeIndex);
       }
     }
 
@@ -67,9 +89,35 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
     if (collapsed != _isCollapsed) {
       setState(() => _isCollapsed = collapsed);
     }
-    // Exit search mode if user scrolls back up to expanded state
-    if (!collapsed && _isSearchMode) {
-      _exitSearchMode();
+  }
+
+  bool _isTabClicking = false;
+  void _scrollToSection(int index) async {
+    final controller = Get.find<ChefDetailsController>();
+    final sections = controller.visibleSections;
+    if (index >= sections.length) return;
+
+    final key = controller.categoryKeys[sections[index]];
+    if (key != null && key.currentContext != null) {
+      _isTabClicking = true;
+
+      if (_isSearchMode) _exitSearchMode();
+
+      final RenderObject? renderObject = key.currentContext?.findRenderObject();
+      if (renderObject is RenderBox) {
+        final double position = renderObject.localToGlobal(Offset.zero).dy;
+        final double currentOffset = _scrollController.offset;
+        final double targetOffset = currentOffset + position - (90.h + 80.h);
+
+        await _scrollController.animateTo(
+          targetOffset.clamp(0, _scrollController.position.maxScrollExtent),
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+
+      await Future.delayed(const Duration(milliseconds: 100));
+      _isTabClicking = false;
     }
   }
 
@@ -105,173 +153,400 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
         final chef = controller.chefDetail;
 
         final String imageUrl =
-            (chef?.image != null && chef!.image!.isNotEmpty)
-                ? (chef.image!.startsWith('http')
-                    ? chef.image!
-                    : ApiEndPoint.imageUrl + chef.image!)
-                : AppImages.image3;
+        (chef?.image != null && chef!.image!.isNotEmpty)
+            ? (chef.image!.startsWith('http')
+            ? chef.image!
+            : ApiEndPoint.imageUrl + chef.image!)
+            : AppImages.image3;
 
         final double totalCartPrice =
-            (controller.cartItems.length) * (chef?.priceWithFee ?? 0);
-        final double pricePerChef = chef?.priceWithFee ?? 0.0;
+            CartController.instance.priceBreakdown?.subtotal ?? 0.0;
 
-        final List<String> sections = controller.chefDetail?.menuSections ?? [];
+        final sections = controller.visibleSections;
+
+        final double bottomSafeArea = MediaQuery.of(context).padding.bottom;
 
         return Scaffold(
-          body: DefaultTabController(
-            length: sections.isEmpty ? 1 : sections.length,
-            child: CustomScrollView(
-              controller: _scrollController,
-              physics: const ClampingScrollPhysics(),
-              slivers: [
-                SliverAppBar(
-                  pinned: true,
-                  expandedHeight: _expandedHeight.h,
-                  toolbarHeight: 90.h,
-                  backgroundColor: Colors.white,
-                  elevation: _isCollapsed ? 1 : 0,
-                  titleSpacing: 0,
-                  automaticallyImplyLeading: false,
-                  leadingWidth: 80,
-                  leading:
-                      _isCollapsed
-                          ? null
-                          : Center(
-                            child: InkWell(
-                              onTap: Get.back,
-                              child: LiquidGlassLayer(
-                                child: LiquidGlass(
-                                  shape: const LiquidRoundedSuperellipse(
-                                    borderRadius: 20,
+          body: Stack(
+            children: [
+              // ── Main scroll content ───────────────────────────────
+              CustomScrollView(
+                controller: _scrollController,
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  SliverAppBar(
+                    pinned: true,
+                    expandedHeight: _expandedHeight.h,
+                    toolbarHeight: 90.h,
+                    backgroundColor: Colors.white,
+                    elevation: _isCollapsed ? 1 : 0,
+                    titleSpacing: 0,
+                    automaticallyImplyLeading: false,
+                    leadingWidth: 80,
+                    leading:
+                    _isCollapsed
+                        ? null
+                        : Center(
+                      child: InkWell(
+                        onTap: Get.back,
+                        child: LiquidGlassLayer(
+                          child: LiquidGlass(
+                            shape: const LiquidRoundedSuperellipse(
+                              borderRadius: 20,
+                            ),
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Center(
+                                child: Icon(
+                                  CupertinoIcons.back,
+                                  color: Color(0xff272727),
+                                  size: 24,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    title:
+                    _isCollapsed
+                        ? (_isSearchMode
+                        ? _SearchAppBarTitle(
+                      controller: controller,
+                      searchTextController: _searchTextController,
+                      searchFocusNode: _searchFocusNode,
+                      onClose: _exitSearchMode,
+                    )
+                        : _CollapsedAppBarTitle(
+                      controller: controller,
+                      onSearchTap: _enterSearchMode,
+                    ))
+                        : null,
+
+                    actions:
+                    _isCollapsed
+                        ? []
+                        : [
+                      if (LocalStorage.myRole == "CUSTOMER")
+                        Center(
+                          child: InkWell(
+                            onTap: controller.toggleFavourite,
+                            child: LiquidGlassLayer(
+                              child: LiquidGlass(
+                                shape: const LiquidRoundedSuperellipse(
+                                  borderRadius: 20,
+                                ),
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
                                   ),
-                                  child: Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Center(
-                                      child: Icon(
-                                        CupertinoIcons.back,
-                                        color: Color(0xff272727),
-                                        size: 24,
-                                      ),
+                                  child: Center(
+                                    child: Icon(
+                                      controller.isFavorite
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color:
+                                      controller.isFavorite
+                                          ? Colors.red
+                                          : Color(0xff272727),
+                                      size: 24,
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-
-                  title:
-                      _isCollapsed
-                          ? (_isSearchMode
-                              ? _SearchAppBarTitle(
-                                controller: controller,
-                                searchTextController: _searchTextController,
-                                searchFocusNode: _searchFocusNode,
-                                onClose: _exitSearchMode,
-                              )
-                              : _CollapsedAppBarTitle(
-                                controller: controller,
-                                onSearchTap: _enterSearchMode,
-                              ))
-                          : null,
-
-                  actions:
-                      _isCollapsed
-                          ? []
-                          : [
-                            if (LocalStorage.myRole == "CUSTOMER")
-                              Center(
-                                child: InkWell(
-                                  onTap: controller.toggleFavourite,
-                                  child: LiquidGlassLayer(
-                                    child: LiquidGlass(
-                                      shape: const LiquidRoundedSuperellipse(
-                                        borderRadius: 20,
-                                      ),
-                                      child: Container(
-                                        width: 40,
-                                        height: 40,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Center(
-                                          child: Icon(
-                                            controller.isFavorite
-                                                ? Icons.favorite
-                                                : Icons.favorite_border,
-                                            color:
-                                                controller.isFavorite
-                                                    ? Colors.red
-                                                    : Color(0xff272727),
-                                            size: 24,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                        ),
+                      const SizedBox(width: 12),
+                      Center(
+                        child: InkWell(
+                          onTap: () {
+                            SharePlus.instance.share(
+                              ShareParams(text: 'https://example.com'),
+                            );
+                          },
+                          child: LiquidGlassLayer(
+                            child: LiquidGlass(
+                              shape: const LiquidRoundedSuperellipse(
+                                borderRadius: 20,
                               ),
-                            const SizedBox(width: 12),
-                            Center(
-                              child: InkWell(
-                                onTap: () {
-                                  SharePlus.instance.share(
-                                    ShareParams(text: 'https://example.com'),
-                                  );
-                                },
-                                child: LiquidGlassLayer(
-                                  child: LiquidGlass(
-                                    shape: const LiquidRoundedSuperellipse(
-                                      borderRadius: 20,
-                                    ),
-                                    child: Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: const Center(
-                                        child: Icon(
-                                          CupertinoIcons.share,
-                                          color: Color(0xff272727),
-                                          size: 24,
-                                        ),
-                                      ),
-                                    ),
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    CupertinoIcons.share,
+                                    color: Color(0xff272727),
+                                    size: 24,
                                   ),
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 12),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                    ],
+
+                    flexibleSpace: FlexibleSpaceBar(
+                      collapseMode: CollapseMode.pin,
+                      background: SizedBox(
+                        height: _expandedHeight.h,
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child:
+                              controller.isLoadingDetail
+                                  ? Container(color: const Color(0xffF2F2F2))
+                                  : CommonImage(
+                                imageSrc: imageUrl,
+                                fill: BoxFit.cover,
+                              ),
+                            ),
+                            const Positioned(
+                              bottom: 20,
+                              left: 20,
+                              child: CommonImage(
+                                imageSrc: AppIcons.chef,
+                                height: 30,
+                                width: 115,
+                                fill: BoxFit.fill,
+                              ),
+                            ),
                           ],
+                        ),
+                      ),
+                    ),
+                  ),
 
-                  flexibleSpace: FlexibleSpaceBar(
-                    collapseMode: CollapseMode.pin,
-                    background: SizedBox(
-                      height: _expandedHeight.h,
-                      child: Stack(
+                  // ── Chef info section ───────────────────────────────
+                  SliverToBoxAdapter(
+                    child:
+                    controller.isLoadingDetail
+                        ? SizedBox(
+                      height: 180.h,
+                      child: const Center(
+                        child: CupertinoActivityIndicator(),
+                      ),
+                    )
+                        : Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Column(
                         children: [
-                          Positioned.fill(
-                            child:
-                                controller.isLoadingDetail
-                                    ? Container(color: const Color(0xffF2F2F2))
-                                    : CommonImage(
-                                      imageSrc: imageUrl,
-                                      fill: BoxFit.cover,
-                                    ),
+                          const SizedBox(height: 12),
+                          Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              CommonText(
+                                text: chef?.name ?? 'N/A',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xff272727),
+                              ),
+                              if (LocalStorage.myRole == "CUSTOMER")
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                        "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}",
+                                        style: const TextStyle(
+                                          color: Color(0xff272727),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const TextSpan(
+                                        text: ' /hr',
+                                        style: TextStyle(
+                                          color: Color(0xff777777),
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            ],
                           ),
-                          const Positioned(
-                            bottom: 20,
-                            left: 20,
-                            child: CommonImage(
-                              imageSrc: AppIcons.chef,
-                              height: 30,
-                              width: 115,
-                              fill: BoxFit.fill,
+                          const SizedBox(height: 8),
+                          if (LocalStorage.myRole == "CUSTOMER")
+                            Row(
+                              children: [
+                                const CommonImage(
+                                  imageSrc: AppIcons.location,
+                                ),
+                                CommonText(
+                                  text:
+                                  controller.chefArg?.distance ??
+                                      'N/A',
+                                  fontSize: 12,
+                                  textAlign: TextAlign.start,
+                                  left: 4,
+                                  color: const Color(0xff777777),
+                                ),
+                                Container(
+                                  height: 8,
+                                  width: 1,
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                  ),
+                                  color: const Color(0xffF1F1F1),
+                                ),
+                                const CommonImage(
+                                  imageSrc: AppIcons.briefcase,
+                                ),
+                                CommonText(
+                                  text:
+                                  '${chef?.experience ?? 0} years Experience',
+                                  fontSize: 12,
+                                  left: 4,
+                                  color: const Color(0xff777777),
+                                ),
+                              ],
                             ),
+                          if (LocalStorage.myRole == "CHEF")
+                            Row(
+                              children: [
+                                const CommonImage(
+                                  imageSrc: AppIcons.location,
+                                ),
+                                Expanded(
+                                  child: CommonText(
+                                    text:
+                                    (chef?.cookingArea?.address !=
+                                        null &&
+                                        chef!
+                                            .cookingArea!
+                                            .address!
+                                            .isNotEmpty)
+                                        ? chef.cookingArea!.address!
+                                        : (chef?.address ?? 'N/A'),
+                                    fontSize: 12,
+                                    textAlign: TextAlign.start,
+                                    left: 4,
+                                    color: const Color(0xff777777),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          Row(
+                            children: [
+                              const Flexible(
+                                child: Icon(
+                                  Icons.star,
+                                  color: Color(0xffFD713F),
+                                  size: 20,
+                                ),
+                              ),
+                              Flexible(
+                                child: CommonText(
+                                  text:
+                                  '${(chef?.avgRating ?? 0).toStringAsFixed(2)} (${chef?.totalRating ?? 0} Reviews)',
+                                  fontSize: 12,
+                                  left: 4,
+                                  color: const Color(0xff777777),
+                                ),
+                              ),
+                              SizedBox(width: 4.w),
+                            ],
+                          ),
+
+                          const CommonText(
+                            text: 'Minimum booking length: 1 hour ',
+                            color: AppColors.primaryTextColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            textAlign: TextAlign.start,
+                            top: 8,
+                          ).start,
+                          Text(
+                            'Labour-only chef: groceries provided by you.',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.secondaryTextColor,
+                              fontSize: 12.sp,
+                            ),
+                          ).start,
+                          ExtendText(
+                            text: chef?.about ?? '',
+                            isExpanded: controller.isExpanded,
+                            onTap: controller.onChangeExpand,
+                          ),
+                          const SizedBox(height: 16),
+                          CommonButton(
+                            titleText: AppString.checkAvailability,
+                            onTap: () {
+                              print(
+                                'chef id: 🤣🤣🤣🤣${controller.chefId}',
+                              );
+                              availabilityPopup(
+                                context,
+                                controller.chefId,
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // ── Pinned Menu Title + Tab Bar ─────────────────────
+                  if (!controller.isLoadingDetail && sections.isNotEmpty)
+                    SliverPersistentHeader(
+                      pinned: true,
+                      delegate: _MenuTabBarDelegate(
+                        sections: sections,
+                        controller: controller,
+                        onTabTap: (index) => _scrollToSection(index),
+                      ),
+                    ),
+
+                  MenuPage(isSearchMode: _isSearchMode),
+                  const SliverToBoxAdapter(child: SizedBox(height: 140)),
+                ],
+              ),
+
+              // ── Cart button — uses MediaQuery so it works on all devices ──
+              if (controller.cartItems.isNotEmpty)
+                Positioned(
+                  left: 16.w,
+                  right: 16.w,
+                  // same formula Flutter FAB centerFloat uses internally
+                  bottom: bottomSafeArea == 0 ? 16 : bottomSafeArea + 16,
+                  child: InkWell(
+                    onTap: () => Get.toNamed(AppRoutes.cart),
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      height: 60,
+                      decoration: const BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Row(
+                        children: [
+                          const CommonText(
+                            text: AppString.viewCart,
+                            color: Colors.white,
+                            left: 8,
+                          ),
+                          const Spacer(),
+                          CommonText(
+                            text: '\$${totalCartPrice.toStringAsFixed(2)}',
+                            color: Colors.white,
                           ),
                         ],
                       ),
@@ -279,250 +554,31 @@ class _ChefDetailsScreenState extends State<ChefDetailsScreen> {
                   ),
                 ),
 
-                // ── Chef info section ───────────────────────────────
-                SliverToBoxAdapter(
-                  child:
-                      controller.isLoadingDetail
-                          ? SizedBox(
-                            height: 180.h,
-                            child: const Center(
-                              child: CupertinoActivityIndicator(),
-                            ),
-                          )
-                          : Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.w),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 12),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CommonText(
-                                      text: chef?.name ?? 'N/A',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xff272727),
-                                    ),
-                                    if (LocalStorage.myRole == "CUSTOMER")
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text:
-                                                  "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}",
-                                              style: const TextStyle(
-                                                color: Color(0xff272727),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            const TextSpan(
-                                              text: ' /hr',
-                                              style: TextStyle(
-                                                color: Color(0xff777777),
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                if (LocalStorage.myRole == "CUSTOMER")
-                                  Row(
-                                    children: [
-                                      const CommonImage(
-                                        imageSrc: AppIcons.location,
-                                      ),
-                                      CommonText(
-                                        text:
-                                            controller.chefArg?.distance ??
-                                            'N/A',
-                                        fontSize: 12,
-                                        textAlign: TextAlign.start,
-                                        left: 4,
-                                        color: const Color(0xff777777),
-                                      ),
-                                      Container(
-                                        height: 8,
-                                        width: 1,
-                                        margin: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                        ),
-                                        color: const Color(0xffF1F1F1),
-                                      ),
-                                      const CommonImage(
-                                        imageSrc: AppIcons.briefcase,
-                                      ),
-                                      CommonText(
-                                        text:
-                                            '${chef?.experience ?? 0} years Experience',
-                                        fontSize: 12,
-                                        left: 4,
-                                        color: const Color(0xff777777),
-                                      ),
-                                    ],
-                                  ),
-                                if (LocalStorage.myRole == "CHEF")
-                                  Row(
-                                    children: [
-                                      const CommonImage(
-                                        imageSrc: AppIcons.location,
-                                      ),
-                                      Expanded(
-                                        child: CommonText(
-                                          text:
-                                              (chef?.cookingArea?.address !=
-                                                          null &&
-                                                      chef!
-                                                          .cookingArea!
-                                                          .address!
-                                                          .isNotEmpty)
-                                                  ? chef.cookingArea!.address!
-                                                  : (chef?.address ?? 'N/A'),
-                                          fontSize: 12,
-                                          textAlign: TextAlign.start,
-                                          left: 4,
-                                          color: const Color(0xff777777),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                Row(
-                                  children: [
-                                    const Flexible(
-                                      child: Icon(
-                                        Icons.star,
-                                        color: Color(0xffFD713F),
-                                        size: 20,
-                                      ),
-                                    ),
-                                    Flexible(
-                                      child: CommonText(
-                                        text:
-                                            '${(chef?.avgRating ?? 0).toStringAsFixed(2)} (${chef?.totalRating ?? 0} Reviews)',
-                                        fontSize: 12,
-                                        left: 4,
-                                        color: const Color(0xff777777),
-                                      ),
-                                    ),
-                                    SizedBox(width: 4.w),
-                                  ],
-                                ),
-
-                                const CommonText(
-                                  text: 'Minimum booking length: 1 hour ',
-                                  color: AppColors.primaryTextColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  textAlign: TextAlign.start,
-                                  top: 8,
-                                ).start,
-                                Text(
-                                  'Labour-only chef: groceries provided by you.',
-                                  style: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.secondaryTextColor,
-                                    fontSize: 12.sp,
-                                  ),
-                                ).start,
-                                ExtendText(
-                                  text: chef?.about ?? '',
-                                  isExpanded: controller.isExpanded,
-                                  onTap: controller.onChangeExpand,
-                                ),
-                                const SizedBox(height: 16),
-                                CommonButton(
-                                  titleText: AppString.checkAvailability,
-                                  onTap: () {
-                                    print(
-                                      'chef id: 🤣🤣🤣🤣${controller.chefId}',
-                                    );
-                                    availabilityPopup(
-                                      context,
-                                      controller.chefId,
-                                    );
-                                  },
-                                ),
-                                const SizedBox(height: 16),
-                              ],
-                            ),
-                          ),
-                ),
-
-                // ── Pinned Menu Title + Tab Bar ─────────────────────
-                if (!controller.isLoadingDetail && sections.isNotEmpty)
-                  SliverPersistentHeader(
-                    pinned: true,
-                    delegate: _MenuTabBarDelegate(
-                      sections: sections,
-                      controller: controller,
-                    ),
-                  ),
-
-                // ── Food items fill remaining space below pinned menu bar ──
-                SliverFillRemaining(
-                  hasScrollBody: true,
-                  child: MenuPage(isSearchMode: _isSearchMode),
-                ),
-              ],
-            ),
-          ),
-
-          // ── Cart bottom bar ─────────────────────────────────────────
-          bottomNavigationBar:
-              controller.cartItems.isEmpty
-                  ? null
-                  : SafeArea(
-                    top: false,
-                    child: InkWell(
-                      onTap: () => Get.toNamed(AppRoutes.cart),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 12.h,
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          height: 60,
-                          decoration: const BoxDecoration(
-                            color: AppColors.primaryColor,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 20,
-                                width: 20,
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                ),
-                                child:
-                                    CommonText(
-                                      text: '${controller.cartItems.length}',
-                                      fontWeight: FontWeight.w600,
-                                    ).center,
-                              ),
-                              const CommonText(
-                                text: AppString.viewCart,
-                                color: Colors.white,
-                                left: 8,
-                              ),
-                              const Spacer(),
-                              CommonText(
-                                text: '\$${pricePerChef.toStringAsFixed(2)}',
-                                color: Colors.white,
-                              ),
-                            ],
-                          ),
+              // ── Blur only in the safe area below the button ───────
+              if (controller.cartItems.isNotEmpty)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  // only covers the gap below the button — never touches it
+                  height: bottomSafeArea == 0 ? 16 : bottomSafeArea + 16,
+                  child: IgnorePointer(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [
+                            Colors.white.withOpacity(0.95),
+                            Colors.white.withOpacity(0.0),
+                          ],
                         ),
                       ),
                     ),
                   ),
+                ),
+            ],
+          ),
         );
       },
     );
@@ -699,14 +755,14 @@ class _CollapsedAppBarTitle extends StatelessWidget {
                           if (LocalStorage.myRole == "CUSTOMER")
                             CommonText(
                               text:
-                                  "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}/hr",
+                              "\$${chef?.priceWithFee?.toStringAsFixed(2) ?? '0.00'}/hr",
                               fontSize: 12,
                               color: const Color(0xff555555),
                             ),
                           if (LocalStorage.myRole == "CHEF")
                             CommonText(
                               text:
-                                  "\$${chef?.pricing?.toStringAsFixed(2) ?? '0.00'}/hr",
+                              "\$${chef?.pricing?.toStringAsFixed(2) ?? '0.00'}/hr",
                               fontSize: 12,
                               color: const Color(0xff555555),
                             ),
@@ -755,8 +811,9 @@ class _CollapsedAppBarTitle extends StatelessWidget {
 class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
   final List<String> sections;
   final ChefDetailsController controller;
+  final Function(int)? onTabTap;
 
-  const _MenuTabBarDelegate({required this.sections, required this.controller});
+  const _MenuTabBarDelegate({required this.sections, required this.controller, this.onTabTap});
 
   @override
   double get minExtent => 80;
@@ -766,10 +823,10 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
+      BuildContext context,
+      double shrinkOffset,
+      bool overlapsContent,
+      ) {
     return Container(
       color: Colors.white,
       child: Column(
@@ -786,7 +843,10 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
           const SizedBox(height: 8),
           SizedBox(
             height: 36,
-            child: TabBar(
+            child: (controller.tabController == null || controller.tabController!.length != sections.length)
+                ? const SizedBox.shrink()
+                : TabBar(
+              onTap: onTabTap,
               controller: controller.tabController,
               isScrollable: true,
               indicatorSize: TabBarIndicatorSize.label,
@@ -810,18 +870,18 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
                 letterSpacing: getLetterSpacing(14, FontWeight.w400),
               ),
               tabs:
-                  sections
-                      .map(
-                        (s) => Tab(
-                          child: Text(
-                            s,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      )
-                      .toList(),
+              sections
+                  .map(
+                    (s) => Tab(
+                  child: Text(
+                    s,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              )
+                  .toList(),
             ),
           ),
         ],
@@ -831,5 +891,5 @@ class _MenuTabBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(_MenuTabBarDelegate oldDelegate) =>
-      oldDelegate.sections != sections;
+      oldDelegate.sections != sections || oldDelegate.controller != controller;
 }

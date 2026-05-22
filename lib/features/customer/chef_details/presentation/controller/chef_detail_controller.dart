@@ -8,7 +8,9 @@ import '../../../home/presentation/data/chef_model.dart';
 import '../../data/chef_details.dart';
 import '../../data/mamu_model.dart';
 
-class ChefDetailsController extends GetxController with GetSingleTickerProviderStateMixin {
+import '../../presentation/widgets/confirm_cart_popup.dart';
+
+class ChefDetailsController extends GetxController with GetTickerProviderStateMixin {
   static ChefDetailsController get instance =>
       Get.find<ChefDetailsController>();
 
@@ -27,6 +29,8 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
   static const int _pageLimit = 10;
   String chefId = '';
   TabController? tabController;
+  final Map<String, GlobalKey> categoryKeys = {};
+  List<String> visibleSections = [];
 
   // ── Search state ─────────────────────────────────────────────────────────────
   String searchQuery = '';
@@ -42,11 +46,12 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
     }
     if (Get.arguments != null && Get.arguments is ChefData) {
       chefArg = Get.arguments as ChefData;
-      chefId = chefArg!.id ?? ''; // ✅ FIX: Always set chefId from chefArg
-      fetchChefDetails(chefArg!.id!);
+      chefId = chefArg?.id ?? ''; 
+      if (chefId.isNotEmpty) {
+        fetchChefDetails(chefId);
+      }
     } else if (Get.arguments != null && Get.arguments is String) {
-      chefId = Get.arguments;
-      print('id: 😍😍😍😍😍😍😍$chefId');
+      chefId = Get.arguments as String;
       fetchChefDetails(chefId);
     }
     ever(innerBoxIsScrolled, (bool value) {
@@ -107,6 +112,37 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
 
   // ── Chef detail ─────────────────────────────────────────────────────────────
 
+  List<String> get filteredSections => visibleSections;
+
+  void _updateVisibleSections() {
+    visibleSections = (chefDetail?.menuSections ?? [])
+        .where((s) => (menuCache[s] ?? []).isNotEmpty)
+        .toList();
+    _updateTabController();
+  }
+
+  void _updateTabController() {
+    final sections = visibleSections;
+    if (sections.isEmpty) {
+      tabController?.dispose();
+      tabController = null;
+      return;
+    }
+    
+    if (tabController == null || tabController!.length != sections.length) {
+      final oldController = tabController;
+      tabController = TabController(
+        length: sections.length, 
+        vsync: this,
+        initialIndex: 0,
+      );
+      // Dispose old controller after creating new one to avoid immediate gaps
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        oldController?.dispose();
+      });
+    }
+  }
+
   Future<void> fetchChefDetails(String chefId) async {
     isLoadingDetail = true;
     update();
@@ -116,22 +152,17 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
         chefDetailModel = ChefDetailModel.fromJson(response.data);
         chefDetail = chefDetailModel?.data;
 
-        // ✅ Read isFavorite from API response
         isFavorite = chefDetail?.isFavorite ?? false;
 
-        final sections = chefDetail?.menuSections ?? [];
-        if (sections.isNotEmpty) {
-          selectedMenuSection = sections.first;
-          if (tabController == null || tabController!.length != sections.length) {
-            tabController?.dispose();
-            tabController = TabController(length: sections.length, vsync: this);
-            tabController!.addListener(() {
-              if (!tabController!.indexIsChanging) {
-                selectedMenuSection = sections[tabController!.index];
-                update();
-              }
-            });
+        final allSections = chefDetail?.menuSections ?? [];
+        if (allSections.isNotEmpty) {
+          selectedMenuSection = allSections.first;
+          
+          // Initial fetch for all sections
+          for (var section in allSections) {
+            await _fetchMenuPage(section, page: 1);
           }
+          _updateVisibleSections();
         }
       } else {
         Utils.errorSnackBar('Error', 'Failed to fetch chef details');
@@ -193,6 +224,7 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
         } else {
           menuCache[section] = newItems;
         }
+        _updateVisibleSections(); // ✅ Update tabs and sections safely
       } else {
         if (!isLoadMore) menuCache[section] = [];
         Utils.errorSnackBar('Error', 'Failed to fetch menu');
@@ -273,9 +305,9 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
       .expand((g) => g.menus ?? [])
       .toList();
 
-  Future<void> addToCart(Map<String, dynamic> data) async {
+  Future<void> addToCart(Map<String, dynamic> data, {bool forceReplace = false}) async {
     final String menuId = data['id'] ?? '';
-    final String chefId = chefArg?.id ?? '';
+    final String chefId = chefArg?.id ?? this.chefId;
     final List<String> customizations =
     List<String>.from(data['customizations'] ?? []);
 
@@ -284,9 +316,18 @@ class ChefDetailsController extends GetxController with GetSingleTickerProviderS
       return;
     }
 
-    Navigator.pop(Get.context!);
+    final cartCtrl = CartController.instance;
+    if (!forceReplace && cartCtrl.chefGroups.isNotEmpty && cartCtrl.chefGroups.first.chef?.id != chefId) {
+      Get.dialog(CartConfirmPopUp(controller: this, data: data));
+      return;
+    }
 
-    await CartController.instance.postCartAndNavigate(
+    if (forceReplace) {
+      Get.back(); // Close the CartConfirmPopUp dialog
+    }
+    Get.back(); // Close the Item Details bottom sheet
+
+    await cartCtrl.postCartAndNavigate(
       menuId: menuId,
       chefId: chefId,
       customizations: customizations,

@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
@@ -21,6 +24,7 @@ class CartController extends GetxController {
   List<CartChefGroup> get chefGroups => cartData?.data ?? [];
   PriceBreakdown? get priceBreakdown => cartData?.priceBreakdown;
   String? get estimatedTime => cartData?.estimatedTime;
+  late double? subtotal=cartData?.priceBreakdown?.subtotal;
 
   bool isLoadingCart = false;
   bool isPostingCart = false;
@@ -469,16 +473,18 @@ class CartController extends GetxController {
     required String cartItemId,
     required String chefId,
   }) async {
+    Get.dialog(const Center(child: CupertinoActivityIndicator()), barrierDismissible: false);
     try {
       final response = await ApiService.delete('cart/$cartItemId');
+      Get.back();
       if (response.statusCode == 200 || response.statusCode == 201) {
-        Navigator.pop(Get.context!);
-        Utils.successSnackBar('Successful', 'Successfully Delete the');
+        Utils.successSnackBar('Successful', 'Successfully Deleted the item');
         await fetchCart(chefId);
       } else {
         Utils.errorSnackBar('Error', 'Failed to delete item');
       }
     } catch (e) {
+      Get.back();
       Utils.errorSnackBar('Error', e.toString());
     }
   }
