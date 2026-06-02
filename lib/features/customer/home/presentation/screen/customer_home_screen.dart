@@ -4,13 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:cupertino_native/cupertino_native.dart';
+import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/component/text/common_text.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/screens/groceries_screen.dart';
+import '../../../../../utils/extensions/extension.dart';
 import '../controller/home_controller.dart';
 
 import '../../../../common/message/presentation/screen/chat_screen.dart';
 import '../../../booking/presentation/screen/booking_history_screen.dart';
 import '../../../profile/presentation/screen/profile_screen.dart';
+import '../widgets/groceries_notification_popup.dart';
 import 'home_screen.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
@@ -104,8 +107,81 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
         physics: const NeverScrollableScrollPhysics(),
         children: pages,
       ),
-      bottomNavigationBar:
-      Platform.isIOS ? _buildCupertinoBar() : _buildAndroidBar(),
+      bottomNavigationBar: Obx(() => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (selectedTabIndex == 0 && homeController.showStatusCard.value)
+                _buildStatusCard(),
+              Platform.isIOS ? _buildCupertinoBar() : _buildAndroidBar(),
+            ],
+          )),
+    );
+  }
+
+  Widget _buildStatusCard() {
+    return InkWell(
+      onTap: () {
+        Get.dialog(const GroceriesNotificationPopup());
+      },
+      child: Container(
+        margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 0.h),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+        decoration: BoxDecoration(
+          color: const Color(0xff272727),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.r),
+            topRight: Radius.circular(16.r),
+            bottomLeft: Radius.circular(12.r),
+            bottomRight: Radius.circular(12.r),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            // Left Icon with badge
+            CommonImage(
+              imageSrc: "assets/images/confirm_image.png",
+              height: 48.h,
+              width: 48.h,
+            ),
+            12.width,
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const CommonText(
+                    text: 'Awaiting Confirmation by Privae...',
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    textAlign: TextAlign.start,
+                  ),
+                  CommonText(
+                    text: 'Estimated 4m - 12m',
+                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    textAlign: TextAlign.start,
+                    top: 2.h,
+                  ),
+                ],
+              ),
+            ),
+            const Icon(
+              CupertinoIcons.chevron_right,
+              color: Colors.white,
+              size: 18,
+            ),
+          ],
+        ),
+      ),
     );
   }
 

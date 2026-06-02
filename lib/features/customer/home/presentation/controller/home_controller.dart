@@ -18,6 +18,7 @@ import '../data/order_model.dart';
 class HomeController extends GetxController {
   RangeValues values = const RangeValues(20, 100);
   RxInt unreadCount = 0.obs;
+  RxBool showStatusCard = true.obs;
 
   bool saved = false;
   String address = '';
