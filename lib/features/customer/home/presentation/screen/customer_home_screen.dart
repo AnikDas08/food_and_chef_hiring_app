@@ -110,7 +110,9 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
       bottomNavigationBar: Obx(() => Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (selectedTabIndex == 0 && homeController.showStatusCard.value)
+              if (selectedTabIndex == 0 &&
+                  homeController.showStatusCard.value &&
+                  homeController.groceriesOrder.value != null)
                 _buildStatusCard(),
               Platform.isIOS ? _buildCupertinoBar() : _buildAndroidBar(),
             ],
@@ -119,6 +121,29 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
   }
 
   Widget _buildStatusCard() {
+    final order = homeController.groceriesOrder.value;
+    String estimatedTime = "Estimated 5m";
+
+    if (order != null && order['formatted_date'] != null) {
+      try {
+        DateTime orderTime = DateTime.parse(order['formatted_date']).toLocal();
+        DateTime now = DateTime.now();
+        Duration difference = orderTime.difference(now);
+
+        if (difference.inSeconds > 0) {
+          if (difference.inMinutes > 0) {
+            estimatedTime = "Estimated ${difference.inMinutes}m ${difference.inSeconds % 60}s";
+          } else {
+            estimatedTime = "Estimated ${difference.inSeconds}s";
+          }
+        } else {
+          estimatedTime = "Processing...";
+        }
+      } catch (e) {
+        estimatedTime = "Estimated ${order['remainingTime'] ?? "5m"}";
+      }
+    }
+
     return InkWell(
       onTap: () {
         Get.dialog(const GroceriesNotificationPopup());
@@ -164,7 +189,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
                     textAlign: TextAlign.start,
                   ),
                   CommonText(
-                    text: 'Estimated 4m - 12m',
+                    text: estimatedTime,
                     color: Colors.white.withOpacity(0.8),
                     fontSize: 12,
                     fontWeight: FontWeight.w400,

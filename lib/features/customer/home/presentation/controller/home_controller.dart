@@ -19,6 +19,8 @@ class HomeController extends GetxController {
   RangeValues values = const RangeValues(20, 100);
   RxInt unreadCount = 0.obs;
   RxBool showStatusCard = true.obs;
+  Rxn<Map<String, dynamic>> groceriesOrder = Rxn<Map<String, dynamic>>();
+  Timer? _orderTimer;
 
   bool saved = false;
   String address = '';
@@ -92,11 +94,13 @@ class HomeController extends GetxController {
     getCurrentLocationAndFetchChefs();
     getOrderAgain();
     isRead();
+    getGroceriesPurchaseOrders();
     _setupMessageListener();
   }
 
   @override
   void onClose() {
+    _orderTimer?.cancel();
     super.onClose();
   }
 
@@ -450,5 +454,41 @@ class HomeController extends GetxController {
   void onChangeValue(newValue) {
     values = newValue;
     update();
+  }
+
+  Future<void> getGroceriesPurchaseOrders() async {
+    try {
+      final response = await ApiService.get('order/groceries-purchase-orders');
+      if (response.statusCode == 200 && response.data['data'] != null) {
+        groceriesOrder.value = response.data['data'];
+        _startOrderTimer();
+      } else {
+        groceriesOrder.value = null;
+      }
+    } catch (e) {
+      groceriesOrder.value = null;
+    }
+  }
+
+  void _startOrderTimer() {
+    _orderTimer?.cancel();
+    _orderTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (groceriesOrder.value == null) {
+        timer.cancel();
+        return;
+      }
+      // Trigger a refresh of the UI by notifying listeners
+      groceriesOrder.refresh();
+
+      // Optional: stop timer if time reached zero
+      try {
+        DateTime orderTime =
+            DateTime.parse(groceriesOrder.value!['formatted_date']).toLocal();
+        if (orderTime.isBefore(DateTime.now())) {
+          // You might want to hide the card or stop at 0m
+          // timer.cancel();
+        }
+      } catch (e) {}
+    });
   }
 }
