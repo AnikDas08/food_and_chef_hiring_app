@@ -22,10 +22,7 @@ class GroceryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(
-      GroceryController(),
-      tag: DateTime.now().millisecondsSinceEpoch.toString(),
-    );
+    final controller = Get.put(GroceryController());
 
     // Check if coming from booking history (has arguments)
     final bool fromBookingHistory = Get.arguments != null;
@@ -33,31 +30,30 @@ class GroceryScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
-
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: fromBookingHistory,
         flexibleSpace: appBarOpacity(),
-        actions: [LiquidGlassLayer(
-          child: LiquidGlass(
-            shape: const LiquidRoundedSuperellipse(borderRadius: 0),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.white.withOpacity(0.2),
-                    Colors.white.withOpacity(0.05),
-                  ],
+        actions: [
+          LiquidGlassLayer(
+            child: LiquidGlass(
+              shape: const LiquidRoundedSuperellipse(borderRadius: 0),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.white.withOpacity(0.2),
+                      Colors.white.withOpacity(0.05),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
         ],
         title: const CommonText(
           text: 'Groceries',
@@ -66,28 +62,26 @@ class GroceryScreen extends StatelessWidget {
           color: Color(0xff272727),
         ),
       ),
-      body: Obx(() {
-        if (controller.isLoading.value) {
-          return const Center(
-            child: CupertinoActivityIndicator(
-              color: Color(0xff272727),
+      body: SafeArea(
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return const Center(
+              child: CupertinoActivityIndicator(
+                color: Color(0xff272727),
+              ),
+            );
+          }
+
+          final bool hasInitialId = controller.initialOrderId != null &&
+              controller.initialOrderId!.isNotEmpty;
+
+          return SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(
+              16.w,
+              (fromBookingHistory && !hasInitialId) ? 10.h : 16.h,
+              16.w,
+              fromBookingHistory ? 30.h : 16.h,
             ),
-          );
-        }
-
-        final bool hasInitialId =
-            controller.initialOrderId != null &&
-                controller.initialOrderId!.isNotEmpty;
-
-        return SingleChildScrollView(
-          //padding: EdgeInsets.fromLTRB(16.w, fromBookingHistory ? kToolbarHeight + 16.h : 16.h, 16.w, fromBookingHistory ? 30.h : 16.h),
-          padding: EdgeInsets.fromLTRB(
-            16.w,
-            (fromBookingHistory && !hasInitialId) ? 100.h : 16.h,
-            16.w,
-            fromBookingHistory ? 30.h : 16.h,
-          ),
-          child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -119,50 +113,25 @@ class GroceryScreen extends StatelessWidget {
                 SizedBox(height: 12.h),
 
                 if (controller.basketItems.isNotEmpty)
-                const CommonText(
-                  text: '2. Buy Ingredients',
-                  color: Color(0xff272727),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-
-                /*Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.h),
-                  child: Row(
-                    children: [
-                      _partnerIcon(
-                        label: 'Instacart',
-                        iconPath: 'assets/images/intacart.png',
-                        isSelected:
-                        controller.selectedPartner.value == 'Instacart',
-                        onTap: () {
-                          controller.selectedPartner.value = 'Instacart';
-                          //controller.createInstacartLink(); // CALLS API IMMEDIATELY
-                        },
-                      ),
-                      SizedBox(width: 20.w),
-                      _partnerIcon(
-                        label: 'Get your own\ngroceries',
-                        icon: Icons.directions_walk,
-                        isSelected: controller.selectedPartner.value == 'Self',
-                        onTap: () => controller.selectedPartner.value = 'Self',
-                      ),
-                    ],
+                  const CommonText(
+                    text: '2. Buy Ingredients',
+                    color: Color(0xff272727),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
-                ),*/
 
                 SizedBox(height: 12.h),
 
                 // --- 3. GROCERY BASKET ---
                 if (controller.basketItems.isNotEmpty)
                   Container(
-                    padding: EdgeInsets.all(16.r), // Padding: 16px
+                    padding: EdgeInsets.all(16.r),
                     decoration: BoxDecoration(
                       color: const Color(0xFFFFFFFF),
-                      borderRadius: BorderRadius.circular(24.r), // Radius: 24px
+                      borderRadius: BorderRadius.circular(24.r),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF000000).withOpacity(0.12), // #000000 at 12%
+                          color: const Color(0xFF000000).withOpacity(0.12),
                           blurRadius: 20,
                           spreadRadius: 0,
                           offset: const Offset(0, 0),
@@ -179,7 +148,6 @@ class GroceryScreen extends StatelessWidget {
                           fontSize: 14,
                         ),
                         SizedBox(height: 12.h),
-
                         if (controller.isIngredientsLoading.value)
                           const Center(
                             child: CupertinoActivityIndicator(
@@ -195,23 +163,18 @@ class GroceryScreen extends StatelessWidget {
                             itemBuilder: (context, index) => GroceryItemTile(
                               data: controller.basketItems[index],
                               onTap: () => controller.toggleBasketItem(index),
-                              isLast: index == controller.basketItems.length - 1,
+                              isLast:
+                                  index == controller.basketItems.length - 1,
                             ),
                           ),
                       ],
                     ),
                   ),
-                SizedBox(height: 12,),
+                SizedBox(height: 12.h),
 
                 // --- Other personal groceries section ---
-// Replace from: const CommonText(text: "Other personal groceries"...
-// To the end of the add groceries button
-
-              if(controller.basketItems.isNotEmpty)
-                ...[
-                  // Show "Other personal groceries" section regardless of basketItems
-                  Obx(() => controller.personalItems.isNotEmpty
-                      ? Container(
+                if (controller.personalItems.isNotEmpty)
+                  Container(
                     padding: EdgeInsets.all(16.r),
                     decoration: BoxDecoration(
                       color: const Color(0xFFFFFFFF),
@@ -231,7 +194,7 @@ class GroceryScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CommonText(
+                            const CommonText(
                               text: "Other personal groceries",
                               fontWeight: FontWeight.w600,
                               fontSize: 14,
@@ -243,7 +206,7 @@ class GroceryScreen extends StatelessWidget {
                               },
                               child: Icon(
                                 CupertinoIcons.delete,
-                                color: Color(0xff777777),
+                                color: const Color(0xff777777),
                                 size: 18.r,
                               ),
                             )
@@ -260,13 +223,15 @@ class GroceryScreen extends StatelessWidget {
                             return GroceryItemTile(
                               data: item,
                               onTap: () => controller.togglePersonalItem(index),
-                              isLast: index == controller.personalItems.length - 1,
+                              isLast:
+                                  index == controller.personalItems.length - 1,
                             );
                           },
                         ),
                         SizedBox(height: 12.h),
                         GestureDetector(
-                          onTap: () => _showAddGroceryPopup(context, controller),
+                          onTap: () =>
+                              _showAddGroceryPopup(context, controller),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -277,7 +242,8 @@ class GroceryScreen extends StatelessWidget {
                                   color: const Color(0xFFF5F5F5),
                                   borderRadius: BorderRadius.circular(8.r),
                                 ),
-                                child: const Icon(Icons.add, color: Color(0xff272727), size: 24),
+                                child: const Icon(Icons.add,
+                                    color: Color(0xff272727), size: 24),
                               ),
                               SizedBox(width: 12.w),
                               const CommonText(
@@ -292,7 +258,8 @@ class GroceryScreen extends StatelessWidget {
                       ],
                     ),
                   )
-                      : Column(
+                else
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const CommonText(
@@ -314,7 +281,8 @@ class GroceryScreen extends StatelessWidget {
                                 color: const Color(0xFFF5F5F5),
                                 borderRadius: BorderRadius.circular(8.r),
                               ),
-                              child: const Icon(Icons.add, color: Color(0xff272727), size: 24),
+                              child: const Icon(Icons.add,
+                                  color: Color(0xff272727), size: 24),
                             ),
                             SizedBox(width: 12.w),
                             const CommonText(
@@ -328,16 +296,9 @@ class GroceryScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  ),
-                  SizedBox(height: 12.h),
-                ],
+                SizedBox(height: 12.h),
 
-// basketItems dependent buttons — still gated
                 if (controller.basketItems.isNotEmpty) ...[
-                  /*if (controller.isInstacartLoading.value)
-                    const Center(
-                      child: CupertinoActivityIndicator(color: Color(0xff272727)),
-                    ),*/
                   CustomButtonIcon(
                     titleText: "Buy groceries online",
                     prefixImage: "assets/images/groceries_image.png",
@@ -358,50 +319,12 @@ class GroceryScreen extends StatelessWidget {
                   ),
                 ],
 
-
-                SizedBox(height: 20.h,),
-                // --- 4. BOTTOM BUTTON ---
-                /*if (controller.isInstacartLoading.value)
-                  const Center(
-                    child: CupertinoActivityIndicator(
-                      color: Color(0xff272727),
-                    ),
-                  ),*/
-                /*else if (controller.basketItems.isNotEmpty&&(controller.selectedPartner.value == 'Instacart'||controller.selectedPartner.value == 'Self'))
-                  CommonButton(
-                    titleText: controller.selectedPartner.value == 'Instacart'
-                        ? 'Buy Groceries Online'
-                        : 'Add to Shopping List',
-                    onTap: () {
-                      // We send the list of selected IDs to the next screen
-                      if(controller.selectedPartner=="Instacart"&&controller.selectedOrderIds.isNotEmpty){
-                        controller.createInstacartLink();
-                      }
-                      else if (controller.selectedOrderIds.isNotEmpty) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ConfirmedGroceryScreen(),
-                            settings: RouteSettings(
-                              arguments:
-                                  controller.selectedOrderIds
-                                      .toList(), // same as Get.arguments
-                            ),
-                          ),
-                        );
-                      } else {
-                        Get.snackbar(
-                          'Selection Required',
-                          'Please select at least one booking.',
-                        );
-                      }
-                    },
-                  ),*/
+                SizedBox(height: 20.h),
               ],
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 

@@ -8,7 +8,9 @@ import '../../../../../utils/app_utils.dart';
 import '../widgets/personal_groceries_storage.dart';
 
 class GroceryController extends GetxController {
-  final String? initialOrderId = Get.arguments?.toString();
+  final String? initialOrderId = Get.arguments is Map 
+      ? Get.arguments['orderId']?.toString() 
+      : Get.arguments?.toString();
 
   var isLoading = false.obs;
   var isIngredientsLoading = false.obs;

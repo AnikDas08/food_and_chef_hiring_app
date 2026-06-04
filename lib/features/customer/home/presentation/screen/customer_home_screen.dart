@@ -122,7 +122,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
 
   Widget _buildStatusCard() {
     final order = homeController.groceriesOrder.value;
-    String estimatedTime = "Estimated 5m";
+    String estimatedTime = "";
 
     if (order != null && order['formatted_date'] != null) {
       try {

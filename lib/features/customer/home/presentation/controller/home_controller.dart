@@ -470,6 +470,28 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> confirmGroceriesMyself() async {
+    final orderId = groceriesOrder.value?['_id'];
+    if (orderId == null) return;
+
+    try {
+      final response = await ApiService.patch(
+        'order/change-status/$orderId',
+        body: {'status': 'Groceries Ordered'},
+      );
+
+      if (response.statusCode == 200 || response.data['success'] == true) {
+        groceriesOrder.value = null;
+        Utils.successSnackBar('Success', 'Groceries confirmed!');
+        getGroceriesPurchaseOrders(); // Refresh to check if any other orders exist
+      } else {
+        Utils.errorSnackBar('Error', 'Could not confirm groceries. Please try again.');
+      }
+    } catch (e) {
+      Utils.errorSnackBar('Error', 'Something went wrong: $e');
+    }
+  }
+
   void _startOrderTimer() {
     _orderTimer?.cancel();
     _orderTimer = Timer.periodic(const Duration(seconds: 1), (timer) {

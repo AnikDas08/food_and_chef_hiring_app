@@ -7,14 +7,20 @@ import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/controller/grocerie_controller.dart';
 import '../../../../../component/text/common_text.dart';
 
-class GroceriesNotificationPopup extends StatelessWidget {
+import '../../../../../config/route/app_routes.dart';
+import '../../../../../utils/constants/app_colors.dart';
+import '../../../groceries/presentations/screens/groceries_screen.dart';
+import '../controller/home_controller.dart';
 
+class GroceriesNotificationPopup extends StatelessWidget {
   const GroceriesNotificationPopup({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final homeController = Get.find<HomeController>();
+
     return Dialog(
       insetPadding: EdgeInsets.symmetric(horizontal: 16),
       backgroundColor: Colors.white,
@@ -43,14 +49,21 @@ class GroceriesNotificationPopup extends StatelessWidget {
             CommonButton(
               titleText: "Order Groceries Now",
               onTap: () {
-                Get.back();
+                final orderId = homeController.groceriesOrder.value?['_id'];
+                if (orderId != null) {
+                  Get.back(); // Close dialog
+                  Get.to(() => const GroceryScreen(), arguments: orderId);
+                }
               },
             ),
             SizedBox(height: 12.h),
 
             CommonButton(
               titleText: "I will get Groceries Myself",
-              onTap: () => Get.back(),
+              onTap: () async {
+                Get.back(); // Close dialog
+                await homeController.confirmGroceriesMyself();
+              },
               buttonColor: const Color(0xffF2F2F2),
               titleColor: const Color(0xff777777),
             ),
