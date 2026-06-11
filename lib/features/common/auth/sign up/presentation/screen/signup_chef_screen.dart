@@ -85,7 +85,7 @@ class SignupChefScreen extends StatelessWidget {
 
                   28.height,
 
-                  Row(
+                  /*Row(
                     children: [
                       const Expanded(child: Divider()),
                       10.width,
@@ -147,7 +147,7 @@ class SignupChefScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
+                  ),*/
 
                   Center(
                     child: Padding(

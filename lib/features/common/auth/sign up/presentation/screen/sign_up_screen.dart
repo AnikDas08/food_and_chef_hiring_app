@@ -88,7 +88,7 @@ class SignUpScreen extends StatelessWidget {
 
                   28.height,
 
-                  Row(
+                  /*Row(
                     children: [
                       const Expanded(child: Divider()),
                       10.width,
@@ -150,7 +150,7 @@ class SignUpScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
+                  ),*/
 
                   Center(
                     child: Padding(

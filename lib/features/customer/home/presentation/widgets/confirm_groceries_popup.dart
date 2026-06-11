@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:new_untitled/component/button/common_button.dart';
 import 'package:new_untitled/component/image/common_image.dart';
 import 'package:new_untitled/features/customer/groceries/presentations/controller/grocerie_controller.dart';
-import 'package:new_untitled/features/customer/home/presentation/widgets/confirm_groceries_popup.dart';
 import '../../../../../component/text/common_text.dart';
 
 import '../../../../../config/route/app_routes.dart';
@@ -13,8 +12,8 @@ import '../../../../../utils/constants/app_colors.dart';
 import '../../../groceries/presentations/screens/groceries_screen.dart';
 import '../controller/home_controller.dart';
 
-class GroceriesNotificationPopup extends StatelessWidget {
-  const GroceriesNotificationPopup({
+class ConfirmGroceriesPopup extends StatelessWidget {
+  const ConfirmGroceriesPopup({
     super.key,
   });
 
@@ -31,42 +30,36 @@ class GroceriesNotificationPopup extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CommonImage(
-                imageSrc: "assets/images/groceries_notification_image.png",
-              height: 190.h,
-              width: 220.w,
-            ),
-            SizedBox(height: 16.h),
-
             const CommonText(
-              text: 'Your booking\nis confirmed!...',
+              text: 'Confirm Grocery Purchase',
               fontSize: 16,
               fontWeight: FontWeight.w600,
               maxLines: 2,
+            ),
+            SizedBox(height: 12.h,),
+            const CommonText(
+              text: 'Please confirm that all ingredients have been purchased for your chef visit. We’ll let your chef know that everything is ready.',
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: Color(0xff777777),
+              maxLines: 4,
             ),
             SizedBox(height: 32.h),
 
 
             CommonButton(
-              titleText: "Order groceries now",
-              onTap: () {
-                final orderId = homeController.groceriesOrder.value?['_id'];
-                if (orderId != null) {
-                  Get.back(); // Close dialog
-                  Get.to(() => const GroceryScreen(), arguments: orderId);
-                }
+              titleText: "Confirm Ingredients",
+              onTap: () async {
+                Get.back(); // Close dialog
+                await homeController.confirmGroceriesMyself();
               },
             ),
             SizedBox(height: 12.h),
 
             CommonButton(
-              titleText: "I bought groceries myself",
+              titleText: "Cancel",
               onTap: () async {
-                Get.back(); // Close dialog
-                showDialog(
-                  context: context,
-                  builder: (context) => const ConfirmGroceriesPopup(),
-                );
+                Get.back();
               },
               buttonColor: const Color(0xffF2F2F2),
               titleColor: const Color(0xff777777),

@@ -132,15 +132,15 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
 
         if (difference.inSeconds > 0) {
           if (difference.inMinutes > 0) {
-            estimatedTime = "Estimated ${difference.inMinutes}m ${difference.inSeconds % 60}s";
+            estimatedTime = "Time remaining: ${difference.inMinutes}m ${difference.inSeconds % 60}s";
           } else {
-            estimatedTime = "Estimated ${difference.inSeconds}s";
+            estimatedTime = "Time remaining: ${difference.inSeconds}s";
           }
         } else {
           estimatedTime = "Processing...";
         }
       } catch (e) {
-        estimatedTime = "Estimated ${order['remainingTime'] ?? "5m"}";
+        estimatedTime = "Time remaining: ${order['remainingTime'] ?? "5m"}";
       }
     }
 
@@ -182,7 +182,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CommonText(
-                    text: 'Awaiting Confirmation by Privae...',
+                    text: 'Order Ingredients Online',
                     color: Colors.white,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,

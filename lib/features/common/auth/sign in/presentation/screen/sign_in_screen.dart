@@ -146,7 +146,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       // ),
                       20.height,
 
-                      Row(
+                      /*Row(
                         children: [
                           const Expanded(child: Divider()),
                           10.width,
@@ -208,7 +208,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ],
                         ),
-                      ),
+                      ),*/
                       24.height,
                       const DoNotHaveAccount().center,
                     ],
