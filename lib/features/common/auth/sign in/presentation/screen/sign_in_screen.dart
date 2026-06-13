@@ -146,7 +146,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       // ),
                       20.height,
 
-                      /*Row(
+                      Row(
                         children: [
                           const Expanded(child: Divider()),
                           10.width,
@@ -162,53 +162,69 @@ class _SignInScreenState extends State<SignInScreen> {
 
                       20.height,
 
-                      Container(
-                        height: 60.h,
-                        decoration: BoxDecoration(
-                          color: const Color(0xffF2F2F2),
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 26.h,
-                              width: 26.w,
-                              child: CommonImage(
-                                imageSrc: AppIcons.apple,
+                      GestureDetector(
+                        onTap: () {
+                          if (!controller.isLoading) {
+                            // আপনার প্রয়োজন অনুযায়ী এখানে 'CUSTOMER' অথবা 'CHEF' পাস করুন
+                            controller.signInWithAppleFirebase('CUSTOMER');
+                          }
+                        },
+                        child: Container(
+                          height: 60.h,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffF2F2F2),
+                            borderRadius: BorderRadius.circular(20.r),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 26.h,
+                                width: 26.w,
+                                child: CommonImage(
+                                  imageSrc: AppIcons.apple,
+                                ),
                               ),
-                            ),
 
-                            SizedBox(width: 12.w),
+                              SizedBox(width: 12.w),
 
-                            const CommonText(
-                              text: AppString.signInWithApple,
-                            ),
-                          ],
+                              const CommonText(
+                                text: AppString.signInWithApple,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
 
                       12.height,
 
-                      Container(
-                        height: 60.h,
-                        decoration: BoxDecoration(
-                          color: const Color(0xffF2F2F2),
-                          borderRadius: BorderRadius.circular(20.r),
-                          border: Border.all(color: const Color(0xffF2F2F2)),
-                        ),
+                      GestureDetector(
+                        onTap: (){
+                          if (!controller.isLoading) {
+                            // আপনার প্রয়োজন অনুযায়ী এখানে 'CUSTOMER' অথবা 'CHEF' পাস করুন
+                            controller.signInWithGoogleFirebase('CUSTOMER');
+                          }
+                        },
+                        child: Container(
+                          height: 60.h,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffF2F2F2),
+                            borderRadius: BorderRadius.circular(20.r),
+                            border: Border.all(color: const Color(0xffF2F2F2)),
+                          ),
 
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CommonImage(imageSrc: AppIcons.google),
-                            CommonText(
-                              text: AppString.signInWithGoogle,
-                              left: 14,
-                            ),
-                          ],
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CommonImage(imageSrc: AppIcons.google),
+                              CommonText(
+                                text: AppString.signInWithGoogle,
+                                left: 14,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),*/
+                      ),
                       24.height,
                       const DoNotHaveAccount().center,
                     ],

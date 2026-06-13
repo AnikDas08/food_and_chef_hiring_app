@@ -85,7 +85,7 @@ class SignupChefScreen extends StatelessWidget {
 
                   28.height,
 
-                  /*Row(
+                  Row(
                     children: [
                       const Expanded(child: Divider()),
                       10.width,
@@ -101,53 +101,62 @@ class SignupChefScreen extends StatelessWidget {
 
                   28.height,
 
-                  Container(
-                    height: 60.h,
-                    decoration: BoxDecoration(
-                      color: const Color(0xffF2F2F2),
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-
-                        SizedBox(
-                          height: 26.h,
-                          width: 26.w,
-                          child: CommonImage(
-                            imageSrc: AppIcons.apple,
+                  GestureDetector(
+                    onTap: (){
+                      controller.signInWithAppleFirebase("CHEF");
+                    },
+                    child: Container(
+                      height: 60.h,
+                      decoration: BoxDecoration(
+                        color: const Color(0xffF2F2F2),
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 26.h,
+                            width: 26.w,
+                            child: CommonImage(
+                              imageSrc: AppIcons.apple,
+                            ),
                           ),
-                        ),
 
-                        SizedBox(width: 12.w),
+                          SizedBox(width: 12.w),
 
-                        const CommonText(
-                          text: AppString.signUpWithApple,
-                        ),
+                          const CommonText(
+                            text: AppString.signUpWithApple,
+                          ),
 
-                      ],
+                        ],
+                      ),
                     ),
                   ),
 
                   12.height,
 
-                  Container(
-                    height: 60.h,
-                    decoration: BoxDecoration(
-                      color: const Color(0xffF2F2F2),
-                      borderRadius: BorderRadius.circular(20.r),
+                  GestureDetector(
+                    onTap: (){
+                      controller.signInWithGoogleFirebase("CHEF");
+                    },
+                    child: Container(
+                      height: 60.h,
+                      decoration: BoxDecoration(
+                        color: const Color(0xffF2F2F2),
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CommonImage(imageSrc: AppIcons.google),
+                          CommonText(
+                            text: AppString.signUpWithGoogle,
+                            left: 14,
+                          ),
+                        ],
+                      ),
                     ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CommonImage(imageSrc: AppIcons.google),
-                        CommonText(
-                          text: AppString.signUpWithGoogle,
-                          left: 14,
-                        ),
-                      ],
-                    ),
-                  ),*/
+                  ),
 
                   Center(
                     child: Padding(
