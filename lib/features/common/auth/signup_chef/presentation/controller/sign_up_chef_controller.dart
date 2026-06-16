@@ -626,7 +626,7 @@ class SignUpChefController extends GetxController {
           "email": firebaseUser.email ?? googleUser.email,
           "name": firebaseUser.displayName ?? googleUser.displayName ?? "No Name",
           "type": "google",
-          "role":"CUSTOMER"
+          "role":"CHEF"
         };
 
         final response = await ApiService.post(
@@ -670,7 +670,7 @@ class SignUpChefController extends GetxController {
           "email": firebaseUser.email ?? "",
           "name": firebaseUser.displayName ?? "No Name",
           "type": "apple",
-          "role":"CUSTOMER"
+          "role":"CHEF"
         };
 
         final response = await ApiService.post(
