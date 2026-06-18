@@ -10,6 +10,7 @@ import 'package:new_untitled/utils/constants/app_images.dart';
 Widget category() {
   return GetBuilder<HomeController>(
     builder: (controller) {
+      //add here
       if (controller.cuisineList.isEmpty) {
         return const Center(child: CupertinoActivityIndicator());
       }
