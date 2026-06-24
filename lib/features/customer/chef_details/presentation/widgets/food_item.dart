@@ -6,7 +6,6 @@ import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/text/common_text.dart';
-import '../../../../../utils/constants/app_images.dart';
 import '../../data/mamu_model.dart';
 import 'item_details.dart';
 
@@ -50,6 +49,17 @@ class _FoodItemState extends State<FoodItem>
     (item.images != null && item.images!.isNotEmpty)
         ? item.images!.first
         : null;
+
+    final bool hasImage = firstImage != null &&
+        firstImage.isNotEmpty &&
+        firstImage.trim() != '' &&
+        !firstImage.toLowerCase().contains('null') &&
+        firstImage != '/uploads/' &&
+        firstImage != '/files/';
+
+    final String imageUrl = hasImage
+        ? _buildImageUrl(firstImage)
+        : '';
 
     // kitchen status badge
     final bool kitchenReady =
@@ -165,15 +175,21 @@ class _FoodItemState extends State<FoodItem>
                 ),
 
                 // ── Food image ────────────────────────────────────────────
-                CommonImage(
-                  imageSrc: (firstImage != null && firstImage.isNotEmpty)
-                      ? _buildImageUrl(firstImage)
-                      : AppImages.noImage,
-                  size: 120,
-                  borderRadius: 8,
-                  fill: BoxFit.cover,
-                  defaultImage: AppImages.noImage,
-                ),
+                if (hasImage) ...[
+                  SizedBox(width: 12.w),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8.r),
+                    child: Image.network(
+                      imageUrl,
+                      height: 100.sp,
+                      width: 100.sp,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  ),
+                ],
               ],
             ),
           ],

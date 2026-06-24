@@ -10,7 +10,6 @@ import 'package:new_untitled/utils/extensions/extension.dart';
 import '../../../../../component/image/common_image.dart';
 import '../../../../../component/text/common_text.dart';
 import '../../../../../utils/constants/app_icons.dart';
-import '../../../../../utils/constants/app_images.dart';
 import 'package:new_untitled/features/customer/cart/presentation/controller/cart_controller.dart';
 import '../../../cart/data/cart_model.dart';
 import '../../data/mamu_model.dart';
@@ -43,10 +42,17 @@ void itemDetails(
   final bool isEditing = cartItem != null;
   final cartController = Get.isRegistered<CartController>() ? Get.find<CartController>() : null;
   // Resolve image
-  final String imageUrl =
-  (item.images != null && item.images!.isNotEmpty)
+  final bool hasImage = item.images != null &&
+      item.images!.isNotEmpty &&
+      item.images!.first.isNotEmpty &&
+      item.images!.first.trim() != '' &&
+      !item.images!.first.toLowerCase().contains('null') &&
+      item.images!.first != '/uploads/' &&
+      item.images!.first != '/files/';
+
+  final String imageUrl = hasImage
       ? _buildImageUrl(item.images!.first)
-      : AppImages.noImage;
+      : '';
 
   // Kitchen status
   final bool kitchenReady =
@@ -130,21 +136,27 @@ void itemDetails(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // ── Food image ───────────────────────────
-                                CommonImage(
-                                  imageSrc: imageUrl,
-                                  borderRadius: 8,
-                                  height: 232,
-                                  width: Get.width,
-                                  fill: BoxFit.cover,
-                                  defaultImage: AppImages.noImage,
-                                ),
+                                if (hasImage) ...[
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.network(
+                                      imageUrl,
+                                      height: 232,
+                                      width: Get.width,
+                                      fit: BoxFit.fill,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return const SizedBox.shrink();
+                                      },
+                                    ),
+                                  ),
+                                  16.height,
+                                ],
 
                                 // ── Name ─────────────────────────────────
                                 CommonText(
                                   text: item.name ?? 'N/A',
                                   color: const Color(0xff272727),
                                   fontSize: 16,
-                                  top: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
 

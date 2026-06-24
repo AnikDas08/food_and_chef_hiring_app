@@ -19,10 +19,8 @@ Widget category() {
         itemCount: controller.cuisineList.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-
           final item = controller.cuisineList[index];
           //print("image ${ApiEndPoint.imageUrl+item.image!}");
-
           return GestureDetector(
             onTap: (){
               Get.toNamed(AppRoutes.homeSearch,arguments: item);
@@ -31,7 +29,6 @@ Widget category() {
               padding: const EdgeInsets.only(right: 10),
               child: Column(
                 children: [
-
                   /// Image
                   CommonImage(
                     imageSrc: item.image == null
@@ -41,7 +38,6 @@ Widget category() {
                         : ApiEndPoint.imageUrl + item.image!),
                     size: 60,
                   ),
-
                   /// Name
                   CommonText(
                     text: item.name ?? '',
