@@ -21,14 +21,27 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
   // Since cartItem is a function, we might need to wrap it or use a different approach.
 
   final CartMenuDetail? menuDetail =
-  item.menu != null && item.menu!.isNotEmpty ? item.menu!.first : null;
+      item.menu != null && item.menu!.isNotEmpty ? item.menu!.first : null;
+
+  final String? firstImage =
+      (menuDetail?.images != null && menuDetail!.images!.isNotEmpty)
+          ? menuDetail.images!.first
+          : null;
+
+  final bool hasImage =
+      firstImage != null &&
+      firstImage.isNotEmpty &&
+      firstImage.trim() != '' &&
+      !firstImage.toLowerCase().contains('null') &&
+      firstImage != '/uploads/' &&
+      firstImage != '/files/';
 
   final String imageUrl =
-  (menuDetail?.images != null && menuDetail!.images!.isNotEmpty)
-      ? (menuDetail.images!.first.startsWith('http')
-      ? menuDetail.images!.first
-      : ApiEndPoint.imageUrl + menuDetail.images!.first)
-      : AppImages.noImage;
+      hasImage
+          ? (firstImage.startsWith('http')
+              ? firstImage
+              : ApiEndPoint.imageUrl + firstImage)
+          : '';
 
   final String name = menuDetail?.name ?? 'N/A';
   final String cartItemId = item.id ?? '';
@@ -59,6 +72,7 @@ Widget cartItem(BuildContext context, CartMenuItem item, String chefId) {
           cartItemId: cartItemId,
           liveQty: liveQty,
           imageUrl: imageUrl,
+          hasImage: hasImage,
         ),
       );
     },
@@ -74,6 +88,7 @@ class _CartItemInkWell extends StatefulWidget {
   final String cartItemId;
   final int liveQty;
   final String imageUrl;
+  final bool hasImage;
 
   const _CartItemInkWell({
     required this.controller,
@@ -84,6 +99,7 @@ class _CartItemInkWell extends StatefulWidget {
     required this.cartItemId,
     required this.liveQty,
     required this.imageUrl,
+    required this.hasImage,
   });
 
   @override
@@ -112,9 +128,10 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: widget.controller.isEditingOrder
-          ? () {
-              /*if (widget.menuDetail == null) return;
+      onTap:
+          widget.controller.isEditingOrder
+              ? () {
+                /*if (widget.menuDetail == null) return;
 
               final menuData = MenuData(
                 id: widget.menuDetail!.id,
@@ -131,8 +148,8 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
                 cartItem: widget.item,
                 chefId: widget.chefId,
               );*/
-            }
-          : null,
+              }
+              : null,
       borderRadius: BorderRadius.circular(12.r),
       child: Container(
         padding: EdgeInsets.all(10.r),
@@ -142,7 +159,7 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
           borderRadius: BorderRadius.circular(12.r),
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: Column(
@@ -164,7 +181,7 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
                       SizedBox(width: 4.w),
                       //_buildDeleteBtn(context, widget.controller, widget.cartItemId, widget.chefId),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           if (widget.menuDetail == null) return;
 
                           final menuData = MenuData(
@@ -172,7 +189,8 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
                             name: widget.menuDetail!.name,
                             images: widget.menuDetail!.images,
                             estCookingTime: widget.item.unitTimeStr,
-                            customizations: widget.menuDetail!.customizations ?? [],
+                            customizations:
+                                widget.menuDetail!.customizations ?? [],
                           );
 
                           itemDetails(
@@ -185,22 +203,32 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
                         },
                         child: Icon(
                           Icons.mode_edit_outline_outlined,
-                          size: 20,color:
-                        Color(0xff272727),
+                          size: 20,
+                          color: Color(0xff272727),
                         ),
-                      )
+                      ),
                     ],
                   ),
                   8.height,
-                  if (widget.item.customizations != null && widget.item.customizations!.isNotEmpty) ...[
+                  if (widget.item.customizations != null &&
+                      widget.item.customizations!.isNotEmpty) ...[
                     Wrap(
                       spacing: 6.w,
                       runSpacing: 6.h,
-                      children: widget.item.customizations!.map((c) => _buildPill(c)).toList(),
+                      children:
+                          widget.item.customizations!
+                              .map((c) => _buildPill(c))
+                              .toList(),
                     ),
                     10.height,
                   ],
-                  _buildStepper(context, widget.controller, widget.cartItemId, widget.chefId, widget.liveQty),
+                  _buildStepper(
+                    context,
+                    widget.controller,
+                    widget.cartItemId,
+                    widget.chefId,
+                    widget.liveQty,
+                  ),
                   12.height,
                   if (widget.item.unitTimeStr != null) ...[
                     //_buildCookingTimeBadge(widget.item.unitTimeStr!),
@@ -209,14 +237,21 @@ class _CartItemInkWellState extends State<_CartItemInkWell>
                 ],
               ),
             ),
-            SizedBox(width: 12.w),
-            CommonImage(
-              imageSrc: widget.imageUrl,
-              size: 95.r,
-              borderRadius: 8.r,
-              fill: BoxFit.cover,
-              defaultImage: AppImages.noImage,
-            ),
+            if (widget.hasImage) ...[
+              SizedBox(width: 12.w),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.r),
+                child: Image.network(
+                  widget.imageUrl,
+                  height: 95.sp,
+                  width: 95.sp,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const SizedBox.shrink();
+                  },
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -292,7 +327,13 @@ Widget _buildCookingTimeBadge(String time) {
   );
 }
 
-Widget _buildStepper(BuildContext context, CartController controller, String id, String chefId, int qty) {
+Widget _buildStepper(
+  BuildContext context,
+  CartController controller,
+  String id,
+  String chefId,
+  int qty,
+) {
   return Container(
     padding: EdgeInsets.all(6.r),
     decoration: BoxDecoration(
@@ -304,20 +345,31 @@ Widget _buildStepper(BuildContext context, CartController controller, String id,
       children: [
         _stepperActionBtn(
           icon: Icons.remove,
-          onTap: qty > 1
-              ? () => controller.updateQuantity(cartItemId: id, increment: false, chefId: chefId)
-              : null,
+          onTap:
+              qty > 1
+                  ? () => controller.updateQuantity(
+                    cartItemId: id,
+                    increment: false,
+                    chefId: chefId,
+                  )
+                  : null,
         ),
         SizedBox(
           width: 32.w,
           child: CommonText(
             text: qty.toString(),
-            fontSize: 12, fontWeight: FontWeight.w600
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
           ),
         ),
         _stepperActionBtn(
           icon: Icons.add,
-          onTap: () => controller.updateQuantity(cartItemId: id, increment: true, chefId: chefId),
+          onTap:
+              () => controller.updateQuantity(
+                cartItemId: id,
+                increment: true,
+                chefId: chefId,
+              ),
         ),
       ],
     ),
@@ -333,7 +385,8 @@ Widget _stepperActionBtn({required IconData icon, VoidCallback? onTap}) {
       child: Icon(
         icon,
         size: 16.r,
-        color: onTap == null ? const Color(0xffC0C0C0) : const Color(0xff272727),
+        color:
+            onTap == null ? const Color(0xffC0C0C0) : const Color(0xff272727),
       ),
     ),
   );
@@ -341,40 +394,57 @@ Widget _stepperActionBtn({required IconData icon, VoidCallback? onTap}) {
 
 // ── CONFIRMATION DIALOG ──
 
-Future<bool?> _confirmDelete(BuildContext context, CartController controller, String cartItemId, String chefId) {
+Future<bool?> _confirmDelete(
+  BuildContext context,
+  CartController controller,
+  String cartItemId,
+  String chefId,
+) {
   return showDialog<bool>(
     context: context,
-    builder: (_) => AlertDialog(
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-      title: const CommonText(
-        text: 'Remove Item',
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-        textAlign: TextAlign.start,
-      ),
+    builder:
+        (_) => AlertDialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+          title: const CommonText(
+            text: 'Remove Item',
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            textAlign: TextAlign.start,
+          ),
 
-      content: CommonText(
-        text: 'Are you sure you want to remove this item from your cart?',
-        fontSize: 12.sp, color: const Color(0xff777777),
-        maxLines: 2,
-        textAlign: TextAlign.start,
-        fontWeight: FontWeight.w400,
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context, false),
-          child: const CommonText(
-              text: 'Cancel', color: Color(0xff777777), fontSize: 14),
+          content: CommonText(
+            text: 'Are you sure you want to remove this item from your cart?',
+            fontSize: 12.sp,
+            color: const Color(0xff777777),
+            maxLines: 2,
+            textAlign: TextAlign.start,
+            fontWeight: FontWeight.w400,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const CommonText(
+                text: 'Cancel',
+                color: Color(0xff777777),
+                fontSize: 14,
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const CommonText(
+                text: 'Remove',
+                color: Color(0xffE53935),
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
+            ),
+          ],
         ),
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context, true);
-          },
-          child: const CommonText(text: 'Remove', color: Color(0xffE53935), fontWeight: FontWeight.w600, fontSize: 14),
-        ),
-      ],
-    ),
   );
 }
 
@@ -396,7 +466,8 @@ class _SwipeableCartItem extends StatefulWidget {
   State<_SwipeableCartItem> createState() => _SwipeableCartItemState();
 }
 
-class _SwipeableCartItemState extends State<_SwipeableCartItem> with SingleTickerProviderStateMixin {
+class _SwipeableCartItemState extends State<_SwipeableCartItem>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<Offset> _animation;
   double _dragExtent = 0;

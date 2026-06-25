@@ -6,6 +6,7 @@ import 'package:new_untitled/utils/constants/app_icons.dart';
 import 'package:new_untitled/utils/extensions/extension.dart';
 
 import '../../../../../component/text/common_text.dart';
+import 'package:new_untitled/services/storage/storage_services.dart';
 import '../../data/mamu_model.dart';
 import 'item_details.dart';
 
@@ -46,25 +47,24 @@ class _FoodItemState extends State<FoodItem>
   Widget build(BuildContext context) {
     final MenuData item = widget.item;
     final String? firstImage =
-    (item.images != null && item.images!.isNotEmpty)
-        ? item.images!.first
-        : null;
+        (item.images != null && item.images!.isNotEmpty)
+            ? item.images!.first
+            : null;
 
-    final bool hasImage = firstImage != null &&
+    final bool hasImage =
+        firstImage != null &&
         firstImage.isNotEmpty &&
         firstImage.trim() != '' &&
         !firstImage.toLowerCase().contains('null') &&
         firstImage != '/uploads/' &&
         firstImage != '/files/';
 
-    final String imageUrl = hasImage
-        ? _buildImageUrl(firstImage)
-        : '';
+    final String imageUrl = hasImage ? _buildImageUrl(firstImage) : '';
 
     // kitchen status badge
     final bool kitchenReady =
         item.kitchenStatus?.toLowerCase() == 'ready' ||
-            item.kitchenStatus == null;
+        item.kitchenStatus == null;
 
     return InkWell(
       onTap: () {
@@ -80,7 +80,7 @@ class _FoodItemState extends State<FoodItem>
         child: Column(
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // ── Text info ────────────────────────────────────────────
                 Expanded(
@@ -95,31 +95,42 @@ class _FoodItemState extends State<FoodItem>
                       ),
                       4.height,
 
-                      // Ingredients count
-                      Row(
-                        children: [
-                          const CommonImage(
-                            imageSrc: AppIcons.ingredients,
-                            size: 16,
-                            imageColor: Color(0xff777777),
-                          ),
-                          const CommonText(
-                            text: 'Ingredients : ',
-                            fontSize: 12,
-                            left: 4,
-                            color: Color(0xff777777),
-                            fontWeight: FontWeight.w400,
-                          ),
-                          CommonText(
-                            text:
-                            '${item.ingredients?.length ?? 0} items',
-                            fontSize: 12,
-                            color: const Color(0xff272727),
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ],
-                      ),
-                      4.height,
+                      // Ingredients / Description count
+                      if (LocalStorage.myRole == 'CUSTOMER') ...[
+                        CommonText(
+                          text: item.description ?? 'N/A',
+                          fontSize: 12,
+                          color: const Color(0xff777777),
+                          fontWeight: FontWeight.w400,
+                          maxLines: 2,
+                          textAlign: TextAlign.start,
+                        ),
+                        4.height,
+                      ] else ...[
+                        Row(
+                          children: [
+                            const CommonImage(
+                              imageSrc: AppIcons.ingredients,
+                              size: 16,
+                              imageColor: Color(0xff777777),
+                            ),
+                            const CommonText(
+                              text: 'Ingredients : ',
+                              fontSize: 12,
+                              left: 4,
+                              color: Color(0xff777777),
+                              fontWeight: FontWeight.w400,
+                            ),
+                            CommonText(
+                              text: '${item.ingredients?.length ?? 0} items',
+                              fontSize: 12,
+                              color: const Color(0xff272727),
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ],
+                        ),
+                        4.height,
+                      ],
 
                       // Cooking time
                       Row(
@@ -150,11 +161,14 @@ class _FoodItemState extends State<FoodItem>
                       // Kitchen status badge
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 6),
+                          horizontal: 8,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
-                          color: kitchenReady
-                              ? const Color(0xffDBEBD9)
-                              : const Color(0xffFFF0E0),
+                          color:
+                              kitchenReady
+                                  ? const Color(0xffDBEBD9)
+                                  : const Color(0xffFFF0E0),
                           borderRadius: BorderRadius.circular(30),
                           /*border: Border.all(
                             color: kitchenReady
@@ -164,9 +178,10 @@ class _FoodItemState extends State<FoodItem>
                         ),
                         child: CommonText(
                           text: item.kitchenStatus ?? 'Your Kitchen is Ready',
-                          color: kitchenReady
-                              ? const Color(0xff2F8328)
-                              : const Color(0xffE39400),
+                          color:
+                              kitchenReady
+                                  ? const Color(0xff2F8328)
+                                  : const Color(0xffE39400),
                           fontSize: 10,
                         ),
                       ),
