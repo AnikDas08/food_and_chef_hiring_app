@@ -23,8 +23,8 @@ class ApiEndPoint {
   static const chats = 'chat';
   static const messages = 'message';
   static const cuisine = '/cusine';
-  static const AddMenuSection = '/                                                                                                                                                                     menu/section?id=';
   static const String getUnits = '/menu/units';
+  static const AddMenuSection = '/menu/section?id=';
   static const String getEquipments = '/equipment';
   static const String addMenuItem = '/menu?id=';
   static const String chefProfile = 'user/profile';

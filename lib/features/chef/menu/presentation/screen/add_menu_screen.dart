@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../component/button/common_button.dart';
+import '../../../../../component/text/common_text.dart';
 import '../../../../common/auth/signup_chef/presentation/controller/Chef_add_menu_controller.dart';
 
 class AddMenuScreen extends StatelessWidget {
   const AddMenuScreen({super.key});
 
   void _showAddDialog(
-    BuildContext context,
-    String title,
-    Function(String) onAdd,
-  ) {
+      BuildContext context,
+      String title,
+      Function(String) onAdd,
+      ) {
     final ctrl = TextEditingController();
-
     showDialog(
       context: context,
       builder: (_) => Dialog(
@@ -27,19 +27,13 @@ class AddMenuScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// 🔹 Title
-              Text(
-                'Add $title',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF272727),
-                ),
+              CommonText(
+                text: 'Add $title',
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: const Color(0xFF272727),
               ),
-
               20.verticalSpace,
-
-              /// 🔹 Input Field (Rounded Container Style)
               Container(
                 decoration: BoxDecoration(
                   color: const Color(0xFFF7F7F7),
@@ -60,21 +54,16 @@ class AddMenuScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
               20.verticalSpace,
-
-              /// 🔹 Buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      'Cancel',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.grey,
-                      ),
+                    child: const CommonText(
+                      text: 'Cancel',
+                      fontSize: 14,
+                      color: Colors.grey,
                     ),
                   ),
                   10.horizontalSpace,
@@ -84,12 +73,18 @@ class AddMenuScreen extends StatelessWidget {
                       onAdd(ctrl.text.trim());
                       Navigator.pop(context);
                     },
-                    child: Padding(padding:EdgeInsetsGeometry.only(right: 10),child: Text('Add', style: TextStyle(color: const Color(0xFF1C1C1C), fontWeight: FontWeight.w600))),
-
-
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: const CommonText(
+                        text: 'Add',
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF1C1C1C),
+                      ),
+                    ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -109,13 +104,16 @@ class AddMenuScreen extends StatelessWidget {
         builder: (ctx, setState) => AlertDialog(
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-          title: Text('Add Ingredient',
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700)),
+          title: const CommonText(
+            text: 'Add Ingredient',
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: Color(0xFF272727),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ✅ Name field with error feedback
               Container(
                 decoration: BoxDecoration(
                   color: const Color(0xFFF7F7F7),
@@ -128,7 +126,9 @@ class AddMenuScreen extends StatelessWidget {
                   controller: nameCtrl,
                   autofocus: true,
                   style: TextStyle(fontSize: 13.sp),
-                  onChanged: (_) { if (nameError != null) setState(() => nameError = null); },
+                  onChanged: (_) {
+                    if (nameError != null) setState(() => nameError = null);
+                  },
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
@@ -139,7 +139,11 @@ class AddMenuScreen extends StatelessWidget {
               ),
               if (nameError != null) ...[
                 4.verticalSpace,
-                Text(nameError!, style: TextStyle(fontSize: 11.sp, color: Colors.red)),
+                CommonText(
+                  text: nameError!,
+                  fontSize: 11,
+                  color: Colors.red,
+                ),
               ],
               10.verticalSpace,
               _dialogField(qtyCtrl, 'Quantity (e.g. 200)', isNumber: true),
@@ -148,7 +152,9 @@ class AddMenuScreen extends StatelessWidget {
                 if (c.isLoadingUnits.value) {
                   return const Center(child: CircularProgressIndicator(strokeWidth: 2));
                 }
-                final units = c.unitsList.isEmpty ? ['kg', 'g', 'ml', 'l', 'cup', 'tsp', 'tbsp'] : c.unitsList;
+                final units = c.unitsList.isEmpty
+                    ? ['kg', 'g', 'ml', 'l', 'cup', 'tsp', 'tbsp']
+                    : c.unitsList;
                 if (!units.contains(localUnit)) localUnit = units.first;
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -165,7 +171,9 @@ class AddMenuScreen extends StatelessWidget {
                       icon: Icon(Icons.keyboard_arrow_down, size: 18.sp, color: const Color(0xFF272727)),
                       style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
                       items: units.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-                      onChanged: (v) { if (v != null) setState(() => localUnit = v); },
+                      onChanged: (v) {
+                        if (v != null) setState(() => localUnit = v);
+                      },
                     ),
                   ),
                 );
@@ -175,21 +183,28 @@ class AddMenuScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel',style: TextStyle(color: Colors.grey),),
+              child: const CommonText(
+                text: 'Cancel',
+                fontSize: 13,
+                color: Colors.grey,
+              ),
             ),
             TextButton(
               onPressed: () {
-                // ✅ Validate before adding
                 if (nameCtrl.text.trim().isEmpty) {
                   setState(() => nameError = 'Ingredient name is required');
                   return;
                 }
                 c.addIngredient(nameCtrl.text, qtyCtrl.text, localUnit);
                 Navigator.of(context).pop();
-                // ✅ Ensure ingredients section is expanded so user sees the added item
                 if (!c.ingredientsExpanded.value) c.toggleIngredients();
               },
-              child: Text('Add', style: TextStyle(color: const Color(0xFF1C1C1C), fontWeight: FontWeight.w600)),
+              child: const CommonText(
+                text: 'Add',
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF1C1C1C),
+              ),
             ),
           ],
         ),
@@ -227,45 +242,35 @@ class AddMenuScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    width: 36.w, height: 36.h,
-                    decoration: BoxDecoration(
-                        color: const Color(0xFFF5F5F5),
-                        borderRadius: BorderRadius.circular(10.r)),
-                    child: Icon(Icons.arrow_back_ios_new_rounded,
-                        size: 16.sp, color: const Color(0xFF272727)),
-                  ),
-                ),
-              ),
-            ),
-
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Add Item',
-                        style: TextStyle(
-                            fontSize: 26.sp, fontWeight: FontWeight.w700,
-                            color: const Color(0xFF272727), letterSpacing: -0.5)),
+                    const CommonText(
+                      text: 'Add Item',
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF272727),
+                    ),
                     8.verticalSpace,
-                    Text(
-                      'Add your menu and items to showcase what you can cook for customers.',
-                      style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777), height: 1.5),
+                    const CommonText(
+                      text: 'Add your menu and items to showcase what you can cook for customers.',
+                      fontSize: 12,
+                      color: Color(0xFF777777),
+                      maxLines: 3,
+                      textAlign: TextAlign.start,
                     ),
                     20.verticalSpace,
 
-                    // ── Preview Image ──
                     _label('Previews'),
                     8.verticalSpace,
                     Obx(() => GestureDetector(
@@ -273,19 +278,21 @@ class AddMenuScreen extends StatelessWidget {
                       child: Container(
                         width: 107.w, height: 112.h,
                         decoration: BoxDecoration(
-                            color: const Color(0xFFF2F2F2),
-                            borderRadius: BorderRadius.circular(12.r)),
+                          color: const Color(0xFFF2F2F2),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
                         child: c.previewImage.value != null
                             ? ClipRRect(
                           borderRadius: BorderRadius.circular(12.r),
                           child: Image.file(c.previewImage.value!, fit: BoxFit.cover),
                         )
-                            : Center(child: Icon(Icons.add, size: 28.sp, color: const Color(0xFF777777))),
+                            : Center(
+                          child: Icon(Icons.add, size: 28.sp, color: const Color(0xFF777777)),
+                        ),
                       ),
                     )),
                     20.verticalSpace,
 
-                    // ── Menu Category ──
                     _label('Menu Category'),
                     8.verticalSpace,
                     Obx(() {
@@ -293,19 +300,27 @@ class AddMenuScreen extends StatelessWidget {
                         return Container(
                           height: 50.h,
                           decoration: BoxDecoration(
-                              color: const Color(0xFFF7F7F7),
-                              borderRadius: BorderRadius.circular(12.r)),
-                          child: const Center(child: CircularProgressIndicator(color: Color(0xFF1C1C1C), strokeWidth: 2)),
+                            color: const Color(0xFFF7F7F7),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: const Center(
+                            child: CircularProgressIndicator(color: Color(0xFF1C1C1C), strokeWidth: 2),
+                          ),
                         );
                       }
                       if (c.categoryList.isEmpty) {
                         return Container(
                           padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
                           decoration: BoxDecoration(
-                              color: const Color(0xFFF7F7F7),
-                              borderRadius: BorderRadius.circular(12.r)),
-                          child: Text('No category found. Add a menu section first.',
-                              style: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB))),
+                            color: const Color(0xFFF7F7F7),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: const CommonText(
+                            text: 'No category found. Add a menu section first.',
+                            fontSize: 13,
+                            color: Color(0xFFBBBBBB),
+                            textAlign: TextAlign.start,
+                          ),
                         );
                       }
                       final safeVal = c.safeCategoryValue;
@@ -313,8 +328,9 @@ class AddMenuScreen extends StatelessWidget {
                         width: double.infinity,
                         padding: EdgeInsets.symmetric(horizontal: 14.w),
                         decoration: BoxDecoration(
-                            color: const Color(0xFFF7F7F7),
-                            borderRadius: BorderRadius.circular(12.r)),
+                          color: const Color(0xFFF7F7F7),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: safeVal,
@@ -326,26 +342,27 @@ class AddMenuScreen extends StatelessWidget {
                             items: c.categoryList
                                 .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                                 .toList(),
-                            onChanged: (v) { if (v != null) c.setCategory(v); },
+                            onChanged: (v) {
+                              if (v != null) c.setCategory(v);
+                            },
                           ),
                         ),
                       );
                     }),
                     16.verticalSpace,
 
-                    // ── Item Name ──
                     _label('Item Name'),
                     8.verticalSpace,
                     _textField(c.nameController, 'Enter Item Name'),
                     16.verticalSpace,
 
-                    // ── Description ──
                     _label('Description'),
                     8.verticalSpace,
                     Container(
                       decoration: BoxDecoration(
-                          color: const Color(0xFFF7F7F7),
-                          borderRadius: BorderRadius.circular(12.r)),
+                        color: const Color(0xFFF7F7F7),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
                       child: TextField(
                         controller: c.descriptionController,
                         maxLines: 4,
@@ -360,7 +377,6 @@ class AddMenuScreen extends StatelessWidget {
                     ),
                     16.verticalSpace,
 
-                    // ── Diet Types ──
                     _label('Diet Types'),
                     8.verticalSpace,
                     Obx(() => _dropdownContainer(
@@ -370,7 +386,6 @@ class AddMenuScreen extends StatelessWidget {
                     )),
                     16.verticalSpace,
 
-                    // ── Allergens (multi-select checkbox list + OK button) ──
                     _label('Allergens'),
                     8.verticalSpace,
                     Obx(() => GestureDetector(
@@ -386,25 +401,24 @@ class AddMenuScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             Expanded(
-                              child: Text(
-                                c.selectedAllergens.isEmpty
+                              child: CommonText(
+                                text: c.selectedAllergens.isEmpty
                                     ? 'Select allergens...'
                                     : c.selectedAllergens.join(', '),
-                                style: TextStyle(
-                                  fontSize: 13.sp,
-                                  color: c.selectedAllergens.isEmpty
-                                      ? const Color(0xFFBBBBBB)
-                                      : const Color(0xFF272727),
-                                ),
+                                fontSize: 13,
+                                color: c.selectedAllergens.isEmpty
+                                    ? const Color(0xFFBBBBBB)
+                                    : const Color(0xFF272727),
                                 maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
                               ),
                             ),
                             Icon(
                               c.allergensExpanded.value
                                   ? Icons.keyboard_arrow_up
                                   : Icons.keyboard_arrow_down,
-                              size: 18.sp, color: const Color(0xFF272727),
+                              size: 18.sp,
+                              color: const Color(0xFF272727),
                             ),
                           ],
                         ),
@@ -419,7 +433,6 @@ class AddMenuScreen extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          // ✅ Checkbox list — full multi-select
                           ...c.allergens.map((allergen) {
                             final isSelected = c.selectedAllergens.contains(allergen);
                             return InkWell(
@@ -443,21 +456,17 @@ class AddMenuScreen extends StatelessWidget {
                                           : null,
                                     ),
                                     12.horizontalSpace,
-                                    Text(
-                                      allergen,
-                                      style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: const Color(0xFF272727),
-                                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                                      ),
+                                    CommonText(
+                                      text: allergen,
+                                      fontSize: 13,
+                                      color: const Color(0xFF272727),
+                                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                                     ),
                                   ],
                                 ),
                               ),
                             );
                           }),
-
-                          // ✅ OK button to close the allergen list
                           Padding(
                             padding: EdgeInsets.fromLTRB(14.w, 4.h, 14.w, 12.h),
                             child: Align(
@@ -470,11 +479,12 @@ class AddMenuScreen extends StatelessWidget {
                                     color: const Color(0xFF272727),
                                     borderRadius: BorderRadius.circular(8.r),
                                   ),
-                                  child: Text('OK',
-                                      style: TextStyle(
-                                          fontSize: 13.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white)),
+                                  child: const CommonText(
+                                    text: 'OK',
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
@@ -485,7 +495,6 @@ class AddMenuScreen extends StatelessWidget {
                         : const SizedBox.shrink()),
                     16.verticalSpace,
 
-                    // ── Prep Time ──
                     _label('Est. Preparation Time'),
                     8.verticalSpace,
                     Obx(() => _TimeInputRow(
@@ -497,16 +506,13 @@ class AddMenuScreen extends StatelessWidget {
                     16.verticalSpace,
 
                     _label('Est. Cooking Time'),
-
                     8.verticalSpace,
-
                     Obx(() => _TimeInputRow(
                       controller: c.cookTimeController,
                       selectedUnit: c.selectedCookUnit,
                       units: c.timeUnits,
                       onUnitChanged: c.setCookUnit,
                     )),
-
                     16.verticalSpace,
 
                     Obx(() => _SectionHeader(
@@ -515,7 +521,6 @@ class AddMenuScreen extends StatelessWidget {
                       onAddTap: () => _showAddDialog(context, 'Customize Option', c.addCustomizeOption),
                       onToggle: c.toggleCustomize,
                     )),
-
                     Obx(() => c.customizeExpanded.value
                         ? Column(children: [
                       8.verticalSpace,
@@ -523,7 +528,6 @@ class AddMenuScreen extends StatelessWidget {
                           _CheckItem(label: opt, onRemove: () => c.removeCustomizeOption(opt))),
                     ])
                         : const SizedBox.shrink()),
-
                     16.verticalSpace,
 
                     Obx(() => _SectionHeader(
@@ -532,15 +536,17 @@ class AddMenuScreen extends StatelessWidget {
                       onAddTap: () => _showIngredientDialog(context, c),
                       onToggle: c.toggleIngredients,
                     )),
-
                     Obx(() => c.ingredientsExpanded.value
                         ? Column(children: [
                       8.verticalSpace,
                       c.ingredientsList.isEmpty
                           ? Padding(
                         padding: EdgeInsets.symmetric(vertical: 6.h),
-                        child: Text('No ingredients added yet.',
-                            style: TextStyle(fontSize: 12.sp, color: const Color(0xFF999999))),
+                        child: const CommonText(
+                          text: 'No ingredients added yet.',
+                          fontSize: 12,
+                          color: Color(0xFF999999),
+                        ),
                       )
                           : Column(
                         children: List.generate(c.ingredientsList.length, (i) {
@@ -557,7 +563,6 @@ class AddMenuScreen extends StatelessWidget {
                         : const SizedBox.shrink()),
                     16.verticalSpace,
 
-                    // ── Special Equipment ──
                     _label('Special Equipment'),
                     8.verticalSpace,
                     Obx(() => GestureDetector(
@@ -573,24 +578,24 @@ class AddMenuScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             Expanded(
-                              child: Text(
-                                c.selectedEquipmentIds.isEmpty
+                              child: CommonText(
+                                text: c.selectedEquipmentIds.isEmpty
                                     ? 'Select equipment...'
                                     : c.selectedEquipmentNames.join(', '),
-                                style: TextStyle(
-                                  fontSize: 13.sp,
-                                  color: c.selectedEquipmentIds.isEmpty
-                                      ? const Color(0xFFBBBBBB)
-                                      : const Color(0xFF272727),
-                                ),
-                                maxLines: 1, overflow: TextOverflow.ellipsis,
+                                fontSize: 13,
+                                color: c.selectedEquipmentIds.isEmpty
+                                    ? const Color(0xFFBBBBBB)
+                                    : const Color(0xFF272727),
+                                maxLines: 1,
+                                textAlign: TextAlign.start,
                               ),
                             ),
                             Icon(
                               c.equipmentExpanded.value
                                   ? Icons.keyboard_arrow_up
                                   : Icons.keyboard_arrow_down,
-                              size: 18.sp, color: const Color(0xFF272727),
+                              size: 18.sp,
+                              color: const Color(0xFF272727),
                             ),
                           ],
                         ),
@@ -601,18 +606,25 @@ class AddMenuScreen extends StatelessWidget {
                         ? Container(
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
-                          color: const Color(0xFFF7F7F7),
-                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(12.r))),
-                      child: const Center(child: CircularProgressIndicator(color: Color(0xFF1C1C1C), strokeWidth: 2)),
+                        color: const Color(0xFFF7F7F7),
+                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(12.r)),
+                      ),
+                      child: const Center(
+                        child: CircularProgressIndicator(color: Color(0xFF1C1C1C), strokeWidth: 2),
+                      ),
                     )
                         : c.equipmentList.isEmpty
                         ? Container(
                       padding: EdgeInsets.all(14.w),
                       decoration: BoxDecoration(
-                          color: const Color(0xFFF7F7F7),
-                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(12.r))),
-                      child: Text('No equipment found',
-                          style: TextStyle(fontSize: 13.sp, color: const Color(0xFF999999))),
+                        color: const Color(0xFFF7F7F7),
+                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(12.r)),
+                      ),
+                      child: const CommonText(
+                        text: 'No equipment found',
+                        fontSize: 13,
+                        color: Color(0xFF999999),
+                      ),
                     )
                         : Container(
                       decoration: BoxDecoration(
@@ -645,17 +657,17 @@ class AddMenuScreen extends StatelessWidget {
                                           : null,
                                     ),
                                     12.horizontalSpace,
-                                    Text(eq.name,
-                                        style: TextStyle(
-                                          fontSize: 13.sp, color: const Color(0xFF272727),
-                                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                                        )),
+                                    CommonText(
+                                      text: eq.name,
+                                      fontSize: 13,
+                                      color: const Color(0xFF272727),
+                                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                                    ),
                                   ],
                                 ),
                               ),
                             );
                           }),
-                          // ✅ OK button for equipment too
                           Padding(
                             padding: EdgeInsets.fromLTRB(14.w, 4.h, 14.w, 12.h),
                             child: Align(
@@ -668,8 +680,12 @@ class AddMenuScreen extends StatelessWidget {
                                     color: const Color(0xFF272727),
                                     borderRadius: BorderRadius.circular(8.r),
                                   ),
-                                  child: Text('OK',
-                                      style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600, color: Colors.white)),
+                                  child: const CommonText(
+                                    text: 'OK',
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
@@ -683,7 +699,6 @@ class AddMenuScreen extends StatelessWidget {
                 ),
               ),
             ),
-
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.h),
               child: Obx(() => CommonButton(
@@ -691,7 +706,6 @@ class AddMenuScreen extends StatelessWidget {
                 titleText: c.isEditMode.value ? 'Update Item' : 'Add Item',
                 onTap: () => c.isEditMode.value ? c.updateMenuItem() : c.submitMenuItem(),
               )),
-
             ),
           ],
         ),
@@ -699,11 +713,18 @@ class AddMenuScreen extends StatelessWidget {
     );
   }
 
-  Widget _label(String text) => Text(text,
-      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: const Color(0xFF272727)));
+  Widget _label(String text) => CommonText(
+    text: text,
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: const Color(0xFF272727),
+  );
 
   Widget _textField(TextEditingController ctrl, String hint) => Container(
-    decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
+    decoration: BoxDecoration(
+      color: const Color(0xFFF7F7F7),
+      borderRadius: BorderRadius.circular(12.r),
+    ),
     child: TextField(
       controller: ctrl,
       style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
@@ -716,33 +737,49 @@ class AddMenuScreen extends StatelessWidget {
     ),
   );
 
-  Widget _dropdownContainer({required String value, required List<String> items, required Function(String) onChanged}) {
+  Widget _dropdownContainer({
+    required String value,
+    required List<String> items,
+    required Function(String) onChanged,
+  }) {
     final safeValue = items.contains(value) ? value : (items.isNotEmpty ? items.first : null);
     if (safeValue == null) return const SizedBox.shrink();
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 14.w),
-      decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF7F7F7),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          value: safeValue, isExpanded: true, dropdownColor: Colors.white,
+          value: safeValue,
+          isExpanded: true,
+          dropdownColor: Colors.white,
           borderRadius: BorderRadius.circular(12.r),
           icon: Icon(Icons.keyboard_arrow_down, size: 18.sp, color: const Color(0xFF272727)),
           style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
           items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-          onChanged: (v) { if (v != null) onChanged(v); },
+          onChanged: (v) {
+            if (v != null) onChanged(v);
+          },
         ),
       ),
     );
   }
 }
 
-// ── Sub-Widgets (unchanged) ──
+// ── Sub-Widgets ──
 
 class _IngredientRow extends StatelessWidget {
   final String name, quantity, unit;
   final VoidCallback onRemove;
-  const _IngredientRow({required this.name, required this.quantity, required this.unit, required this.onRemove});
+  const _IngredientRow({
+    required this.name,
+    required this.quantity,
+    required this.unit,
+    required this.onRemove,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -750,15 +787,33 @@ class _IngredientRow extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 8.h),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-        decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(10.r)),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF7F7F7),
+          borderRadius: BorderRadius.circular(10.r),
+        ),
         child: Row(
           children: [
-            Expanded(flex: 3, child: Text(name,
-                style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w600, color: const Color(0xFF272727)))),
-            Expanded(flex: 2, child: Text('$quantity $unit',
-                style: TextStyle(fontSize: 12.sp, color: const Color(0xFF777777)))),
-            GestureDetector(onTap: onRemove,
-                child: Icon(Icons.close, size: 16.sp, color: const Color(0xFF999999))),
+            Expanded(
+              flex: 3,
+              child: CommonText(
+                text: name,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF272727),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: CommonText(
+                text: '$quantity $unit',
+                fontSize: 12,
+                color: const Color(0xFF777777),
+              ),
+            ),
+            GestureDetector(
+              onTap: onRemove,
+              child: Icon(Icons.close, size: 16.sp, color: const Color(0xFF999999)),
+            ),
           ],
         ),
       ),
@@ -771,44 +826,63 @@ class _TimeInputRow extends StatelessWidget {
   final String selectedUnit;
   final List<String> units;
   final Function(String) onUnitChanged;
-  const _TimeInputRow({required this.controller, required this.selectedUnit, required this.units, required this.onUnitChanged});
+  const _TimeInputRow({
+    required this.controller,
+    required this.selectedUnit,
+    required this.units,
+    required this.onUnitChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
     final safeUnit = units.contains(selectedUnit) ? selectedUnit : units.first;
     return Row(
       children: [
-        Expanded(flex: 2, child: Container(
-          height: 50.h,
-          decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
-          child: TextField(
-            controller: controller, keyboardType: TextInputType.number,
-            style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
-              hintText: 'e.g. 30',
-              hintStyle: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB)),
+        Expanded(
+          flex: 2,
+          child: Container(
+            height: 50.h,
+            decoration: BoxDecoration(
+              color: const Color(0xFFF7F7F7),
+              borderRadius: BorderRadius.circular(12.r),
             ),
-          ),
-        )),
-
-        10.horizontalSpace,
-
-        Expanded(flex: 3, child: Container(
-          height: 50.h,
-          padding: EdgeInsets.symmetric(horizontal: 14.w),
-          decoration: BoxDecoration(color: const Color(0xFFF7F7F7), borderRadius: BorderRadius.circular(12.r)),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: safeUnit, isExpanded: true,
-              icon: Icon(Icons.keyboard_arrow_down, size: 18.sp, color: const Color(0xFF272727)),
+            child: TextField(
+              controller: controller,
+              keyboardType: TextInputType.number,
               style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
-              items: units.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-              onChanged: (v) { if (v != null) onUnitChanged(v); },
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+                hintText: 'e.g. 30',
+                hintStyle: TextStyle(fontSize: 13.sp, color: const Color(0xFFBBBBBB)),
+              ),
             ),
           ),
-        )),
+        ),
+        10.horizontalSpace,
+        Expanded(
+          flex: 3,
+          child: Container(
+            height: 50.h,
+            padding: EdgeInsets.symmetric(horizontal: 14.w),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF7F7F7),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: safeUnit,
+                isExpanded: true,
+                icon: Icon(Icons.keyboard_arrow_down, size: 18.sp, color: const Color(0xFF272727)),
+                style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)),
+                items: units.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                onChanged: (v) {
+                  if (v != null) onUnitChanged(v);
+                },
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -818,27 +892,45 @@ class _SectionHeader extends StatelessWidget {
   final String title;
   final bool expanded;
   final VoidCallback onAddTap, onToggle;
-  const _SectionHeader({required this.title, required this.expanded, required this.onAddTap, required this.onToggle});
+  const _SectionHeader({
+    required this.title,
+    required this.expanded,
+    required this.onAddTap,
+    required this.onToggle,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(title, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: const Color(0xFF272727))),
+        CommonText(
+          text: title,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: const Color(0xFF272727),
+        ),
         const Spacer(),
         GestureDetector(
           onTap: onAddTap,
           child: Row(children: [
             Icon(Icons.add, size: 14.sp, color: const Color(0xFF272727)),
             4.horizontalSpace,
-            Text('Add', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500, color: const Color(0xFF272727))),
+            const CommonText(
+              text: 'Add',
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF272727),
+            ),
           ]),
         ),
         12.horizontalSpace,
         GestureDetector(
           onTap: onToggle,
-          child: Icon(expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-              size: 20.sp, color: const Color(0xFF272727)),
+          child: Icon(
+            expanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+            size: 20.sp,
+            color: const Color(0xFF272727),
+          ),
         ),
       ],
     );
@@ -859,12 +951,23 @@ class _CheckItem extends StatelessWidget {
           Container(
             width: 18.w, height: 18.w,
             decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFFCCCCCC)),
-                borderRadius: BorderRadius.circular(4.r)),
+              border: Border.all(color: const Color(0xFFCCCCCC)),
+              borderRadius: BorderRadius.circular(4.r),
+            ),
           ),
           10.horizontalSpace,
-          Expanded(child: Text(label, style: TextStyle(fontSize: 13.sp, color: const Color(0xFF272727)))),
-          GestureDetector(onTap: onRemove, child: Icon(Icons.close, size: 16.sp, color: const Color(0xFF999999))),
+          Expanded(
+            child: CommonText(
+              text: label,
+              textAlign: TextAlign.left,
+              fontSize: 13,
+              color: const Color(0xFF272727),
+            ),
+          ),
+          GestureDetector(
+            onTap: onRemove,
+            child: Icon(Icons.close, size: 16.sp, color: const Color(0xFF999999)),
+          ),
         ],
       ),
     );
