@@ -210,40 +210,24 @@ class BaseDocPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         scrolledUnderElevation: 0,
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        leadingWidth: 60,
-        flexibleSpace: appBarOpacity(),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: GestureDetector(
-            onTap: onBack ?? () => Navigator.of(context).maybePop(),
-            child: Container(
-              alignment: Alignment.center,
-              child: const Icon(
-                Icons.arrow_back,
-                size: 24,
-                color: _textPrimary,
-              ),
-            ),
+        leading: GestureDetector(
+          onTap: onBack ?? () => Navigator.of(context).maybePop(),
+          child: Icon(
+            Platform.isIOS
+                ? Icons.arrow_back_ios_new
+                : Icons.arrow_back,
+            size: 24,
+            color: _textPrimary,
           ),
         ),
         title: const CommonText(
           text: 'Required documents',
-          fontSize: 24,
+          fontSize: 20,
           fontWeight: FontWeight.w600,
-          color: _textPrimary,
+          color: Color(0xff272727),
         ),
-        actions: [
-          if (trailingAction != null)
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: trailingAction!,
-            )
-          else
-            const SizedBox(width: 60),
-        ],
       ),
+
       body: SafeArea(
         top: false,
         child: Column(

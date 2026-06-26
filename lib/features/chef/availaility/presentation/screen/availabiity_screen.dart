@@ -278,8 +278,6 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
                           ),
                         ),
 
-
-
                       ),
                     ),
                   ],
@@ -296,24 +294,15 @@ class _CafeSetAvailabilityScreenState extends State<AvailabiityScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            Padding(
-              padding: EdgeInsets.only(left: 8.w, top: 8.h),
-              child: IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  size: 20,
-                  color: Color(0xFF1A1A1A),
-                ),
-              ),
-            ),
-
             if (_isLoadingData)
               const Expanded(
                 child: Center(

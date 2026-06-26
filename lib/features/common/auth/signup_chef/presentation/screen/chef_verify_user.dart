@@ -35,10 +35,7 @@ class _VerifyUserState extends State<ChefVerifyUser> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
       ),
-
       /// Body Section starts here
       body: GetBuilder<SignUpChefController>(
         builder: (controller) {

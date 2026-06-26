@@ -22,10 +22,7 @@ class ChefNameScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: 60,
       ),
-
       /// Body Section Starts Here
       body: GetBuilder<SignUpChefController>(
         builder: (controller) {
