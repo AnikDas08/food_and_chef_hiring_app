@@ -46,11 +46,11 @@ class _ChefEditProfileState extends State<ChefEditProfile> {
             flexibleSpace: appBarOpacity(),
             title: const CommonText(
               text: 'Edit Profile',
-              fontSize: 18,
+              fontSize: 24,
               fontWeight: FontWeight.w600,
               color: Color(0xff272727),
             ),
-            leadingWidth: 60,
+            //leadingWidth: 60,
           ),
           body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
