@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../../../../component/image/common_image.dart';
+import '../../../../../../../component/text/common_text.dart';
 import '../../../../../../../utils/constants/app_icons.dart';
 import '../Model/UploadedFileModel.dart';
 
@@ -91,15 +92,10 @@ class _ChefVerificationReviewPageState
   }
 
   Future<void> _handleSubmit() async {
+
     if (!_allRequiredFilled) {
       setState(() => _showErrors = true);
-
-      final missing = <String>[];
-      if (_govIdFront.isEmpty) missing.add('Gov ID Front');
-      if (_govIdBack.isEmpty) missing.add('Gov ID Back');
-      if (_proofOfAddress.isEmpty) missing.add('Proof of Address');
-      if (_foodSafety.isEmpty) missing.add('Food Safety Cert');
-
+      return;
     }
 
     setState(() => _isLoading = true);
@@ -109,6 +105,7 @@ class _ChefVerificationReviewPageState
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
+
   }
 
   @override
@@ -131,47 +128,18 @@ class _ChefVerificationReviewPageState
 
     return Scaffold(
       backgroundColor: _bg,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const CommonText(
+          text: 'Chef verification',
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          color: Color(0xff272727),
+        ),
+      ),
       body: SafeArea(
         child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-            child: Row(children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: GestureDetector(
-                  onTap: _isLoading
-                      ? null
-                      : (widget.onBack ?? () => Navigator.of(context).maybePop()),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: _isLoading
-                          ? const Color(0xffE0E0E0)
-                          : const Color(0xffF6F6F6),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const CommonImage(
-                      imageSrc: AppIcons.backIcon,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              ),
-              const Expanded(
-                child: Text(
-                  'Chef verification',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: _textPrimary),
-                ),
-              ),
-              const SizedBox(width: 48),
-            ]),
-          ),
 
           Expanded(
             child: SingleChildScrollView(
@@ -233,7 +201,6 @@ class _ChefVerificationReviewPageState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 20),
         Row(
           children: [
             Text(
@@ -275,15 +242,17 @@ class _ChefVerificationReviewPageState
                     size: 18,
                     color: showError ? _red : const Color(0xFFEF9A9A)),
                 const SizedBox(width: 8),
-                Text(
-                  maxLines: 5,
-                  showError ? 'If you don’t submit all the required documents,\nYour profile will not be visible to customers.' : 'If you don’t submit all the required documents,\nYour profile will not be visible to customers.',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: showError ? _red : const Color(0xFFEF9A9A),
-                    fontWeight: showError
-                        ? FontWeight.w500
-                        : FontWeight.w400,
+                Expanded(
+                  child: Text(
+                    maxLines: 5,
+                    showError ? 'If you don’t submit all the required documents,Your profile will not be visible to customers.' : 'If you don’t submit all the required documents,\nYour profile will not be visible to customers.',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: showError ? _red : const Color(0xFFEF9A9A),
+                      fontWeight: showError
+                          ? FontWeight.w500
+                          : FontWeight.w400,
+                    ),
                   ),
                 ),
               ],

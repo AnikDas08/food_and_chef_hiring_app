@@ -11,6 +11,7 @@ import '../../../../../utils/helpers/other_helper.dart';
 import '../controller/availiability_controller.dart';
 
 class AvailabilityItem extends StatelessWidget {
+
   const AvailabilityItem({super.key, required this.day});
 
   final DayModel day;
@@ -30,7 +31,7 @@ class AvailabilityItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Day Header ──
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +48,6 @@ class AvailabilityItem extends StatelessWidget {
               ],
             ),
 
-            // ── Slots ──
             if (day.isEnabled) ...[
               16.height,
               ...List.generate(day.slots.length, (i) {
