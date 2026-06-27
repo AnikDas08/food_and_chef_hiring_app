@@ -34,7 +34,9 @@ Widget chefBookingItem({required Map order}) {
   final String status = order['status'] ?? '';
   final String address = order['formatted_address'] ?? '';
   final String strTime = order['strTime'] ?? '';
-  final double totalPrice = (order['user_paid'] ?? 0).toDouble();
+  final double totalPrice =
+  (order['price_breakdown']?['chef_price_breakdown']?['subtotal'] ?? 0)
+      .toDouble();
   final double rating = (order['rating'] ?? 0).toDouble();
   final String review = order['review'] ?? '';
   final String deadline = order['deadline'] ?? '';

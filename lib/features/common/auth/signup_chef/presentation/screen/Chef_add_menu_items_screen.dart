@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import '../../../../../../component/image/common_image.dart';
 import '../../../../../../component/text/common_text.dart';
 import '../../../../../../config/api/api_end_point.dart';
 import '../../../../../../utils/constants/app_icons.dart';
@@ -63,11 +63,97 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                           textAlign: TextAlign.left,
                         ),
                         GestureDetector(
-                          onTap: () async {
-                            c.resetForm();
-                            await c.fetchCategories();
-                            await Get.to(() => const CafeAddMenuItemScreen());
-                            c.resetForm();
+                          onTap: () {
+                            final ctrl = TextEditingController();
+                            String? error;
+
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return StatefulBuilder(
+                                  builder: (context, setState) {
+                                    return AlertDialog(
+                                      backgroundColor: Colors.white,
+                                      title: const CommonText(
+                                        text: 'Add Menu Section',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        textAlign: TextAlign.left,
+                                      ),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFFF7F7F7),
+                                              borderRadius: BorderRadius.circular(10.r),
+                                              border: error != null
+                                                  ? Border.all(color: Colors.red.shade300)
+                                                  : null,
+                                            ),
+                                            child: TextField(
+                                              controller: ctrl,
+                                              autofocus: true,
+                                              style: TextStyle(fontSize: 13.sp),
+                                              onChanged: (_) {
+                                                if (error != null) {
+                                                  setState(() => error = null);
+                                                }
+                                              },
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                contentPadding: EdgeInsets.symmetric(
+                                                  horizontal: 12.w,
+                                                  vertical: 12.h,
+                                                ),
+                                                hintText: 'Enter Your Menu',
+                                                hintStyle: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  color: const Color(0xFFBBBBBB),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          if (error != null) ...[
+                                            4.verticalSpace,
+                                            CommonText(
+                                              text: error!,
+                                              fontSize: 11,
+                                              color: Colors.red,
+                                              textAlign: TextAlign.left,
+                                            ),
+                                          ],
+                                        ],
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(context),
+                                          child: const CommonText(text: 'Cancel', color: Colors.grey),
+                                        ),
+                                        TextButton(
+                                          onPressed: () async {
+                                            if (ctrl.text.trim().isEmpty) {
+                                              setState(() {
+                                                error = 'Please enter a section name';
+                                              });
+                                              return;
+                                            }
+                                            Navigator.pop(context);
+                                            await c.addMenuSection(ctrl.text.trim());
+                                          },
+                                          child: const CommonText(
+                                            text: 'Add',
+                                            color: Color(0xFF1C1C1C),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            );
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 7.h),
@@ -78,7 +164,7 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                               Icon(Icons.add, size: 14.sp, color: const Color(0xFF272727)),
                               4.horizontalSpace,
                               const CommonText(
-                                text: 'Add Menu Item',
+                                text: 'Add Section',
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xFF272727),
@@ -124,63 +210,34 @@ class CafeAddMenuItemsScreen extends StatelessWidget {
                         ],
                       )),
 
-                    GestureDetector(
-                      onTap: () {
-                        final ctrl = TextEditingController();
-                        showDialog(
-                          context: context,
-                          builder: (_) => AlertDialog(
-                            title: const CommonText(
-                              text: 'Add Menu Section',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              textAlign: TextAlign.left,
-                            ),
-                            content: TextField(
-                              controller: ctrl,
-                              autofocus: true,
-                              decoration: InputDecoration(
-                                hintText: 'Enter Your Menu',
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.r)),
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  child: const CommonText(text: 'Cancel', color: Colors.grey)),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  if (ctrl.text.trim().isNotEmpty) {
-                                    c.addMenuSection(ctrl.text.trim());
-                                  }
-                                },
-                                child: const CommonText(
-                                  text: 'Add',
-                                  color: Color(0xFF1C1C1C),
-                                  fontWeight: FontWeight.w600,
-                                ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 25.h),
+                      child: GestureDetector(
+                        onTap: () async {
+                          c.resetForm();
+                          await c.fetchCategories();
+                          await Get.to(() => const CafeAddMenuItemScreen());
+                          c.resetForm();
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(vertical: 14.h),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF0F0F0),
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.add, size: 16.sp, color: const Color(0xFF272727)),
+                              6.horizontalSpace,
+                              const CommonText(
+                                text: 'Add Item',
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF272727),
                               ),
                             ],
                           ),
-                        );
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: 14.h),
-                        decoration: const BoxDecoration(color: Color(0xFFF0F0F0)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.add, size: 16.sp, color: const Color(0xFF272727)),
-                            6.horizontalSpace,
-                            const CommonText(
-                              text: 'Add Menu Section',
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF272727),
-                            ),
-                          ],
                         ),
                       ),
                     ),
@@ -234,7 +291,7 @@ class _ApiMenuCard extends StatelessWidget {
           color: const Color(0xFFF7F7F7),
           borderRadius: BorderRadius.circular(12.r)),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: Padding(
@@ -244,6 +301,7 @@ class _ApiMenuCard extends StatelessWidget {
                 children: [
                   CommonText(
                     text: item.name,
+                    fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: const Color(0xFF272727),
                     textAlign: TextAlign.left,
@@ -292,14 +350,18 @@ class _ApiMenuCard extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8.r),
-                            border: Border.all(color: const Color(0xFFE0E0E0)),
                           ),
                           child: Row(children: [
-                            Icon(Icons.edit_outlined, size: 13.sp, color: const Color(0xFF272727)),
+                            SvgPicture.asset(
+                              AppIcons.edit_manu_bar,
+                              width: 16.w,
+                              height: 16.w,
+                            ),
                             4.horizontalSpace,
                             const CommonText(
                               text: 'Edit Item',
                               fontSize: 12,
+                              fontWeight: FontWeight.w500,
                               color: Color(0xFF272727),
                             ),
                           ]),
@@ -313,9 +375,12 @@ class _ApiMenuCard extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8.r),
-                            border: Border.all(color: const Color(0xFFE0E0E0)),
                           ),
-                          child: Icon(Icons.delete_outline, size: 16.sp, color: Colors.red),
+                          child: SvgPicture.asset(
+                            AppIcons.delete_menu_icon,
+                            width: 16.w,
+                            height: 16.w,
+                          ),
                         ),
                       ),
                     ],
@@ -325,30 +390,31 @@ class _ApiMenuCard extends StatelessWidget {
             ),
           ),
 
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(12.r),
-                bottomRight: Radius.circular(12.r)),
-            child: item.images.isNotEmpty
-                ? Image.network(
-              item.images.first.startsWith('http')
-                  ? item.images.first
-                  : '${ApiEndPoint.imageUrl}${item.images.first}',
-              width: 110.w, height: 130.h, fit: BoxFit.cover,
-              loadingBuilder: (_, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Container(
-                  width: 110.w, height: 130.h,
-                  color: const Color(0xFFE0E0E0),
-                  child: const Center(
-                    child: CircularProgressIndicator(
-                        color: Color(0xFF272727), strokeWidth: 2),
-                  ),
-                );
-              },
-              errorBuilder: (_, error, __) => _placeholder(),
-            )
-                : _placeholder(),
+          Padding(
+            padding: EdgeInsets.all(8.w),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.r),
+              child: item.images.isNotEmpty
+                  ? Image.network(
+                item.images.first.startsWith('http')
+                    ? item.images.first
+                    : '${ApiEndPoint.imageUrl}${item.images.first}',
+                width: 90.w, height: 90.w, fit: BoxFit.cover,
+                loadingBuilder: (_, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Container(
+                    width: 90.w, height: 90.w,
+                    color: const Color(0xFFE0E0E0),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                          color: Color(0xFF272727), strokeWidth: 2),
+                    ),
+                  );
+                },
+                errorBuilder: (_, error, __) => _placeholder(),
+              )
+                  : _placeholder(),
+            ),
           ),
         ],
       ),
@@ -356,8 +422,11 @@ class _ApiMenuCard extends StatelessWidget {
   }
 
   Widget _placeholder() => Container(
-    width: 110.w, height: 130.h,
-    color: const Color(0xFFE0E0E0),
+    width: 90.w, height: 90.w,
+    decoration: BoxDecoration(
+      color: const Color(0xFFE0E0E0),
+      borderRadius: BorderRadius.circular(10.r),
+    ),
     child: Icon(Icons.restaurant, color: const Color(0xFF999999), size: 28.sp),
   );
 }
