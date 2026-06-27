@@ -482,7 +482,7 @@ Widget bookingItem(BookingHistoryModel order) {
             color: Color(0xff777777),
           ),
           CommonText(
-            text: '\$${order.userPaid.toStringAsFixed(2)}',
+            text: '\$${order.totalPrice.toStringAsFixed(2)}',
             fontWeight: FontWeight.w600,
             color: const Color(0xff272727),
             top: 2,
