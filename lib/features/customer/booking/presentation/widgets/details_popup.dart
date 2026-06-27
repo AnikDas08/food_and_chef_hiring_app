@@ -161,9 +161,9 @@ Widget _buildOrderStatusTimeline(List<dynamic> history) {
       Color stepColor =
           isReached ? steps[index]['color'] : AppColors.secondaryTextColor;
 
-      if (isActive) {
+      /*if (isActive) {
         stepColor = const Color(0xffFD713F);
-      }
+      }*/
 
       final Color bgColor =
           isReached ? stepColor.withOpacity(0.3) : const Color(0xffF5F5F5);
